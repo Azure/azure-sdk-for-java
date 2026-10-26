@@ -232,6 +232,29 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
+     * Get the enableOnlyIPv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @return the enableOnlyIPv6Peering value.
+     */
+    public Boolean enableOnlyIPv6Peering() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOnlyIPv6Peering();
+    }
+
+    /**
+     * Set the enableOnlyIPv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @param enableOnlyIPv6Peering the enableOnlyIPv6Peering value to set.
+     * @return the HubVirtualNetworkConnectionInner object itself.
+     */
+    public HubVirtualNetworkConnectionInner withEnableOnlyIPv6Peering(Boolean enableOnlyIPv6Peering) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withEnableOnlyIPv6Peering(enableOnlyIPv6Peering);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
      * 
      * @return the provisioningState value.

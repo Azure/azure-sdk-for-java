@@ -868,7 +868,7 @@ public interface Cluster {
              * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
              * @return the next definition stage.
              */
-            Update withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition);
+            Update withAggregatorOrSingleRackDefinition(RackDefinitionPatch aggregatorOrSingleRackDefinition);
         }
 
         /**
@@ -912,7 +912,7 @@ public interface Cluster {
              * service principal to be used by the cluster during Arc Appliance installation.
              * @return the next definition stage.
              */
-            Update withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal);
+            Update withClusterServicePrincipal(ServicePrincipalInformationPatch clusterServicePrincipal);
         }
 
         /**
@@ -942,7 +942,7 @@ public interface Cluster {
              * machines during environment validation and deployment.
              * @return the next definition stage.
              */
-            Update withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold);
+            Update withComputeDeploymentThreshold(ValidationThresholdPatch computeDeploymentThreshold);
         }
 
         /**
@@ -957,7 +957,7 @@ public interface Cluster {
              * or an empty list in a single-rack cluster.
              * @return the next definition stage.
              */
-            Update withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions);
+            Update withComputeRackDefinitionsForUpdate(List<RackDefinitionPatch> computeRackDefinitions);
         }
 
         /**
@@ -970,7 +970,8 @@ public interface Cluster {
              * @param runtimeProtectionConfiguration The settings for cluster runtime protection.
              * @return the next definition stage.
              */
-            Update withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration);
+            Update
+                withRuntimeProtectionConfiguration(RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration);
         }
 
         /**
@@ -985,7 +986,7 @@ public interface Cluster {
              * operator.
              * @return the next definition stage.
              */
-            Update withSecretArchive(ClusterSecretArchive secretArchive);
+            Update withSecretArchive(ClusterSecretArchivePatch secretArchive);
         }
 
         /**
@@ -1013,7 +1014,7 @@ public interface Cluster {
              * @param updateStrategy The strategy for updating the cluster.
              * @return the next definition stage.
              */
-            Update withUpdateStrategy(ClusterUpdateStrategy updateStrategy);
+            Update withUpdateStrategy(ClusterUpdateStrategyPatch updateStrategy);
         }
 
         /**

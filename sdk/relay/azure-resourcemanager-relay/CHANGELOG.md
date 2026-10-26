@@ -1,8 +1,18 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-08-05)
+## 1.2.0-beta.1 (Unreleased)
 
-- Azure Resource Manager Relay client library for Java. This package contains Microsoft Azure SDK for Relay Management SDK. Use these API to manage Azure Relay resources through Azure Resource Manager. Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0 (2026-07-25)
+
+- Azure Resource Manager Relay client library for Java. This package contains Microsoft Azure SDK for Relay Management SDK. Use these API to manage Azure Relay resources through Azure Resource Manager. Package api-version 2026-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
@@ -26,8 +36,8 @@
 
 #### `models.Sku` was modified
 
-* `validate()` was removed
 * `java.lang.String name()` -> `models.SkuName name()`
+* `validate()` was removed
 
 #### `models.ResourceNamespacePatch` was modified
 
@@ -39,9 +49,9 @@
 
 #### `models.UnavailableReason` was modified
 
-* `models.UnavailableReason[] values()` -> `java.util.Collection values()`
-* `toString()` was removed
 * `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.UnavailableReason[] values()` -> `java.util.Collection values()`
 
 #### `models.CheckNameAvailability` was modified
 
@@ -53,9 +63,9 @@
 
 #### `models.SkuTier` was modified
 
+* `valueOf(java.lang.String)` was removed
 * `models.SkuTier[] values()` -> `java.util.Collection values()`
 * `toString()` was removed
-* `valueOf(java.lang.String)` was removed
 
 #### `models.OperationDisplay` was modified
 
@@ -64,14 +74,14 @@
 
 #### `models.RelayUpdateParameters` was modified
 
-* `models.ProvisioningStateEnum provisioningState()` -> `java.lang.String provisioningState()`
 * `validate()` was removed
+* `models.ProvisioningStateEnum provisioningState()` -> `java.lang.String provisioningState()`
 
 #### `models.KeyType` was modified
 
-* `valueOf(java.lang.String)` was removed
 * `toString()` was removed
 * `models.KeyType[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
 
 #### `RelayManager` was modified
 
@@ -81,73 +91,37 @@
 
 * `models.NetworkRuleSet` was added
 
-* `models.AvailableRelayClustersList` was added
-
 * `models.NWRuleSetIpRules` was added
 
-* `models.RelayClusterSkuInfo` was added
-
 * `models.PrivateLinkConnectionStatus` was added
-
-* `models.RelayClusterSkuCapacity` was added
 
 * `models.DefaultAction` was added
 
 * `models.PublicNetworkAccess` was added
 
-* `models.RelayCluster$Definition` was added
-
-* `models.RelayNamespaceIdListResult` was added
-
 * `models.PrivateLinkResource` was added
 
 * `models.PrivateEndpointConnection$Definition` was added
 
-* `models.Clusters` was added
-
-* `models.RelayClusterSkuListResult` was added
-
 * `models.PrivateEndpointConnection$UpdateStages` was added
-
-* `models.RelayClusterSku` was added
 
 * `models.NetworkRuleIPAction` was added
 
-* `models.RelayCluster$DefinitionStages` was added
-
 * `models.TlsVersion` was added
 
-* `models.RelayClusterSkuTier` was added
-
-* `models.RelayCluster$UpdateStages` was added
-
 * `models.ActionType` was added
-
-* `models.RelayClusterUpdate` was added
 
 * `models.PrivateEndpointConnection$Update` was added
 
 * `models.EndPointProvisioningState` was added
 
-* `models.AvailableRelayClusterRegion` was added
-
 * `models.PrivateLinkResources` was added
 
 * `models.ConnectionState` was added
 
-* `models.RelayClusterSkuScaleType` was added
-
-* `models.RelayCluster` was added
-
-* `models.RelayClusterProperties` was added
-
 * `models.PrivateEndpointConnection$DefinitionStages` was added
 
-* `models.RelayClusterProvisioningState` was added
-
 * `models.PrivateEndpoint` was added
-
-* `models.RelayClusterSkuUpdate` was added
 
 * `models.PrivateLinkResourcesListResult` was added
 
@@ -155,15 +129,7 @@
 
 * `models.Origin` was added
 
-* `models.RelayCluster$Update` was added
-
 * `models.PrivateEndpointConnection` was added
-
-* `models.RelayClusterSkuDetails` was added
-
-* `models.RelayNamespaceReference` was added
-
-* `models.RelayClusterSkuName` was added
 
 * `models.PrivateEndpointConnections` was added
 
@@ -173,10 +139,10 @@
 
 #### `models.Namespaces` was modified
 
-* `createOrUpdateNetworkRuleSetWithResponse(java.lang.String,java.lang.String,fluent.models.NetworkRuleSetInner,com.azure.core.util.Context)` was added
+* `createOrUpdateNetworkRuleSet(java.lang.String,java.lang.String,fluent.models.NetworkRuleSetInner)` was added
 * `getNetworkRuleSet(java.lang.String,java.lang.String)` was added
 * `getNetworkRuleSetWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `createOrUpdateNetworkRuleSet(java.lang.String,java.lang.String,fluent.models.NetworkRuleSetInner)` was added
+* `createOrUpdateNetworkRuleSetWithResponse(java.lang.String,java.lang.String,fluent.models.NetworkRuleSetInner,com.azure.core.util.Context)` was added
 
 #### `models.Sku` was modified
 
@@ -189,10 +155,10 @@
 #### `models.RelayNamespace` was modified
 
 * `publicNetworkAccess()` was added
-* `privateEndpointConnections()` was added
+* `minimumTlsVersion()` was added
 * `status()` was added
 * `systemData()` was added
-* `minimumTlsVersion()` was added
+* `privateEndpointConnections()` was added
 
 #### `models.UnavailableReason` was modified
 
@@ -200,10 +166,10 @@
 
 #### `models.HybridConnection` was modified
 
-* `location()` was added
-* `regionName()` was added
-* `systemData()` was added
 * `region()` was added
+* `systemData()` was added
+* `regionName()` was added
+* `location()` was added
 
 #### `models.SkuTier` was modified
 
@@ -215,27 +181,27 @@
 
 #### `models.Operation` was modified
 
+* `actionType()` was added
 * `isDataAction()` was added
 * `origin()` was added
-* `actionType()` was added
 
 #### `models.WcfRelay` was modified
 
-* `region()` was added
-* `regionName()` was added
 * `systemData()` was added
 * `location()` was added
+* `regionName()` was added
+* `region()` was added
 
 #### `models.RelayUpdateParameters` was modified
 
-* `status()` was added
-* `privateEndpointConnections()` was added
-* `systemData()` was added
-* `publicNetworkAccess()` was added
 * `minimumTlsVersion()` was added
-* `withMinimumTlsVersion(models.TlsVersion)` was added
 * `withPrivateEndpointConnections(java.util.List)` was added
 * `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `systemData()` was added
+* `withMinimumTlsVersion(models.TlsVersion)` was added
+* `privateEndpointConnections()` was added
+* `publicNetworkAccess()` was added
+* `status()` was added
 
 #### `models.KeyType` was modified
 
@@ -243,28 +209,27 @@
 
 #### `RelayManager` was modified
 
-* `clusters()` was added
-* `privateLinkResources()` was added
 * `privateEndpointConnections()` was added
+* `privateLinkResources()` was added
 
 #### `models.RelayNamespace$Update` was modified
 
 * `withPrivateEndpointConnections(java.util.List)` was added
-* `withMinimumTlsVersion(models.TlsVersion)` was added
 * `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withMinimumTlsVersion(models.TlsVersion)` was added
 
 #### `models.RelayNamespace$Definition` was modified
 
+* `withPrivateEndpointConnections(java.util.List)` was added
 * `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
 * `withMinimumTlsVersion(models.TlsVersion)` was added
-* `withPrivateEndpointConnections(java.util.List)` was added
 
 #### `models.AuthorizationRule` was modified
 
-* `regionName()` was added
-* `systemData()` was added
-* `region()` was added
 * `location()` was added
+* `region()` was added
+* `systemData()` was added
+* `regionName()` was added
 
 ## 1.0.0 (2024-12-20)
 

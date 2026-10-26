@@ -9,7 +9,23 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryImageVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Delete.json
+     * x-ms-original-file: 2026-03-03/galleryExamples/GalleryImageVersion_Delete_BypassSoftDelete.json
+     */
+    /**
+     * Sample code: Permanently delete a gallery image version by bypassing soft delete.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void permanentlyDeleteAGalleryImageVersionByBypassingSoftDelete(
+        com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getGalleryImageVersions()
+            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", true,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-03/galleryExamples/GalleryImageVersion_Delete.json
      */
     /**
      * Sample code: Delete a gallery image version.
@@ -19,7 +35,7 @@ public final class GalleryImageVersionsDeleteSamples {
     public static void deleteAGalleryImageVersion(com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getGalleryImageVersions()
-            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PropertySelectorRequirementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PropertySelectorRequirement model
-            = BinaryData.fromString("{\"name\":\"rqlfktsthsucocmn\",\"operator\":\"Eq\",\"values\":[\"zt\"]}")
-                .toObject(PropertySelectorRequirement.class);
-        Assertions.assertEquals("rqlfktsthsucocmn", model.name());
+        PropertySelectorRequirement model = BinaryData.fromString(
+            "{\"name\":\"fpl\",\"operator\":\"Eq\",\"values\":[\"sxnkjzkdeslpvlo\",\"wiyighxpkdw\",\"baiuebbaumny\",\"upedeojnabckhs\"]}")
+            .toObject(PropertySelectorRequirement.class);
+        Assertions.assertEquals("fpl", model.name());
         Assertions.assertEquals(PropertySelectorOperator.EQ, model.operator());
-        Assertions.assertEquals("zt", model.values().get(0));
+        Assertions.assertEquals("sxnkjzkdeslpvlo", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PropertySelectorRequirement model = new PropertySelectorRequirement().withName("rqlfktsthsucocmn")
+        PropertySelectorRequirement model = new PropertySelectorRequirement().withName("fpl")
             .withOperator(PropertySelectorOperator.EQ)
-            .withValues(Arrays.asList("zt"));
+            .withValues(Arrays.asList("sxnkjzkdeslpvlo", "wiyighxpkdw", "baiuebbaumny", "upedeojnabckhs"));
         model = BinaryData.fromObject(model).toObject(PropertySelectorRequirement.class);
-        Assertions.assertEquals("rqlfktsthsucocmn", model.name());
+        Assertions.assertEquals("fpl", model.name());
         Assertions.assertEquals(PropertySelectorOperator.EQ, model.operator());
-        Assertions.assertEquals("zt", model.values().get(0));
+        Assertions.assertEquals("sxnkjzkdeslpvlo", model.values().get(0));
     }
 }

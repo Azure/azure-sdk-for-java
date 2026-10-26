@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class EnclaveConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Delete.json
+     * x-ms-original-file: 2026-04-01/EnclaveConnection_Delete.json
      */
     /**
      * Sample code: EnclaveConnection_Delete.

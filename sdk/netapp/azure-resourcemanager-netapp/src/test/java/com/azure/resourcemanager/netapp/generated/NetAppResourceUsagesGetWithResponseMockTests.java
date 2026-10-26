@@ -20,7 +20,7 @@ public final class NetAppResourceUsagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"cvtlubseskvc\",\"name\":{\"value\":\"t\",\"localizedValue\":\"unlpirykycndz\"},\"properties\":{\"currentValue\":1017219676,\"limit\":1105579119,\"unit\":\"uykbbmn\"}}";
+            = "{\"id\":\"z\",\"name\":{\"value\":\"t\",\"localizedValue\":\"plvukaobrlbpg\"},\"properties\":{\"currentValue\":1893797286,\"limit\":2049519824,\"unit\":\"hjhgem\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class NetAppResourceUsagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageResult response = manager.netAppResourceUsages()
-            .getWithResponse("zdbpqv", "befgvmxn", com.azure.core.util.Context.NONE)
+            .getWithResponse("dbckyo", "kxkxhnegk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

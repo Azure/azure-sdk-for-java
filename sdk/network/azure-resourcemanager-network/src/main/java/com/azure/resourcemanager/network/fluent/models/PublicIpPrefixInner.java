@@ -371,6 +371,15 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
+     * Get the upgradedToV2 property: Whether the public IP prefix SKU has been upgraded from Standard to StandardV2.
+     * 
+     * @return the upgradedToV2 value.
+     */
+    public Boolean upgradedToV2() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradedToV2();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

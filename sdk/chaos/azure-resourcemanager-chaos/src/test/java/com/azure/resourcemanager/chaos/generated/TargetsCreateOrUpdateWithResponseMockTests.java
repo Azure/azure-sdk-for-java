@@ -25,7 +25,7 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pfpazjzoywjxhpdu\":\"\\\"dataddbhf\\\"\",\"tehtuevrhrljyoog\":\"\\\"dataontacnpq\\\"\",\"sd\":\"\\\"dataxh\\\"\"},\"location\":\"gwbsreurf\",\"id\":\"fuarenlvhht\",\"name\":\"lnvnafvvkyfedev\",\"type\":\"bo\"}";
+            = "{\"properties\":{\"hlaiwd\":\"\\\"datav\\\"\",\"hzdtxetlgydlh\":\"\\\"dataxsmlz\\\"\",\"b\":\"\\\"datavlnnpx\\\"\",\"gjekglklby\":\"\\\"datafiqgeaar\\\"\"},\"location\":\"idwcwvmzegjon\",\"id\":\"jirwgdnqzbrfk\",\"name\":\"pzhz\",\"type\":\"tk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,18 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Target response
-            = manager.targets()
-                .createOrUpdateWithResponse("ikczvvitacgxmf", "sserxhtvsoxhlwn", "sjgqrsxyp", "uuuybnchrsziz", "yuel",
-                    new TargetInner().withProperties(mapOf("nb",
-                        BinaryData.fromBytes("\"datatn\"".getBytes(StandardCharsets.UTF_8)), "lgmtrwahzjmucf",
-                        BinaryData.fromBytes("\"dataqyggagfl\"".getBytes(StandardCharsets.UTF_8)), "fusuckzmkwklsno",
-                        BinaryData.fromBytes("\"databyrplrohkpig\"".getBytes(StandardCharsets.UTF_8)),
-                        "hjnhgwydyynfsvk", BinaryData.fromBytes("\"dataaxmqeqal\"".getBytes(StandardCharsets.UTF_8))))
-                        .withLocation("bvqt"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Target response = manager.targets()
+            .createOrUpdateWithResponse("tjklntikyjuzk", "bqzolxr", "vhqjwtrhtgvg", "pcrrk", "lawjmjsmwrok",
+                new TargetInner()
+                    .withProperties(mapOf("nuchlgmltxdwhmo",
+                        BinaryData.fromBytes("\"dataxfzzzwyjafitlhgu\"".getBytes(StandardCharsets.UTF_8)), "zvlnsnnjz",
+                        BinaryData.fromBytes("\"dataus\"".getBytes(StandardCharsets.UTF_8)), "mwamxqzragpgdph",
+                        BinaryData.fromBytes("\"datapafolp\"".getBytes(StandardCharsets.UTF_8))))
+                    .withLocation("dulajvlejchcs"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("gwbsreurf", response.location());
+        Assertions.assertEquals("idwcwvmzegjon", response.location());
     }
 
     // Use "Map.of" if available

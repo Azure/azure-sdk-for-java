@@ -25,7 +25,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.fluent.RelayManagementClient;
-import com.azure.resourcemanager.relay.implementation.ClustersImpl;
 import com.azure.resourcemanager.relay.implementation.HybridConnectionsImpl;
 import com.azure.resourcemanager.relay.implementation.NamespacesImpl;
 import com.azure.resourcemanager.relay.implementation.OperationsImpl;
@@ -33,7 +32,6 @@ import com.azure.resourcemanager.relay.implementation.PrivateEndpointConnections
 import com.azure.resourcemanager.relay.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.relay.implementation.RelayManagementClientBuilder;
 import com.azure.resourcemanager.relay.implementation.WcfRelaysImpl;
-import com.azure.resourcemanager.relay.models.Clusters;
 import com.azure.resourcemanager.relay.models.HybridConnections;
 import com.azure.resourcemanager.relay.models.Namespaces;
 import com.azure.resourcemanager.relay.models.Operations;
@@ -62,8 +60,6 @@ public final class RelayManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
-
-    private Clusters clusters;
 
     private Namespaces namespaces;
 
@@ -341,18 +337,6 @@ public final class RelayManager {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
-    }
-
-    /**
-     * Gets the resource collection API of Clusters. It manages RelayCluster.
-     * 
-     * @return Resource collection API of Clusters.
-     */
-    public Clusters clusters() {
-        if (this.clusters == null) {
-            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
-        }
-        return clusters;
     }
 
     /**

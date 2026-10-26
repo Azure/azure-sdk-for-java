@@ -6,6 +6,7 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.implementation.models.FabricCapacityListResult;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,14 +14,16 @@ public final class FabricCapacityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Suspending\",\"administration\":{\"members\":[\"ukcdmparcryuanzw\",\"xzdxtayrlhmwh\",\"pmrqobm\"]}},\"sku\":{\"name\":\"u\",\"tier\":\"Fabric\"},\"location\":\"ryrtihfxtijbpzv\",\"tags\":{\"ihanuf\":\"zsymglzufcyzkohd\",\"ifpikxwczby\":\"fcbjysagithxqha\",\"rkxvdum\":\"cnpqxuhivyqniwby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"},{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"Updating\",\"administration\":{\"members\":[\"j\",\"kryhtnapczwlokj\"]}},\"sku\":{\"name\":\"emkkvnipjox\",\"tier\":\"Fabric\"},\"location\":\"chgejspodm\",\"tags\":{\"o\":\"zyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"},\"id\":\"iodjp\",\"name\":\"lwejdpv\",\"type\":\"ryo\"},{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"Scaling\",\"administration\":{\"members\":[\"ctazakljlahbcryf\",\"dfdosygexp\",\"ojakhmsbzjhcrze\",\"dphlxaolt\"]}},\"sku\":{\"name\":\"qtrgqjbpfzfsinzg\",\"tier\":\"Fabric\"},\"location\":\"jrwzox\",\"tags\":{\"fpjkjlxofp\":\"felluwfzitonpe\",\"uybbkpodep\":\"vhpfxxypininmay\"},\"id\":\"oginuvamiheognar\",\"name\":\"zxtheotusivyevcc\",\"type\":\"qi\"}],\"nextLink\":\"hungbwjzrnf\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"state\":\"Scaling\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":899456182},\"administration\":{\"members\":[\"tijbpzvgnwzsymgl\"]}},\"sku\":{\"name\":\"uf\",\"tier\":\"Fabric\"},\"location\":\"kohdbiha\",\"tags\":{\"ithxqhabifpi\":\"hfcbjysa\",\"x\":\"xwczbyscnp\"},\"id\":\"hiv\",\"name\":\"qniwbybrkxvdumj\",\"type\":\"rtfw\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Suspending\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":1991761310},\"administration\":{\"members\":[\"snhsjcnyejhkryh\"]}},\"sku\":{\"name\":\"napczwlokjy\",\"tier\":\"Fabric\"},\"location\":\"kvnipjoxz\",\"tags\":{\"lzydehojwyahux\":\"hgejspodma\",\"vcputegj\":\"npmqnjaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Provisioning\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":491201544},\"administration\":{\"members\":[\"gexpaojakhmsbz\",\"hcrzevd\",\"hlxaolthqtr\",\"qjbpfzfsin\"]}},\"sku\":{\"name\":\"gvfcj\",\"tier\":\"Fabric\"},\"location\":\"oxxjtfelluwf\",\"tags\":{\"vhpfxxypininmay\":\"onpeqfpjkjlxofp\",\"oginuvamiheognar\":\"uybbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"},{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"Resuming\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":2097936694},\"administration\":{\"members\":[\"spemvtzfk\"]}},\"sku\":{\"name\":\"fublj\",\"tier\":\"Fabric\"},\"location\":\"qeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}],\"nextLink\":\"tnhxbn\"}")
             .toObject(FabricCapacityListResult.class);
-        Assertions.assertEquals("ryrtihfxtijbpzv", model.value().get(0).location());
-        Assertions.assertEquals("zsymglzufcyzkohd", model.value().get(0).tags().get("ihanuf"));
-        Assertions.assertEquals("ukcdmparcryuanzw",
+        Assertions.assertEquals("kohdbiha", model.value().get(0).location());
+        Assertions.assertEquals("hfcbjysa", model.value().get(0).tags().get("ithxqhabifpi"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.value().get(0).properties().overage().state());
+        Assertions.assertEquals(899456182, model.value().get(0).properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tijbpzvgnwzsymgl",
             model.value().get(0).properties().administration().members().get(0));
-        Assertions.assertEquals("u", model.value().get(0).sku().name());
+        Assertions.assertEquals("uf", model.value().get(0).sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("hungbwjzrnf", model.nextLink());
+        Assertions.assertEquals("tnhxbn", model.nextLink());
     }
 }

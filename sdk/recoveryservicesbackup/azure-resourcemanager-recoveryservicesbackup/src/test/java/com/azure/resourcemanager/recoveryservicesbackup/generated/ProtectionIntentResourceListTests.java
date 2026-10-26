@@ -14,18 +14,17 @@ public final class ProtectionIntentResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntentResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"nwyvq\",\"itemId\":\"rerlniy\",\"policyId\":\"lyfwxzutg\",\"protectionState\":\"ProtectionFailed\"},\"tags\":{\"upgxyjtcdxabbujf\":\"gh\",\"bbklqpxzuca\":\"abe\",\"dwwnl\":\"e\"},\"location\":\"fwxudgnhg\",\"eTag\":\"krtalvn\",\"id\":\"gpbemeluclvdjju\",\"name\":\"yrdnqod\",\"type\":\"ahhxhqfaqnvzoqg\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DPM\",\"sourceResourceId\":\"chgavs\",\"itemId\":\"uejdtxptlg\",\"policyId\":\"zhomewjjstliu\",\"protectionState\":\"Protected\"},\"tags\":{\"blxydkxr\":\"oaiancznvodrrs\",\"hychocokuleh\":\"vvbxiwkgfbqljnq\"},\"location\":\"qlrqffaweyurk\",\"eTag\":\"y\",\"id\":\"xra\",\"name\":\"juqdbrx\",\"type\":\"rgchbap\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"jjk\",\"itemId\":\"jbuscg\",\"policyId\":\"u\",\"protectionState\":\"Invalid\"},\"tags\":{\"xkyxlzgs\":\"blevpmcluj\",\"taf\":\"gkzz\"},\"location\":\"zffovwmbjl\",\"eTag\":\"sczpgvdwnapfd\",\"id\":\"owftptnuwjtks\",\"name\":\"h\",\"type\":\"cgqyhleseyq\"}],\"nextLink\":\"vyeldot\"}")
+            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"h\",\"itemId\":\"ddacbcbgydlqidy\",\"policyId\":\"hmptyrilkfbn\",\"protectionState\":\"Protected\"},\"tags\":{\"fnqt\":\"ztpb\"},\"location\":\"to\",\"eTag\":\"lswbnf\",\"id\":\"epl\",\"name\":\"wqjnsfzygleexa\",\"type\":\"vmywhsbrcarycsjj\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DPM\",\"sourceResourceId\":\"qajuvehzptdmk\",\"itemId\":\"bhmpfulubefgybp\",\"policyId\":\"bfununmpzkrv\",\"protectionState\":\"Protecting\"},\"tags\":{\"cwnphbkgfyrtogm\":\"dschlzvfictnkjjw\",\"ev\":\"mjpjscdfpdqwty\",\"x\":\"wmseharxifvqn\",\"sidqpxlbtpakft\":\"mbpjptnvwjh\"},\"location\":\"atw\",\"eTag\":\"kyutrymdwmfjhpyc\",\"id\":\"q\",\"name\":\"vdwkqpldr\",\"type\":\"efgnaavuagnt\"}],\"nextLink\":\"aou\"}")
             .toObject(ProtectionIntentResourceList.class);
-        Assertions.assertEquals("vyeldot", model.nextLink());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
+        Assertions.assertEquals("aou", model.nextLink());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD,
             model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("nwyvq", model.value().get(0).properties().sourceResourceId());
-        Assertions.assertEquals("rerlniy", model.value().get(0).properties().itemId());
-        Assertions.assertEquals("lyfwxzutg", model.value().get(0).properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED,
-            model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("gh", model.value().get(0).tags().get("upgxyjtcdxabbujf"));
-        Assertions.assertEquals("fwxudgnhg", model.value().get(0).location());
-        Assertions.assertEquals("krtalvn", model.value().get(0).etag());
+        Assertions.assertEquals("h", model.value().get(0).properties().sourceResourceId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.value().get(0).properties().itemId());
+        Assertions.assertEquals("hmptyrilkfbn", model.value().get(0).properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ztpb", model.value().get(0).tags().get("fnqt"));
+        Assertions.assertEquals("to", model.value().get(0).location());
+        Assertions.assertEquals("lswbnf", model.value().get(0).etag());
     }
 }

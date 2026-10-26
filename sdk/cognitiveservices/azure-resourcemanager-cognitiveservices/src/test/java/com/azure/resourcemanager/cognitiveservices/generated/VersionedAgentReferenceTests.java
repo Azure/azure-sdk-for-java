@@ -12,20 +12,20 @@ public final class VersionedAgentReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VersionedAgentReference model
-            = BinaryData.fromString("{\"agentVersion\":\"uvp\",\"agentId\":\"glpm\",\"agentName\":\"dcueljtiahxmfq\"}")
+            = BinaryData.fromString("{\"agentVersion\":\"u\",\"agentId\":\"doad\",\"agentName\":\"op\"}")
                 .toObject(VersionedAgentReference.class);
-        Assertions.assertEquals("glpm", model.agentId());
-        Assertions.assertEquals("dcueljtiahxmfq", model.agentName());
-        Assertions.assertEquals("uvp", model.agentVersion());
+        Assertions.assertEquals("doad", model.agentId());
+        Assertions.assertEquals("op", model.agentName());
+        Assertions.assertEquals("u", model.agentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VersionedAgentReference model
-            = new VersionedAgentReference().withAgentId("glpm").withAgentName("dcueljtiahxmfq").withAgentVersion("uvp");
+            = new VersionedAgentReference().withAgentId("doad").withAgentName("op").withAgentVersion("u");
         model = BinaryData.fromObject(model).toObject(VersionedAgentReference.class);
-        Assertions.assertEquals("glpm", model.agentId());
-        Assertions.assertEquals("dcueljtiahxmfq", model.agentName());
-        Assertions.assertEquals("uvp", model.agentVersion());
+        Assertions.assertEquals("doad", model.agentId());
+        Assertions.assertEquals("op", model.agentName());
+        Assertions.assertEquals("u", model.agentVersion());
     }
 }

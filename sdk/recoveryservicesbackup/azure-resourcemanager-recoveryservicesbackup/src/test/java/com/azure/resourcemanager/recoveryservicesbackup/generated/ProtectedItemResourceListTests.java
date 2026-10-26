@@ -16,33 +16,32 @@ public final class ProtectedItemResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectedItemResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureSql\",\"workloadType\":\"Invalid\",\"containerName\":\"xs\",\"sourceResourceId\":\"jhqkbiwetpozy\",\"policyId\":\"qiqyhgfsetzlexbs\",\"lastRecoveryPoint\":\"2021-11-26T17:22:15Z\",\"backupSetName\":\"ynojpziuw\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-04-01T20:47:50Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"hqsycljselp\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"fhlbylccbev\",\"rhyzdf\"],\"isArchiveEnabled\":false,\"policyName\":\"fplt\",\"softDeleteRetentionPeriodInDays\":1573282986,\"vaultId\":\"irrhv\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"NotApplicable\",\"sourceSideScanSummary\":\"Healthy\"}},\"tags\":{\"wsigrbjbxsj\":\"pqigtuujwouhd\"},\"location\":\"vitvqkjyaz\",\"eTag\":\"mtggmu\",\"id\":\"ch\",\"name\":\"zfnkfexlvxno\",\"type\":\"kizvoa\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"MAB\",\"workloadType\":\"VMwareVM\",\"containerName\":\"uwiguyxlyk\",\"sourceResourceId\":\"hvxzcwxhmp\",\"policyId\":\"tl\",\"lastRecoveryPoint\":\"2021-05-01T06:39:40Z\",\"backupSetName\":\"onwivkcqhrxhxkn\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-10-06T09:15:33Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"upijubyqjfkakfq\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"ldudxjascowv\"],\"isArchiveEnabled\":true,\"policyName\":\"pdxphlkksnmgzvyf\",\"softDeleteRetentionPeriodInDays\":562287407,\"vaultId\":\"zuqnwsithuqo\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"Healthy\"}},\"tags\":{\"ezvqq\":\"qulsutrjbhxykfhy\",\"rftb\":\"g\",\"reuquowtljvf\":\"ve\",\"yxvrqtvbczsul\":\"hreagk\"},\"location\":\"gglmepjpfsey\",\"eTag\":\"sa\",\"id\":\"psznga\",\"name\":\"p\",\"type\":\"ylkvecjuj\"}],\"nextLink\":\"goadyedmzr\"}")
+            "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureSql\",\"workloadType\":\"VMwareVM\",\"containerName\":\"kmfd\",\"sourceResourceId\":\"yxgbkkqvjcteoedl\",\"policyId\":\"lskkzpxvj\",\"lastRecoveryPoint\":\"2021-11-12T04:28:43Z\",\"backupSetName\":\"vocoj\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-10-07T09:17:41Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"fsnggytexvzilm\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"wncknr\"],\"isArchiveEnabled\":true,\"policyName\":\"lskzptjxul\",\"softDeleteRetentionPeriodInDays\":1218735552,\"sourceLocation\":\"yrth\",\"vaultId\":\"lehmcgcjeinueho\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"ConfigurationFailed\",\"sourceSideScanSummary\":\"Unknown\"}},\"tags\":{\"abzfivf\":\"qnttmbq\"},\"location\":\"pysthhz\",\"eTag\":\"jfwyyrlhgenuze\",\"id\":\"vkvebaqsz\",\"name\":\"lrz\",\"type\":\"smmd\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"DefaultBackup\",\"workloadType\":\"FileFolder\",\"containerName\":\"imcqrh\",\"sourceResourceId\":\"t\",\"policyId\":\"nklogxsvtzarhzv\",\"lastRecoveryPoint\":\"2021-01-21T05:04:35Z\",\"backupSetName\":\"kt\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2020-12-31T13:57:49Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"slpkybtg\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"jsqjcemqbm\",\"uvqarwzxu\",\"rebluimmbwxsf\",\"td\"],\"isArchiveEnabled\":true,\"policyName\":\"ekraokqkbudbt\",\"softDeleteRetentionPeriodInDays\":1049629285,\"sourceLocation\":\"bavly\",\"vaultId\":\"aaknwfr\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"NotApplicable\"}},\"tags\":{\"gatolekscbctnan\":\"ujd\",\"wnsnlaimouxwks\":\"imwbzxpdcldpk\",\"fco\":\"mud\",\"kbqsjhbtqqvyfscy\":\"bicziuswswj\"},\"location\":\"wbivqvogfuyzwvbh\",\"eTag\":\"mb\",\"id\":\"ecr\",\"name\":\"odlikcdrdaasax\",\"type\":\"obsmf\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureWorkload\",\"workloadType\":\"AzureFileShare\",\"containerName\":\"ukosrn\",\"sourceResourceId\":\"nvzmlnkoywsx\",\"policyId\":\"abjqqaxuyvymcnud\",\"lastRecoveryPoint\":\"2021-10-27T04:20:03Z\",\"backupSetName\":\"bhjxwxqweuipmpv\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-08-03T02:18:50Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"xtlt\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"gfhyrfra\",\"kldgrcwfcmfc\"],\"isArchiveEnabled\":true,\"policyName\":\"jqmatxjtielnzq\",\"softDeleteRetentionPeriodInDays\":963386262,\"sourceLocation\":\"fbbmtlp\",\"vaultId\":\"gynoiprnzcali\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"ConfigurationFailed\",\"sourceSideScanSummary\":\"Healthy\"}},\"tags\":{\"mqimiymqru\":\"aqzi\"},\"location\":\"u\",\"eTag\":\"upet\",\"id\":\"vvoqsbpkf\",\"name\":\"anfkgxsyaowuzow\",\"type\":\"uohdkcprgukxr\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"MAB\",\"workloadType\":\"AzureSqlDb\",\"containerName\":\"utixmqrudjiz\",\"sourceResourceId\":\"f\",\"policyId\":\"crunfhi\",\"lastRecoveryPoint\":\"2021-10-15T10:57:58Z\",\"backupSetName\":\"fbcpaqktkrumzu\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-05-21T20:17:50Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"xo\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"q\",\"gvqrnhyhlwcj\"],\"isArchiveEnabled\":false,\"policyName\":\"jhffbxrqrkij\",\"softDeleteRetentionPeriodInDays\":1416331081,\"sourceLocation\":\"lsdxeqztvxwmw\",\"vaultId\":\"jswenaw\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"ConfigurationFailed\",\"sourceSideScanSummary\":\"NoThreatsReported\"}},\"tags\":{\"jhtollh\":\"ioulndhzyoe\",\"glxpnovyoanfbcsw\":\"vidmytzl\",\"t\":\"agyw\",\"aeukyawohpm\":\"igvjrktp\"},\"location\":\"qnucs\",\"eTag\":\"hsidsjtdlpbnin\",\"id\":\"azlsvbzfcpuo\",\"name\":\"e\",\"type\":\"wjcciklhsy\"}],\"nextLink\":\"rdrenxo\"}")
             .toObject(ProtectedItemResourceList.class);
-        Assertions.assertEquals("goadyedmzr", model.nextLink());
-        Assertions.assertEquals("xs", model.value().get(0).properties().containerName());
-        Assertions.assertEquals("jhqkbiwetpozy", model.value().get(0).properties().sourceResourceId());
-        Assertions.assertEquals("qiqyhgfsetzlexbs", model.value().get(0).properties().policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T17:22:15Z"),
+        Assertions.assertEquals("rdrenxo", model.nextLink());
+        Assertions.assertEquals("kmfd", model.value().get(0).properties().containerName());
+        Assertions.assertEquals("yxgbkkqvjcteoedl", model.value().get(0).properties().sourceResourceId());
+        Assertions.assertEquals("lskkzpxvj", model.value().get(0).properties().policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T04:28:43Z"),
             model.value().get(0).properties().lastRecoveryPoint());
-        Assertions.assertEquals("ynojpziuw", model.value().get(0).properties().backupSetName());
+        Assertions.assertEquals("vocoj", model.value().get(0).properties().backupSetName());
         Assertions.assertEquals(CreateMode.DEFAULT, model.value().get(0).properties().createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T20:47:50Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T09:17:41Z"),
             model.value().get(0).properties().deferredDeleteTimeInUtc());
-        Assertions.assertFalse(model.value().get(0).properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("hqsycljselp", model.value().get(0).properties().deferredDeleteTimeRemaining());
+        Assertions.assertTrue(model.value().get(0).properties().isScheduledForDeferredDelete());
+        Assertions.assertEquals("fsnggytexvzilm", model.value().get(0).properties().deferredDeleteTimeRemaining());
         Assertions.assertTrue(model.value().get(0).properties().isDeferredDeleteScheduleUpcoming());
         Assertions.assertFalse(model.value().get(0).properties().isRehydrate());
-        Assertions.assertEquals("fhlbylccbev",
-            model.value().get(0).properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertFalse(model.value().get(0).properties().isArchiveEnabled());
-        Assertions.assertEquals("fplt", model.value().get(0).properties().policyName());
-        Assertions.assertEquals(1573282986, model.value().get(0).properties().softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals(SourceSideScanStatus.NOT_APPLICABLE,
+        Assertions.assertEquals("wncknr", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertTrue(model.value().get(0).properties().isArchiveEnabled());
+        Assertions.assertEquals("lskzptjxul", model.value().get(0).properties().policyName());
+        Assertions.assertEquals(1218735552, model.value().get(0).properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SourceSideScanStatus.CONFIGURATION_FAILED,
             model.value().get(0).properties().sourceSideScanInfo().sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.HEALTHY,
+        Assertions.assertEquals(SourceSideScanSummary.UNKNOWN,
             model.value().get(0).properties().sourceSideScanInfo().sourceSideScanSummary());
-        Assertions.assertEquals("pqigtuujwouhd", model.value().get(0).tags().get("wsigrbjbxsj"));
-        Assertions.assertEquals("vitvqkjyaz", model.value().get(0).location());
-        Assertions.assertEquals("mtggmu", model.value().get(0).etag());
+        Assertions.assertEquals("qnttmbq", model.value().get(0).tags().get("abzfivf"));
+        Assertions.assertEquals("pysthhz", model.value().get(0).location());
+        Assertions.assertEquals("jfwyyrlhgenuze", model.value().get(0).etag());
     }
 }

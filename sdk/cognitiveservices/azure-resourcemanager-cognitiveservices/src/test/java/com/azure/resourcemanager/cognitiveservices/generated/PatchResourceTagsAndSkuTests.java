@@ -16,32 +16,32 @@ public final class PatchResourceTagsAndSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchResourceTagsAndSku model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"xsdqrhzoymibmrqy\",\"tier\":\"Enterprise\",\"size\":\"wfluszdt\",\"family\":\"rkwofyyvoqa\",\"capacity\":848769798},\"tags\":{\"wbwo\":\"pbtg\",\"kcnqxwbpo\":\"nwashrtd\",\"aasipqi\":\"ulpiuj\"}}")
+            "{\"sku\":{\"name\":\"lsa\",\"tier\":\"Basic\",\"size\":\"fsynljphuop\",\"family\":\"dlqiyntorzih\",\"capacity\":1679809360},\"tags\":{\"yzrpzbchckqqzq\":\"swsrms\",\"ysuiizynkedya\":\"ox\",\"pyy\":\"rwyhqmibzyhwitsm\"}}")
             .toObject(PatchResourceTagsAndSku.class);
-        Assertions.assertEquals("pbtg", model.tags().get("wbwo"));
-        Assertions.assertEquals("xsdqrhzoymibmrqy", model.sku().name());
-        Assertions.assertEquals(SkuTier.ENTERPRISE, model.sku().tier());
-        Assertions.assertEquals("wfluszdt", model.sku().size());
-        Assertions.assertEquals("rkwofyyvoqa", model.sku().family());
-        Assertions.assertEquals(848769798, model.sku().capacity());
+        Assertions.assertEquals("swsrms", model.tags().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("lsa", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("fsynljphuop", model.sku().size());
+        Assertions.assertEquals("dlqiyntorzih", model.sku().family());
+        Assertions.assertEquals(1679809360, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchResourceTagsAndSku model = new PatchResourceTagsAndSku()
-            .withTags(mapOf("wbwo", "pbtg", "kcnqxwbpo", "nwashrtd", "aasipqi", "ulpiuj"))
-            .withSku(new Sku().withName("xsdqrhzoymibmrqy")
-                .withTier(SkuTier.ENTERPRISE)
-                .withSize("wfluszdt")
-                .withFamily("rkwofyyvoqa")
-                .withCapacity(848769798));
+            .withTags(mapOf("yzrpzbchckqqzq", "swsrms", "ysuiizynkedya", "ox", "pyy", "rwyhqmibzyhwitsm"))
+            .withSku(new Sku().withName("lsa")
+                .withTier(SkuTier.BASIC)
+                .withSize("fsynljphuop")
+                .withFamily("dlqiyntorzih")
+                .withCapacity(1679809360));
         model = BinaryData.fromObject(model).toObject(PatchResourceTagsAndSku.class);
-        Assertions.assertEquals("pbtg", model.tags().get("wbwo"));
-        Assertions.assertEquals("xsdqrhzoymibmrqy", model.sku().name());
-        Assertions.assertEquals(SkuTier.ENTERPRISE, model.sku().tier());
-        Assertions.assertEquals("wfluszdt", model.sku().size());
-        Assertions.assertEquals("rkwofyyvoqa", model.sku().family());
-        Assertions.assertEquals(848769798, model.sku().capacity());
+        Assertions.assertEquals("swsrms", model.tags().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("lsa", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("fsynljphuop", model.sku().size());
+        Assertions.assertEquals("dlqiyntorzih", model.sku().family());
+        Assertions.assertEquals(1679809360, model.sku().capacity());
     }
 
     // Use "Map.of" if available

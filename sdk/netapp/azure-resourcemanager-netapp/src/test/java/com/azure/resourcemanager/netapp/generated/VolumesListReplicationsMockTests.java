@@ -26,7 +26,7 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"replicationId\":\"rytfmpcycil\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"ggn\",\"remoteVolumeRegion\":\"uztrksxwpndfcpf\",\"mirrorState\":\"Mirrored\",\"replicationCreationTime\":\"2021-05-17T18:52:51Z\",\"replicationDeletionTime\":\"2021-09-16T04:39:55Z\"}]}";
+            = "{\"value\":[{\"replicationId\":\"hnykz\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"x\",\"remoteVolumeRegion\":\"mzqwmvtxnjmxmcu\",\"mirrorState\":\"Broken\",\"replicationCreationTime\":\"2021-02-28T12:20:49Z\",\"replicationDeletionTime\":\"2021-11-16T20:15:57Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,12 +36,12 @@ public final class VolumesListReplicationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("npbs", "vefloccsrmozihmi", "g", "wtxxpkyjcx",
+            .listReplications("mk", "svth", "wpztekovmribia", "tgplucfota",
                 new ListReplicationsRequest().withExclude(Exclude.NONE), com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
         Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("ggn", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("uztrksxwpndfcpf", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals("x", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("mzqwmvtxnjmxmcu", response.iterator().next().remoteVolumeRegion());
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnect
 import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
+import com.azure.resourcemanager.elasticsan.models.ElasticSanVersion;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
@@ -72,11 +73,11 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
         return this.innerModel().provisioningState();
     }
 
-    public long baseSizeTiB() {
+    public Long baseSizeTiB() {
         return this.innerModel().baseSizeTiB();
     }
 
-    public long extendedCapacitySizeTiB() {
+    public Long extendedCapacitySizeTiB() {
         return this.innerModel().extendedCapacitySizeTiB();
     }
 
@@ -117,6 +118,22 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public AutoScaleProperties autoScaleProperties() {
         return this.innerModel().autoScaleProperties();
+    }
+
+    public ElasticSanVersion version() {
+        return this.innerModel().version();
+    }
+
+    public Long usedCapacityGiB() {
+        return this.innerModel().usedCapacityGiB();
+    }
+
+    public Integer totalReservedIops() {
+        return this.innerModel().totalReservedIops();
+    }
+
+    public Integer totalReservedMBps() {
+        return this.innerModel().totalReservedMBps();
     }
 
     public Region region() {
@@ -227,16 +244,6 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
         return this;
     }
 
-    public ElasticSanImpl withBaseSizeTiB(long baseSizeTiB) {
-        this.innerModel().withBaseSizeTiB(baseSizeTiB);
-        return this;
-    }
-
-    public ElasticSanImpl withExtendedCapacitySizeTiB(long extendedCapacitySizeTiB) {
-        this.innerModel().withExtendedCapacitySizeTiB(extendedCapacitySizeTiB);
-        return this;
-    }
-
     public ElasticSanImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -250,6 +257,56 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     public ElasticSanImpl withAvailabilityZones(List<String> availabilityZones) {
         this.innerModel().withAvailabilityZones(availabilityZones);
         return this;
+    }
+
+    public ElasticSanImpl withBaseSizeTiB(Long baseSizeTiB) {
+        if (isInCreateMode()) {
+            this.innerModel().withBaseSizeTiB(baseSizeTiB);
+            return this;
+        } else {
+            this.updateParameters.withBaseSizeTiB(baseSizeTiB);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB) {
+        if (isInCreateMode()) {
+            this.innerModel().withExtendedCapacitySizeTiB(extendedCapacitySizeTiB);
+            return this;
+        } else {
+            this.updateParameters.withExtendedCapacitySizeTiB(extendedCapacitySizeTiB);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withTotalIops(Long totalIops) {
+        if (isInCreateMode()) {
+            this.innerModel().withTotalIops(totalIops);
+            return this;
+        } else {
+            this.updateParameters.withTotalIops(totalIops);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withTotalMBps(Long totalMBps) {
+        if (isInCreateMode()) {
+            this.innerModel().withTotalMBps(totalMBps);
+            return this;
+        } else {
+            this.updateParameters.withTotalMBps(totalMBps);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withTotalSizeTiB(Long totalSizeTiB) {
+        if (isInCreateMode()) {
+            this.innerModel().withTotalSizeTiB(totalSizeTiB);
+            return this;
+        } else {
+            this.updateParameters.withTotalSizeTiB(totalSizeTiB);
+            return this;
+        }
     }
 
     public ElasticSanImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
@@ -272,13 +329,8 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
         }
     }
 
-    public ElasticSanImpl withBaseSizeTiB(Long baseSizeTiB) {
-        this.updateParameters.withBaseSizeTiB(baseSizeTiB);
-        return this;
-    }
-
-    public ElasticSanImpl withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB) {
-        this.updateParameters.withExtendedCapacitySizeTiB(extendedCapacitySizeTiB);
+    public ElasticSanImpl withVersion(ElasticSanVersion version) {
+        this.innerModel().withVersion(version);
         return this;
     }
 

@@ -12,10 +12,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purestorageblock.fluent.StoragePoolsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsConnectionInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsStatusInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleActivationCodeInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleAuthResultInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolHealthInfoInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner;
 import com.azure.resourcemanager.purestorageblock.models.AvsConnection;
 import com.azure.resourcemanager.purestorageblock.models.AvsStatus;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleActivationCode;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthResult;
 import com.azure.resourcemanager.purestorageblock.models.StoragePool;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
@@ -165,6 +170,44 @@ public final class StoragePoolsImpl implements StoragePools {
 
     public void repairAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
         this.serviceClient().repairAvsConnection(resourceGroupName, storagePoolName, context);
+    }
+
+    public Response<PlatformConsoleActivationCode> listPlatformConsoleActivationCodeWithResponse(
+        String resourceGroupName, String storagePoolName, Context context) {
+        Response<PlatformConsoleActivationCodeInner> inner = this.serviceClient()
+            .listPlatformConsoleActivationCodeWithResponse(resourceGroupName, storagePoolName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlatformConsoleActivationCodeImpl(inner.getValue(), this.manager()));
+    }
+
+    public PlatformConsoleActivationCode listPlatformConsoleActivationCode(String resourceGroupName,
+        String storagePoolName) {
+        PlatformConsoleActivationCodeInner inner
+            = this.serviceClient().listPlatformConsoleActivationCode(resourceGroupName, storagePoolName);
+        if (inner != null) {
+            return new PlatformConsoleActivationCodeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<PlatformConsoleAuthResult> configurePlatformConsoleAuthWithResponse(String resourceGroupName,
+        String storagePoolName, PlatformConsoleAuthConfig config, Context context) {
+        Response<PlatformConsoleAuthResultInner> inner = this.serviceClient()
+            .configurePlatformConsoleAuthWithResponse(resourceGroupName, storagePoolName, config, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlatformConsoleAuthResultImpl(inner.getValue(), this.manager()));
+    }
+
+    public PlatformConsoleAuthResult configurePlatformConsoleAuth(String resourceGroupName, String storagePoolName,
+        PlatformConsoleAuthConfig config) {
+        PlatformConsoleAuthResultInner inner
+            = this.serviceClient().configurePlatformConsoleAuth(resourceGroupName, storagePoolName, config);
+        if (inner != null) {
+            return new PlatformConsoleAuthResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public StoragePool getById(String id) {

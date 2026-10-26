@@ -12,9 +12,9 @@ public final class MongoDBCollectionGetPropertiesOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBCollectionGetPropertiesOptions model
-            = BinaryData.fromString("{\"throughput\":663204273,\"autoscaleSettings\":{\"maxThroughput\":809500058}}")
+            = BinaryData.fromString("{\"throughput\":417170517,\"autoscaleSettings\":{\"maxThroughput\":327752705}}")
                 .toObject(MongoDBCollectionGetPropertiesOptions.class);
-        Assertions.assertEquals(663204273, model.throughput());
-        Assertions.assertEquals(809500058, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(417170517, model.throughput());
+        Assertions.assertEquals(327752705, model.autoscaleSettings().maxThroughput());
     }
 }

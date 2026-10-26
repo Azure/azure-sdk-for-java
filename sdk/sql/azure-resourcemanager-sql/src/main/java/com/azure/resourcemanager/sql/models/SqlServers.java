@@ -81,14 +81,32 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
      * Gets the entry point of the SQL Sync Group.
      *
      * @return the SQL Sync Group entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. For distributed applications, use
+     * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy.
+     * For globally distributed applications, additionally use
+     * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with
+     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
+     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
+     * retirement migration guidance</a> for more alternatives.
      */
+    @Deprecated
     SqlSyncGroupOperations syncGroups();
 
     /**
-     * Gets the entry point of the SQL Sync Group.
+     * Gets the entry point of the SQL Sync Member.
      *
-     * @return the SQL Sync Group entry point
+     * @return the SQL Sync Member entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. For distributed applications, use
+     * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy.
+     * For globally distributed applications, additionally use
+     * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with
+     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
+     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
+     * retirement migration guidance</a> for more alternatives.
      */
+    @Deprecated
     SqlSyncMemberOperations syncMembers();
 
     /**

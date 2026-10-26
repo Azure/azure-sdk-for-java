@@ -13,11 +13,11 @@ public final class AzureVMAppContainerProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVMAppContainerProtectableContainer model = BinaryData.fromString(
-            "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"wofali\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"oiqtamtyvskn\",\"containerId\":\"wzawnvsbcfhzagxn\"}")
+            "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"sgeafgfosehx\",\"backupManagementType\":\"AzureSql\",\"healthStatus\":\"ezppkkwaaesk\",\"containerId\":\"jlpzeqtoyrp\"}")
             .toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("wofali", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("oiqtamtyvskn", model.healthStatus());
-        Assertions.assertEquals("wzawnvsbcfhzagxn", model.containerId());
+        Assertions.assertEquals("sgeafgfosehx", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("ezppkkwaaesk", model.healthStatus());
+        Assertions.assertEquals("jlpzeqtoyrp", model.containerId());
     }
 }

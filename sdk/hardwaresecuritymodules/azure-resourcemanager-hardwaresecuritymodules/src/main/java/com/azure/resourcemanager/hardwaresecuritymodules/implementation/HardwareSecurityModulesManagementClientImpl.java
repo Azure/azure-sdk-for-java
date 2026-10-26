@@ -34,6 +34,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusters
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.DedicatedHsmsClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.HardwareSecurityModulesManagementClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.OperationsClient;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.PaymentHsmClusterPrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.PaymentHsmClusterPrivateLinkResourcesClient;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.PaymentHsmClustersClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.PrivateEndpointConnectionsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -176,6 +179,34 @@ public final class HardwareSecurityModulesManagementClientImpl implements Hardwa
     }
 
     /**
+     * The PaymentHsmClustersClient object to access its operations.
+     */
+    private final PaymentHsmClustersClient paymentHsmClusters;
+
+    /**
+     * Gets the PaymentHsmClustersClient object to access its operations.
+     * 
+     * @return the PaymentHsmClustersClient object.
+     */
+    public PaymentHsmClustersClient getPaymentHsmClusters() {
+        return this.paymentHsmClusters;
+    }
+
+    /**
+     * The PaymentHsmClusterPrivateEndpointConnectionsClient object to access its operations.
+     */
+    private final PaymentHsmClusterPrivateEndpointConnectionsClient paymentHsmClusterPrivateEndpointConnections;
+
+    /**
+     * Gets the PaymentHsmClusterPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the PaymentHsmClusterPrivateEndpointConnectionsClient object.
+     */
+    public PaymentHsmClusterPrivateEndpointConnectionsClient getPaymentHsmClusterPrivateEndpointConnections() {
+        return this.paymentHsmClusterPrivateEndpointConnections;
+    }
+
+    /**
      * The CloudHsmClusterPrivateLinkResourcesClient object to access its operations.
      */
     private final CloudHsmClusterPrivateLinkResourcesClient cloudHsmClusterPrivateLinkResources;
@@ -246,6 +277,20 @@ public final class HardwareSecurityModulesManagementClientImpl implements Hardwa
     }
 
     /**
+     * The PaymentHsmClusterPrivateLinkResourcesClient object to access its operations.
+     */
+    private final PaymentHsmClusterPrivateLinkResourcesClient paymentHsmClusterPrivateLinkResources;
+
+    /**
+     * Gets the PaymentHsmClusterPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the PaymentHsmClusterPrivateLinkResourcesClient object.
+     */
+    public PaymentHsmClusterPrivateLinkResourcesClient getPaymentHsmClusterPrivateLinkResources() {
+        return this.paymentHsmClusterPrivateLinkResources;
+    }
+
+    /**
      * Initializes an instance of HardwareSecurityModulesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -262,15 +307,19 @@ public final class HardwareSecurityModulesManagementClientImpl implements Hardwa
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-31";
+        this.apiVersion = "2025-12-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.cloudHsmClusters = new CloudHsmClustersClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.paymentHsmClusters = new PaymentHsmClustersClientImpl(this);
+        this.paymentHsmClusterPrivateEndpointConnections
+            = new PaymentHsmClusterPrivateEndpointConnectionsClientImpl(this);
         this.cloudHsmClusterPrivateLinkResources = new CloudHsmClusterPrivateLinkResourcesClientImpl(this);
         this.cloudHsmClusterBackupStatus = new CloudHsmClusterBackupStatusClientImpl(this);
         this.cloudHsmClusterRestoreStatus = new CloudHsmClusterRestoreStatusClientImpl(this);
         this.cloudHsmClusterPrivateEndpointConnections = new CloudHsmClusterPrivateEndpointConnectionsClientImpl(this);
         this.dedicatedHsms = new DedicatedHsmsClientImpl(this);
+        this.paymentHsmClusterPrivateLinkResources = new PaymentHsmClusterPrivateLinkResourcesClientImpl(this);
     }
 
     /**

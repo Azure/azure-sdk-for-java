@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +51,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * MultiAD Status for the account
      */
     private MultiAdStatus multiAdStatus;
+
+    /*
+     * LDAP Configuration for the account.
+     */
+    private LdapConfiguration ldapConfiguration;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -148,6 +154,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    public LdapConfiguration ldapConfiguration() {
+        return this.ldapConfiguration;
+    }
+
+    /**
+     * Set the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @param ldapConfiguration the ldapConfiguration value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        this.ldapConfiguration = ldapConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +184,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (ldapConfiguration() != null) {
+            ldapConfiguration().validate();
         }
     }
 
@@ -171,6 +200,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
+        jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +233,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.nfsV4IdDomain = reader.getString();
                 } else if ("multiAdStatus".equals(fieldName)) {
                     deserializedAccountProperties.multiAdStatus = MultiAdStatus.fromString(reader.getString());
+                } else if ("ldapConfiguration".equals(fieldName)) {
+                    deserializedAccountProperties.ldapConfiguration = LdapConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

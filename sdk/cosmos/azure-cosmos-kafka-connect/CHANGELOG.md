@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.12.0-beta.1 (Unreleased)
+### 2.13.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,11 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.12.0 (2026-09-22)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
 ### 2.11.0 (2026-06-08)
 
@@ -58,7 +63,7 @@
 * Fixed warning logs for `java.lang.NoClassDefFoundError: io/micrometer/observation/ObservationHandler` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 #### Other Changes
-* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregrated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 ### 2.5.0 (2025-07-31)
 

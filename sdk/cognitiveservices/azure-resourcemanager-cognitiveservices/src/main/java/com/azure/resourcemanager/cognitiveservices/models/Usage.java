@@ -11,6 +11,21 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
  */
 public interface Usage {
     /**
+     * Gets the id property: Fully qualified resource ID for the usage. Ex -
+     * /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/usages/{usageName}.
+     * 
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * Gets the type property: The type of the usage resource. E.g. "Microsoft.CognitiveServices/locations/usages".
+     * 
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the unit property: The unit of the metric.
      * 
      * @return the unit value.

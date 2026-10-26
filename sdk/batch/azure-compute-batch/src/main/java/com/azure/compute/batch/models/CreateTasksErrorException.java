@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * The exception that is thrown when the {@link com.azure.compute.batch.BatchClient#createTasks(String, Collection, BatchClientParallelOptions)} operation is terminated.
+ * The exception that is thrown when the {@link com.azure.compute.batch.BatchClient#createTasks(String, List, BatchClientParallelOptions)} operation is terminated.
  */
 public class CreateTasksErrorException extends AzureException {
 
@@ -43,7 +43,7 @@ public class CreateTasksErrorException extends AzureException {
      *
      * @return The list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
      */
-    public List<BatchTaskCreateResult> failureTaskList() {
+    public List<BatchTaskCreateResult> getFailureTaskList() {
         return failureTaskList;
     }
 
@@ -52,7 +52,7 @@ public class CreateTasksErrorException extends AzureException {
      *
      * @return The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public List<BatchTaskCreateParameters> pendingTaskList() {
+    public List<BatchTaskCreateParameters> getPendingTaskList() {
         return pendingTaskList;
     }
 }

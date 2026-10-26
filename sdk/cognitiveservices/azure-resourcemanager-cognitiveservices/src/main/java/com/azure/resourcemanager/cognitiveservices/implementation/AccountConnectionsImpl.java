@@ -13,7 +13,6 @@ import com.azure.resourcemanager.cognitiveservices.fluent.AccountConnectionsClie
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
-import com.azure.resourcemanager.cognitiveservices.models.ConnectionUpdateContent;
 
 public final class AccountConnectionsImpl implements AccountConnections {
     private static final ClientLogger LOGGER = new ClientLogger(AccountConnectionsImpl.class);
@@ -47,45 +46,6 @@ public final class AccountConnectionsImpl implements AccountConnections {
         }
     }
 
-    public Response<ConnectionPropertiesV2BasicResource> createWithResponse(String resourceGroupName,
-        String accountName, String connectionName, ConnectionPropertiesV2BasicResourceInner connection,
-        Context context) {
-        Response<ConnectionPropertiesV2BasicResourceInner> inner = this.serviceClient()
-            .createWithResponse(resourceGroupName, accountName, connectionName, connection, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConnectionPropertiesV2BasicResourceImpl(inner.getValue(), this.manager()));
-    }
-
-    public ConnectionPropertiesV2BasicResource create(String resourceGroupName, String accountName,
-        String connectionName) {
-        ConnectionPropertiesV2BasicResourceInner inner
-            = this.serviceClient().create(resourceGroupName, accountName, connectionName);
-        if (inner != null) {
-            return new ConnectionPropertiesV2BasicResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ConnectionPropertiesV2BasicResource> updateWithResponse(String resourceGroupName,
-        String accountName, String connectionName, ConnectionUpdateContent connection, Context context) {
-        Response<ConnectionPropertiesV2BasicResourceInner> inner = this.serviceClient()
-            .updateWithResponse(resourceGroupName, accountName, connectionName, connection, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConnectionPropertiesV2BasicResourceImpl(inner.getValue(), this.manager()));
-    }
-
-    public ConnectionPropertiesV2BasicResource update(String resourceGroupName, String accountName,
-        String connectionName) {
-        ConnectionPropertiesV2BasicResourceInner inner
-            = this.serviceClient().update(resourceGroupName, accountName, connectionName);
-        if (inner != null) {
-            return new ConnectionPropertiesV2BasicResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String connectionName,
         Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, connectionName, context);
@@ -110,11 +70,91 @@ public final class AccountConnectionsImpl implements AccountConnections {
             inner1 -> new ConnectionPropertiesV2BasicResourceImpl(inner1, this.manager()));
     }
 
+    public ConnectionPropertiesV2BasicResource getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
+        if (accountName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        String connectionName = ResourceManagerUtils.getValueFromIdByName(id, "connections");
+        if (connectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, accountName, connectionName, Context.NONE).getValue();
+    }
+
+    public Response<ConnectionPropertiesV2BasicResource> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
+        if (accountName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        String connectionName = ResourceManagerUtils.getValueFromIdByName(id, "connections");
+        if (connectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, accountName, connectionName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
+        if (accountName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        String connectionName = ResourceManagerUtils.getValueFromIdByName(id, "connections");
+        if (connectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, accountName, connectionName, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
+        if (accountName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        String connectionName = ResourceManagerUtils.getValueFromIdByName(id, "connections");
+        if (connectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, accountName, connectionName, context);
+    }
+
     private AccountConnectionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager() {
         return this.serviceManager;
+    }
+
+    public ConnectionPropertiesV2BasicResourceImpl define(String name) {
+        return new ConnectionPropertiesV2BasicResourceImpl(name, this.manager());
     }
 }

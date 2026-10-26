@@ -33,7 +33,7 @@ public interface NetworkSecurityPerimeterConfiguration {
     String type();
 
     /**
-     * Gets the properties property: The properties property.
+     * Gets the properties property: Network security configuration properties.
      * 
      * @return the properties value.
      */

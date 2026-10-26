@@ -16,6 +16,7 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -36,6 +37,20 @@ import java.util.List;
  * - {@link #analyzeVideoUrl()} - Analyze video files
  * - {@link #analyzeAudioUrl()} - Analyze audio files
  * - {@link #analyzeImageUrl()} - Analyze image files
+ *
+ * <p>Use {@code beginAnalyze} with {@link AnalysisInput} for publicly accessible URL inputs. Use
+ * {@code beginAnalyzeBinary} for local binary data. Use {@code prebuilt-imageSearch} for standalone image
+ * descriptions; for images containing printed or handwritten text, use {@code prebuilt-documentSearch}.</p>
+ *
+ * <p>This sample uses long-running operations, which support the RAG analyzers shown here, larger inputs, and
+ * persisted results. For inline analysis without polling or persisted results, see {@link Sample19_AnalyzeInline}.
+ * Inline analysis supports document analyzers without field schemas or figure analysis:
+ * {@code prebuilt-digitalParse}, {@code prebuilt-read}, {@code prebuilt-layout}, or a custom document analyzer without
+ * fields.</p>
+ *
+ * <p>Document ranges use 1-based page numbers. Audio and video ranges use millisecond offsets; the top-level
+ * {@code AudioVisualContent} start and end times remain relative to the original media and are not rebased to the
+ * requested range.</p>
  */
 public class Sample02_AnalyzeUrl {
 
@@ -101,11 +116,16 @@ public class Sample02_AnalyzeUrl {
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalysisResult result = operation.getFinalResult();
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
         // END:ContentUnderstandingAnalyzeUrl
 
         System.out.println("Analysis operation completed");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+        if (usage != null) {
+            System.out.println("Document pages (standard): " + usage.getDocumentPagesStandard());
+            System.out.println("Contextualization tokens: " + usage.getContextualizationTokens());
+        }
 
         // A PDF file has only one content element even if it contains multiple pages
         AnalysisContent content = null;
@@ -357,6 +377,22 @@ public class Sample02_AnalyzeUrl {
                 + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
         }
 
+        // Pass a dynamically constructed range string directly. Time ranges use milliseconds on the wire.
+        // This is equivalent to ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5)).
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("0-5000"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        for (AnalysisContent media : rawRangeResult.getContents()) {
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("Raw ContentRange(\"0-5000\"): Start=" + videoContent.getStartTime().toMillis()
+                + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+        }
+
         // Analyze from 10 seconds onward using ContentRange.timeRangeFrom()
         AnalysisInput rangeFromInput = new AnalysisInput();
         rangeFromInput.setUrl(uriSource);
@@ -429,6 +465,20 @@ public class Sample02_AnalyzeUrl {
         AudioVisualContent audioContent = (AudioVisualContent) rangeResult.getContents().get(0);
         System.out.println("TimeRangeFrom(5s): Start=" + audioContent.getStartTime().toMillis()
             + " ms, End=" + audioContent.getEndTime().toMillis() + " ms");
+
+        // Pass a dynamically constructed range string directly. Time ranges use milliseconds on the wire.
+        // This is equivalent to ContentRange.timeRangeFrom(Duration.ofSeconds(5)).
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("5000-"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        AudioVisualContent rawAudioContent = (AudioVisualContent) rawRangeResult.getContents().get(0);
+        System.out.println("Raw ContentRange(\"5000-\"): Start=" + rawAudioContent.getStartTime().toMillis()
+            + " ms, End=" + rawAudioContent.getEndTime().toMillis() + " ms");
 
         // Analyze a specific time window
         AnalysisInput windowInput = new AnalysisInput();

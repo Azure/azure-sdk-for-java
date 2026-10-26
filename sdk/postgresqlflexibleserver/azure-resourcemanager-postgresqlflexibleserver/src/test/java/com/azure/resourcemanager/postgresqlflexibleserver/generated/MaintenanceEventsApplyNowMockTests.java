@@ -22,7 +22,7 @@ public final class MaintenanceEventsApplyNowMockTests {
     @Test
     public void testApplyNow() throws Exception {
         String responseStr
-            = "{\"maintenanceEventId\":\"gdirazf\",\"serverId\":\"ejwabmdujtmvco\",\"status\":\"Complete\",\"plannedStartTime\":\"2021-08-23T15:56:52Z\",\"plannedEndTime\":\"2021-02-26T19:05:59Z\",\"appliedNow\":true,\"lastUpdatedTime\":\"2021-01-01T10:35:32Z\"}";
+            = "{\"maintenanceEventId\":\"mkmlmvevfx\",\"serverId\":\"pj\",\"status\":\"InProgress\",\"plannedStartTime\":\"2021-03-18T17:42:19Z\",\"plannedEndTime\":\"2021-05-23T07:43:32Z\",\"appliedNow\":true,\"lastUpdatedTime\":\"2021-09-18T13:29:51Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class MaintenanceEventsApplyNowMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceEventActionResponse response = manager.maintenanceEvents()
-            .applyNow("gueiookjbsahrtdt", "delqacslmoto", "bnfxofvc", com.azure.core.util.Context.NONE);
+            .applyNow("rrrouuxvnsa", "bcrymodizrx", "lobdxna", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gdirazf", response.maintenanceEventId());
-        Assertions.assertEquals("ejwabmdujtmvco", response.serverId());
-        Assertions.assertEquals(MaintenanceEventStatus.COMPLETE, response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T15:56:52Z"), response.plannedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T19:05:59Z"), response.plannedEndTime());
+        Assertions.assertEquals("mkmlmvevfx", response.maintenanceEventId());
+        Assertions.assertEquals("pj", response.serverId());
+        Assertions.assertEquals(MaintenanceEventStatus.IN_PROGRESS, response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T17:42:19Z"), response.plannedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T07:43:32Z"), response.plannedEndTime());
         Assertions.assertTrue(response.appliedNow());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T10:35:32Z"), response.lastUpdatedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T13:29:51Z"), response.lastUpdatedTime());
     }
 }

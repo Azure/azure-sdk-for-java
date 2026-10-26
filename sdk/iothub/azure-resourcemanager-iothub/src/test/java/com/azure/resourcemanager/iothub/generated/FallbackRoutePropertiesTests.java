@@ -14,27 +14,27 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FallbackRouteProperties model = BinaryData.fromString(
-            "{\"name\":\"bebrjcxerfuwuttt\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"jrbirphxepcyv\",\"endpointNames\":[\"fnljky\",\"xjvuujqgidokg\"],\"isEnabled\":true}")
+            "{\"name\":\"tkncwsc\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"lxotogtwrupq\",\"endpointNames\":[\"vnm\",\"cykvceo\",\"eil\",\"vnotyfjfcnj\"],\"isEnabled\":false}")
             .toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.name());
+        Assertions.assertEquals("tkncwsc", model.name());
         Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
-        Assertions.assertEquals("jrbirphxepcyv", model.condition());
-        Assertions.assertEquals("fnljky", model.endpointNames().get(0));
-        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals("lxotogtwrupq", model.condition());
+        Assertions.assertEquals("vnm", model.endpointNames().get(0));
+        Assertions.assertFalse(model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FallbackRouteProperties model = new FallbackRouteProperties().withName("bebrjcxerfuwuttt")
+        FallbackRouteProperties model = new FallbackRouteProperties().withName("tkncwsc")
             .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
-            .withCondition("jrbirphxepcyv")
-            .withEndpointNames(Arrays.asList("fnljky", "xjvuujqgidokg"))
-            .withIsEnabled(true);
+            .withCondition("lxotogtwrupq")
+            .withEndpointNames(Arrays.asList("vnm", "cykvceo", "eil", "vnotyfjfcnj"))
+            .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.name());
+        Assertions.assertEquals("tkncwsc", model.name());
         Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
-        Assertions.assertEquals("jrbirphxepcyv", model.condition());
-        Assertions.assertEquals("fnljky", model.endpointNames().get(0));
-        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals("lxotogtwrupq", model.condition());
+        Assertions.assertEquals("vnm", model.endpointNames().get(0));
+        Assertions.assertFalse(model.isEnabled());
     }
 }

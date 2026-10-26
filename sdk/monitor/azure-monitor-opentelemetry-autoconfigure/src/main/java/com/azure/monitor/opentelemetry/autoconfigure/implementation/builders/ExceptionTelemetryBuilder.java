@@ -15,7 +15,8 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class ExceptionTelemetryBuilder extends AbstractTelemetryBuilder {
+public final class ExceptionTelemetryBuilder extends AbstractTelemetryBuilder
+    implements CustomMeasurementsTelemetryBuilder {
 
     private static final int MAX_PROBLEM_ID_LENGTH = 1024;
 

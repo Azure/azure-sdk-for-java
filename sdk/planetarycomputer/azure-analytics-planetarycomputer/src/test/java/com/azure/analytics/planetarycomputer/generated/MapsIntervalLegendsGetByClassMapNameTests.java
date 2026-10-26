@@ -14,6 +14,6 @@ public final class MapsIntervalLegendsGetByClassMapNameTests extends PlanetaryCo
     @Disabled
     public void testMapsIntervalLegendsGetByClassMapNameTests() {
         // method invocation
-        List<List<List<Long>>> response = dataClient.getIntervalLegend("modis-64A1", null, null);
+        List<List<List<Long>>> response = dataClient.getIntervalLegend("modis-64A1", (Integer) null, (Integer) null);
     }
 }

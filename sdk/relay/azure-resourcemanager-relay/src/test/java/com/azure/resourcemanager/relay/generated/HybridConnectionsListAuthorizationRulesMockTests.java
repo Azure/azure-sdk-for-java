@@ -23,7 +23,7 @@ public final class HybridConnectionsListAuthorizationRulesMockTests {
     @Test
     public void testListAuthorizationRules() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"rights\":[\"Send\"]},\"location\":\"zlfmisgwbnbbeld\",\"id\":\"k\",\"name\":\"baliourqhakauha\",\"type\":\"hsfwxosowzxcug\"}]}";
+            = "{\"value\":[{\"properties\":{\"rights\":[\"Listen\"]},\"location\":\"uedck\",\"id\":\"wbiexzfey\",\"name\":\"eaxib\",\"type\":\"ujwb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class HybridConnectionsListAuthorizationRulesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AuthorizationRule> response = manager.hybridConnections()
-            .listAuthorizationRules("duala", "xqpvfadmw", "rcrgvx", com.azure.core.util.Context.NONE);
+            .listAuthorizationRules("wrqlfktsthsuco", "mnyyazt", "bt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AccessRights.SEND, response.iterator().next().rights().get(0));
+        Assertions.assertEquals(AccessRights.LISTEN, response.iterator().next().rights().get(0));
     }
 }

@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * The discriminator values supported for routine triggers.
  */
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class RoutineTriggerType extends ExpandableStringEnum<RoutineTriggerType> {
 
     /**

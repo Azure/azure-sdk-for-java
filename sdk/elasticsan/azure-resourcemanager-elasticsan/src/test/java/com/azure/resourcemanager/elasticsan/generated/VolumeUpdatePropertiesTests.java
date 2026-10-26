@@ -6,25 +6,32 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VolumeUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeUpdateProperties model
-            = BinaryData.fromString("{\"sizeGiB\":991412043845588361,\"managedBy\":{\"resourceId\":\"ezrkgqhcjrefo\"}}")
-                .toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(991412043845588361L, model.sizeGiB());
-        Assertions.assertEquals("ezrkgqhcjrefo", model.managedBy().resourceId());
+        VolumeUpdateProperties model = BinaryData.fromString(
+            "{\"sizeGiB\":4290825353031723403,\"managedBy\":[{\"clientId\":\"qrvkdv\",\"version\":711383541,\"resourceIds\":[\"mvvd\"]}]}")
+            .toObject(VolumeUpdateProperties.class);
+        Assertions.assertEquals(4290825353031723403L, model.sizeGiB());
+        Assertions.assertEquals("qrvkdv", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(711383541, model.managedBy().get(0).version());
+        Assertions.assertEquals("mvvd", model.managedBy().get(0).resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeUpdateProperties model = new VolumeUpdateProperties().withSizeGiB(991412043845588361L)
-            .withManagedBy(new ManagedByInfo().withResourceId("ezrkgqhcjrefo"));
+        VolumeUpdateProperties model = new VolumeUpdateProperties().withSizeGiB(4290825353031723403L)
+            .withManagedBy(Arrays.asList(new ManagedByResources().withClientId("qrvkdv")
+                .withVersion(711383541)
+                .withResourceIds(Arrays.asList("mvvd"))));
         model = BinaryData.fromObject(model).toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(991412043845588361L, model.sizeGiB());
-        Assertions.assertEquals("ezrkgqhcjrefo", model.managedBy().resourceId());
+        Assertions.assertEquals(4290825353031723403L, model.sizeGiB());
+        Assertions.assertEquals("qrvkdv", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(711383541, model.managedBy().get(0).version());
+        Assertions.assertEquals("mvvd", model.managedBy().get(0).resourceIds().get(0));
     }
 }

@@ -7,7 +7,6 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,22 +42,12 @@ public class Sample00_UpdateDefaultsTest extends ContentUnderstandingClientTestB
         // These map model names to your deployed model names in Azure AI Foundry
         System.out.println("\nConfiguring model deployments from environment variables...");
 
-        // Get deployment names from environment variables (with defaults)
-        String gpt41Deployment = getEnvOrDefault("GPT_4_1_DEPLOYMENT", "gpt-4.1");
-        String gpt41MiniDeployment = getEnvOrDefault("GPT_4_1_MINI_DEPLOYMENT", "gpt-4.1-mini");
-        String textEmbedding3LargeDeployment
-            = getEnvOrDefault("TEXT_EMBEDDING_3_LARGE_DEPLOYMENT", "text-embedding-3-large");
-
-        // Create model deployments map
-        Map<String, String> modelDeployments = new HashMap<>();
-        modelDeployments.put("gpt-4.1", gpt41Deployment);
-        modelDeployments.put("gpt-4.1-mini", gpt41MiniDeployment);
-        modelDeployments.put("text-embedding-3-large", textEmbedding3LargeDeployment);
+        Map<String, String> modelDeployments = getModelProfile().getDefaultModelDeployments();
 
         System.out.println("Model deployments to configure:");
-        System.out.println("  gpt-4.1 -> " + gpt41Deployment);
-        System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
-        System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
+        for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+            System.out.println("  " + deployment.getKey() + " -> " + deployment.getValue());
+        }
 
         // BEGIN:ContentUnderstandingUpdateDefaults
         // Step 3: Update defaults with the new configuration
@@ -89,35 +78,15 @@ public class Sample00_UpdateDefaultsTest extends ContentUnderstandingClientTestB
         assertNotNull(updatedDefaults.getModelDeployments(), "Verified model deployments should not be null");
         assertFalse(updatedDefaults.getModelDeployments().isEmpty(), "Verified model deployments should not be empty");
 
-        // Verify the model deployments contain the expected keys
-        assertTrue(updatedDefaults.getModelDeployments().containsKey("gpt-4.1"),
-            "Model deployments should contain gpt-4.1");
-        assertTrue(updatedDefaults.getModelDeployments().containsKey("gpt-4.1-mini"),
-            "Model deployments should contain gpt-4.1-mini");
-        assertTrue(updatedDefaults.getModelDeployments().containsKey("text-embedding-3-large"),
-            "Model deployments should contain text-embedding-3-large");
-
-        // Verify the values match what we set
-        assertEquals(gpt41Deployment, updatedDefaults.getModelDeployments().get("gpt-4.1"),
-            "gpt-4.1 deployment should match configured value");
-        assertEquals(gpt41MiniDeployment, updatedDefaults.getModelDeployments().get("gpt-4.1-mini"),
-            "gpt-4.1-mini deployment should match configured value");
-        assertEquals(textEmbedding3LargeDeployment, updatedDefaults.getModelDeployments().get("text-embedding-3-large"),
-            "text-embedding-3-large deployment should match configured value");
+        for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+            assertTrue(updatedDefaults.getModelDeployments().containsKey(deployment.getKey()),
+                "Model deployments should contain " + deployment.getKey());
+            assertEquals(deployment.getValue(), updatedDefaults.getModelDeployments().get(deployment.getKey()),
+                deployment.getKey() + " deployment should match configured value");
+        }
         // END:Assertion_ContentUnderstandingVerifyDefaults
 
         System.out.println("\nConfiguration management completed.");
     }
 
-    /**
-     * Gets an environment variable value or returns a default value if not set.
-     *
-     * @param envVar the environment variable name
-     * @param defaultValue the default value to return if the environment variable is not set
-     * @return the environment variable value or the default value
-     */
-    private static String getEnvOrDefault(String envVar, String defaultValue) {
-        String value = System.getenv(envVar);
-        return (value != null && !value.trim().isEmpty()) ? value : defaultValue;
-    }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesResetCifsPasswordSamples {
     /*
-     * x-ms-original-file: 2026-05-01/Volumes_ResetCifsPassword.json
+     * x-ms-original-file: 2026-08-01/Volumes_ResetCifsPassword.json
      */
     /**
      * Sample code: Volumes_ResetCifsPassword.

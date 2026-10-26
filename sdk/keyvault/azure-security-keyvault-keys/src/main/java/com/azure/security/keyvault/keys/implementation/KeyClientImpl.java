@@ -826,7 +826,7 @@ public final class KeyClientImpl {
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -956,7 +956,7 @@ public final class KeyClientImpl {
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1693,7 +1693,7 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1820,7 +1820,7 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)

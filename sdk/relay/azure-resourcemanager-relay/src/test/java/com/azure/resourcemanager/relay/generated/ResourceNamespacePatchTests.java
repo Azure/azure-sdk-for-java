@@ -14,17 +14,17 @@ public final class ResourceNamespacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNamespacePatch model = BinaryData.fromString(
-            "{\"tags\":{\"cxerf\":\"qhjfbebr\",\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\"},\"id\":\"gsncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"}")
+            "{\"tags\":{\"enjbdlwtgrhp\":\"eipheoflokeyy\",\"umasxazjpq\":\"jp\"},\"id\":\"gual\",\"name\":\"b\",\"type\":\"xhejjzzvdud\"}")
             .toObject(ResourceNamespacePatch.class);
-        Assertions.assertEquals("qhjfbebr", model.tags().get("cxerf"));
+        Assertions.assertEquals("eipheoflokeyy", model.tags().get("enjbdlwtgrhp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNamespacePatch model = new ResourceNamespacePatch()
-            .withTags(mapOf("cxerf", "qhjfbebr", "phxepcyvahf", "wutttxfvjrbi", "gidokgjljyoxgvcl", "ljkyqxjvuuj"));
+        ResourceNamespacePatch model
+            = new ResourceNamespacePatch().withTags(mapOf("enjbdlwtgrhp", "eipheoflokeyy", "umasxazjpq", "jp"));
         model = BinaryData.fromObject(model).toObject(ResourceNamespacePatch.class);
-        Assertions.assertEquals("qhjfbebr", model.tags().get("cxerf"));
+        Assertions.assertEquals("eipheoflokeyy", model.tags().get("enjbdlwtgrhp"));
     }
 
     // Use "Map.of" if available

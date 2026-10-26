@@ -68,6 +68,20 @@ public interface HardwareSecurityModulesManagementClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
+     * Gets the PaymentHsmClustersClient object to access its operations.
+     * 
+     * @return the PaymentHsmClustersClient object.
+     */
+    PaymentHsmClustersClient getPaymentHsmClusters();
+
+    /**
+     * Gets the PaymentHsmClusterPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the PaymentHsmClusterPrivateEndpointConnectionsClient object.
+     */
+    PaymentHsmClusterPrivateEndpointConnectionsClient getPaymentHsmClusterPrivateEndpointConnections();
+
+    /**
      * Gets the CloudHsmClusterPrivateLinkResourcesClient object to access its operations.
      * 
      * @return the CloudHsmClusterPrivateLinkResourcesClient object.
@@ -101,4 +115,11 @@ public interface HardwareSecurityModulesManagementClient {
      * @return the DedicatedHsmsClient object.
      */
     DedicatedHsmsClient getDedicatedHsms();
+
+    /**
+     * Gets the PaymentHsmClusterPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the PaymentHsmClusterPrivateLinkResourcesClient object.
+     */
+    PaymentHsmClusterPrivateLinkResourcesClient getPaymentHsmClusterPrivateLinkResources();
 }

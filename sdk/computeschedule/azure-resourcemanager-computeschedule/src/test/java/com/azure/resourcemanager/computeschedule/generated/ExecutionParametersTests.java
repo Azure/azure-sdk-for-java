@@ -7,6 +7,7 @@ package com.azure.resourcemanager.computeschedule.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,21 +15,25 @@ public final class ExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionParameters model = BinaryData.fromString(
-            "{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1742906904,\"retryWindowInMinutes\":1574574303}}")
+            "{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1753847734,\"retryWindowInMinutes\":768699380,\"onFailureAction\":\"Start\"}}")
             .toObject(ExecutionParameters.class);
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY, model.optimizationPreference());
-        Assertions.assertEquals(1742906904, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1574574303, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(1753847734, model.retryPolicy().retryCount());
+        Assertions.assertEquals(768699380, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START, model.retryPolicy().onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionParameters model
             = new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                .withRetryPolicy(new RetryPolicy().withRetryCount(1742906904).withRetryWindowInMinutes(1574574303));
+                .withRetryPolicy(new RetryPolicy().withRetryCount(1753847734)
+                    .withRetryWindowInMinutes(768699380)
+                    .withOnFailureAction(ResourceOperationType.START));
         model = BinaryData.fromObject(model).toObject(ExecutionParameters.class);
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY, model.optimizationPreference());
-        Assertions.assertEquals(1742906904, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1574574303, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(1753847734, model.retryPolicy().retryCount());
+        Assertions.assertEquals(768699380, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START, model.retryPolicy().onFailureAction());
     }
 }

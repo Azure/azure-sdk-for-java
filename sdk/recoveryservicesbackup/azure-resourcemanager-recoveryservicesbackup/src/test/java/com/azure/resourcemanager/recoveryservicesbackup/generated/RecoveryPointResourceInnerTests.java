@@ -15,13 +15,13 @@ public final class RecoveryPointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"apnyiropuhpig\",\"threatDescription\":\"gylgqgitxmedjvcs\",\"lastUpdatedTime\":\"2021-02-26T17:22:44Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-01-28T21:50:56Z\",\"threatEndTime\":\"2021-09-17T17:00:46Z\",\"threatURI\":\"zhxgktrmgucn\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"eoellwptfdygp\",\"threatDescription\":\"b\",\"lastUpdatedTime\":\"2021-01-13T17:58:58Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-09-04T05:04:19Z\",\"threatEndTime\":\"2021-04-15T23:44:21Z\",\"threatURI\":\"hhuao\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"qeqxo\",\"threatDescription\":\"dahzxctobg\",\"lastUpdatedTime\":\"2021-09-01T00:32:36Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-01-29T19:09:38Z\",\"threatEndTime\":\"2021-09-15T16:01:55Z\",\"threatURI\":\"tmgrcfbun\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"jy\":\"hhkxbp\",\"u\":\"jhxxjyn\"},\"location\":\"vkr\",\"eTag\":\"wbxqzvszjfau\",\"id\":\"fdxxivetvtcqaqtd\",\"name\":\"qmcbxvwvxyslqbhs\",\"type\":\"xoblytkbl\"}")
+            "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Warning\",\"threatInfo\":[{\"threatTitle\":\"d\",\"threatDescription\":\"vwiwubmwmbesld\",\"lastUpdatedTime\":\"2021-06-09T22:01:08Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-10-08T02:57:33Z\",\"threatEndTime\":\"2021-05-13T14:02:05Z\",\"threatURI\":\"cxogaokonzm\",\"threatSeverity\":\"Warning\"}]},\"tags\":{\"v\":\"mkqzeqqkdltfzxmh\",\"tibqdxbxwakb\":\"gureodkwobdag\"},\"location\":\"qxn\",\"eTag\":\"kzgxhurip\",\"id\":\"podxunkb\",\"name\":\"bxmubyynt\",\"type\":\"lrb\"}")
             .toObject(RecoveryPointResourceInner.class);
-        Assertions.assertEquals(ThreatStatus.NOT_AVAILABLE, model.properties().threatStatus());
-        Assertions.assertEquals(ThreatState.IGNORED, model.properties().threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.CRITICAL, model.properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("hhkxbp", model.tags().get("jy"));
-        Assertions.assertEquals("vkr", model.location());
-        Assertions.assertEquals("wbxqzvszjfau", model.etag());
+        Assertions.assertEquals(ThreatStatus.WARNING, model.properties().threatStatus());
+        Assertions.assertEquals(ThreatState.IN_PROGRESS, model.properties().threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatSeverity.WARNING, model.properties().threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals("mkqzeqqkdltfzxmh", model.tags().get("v"));
+        Assertions.assertEquals("qxn", model.location());
+        Assertions.assertEquals("kzgxhurip", model.etag());
     }
 }

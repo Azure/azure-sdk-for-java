@@ -135,6 +135,10 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
@@ -145,6 +149,7 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("searchIndexArguments", this.searchIndexArguments);
+        jsonWriter.writeJsonField("queryHintProcessing", this.queryHintProcessing);
         return jsonWriter.writeEndObject();
     }
 
@@ -161,6 +166,8 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
     public static KnowledgeBaseSearchIndexActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
@@ -170,11 +177,18 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
             Integer count = null;
             ImageServingStatistics imageServing = null;
             KnowledgeBaseSearchIndexActivityArguments searchIndexArguments = null;
+            KnowledgeBaseQueryHintProcessing queryHintProcessing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -194,12 +208,16 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
                     imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("searchIndexArguments".equals(fieldName)) {
                     searchIndexArguments = KnowledgeBaseSearchIndexActivityArguments.fromJson(reader);
+                } else if ("queryHintProcessing".equals(fieldName)) {
+                    queryHintProcessing = KnowledgeBaseQueryHintProcessing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseSearchIndexActivityRecord deserializedKnowledgeBaseSearchIndexActivityRecord
                 = new KnowledgeBaseSearchIndexActivityRecord(id);
+            deserializedKnowledgeBaseSearchIndexActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseSearchIndexActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseSearchIndexActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseSearchIndexActivityRecord.setError(error);
             deserializedKnowledgeBaseSearchIndexActivityRecord.setWarning(warning);
@@ -209,7 +227,24 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
             deserializedKnowledgeBaseSearchIndexActivityRecord.count = count;
             deserializedKnowledgeBaseSearchIndexActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseSearchIndexActivityRecord.searchIndexArguments = searchIndexArguments;
+            deserializedKnowledgeBaseSearchIndexActivityRecord.queryHintProcessing = queryHintProcessing;
             return deserializedKnowledgeBaseSearchIndexActivityRecord;
         });
+    }
+
+    /*
+     * Details about the expressions generated from query hints for this activity.
+     */
+    @Generated
+    private KnowledgeBaseQueryHintProcessing queryHintProcessing;
+
+    /**
+     * Get the queryHintProcessing property: Details about the expressions generated from query hints for this activity.
+     *
+     * @return the queryHintProcessing value.
+     */
+    @Generated
+    public KnowledgeBaseQueryHintProcessing getQueryHintProcessing() {
+        return this.queryHintProcessing;
     }
 }

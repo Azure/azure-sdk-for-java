@@ -9,10 +9,13 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
+import com.azure.resourcemanager.netapp.models.LdapConfiguration;
+import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
@@ -90,6 +93,10 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public MultiAdStatus multiAdStatus() {
         return this.innerModel().multiAdStatus();
+    }
+
+    public LdapConfiguration ldapConfiguration() {
+        return this.innerModel().ldapConfiguration();
     }
 
     public Region region() {
@@ -217,6 +224,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         serviceManager.accounts().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
+    public void refreshLdapBindPassword() {
+        serviceManager.accounts().refreshLdapBindPassword(resourceGroupName, accountName);
+    }
+
+    public void refreshLdapBindPassword(Context context) {
+        serviceManager.accounts().refreshLdapBindPassword(resourceGroupName, accountName, context);
+    }
+
     public NetAppAccountImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -258,13 +273,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
-        if (isInCreateMode()) {
-            this.innerModel().withEncryption(encryption);
-            return this;
-        } else {
-            this.updateBody.withEncryption(encryption);
-            return this;
-        }
+        this.innerModel().withEncryption(encryption);
+        return this;
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
@@ -275,6 +285,21 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
+    }
+
+    public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        this.innerModel().withLdapConfiguration(ldapConfiguration);
+        return this;
+    }
+
+    public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
+        this.updateBody.withEncryption(encryption);
+        return this;
+    }
+
+    public NetAppAccountImpl withLdapConfiguration(LdapConfigurationPatch ldapConfiguration) {
+        this.updateBody.withLdapConfiguration(ldapConfiguration);
+        return this;
     }
 
     private boolean isInCreateMode() {

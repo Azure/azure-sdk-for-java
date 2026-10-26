@@ -16,6 +16,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.ContentNumberField;
@@ -34,7 +35,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Sample demonstrating how to create a custom analyzer with field schema.
@@ -106,7 +106,7 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
 
         // Create the custom analyzer with configuration
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
+        models.put("completion", getModelProfile().getCompletionModel());
         models.put("embedding", "text-embedding-3-large");
 
         ContentAnalyzer customAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
@@ -238,7 +238,8 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
         assertTrue(result.getModels().size() >= 2, "Should have at least 2 model mappings");
         assertTrue(result.getModels().containsKey("completion"), "Should contain 'completion' model mapping");
         assertTrue(result.getModels().containsKey("embedding"), "Should contain 'embedding' model mapping");
-        assertEquals("gpt-4.1", result.getModels().get("completion"), "Completion model should be 'gpt-4.1'");
+        assertEquals(getModelProfile().getCompletionModel(), result.getModels().get("completion"),
+            "Completion model should match the configured profile");
         assertEquals("text-embedding-3-large", result.getModels().get("embedding"),
             "Embedding model should be 'text-embedding-3-large'");
         System.out.println("Model mappings verified: " + result.getModels().size() + " model(s)");
@@ -301,7 +302,7 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
         customAnalyzer.setFieldSchema(fieldSchema);
 
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
+        models.put("completion", getModelProfile().getCompletionModel());
         models.put("embedding", "text-embedding-3-large");
         customAnalyzer.setModels(models);
 
@@ -341,8 +342,15 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                     System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
                         ? String.format("%.2f", companyNameField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
+                    if (companyNameField.getSources() != null) {
+                        for (ContentSource source : companyNameField.getSources()) {
+                            if (source instanceof DocumentSource) {
+                                DocumentSource documentSource = (DocumentSource) source;
+                                System.out.println("  Page " + documentSource.getPageNumber() + ", BoundingBox: "
+                                    + documentSource.getBoundingBox());
+                            }
+                        }
+                    }
                     List<ContentSpan> spans = companyNameField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -362,8 +370,15 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                     System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
                         ? String.format("%.2f", totalAmountField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
+                    if (totalAmountField.getSources() != null) {
+                        for (ContentSource source : totalAmountField.getSources()) {
+                            if (source instanceof DocumentSource) {
+                                DocumentSource documentSource = (DocumentSource) source;
+                                System.out.println("  Page " + documentSource.getPageNumber() + ", BoundingBox: "
+                                    + documentSource.getBoundingBox());
+                            }
+                        }
+                    }
                     List<ContentSpan> spans = totalAmountField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -372,36 +387,33 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                     }
                 }
 
-                // Generate field (AI-generated value)
                 ContentField summaryField
                     = content.getFields() != null ? content.getFields().get("document_summary") : null;
                 if (summaryField instanceof ContentStringField) {
                     ContentStringField sf = (ContentStringField) summaryField;
                     String summary = sf.getValue();
-                    System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
+                    System.out.println("Document Summary: " + (summary != null ? summary : "(not found)"));
                     System.out.println("  Confidence: " + (summaryField.getConfidence() != null
                         ? String.format("%.2f", summaryField.getConfidence())
                         : "N/A"));
-                    // Note: Generated fields may not have source information
+                    // In the GA service version used by this test, generated fields may omit source information.
                     if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + summaryField.getSources());
+                        System.out.println("  Grounding sources: " + summaryField.getSources().size());
                     }
                 }
 
-                // Classify field (classification against predefined categories)
                 ContentField documentTypeField
                     = content.getFields() != null ? content.getFields().get("document_type") : null;
                 if (documentTypeField instanceof ContentStringField) {
                     ContentStringField sf = (ContentStringField) documentTypeField;
                     String documentType = sf.getValue();
-                    System.out
-                        .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
+                    System.out.println("Document Type: " + (documentType != null ? documentType : "(not found)"));
                     System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
                         ? String.format("%.2f", documentTypeField.getConfidence())
                         : "N/A"));
-                    // Note: Classified fields may not have source information
+                    // In the GA service version used by this test, classified fields may omit source information.
                     if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + documentTypeField.getSources());
+                        System.out.println("  Grounding sources: " + documentTypeField.getSources().size());
                     }
                 }
             }
@@ -469,6 +481,76 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 }
             } else {
                 System.out.println("⚠️ company_name field not found");
+            }
+
+            // Verify total_amount field (Extract method)
+            ContentField totalAmountFieldAssert = documentContent.getFields().get("total_amount");
+            if (totalAmountFieldAssert != null) {
+                assertTrue(totalAmountFieldAssert instanceof ContentNumberField,
+                    "total_amount should be a ContentNumberField");
+                Double totalAmount = ((ContentNumberField) totalAmountFieldAssert).getValue();
+                if (totalAmount != null) {
+                    assertTrue(totalAmount >= 0, "total_amount should be non-negative, but was " + totalAmount);
+                }
+                if (totalAmountFieldAssert.getConfidence() != null) {
+                    assertTrue(
+                        totalAmountFieldAssert.getConfidence() >= 0 && totalAmountFieldAssert.getConfidence() <= 1,
+                        "total_amount confidence should be between 0 and 1, but was "
+                            + totalAmountFieldAssert.getConfidence());
+                }
+                if (totalAmountFieldAssert.getSources() != null && !totalAmountFieldAssert.getSources().isEmpty()) {
+                    assertTrue(totalAmountFieldAssert.getSources().get(0) instanceof DocumentSource,
+                        "total_amount source should be a DocumentSource");
+                    assertTrue(((DocumentSource) totalAmountFieldAssert.getSources().get(0)).getPageNumber() >= 1,
+                        "total_amount source page should be positive");
+                }
+                if (totalAmountFieldAssert.getSpans() != null) {
+                    totalAmountFieldAssert.getSpans().forEach(span -> {
+                        assertTrue(span.getOffset() >= 0, "total_amount span offset should be non-negative");
+                        assertTrue(span.getLength() > 0, "total_amount span length should be positive");
+                    });
+                }
+            } else {
+                System.out.println("⚠️ total_amount field not found");
+            }
+
+            // Verify document_summary field (Generate method)
+            ContentField summaryFieldAssert = documentContent.getFields().get("document_summary");
+            if (summaryFieldAssert != null) {
+                assertTrue(summaryFieldAssert instanceof ContentStringField,
+                    "document_summary should be a ContentStringField");
+                String summary = ((ContentStringField) summaryFieldAssert).getValue();
+                if (summary != null) {
+                    assertFalse(summary.trim().isEmpty(), "document_summary should not be empty when present");
+                }
+                if (summaryFieldAssert.getConfidence() != null) {
+                    assertTrue(summaryFieldAssert.getConfidence() >= 0 && summaryFieldAssert.getConfidence() <= 1,
+                        "document_summary confidence should be between 0 and 1, but was "
+                            + summaryFieldAssert.getConfidence());
+                }
+            } else {
+                System.out.println("⚠️ document_summary field not found");
+            }
+
+            // Verify document_type field (Classify method)
+            ContentField documentTypeFieldAssert = documentContent.getFields().get("document_type");
+            if (documentTypeFieldAssert != null) {
+                assertTrue(documentTypeFieldAssert instanceof ContentStringField,
+                    "document_type should be a ContentStringField");
+                if (documentTypeFieldAssert.getConfidence() != null) {
+                    assertTrue(
+                        documentTypeFieldAssert.getConfidence() >= 0 && documentTypeFieldAssert.getConfidence() <= 1,
+                        "document_type confidence should be between 0 and 1, but was "
+                            + documentTypeFieldAssert.getConfidence());
+                }
+                String documentType = ((ContentStringField) documentTypeFieldAssert).getValue();
+                if (documentType != null && !documentType.trim().isEmpty()) {
+                    assertTrue(
+                        Arrays.asList("invoice", "receipt", "contract", "report", "other").contains(documentType),
+                        "document_type should be one of the configured enum values, but was " + documentType);
+                }
+            } else {
+                System.out.println("⚠️ document_type field not found");
             }
 
             System.out.println("All custom analyzer usage properties validated successfully");

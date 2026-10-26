@@ -35,7 +35,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.27.0-beta.16</version>
+  <version>1.27.0-beta.19</version>
 </dependency>
 ```
 
@@ -352,5 +352,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
 

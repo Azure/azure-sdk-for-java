@@ -36,6 +36,11 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
      */
     private List<DatabaseInRP> includedDatabases;
 
+    /*
+     * Detailed info of snapshot restore point.
+     */
+    private SnapshotRecoveryPointInfo snapshotRecoveryPointInfo;
+
     /**
      * Creates an instance of AzureWorkloadSqlRecoveryPointExtendedInfo class.
      */
@@ -70,6 +75,15 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
     }
 
     /**
+     * Get the snapshotRecoveryPointInfo property: Detailed info of snapshot restore point.
+     * 
+     * @return the snapshotRecoveryPointInfo value.
+     */
+    public SnapshotRecoveryPointInfo snapshotRecoveryPointInfo() {
+        return this.snapshotRecoveryPointInfo;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -83,6 +97,7 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("includedDatabases", this.includedDatabases,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("snapshotRecoveryPointInfo", this.snapshotRecoveryPointInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,6 +127,9 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
                 } else if ("includedDatabases".equals(fieldName)) {
                     List<DatabaseInRP> includedDatabases = reader.readArray(reader1 -> DatabaseInRP.fromJson(reader1));
                     deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.includedDatabases = includedDatabases;
+                } else if ("snapshotRecoveryPointInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.snapshotRecoveryPointInfo
+                        = SnapshotRecoveryPointInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

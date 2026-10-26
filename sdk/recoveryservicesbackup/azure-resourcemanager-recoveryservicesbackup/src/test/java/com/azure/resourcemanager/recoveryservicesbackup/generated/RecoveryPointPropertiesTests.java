@@ -6,16 +6,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 
 public final class RecoveryPointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointProperties model = BinaryData
-            .fromString("{\"expiryTime\":\"zzewkfvhqcrai\",\"ruleName\":\"pnppfuf\",\"isSoftDeleted\":true}")
+        RecoveryPointProperties model = BinaryData.fromString(
+            "{\"expiryTime\":\"iwbwoenwashrtdtk\",\"ruleName\":\"qxwbpokulpiu\",\"isSoftDeleted\":false,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2021-06-01T21:52:28Z\"}}")
             .toObject(RecoveryPointProperties.class);
-        Assertions.assertEquals("zzewkfvhqcrai", model.expiryTime());
-        Assertions.assertEquals("pnppfuf", model.ruleName());
-        Assertions.assertTrue(model.isSoftDeleted());
+        Assertions.assertEquals("iwbwoenwashrtdtk", model.expiryTime());
+        Assertions.assertEquals("qxwbpokulpiu", model.ruleName());
+        Assertions.assertFalse(model.isSoftDeleted());
+        Assertions.assertFalse(model.immutabilityProperties().isImmutable());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-01T21:52:28Z"),
+            model.immutabilityProperties().expiryTime());
     }
 }

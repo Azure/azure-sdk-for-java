@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"payShield10K_LMK2_CPS250\"}").toObject(Sku.class);
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS250, model.name());
+        Sku model = BinaryData.fromString("{\"name\":\"SafeNet Luna Network HSM A790\"}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS250);
+        Sku model = new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS250, model.name());
+        Assertions.assertEquals(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790, model.name());
     }
 }

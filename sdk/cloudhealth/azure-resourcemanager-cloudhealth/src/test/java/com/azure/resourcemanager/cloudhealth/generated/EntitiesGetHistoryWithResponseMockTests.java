@@ -23,7 +23,7 @@ public final class EntitiesGetHistoryWithResponseMockTests {
     @Test
     public void testGetHistoryWithResponse() throws Exception {
         String responseStr
-            = "{\"entityName\":\"nthjtwkjaosrxuzv\",\"history\":[{\"previousState\":\"Healthy\",\"newState\":\"Unknown\",\"occurredAt\":\"2021-10-04T14:47:32Z\",\"reason\":\"q\"},{\"previousState\":\"Degraded\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-04-08T21:59:12Z\",\"reason\":\"bzahgxqd\"},{\"previousState\":\"Unknown\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-07-05T11:42:01Z\",\"reason\":\"tlaprltzkatb\"},{\"previousState\":\"Healthy\",\"newState\":\"Unknown\",\"occurredAt\":\"2021-11-05T23:53:12Z\",\"reason\":\"nbsoqeqalarv\"}],\"nextMarker\":\"gunbtgfebwlnbm\"}";
+            = "{\"entityName\":\"ujtv\",\"history\":[{\"previousState\":\"Degraded\",\"newState\":\"Unhealthy\",\"occurredAt\":\"2021-03-23T20:16:32Z\",\"reason\":\"xrx\"}],\"nextMarker\":\"njdxvglnkvxl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class EntitiesGetHistoryWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EntityHistoryResponse response = manager.entities()
-            .getHistoryWithResponse("cxcjxgry", "fmpcycilrmca", "kggnoxu",
-                new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2021-02-01T22:28:07Z"))
-                    .withEndAt(OffsetDateTime.parse("2021-07-13T12:46:46Z"))
-                    .withTop(365687187)
-                    .withNextMarker("ndfcpfn"),
+            .getHistoryWithResponse("szdtmaajquh", "xylrjvmtygjbmz", "ospspshckf",
+                new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2021-01-07T22:30:28Z"))
+                    .withEndAt(OffsetDateTime.parse("2021-10-20T21:46:59Z"))
+                    .withTop(144887508)
+                    .withNextMarker("pssdfppyogtie"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nthjtwkjaosrxuzv", response.entityName());
-        Assertions.assertEquals(HealthState.HEALTHY, response.history().get(0).previousState());
-        Assertions.assertEquals(HealthState.UNKNOWN, response.history().get(0).newState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T14:47:32Z"), response.history().get(0).occurredAt());
-        Assertions.assertEquals("q", response.history().get(0).reason());
-        Assertions.assertEquals("gunbtgfebwlnbm", response.nextMarker());
+        Assertions.assertEquals("ujtv", response.entityName());
+        Assertions.assertEquals(HealthState.DEGRADED, response.history().get(0).previousState());
+        Assertions.assertEquals(HealthState.UNHEALTHY, response.history().get(0).newState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T20:16:32Z"), response.history().get(0).occurredAt());
+        Assertions.assertEquals("xrx", response.history().get(0).reason());
+        Assertions.assertEquals("njdxvglnkvxl", response.nextMarker());
     }
 }

@@ -5075,7 +5075,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("availabilityStrategy");
         return createTestContainer(clientWithPreferredRegions, dbId);
     }
 

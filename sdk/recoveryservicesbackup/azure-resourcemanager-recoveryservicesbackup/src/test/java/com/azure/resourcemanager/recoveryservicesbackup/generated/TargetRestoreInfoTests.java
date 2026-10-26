@@ -13,24 +13,24 @@ public final class TargetRestoreInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetRestoreInfo model = BinaryData.fromString(
-            "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"tft\",\"databaseName\":\"pnpbswveflocc\",\"targetDirectoryForFileRestore\":\"mozi\"}")
+            "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"qroohtu\",\"databaseName\":\"maonurj\",\"targetDirectoryForFileRestore\":\"mghihp\"}")
             .toObject(TargetRestoreInfo.class);
         Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("tft", model.containerId());
-        Assertions.assertEquals("pnpbswveflocc", model.databaseName());
-        Assertions.assertEquals("mozi", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals("qroohtu", model.containerId());
+        Assertions.assertEquals("maonurj", model.databaseName());
+        Assertions.assertEquals("mghihp", model.targetDirectoryForFileRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
-            .withContainerId("tft")
-            .withDatabaseName("pnpbswveflocc")
-            .withTargetDirectoryForFileRestore("mozi");
+            .withContainerId("qroohtu")
+            .withDatabaseName("maonurj")
+            .withTargetDirectoryForFileRestore("mghihp");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
         Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("tft", model.containerId());
-        Assertions.assertEquals("pnpbswveflocc", model.databaseName());
-        Assertions.assertEquals("mozi", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals("qroohtu", model.containerId());
+        Assertions.assertEquals("maonurj", model.databaseName());
+        Assertions.assertEquals("mghihp", model.targetDirectoryForFileRestore());
     }
 }

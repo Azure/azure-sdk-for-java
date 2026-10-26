@@ -12,9 +12,9 @@ public final class AzureWorkloadJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadJobTaskDetails model
-            = BinaryData.fromString("{\"taskId\":\"spzhzmtksjc\",\"status\":\"digsxcdgl\"}")
+            = BinaryData.fromString("{\"taskId\":\"nqlnfwmyymvqd\",\"status\":\"bhfckdvezcrcssb\"}")
                 .toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("spzhzmtksjc", model.taskId());
-        Assertions.assertEquals("digsxcdgl", model.status());
+        Assertions.assertEquals("nqlnfwmyymvqd", model.taskId());
+        Assertions.assertEquals("bhfckdvezcrcssb", model.status());
     }
 }

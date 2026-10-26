@@ -13,7 +13,7 @@ public final class AvsVmVolumeUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsVmVolumeUpdateProperties model
-            = BinaryData.fromString("{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"j\"}}")
+            = BinaryData.fromString("{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"p\"}}")
                 .toObject(AvsVmVolumeUpdateProperties.class);
         Assertions.assertTrue(model.softDeletion().destroyed());
     }

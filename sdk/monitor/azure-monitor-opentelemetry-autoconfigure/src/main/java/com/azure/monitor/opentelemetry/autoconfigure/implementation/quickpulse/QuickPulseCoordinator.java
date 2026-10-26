@@ -10,7 +10,6 @@ import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -150,26 +149,30 @@ final class QuickPulseCoordinator implements Runnable {
         return 0;
     }
 
-    private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
+    QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
             try {
-                URL redirectUrl = new URL(redirectLink);
-                // Taking the QuickPulseService.svc part out if present because the swagger will add that on.
-                qpsServiceRedirectedEndpoint = redirectUrl.getProtocol() + "://" + redirectUrl.getHost() + "/";
+                qpsServiceRedirectedEndpoint = QuickPulseRedirectValidator
+                    .validateAndGetEndpointPrefix(pingSender.getQuickPulseEndpoint(), redirectLink);
                 logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
                 dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
             } catch (MalformedURLException e) {
-                logger.error("The service returned a malformed URL in the redirect header: {}. Exception message: {}",
+                logger.error("The service returned an invalid URL in the redirect header: {}. Exception message: {}",
                     redirectLink, e.getMessage());
             }
         }
 
         String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();
         if (!Strings.isNullOrEmpty(pollingIntervalHeader)) {
-            long newPollingInterval = Long.getLong(pingHeaders.getXMsQpsServicePollingIntervalHint());
-            if (newPollingInterval > 0) {
-                qpsServicePollingIntervalHintMillis = newPollingInterval;
+            // The hint is optional, so an invalid value only discards the hint rather than the whole ping response.
+            try {
+                long newPollingInterval = Long.parseLong(pollingIntervalHeader.trim());
+                if (newPollingInterval > 0) {
+                    qpsServicePollingIntervalHintMillis = newPollingInterval;
+                }
+            } catch (NumberFormatException e) {
+                logger.verbose("Ignoring invalid polling interval hint header: {}", pollingIntervalHeader);
             }
         }
 
@@ -184,6 +187,11 @@ final class QuickPulseCoordinator implements Runnable {
         } else {
             return QuickPulseStatus.QP_IS_OFF;
         }
+    }
+
+    // visible for testing
+    long getQpsServicePollingIntervalHintMillis() {
+        return qpsServicePollingIntervalHintMillis;
     }
 
     void stop() {

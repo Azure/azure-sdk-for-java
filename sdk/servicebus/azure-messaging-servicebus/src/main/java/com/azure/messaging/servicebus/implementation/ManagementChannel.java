@@ -521,17 +521,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return monoError(logger, new IllegalArgumentException("'top' must be positive; got " + top + "."));
         }
 
-        // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
+        // Track 1's SessionBrowser uses new Date(253402300800000L) as the default-listing sentinel
         // (1ms past 9999-12-31T23:59:59.999Z, rendered by OffsetDateTime.toString() as
         // +10000-01-01T00:00Z). This is the wire value the broker has been validated against for
-        // years; align with it here. Any input at or beyond that instant (including
+        // listing sessions with active messages or stored session state; align with it here. Any
+        // input at or beyond that instant (including
         // OffsetDateTime.MAX, whose nanosecond precision and year-999_999_999 value would otherwise
         // overflow java.util.Date) is clamped to it so the sentinel comparison and Date.from(...)
         // both stay well-defined. Comparing with >= so the sentinel-equal case is also routed
         // through the clamp explicitly (it's a no-op for equal values, but keeps the comment/code
         // contract precise).
-        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) >= 0
-            ? ManagementConstants.ACTIVE_MESSAGES_SENTINEL
+        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.DEFAULT_LISTING_SENTINEL) >= 0
+            ? ManagementConstants.DEFAULT_LISTING_SENTINEL
             : lastUpdatedTime;
 
         return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {

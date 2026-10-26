@@ -1,0 +1,10 @@
+diff --git a/sdk/compute/azure-resourcemanager-compute/src/main/java/com/azure/resourcemanager/compute/Placements.java b/sdk/compute/azure-resourcemanager-compute/src/main/java/com/azure/resourcemanager/compute/Placements.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/compute/azure-resourcemanager-compute/src/main/java/com/azure/resourcemanager/compute/Placements.java
+@@ -0,0 +1,5 @@
++package com.azure.resourcemanager.compute;
++
++public interface Placements {
++    Placement get(String resourceGroupName, String placementName);
++}

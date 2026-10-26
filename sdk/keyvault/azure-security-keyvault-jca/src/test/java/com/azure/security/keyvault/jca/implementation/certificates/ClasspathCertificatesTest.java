@@ -3,15 +3,14 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import static org.mockito.Mockito.mock;
-
-import java.security.cert.Certificate;
+import com.azure.security.keyvault.jca.implementation.mocking.MockCertificate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ClasspathCertificatesTest {
+import java.security.cert.Certificate;
 
-    private final Certificate certificate = mock(Certificate.class);
+public class ClasspathCertificatesTest {
+    private final Certificate certificate = new MockCertificate();
 
     @Test
     public void testSetCertificateEntry() {

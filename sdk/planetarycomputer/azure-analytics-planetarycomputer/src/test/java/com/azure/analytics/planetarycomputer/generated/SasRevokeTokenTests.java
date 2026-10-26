@@ -13,6 +13,6 @@ public final class SasRevokeTokenTests extends PlanetaryComputerProClientTestBas
     @Disabled
     public void testSasRevokeTokenTests() {
         // method invocation
-        sharedAccessSignatureClient.revokeToken(null);
+        sharedAccessSignatureClient.revokeToken((Integer) null);
     }
 }

@@ -14,21 +14,21 @@ public final class QuotaAvailabilityRequestTests {
     public void testDeserialize() throws Exception {
         QuotaAvailabilityRequest model = BinaryData
             .fromString(
-                "{\"name\":\"opteecj\",\"type\":\"Microsoft.NetApp/netAppAccounts\",\"resourceGroup\":\"islstv\"}")
+                "{\"name\":\"i\",\"type\":\"Microsoft.NetApp/netAppAccounts\",\"resourceGroup\":\"wncvjtszcofiz\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("opteecj", model.name());
+        Assertions.assertEquals("i", model.name());
         Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
-        Assertions.assertEquals("islstv", model.resourceGroup());
+        Assertions.assertEquals("wncvjtszcofiz", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("opteecj")
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("i")
             .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
-            .withResourceGroup("islstv");
+            .withResourceGroup("wncvjtszcofiz");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("opteecj", model.name());
+        Assertions.assertEquals("i", model.name());
         Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
-        Assertions.assertEquals("islstv", model.resourceGroup());
+        Assertions.assertEquals("wncvjtszcofiz", model.resourceGroup());
     }
 }

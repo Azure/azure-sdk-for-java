@@ -1,0 +1,11 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/Widgets.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/Widgets.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/Widgets.java
+@@ -0,0 +1,6 @@
++package com.azure.resourcemanager.contosowidgets;
++
++public interface Widgets {
++    Response<WidgetCreateResponse> createWithResponse(
++        String resourceGroupName, String widgetName, WidgetData widget);
++}

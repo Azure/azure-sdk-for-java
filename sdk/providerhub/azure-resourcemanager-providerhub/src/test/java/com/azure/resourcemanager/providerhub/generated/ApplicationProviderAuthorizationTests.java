@@ -12,18 +12,19 @@ public final class ApplicationProviderAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationProviderAuthorization model
-            = BinaryData.fromString("{\"roleDefinitionId\":\"vk\",\"managedByRoleDefinitionId\":\"geslabnsmj\"}")
+            = BinaryData.fromString("{\"roleDefinitionId\":\"vkjzwfbcyaykm\",\"managedByRoleDefinitionId\":\"zs\"}")
                 .toObject(ApplicationProviderAuthorization.class);
-        Assertions.assertEquals("vk", model.roleDefinitionId());
-        Assertions.assertEquals("geslabnsmj", model.managedByRoleDefinitionId());
+        Assertions.assertEquals("vkjzwfbcyaykm", model.roleDefinitionId());
+        Assertions.assertEquals("zs", model.managedByRoleDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationProviderAuthorization model = new ApplicationProviderAuthorization().withRoleDefinitionId("vk")
-            .withManagedByRoleDefinitionId("geslabnsmj");
+        ApplicationProviderAuthorization model
+            = new ApplicationProviderAuthorization().withRoleDefinitionId("vkjzwfbcyaykm")
+                .withManagedByRoleDefinitionId("zs");
         model = BinaryData.fromObject(model).toObject(ApplicationProviderAuthorization.class);
-        Assertions.assertEquals("vk", model.roleDefinitionId());
-        Assertions.assertEquals("geslabnsmj", model.managedByRoleDefinitionId());
+        Assertions.assertEquals("vkjzwfbcyaykm", model.roleDefinitionId());
+        Assertions.assertEquals("zs", model.managedByRoleDefinitionId());
     }
 }

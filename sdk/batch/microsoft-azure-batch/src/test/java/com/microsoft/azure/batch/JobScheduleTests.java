@@ -6,7 +6,10 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,17 +18,17 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
     static CloudPool livePool;
     static String poolId;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
             livePool = createIfNotExistIaaSPool(poolId);
-            Assert.assertNotNull(livePool);
+            Assertions.assertNotNull(livePool);
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws Exception {
         try {
             //batchClient.poolOperations().deletePool(livePool.id());
@@ -49,39 +52,39 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
 
         try {
             // GET
-            Assert.assertTrue(batchClient.jobScheduleOperations().existsJobSchedule(jobScheduleId));
+            Assertions.assertTrue(batchClient.jobScheduleOperations().existsJobSchedule(jobScheduleId));
 
             CloudJobSchedule jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertNotNull(jobSchedule);
-            Assert.assertEquals(jobScheduleId, jobSchedule.id());
-            Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
+            Assertions.assertNotNull(jobSchedule);
+            Assertions.assertEquals(jobScheduleId, jobSchedule.id());
+            Assertions.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
             //This case will only hold true during live mode as recorded job schedule time will be in the past.
             //Hence, this assertion should only run in Record/Live mode.
             if(isRecordMode()) {
-                Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
+                Assertions.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
             }
 
             // LIST
             List<CloudJobSchedule> jobSchedules = batchClient.jobScheduleOperations().listJobSchedules(new DetailLevel.Builder().withFilterClause(String.format("id eq '%s'", jobScheduleId)).build());
-            Assert.assertNotNull(jobSchedules);
-            Assert.assertTrue(jobSchedules.size() > 0);
+            Assertions.assertNotNull(jobSchedules);
+            Assertions.assertTrue(jobSchedules.size() > 0);
 
-            Assert.assertEquals(jobScheduleId, jobSchedules.get(0).id());
+            Assertions.assertEquals(jobScheduleId, jobSchedules.get(0).id());
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
             metadata.add((new MetadataItem()).withName("key1").withValue("value1"));
             batchClient.jobScheduleOperations().patchJobSchedule(jobScheduleId, null, null, metadata);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertTrue(jobSchedule.metadata().size() == 1);
-            Assert.assertTrue(jobSchedule.metadata().get(0).name().equals("key1"));
-            Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
+            Assertions.assertTrue(jobSchedule.metadata().size() == 1);
+            Assertions.assertTrue(jobSchedule.metadata().get(0).name().equals("key1"));
+            Assertions.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
 
             // DELETE
             batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
             try {
                 jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-                Assert.assertTrue("Shouldn't be here, the jobschedule should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.JobScheduleNotFound)) {
                     throw err;
@@ -113,28 +116,28 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
         try {
             // GET
             CloudJobSchedule jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
+            Assertions.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
 
             batchClient.jobScheduleOperations().disableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.DISABLED, jobSchedule.state());
+            Assertions.assertEquals(JobScheduleState.DISABLED, jobSchedule.state());
 
             batchClient.jobScheduleOperations().enableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
+            Assertions.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
 
             batchClient.jobScheduleOperations().terminateJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertTrue(jobSchedule.state() == JobScheduleState.TERMINATING || jobSchedule.state() == JobScheduleState.COMPLETED);
+            Assertions.assertTrue(jobSchedule.state() == JobScheduleState.TERMINATING || jobSchedule.state() == JobScheduleState.COMPLETED);
 
             Thread.sleep(2 * 1000);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.COMPLETED, jobSchedule.state());
+            Assertions.assertEquals(JobScheduleState.COMPLETED, jobSchedule.state());
 
             batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
             try {
                 jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-                Assert.assertTrue("Shouldn't be here, the jobschedule should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.JobScheduleNotFound)) {
                     throw err;

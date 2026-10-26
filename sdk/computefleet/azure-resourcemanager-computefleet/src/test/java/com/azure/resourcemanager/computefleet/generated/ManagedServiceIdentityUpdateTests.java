@@ -16,17 +16,17 @@ public final class ManagedServiceIdentityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentityUpdate model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bogqxndlkzgxhu\":{\"principalId\":\"bdagxt\",\"clientId\":\"qdxbxwa\"},\"lrb\":{\"principalId\":\"plbpodxun\",\"clientId\":\"ebxmubyynt\"},\"l\":{\"principalId\":\"koievseo\",\"clientId\":\"q\"},\"pbttdum\":{\"principalId\":\"muwlauwzizxbm\",\"clientId\":\"cjefuzmu\"}}}")
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"abnetshh\",\"clientId\":\"h\"},\"lcxog\":{\"principalId\":\"vwiwubmwmbesld\",\"clientId\":\"wwtppj\"},\"qkdltfz\":{\"principalId\":\"konzmnsik\",\"clientId\":\"kqze\"},\"odkwobd\":{\"principalId\":\"hhvh\",\"clientId\":\"r\"}}}")
             .toObject(ManagedServiceIdentityUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentityUpdate model = new ManagedServiceIdentityUpdate()
-            .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("bogqxndlkzgxhu", new UserAssignedIdentity(), "lrb",
-                new UserAssignedIdentity(), "l", new UserAssignedIdentity(), "pbttdum", new UserAssignedIdentity()));
+        ManagedServiceIdentityUpdate model
+            = new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("d", new UserAssignedIdentity(), "lcxog", new UserAssignedIdentity(),
+                    "qkdltfz", new UserAssignedIdentity(), "odkwobd", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentityUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

@@ -13,21 +13,21 @@ public final class FeedbackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeedbackProperties model = BinaryData.fromString(
-            "{\"lockDurationAsIso8601\":\"PT217H34M45S\",\"ttlAsIso8601\":\"PT113H36M12S\",\"maxDeliveryCount\":156663672}")
+            "{\"lockDurationAsIso8601\":\"PT10H11M16S\",\"ttlAsIso8601\":\"PT189H54S\",\"maxDeliveryCount\":1466922404}")
             .toObject(FeedbackProperties.class);
-        Assertions.assertEquals(Duration.parse("PT217H34M45S"), model.lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT113H36M12S"), model.ttlAsIso8601());
-        Assertions.assertEquals(156663672, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT10H11M16S"), model.lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT189H54S"), model.ttlAsIso8601());
+        Assertions.assertEquals(1466922404, model.maxDeliveryCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeedbackProperties model = new FeedbackProperties().withLockDurationAsIso8601(Duration.parse("PT217H34M45S"))
-            .withTtlAsIso8601(Duration.parse("PT113H36M12S"))
-            .withMaxDeliveryCount(156663672);
+        FeedbackProperties model = new FeedbackProperties().withLockDurationAsIso8601(Duration.parse("PT10H11M16S"))
+            .withTtlAsIso8601(Duration.parse("PT189H54S"))
+            .withMaxDeliveryCount(1466922404);
         model = BinaryData.fromObject(model).toObject(FeedbackProperties.class);
-        Assertions.assertEquals(Duration.parse("PT217H34M45S"), model.lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT113H36M12S"), model.ttlAsIso8601());
-        Assertions.assertEquals(156663672, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT10H11M16S"), model.lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT189H54S"), model.ttlAsIso8601());
+        Assertions.assertEquals(1466922404, model.maxDeliveryCount());
     }
 }

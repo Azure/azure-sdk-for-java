@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Information used to connect to a CIFS file system.
@@ -63,6 +65,18 @@ public final class CifsMountConfiguration implements JsonSerializable<CifsMountC
         this.source = source;
         this.relativeMountPath = relativeMountPath;
         this.password = password;
+    }
+
+    /**
+     * Creates an instance of CifsMountConfiguration class.
+     *
+     * @param username the username value to set.
+     * @param source the source value to set.
+     * @param relativeMountPath the relativeMountPath value to set.
+     * @param password the password value to set.
+     */
+    public CifsMountConfiguration(String username, String source, Path relativeMountPath, String password) {
+        this(username, source, Objects.toString(relativeMountPath, null), password);
     }
 
     /**

@@ -13,11 +13,12 @@ public final class AvsVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsVmDetails model = BinaryData
-            .fromString("{\"vmId\":\"vppho\",\"vmName\":\"zqzudph\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"mvdk\"}")
+            .fromString(
+                "{\"vmId\":\"lmctlpd\",\"vmName\":\"gitvg\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"hrixkwmy\"}")
             .toObject(AvsVmDetails.class);
-        Assertions.assertEquals("vppho", model.vmId());
-        Assertions.assertEquals("zqzudph", model.vmName());
+        Assertions.assertEquals("lmctlpd", model.vmId());
+        Assertions.assertEquals("gitvg", model.vmName());
         Assertions.assertEquals(VmType.V_VOL, model.vmType());
-        Assertions.assertEquals("mvdk", model.avsVmInternalId());
+        Assertions.assertEquals("hrixkwmy", model.avsVmInternalId());
     }
 }

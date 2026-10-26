@@ -1,0 +1,22 @@
+{
+  "number": 12345,
+  "title": "[AutoPR azure-resourcemanager-deviceprovisioningservices]-generated-from-SDK Generation",
+  "user": {
+    "login": "app/azure-sdk-automation"
+  },
+  "base": {
+    "ref": "main",
+    "repo": {
+      "full_name": "Azure/azure-sdk-for-java"
+    }
+  },
+  "head": {
+    "sha": "2222222222222222222222222222222222222222",
+    "repo": {
+      "full_name": "Azure/azure-sdk-for-java"
+    }
+  },
+  "draft": false,
+  "body": "Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926",
+  "changed_files": 137
+}

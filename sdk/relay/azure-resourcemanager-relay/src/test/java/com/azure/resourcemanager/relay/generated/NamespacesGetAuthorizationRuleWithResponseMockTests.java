@@ -22,7 +22,7 @@ public final class NamespacesGetAuthorizationRuleWithResponseMockTests {
     @Test
     public void testGetAuthorizationRuleWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rights\":[\"Manage\",\"Listen\",\"Listen\"]},\"location\":\"ud\",\"id\":\"rx\",\"name\":\"rthzvaytdwkqbrqu\",\"type\":\"paxh\"}";
+            = "{\"properties\":{\"rights\":[\"Send\",\"Send\",\"Send\"]},\"location\":\"ydmcwyhzdxssa\",\"id\":\"zmnvdfznudaod\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class NamespacesGetAuthorizationRuleWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationRule response = manager.namespaces()
-            .getAuthorizationRuleWithResponse("imrzrtuzqog", "exn", "vfdnwnwmewzsyyce",
+            .getAuthorizationRuleWithResponse("maqolbgycduie", "tgccymvaolpss", "qlfmmdnbb",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(AccessRights.MANAGE, response.rights().get(0));
+        Assertions.assertEquals(AccessRights.SEND, response.rights().get(0));
     }
 }

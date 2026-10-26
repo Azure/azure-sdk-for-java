@@ -19,7 +19,7 @@ import com.azure.resourcemanager.appnetwork.models.AppLinkMemberUpdate;
  */
 public interface AppLinkMembersClient {
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -28,14 +28,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember along with {@link Response}.
+     * @return a member of an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AppLinkMemberInner> getWithResponse(String resourceGroupName, String appLinkName, String appLinkMemberName,
         Context context);
 
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -43,13 +43,13 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppLinkMemberInner get(String resourceGroupName, String appLinkName, String appLinkMemberName);
 
     /**
-     * Create an AppLinkMember.
+     * Create a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -58,14 +58,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink Member resource.
+     * @return the {@link SyncPoller} for polling of a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppLinkMemberInner>, AppLinkMemberInner> beginCreateOrUpdate(String resourceGroupName,
         String appLinkName, String appLinkMemberName, AppLinkMemberInner resource);
 
     /**
-     * Create an AppLinkMember.
+     * Create a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -75,14 +75,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink Member resource.
+     * @return the {@link SyncPoller} for polling of a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppLinkMemberInner>, AppLinkMemberInner> beginCreateOrUpdate(String resourceGroupName,
         String appLinkName, String appLinkMemberName, AppLinkMemberInner resource, Context context);
 
     /**
-     * Create an AppLinkMember.
+     * Create a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -91,14 +91,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink Member resource.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppLinkMemberInner createOrUpdate(String resourceGroupName, String appLinkName, String appLinkMemberName,
         AppLinkMemberInner resource);
 
     /**
-     * Create an AppLinkMember.
+     * Create a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -108,14 +108,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink Member resource.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppLinkMemberInner createOrUpdate(String resourceGroupName, String appLinkName, String appLinkMemberName,
         AppLinkMemberInner resource, Context context);
 
     /**
-     * Update an AppLinkMember.
+     * Update a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -124,14 +124,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink Member resource.
+     * @return the {@link SyncPoller} for polling of a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppLinkMemberInner>, AppLinkMemberInner> beginUpdate(String resourceGroupName,
         String appLinkName, String appLinkMemberName, AppLinkMemberUpdate properties);
 
     /**
-     * Update an AppLinkMember.
+     * Update a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -141,14 +141,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink Member resource.
+     * @return the {@link SyncPoller} for polling of a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppLinkMemberInner>, AppLinkMemberInner> beginUpdate(String resourceGroupName,
         String appLinkName, String appLinkMemberName, AppLinkMemberUpdate properties, Context context);
 
     /**
-     * Update an AppLinkMember.
+     * Update a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -157,14 +157,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink Member resource.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppLinkMemberInner update(String resourceGroupName, String appLinkName, String appLinkMemberName,
         AppLinkMemberUpdate properties);
 
     /**
-     * Update an AppLinkMember.
+     * Update a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -174,14 +174,14 @@ public interface AppLinkMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink Member resource.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppLinkMemberInner update(String resourceGroupName, String appLinkName, String appLinkMemberName,
         AppLinkMemberUpdate properties, Context context);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -196,7 +196,7 @@ public interface AppLinkMembersClient {
         String appLinkMemberName);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -212,7 +212,7 @@ public interface AppLinkMembersClient {
         String appLinkMemberName, Context context);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -225,7 +225,7 @@ public interface AppLinkMembersClient {
     void delete(String resourceGroupName, String appLinkName, String appLinkMemberName);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -239,7 +239,7 @@ public interface AppLinkMembersClient {
     void delete(String resourceGroupName, String appLinkName, String appLinkMemberName, Context context);
 
     /**
-     * List AppLinkMember resources by AppLink.
+     * List the members of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -252,7 +252,7 @@ public interface AppLinkMembersClient {
     PagedIterable<AppLinkMemberInner> listByAppLink(String resourceGroupName, String appLinkName);
 
     /**
-     * List AppLinkMember resources by AppLink.
+     * List the members of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.

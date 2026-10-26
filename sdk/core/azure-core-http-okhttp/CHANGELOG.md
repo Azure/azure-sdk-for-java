@@ -8,7 +8,39 @@
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults. Nonpositive call timeouts now disable the timeout instead of rejecting
+  negative values.
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
+- Fixed response timeouts remaining active while reading the response body after an `Expect: 100-continue` handshake.
+
 ### Other Changes
+
+## 1.13.8 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+
+## 1.13.7 (2026-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
+
+## 1.13.6 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
+- Upgraded `okio-jvm` from `3.16.0` to `3.18.1`.
 
 ## 1.13.5 (2026-06-08)
 

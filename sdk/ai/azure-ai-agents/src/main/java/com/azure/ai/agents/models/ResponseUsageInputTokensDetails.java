@@ -18,16 +18,6 @@ import java.io.IOException;
 public final class ResponseUsageInputTokensDetails implements JsonSerializable<ResponseUsageInputTokensDetails> {
 
     /**
-     * Creates an instance of ResponseUsageInputTokensDetails class.
-     *
-     * @param cachedTokensCount the cachedTokensCount value to set.
-     */
-    @Generated
-    private ResponseUsageInputTokensDetails(long cachedTokensCount) {
-        this.cachedTokensCount = cachedTokensCount;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -35,6 +25,7 @@ public final class ResponseUsageInputTokensDetails implements JsonSerializable<R
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("cached_tokens", this.cachedTokensCount);
+        jsonWriter.writeLongField("cache_write_tokens", this.cacheWriteTokens);
         return jsonWriter.writeEndObject();
     }
 
@@ -51,16 +42,19 @@ public final class ResponseUsageInputTokensDetails implements JsonSerializable<R
     public static ResponseUsageInputTokensDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             long cachedTokensCount = 0L;
+            long cacheWriteTokens = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("cached_tokens".equals(fieldName)) {
                     cachedTokensCount = reader.getLong();
+                } else if ("cache_write_tokens".equals(fieldName)) {
+                    cacheWriteTokens = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResponseUsageInputTokensDetails(cachedTokensCount);
+            return new ResponseUsageInputTokensDetails(cachedTokensCount, cacheWriteTokens);
         });
     }
 
@@ -78,5 +72,33 @@ public final class ResponseUsageInputTokensDetails implements JsonSerializable<R
     @Generated
     public long getCachedTokensCount() {
         return this.cachedTokensCount;
+    }
+
+    /*
+     * The cache_write_tokens property.
+     */
+    @Generated
+    private final long cacheWriteTokens;
+
+    /**
+     * Creates an instance of ResponseUsageInputTokensDetails class.
+     *
+     * @param cachedTokensCount the cachedTokensCount value to set.
+     * @param cacheWriteTokens the cacheWriteTokens value to set.
+     */
+    @Generated
+    private ResponseUsageInputTokensDetails(long cachedTokensCount, long cacheWriteTokens) {
+        this.cachedTokensCount = cachedTokensCount;
+        this.cacheWriteTokens = cacheWriteTokens;
+    }
+
+    /**
+     * Get the cacheWriteTokens property: The cache_write_tokens property.
+     *
+     * @return the cacheWriteTokens value.
+     */
+    @Generated
+    public long getCacheWriteTokens() {
+        return this.cacheWriteTokens;
     }
 }

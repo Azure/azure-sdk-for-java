@@ -82,13 +82,6 @@ public interface RelayManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the ClustersClient object to access its operations.
-     * 
-     * @return the ClustersClient object.
-     */
-    ClustersClient getClusters();
-
-    /**
      * Gets the NamespacesClient object to access its operations.
      * 
      * @return the NamespacesClient object.

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.0 (2026-10-12)
+
+- Package api-version 2026-05-15.
+
+### Breaking Changes
+
+#### `models.ManagedHsmSkuName` was modified
+
+* `toString()` was removed
+* `models.ManagedHsmSkuName[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+#### `models.JsonWebKeyType` was modified
+
+* `OCT_HSM` was added
+
+#### `models.ManagedHsmSkuName` was modified
+
+* `ManagedHsmSkuName()` was added
+* `STANDARD_B5V2` was added
+* `STANDARD_B10V2` was added
+* `STANDARD_B20V2` was added
+* `STANDARD_B1V2` was added
+* `STANDARD_B15V2` was added
+
+## 2.55.6 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.13` to version `2.53.14`.
+
+## 2.55.5 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-security-keyvault-keys` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.12` to version `2.53.13`.
+
+## 2.55.4 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-keys` from `4.11.0` to version `4.11.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.12`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+- Upgraded `azure-security-keyvault-secrets` from `4.11.0` to version `4.11.2`.
 
 ## 2.55.3 (2026-07-01)
 

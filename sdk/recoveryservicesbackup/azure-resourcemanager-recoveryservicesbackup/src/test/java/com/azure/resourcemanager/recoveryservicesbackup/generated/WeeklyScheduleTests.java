@@ -14,21 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WeeklySchedule model = BinaryData
-            .fromString(
-                "{\"scheduleRunDays\":[\"Saturday\",\"Thursday\"],\"scheduleRunTimes\":[\"2021-08-17T11:36:27Z\"]}")
+        WeeklySchedule model = BinaryData.fromString(
+            "{\"scheduleRunDays\":[\"Friday\",\"Thursday\"],\"scheduleRunTimes\":[\"2021-11-09T08:51:20Z\",\"2021-09-13T14:02:46Z\",\"2021-03-24T18:46Z\"]}")
             .toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T11:36:27Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T08:51:20Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklySchedule model
-            = new WeeklySchedule().withScheduleRunDays(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.THURSDAY))
-                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-08-17T11:36:27Z")));
+            = new WeeklySchedule().withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.THURSDAY))
+                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-11-09T08:51:20Z"),
+                    OffsetDateTime.parse("2021-09-13T14:02:46Z"), OffsetDateTime.parse("2021-03-24T18:46Z")));
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T11:36:27Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T08:51:20Z"), model.scheduleRunTimes().get(0));
     }
 }

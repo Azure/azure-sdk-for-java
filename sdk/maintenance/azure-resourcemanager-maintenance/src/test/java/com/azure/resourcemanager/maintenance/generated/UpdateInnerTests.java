@@ -16,13 +16,13 @@ public final class UpdateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateInner model = BinaryData.fromString(
-            "{\"maintenanceScope\":\"Extension\",\"impactType\":\"Restart\",\"status\":\"Cancelled\",\"impactDurationInSec\":1013735837,\"notBefore\":\"2021-11-15T07:00:08Z\",\"properties\":{\"resourceId\":\"ukkfplgmgs\"}}")
+            "{\"maintenanceScope\":\"Extension\",\"impactType\":\"None\",\"status\":\"InProgress\",\"impactDurationInSec\":882863713,\"notBefore\":\"2021-06-27T19:00:45Z\",\"properties\":{\"resourceId\":\"vplwzbhv\"}}")
             .toObject(UpdateInner.class);
         Assertions.assertEquals(MaintenanceScope.EXTENSION, model.maintenanceScope());
-        Assertions.assertEquals(ImpactType.RESTART, model.impactType());
-        Assertions.assertEquals(UpdateStatus.CANCELLED, model.status());
-        Assertions.assertEquals(1013735837, model.impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-15T07:00:08Z"), model.notBefore());
-        Assertions.assertEquals("ukkfplgmgs", model.resourceId());
+        Assertions.assertEquals(ImpactType.NONE, model.impactType());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, model.status());
+        Assertions.assertEquals(882863713, model.impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T19:00:45Z"), model.notBefore());
+        Assertions.assertEquals("vplwzbhv", model.resourceId());
     }
 }

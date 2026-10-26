@@ -5,18 +5,14 @@ package com.microsoft.azure.eventhubs.proxy;
 
 import com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType;
 import com.microsoft.azure.proton.transport.proxy.ProxyConfiguration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-@RunWith(value = Theories.class)
 public class ProxyConfigurationTest {
     private static final String USERNAME = "test-user";
     private static final String PASSWORD = "test-password!";
@@ -25,7 +21,6 @@ public class ProxyConfigurationTest {
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final ProxyAuthenticationType AUTHENTICATION_TYPE = ProxyAuthenticationType.BASIC;
 
-    @DataPoints("userConfigurations")
     public static ProxyConfiguration[] userConfigurations() {
         return new ProxyConfiguration[]{
             new ProxyConfiguration(AUTHENTICATION_TYPE, PROXY, null, PASSWORD),
@@ -38,39 +33,40 @@ public class ProxyConfigurationTest {
     public void systemConfiguredConfiguration() {
         ProxyConfiguration configuration = ProxyConfiguration.SYSTEM_DEFAULTS;
 
-        Assert.assertFalse(configuration.isProxyAddressConfigured());
-        Assert.assertFalse(configuration.hasUserDefinedCredentials());
+        Assertions.assertFalse(configuration.isProxyAddressConfigured());
+        Assertions.assertFalse(configuration.hasUserDefinedCredentials());
 
-        Assert.assertNull(configuration.proxyAddress());
-        Assert.assertNull(configuration.credentials());
-        Assert.assertNull(configuration.authentication());
+        Assertions.assertNull(configuration.proxyAddress());
+        Assertions.assertNull(configuration.credentials());
+        Assertions.assertNull(configuration.authentication());
     }
 
     @Test
     public void userDefinedConfiguration() {
         ProxyConfiguration configuration = new ProxyConfiguration(AUTHENTICATION_TYPE, PROXY, USERNAME, PASSWORD);
 
-        Assert.assertTrue(configuration.isProxyAddressConfigured());
-        Assert.assertTrue(configuration.hasUserDefinedCredentials());
+        Assertions.assertTrue(configuration.isProxyAddressConfigured());
+        Assertions.assertTrue(configuration.hasUserDefinedCredentials());
 
-        Assert.assertEquals(AUTHENTICATION_TYPE, configuration.authentication());
-        Assert.assertEquals(PROXY, configuration.proxyAddress());
-        Assert.assertEquals(USERNAME, configuration.credentials().getUserName());
-        Assert.assertArrayEquals(PASSWORD_CHARS, configuration.credentials().getPassword());
+        Assertions.assertEquals(AUTHENTICATION_TYPE, configuration.authentication());
+        Assertions.assertEquals(PROXY, configuration.proxyAddress());
+        Assertions.assertEquals(USERNAME, configuration.credentials().getUserName());
+        Assertions.assertArrayEquals(PASSWORD_CHARS, configuration.credentials().getPassword());
     }
 
     /**
      * Verify that if the user has not provided a username or password, we cannot construct valid credentials from that.
      */
-    @Theory
-    public void userDefinedConfigurationMissingData(@FromDataPoints("userConfigurations") ProxyConfiguration configuration) {
-        Assert.assertTrue(configuration.isProxyAddressConfigured());
-        Assert.assertFalse(configuration.hasUserDefinedCredentials());
+    @ParameterizedTest
+    @MethodSource("userConfigurations")
+    public void userDefinedConfigurationMissingData(ProxyConfiguration configuration) {
+        Assertions.assertTrue(configuration.isProxyAddressConfigured());
+        Assertions.assertFalse(configuration.hasUserDefinedCredentials());
 
-        Assert.assertNull(configuration.credentials());
+        Assertions.assertNull(configuration.credentials());
 
-        Assert.assertEquals(AUTHENTICATION_TYPE, configuration.authentication());
-        Assert.assertEquals(PROXY, configuration.proxyAddress());
+        Assertions.assertEquals(AUTHENTICATION_TYPE, configuration.authentication());
+        Assertions.assertEquals(PROXY, configuration.proxyAddress());
     }
 
     /**
@@ -81,13 +77,13 @@ public class ProxyConfigurationTest {
         ProxyAuthenticationType type = ProxyAuthenticationType.DIGEST;
         ProxyConfiguration configuration = new ProxyConfiguration(type, null, USERNAME, PASSWORD);
 
-        Assert.assertFalse(configuration.isProxyAddressConfigured());
-        Assert.assertTrue(configuration.hasUserDefinedCredentials());
+        Assertions.assertFalse(configuration.isProxyAddressConfigured());
+        Assertions.assertTrue(configuration.hasUserDefinedCredentials());
 
-        Assert.assertEquals(type, configuration.authentication());
-        Assert.assertNotNull(configuration.credentials());
+        Assertions.assertEquals(type, configuration.authentication());
+        Assertions.assertNotNull(configuration.credentials());
 
-        Assert.assertEquals(USERNAME, configuration.credentials().getUserName());
-        Assert.assertArrayEquals(PASSWORD_CHARS, configuration.credentials().getPassword());
+        Assertions.assertEquals(USERNAME, configuration.credentials().getUserName());
+        Assertions.assertArrayEquals(PASSWORD_CHARS, configuration.credentials().getPassword());
     }
 }

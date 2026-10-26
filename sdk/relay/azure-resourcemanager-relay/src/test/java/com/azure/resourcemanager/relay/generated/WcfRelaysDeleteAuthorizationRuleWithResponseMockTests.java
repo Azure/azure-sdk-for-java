@@ -28,7 +28,7 @@ public final class WcfRelaysDeleteAuthorizationRuleWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.wcfRelays()
-            .deleteAuthorizationRuleWithResponse("igvpgylg", "git", "medjvcslynqwwncw", "zhxgktrmgucn",
+            .deleteAuthorizationRuleWithResponse("hspkdeemao", "mx", "gkvtmelmqkrhah", "ljuahaquhcdh",
                 com.azure.core.util.Context.NONE);
 
     }

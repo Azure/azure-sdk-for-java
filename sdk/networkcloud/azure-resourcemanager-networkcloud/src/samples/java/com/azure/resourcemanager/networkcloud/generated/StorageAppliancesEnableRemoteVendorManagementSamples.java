@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class StorageAppliancesEnableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_EnableRemoteVendorManagement.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_EnableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn on remote vendor management for storage appliance.

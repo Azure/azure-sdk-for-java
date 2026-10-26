@@ -16,29 +16,30 @@ public final class ProtectionPolicyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicyResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":319794832,\"resourceGuardOperationRequests\":[\"pxtivhjk\"]},\"tags\":{\"jxgpnrhgovfg\":\"ibg\",\"mhha\":\"ik\",\"uydzvk\":\"wjrmzvuporqzd\",\"okmvkhlggd\":\"vxcnqmxqps\"},\"location\":\"em\",\"eTag\":\"kzsz\",\"id\":\"iwtglxxhljfpg\",\"name\":\"icrmnzh\",\"type\":\"gmqgjs\"}")
+            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":260933240,\"resourceGuardOperationRequests\":[\"bsizus\",\"szlbscm\",\"lzijiufehgmvflnw\",\"v\"]},\"tags\":{\"yl\":\"rerlniy\",\"ztwhghmupg\":\"fwxzutg\",\"nbbklqpxzucafed\":\"yjtcdxabbujftab\",\"ookrtalvnbw\":\"wwnlzafwxudgnh\"},\"location\":\"bemeluclvd\",\"eTag\":\"ukyrdnqodxahh\",\"id\":\"qfaqnvzoqg\",\"name\":\"ipemchgavscz\",\"type\":\"ejdtxptl\"}")
             .toObject(ProtectionPolicyResourceInner.class);
-        Assertions.assertEquals(319794832, model.properties().protectedItemsCount());
-        Assertions.assertEquals("pxtivhjk", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("ibg", model.tags().get("jxgpnrhgovfg"));
-        Assertions.assertEquals("em", model.location());
-        Assertions.assertEquals("kzsz", model.etag());
+        Assertions.assertEquals(260933240, model.properties().protectedItemsCount());
+        Assertions.assertEquals("bsizus", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("rerlniy", model.tags().get("yl"));
+        Assertions.assertEquals("bemeluclvd", model.location());
+        Assertions.assertEquals("ukyrdnqodxahh", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionPolicyResourceInner model = new ProtectionPolicyResourceInner()
-            .withProperties(new ProtectionPolicy().withProtectedItemsCount(319794832)
-                .withResourceGuardOperationRequests(Arrays.asList("pxtivhjk")))
-            .withTags(mapOf("jxgpnrhgovfg", "ibg", "mhha", "ik", "uydzvk", "wjrmzvuporqzd", "okmvkhlggd", "vxcnqmxqps"))
-            .withLocation("em")
-            .withEtag("kzsz");
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(260933240)
+                .withResourceGuardOperationRequests(Arrays.asList("bsizus", "szlbscm", "lzijiufehgmvflnw", "v")))
+            .withTags(mapOf("yl", "rerlniy", "ztwhghmupg", "fwxzutg", "nbbklqpxzucafed", "yjtcdxabbujftab",
+                "ookrtalvnbw", "wwnlzafwxudgnh"))
+            .withLocation("bemeluclvd")
+            .withEtag("ukyrdnqodxahh");
         model = BinaryData.fromObject(model).toObject(ProtectionPolicyResourceInner.class);
-        Assertions.assertEquals(319794832, model.properties().protectedItemsCount());
-        Assertions.assertEquals("pxtivhjk", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("ibg", model.tags().get("jxgpnrhgovfg"));
-        Assertions.assertEquals("em", model.location());
-        Assertions.assertEquals("kzsz", model.etag());
+        Assertions.assertEquals(260933240, model.properties().protectedItemsCount());
+        Assertions.assertEquals("bsizus", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("rerlniy", model.tags().get("yl"));
+        Assertions.assertEquals("bemeluclvd", model.location());
+        Assertions.assertEquals("ukyrdnqodxahh", model.etag());
     }
 
     // Use "Map.of" if available

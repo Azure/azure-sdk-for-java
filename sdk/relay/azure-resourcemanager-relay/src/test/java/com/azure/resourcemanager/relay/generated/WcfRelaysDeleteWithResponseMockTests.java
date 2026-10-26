@@ -28,7 +28,7 @@ public final class WcfRelaysDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.wcfRelays()
-            .deleteWithResponse("sqfsubcgjbirxb", "ybsrfbjfdtwss", "t", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lrbpbewtghfgbl", "gw", "zvlvqhjkbegib", com.azure.core.util.Context.NONE);
 
     }
 }

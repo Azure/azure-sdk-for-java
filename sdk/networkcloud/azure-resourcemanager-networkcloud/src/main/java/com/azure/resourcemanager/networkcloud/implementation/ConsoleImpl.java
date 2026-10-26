@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.models.ConsolePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.ConsoleProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKeyPatch;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -232,13 +233,8 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public ConsoleImpl withSshPublicKey(SshPublicKey sshPublicKey) {
-        if (isInCreateMode()) {
-            this.innerModel().withSshPublicKey(sshPublicKey);
-            return this;
-        } else {
-            this.updateConsoleUpdateParameters.withSshPublicKey(sshPublicKey);
-            return this;
-        }
+        this.innerModel().withSshPublicKey(sshPublicKey);
+        return this;
     }
 
     public ConsoleImpl withTags(Map<String, String> tags) {
@@ -279,6 +275,11 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
+    }
+
+    public ConsoleImpl withSshPublicKey(SshPublicKeyPatch sshPublicKey) {
+        this.updateConsoleUpdateParameters.withSshPublicKey(sshPublicKey);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -13,27 +13,27 @@ public final class ProtectionContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionContainer model = BinaryData.fromString(
-            "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"viklb\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"hbejdznxcvdsrhnj\",\"healthStatus\":\"olvtnovqfzge\",\"protectableObjectType\":\"dftuljltduce\"}")
+            "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"hgppipifhpfeoa\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"xtxj\",\"healthStatus\":\"heafidlt\",\"protectableObjectType\":\"sr\",\"sourceLocation\":\"mks\"}")
             .toObject(ProtectionContainer.class);
-        Assertions.assertEquals("viklb", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("hbejdznxcvdsrhnj", model.registrationStatus());
-        Assertions.assertEquals("olvtnovqfzge", model.healthStatus());
-        Assertions.assertEquals("dftuljltduce", model.protectableObjectType());
+        Assertions.assertEquals("hgppipifhpfeoa", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("xtxj", model.registrationStatus());
+        Assertions.assertEquals("heafidlt", model.healthStatus());
+        Assertions.assertEquals("sr", model.protectableObjectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionContainer model = new ProtectionContainer().withFriendlyName("viklb")
-            .withBackupManagementType(BackupManagementType.MAB)
-            .withRegistrationStatus("hbejdznxcvdsrhnj")
-            .withHealthStatus("olvtnovqfzge")
-            .withProtectableObjectType("dftuljltduce");
+        ProtectionContainer model = new ProtectionContainer().withFriendlyName("hgppipifhpfeoa")
+            .withBackupManagementType(BackupManagementType.INVALID)
+            .withRegistrationStatus("xtxj")
+            .withHealthStatus("heafidlt")
+            .withProtectableObjectType("sr");
         model = BinaryData.fromObject(model).toObject(ProtectionContainer.class);
-        Assertions.assertEquals("viklb", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("hbejdznxcvdsrhnj", model.registrationStatus());
-        Assertions.assertEquals("olvtnovqfzge", model.healthStatus());
-        Assertions.assertEquals("dftuljltduce", model.protectableObjectType());
+        Assertions.assertEquals("hgppipifhpfeoa", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("xtxj", model.registrationStatus());
+        Assertions.assertEquals("heafidlt", model.healthStatus());
+        Assertions.assertEquals("sr", model.protectableObjectType());
     }
 }

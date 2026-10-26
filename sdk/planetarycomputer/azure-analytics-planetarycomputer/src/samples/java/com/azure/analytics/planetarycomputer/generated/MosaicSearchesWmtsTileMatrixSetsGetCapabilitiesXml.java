@@ -6,8 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.List;
 
 public class MosaicSearchesWmtsTileMatrixSetsGetCapabilitiesXml {
     public static void main(String[] args) {
@@ -17,7 +20,9 @@ public class MosaicSearchesWmtsTileMatrixSetsGetCapabilitiesXml {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-with-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
         byte[] response = dataClient.getSearchWmtsCapabilitiesWithTms("ba13fc7947b9b585690d84ee61aaa653",
-            "WebMercatorQuad", null, null, null, null, null, null, null, null, null, null, null, null);
+            "WebMercatorQuad", (TilerImageFormat) null, (Integer) null, (Integer) null, (Integer) null,
+            (List<Integer>) null, (List<String>) null, (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-with-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

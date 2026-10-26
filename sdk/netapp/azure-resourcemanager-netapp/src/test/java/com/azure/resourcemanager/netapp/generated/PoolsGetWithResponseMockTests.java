@@ -24,7 +24,7 @@ public final class PoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"poolId\":\"oqmavnwqjwgo\",\"size\":4403586247880198279,\"serviceLevel\":\"Premium\",\"provisioningState\":\"jj\",\"totalThroughputMibps\":52.29952,\"utilizedThroughputMibps\":14.734721,\"customThroughputMibps\":2138243626,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"etag\":\"nsvk\",\"location\":\"kjtjknsx\",\"tags\":{\"fbpkuw\":\"shcdpkupnqrmg\"},\"id\":\"eoiojfizfavkjzw\",\"name\":\"bcyaykmmfzs\",\"type\":\"fwxrzxmdew\"}";
+            = "{\"properties\":{\"poolId\":\"v\",\"size\":2472472449262308145,\"serviceLevel\":\"Premium\",\"provisioningState\":\"aqylkjztji\",\"totalThroughputMibps\":20.662773,\"utilizedThroughputMibps\":17.443895,\"customThroughputMibps\":864325945,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"etag\":\"zc\",\"location\":\"ltkrl\",\"tags\":{\"zhomp\":\"tbdrvcqgue\",\"ckyeclcdigpta\":\"eqdurelyujlfyoum\",\"utgjcyz\":\"brzmqxucycijoclx\"},\"id\":\"zjd\",\"name\":\"r\",\"type\":\"jb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class PoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapacityPool response = manager.pools()
-            .getWithResponse("excgjokjljnhvl", "jbekpeeksnbksdq", "jvyklxeslkhhust", com.azure.core.util.Context.NONE)
+            .getWithResponse("d", "bdweade", "zmwntopagt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kjtjknsx", response.location());
-        Assertions.assertEquals("shcdpkupnqrmg", response.tags().get("fbpkuw"));
-        Assertions.assertEquals(4403586247880198279L, response.size());
+        Assertions.assertEquals("ltkrl", response.location());
+        Assertions.assertEquals("tbdrvcqgue", response.tags().get("zhomp"));
+        Assertions.assertEquals(2472472449262308145L, response.size());
         Assertions.assertEquals(ServiceLevel.PREMIUM, response.serviceLevel());
-        Assertions.assertEquals(2138243626, response.customThroughputMibps());
+        Assertions.assertEquals(864325945, response.customThroughputMibps());
         Assertions.assertEquals(QosType.MANUAL, response.qosType());
         Assertions.assertTrue(response.coolAccess());
         Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());

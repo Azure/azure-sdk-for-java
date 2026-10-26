@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class ClusterMeshProfilesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_ListByFleet.json
+     * x-ms-original-file: 2026-06-02-preview/ClusterMeshProfiles_ListByFleet.json
      */
     /**
      * Sample code: List the ClusterMeshProfile resources by fleet.

@@ -6,6 +6,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -17,25 +20,30 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * Utilities shared with HttpClient implementations.
  */
 public final class HttpUtils {
+    private static final String TEXT_EVENT_STREAM = "text/event-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpUtils.class);
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
 
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-    }
+    /**
+     * The SDK fallback connect timeout, independent of global configuration.
+     */
+    public static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+
+    /**
+     * The SDK fallback write timeout, independent of global configuration.
+     */
+    public static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
+
+    /**
+     * The SDK fallback response timeout, independent of global configuration.
+     */
+    public static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+
+    /**
+     * The SDK fallback read timeout, independent of global configuration.
+     */
+    public static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
 
     /**
      * Context key used to indicate to an HttpClient implementation if it should eagerly read the response from the
@@ -61,39 +69,124 @@ public final class HttpUtils {
     public static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     /**
-     * Gets the default connect timeout.
+     * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.
+     * Charset parameters don't affect this determination as event streams are always decoded as UTF-8.
+     *
+     * @param headerValue The Content-Type header value.
+     * @return Whether the header identifies a {@code text/event-stream} representation.
+     */
+    public static boolean isTextEventStreamContentType(String headerValue) {
+        if (headerValue == null) {
+            return false;
+        }
+
+        List<String> mediaTypeAndParameters = splitHeaderValue(headerValue, ';');
+        if (mediaTypeAndParameters.size() == 0
+            || !TEXT_EVENT_STREAM.equalsIgnoreCase(mediaTypeAndParameters.get(0).trim())
+            || splitHeaderValue(headerValue, ',').size() != 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static List<String> splitHeaderValue(String value, char delimiter) {
+        List<String> segments = new ArrayList<>();
+        int start = 0;
+        boolean quoted = false;
+        boolean escaped = false;
+
+        for (int i = 0; i < value.length(); i++) {
+            char character = value.charAt(i);
+            if (escaped) {
+                escaped = false;
+            } else if (quoted && character == '\\') {
+                escaped = true;
+            } else if (character == '"') {
+                quoted = !quoted;
+            } else if (!quoted && character == delimiter) {
+                segments.add(value.substring(start, i));
+                start = i + 1;
+            }
+        }
+
+        if (quoted) {
+            return Collections.emptyList();
+        }
+
+        segments.add(value.substring(start));
+        return segments;
+    }
+
+    /**
+     * Gets the default connect timeout from the global configuration, falling back to {@link #DEFAULT_CONNECT_TIMEOUT}
+     * when the configured value is missing or invalid. The global configuration is resolved on each call.
      *
      * @return The default connect timeout.
      */
     public static Duration getDefaultConnectTimeout() {
-        return DEFAULT_CONNECT_TIMEOUT;
+        return getDefaultTimeoutFromEnvironment(Configuration.getGlobalConfiguration(),
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, LOGGER);
     }
 
     /**
-     * Gets the default write timeout.
+     * Gets the default write timeout from the global configuration, falling back to {@link #DEFAULT_WRITE_TIMEOUT}
+     * when the configured value is missing or invalid. The global configuration is resolved on each call.
      *
      * @return The default write timeout.
      */
     public static Duration getDefaultWriteTimeout() {
-        return DEFAULT_WRITE_TIMEOUT;
+        return getDefaultTimeoutFromEnvironment(Configuration.getGlobalConfiguration(),
+            PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT, LOGGER);
     }
 
     /**
-     * Gets the default response timeout.
+     * Gets the default response timeout from the global configuration, falling back to {@link #DEFAULT_RESPONSE_TIMEOUT}
+     * when the configured value is missing or invalid. The global configuration is resolved on each call.
      *
      * @return The default response timeout.
      */
     public static Duration getDefaultResponseTimeout() {
-        return DEFAULT_RESPONSE_TIMEOUT;
+        return getDefaultTimeoutFromEnvironment(Configuration.getGlobalConfiguration(),
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT, LOGGER);
     }
 
     /**
-     * Gets the default read timeout.
+     * Gets the default read timeout from the global configuration, falling back to {@link #DEFAULT_READ_TIMEOUT}
+     * when the configured value is missing or invalid. The global configuration is resolved on each call.
      *
      * @return The default read timeout.
      */
     public static Duration getDefaultReadTimeout() {
-        return DEFAULT_READ_TIMEOUT;
+        return getDefaultTimeoutFromEnvironment(Configuration.getGlobalConfiguration(),
+            PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT, LOGGER);
+    }
+
+    /**
+     * Resolves a timeout from the explicit value, the builder's configuration, the global configuration, and finally
+     * the default, in that order. Missing, empty, or invalid configuration values fall back to the next source.
+     * Nonpositive values disable the timeout; positive values less than one millisecond use one millisecond.
+     *
+     * @param configuredTimeout The explicitly configured timeout, or null.
+     * @param configuration The builder's configuration, or null to use the global configuration.
+     * @param timeoutPropertyName The timeout configuration property name.
+     * @param defaultTimeout The fallback timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Configuration configuration,
+        String timeoutPropertyName, Duration defaultTimeout) {
+        if (configuredTimeout != null) {
+            return getTimeout(configuredTimeout, defaultTimeout);
+        }
+
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        Duration timeout = (configuration == null || configuration == globalConfiguration)
+            ? null
+            : getDefaultTimeoutFromEnvironment(configuration, timeoutPropertyName, null, LOGGER);
+
+        return timeout == null
+            ? getDefaultTimeoutFromEnvironment(globalConfiguration, timeoutPropertyName, defaultTimeout, LOGGER)
+            : timeout;
     }
 
     /**

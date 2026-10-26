@@ -14,21 +14,21 @@ public final class CloudHsmClusterSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudHsmClusterSku model
-            = BinaryData.fromString("{\"family\":\"B\",\"name\":\"Standard_B1\",\"capacity\":853562932}")
+            = BinaryData.fromString("{\"family\":\"B\",\"name\":\"Standard_B15v2\",\"capacity\":853562932}")
                 .toObject(CloudHsmClusterSku.class);
         Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.family());
-        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B1, model.name());
+        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B15V2, model.name());
         Assertions.assertEquals(853562932, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudHsmClusterSku model = new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
-            .withName(CloudHsmClusterSkuName.STANDARD_B1)
+            .withName(CloudHsmClusterSkuName.STANDARD_B15V2)
             .withCapacity(853562932);
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterSku.class);
         Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.family());
-        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B1, model.name());
+        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B15V2, model.name());
         Assertions.assertEquals(853562932, model.capacity());
     }
 }

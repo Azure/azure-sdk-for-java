@@ -8,20 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates the type of capacity reservation. Allowed values are 'Block' for block capacity reservations and 'Targeted'
- * for reservations that enable a VM to consume a specific capacity reservation when a capacity reservation group is
- * provided. The reservation type is immutable and cannot be changed after it is assigned.
+ * Indicates the type of capacity reservation. Allowed values are 'Block' for block capacity reservations that enable a
+ * VM to consume capacity only from this capacity block when it is associated using a capacity reservation group,
+ * 'Targeted' for reservations that enable a VM to consume capacity from an explicitly associated capacity reservation
+ * group and fall back to the publicly available capacity if the reservation is full, and 'Open' for reservations that a
+ * VM consumes when it is eligible from an implicitly associated capacity reservation group with the matching VM size
+ * and zone without associating that capacity reservation group and fall back to the publicly available capacity if the
+ * reservation is full. Future capacity reservations can be created in 'Targeted' or 'Open' capacity reservation groups.
+ * The reservation type is immutable and cannot be changed after the capacity reservation group is created.
  */
 public final class ReservationType extends ExpandableStringEnum<ReservationType> {
     /**
-     * To consume on demand allocated capacity reservation when a capacity reservation group is provided.
+     * Reservations that enable a VM to consume capacity from an explicitly associated capacity reservation group and
+     * fall back to the publicly available capacity if the reservation is full.
      */
     public static final ReservationType TARGETED = fromString("Targeted");
 
     /**
-     * To consume scheduled allocated block capacity reservation when a capacity reservation group is provided.
+     * Block capacity reservations that enable a VM to consume capacity only from this capacity block when it is
+     * associated using a capacity reservation group.
      */
     public static final ReservationType BLOCK = fromString("Block");
+
+    /**
+     * Reservations that a VM consumes when it is eligible from an implicitly associated capacity reservation group with
+     * the matching VM size and zone without associating that capacity reservation group, and fall back to the publicly
+     * available capacity if the reservation is full. Minimum api-version: 2026-04-01.
+     */
+    public static final ReservationType OPEN = fromString("Open");
 
     /**
      * Creates a new instance of ReservationType value.

@@ -6,16 +6,21 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +38,7 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
         // BEGIN: com.azure.ai.contentunderstanding.deleteResult
         // Step 1: Analyze a document
         String documentUrl
-            = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf";
 
         AnalysisInput input = new AnalysisInput();
         input.setUrl(documentUrl);
@@ -45,12 +50,23 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
         System.out.println("Started analysis operation");
 
         // Wait for completion
+        LongRunningOperationStatus status = poller.waitForCompletion().getStatus();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException("Invoice analysis completed unsuccessfully with status: " + status);
+        }
         AnalysisResult result = poller.getFinalResult();
+        if (result == null) {
+            throw new IllegalStateException("Invoice analysis completed without a final result.");
+        }
         System.out.println("Analysis completed successfully!");
 
         // Get the operation ID using the getId() convenience method
         // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.poll().getValue().getId();
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = poller.poll().getValue();
+        String operationId = operationStatus == null ? null : operationStatus.getId();
+        if (operationId == null || operationId.trim().isEmpty()) {
+            throw new IllegalStateException("Invoice analysis completed without an operation ID.");
+        }
         System.out.println("Operation ID: " + operationId);
 
         // Display some sample results using getValue() convenience method
@@ -73,7 +89,9 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
 
         // Step 2: Delete the analysis result using the operation ID
         // This cleans up the server-side resources (including keyframe images for video analysis)
-        contentUnderstandingClient.deleteResult(operationId);
+        System.out.println("Deleting analysis result (Operation ID: " + operationId + ")...");
+        Response<Void> deleteResponse
+            = contentUnderstandingClient.deleteResultWithResponse(operationId, new RequestOptions());
         System.out.println("Analysis result deleted successfully!");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
@@ -81,6 +99,11 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
         System.out.println("\n📋 Analysis Operation Verification:");
         assertNotNull(documentUrl, "Document URL should not be null");
         System.out.println("Document URL: " + documentUrl);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status,
+            "Invoice analysis should complete successfully");
+        assertNotNull(operationId, "Operation ID should not be null");
+        assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
+        assertFalse(operationId.contains(" "), "Operation ID should not contain spaces");
         System.out.println("Analysis operation completed successfully");
 
         // Verify result
@@ -97,15 +120,34 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
         assertNotNull(documentContent.getFields(), "Document content should have fields");
         System.out.println("Document content has " + documentContent.getFields().size() + " field(s)");
 
-        // API Pattern Demo
-        System.out.println("\n🗑️ Result Deletion API Pattern:");
-        System.out.println("  contentUnderstandingClient.deleteResultWithResponse(resultId, requestOptions)");
-        System.out.println("  Use the result ID from the analysis operation for cleanup");
+        if (result.getAnalyzerId() != null && !result.getAnalyzerId().trim().isEmpty()) {
+            assertEquals("prebuilt-invoice", result.getAnalyzerId(), "Analyzer ID should match the request");
+        }
+
+        // Verify the initial deletion response.
+        assertNotNull(deleteResponse, "Delete response should not be null");
+        assertEquals(204, deleteResponse.getStatusCode(), "Initial deletion should return 204 No Content");
+
+        // A repeated deletion may be idempotent or report that the result no longer exists.
+        try {
+            Response<Void> secondDeleteResponse
+                = contentUnderstandingClient.deleteResultWithResponse(operationId, new RequestOptions());
+            assertNotNull(secondDeleteResponse, "Repeated delete response should not be null");
+            assertEquals(204, secondDeleteResponse.getStatusCode(),
+                "An idempotent repeated deletion should return 204 No Content");
+            System.out.println("Repeated deletion succeeded idempotently.");
+        } catch (ResourceNotFoundException exception) {
+            assertNotNull(exception.getResponse(), "Not-found deletion should include an HTTP response");
+            assertEquals(404, exception.getResponse().getStatusCode(),
+                "An already deleted result should return 404 Not Found");
+            System.out.println("Repeated deletion returned 404 because the result was already deleted.");
+        }
 
         // Summary
         System.out.println("\n✅ DeleteResult API pattern demonstrated:");
         System.out.println("  Analysis: Completed successfully");
         System.out.println("  Fields extracted: " + documentContent.getFields().size());
-        System.out.println("  API: deleteResultWithResponse available for cleanup");
+        System.out.println("  Initial deletion status: " + deleteResponse.getStatusCode());
     }
+
 }
