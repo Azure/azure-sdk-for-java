@@ -3,6 +3,7 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Query-plan request metrics now use recorded HTTP attempts, including their destination, status, RU charge, and retries, with `RequestOperationType=Document/QueryPlan`. Cached plans do not emit network request measurements.
 * Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings.
 
 #### Breaking Changes

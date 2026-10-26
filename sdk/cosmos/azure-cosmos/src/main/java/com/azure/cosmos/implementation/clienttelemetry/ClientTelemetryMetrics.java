@@ -7,11 +7,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
@@ -22,7 +19,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsCompletionRecorder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
-import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosMetricName;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
@@ -78,9 +74,6 @@ public final class ClientTelemetryMetrics {
     private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
 
     private static final Object lockObject = new Object();
-    private static final Tag QUERYPLAN_TAG = Tag.of(
-        TagName.RequestOperationType.toString(),
-        ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
     private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
     private static String convertStackTraceToString(Throwable throwable)
@@ -563,72 +556,7 @@ public final class ClientTelemetryMetrics {
                     }
                 }
 
-                FeedResponseDiagnostics feedDiagnostics = diagAccessor()
-                    .getFeedResponseDiagnostics(diagnostics);
-
-                if (feedDiagnostics == null) {
-                    continue;
-                }
-
-                QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
-                    feedDiagnostics.getQueryPlanDiagnosticsContext();
-
-                recordQueryPlanDiagnostics(diagnosticsContext, cosmosAsyncClient, queryPlanDiagnostics);
             }
-        }
-
-        private void recordQueryPlanDiagnostics(
-            CosmosDiagnosticsContext ctx,
-            CosmosAsyncClient cosmosAsyncClient,
-            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics
-        ) {
-            if (queryPlanDiagnostics == null || !this.metricCategories.contains(MetricCategory.RequestSummary)) {
-                return;
-            }
-
-            Tags requestTags = operationTags.and(
-                createQueryPlanTags(metricTagNames)
-            );
-
-            CosmosMeterOptions requestsOptions = clientAccessor().getMeterOptions(
-                cosmosAsyncClient,
-                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
-            if (requestsOptions.isEnabled() &&
-                (!requestsOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                Counter requestCounter = Counter
-                    .builder(requestsOptions.getMeterName().toString())
-                    .baseUnit("requests")
-                    .description("Gateway requests")
-                    .tags(getEffectiveTags(requestTags, requestsOptions))
-                    .register(compositeRegistry);
-                requestCounter.increment();
-            }
-
-            Duration latency = queryPlanDiagnostics.getDuration();
-
-            if (latency != null) {
-                CosmosMeterOptions latencyOptions = clientAccessor().getMeterOptions(
-                    cosmosAsyncClient,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
-                if (latencyOptions.isEnabled() &&
-                    (!latencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                    Timer requestLatencyMeter = Timer
-                        .builder(latencyOptions.getMeterName().toString())
-                        .description("Gateway Request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(latencyOptions.getPercentiles())
-                        .publishPercentileHistogram(latencyOptions.isHistogramPublishingEnabled())
-                        .tags(getEffectiveTags(requestTags, latencyOptions))
-                        .register(compositeRegistry);
-                    requestLatencyMeter.record(latency);
-                }
-            }
-
-            recordRequestTimeline(
-                ctx,
-                cosmosAsyncClient,
-                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
-                queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
         private void recordRequestPayloadSizes(
@@ -787,24 +715,6 @@ public final class ClientTelemetryMetrics {
                         TagName.ReplicaId.toString(),
                         replicaId));
                 }
-            }
-
-            return Tags.of(effectiveTags);
-        }
-
-        private Tags createQueryPlanTags(
-            EnumSet<TagName> metricTagNames
-        ) {
-            List<Tag> effectiveTags = new ArrayList<>();
-
-            if (metricTagNames.contains(TagName.RequestOperationType)) {
-                effectiveTags.add(QUERYPLAN_TAG);
-            }
-            if (metricTagNames.contains(TagName.RequestStatusCode)) {
-                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(),"NONE"));
-            }
-            if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
-                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(),"NONE"));
             }
 
             return Tags.of(effectiveTags);

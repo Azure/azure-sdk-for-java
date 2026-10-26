@@ -5,11 +5,13 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryCompatibilityMode;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxGatewayStoreModel;
@@ -20,14 +22,17 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMetricCategory;
 import com.azure.cosmos.models.CosmosMetricTagName;
 import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.annotations.DataProvider;
@@ -35,8 +40,12 @@ import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,6 +56,77 @@ import static org.mockito.Mockito.mock;
 
 public class GatewayEndpointMetricsTest {
     private static final String SERVICE_ENDPOINT = TagName.ServiceEndpoint.toString();
+    private static final RequestTimeline REQUEST_TIMELINE = RequestTimeline.of(
+        new RequestTimeline.Event(RequestTimeline.EventName.REQUEST_SENT, Instant.EPOCH, Instant.EPOCH.plusMillis(1)));
+
+    @DataProvider(name = "queryPlanTagConfigurations")
+    public Object[][] queryPlanTagConfigurations() {
+        return new Object[][] {
+            {false, false, false}, {false, false, true},
+            {true, false, false}, {true, false, true},
+            {true, true, false}, {true, true, true}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "queryPlanTagConfigurations")
+    public void queryPlanAndGatewayRequestsUseTheSameTagKeys(
+        boolean endpointEnabled, boolean suppressEndpoint, boolean queryPlanFirst) throws Exception {
+
+        try (TestState state = new TestState(
+            endpointEnabled ? CosmosMetricTagName.ALL : CosmosMetricTagName.DEFAULT)) {
+            state.options.setMetricCategories(CosmosMetricCategory.ALL);
+            if (suppressEndpoint) {
+                for (CosmosMetricName name : new CosmosMetricName[] {
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY,
+                    CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE}) {
+                    state.options.configureMeter(name,
+                        new CosmosMicrometerMeterOptions().suppressTagNames(CosmosMetricTagName.SERVICE_ENDPOINT));
+                }
+            }
+            Map<String, Set<String>> tagKeysByName = new HashMap<>();
+            state.registry.config().meterFilter(new MeterFilter() {
+                @Override
+                public Meter.Id map(Meter.Id id) {
+                    Set<String> keys = id.getTags().stream().map(Tag::getKey).collect(Collectors.toSet());
+                    Set<String> existingKeys = tagKeysByName.putIfAbsent(id.getName(), keys);
+                    if (existingKeys != null) {
+                        assertThat(keys).as("Consistent label keys for meter %s", id.getName())
+                            .isEqualTo(existingKeys);
+                    }
+                    return id;
+                }
+            });
+            if (queryPlanFirst) {
+                state.recordQueryPlan();
+            }
+            state.recordGateway(URI.create("https://account.documents.azure.com:443/dbs/db/docs/id"), 200);
+            if (!queryPlanFirst) {
+                state.recordQueryPlan();
+            }
+
+            for (String name : new String[] {
+                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString(),
+                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString(),
+                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE + ".requestSent"}) {
+                List<Meter> meters = state.registry.getMeters().stream()
+                    .filter(meter -> name.equals(meter.getId().getName()))
+                    .collect(Collectors.toList());
+                assertThat(meters).hasSize(2);
+                for (Meter meter : meters) {
+                    String expectedEndpoint = endpointEnabled && !suppressEndpoint
+                        ? "account.documents.azure.com_443" : null;
+                    assertThat(meter.getId().getTag(SERVICE_ENDPOINT)).isEqualTo(expectedEndpoint);
+                }
+            }
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                .counter().count()).isEqualTo(1);
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
+                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                .timer().count()).isEqualTo(1);
+        }
+    }
 
     @DataProvider(name = "gatewayEndpoints")
     public Object[][] gatewayEndpoints() {
@@ -66,6 +146,56 @@ public class GatewayEndpointMetricsTest {
             {URI.create("https:///dbs/db"), "NONE"},
             {URI.create("rntbd://replica.documents.azure.com:14050/"), "NONE"}
         };
+    }
+
+    @Test(groups = {"unit"})
+    public void queryPlanRetryAttemptsUseTheirActualEndpointAndStatus() throws Exception {
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(mock(DiagnosticsClientContext.class));
+            for (int status : new int[] {429, 200}) {
+                StoreResponseDiagnostics response = mock(StoreResponseDiagnostics.class);
+                doReturn(status).when(response).getStatusCode();
+                doReturn("activity-id").when(response).getActivityId();
+                doReturn(REQUEST_TIMELINE).when(response).getRequestTimeline();
+                String host = status == 429 ? "account-eastus" : "account-westus";
+                doReturn(state.storeModel.getServiceEndpointMetricTag(
+                    URI.create("https://" + host + ".documents.azure.com:443/docs")))
+                    .when(response).getServiceEndpointMetricTag();
+                RxDocumentServiceRequest request = mock(RxDocumentServiceRequest.class);
+                doReturn(OperationType.QueryPlan).when(request).getOperationType();
+                doReturn(ResourceType.Document).when(request).getResourceType();
+                statistics.recordGatewayResponse(request, response, null);
+            }
+            FeedResponseDiagnostics feed = new FeedResponseDiagnostics(
+                Collections.emptyMap(), Collections.singletonList(statistics));
+            feed.setDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(
+                Instant.EPOCH, Instant.EPOCH.plusMillis(10), REQUEST_TIMELINE));
+            state.record(new CosmosDiagnostics(feed), 200);
+            FeedResponseDiagnostics laterPage = new FeedResponseDiagnostics(Collections.emptyMap(), Collections.emptyList());
+            laterPage.setDiagnosticsContext(feed.getQueryPlanDiagnosticsContext());
+            state.record(new CosmosDiagnostics(laterPage), 200);
+            assertThat(state.registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan").counters())
+                .hasSize(2).allSatisfy(counter -> assertThat(counter.count()).isEqualTo(1));
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "account-eastus.documents.azure.com_443")
+                .tag(TagName.RequestStatusCode.toString(), "429/0").counter().count()).isEqualTo(1);
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "account-westus.documents.azure.com_443")
+                .tag(TagName.RequestStatusCode.toString(), "200/0").counter().count()).isEqualTo(1);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void queryPlanWithoutNetworkStatisticsDoesNotEmitRequestMetrics() throws Exception {
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            FeedResponseDiagnostics feed = new FeedResponseDiagnostics(Collections.emptyMap(), Collections.emptyList());
+            feed.setDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(
+                Instant.EPOCH, Instant.EPOCH.plusMillis(10), REQUEST_TIMELINE));
+            state.record(new CosmosDiagnostics(feed), 200);
+            assertThat(state.registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .counters()).isEmpty();
+        }
     }
 
     @Test(groups = {"unit"}, dataProvider = "gatewayEndpoints")
@@ -386,7 +516,27 @@ public class GatewayEndpointMetricsTest {
             doReturn(statusCode).when(response).getStatusCode();
             doReturn(2.5).when(response).getRequestCharge();
             doReturn("activity-id").when(response).getActivityId();
+            doReturn(REQUEST_TIMELINE).when(response).getRequestTimeline();
             recordGateway(response);
+        }
+
+        private void recordQueryPlan() {
+            ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(mock(DiagnosticsClientContext.class));
+            RxDocumentServiceRequest request = mock(RxDocumentServiceRequest.class);
+            doReturn(OperationType.QueryPlan).when(request).getOperationType();
+            doReturn(ResourceType.Document).when(request).getResourceType();
+            StoreResponseDiagnostics response = mock(StoreResponseDiagnostics.class);
+            doReturn(200).when(response).getStatusCode();
+            doReturn("activity-id").when(response).getActivityId();
+            doReturn(REQUEST_TIMELINE).when(response).getRequestTimeline();
+            doReturn(storeModel.getServiceEndpointMetricTag(
+                URI.create("https://account.documents.azure.com:443/dbs/db/docs"))).when(response).getServiceEndpointMetricTag();
+            statistics.recordGatewayResponse(request, response, null);
+            FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(
+                Collections.emptyMap(), Collections.singletonList(statistics));
+            feedDiagnostics.setDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(
+                Instant.EPOCH, Instant.EPOCH.plusMillis(10), REQUEST_TIMELINE));
+            record(new CosmosDiagnostics(feedDiagnostics), 200);
         }
 
         private ClientSideRequestStatistics.GatewayStatistics recordGateway(StoreResponseDiagnostics response) {

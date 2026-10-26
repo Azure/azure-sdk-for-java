@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosMetricCategory;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosMetricTagName;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -48,6 +49,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -107,6 +109,92 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
     public void gatewayV2RetryIsCapturedInEndpointMetrics() {
         validateRetryMetrics(true);
+    }
+
+    @Test(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    public void queryPlanAndDocumentMetricsHaveConsistentEndpointLabels() {
+        validateQueryPlanMetrics(false);
+    }
+
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
+    public void gatewayV2QueryPlanAttemptsAreCapturedInMetrics() {
+        validateQueryPlanMetrics(true);
+    }
+
+    private void validateQueryPlanMetrics(boolean gatewayV2) {
+        String id = UUID.randomUUID().toString();
+        resourceSetupClient.getDatabase(database.getId()).getContainer(CONTAINER_ID)
+            .createItem(OBJECT_MAPPER.createObjectNode().put("id", id).put("mypk", id)).block();
+        SimpleMeterRegistry registry = new SimpleMeterRegistry();
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("query-plan-metric-retry-" + id)
+            .condition(new FaultInjectionConditionBuilder()
+                .connectionType(FaultInjectionConnectionType.GATEWAY)
+                .operationType(FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN).build())
+            .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                .times(1).build())
+            .hitLimit(1).build();
+        try {
+            CosmosMicrometerMetricsOptions options = new CosmosMicrometerMetricsOptions()
+                .meterRegistry(registry).setEnabled(true)
+                .configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)
+                .applyDiagnosticThresholdsForTransportLevelMeters(false);
+            try (CosmosClient client = gatewayBuilder(gatewayV2)
+                .clientTelemetryConfig(new CosmosClientTelemetryConfig().metricsOptions(options))
+                .buildClient()) {
+                awaitGatewayV2Readiness(client, gatewayV2);
+                CosmosContainer container = client.getDatabase(database.getId()).getContainer(CONTAINER_ID);
+                CosmosItemResponse<ObjectNode> response = container.readItem(id, new PartitionKey(id), ObjectNode.class);
+                assertMetrics(registry, client.asyncClient().getClientCorrelationTag(),
+                    response.getDiagnostics(), 200, true, gatewayV2);
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                    client.asyncClient().getDatabase(database.getId()).getContainer(CONTAINER_ID),
+                    Collections.singletonList(rule)).block();
+                String query = "SELECT VALUE c.id FROM c WHERE c.id = '" + id + "'";
+                CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(id));
+                assertThat(container.queryItems(query, queryOptions, String.class).iterator().next()).isEqualTo(id);
+                assertThat(rule.getHitCount()).isEqualTo(1);
+
+                List<Counter> planCounters = registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                    .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                    .counters().stream().collect(Collectors.toList());
+                assertThat(planCounters).hasSize(2);
+                assertThat(planCounters.stream().mapToDouble(Counter::count).sum()).isEqualTo(2);
+                assertThat(planCounters).anySatisfy(counter ->
+                    assertThat(counter.getId().getTag(TagName.RequestStatusCode.toString())).startsWith("429/"));
+                assertThat(planCounters).anySatisfy(counter ->
+                    assertThat(counter.getId().getTag(TagName.RequestStatusCode.toString())).isEqualTo("200/0"));
+                for (Counter counter : planCounters) {
+                    String destination = counter.getId().getTag(TagName.ServiceEndpoint.toString());
+                    assertThat(destination).isNotNull().isNotEqualTo("NONE");
+                    if (gatewayV2 && Configs.isThinClientQueryPlanEnabled()) {
+                        assertThat(destination).endsWith("_10250");
+                    }
+                    assertThat(registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
+                        .tags(counter.getId().getTags()).timer().count()).isEqualTo((long) counter.count());
+                    assertThat(registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE.toString())
+                        .tags(counter.getId().getTags()).summary().count()).isEqualTo((long) counter.count());
+                }
+                assertThat(container.queryItems(query, queryOptions, String.class).iterator().next()).isEqualTo(id);
+                assertThat(planCounters.stream().mapToDouble(Counter::count).sum())
+                    .as("A cached plan must not emit another network request measurement").isEqualTo(2);
+
+                for (CosmosMetricName name : new CosmosMetricName[] {
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY}) {
+                    List<Meter> meters = registry.getMeters().stream()
+                        .filter(meter -> name.toString().equals(meter.getId().getName()))
+                        .collect(Collectors.toList());
+                    Set<String> keys = meters.get(0).getId().getTags().stream()
+                        .map(Tag::getKey).collect(Collectors.toSet());
+                    assertThat(meters).allSatisfy(meter -> assertThat(
+                        meter.getId().getTags().stream().map(Tag::getKey).collect(Collectors.toSet()))
+                        .isEqualTo(keys));
+                }
+            }
+        } finally {
+            rule.disable();
+            registry.close();
+        }
     }
 
     private CosmosClientBuilder gatewayBuilder(boolean http2Enabled) {
@@ -261,7 +349,9 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                     URI endpoint = attempt.getRequestUri();
                     assertThat(endpoint).isNotNull();
                     int port = endpoint.getPort() == -1 ? 443 : endpoint.getPort();
-                    assertThat(port).isEqualTo(gatewayV2 ? 10250 : 443);
+                    if (gatewayV2) {
+                        assertThat(port).isEqualTo(10250);
+                    }
                     Tag endpointTag = attempt.getServiceEndpointMetricTag();
                     assertThat(endpointTag).isNotNull();
                     assertThat(endpointTag.getValue()).isEqualTo(endpoint.getHost() + "_" + port);
@@ -307,14 +397,14 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
             assertThat(statistics.getRequestUri()).isEqualTo(endpoint);
             assertThat(endpoint.getScheme()).isEqualToIgnoringCase("https");
             assertThat(endpoint.getHost()).isNotBlank();
-            int expectedPort = gatewayV2 ? 10250 : 443;
-            assertThat(endpoint.getPort() == -1 ? 443 : endpoint.getPort())
-                .as("Document request must use %s, endpoint: %s",
-                    gatewayV2 ? "GatewayV2" : "Compute Gateway", endpoint)
-                .isEqualTo(expectedPort);
+            int port = endpoint.getPort() == -1 ? 443 : endpoint.getPort();
+            if (gatewayV2) {
+                assertThat(port).as("Document request must use GatewayV2, endpoint: %s", endpoint)
+                    .isEqualTo(10250);
+            }
             assertThat(statistics.isHttp2()).as("Negotiated HTTP/2 for endpoint %s", endpoint)
                 .isEqualTo(gatewayV2);
-            String expectedEndpoint = endpoint.getHost() + "_" + expectedPort;
+            String expectedEndpoint = endpoint.getHost() + "_" + port;
             if (serviceEndpointEnabled) {
                 assertThat(statistics.getServiceEndpointMetricTag()).isNotNull();
                 assertThat(statistics.getServiceEndpointMetricTag().getValue()).isEqualTo(expectedEndpoint);
