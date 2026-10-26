@@ -87,7 +87,7 @@ public final class ResourceSkuZoneDetails implements JsonSerializable<ResourceSk
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("name".equals(fieldName)) {
+                if ("Name".equals(fieldName)) {
                     List<String> name = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceSkuZoneDetails.name = name;
                 } else if ("capabilities".equals(fieldName)) {

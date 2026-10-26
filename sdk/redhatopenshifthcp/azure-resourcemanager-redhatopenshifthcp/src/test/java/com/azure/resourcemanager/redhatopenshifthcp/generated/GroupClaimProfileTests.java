@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupClaimProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupClaimProfile model = BinaryData.fromString("{\"claim\":\"h\",\"prefix\":\"pnvjtoqnermclf\"}")
+        GroupClaimProfile model = BinaryData.fromString("{\"claim\":\"fm\",\"prefix\":\"gkvtmelmqkrhah\"}")
             .toObject(GroupClaimProfile.class);
-        Assertions.assertEquals("h", model.claim());
-        Assertions.assertEquals("pnvjtoqnermclf", model.prefix());
+        Assertions.assertEquals("fm", model.claim());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupClaimProfile model = new GroupClaimProfile().withClaim("h").withPrefix("pnvjtoqnermclf");
+        GroupClaimProfile model = new GroupClaimProfile().withClaim("fm").withPrefix("gkvtmelmqkrhah");
         model = BinaryData.fromObject(model).toObject(GroupClaimProfile.class);
-        Assertions.assertEquals("h", model.claim());
-        Assertions.assertEquals("pnvjtoqnermclf", model.prefix());
+        Assertions.assertEquals("fm", model.claim());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.prefix());
     }
 }

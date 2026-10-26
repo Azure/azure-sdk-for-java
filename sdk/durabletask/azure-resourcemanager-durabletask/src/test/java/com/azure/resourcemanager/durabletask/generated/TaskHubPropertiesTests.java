@@ -6,18 +6,23 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class TaskHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskHubProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"bdlwtgrhpdjpj\"}")
-                .toObject(TaskHubProperties.class);
+        TaskHubProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"hfwdsjnkaljutiis\",\"capabilities\":[\"ffgdkz\",\"ewkfvhqcrai\",\"vpnpp\"]}")
+            .toObject(TaskHubProperties.class);
+        Assertions.assertEquals("ffgdkz", model.capabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskHubProperties model = new TaskHubProperties();
+        TaskHubProperties model
+            = new TaskHubProperties().withCapabilities(Arrays.asList("ffgdkz", "ewkfvhqcrai", "vpnpp"));
         model = BinaryData.fromObject(model).toObject(TaskHubProperties.class);
+        Assertions.assertEquals("ffgdkz", model.capabilities().get(0));
     }
 }

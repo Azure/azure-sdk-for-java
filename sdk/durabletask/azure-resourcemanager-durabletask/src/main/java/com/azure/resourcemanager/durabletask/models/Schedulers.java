@@ -250,6 +250,30 @@ public interface Schedulers {
         String schedulerName, Context context);
 
     /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> restartWithResponse(String resourceGroupName, String schedulerName, Context context);
+
+    /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart(String resourceGroupName, String schedulerName);
+
+    /**
      * Get a Scheduler.
      * 
      * @param id the resource ID.

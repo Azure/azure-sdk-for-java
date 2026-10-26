@@ -13,16 +13,16 @@ public final class RestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreRequest model = BinaryData.fromString(
-            "{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"yuvvfonkp\",\"hqyikvy\",\"auy\"]}")
+            "{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"jbaqehgpdoh\",\"jqatucoigebxn\",\"nwfepbnwg\",\"m\"]}")
             .toObject(RestoreRequest.class);
-        Assertions.assertEquals("yuvvfonkp", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jbaqehgpdoh", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreRequest model
-            = new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("yuvvfonkp", "hqyikvy", "auy"));
+        RestoreRequest model = new RestoreRequest()
+            .withResourceGuardOperationRequests(Arrays.asList("jbaqehgpdoh", "jqatucoigebxn", "nwfepbnwg", "m"));
         model = BinaryData.fromObject(model).toObject(RestoreRequest.class);
-        Assertions.assertEquals("yuvvfonkp", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jbaqehgpdoh", model.resourceGuardOperationRequests().get(0));
     }
 }
