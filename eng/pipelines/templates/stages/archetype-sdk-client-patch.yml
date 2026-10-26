@@ -17,6 +17,9 @@ parameters:
 - name: TestPipeline
   type: boolean
   default: false
+- name: PatchMergeBack
+  type: boolean
+  default: false
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -55,9 +58,21 @@ extends:
                 env:
                   AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
-            - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-              parameters:
-                JobType: 'Build'
+              - ${{ if eq(parameters.PatchMergeBack, true) }}:
+                - task: PowerShell@2
+                  inputs:
+                    pwsh: true
+                    filePath: eng/scripts/Test-Patch-Mergeback.ps1
+                    arguments: >
+                      -RepoRoot "$(Build.SourcesDirectory)"
+                      -ValidationRoot "$(Agent.TempDirectory)/patch-mergeback-validation-$(System.JobAttempt)"
+                      -ReleaseBranch "$(Build.SourceVersion)"
+                      -ExpectedArtifacts $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
+                  displayName: 'Dry run patch merge-back against main'
+
+              - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+                parameters:
+                  JobType: 'Build'
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
@@ -315,3 +330,4 @@ extends:
               - Build
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
+            PatchMergeBack: ${{ parameters.PatchMergeBack }}
