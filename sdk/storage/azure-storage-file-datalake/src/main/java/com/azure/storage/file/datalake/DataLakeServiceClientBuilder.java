@@ -555,25 +555,24 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     }
 
     /**
-     * Sets the {@link SessionContext} that controls how the SDK manages session-based authentication for the
-     * OAuth-authenticated Blob pipeline shared by the file system and path clients created from this service
-     * client.
+     * Sets the {@link SessionContext} used for session-based authentication by the underlying Blob clients of file system
+     * and path clients derived from this service client. Sessions are not used by the DFS pipeline.
      * <p>
-     * Sessions amortize authentication and authorization cost across many requests by signing them with a
-     * lightweight HMAC key instead of a full bearer token, and are only effective for accounts with a
-     * hierarchical namespace (HNS) enabled. Session mode defaults to
-     * {@link SessionContext.SessionMode#AUTO}, which currently disables sessions. To enable them, set
-     * {@link SessionContext#setSessionMode(SessionContext.SessionMode)} to
-     * {@link SessionContext.SessionMode#ENABLED} and configure this builder with a
-     * {@link com.azure.core.credential.TokenCredential}. Session authentication is attempted only
-     * for eligible GET blob requests; requests that are not eligible for
-     * session authentication, or for which session negotiation fails (for example, because HNS is not enabled),
-     * transparently fall back to bearer token authentication.
-     * Clients using the same {@link SessionContext} instance share a session cache; each client acquires
-     * sessions through its own pipeline. Share the context only across clients with compatible identity and
-     * network contexts, or use separate instances for independent caches.
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}. The default session mode,
+     * {@link SessionContext.SessionMode#AUTO}, currently disables sessions. Set the context's session mode to
+     * {@link SessionContext.SessionMode#ENABLED} to enable session authentication for eligible GET blob requests.
+     * Other requests, and requests for which session acquisition fails, use bearer token authentication.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache, including independently built
+     * clients. Each client acquires sessions through its own Blob pipeline. The context can override the endpoint and
+     * credential used for session acquisition without changing the client's settings for other requests. Share the context
+     * only across clients targeting the same endpoint with compatible identity and network contexts, or use separate
+     * instances for independent caches.
+     * <p>
+     * The session mode and account name are captured when the client is built. Changing them on the context affects only
+     * clients built afterward; the session cache remains shared.
      *
-     * @param sessionContext The session context for the HTTP pipeline.
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
      * @return the updated DataLakeServiceClientBuilder object.
      */
     public DataLakeServiceClientBuilder sessionContext(SessionContext sessionContext) {

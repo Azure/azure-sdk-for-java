@@ -37,18 +37,20 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Configures session authentication using a session context.
+     * Shares session authentication across independently built clients using a session context.
      * @param credential The OAuth credential.
      * @param httpClient The HTTP transport configured for session acquisition and blob requests.
      */
     public void configureSessionContext(TokenCredential credential, HttpClient httpClient) {
         // BEGIN: com.azure.storage.blob.SessionContext.create
         String endpoint = "https://account.blob.core.windows.net";
-        SessionContext sessions = new SessionContext(endpoint, credential)
+        SessionContext sessionContext = new SessionContext(endpoint, credential)
             .setSessionMode(SessionContext.SessionMode.ENABLED);
 
-        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
-            .httpClient(httpClient).sessionContext(sessions).buildClient();
+        BlobServiceClient firstClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
+            .httpClient(httpClient).sessionContext(sessionContext).buildClient();
+        BlobServiceClient secondClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
+            .httpClient(httpClient).sessionContext(sessionContext).buildClient();
         // END: com.azure.storage.blob.SessionContext.create
     }
 

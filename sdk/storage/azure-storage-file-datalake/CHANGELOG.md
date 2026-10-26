@@ -4,8 +4,8 @@
 
 ### Features Added
 
-- Added `sessionOptions` to Data Lake client builders to configure session-based authentication for eligible GET
-  requests.
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
 
 ### Breaking Changes
 
