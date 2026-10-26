@@ -297,12 +297,6 @@
     <module name="io.clientcore.linting.extensions.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Checks for the public API that should
-    1) not return classes in the implementation package
-    2) no class of implementation package as method's parameters -->
-    <module name="io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI"/>
-
-    <!-- CUSTOM CHECKS -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
     1) No public or protected constructors
     2) No public static method named 'builder'
@@ -320,10 +314,10 @@
     <module name="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Checks for no external dependency exposed in the public API.
+    <!-- Rejects implementation types and unapproved external dependencies in public API.
     We should only return types, and accept argument types, that are from the com.azure namespace.
     All other types should have suppression added if required. -->
-    <module name="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck">
+    <module name="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck">
       <property name="allowedDependencyPrefixes" value="com.azure.,reactor.,org.reactivestreams."/>
     </module>
 
@@ -356,32 +350,16 @@
     <module name="io.clientcore.linting.extensions.checkstyle.checks.JavadocFormatting"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-    <module name="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+    <!-- Validate Azure Core exception logging and preserve caught exception causes. -->
+    <module name="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck">
+      <property name="loggingApi" value="azure-core"/>
+    </module>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
     <module name="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck"/>
-
-    <!-- CUSTOM CHECKS -->
-    <!-- Javadoc inline check should:
-    1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
-       Inline code sample are fine as-is.
-    2) No check on class-level Javadoc. -->
-    <!-- This check was removed as it causes more noise than fixes. The purpose of this check was to move away from -->
-    <!-- using <code>, <pre>, and {@code} tags while we were on-boarding codesnippets. These tags have since been   -->
-    <!-- removed and codesnippets are expected.                                                                     -->
-    <!-- <module name="io.clientcore.linting.extensions.checkstyle.checks.JavadocInlineTagCheck"/> -->
-
-    <!-- CUSTOM CHECKS -->
-    <!-- {@codesnippet ...} description should match naming pattern requirement below:
-    1) Package, class and method names should be concatenated by dot '.'. Ex. packageName.className.methodName
-    2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
-    3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
-    <!-- Disabled as {@codesnippet} is no longer used. -->
-    <!-- <module name="io.clientcore.linting.extensions.checkstyle.checks.JavadocCodeSnippetCheck"/> -->
 
     <!--CUSTOM CHECKS-->
     <!-- Good Logging Practice
@@ -414,10 +392,6 @@
     <!-- <module name="io.clientcore.linting.extensions.checkstyle.checks.FluentMethodNameCheck">-->
     <!--    <property name="disallowedPrefixes" value="with,set"/>-->
     <!-- </module>-->
-
-    <!-- CUSTOM CHECKS -->
-    <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
-    <module name="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
 
     <module name="io.clientcore.linting.extensions.checkstyle.checks.StepVerifierCheck"/>
 

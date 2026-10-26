@@ -7,5 +7,5 @@
   <suppress files="com.azure.compute.batch.implementation.task.SyncTaskSubmitter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.compute.batch.implementation.task.TaskManager.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
-  <suppress files="com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

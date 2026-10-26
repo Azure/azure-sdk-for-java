@@ -7,7 +7,7 @@
   <suppress files="com.azure.containers.containerregistry.ContainerRepositoryAsync.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.containers.containerregistry.RegistryArtifact.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.containers.containerregistry.RegistryArtifactAsync.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.containers.containerregistry.implementation.authentication.AccessTokenCacheImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.containers.containerregistry.implementation.UtilsImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.containers.containerregistry.implementation.authentication.AccessTokenCacheImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.containers.containerregistry.implementation.UtilsImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

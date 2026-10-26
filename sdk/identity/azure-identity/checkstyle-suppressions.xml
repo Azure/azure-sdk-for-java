@@ -30,22 +30,21 @@
   <suppress files="com.azure.identity.implementation.HttpPipelineAdapter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.identity.implementation.IdentityClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.identity.AzureCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.AzureDeveloperCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.ChainedTokenCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.ClientCertificateCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.ClientSecretCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.DeviceCodeCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.EnvironmentCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.InteractiveBrowserCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.OnBehalfOfCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.UsernamePasswordCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.WorkloadIdentityCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.IdentityClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.IdentitySyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.IntelliJCacheAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.VisualStudioCacheAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
-  <suppress files="com.azure.identity.implementation.WindowsCredentialAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.identity.AzureCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.AzureDeveloperCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.ChainedTokenCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.ClientCertificateCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.ClientSecretCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.DeviceCodeCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.EnvironmentCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.InteractiveBrowserCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.OnBehalfOfCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.UsernamePasswordCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.WorkloadIdentityCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.IdentityClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.IdentitySyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.IntelliJCacheAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.VisualStudioCacheAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.identity.implementation.WindowsCredentialAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

@@ -67,6 +67,47 @@ public final class SdkCheckUtils {
         return access == AccessModifierOption.PUBLIC || access == AccessModifierOption.PROTECTED;
     }
 
+    /**
+     * Gets the called method's identifier without materializing the receiver expression as a string.
+     *
+     * @param methodCall a method-call node.
+     * @return the called method name, or an empty string for an unsupported expression.
+     */
+    public static String getCalledMethodName(DetailAST methodCall) {
+        DetailAST target = methodCall.getFirstChild();
+        if (target != null && target.getType() == TokenTypes.DOT) {
+            target = target.getLastChild();
+        }
+        return target != null && target.getType() == TokenTypes.IDENT ? target.getText() : "";
+    }
+
+    /**
+     * Finds the throwable logging event in a {@code throwableAt*().addKeyValue(...).log(...)} chain.
+     * Arguments to unrelated calls are deliberately not searched.
+     *
+     * @param methodCall the terminal {@code log} call.
+     * @return the throwable event method call, or null if this is not a throwable logging chain.
+     */
+    public static DetailAST findThrowableLoggingEvent(DetailAST methodCall) {
+        if (!"log".equals(getCalledMethodName(methodCall))) {
+            return null;
+        }
+        DetailAST current = methodCall.getFirstChild();
+        while (current != null && current.getType() == TokenTypes.DOT) {
+            current = current.getFirstChild();
+            if (current.getType() != TokenTypes.METHOD_CALL) {
+                return null;
+            }
+            String name = getCalledMethodName(current);
+            if ("throwableAtError".equals(name) || "throwableAtWarning".equals(name)) {
+                DetailAST receiver = current.getFirstChild();
+                return receiver != null && receiver.getType() == TokenTypes.DOT ? current : null;
+            }
+            current = current.getFirstChild();
+        }
+        return null;
+    }
+
     private SdkCheckUtils() {
     }
 }
