@@ -23,7 +23,7 @@ public final class ConfigurationAssignmentsListParentMockTests {
     @Test
     public void testListParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"maintenanceConfigurationId\":\"kby\",\"resourceId\":\"t\",\"filter\":{\"resourceTypes\":[\"pagmhrskdsnf\",\"sd\"],\"resourceGroups\":[\"gtdlmk\",\"zev\",\"l\"],\"osTypes\":[\"pusdstt\",\"vogvbbejdcngqqmo\",\"kufgmj\",\"rwr\"],\"locations\":[\"twaenuuzko\",\"bminrfdwoyuhhzi\",\"iefozbhdmsml\"],\"tagSettings\":{\"tags\":{\"alnswhccsphk\":[\"ft\",\"maequiahxicslfa\",\"qzpiyyl\"],\"sbrgz\":[\"vwitqscyw\",\"ggwoluhczb\",\"emh\",\"i\"]},\"filterOperator\":\"Any\"}}},\"location\":\"weyp\",\"id\":\"dxggicccnxqhuexm\",\"name\":\"ttlstvlzywemhz\",\"type\":\"ncsdtclusiyp\"}]}";
+            = "{\"value\":[{\"properties\":{\"maintenanceConfigurationId\":\"ufgmjzrwrdg\",\"resourceId\":\"wae\",\"filter\":{\"resourceTypes\":[\"kopbminrf\",\"woyuhhziuief\"],\"resourceGroups\":[\"hdmsmlmzqhoftrm\",\"equi\",\"hxicslfaoqz\",\"iyylhalnswhccsp\"],\"osTypes\":[\"ivwitqscywugg\",\"oluhczbwemh\",\"i\"],\"locations\":[\"rgzdwmsweyp\"],\"tagSettings\":{\"tags\":{\"dtclusiypb\":[\"gicccnxqhuex\",\"ktt\",\"stvlzywemhzrnc\"],\"vk\":[\"gytguslfead\",\"ygqukyhejh\",\"isxgfp\",\"lolp\"],\"swibyr\":[\"pqvujzraehtwdwrf\"],\"h\":[\"l\"]},\"filterOperator\":\"Any\"}}},\"location\":\"p\",\"id\":\"cstwity\",\"name\":\"hevxcced\",\"type\":\"pnmdyodnwzxltjcv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ConfigurationAssignmentsListParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConfigurationAssignment> response = manager.configurationAssignments()
-            .listParent("cmrvexzt", "bt", "gsfraoyzkoow", "lmnguxaw", "aldsy", "uximerqfobw",
+            .listParent("r", "kdsnfdsdoakgtdl", "kkze", "dlhewp", "sdsttwvog", "bbejdcngqqm",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("weyp", response.iterator().next().location());
-        Assertions.assertEquals("kby", response.iterator().next().maintenanceConfigurationId());
-        Assertions.assertEquals("t", response.iterator().next().resourceId());
-        Assertions.assertEquals("pagmhrskdsnf", response.iterator().next().filter().resourceTypes().get(0));
-        Assertions.assertEquals("gtdlmk", response.iterator().next().filter().resourceGroups().get(0));
-        Assertions.assertEquals("pusdstt", response.iterator().next().filter().osTypes().get(0));
-        Assertions.assertEquals("twaenuuzko", response.iterator().next().filter().locations().get(0));
-        Assertions.assertEquals("ft",
-            response.iterator().next().filter().tagSettings().tags().get("alnswhccsphk").get(0));
+        Assertions.assertEquals("p", response.iterator().next().location());
+        Assertions.assertEquals("ufgmjzrwrdg", response.iterator().next().maintenanceConfigurationId());
+        Assertions.assertEquals("wae", response.iterator().next().resourceId());
+        Assertions.assertEquals("kopbminrf", response.iterator().next().filter().resourceTypes().get(0));
+        Assertions.assertEquals("hdmsmlmzqhoftrm", response.iterator().next().filter().resourceGroups().get(0));
+        Assertions.assertEquals("ivwitqscywugg", response.iterator().next().filter().osTypes().get(0));
+        Assertions.assertEquals("rgzdwmsweyp", response.iterator().next().filter().locations().get(0));
+        Assertions.assertEquals("gicccnxqhuex",
+            response.iterator().next().filter().tagSettings().tags().get("dtclusiypb").get(0));
         Assertions.assertEquals(TagOperators.ANY, response.iterator().next().filter().tagSettings().filterOperator());
     }
 }

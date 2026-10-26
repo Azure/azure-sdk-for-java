@@ -8,66 +8,66 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * A month in which the scheduled action can run.
+ * A month in which the recurring bulk action can run.
  */
 public final class Month extends ExpandableStringEnum<Month> {
     /**
-     * The scheduled action can run in January.
+     * The recurring bulk action can run in January.
      */
     public static final Month JANUARY = fromString("January");
 
     /**
-     * The scheduled action can run in February.
+     * The recurring bulk action can run in February.
      */
     public static final Month FEBRUARY = fromString("February");
 
     /**
-     * The scheduled action can run in March.
+     * The recurring bulk action can run in March.
      */
     public static final Month MARCH = fromString("March");
 
     /**
-     * The scheduled action can run in April.
+     * The recurring bulk action can run in April.
      */
     public static final Month APRIL = fromString("April");
 
     /**
-     * The scheduled action can run in May.
+     * The recurring bulk action can run in May.
      */
     public static final Month MAY = fromString("May");
 
     /**
-     * The scheduled action can run in June.
+     * The recurring bulk action can run in June.
      */
     public static final Month JUNE = fromString("June");
 
     /**
-     * The scheduled action can run in July.
+     * The recurring bulk action can run in July.
      */
     public static final Month JULY = fromString("July");
 
     /**
-     * The scheduled action can run in August.
+     * The recurring bulk action can run in August.
      */
     public static final Month AUGUST = fromString("August");
 
     /**
-     * The scheduled action can run in September.
+     * The recurring bulk action can run in September.
      */
     public static final Month SEPTEMBER = fromString("September");
 
     /**
-     * The scheduled action can run in October.
+     * The recurring bulk action can run in October.
      */
     public static final Month OCTOBER = fromString("October");
 
     /**
-     * The scheduled action can run in November.
+     * The recurring bulk action can run in November.
      */
     public static final Month NOVEMBER = fromString("November");
 
     /**
-     * The scheduled action can run in December.
+     * The recurring bulk action can run in December.
      */
     public static final Month DECEMBER = fromString("December");
 

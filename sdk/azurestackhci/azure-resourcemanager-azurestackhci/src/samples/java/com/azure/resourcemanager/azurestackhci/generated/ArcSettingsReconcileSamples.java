@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ArcSettingsReconcileSamples {
     /*
-     * x-ms-original-file: 2026-04-30/reconcileArcSettings.json
+     * x-ms-original-file: 2026-10-01/reconcileArcSettings.json
      */
     /**
      * Sample code: Reconcile Arc Settings.

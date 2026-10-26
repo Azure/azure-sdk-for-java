@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAd
  */
 public final class HcpOpenShiftClustersRequestAdminCredentialSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_RequestAdminCredential_MaximumSet.

@@ -51,6 +51,9 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-modules java.management
       --add-reads com.azure.cosmos.encryption=java.management
+      --add-reads com.azure.cosmos.encryption=io.netty.common
+      --add-reads com.azure.cosmos.encryption=io.netty.buffer
+      --add-reads com.azure.cosmos.encryption=io.netty.codec.http
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
@@ -178,7 +181,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.8.7</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

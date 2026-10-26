@@ -618,6 +618,8 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
                     return AzureVmWorkloadSapHanaDBInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("AzureVmWorkloadSQLDatabase".equals(discriminatorValue)) {
                     return AzureVmWorkloadSqlDatabaseProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadSQLInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSQLInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
