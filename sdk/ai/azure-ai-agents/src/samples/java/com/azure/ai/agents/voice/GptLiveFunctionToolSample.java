@@ -8,6 +8,9 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ResponseItemCreateEvent;
+import com.openai.models.responses.ResponseInputItem;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -79,7 +82,7 @@ public class GptLiveFunctionToolSample {
         return BinaryData.fromObject(tool);
     }
 
-    static BinaryData toolResult(Map<?, ?> call) {
+    static ClientEvent toolResult(Map<?, ?> call) {
         if (!"get_weather".equals(GptLiveSampleUtils.string(call, "name"))) {
             throw new IllegalArgumentException("Unsupported sample tool: " + call.get("name"));
         }
@@ -90,11 +93,12 @@ public class GptLiveFunctionToolSample {
         result.put("condition", "sunny");
         result.put("temperature_f", 72);
         result.put("simulated", true);
-        Map<String, Object> item = new LinkedHashMap<>();
-        item.put("type", "function_call_output");
-        item.put("call_id", GptLiveSampleUtils.string(call, "call_id"));
-        item.put("output", BinaryData.fromObject(result).toString());
-        return GptLiveSampleUtils.event("response.item.create", "item", item);
+        return ClientEvent.ofResponseItemCreate(ResponseItemCreateEvent.builder()
+            .item(ResponseInputItem.FunctionCallOutput.builder()
+                .callId(GptLiveSampleUtils.string(call, "call_id"))
+                .output(BinaryData.fromObject(result).toString())
+                .build())
+            .build());
     }
 
 }
