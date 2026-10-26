@@ -20,6 +20,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
+import com.openai.core.JsonValue;
+import com.openai.models.live.ServerEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -90,8 +92,8 @@ final class GptLiveSampleUtils {
             (audio, error) -> closeAudio(audio), GptLiveSampleUtils::closeAudio);
     }
 
-    static byte[] decodeAudio(Map<?, ?> event) {
-        byte[] pcm = Base64.getDecoder().decode(string(event, "delta"));
+    static byte[] decodeAudio(ServerEvent event) {
+        byte[] pcm = Base64.getDecoder().decode(event.asSessionOutputAudioDelta().delta());
         if (pcm.length % 2 != 0) {
             throw new IllegalArgumentException("GPT Live PCM16 audio must contain complete two-byte samples.");
         }
@@ -183,15 +185,15 @@ final class GptLiveSampleUtils {
             thread.setDaemon(true);
             return thread;
         });
-        BlockingQueue<BinaryData> pending = new LinkedBlockingQueue<>(256);
+        BlockingQueue<ServerEvent> pending = new LinkedBlockingQueue<>(256);
         AtomicReference<RuntimeException> receiveFailure = new AtomicReference<>();
         AtomicBoolean receiveEnded = new AtomicBoolean();
         AudioTranscriptPrinter transcripts = new AudioTranscriptPrinter(System.console() != null, spoken);
         Future<?> receiver = workers.submit(() -> {
             try {
-                for (BinaryData data : session.receiveEvents(TIMEOUT)) {
-                    pending.put(data);
-                    if ("session.closed".equals(type(object(data)))) {
+                for (ServerEvent event : session.receiveEvents(TIMEOUT)) {
+                    pending.put(event);
+                    if (event.isSessionClosed()) {
                         break;
                     }
                 }
@@ -218,21 +220,20 @@ final class GptLiveSampleUtils {
         BinaryData silence = audio(new byte[960]);
         try {
             while (true) {
-                BinaryData data = pending.poll(20, TimeUnit.MILLISECONDS);
+                ServerEvent event = pending.poll(20, TimeUnit.MILLISECONDS);
                 long now = System.nanoTime();
-                if (data != null) {
-                    Map<?, ?> event = object(data);
+                if (event != null) {
                     if (spoken) {
                         transcripts.print(event);
-                        if ("session.output_audio.delta".equals(type(event))) {
+                        if (event.isSessionOutputAudioDelta()) {
                             byte[] pcm = decodeAudio(event);
                             playAudio.accept(pcm);
                             if (hasSpeech(pcm)) {
                                 greetingAudio = true;
                                 quietSince = now;
                             }
-                        } else if ("session.output_transcript.delta".equals(type(event))
-                            && !string(event, "delta").trim().isEmpty()) {
+                        } else if (event.isSessionOutputTranscriptDelta()
+                            && !event.asSessionOutputTranscriptDelta().delta().trim().isEmpty()) {
                             greetingTranscript = true;
                             quietSince = now;
                         }
@@ -240,8 +241,8 @@ final class GptLiveSampleUtils {
                         printEvent(event);
                     }
                     Map<?, ?> backend = backendEvent(event);
-                    String type = type(backend);
-                    if ("session.started".equals(type)) {
+                    String type = event.isResponseEvent() ? type(backend) : "";
+                    if (event.isSessionStarted()) {
                         if (started) {
                             throw new IllegalStateException("Duplicate session.started event.");
                         }
@@ -279,13 +280,14 @@ final class GptLiveSampleUtils {
                         if ("function_call".equals(type(item))) {
                             results.add(toolHandler.apply(item));
                         }
-                    } else if ("session.closed".equals(type)) {
-                        if (started && ("remote_hangup".equals(event.get("reason"))
-                            || closing && "close_requested".equals(event.get("reason")))) {
-                            System.out.println("Live session closed (" + event.get("reason") + ").");
+                    } else if (event.isSessionClosed()) {
+                        String reason = event.asSessionClosed().reason().toString();
+                        if (started && ("remote_hangup".equals(reason)
+                            || closing && "close_requested".equals(reason))) {
+                            System.out.println("Live session closed (" + reason + ").");
                             return;
                         }
-                        throw new IllegalStateException("GPT Live closed before all turns completed. Event: " + data
+                        throw new IllegalStateException("GPT Live closed before all turns completed. Event: " + event
                             + "; transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason());
                     }
                 } else if (receiveEnded.get()) {
@@ -380,7 +382,7 @@ final class GptLiveSampleUtils {
             input, playAudio, drainAudio));
     }
 
-    static Mono<Void> runInteractiveConversation(Flux<BinaryData> events,
+    static Mono<Void> runInteractiveConversation(Flux<ServerEvent> events,
         Function<BinaryData, Mono<Void>> sendEvent, Supplier<String> closeDetails, Reader input,
         Consumer<byte[]> playAudio, Runnable drainAudio) {
         return Mono.defer(() -> {
@@ -400,14 +402,14 @@ final class GptLiveSampleUtils {
             nextPrompt, playAudio, drainAudio, spoken));
     }
 
-    private static Mono<Void> runConversation(Flux<BinaryData> events,
+    private static Mono<Void> runConversation(Flux<ServerEvent> events,
         Function<BinaryData, Mono<Void>> sendEvent, Supplier<String> closeDetails,
         Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
         Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken) {
         return runConversation(events, sendEvent, closeDetails, nextPrompt, playAudio, drainAudio, spoken, null);
     }
 
-    private static Mono<Void> runConversation(Flux<BinaryData> events,
+    private static Mono<Void> runConversation(Flux<ServerEvent> events,
         Function<BinaryData, Mono<Void>> sendEvent, Supplier<String> closeDetails,
         Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
         Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken, AudioProcessor microphone) {
@@ -428,24 +430,22 @@ final class GptLiveSampleUtils {
             AtomicReference<Sinks.Empty<Void>> responseCompleted = new AtomicReference<>();
             Mono<Void> receive = events
                 .publishOn(Schedulers.boundedElastic(), 1)
-                .doOnNext(data -> {
-                    Map<?, ?> event = object(data);
-                    String eventType = type(event);
+                .doOnNext(event -> {
                     if (spoken) {
                         transcripts.print(event);
-                        if ("session.output_audio.delta".equals(eventType)) {
+                        if (event.isSessionOutputAudioDelta()) {
                             byte[] pcm = decodeAudio(event);
                             playAudio.accept(pcm);
                             greeting.onAudio(pcm);
-                        } else if ("session.output_transcript.delta".equals(eventType)
-                            && !string(event, "delta").trim().isEmpty()) {
+                        } else if (event.isSessionOutputTranscriptDelta()
+                            && !event.asSessionOutputTranscriptDelta().delta().trim().isEmpty()) {
                             greeting.onTranscript();
                         }
                     } else {
                         printEvent(event);
                     }
-                    String type = type(backendEvent(event));
-                    if ("session.started".equals(type)) {
+                    String type = event.isResponseEvent() ? type(backendEvent(event)) : "";
+                    if (event.isSessionStarted()) {
                         if (!started.compareAndSet(false, true)) {
                             throw new IllegalStateException("Duplicate session.started event.");
                         }
@@ -465,21 +465,22 @@ final class GptLiveSampleUtils {
                             System.out.println();
                         }
                         completion.tryEmitEmpty();
-                    } else if ("session.closed".equals(type)) {
-                        boolean remote = started.get() && "remote_hangup".equals(event.get("reason"));
+                    } else if (event.isSessionClosed()) {
+                        String reason = event.asSessionClosed().reason().toString();
+                        boolean remote = started.get() && "remote_hangup".equals(reason);
                         boolean requested = microphone != null
-                            || closeRequested.get() && "close_requested".equals(event.get("reason"));
+                            || closeRequested.get() && "close_requested".equals(reason);
                         if (!requested && !remote) {
                             throw new IllegalStateException("GPT Live closed before all turns completed. Event: "
-                                + data + "; " + closeDetails.get());
+                                + event + "; " + closeDetails.get());
                         }
                         remoteHangup.set(remote || microphone != null);
-                        System.out.println("Live session closed (" + event.get("reason") + ").");
+                        System.out.println("Live session closed (" + reason + ").");
                         finalized.set(true);
                         closed.tryEmitEmpty();
                     }
                 })
-                .takeUntil(data -> "session.closed".equals(type(object(data))))
+                .takeUntil(ServerEvent::isSessionClosed)
                 .then(Mono.defer(() -> remoteHangup.get() ? Mono.empty() : finalized.get() ? Mono.never()
                     : Mono.error(new IllegalStateException("GPT Live disconnected without session.closed."))));
             Mono<Void> audio = ready.asMono()
@@ -675,8 +676,28 @@ final class GptLiveSampleUtils {
         }
     }
 
-    static Map<?, ?> backendEvent(Map<?, ?> event) {
-        return "response.event".equals(type(event)) ? object(event.get("event")) : event;
+    static Map<?, ?> backendEvent(ServerEvent event) {
+        return event.isResponseEvent()
+            ? JsonValue.from(event.asResponseEvent().event()._additionalProperties()).convert(Map.class)
+            : java.util.Collections.emptyMap();
+    }
+
+    static void checkError(ServerEvent event) {
+        if (event.isErrorEvent()) {
+            com.openai.models.live.Error error = event.asErrorEvent().error();
+            boolean moderated = "content_filter".equals(error._code().asString().orElse(null))
+                || "content_filter".equals(error._type().asString().orElse(null));
+            throw new IllegalStateException(moderated
+                ? "GPT Live service error: generation stopped by service moderation "
+                    + "(content_filter). The call has ended; review the conversation and service diagnostics. Event: "
+                    + event
+                : "GPT Live service error: " + event);
+        }
+        if (event.isResponseEvent()) {
+            checkError(backendEvent(event));
+        } else if (event._json().isPresent()) {
+            checkError(event._json().get().convert(Map.class));
+        }
     }
 
     static void checkError(Map<?, ?> event) {
@@ -693,18 +714,19 @@ final class GptLiveSampleUtils {
         }
     }
 
-    static void printEvent(Map<?, ?> event) {
+    static void printEvent(ServerEvent event) {
         checkError(event);
-        if ("session.started".equals(type(event))) {
-            Object conversationId = event.get("conversation_id");
+        if (event.isSessionStarted()) {
+            JsonValue conversationId = event.asSessionStarted()._additionalProperties().get("conversation_id");
             System.out.println(conversationId == null
+                || !conversationId.asString().isPresent()
                 ? "Live session started; conversation_id not provided (persistence may be disabled)."
-                : "Live session started; conversation_id=" + conversationId);
-        } else if ("session.input_transcript.delta".equals(type(event))) {
-            System.out.print(string(event, "delta"));
-        } else if ("session.output_transcript.delta".equals(type(event))) {
-            System.out.print(string(event, "delta"));
-        } else if ("response.event".equals(type(event))) {
+                : "Live session started; conversation_id=" + conversationId.asString().get());
+        } else if (event.isSessionInputTranscriptDelta()) {
+            System.out.print(event.asSessionInputTranscriptDelta().delta());
+        } else if (event.isSessionOutputTranscriptDelta()) {
+            System.out.print(event.asSessionOutputTranscriptDelta().delta());
+        } else if (event.isResponseEvent()) {
             Map<?, ?> backend = backendEvent(event);
             checkError(backend);
             if ("response.output_text.delta".equals(type(backend))) {
@@ -979,30 +1001,27 @@ final class GptLiveSampleUtils {
             write(text);
         }
 
-        synchronized void print(Map<?, ?> event) {
+        synchronized void print(ServerEvent event) {
             checkError(event);
-            String eventType = type(event);
-            if ("response.event".equals(eventType)) {
-                checkError(backendEvent(event));
-            } else if ("session.input_transcript.delta".equals(eventType)
-                || "session.output_transcript.delta".equals(eventType)) {
-                if (completeUtterances && "session.output_transcript.delta".equals(eventType)) {
-                    String delta = string(event, "delta");
+            if (event.isSessionInputTranscriptDelta() || event.isSessionOutputTranscriptDelta()) {
+                String delta = event.isSessionInputTranscriptDelta()
+                    ? event.asSessionInputTranscriptDelta().delta() : event.asSessionOutputTranscriptDelta().delta();
+                if (completeUtterances && event.isSessionOutputTranscriptDelta()) {
                     if (delta.length() > MAX_BUFFERED_TRANSCRIPT_CHARACTERS - pending.length() - utterance.length()) {
                         throw new IllegalStateException("Buffered transcript exceeded 65536 characters.");
                     }
                     utterance.append(delta);
                     return;
                 }
-                String nextSpeaker = "session.input_transcript.delta".equals(eventType) ? "You" : "Assistant";
+                String nextSpeaker = event.isSessionInputTranscriptDelta() ? "You" : "Assistant";
                 if (!nextSpeaker.equals(speaker)) {
                     write((lineOpen ? System.lineSeparator() : "") + nextSpeaker + ": ");
                     speaker = nextSpeaker;
                 }
-                write(string(event, "delta"));
-            } else if ("session.started".equals(eventType)) {
+                write(delta);
+            } else if (event.isSessionStarted()) {
                 printEvent(event);
-            } else if ("session.closed".equals(eventType)) {
+            } else if (event.isSessionClosed()) {
                 endUtterance();
                 if (lineOpen) {
                     write(System.lineSeparator());

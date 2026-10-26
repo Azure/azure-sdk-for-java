@@ -66,27 +66,27 @@ public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoClose
      * @return the single-consumer stream of complete JSON events.
      * @throws IllegalStateException if the receive stream was already claimed.
      */
-    public IterableStream<BinaryData> receiveEvents() {
-        return receiveEvents(null);
+    public IterableStream<BinaryData> receiveRawEvents() {
+        return receiveRawEvents(null);
     }
 
     /**
      * Receives typed native Live server events. Typed and raw receivers share the single-consumer limit.
      * @return the typed server event stream.
      */
-    public IterableStream<ServerEvent> receiveTypedEvents() {
-        return receiveTypedEvents(null);
+    public IterableStream<ServerEvent> receiveEvents() {
+        return receiveEvents(null);
     }
 
     /**
      * Receives typed native Live events with a timeout per wait. Timeouts leave the session open.
-     * Use {@link #receiveEvents(Duration)} when the original JSON representation is needed.
+    * Use {@link #receiveRawEvents(Duration)} when the original JSON representation is needed.
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer typed event stream.
      * @throws IllegalArgumentException if the timeout is zero or negative.
      * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
      */
-    public IterableStream<ServerEvent> receiveTypedEvents(Duration timeout) {
+    public IterableStream<ServerEvent> receiveEvents(Duration timeout) {
         return transport.receiveEvents(timeout);
     }
 
@@ -107,7 +107,7 @@ public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoClose
      * @throws IllegalArgumentException if the timeout is zero or negative.
      * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
      */
-    public IterableStream<BinaryData> receiveEvents(Duration timeout) {
+    public IterableStream<BinaryData> receiveRawEvents(Duration timeout) {
         return transport.receiveRawEvents(timeout);
     }
 

@@ -6,10 +6,12 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.openai.models.live.ServerEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterReader;
 import java.io.InputStream;
@@ -101,18 +103,15 @@ public class GptLiveSamplesTests {
         try (PrintStream capture = new PrintStream(output)) {
             System.setOut(capture);
             GptLiveSampleUtils.AudioTranscriptPrinter printer = new GptLiveSampleUtils.AudioTranscriptPrinter();
-            printer.print(GptLiveSampleUtils.object(BinaryData.fromString(STARTED)));
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.input_transcript.delta", "delta", "Hello")));
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.input_transcript.delta", "delta", " there")));
-            printer.print(GptLiveSampleUtils.object(BinaryData.fromString("{\"type\":\"response.event\","
+            printer.print(typedEvent(BinaryData.fromString(STARTED)));
+            printer.print(typedEvent(GptLiveSampleUtils.event("session.input_transcript.delta", "delta", "Hello")));
+            printer.print(typedEvent(GptLiveSampleUtils.event("session.input_transcript.delta", "delta", " there")));
+            printer.print(typedEvent(BinaryData.fromString("{\"type\":\"response.event\","
                 + "\"event\":{\"type\":\"response.output_text.delta\",\"delta\":\"backend-only text\"}}")));
-            printer.print(
-                GptLiveSampleUtils.object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Hi!")));
+            printer.print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Hi!")));
             printer.beginTurn();
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "How can I help?")));
+            printer.print(
+                typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "How can I help?")));
         } finally {
             System.setOut(original);
         }
@@ -126,7 +125,7 @@ public class GptLiveSamplesTests {
     @ValueSource(booleans = { false, true })
     @ResourceLock("java.lang.System.out")
     public void startupPrintsFoundryConversationIdInScriptedAndInteractiveModes(boolean interactive) {
-        Map<?, ?> event = GptLiveSampleUtils.object(BinaryData.fromString(
+        ServerEvent event = typedEvent(BinaryData.fromString(
             "{\"type\":\"session.started\",\"conversation_id\":\"conversation-1\",\"session\":{\"id\":\"native-1\"}}"));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream original = System.out;
@@ -148,7 +147,7 @@ public class GptLiveSamplesTests {
     @ValueSource(booleans = { false, true })
     @ResourceLock("java.lang.System.out")
     public void startupWithoutPersistenceDoesNotSubstituteNativeSessionId(boolean interactive) {
-        Map<?, ?> event = GptLiveSampleUtils.object(BinaryData.fromString(STARTED));
+        ServerEvent event = typedEvent(BinaryData.fromString(STARTED));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream original = System.out;
         try (PrintStream capture = new PrintStream(output)) {
@@ -173,8 +172,8 @@ public class GptLiveSamplesTests {
         GptLiveSampleUtils.AudioTranscriptPrinter printer = new GptLiveSampleUtils.AudioTranscriptPrinter();
         try (PrintStream capture = new PrintStream(output)) {
             System.setOut(capture);
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Previous response.")));
+            printer.print(
+                typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Previous response.")));
             printer.beginInput();
             assertTrue(new String(output.toByteArray(), StandardCharsets.UTF_8)
                 .endsWith("Previous response." + System.lineSeparator() + "You: "));
@@ -182,11 +181,11 @@ public class GptLiveSamplesTests {
             char[] characters = new char[GptLiveSampleUtils.AudioTranscriptPrinter.MAX_BUFFERED_TRANSCRIPT_CHARACTERS
                 - "Assistant: ".length()];
             Arrays.fill(characters, 'a');
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", new String(characters))));
+            printer.print(typedEvent(
+                GptLiveSampleUtils.event("session.output_transcript.delta", "delta", new String(characters))));
             assertEquals(promptLength, output.size(), "Transcript output must not overwrite the input line");
-            IllegalStateException error = assertThrows(IllegalStateException.class, () -> printer.print(
-                GptLiveSampleUtils.object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "x"))));
+            IllegalStateException error = assertThrows(IllegalStateException.class, () -> printer
+                .print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "x"))));
             assertTrue(error.getMessage().contains("65536"));
             printer.endInput();
             assertTrue(output.size() > promptLength, "Buffered text must be flushed after input ends");
@@ -205,21 +204,19 @@ public class GptLiveSamplesTests {
             System.setOut(capture);
             GptLiveSampleUtils.AudioTranscriptPrinter printer
                 = new GptLiveSampleUtils.AudioTranscriptPrinter(inputEchoed);
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Welcome.")));
+            printer.print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Welcome.")));
             printer.beginInput();
             if (inputEchoed) {
                 System.out.println("testing");
             }
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Reply.")));
+            printer.print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Reply.")));
             printer.endInput();
             printer.beginInput();
             if (inputEchoed) {
                 System.out.println("exit");
             }
             printer.endInput();
-            printer.print(GptLiveSampleUtils.object(BinaryData.fromString(CLOSED)));
+            printer.print(typedEvent(BinaryData.fromString(CLOSED)));
             System.out.println("Live session closed.");
         } finally {
             System.setOut(original);
@@ -241,13 +238,13 @@ public class GptLiveSamplesTests {
             GptLiveSampleUtils.AudioTranscriptPrinter printer
                 = new GptLiveSampleUtils.AudioTranscriptPrinter(false, true);
             printer.beginInput();
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "This sentence ")));
+            printer.print(
+                typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "This sentence ")));
             printer.endInput();
             assertFalse(new String(output.toByteArray(), StandardCharsets.UTF_8).contains("This sentence"));
             printer.beginTurn();
             printer.beginInput();
-            printer.print(GptLiveSampleUtils.object(
+            printer.print(typedEvent(
                 GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "continues after Enter.")));
             printer.endUtterance();
             assertTrue(new String(output.toByteArray(), StandardCharsets.UTF_8).endsWith("You: "));
@@ -271,17 +268,17 @@ public class GptLiveSamplesTests {
             GptLiveSampleUtils.AudioTranscriptPrinter printer
                 = new GptLiveSampleUtils.AudioTranscriptPrinter(false, true);
             printer.beginInput();
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Completed.")));
+            printer
+                .print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "Completed.")));
             printer.endUtterance();
             int queuedLength = ("Assistant: Completed." + System.lineSeparator()).length();
             char[] characters
                 = new char[GptLiveSampleUtils.AudioTranscriptPrinter.MAX_BUFFERED_TRANSCRIPT_CHARACTERS - queuedLength];
             Arrays.fill(characters, 'a');
-            printer.print(GptLiveSampleUtils
-                .object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", new String(characters))));
-            assertThrows(IllegalStateException.class, () -> printer.print(
-                GptLiveSampleUtils.object(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "x"))));
+            printer.print(typedEvent(
+                GptLiveSampleUtils.event("session.output_transcript.delta", "delta", new String(characters))));
+            assertThrows(IllegalStateException.class, () -> printer
+                .print(typedEvent(GptLiveSampleUtils.event("session.output_transcript.delta", "delta", "x"))));
             printer.endInput();
             assertTrue(new String(output.toByteArray(), StandardCharsets.UTF_8).contains("Assistant: Completed."));
             assertFalse(new String(output.toByteArray(), StandardCharsets.UTF_8).contains("aaaa"));
@@ -334,17 +331,52 @@ public class GptLiveSamplesTests {
     }
 
     @Test
+    @ResourceLock("java.lang.System.out")
+    public void unknownLiveEventsDoNotInterruptTranscriptHandlers() {
+        ServerEvent event = typedEvent(GptLiveSampleUtils.event("session.future_event", "value", "future"));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream original = System.out;
+        try (PrintStream capture = new PrintStream(output)) {
+            System.setOut(capture);
+            GptLiveSampleUtils.printEvent(event);
+            new GptLiveSampleUtils.AudioTranscriptPrinter().print(event);
+        } finally {
+            System.setOut(original);
+        }
+        assertEquals(0, output.size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "response.failed", "response.incomplete" })
+    public void responseFailuresAreReportedForUnknownAndDelegatedEvents(String type) {
+        BinaryData failure = GptLiveSampleUtils.event(type, "event_id", "failure-1");
+        for (boolean delegated : new boolean[] { false, true }) {
+            Map<String, Object> wrapper = new LinkedHashMap<>();
+            wrapper.put("type", "response.event");
+            wrapper.put("event", GptLiveSampleUtils.object(failure));
+            ServerEvent event = typedEvent(delegated ? BinaryData.fromObject(wrapper) : failure);
+            IllegalStateException error
+                = assertThrows(IllegalStateException.class, () -> GptLiveSampleUtils.printEvent(event));
+            assertTrue(error.getMessage().contains(type));
+            assertTrue(error.getMessage().contains("failure-1"));
+            assertThrows(IllegalStateException.class,
+                () -> new GptLiveSampleUtils.AudioTranscriptPrinter().print(event));
+        }
+    }
+
+    @Test
     public void moderationIsReportedExplicitlyAndPreservesServiceDiagnostics() {
         Map<?, ?> event = GptLiveSampleUtils.object(BinaryData.fromString(MODERATED));
         IllegalStateException error = assertThrows(IllegalStateException.class,
-            () -> new GptLiveSampleUtils.AudioTranscriptPrinter().print(event));
+            () -> new GptLiveSampleUtils.AudioTranscriptPrinter().print(typedEvent(BinaryData.fromString(MODERATED))));
         assertTrue(error.getMessage().contains("generation stopped by service moderation"));
         assertTrue(error.getMessage().contains("content_filter"));
         assertTrue(error.getMessage().contains("moderated-1"));
         Map<String, Object> wrapper = new java.util.LinkedHashMap<>();
         wrapper.put("type", "response.event");
         wrapper.put("event", event);
-        assertThrows(IllegalStateException.class, () -> new GptLiveSampleUtils.AudioTranscriptPrinter().print(wrapper));
+        assertThrows(IllegalStateException.class,
+            () -> new GptLiveSampleUtils.AudioTranscriptPrinter().print(typedEvent(BinaryData.fromObject(wrapper))));
     }
 
     @ParameterizedTest
@@ -1044,12 +1076,17 @@ public class GptLiveSamplesTests {
         Map<?, ?> command = GptLiveSampleUtils.object(GptLiveSampleUtils.audio(pcm));
         assertEquals("session.input_audio.append", command.get("type"));
         assertArrayEquals(pcm, Base64.getDecoder().decode((String) command.get("audio")));
-        Map<?, ?> event = Collections.singletonMap("delta", Base64.getEncoder().encodeToString(pcm));
+        ServerEvent event = typedEvent(
+            GptLiveSampleUtils.event("session.output_audio.delta", "delta", Base64.getEncoder().encodeToString(pcm)));
         assertArrayEquals(pcm, GptLiveSampleUtils.decodeAudio(event));
-        assertThrows(IllegalArgumentException.class,
-            () -> GptLiveSampleUtils.decodeAudio(Collections.singletonMap("delta", "%%%")));
-        assertThrows(IllegalArgumentException.class,
-            () -> GptLiveSampleUtils.decodeAudio(Collections.singletonMap("delta", "AA==")));
+        assertThrows(IllegalArgumentException.class, () -> GptLiveSampleUtils
+            .decodeAudio(typedEvent(GptLiveSampleUtils.event("session.output_audio.delta", "delta", "%%%"))));
+        assertThrows(IllegalArgumentException.class, () -> GptLiveSampleUtils
+            .decodeAudio(typedEvent(GptLiveSampleUtils.event("session.output_audio.delta", "delta", "AA=="))));
+    }
+
+    private static ServerEvent typedEvent(BinaryData data) {
+        return OpenAIJsonHelper.fromBinaryData(data, ServerEvent.class);
     }
 
     private static Stream<Arguments> audioSessionCases() {
