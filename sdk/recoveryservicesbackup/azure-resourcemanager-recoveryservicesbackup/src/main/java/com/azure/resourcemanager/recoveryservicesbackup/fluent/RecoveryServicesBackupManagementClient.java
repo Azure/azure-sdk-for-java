@@ -383,6 +383,13 @@ public interface RecoveryServicesBackupManagementClient {
     TieringCostOperationStatusClient getTieringCostOperationStatus();
 
     /**
+     * Gets the ProtectionContainerRefreshOperationStatusesClient object to access its operations.
+     * 
+     * @return the ProtectionContainerRefreshOperationStatusesClient object.
+     */
+    ProtectionContainerRefreshOperationStatusesClient getProtectionContainerRefreshOperationStatuses();
+
+    /**
      * Gets the ProtectionIntentsClient object to access its operations.
      * 
      * @return the ProtectionIntentsClient object.

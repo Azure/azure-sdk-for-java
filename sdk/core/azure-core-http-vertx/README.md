@@ -11,8 +11,11 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
 
 ### Include the package
 
-By default, this transport uses Vert.x 4.5 and Netty 4.1 to support Java 8. It also supports Vert.x 5.0 on Java 11 or
-later when your application selects Vert.x 5.0 and its compatible transitive dependencies, including Netty 4.2.
+By default, this transport uses Vert.x 4.5 and Netty 4.1 to support Java 8. It also supports Vert.x 5.0,
+5.1 (5.1.1 or later), and 5.2 on Java 11 or later when your application selects one of these Vert.x versions and its
+compatible transitive dependencies, including Netty 4.2.
+Vert.x 5.1.0 has an [upstream regression][vertx_connect_timeout_fix] that rejects disabled connection timeouts;
+use 5.1.1 or a later patch release in the 5.1 series instead.
 Keep Vert.x and Netty versions consistent across your application. Do not combine the default Vert.x 4.5/Netty 4.1
 dependencies with the Netty 4.2-based `azure-core-http-netty` library on the same classpath.
 
@@ -142,4 +145,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
+[vertx_connect_timeout_fix]: https://github.com/eclipse-vertx/vert.x/commit/a1a103485300ab78468dfbbd7a961e19c5e4268a

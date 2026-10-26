@@ -246,4 +246,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType BROWSER_AUTOMATION = fromString("browser_automation");
+
+    /**
+     * Static value microsoft_copilot_toolset_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType MICROSOFT_COPILOT_TOOLSET_PREVIEW = fromString("microsoft_copilot_toolset_preview");
 }
