@@ -335,7 +335,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         }
     }
 
-    static Flux<HybridSearchQueryResult<Document>> computeRRFScores(
+    private static Flux<HybridSearchQueryResult<Document>> computeRRFScores(
         Mono<List<List<Integer>>> ranks,
         Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults,
         List<ComponentWeight> componentWeights) {
@@ -362,7 +362,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             }).flatMapMany(Flux::fromIterable);
     }
 
-    static Mono<List<List<Integer>>> computeRanks(
+    private static Mono<List<List<Integer>>> computeRanks(
         Mono<List<List<ScoreTuple>>> componentScoresList, boolean useCompetitionRanking) {
         return componentScoresList.map(componentScores -> {
             // initialize ranks as an N-D list with zeros
@@ -392,7 +392,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
-    static Mono<List<List<ScoreTuple>>> retrieveComponentScores(
+    private static Mono<List<List<ScoreTuple>>> retrieveComponentScores(
         Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults, List<ComponentWeight> componentWeights) {
         return coalescedAndSortedResults.map(results -> {
             List<List<ScoreTuple>> componentScoresInternal = new ArrayList<>();
@@ -519,7 +519,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
-    static Mono<List<HybridSearchQueryResult<Document>>> coalesceAndSortResults(Flux<Document> componentQueryResults) {
+    private static Mono<List<HybridSearchQueryResult<Document>>> coalesceAndSortResults(Flux<Document> componentQueryResults) {
         return componentQueryResults.collectList()
             .map(results -> {
                 Map<String, HybridSearchQueryResult<Document>> uniqueDocuments = new LinkedHashMap<>();
@@ -591,7 +591,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         return aggregatedStats;
     }
 
-    static List<ComponentWeight> retrieveComponentWeights(List<Double> componentWeightList, List<QueryInfo> componentQueryInfos) {
+    private static List<ComponentWeight> retrieveComponentWeights(List<Double> componentWeightList, List<QueryInfo> componentQueryInfos) {
         boolean useDefaultComponentWeight = componentWeightList == null || componentWeightList.isEmpty();
         List<ComponentWeight> componentWeights = new ArrayList<>();
         for (int i=0;i<componentQueryInfos.size();i++) {
@@ -603,7 +603,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         return componentWeights;
     }
 
-    static class ComponentWeight {
+    private static class ComponentWeight {
         private final Double weight;
         private final Comparator<Double> comparator;
         private final int comparisonFactor;
