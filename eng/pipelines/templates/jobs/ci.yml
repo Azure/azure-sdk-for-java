@@ -278,6 +278,15 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: 'packages'
 
+      # The selected packages artifact preserves release/publishing semantics. Documentation
+      # validation additionally needs unpublished reactor prerequisites built by Maven's -am.
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactPath: $(System.DefaultWorkingDirectory)/build
+          ArtifactName: 'documentation-packages'
+          SbomEnabled: false
+          CustomCondition: and(succeeded(), eq(variables['System.TeamProject'], 'public'))
+
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
       # during testing if tests failed, and linting reports.

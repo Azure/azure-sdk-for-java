@@ -1,0 +1,46 @@
+stages:
+  - stage: DocumentationValidation
+    displayName: Validate reference documentation
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['System.TeamProject'], 'public'))
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+    jobs:
+      - job: ValidateDocumentation
+        displayName: Validate built package documentation
+        pool:
+          name: $(LINUXPOOL)
+          image: $(LINUXVMIMAGE)
+          os: linux
+        steps:
+          - checkout: self
+            clean: true
+
+          - download: current
+            displayName: 'Download Artifact: packages'
+            artifact: packages
+
+          - download: current
+            displayName: 'Download Artifact: documentation-packages'
+            artifact: documentation-packages
+
+          - pwsh: New-Item -ItemType Directory -Path '$(Build.ArtifactStagingDirectory)/documentation-validation' -Force
+            displayName: Prepare documentation diagnostics
+
+          - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+          - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
+          - template: /eng/common/pipelines/templates/steps/validate-docsms-packages.yml
+            parameters:
+              PackageInfoDirectory: $(Pipeline.Workspace)/packages/PackageInfo
+              ArtifactRoot: $(Pipeline.Workspace)/documentation-packages
+              OutputDirectory: $(Build.ArtifactStagingDirectory)/documentation-validation
+
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactName: documentation-validation
+              ArtifactPath: $(Build.ArtifactStagingDirectory)/documentation-validation
+              CustomCondition: always()
+              SbomEnabled: false

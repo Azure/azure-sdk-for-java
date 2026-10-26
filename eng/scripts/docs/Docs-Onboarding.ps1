@@ -66,6 +66,237 @@ function Get-java-PackageIdentityFromCsvMetadata($package) {
     return "$($package.GroupId):$($Package.Package)"
 }
 
+function Get-java-Java2DocfxJar {
+    if (!$Env:BUILD_BINARIESDIRECTORY) {
+        throw 'BUILD_BINARIESDIRECTORY is not set. Run install-rex-validation-tool.yml before documentation validation.'
+    }
+
+    $version = (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'java2docfx.version.txt') -Raw).Trim()
+    $java2docfxJar = Join-Path $Env:BUILD_BINARIESDIRECTORY "java2docfx/java2docfx-$version.jar"
+    if (!(Test-Path -LiteralPath $java2docfxJar -PathType Leaf)) {
+        throw "The pinned java2docfx $version JAR was not found at '$java2docfxJar'."
+    }
+
+    return (Resolve-Path -LiteralPath $java2docfxJar).ProviderPath
+}
+
+function Copy-java-MavenPackageToRepository {
+    param(
+        [Parameter(Mandatory = $true)]$Package,
+        [Parameter(Mandatory = $true)][string]$Repository
+    )
+
+    $packageDirectory = Join-Path $Repository ($Package.GroupID -replace '\.', [IO.Path]::DirectorySeparatorChar)
+    $packageDirectory = Join-Path $packageDirectory $Package.ArtifactID
+    $packageDirectory = Join-Path $packageDirectory $Package.Version
+    $null = New-Item -ItemType Directory -Path $packageDirectory -Force
+    foreach ($artifact in $Package.AssociatedArtifacts) {
+        Copy-Item -LiteralPath $artifact.File.FullName -Destination $packageDirectory -Force
+    }
+}
+
+function Invoke-java-Java2Docfx {
+    param(
+        [Parameter(Mandatory = $true)][string]$Java2DocfxJar,
+        [Parameter(Mandatory = $true)][string]$Artifact,
+        [Parameter(Mandatory = $true)][string]$LocalPackageDirectory,
+        [Parameter(Mandatory = $true)][string]$OutputDirectory,
+        [Parameter(Mandatory = $true)][string]$MavenHome
+    )
+
+    $settingsPath = Join-Path $MavenHome '.m2/settings.xml'
+    $workingDirectory = Split-Path -Parent $MavenHome
+    $localPackageArgument = [IO.Path]::GetRelativePath($workingDirectory, $LocalPackageDirectory)
+    $outputArgument = [IO.Path]::GetRelativePath($workingDirectory, $OutputDirectory)
+    $previousLocation = Get-Location
+    $previousEnvironment = @{
+        HOME = $Env:HOME
+        JAVA_TOOL_OPTIONS = $Env:JAVA_TOOL_OPTIONS
+        MAVEN_ARGS = $Env:MAVEN_ARGS
+        MAVEN_USER_HOME = $Env:MAVEN_USER_HOME
+        USERPROFILE = $Env:USERPROFILE
+    }
+    try {
+        $Env:HOME = $MavenHome
+        $Env:USERPROFILE = $MavenHome
+        $Env:MAVEN_USER_HOME = $MavenHome
+        $Env:MAVEN_ARGS = "--settings `"$settingsPath`""
+        $userHomeOption = "-Duser.home=$MavenHome"
+        $Env:JAVA_TOOL_OPTIONS = (@($previousEnvironment.JAVA_TOOL_OPTIONS, $userHomeOption) |
+            Where-Object { $_ }) -join ' '
+
+        Set-Location $workingDirectory
+        $output = @(& java -jar $Java2DocfxJar -p $Artifact -l $localPackageArgument -i -o $outputArgument 2>&1)
+        return [pscustomobject]@{
+            ExitCode = $LASTEXITCODE
+            Output = $output
+        }
+    }
+    finally {
+        Set-Location $previousLocation
+        foreach ($entry in $previousEnvironment.GetEnumerator()) {
+            Set-Item -Path "Env:$($entry.Key)" -Value $entry.Value
+        }
+    }
+}
+
+function Validate-java-LocalDocsMsPackage {
+    param(
+        [Parameter(Mandatory = $true)]$PackageInfo,
+        [Parameter(Mandatory = $true)][string]$ArtifactRoot,
+        [Parameter(Mandatory = $true)][string]$OutputDirectory
+    )
+
+    if (($PackageInfo.PSObject.Properties['IncludedForValidation'] -and $PackageInfo.IncludedForValidation) -or
+        ($PackageInfo.PSObject.Properties['ArtifactDetails'] -and $null -eq $PackageInfo.ArtifactDetails)) {
+        return [pscustomobject]@{
+            Status = 'Skipped'
+            Reason = 'Package was included only as a co-built validation dependency.'
+        }
+    }
+    if ($PackageInfo.PSObject.Properties['ArtifactDetails'] -and
+        $PackageInfo.ArtifactDetails.PSObject.Properties['skipPublishPackage'] -and
+        "$($PackageInfo.ArtifactDetails.skipPublishPackage)" -ieq 'true') {
+        return [pscustomobject]@{
+            Status = 'Skipped'
+            Reason = 'Package is excluded from Maven publishing.'
+        }
+    }
+
+    $artifactId = if ($PackageInfo.PSObject.Properties['ArtifactName'] -and $PackageInfo.ArtifactName) {
+        $PackageInfo.ArtifactName
+    } else {
+        $PackageInfo.Name
+    }
+    $groupId = $PackageInfo.Group
+    $version = if ($PackageInfo.PSObject.Properties['DevVersion'] -and $PackageInfo.DevVersion) {
+        $PackageInfo.DevVersion
+    } else {
+        $PackageInfo.Version
+    }
+    if ([string]::IsNullOrWhiteSpace($groupId) -or
+        [string]::IsNullOrWhiteSpace($artifactId) -or
+        [string]::IsNullOrWhiteSpace($version)) {
+        throw 'Java PackageInfo must contain nonempty Group, ArtifactName or Name, and Version or DevVersion values.'
+    }
+
+    if (-not (Get-Command Get-MavenPackageDetails -ErrorAction SilentlyContinue)) {
+        . (Join-Path $PSScriptRoot '../MavenPackaging.ps1')
+    }
+    $packages = @(Get-MavenPackageDetails -ArtifactDirectory $ArtifactRoot)
+    $identityMatches = @($packages | Where-Object {
+        $_.GroupID -ceq $groupId -and $_.ArtifactID -ceq $artifactId
+    })
+    $targetMatches = @($identityMatches | Where-Object { $_.Version -ceq $version })
+    $artifact = "${groupId}:${artifactId}:${version}"
+
+    if ($targetMatches.Count -eq 0) {
+        if ($identityMatches.Count -gt 0) {
+            $actualVersions = @($identityMatches.Version | Sort-Object -Unique) -join ', '
+            throw "Local package version mismatch for '$artifact'. Found: $actualVersions."
+        }
+        throw "Local package '$artifact' was not found under '$ArtifactRoot'."
+    }
+    if ($targetMatches.Count -gt 1) {
+        throw "Local package '$artifact' is ambiguous: $($targetMatches.Count) matching POM files were found."
+    }
+
+    $target = $targetMatches[0]
+    $pomFiles = @($target.AssociatedArtifacts | Where-Object {
+        $_.Type -ceq 'pom' -and [string]::IsNullOrEmpty($_.Classifier)
+    })
+    $binaryJars = @($target.AssociatedArtifacts | Where-Object {
+        $_.Type -ceq 'jar' -and [string]::IsNullOrEmpty($_.Classifier)
+    })
+    $sourceJars = @($target.AssociatedArtifacts | Where-Object {
+        $_.Type -ceq 'jar' -and $_.Classifier -ceq 'sources'
+    })
+    foreach ($required in @(
+        @{ Name = 'POM'; Files = $pomFiles },
+        @{ Name = 'binary JAR'; Files = $binaryJars },
+        @{ Name = 'sources JAR'; Files = $sourceJars }
+    )) {
+        if ($required.Files.Count -ne 1) {
+            throw "Local package '$artifact' requires exactly one $($required.Name); found $($required.Files.Count)."
+        }
+    }
+
+    $localPackageDirectory = Join-Path $OutputDirectory 'local-package'
+    $mavenHome = Join-Path $OutputDirectory 'maven-home'
+    $mavenRepository = Join-Path $MavenHome '.m2/repository'
+    $generatorOutput = Join-Path $OutputDirectory 'api'
+    foreach ($directory in @($localPackageDirectory, $mavenRepository, $generatorOutput)) {
+        $null = New-Item -ItemType Directory -Path $directory -Force
+    }
+
+    $packageKeys = @{}
+    foreach ($package in $packages) {
+        $key = "$($package.GroupID):$($package.ArtifactID):$($package.Version)"
+        if ($packageKeys.ContainsKey($key)) {
+            throw "Co-built package '$key' is ambiguous under '$ArtifactRoot'."
+        }
+        $packageKeys[$key] = $true
+        Copy-java-MavenPackageToRepository -Package $package -Repository $mavenRepository
+
+        $packagePom = @($package.AssociatedArtifacts | Where-Object {
+            $_.Type -ceq 'pom' -and [string]::IsNullOrEmpty($_.Classifier)
+        })
+        $packageBinary = @($package.AssociatedArtifacts | Where-Object {
+            $_.Type -ceq 'jar' -and [string]::IsNullOrEmpty($_.Classifier)
+        })
+        $packageSources = @($package.AssociatedArtifacts | Where-Object {
+            $_.Type -ceq 'jar' -and $_.Classifier -ceq 'sources'
+        })
+        if ($packagePom.Count -eq 1 -and $packageBinary.Count -eq 1 -and $packageSources.Count -eq 1) {
+            $localDirectory = Join-Path $localPackageDirectory $package.GroupID
+            $localDirectory = Join-Path $localDirectory $package.ArtifactID
+            $null = New-Item -ItemType Directory -Path $localDirectory -Force
+            foreach ($file in @($packagePom[0].File, $packageBinary[0].File, $packageSources[0].File)) {
+                Copy-Item -LiteralPath $file.FullName -Destination $localDirectory -Force
+            }
+        }
+    }
+
+    $settingsDirectory = Join-Path $MavenHome '.m2'
+    $null = New-Item -ItemType Directory -Path $settingsDirectory -Force
+    @"
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+  <localRepository>$($mavenRepository -replace '\\', '/')</localRepository>
+  <mirrors>
+    <mirror>
+      <id>central-only</id>
+      <mirrorOf>external:*</mirrorOf>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </mirror>
+  </mirrors>
+</settings>
+"@ | Set-Content -LiteralPath (Join-Path $settingsDirectory 'settings.xml')
+
+    $java2docfxJar = Get-java-Java2DocfxJar
+    Write-Host "Calling pinned java2docfx for $artifact from '$localPackageDirectory'."
+    $invocation = Invoke-java-Java2Docfx `
+        -Java2DocfxJar $java2docfxJar `
+        -Artifact $artifact `
+        -LocalPackageDirectory $localPackageDirectory `
+        -OutputDirectory $generatorOutput `
+        -MavenHome $mavenHome
+    $logPath = Join-Path $OutputDirectory 'java2docfx.log'
+    @($invocation.Output) | Set-Content -LiteralPath $logPath
+    @($invocation.Output) | Write-Host
+
+    if ($invocation.ExitCode -ne 0) {
+        return [pscustomobject]@{
+            Status = 'Failed'
+            Reason = "java2docfx exited with code $($invocation.ExitCode). See '$logPath'."
+        }
+    }
+
+    return [pscustomobject]@{
+        Status = 'Passed'
+        Reason = ''
+    }
+}
+
 
 # Defined in common.ps1 as:
 # $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages"
