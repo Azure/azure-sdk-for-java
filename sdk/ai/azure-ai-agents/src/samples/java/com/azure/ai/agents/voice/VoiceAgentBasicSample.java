@@ -40,7 +40,7 @@ public class VoiceAgentBasicSample {
             .buildAgentsClient();
         try {
             AgentVersionDetails created = client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a friendly voice assistant. Keep replies short and natural.")));
             System.out.printf("Created voice agent %s, version %s%n", created.getName(), created.getVersion());
 
@@ -51,7 +51,7 @@ public class VoiceAgentBasicSample {
             }
 
             AgentVersionDetails updated = client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a friendly voice assistant. Always greet the caller warmly."))
                     .setDescription("Updated voice-agent instructions."));
             System.out.println("Created updated version: " + updated.getVersion());
