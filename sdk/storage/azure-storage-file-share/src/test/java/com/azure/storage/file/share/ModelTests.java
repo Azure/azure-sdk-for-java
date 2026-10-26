@@ -24,6 +24,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ModelTests {
 
     @Test
+    void sharePropertiesChangeFeedDefaultsAndClearing() {
+        ShareProperties properties = new ShareProperties();
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+
+        properties.setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7);
+        properties.setChangeFeedEnabled(null).setChangeFeedRetentionInDays(null);
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+    }
+
+    @Test
     void ntfsToAttributes() {
         assertEquals(EnumSet.of(NtfsFileAttributes.READ_ONLY), NtfsFileAttributes.toAttributes("ReadOnly"));
         assertEquals(EnumSet.of(NtfsFileAttributes.READ_ONLY), NtfsFileAttributes.toAttributes("ReadOnly "));
