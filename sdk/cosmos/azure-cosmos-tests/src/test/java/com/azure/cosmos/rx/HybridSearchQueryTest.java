@@ -151,8 +151,7 @@ public class HybridSearchQueryTest {
         // but explicitly order the fixture's zero-score ties by numeric RID for ordinal fusion.
         titleJohnOrder = fullTextOrder("title", "John", Collections.singletonList("2"));
         textJohnOrder = fullTextOrder("text", "John", Arrays.asList("2", "57", "85"));
-        textUnitedOrder = fullTextOrder("text", "United",
-            Arrays.asList("22", "24", "25", "49", "51", "54", "61", "66", "75", "76", "77", "80"));
+        textUnitedOrder = fullTextOrder("text", "United", Arrays.asList("22", "24", "25", "49", "51", "54", "61", "66", "75", "76", "77", "80"));
         SqlQuerySpec vectorQuery = new SqlQuerySpec(
             "SELECT TOP 100 c.id, VectorDistance(c.vector, @vector) AS score FROM c "
                 + "ORDER BY VectorDistance(c.vector, @vector)",
@@ -165,8 +164,7 @@ public class HybridSearchQueryTest {
             .isSortedAccordingTo(Collections.reverseOrder());
         vectorDocuments.sort((left, right) -> {
             int comparison = Double.compare(right.score, left.score);
-            return comparison != 0 ? comparison
-                : Long.compareUnsigned(documentRids.get(right.id), documentRids.get(left.id));
+            return comparison != 0 ? comparison : Long.compareUnsigned(documentRids.get(right.id), documentRids.get(left.id));
         });
         vectorOrder = vectorDocuments.stream().map(Document::getId).collect(Collectors.toList());
     }
