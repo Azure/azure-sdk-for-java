@@ -66,16 +66,16 @@ public final class BetaVoiceAgentLiveWebSocketSessionAsyncClient implements Asyn
      * Service {@code error} events are delivered as JSON; transport and malformed JSON errors terminate the stream.
      * @return the single-subscriber stream of complete JSON events.
      */
-    public Flux<BinaryData> receiveEvents() {
+    public Flux<BinaryData> receiveRawEvents() {
         return transport.receiveRawEvents();
     }
 
     /**
      * Receives typed native Live server events. Typed and raw receivers share the single-subscriber limit.
-     * Use {@link #receiveEvents()} when the original JSON representation is needed.
+    * Use {@link #receiveRawEvents()} when the original JSON representation is needed.
      * @return the typed server event stream.
      */
-    public Flux<ServerEvent> receiveTypedEvents() {
+    public Flux<ServerEvent> receiveEvents() {
         return transport.receiveEvents();
     }
 

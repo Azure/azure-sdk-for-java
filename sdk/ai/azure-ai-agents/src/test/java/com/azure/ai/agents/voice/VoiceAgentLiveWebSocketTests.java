@@ -147,13 +147,13 @@ public class VoiceAgentLiveWebSocketTests {
         BetaVoiceAgentLiveWebSocketSessionClient session
             = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent");
         try {
-            Iterator<BinaryData> events = session.receiveEvents(TIMEOUT).iterator();
+            Iterator<BinaryData> events = session.receiveRawEvents(TIMEOUT).iterator();
             assertEquals(STARTED, events.next().toString());
             assertEquals(RESPONSE, events.next().toString());
             assertEquals(FUTURE, events.next().toString());
             assertEquals(ERROR, events.next().toString());
+            assertThrows(IllegalStateException.class, session::receiveRawEvents);
             assertThrows(IllegalStateException.class, session::receiveEvents);
-            assertThrows(IllegalStateException.class, session::receiveTypedEvents);
             assertThrows(IllegalArgumentException.class, () -> session.sendEvent(BinaryData.fromString("[]")));
             session.sendEvent(BinaryData.fromString(COMMAND));
             assertEquals(COMMAND, events.next().toString());
@@ -181,15 +181,15 @@ public class VoiceAgentLiveWebSocketTests {
                 .verify(TIMEOUT);
             StepVerifier
                 .create(session.sendEvent(BinaryData.fromString(COMMAND))
-                    .thenMany(session.receiveEvents())
+                    .thenMany(session.receiveRawEvents())
                     .map(BinaryData::toString))
                 .expectNext(STARTED, RESPONSE, FUTURE, ERROR)
                 .expectNext(COMMAND)
                 .thenCancel()
                 .verify(TIMEOUT);
             assertEquals(Arrays.asList(COMMAND), sent);
+            StepVerifier.create(session.receiveRawEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
             StepVerifier.create(session.receiveEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
-            StepVerifier.create(session.receiveTypedEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
             session.closeAsync(1000, "done").block(TIMEOUT);
             assertFalse(session.isOpen());
             StepVerifier.create(session.sendEvent(BinaryData.fromString(COMMAND)))
@@ -283,7 +283,7 @@ public class VoiceAgentLiveWebSocketTests {
             assertNotNull(session);
             try {
                 assertThrows(NullPointerException.class, () -> session.sendEvent((ClientEvent) null));
-                StepVerifier.create(session.sendEvent(command).thenMany(session.receiveTypedEvents()))
+                StepVerifier.create(session.sendEvent(command).thenMany(session.receiveEvents()))
                     .assertNext(event -> assertStartedEvent(event))
                     .assertNext(event -> assertAudioEvent(event, audio))
                     .assertNext(event -> assertBackendEvent(event, backend))
@@ -295,7 +295,9 @@ public class VoiceAgentLiveWebSocketTests {
                     .assertNext(event -> assertEventJson(event, commandJson))
                     .thenCancel()
                     .verify(TIMEOUT);
-                StepVerifier.create(session.receiveEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
+                StepVerifier.create(session.receiveRawEvents())
+                    .expectError(IllegalStateException.class)
+                    .verify(TIMEOUT);
             } finally {
                 session.closeAsync().block(TIMEOUT);
             }
@@ -303,8 +305,8 @@ public class VoiceAgentLiveWebSocketTests {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
                 assertThrows(NullPointerException.class, () -> session.sendEvent((ClientEvent) null));
-                assertThrows(IllegalArgumentException.class, () -> session.receiveTypedEvents(Duration.ZERO));
-                Iterator<ServerEvent> events = session.receiveTypedEvents(TIMEOUT).iterator();
+                assertThrows(IllegalArgumentException.class, () -> session.receiveEvents(Duration.ZERO));
+                Iterator<ServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
                 assertStartedEvent(events.next());
                 assertAudioEvent(events.next(), audio);
                 assertBackendEvent(events.next(), backend);
@@ -314,7 +316,7 @@ public class VoiceAgentLiveWebSocketTests {
                 assertEventJson(error, ERROR);
                 session.sendEvent(command);
                 assertEventJson(events.next(), commandJson);
-                assertThrows(IllegalStateException.class, session::receiveEvents);
+                assertThrows(IllegalStateException.class, session::receiveRawEvents);
             }
         }
         assertEquals(Arrays.asList(commandJson), sent);
@@ -379,7 +381,7 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveEvents())
+                StepVerifier.create(session.receiveRawEvents())
                     .expectError(IllegalArgumentException.class)
                     .verify(TIMEOUT);
             } finally {
@@ -388,7 +390,8 @@ public class VoiceAgentLiveWebSocketTests {
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-                assertThrows(IllegalArgumentException.class, () -> session.receiveEvents(TIMEOUT).iterator().hasNext());
+                assertThrows(IllegalArgumentException.class,
+                    () -> session.receiveRawEvents(TIMEOUT).iterator().hasNext());
             }
         }
     }
@@ -438,7 +441,7 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveEvents().map(BinaryData::toString))
+                StepVerifier.create(session.receiveRawEvents().map(BinaryData::toString))
                     .expectNext(STARTED)
                     .expectComplete()
                     .verify(TIMEOUT);
@@ -451,7 +454,7 @@ public class VoiceAgentLiveWebSocketTests {
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-                Iterator<BinaryData> events = session.receiveEvents(TIMEOUT).iterator();
+                Iterator<BinaryData> events = session.receiveRawEvents(TIMEOUT).iterator();
                 assertEquals(STARTED, events.next().toString());
                 assertFalse(events.hasNext());
                 assertEquals(1000, session.getCloseCode());
@@ -480,7 +483,7 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveEvents().map(BinaryData::toString))
+                StepVerifier.create(session.receiveRawEvents().map(BinaryData::toString))
                     .expectNext(STARTED)
                     .thenCancel()
                     .verify(TIMEOUT);
@@ -490,7 +493,7 @@ public class VoiceAgentLiveWebSocketTests {
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", options)) {
-                assertEquals(STARTED, session.receiveEvents(TIMEOUT).iterator().next().toString());
+                assertEquals(STARTED, session.receiveRawEvents(TIMEOUT).iterator().next().toString());
             }
         }
         assertEquals(1, malformed.get());
@@ -516,14 +519,15 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveEvents()).expectError().verify(TIMEOUT);
+                StepVerifier.create(session.receiveRawEvents()).expectError().verify(TIMEOUT);
             } finally {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", options)) {
-                assertThrows(IllegalArgumentException.class, () -> session.receiveEvents(TIMEOUT).iterator().hasNext());
+                assertThrows(IllegalArgumentException.class,
+                    () -> session.receiveRawEvents(TIMEOUT).iterator().hasNext());
             }
         }
         assertEquals(0, malformed.get());

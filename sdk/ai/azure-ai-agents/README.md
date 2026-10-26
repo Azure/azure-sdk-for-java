@@ -1116,10 +1116,10 @@ send the `Foundry-Features: VoiceAgents=V1Preview` header, and **do not** negoti
 subprotocol. `allowPreview(true)` is not required.
 
 Foundry sends the initial native `session.start`. Wait for `session.started` before sending application events;
-do not send `session.start` yourself. Use `sendEvent(ClientEvent)` and `receiveTypedEvents()` with the
+do not send `session.start` yourself. Use `sendEvent(ClientEvent)` and `receiveEvents()` with the
 `com.openai.models.live` event models from the SDK's existing `openai-java` dependency. These are distinct
-from Realtime event models. The synchronous client also offers `receiveTypedEvents(Duration)` for bounded waits.
-The existing `sendEvent(BinaryData)` and `receiveEvents()` APIs expose complete JSON objects when the original
+from Realtime event models. The synchronous client also offers `receiveEvents(Duration)` for bounded waits.
+The `sendEvent(BinaryData)` and `receiveRawEvents()` APIs expose complete JSON objects when the original
 wire representation is needed, including unknown properties, nested `response.event` backend events, and the
 Foundry `conversation_id` on `session.started`. OpenAI typed models retain extra properties and unknown event
 variants, but typed serialization need not preserve the original JSON formatting.
@@ -1133,7 +1133,7 @@ import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ResponseCreateEvent;
 import com.openai.models.live.ServerEvent;
 
-for (ServerEvent event : session.receiveTypedEvents()) {
+for (ServerEvent event : session.receiveEvents()) {
     if (event.isSessionStarted()) {
         session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
     } else if (event.isSessionOutputTranscriptDelta()) {
