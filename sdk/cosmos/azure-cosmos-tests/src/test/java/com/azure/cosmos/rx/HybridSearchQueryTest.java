@@ -18,6 +18,7 @@ import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -32,19 +33,24 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +65,7 @@ import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-@Ignore("TODO: Ignore these test cases until the public emulator is released.")
+@Test(singleThreaded = true)
 public class HybridSearchQueryTest {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 80000;
@@ -69,6 +75,8 @@ public class HybridSearchQueryTest {
 
     private static final List<String> JOHN_AND_UNITED_IDS =
         Arrays.asList("2", "22", "24", "25", "49", "51", "54", "57", "61", "66", "75", "76", "77", "80", "85");
+    private static final String RANKING_PROPERTY = "COSMOS.HYBRID_SEARCH_USE_COMPETITION_RANKING";
+    private static final int RANKING_DOCUMENT_COUNT = 260;
     private final String containerId = UUID.randomUUID().toString();
     private final String hpkContainerId = UUID.randomUUID().toString();
     private CosmosAsyncClient client;
@@ -80,6 +88,9 @@ public class HybridSearchQueryTest {
     private List<String> textJohnOrder;
     private List<String> textUnitedOrder;
     private List<String> vectorOrder;
+    private CosmosAsyncContainer rankingContainer;
+    private CosmosAsyncContainer rankingTierContainer;
+    private List<ObjectNode> rankingDocumentsByRid;
 
     @BeforeClass(groups = {"query", "split"}, timeOut = SETUP_TIMEOUT* 10)
     public void before_HybridSearchQueryTest() {
@@ -167,6 +178,7 @@ public class HybridSearchQueryTest {
             return comparison != 0 ? comparison : Long.compareUnsigned(documentRids.get(right.id), documentRids.get(left.id));
         });
         vectorOrder = vectorDocuments.stream().map(Document::getId).collect(Collectors.toList());
+        createRankingFixtures();
     }
 
     @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -658,6 +670,201 @@ public class HybridSearchQueryTest {
             assertThat(ex.getMessage()).contains("The length of this array must be the same as the number of the component scores.");
         }
 
+    }
+
+    private void createRankingFixtures() {
+        CosmosFullTextIndex titleIndex = new CosmosFullTextIndex();
+        titleIndex.setPath("/title");
+        CosmosFullTextIndex textIndex = new CosmosFullTextIndex();
+        textIndex.setPath("/text");
+        IndexingPolicy indexing = new IndexingPolicy();
+        indexing.setCosmosFullTextIndexes(Arrays.asList(titleIndex, textIndex));
+        CosmosFullTextPath titlePath = new CosmosFullTextPath();
+        titlePath.setPath("/title");
+        titlePath.setLanguage("en-US");
+        CosmosFullTextPath textPath = new CosmosFullTextPath();
+        textPath.setPath("/text");
+        textPath.setLanguage("en-US");
+        CosmosFullTextPolicy fullText = new CosmosFullTextPolicy();
+        fullText.setDefaultLanguage("en-US");
+        fullText.setPaths(Arrays.asList(titlePath, textPath));
+        CosmosContainerProperties properties = new CosmosContainerProperties("ranking-ties", "/pk");
+        properties.setIndexingPolicy(indexing);
+        properties.setFullTextPolicy(fullText);
+        rankingContainer = createCollection(database, properties, new CosmosContainerRequestOptions(), 10000);
+        CosmosContainerProperties tierProperties = new CosmosContainerProperties("ranking-tiers", "/pk");
+        tierProperties.setIndexingPolicy(indexing);
+        tierProperties.setFullTextPolicy(fullText);
+        rankingTierContainer = createCollection(database, tierProperties, new CosmosContainerRequestOptions(), 400);
+        String[] tierTexts = {"beta filler filler filler filler", "beta beta filler filler filler",
+            "beta beta beta filler filler", "beta beta beta beta filler", "beta beta beta beta beta"};
+        for (int i = 0; i < 5; i++) {
+            ObjectNode document = JsonNodeFactory.instance.objectNode();
+            document.put("id", "tier-" + i);
+            document.put("pk", "tiers");
+            document.put("title", i == 0 ? "alpha alpha" : i == 4 ? "filler filler" : "alpha filler");
+            document.put("text", tierTexts[i]);
+            rankingTierContainer.createItem(document).block();
+        }
+
+        // Identical fields guarantee tied component scores without reproducing the service's BM25 implementation.
+        // More than 256 inserts also exercise RID byte boundaries rather than assuming encoded RID order.
+        for (int i = 0; i < RANKING_DOCUMENT_COUNT; i++) {
+            ObjectNode document = JsonNodeFactory.instance.objectNode();
+            document.put("id", "doc-" + i);
+            document.put("pk", Integer.toString(i % 2));
+            document.put("title", "alpha");
+            document.put("text", "beta");
+            rankingContainer.createItem(document).block();
+        }
+        rankingDocumentsByRid = rankingContainer.queryItems("SELECT * FROM c",
+            new CosmosQueryRequestOptions(), ObjectNode.class).collectList().block();
+        assertThat(rankingDocumentsByRid).hasSize(RANKING_DOCUMENT_COUNT);
+        rankingDocumentsByRid.sort((left, right) -> Long.compareUnsigned(documentRid(right), documentRid(left)));
+        List<ObjectNode> encodedOrder = new ArrayList<>(rankingDocumentsByRid);
+        encodedOrder.sort((left, right) -> right.get("_rid").asText().compareTo(left.get("_rid").asText()));
+        assertThat(rankingIds(encodedOrder)).as("Fixture must distinguish numeric from encoded RID ordering")
+            .isNotEqualTo(rankingIds(rankingDocumentsByRid));
+    }
+
+    @DataProvider(name = "rankingModes")
+    public Object[][] rankingModes() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = {"query", "split"}, dataProvider = "rankingModes", timeOut = 60000)
+    public void tiedComponentsRespectRankingModeAndDirection(boolean competition) {
+        String previous = System.getProperty(RANKING_PROPERTY);
+        try {
+            System.setProperty(RANKING_PROPERTY, Boolean.toString(competition));
+            for (double[] weights : new double[][] {{1, 1}, {-1, -1}, {1, -1}, {2, -1}}) {
+                List<String> expected = expectedTiedRankingOrder(weights, competition);
+                String orderBy = rankingOrderBy(weights);
+                List<FeedResponse<ObjectNode>> pages = rankingContainer.queryItems(
+                    "SELECT TOP 260 * FROM c " + orderBy, new CosmosQueryRequestOptions(), ObjectNode.class)
+                    .byPage(17).collectList().block();
+                List<ObjectNode> actual = pages.stream().flatMap(page -> page.getResults().stream())
+                    .collect(Collectors.toList());
+                assertThat(rankingIds(actual)).as("weights=%s, competition=%s", Arrays.toString(weights), competition)
+                    .containsExactlyElementsOf(expected);
+                assertThat(pages).hasSizeGreaterThan(1);
+                assertThat(actual).allSatisfy(document -> {
+                    assertThat(document.get("title").asText()).isEqualTo("alpha");
+                    assertThat(document.get("text").asText()).isEqualTo("beta");
+                });
+
+                // Keep the full fixture in the service's bounded component candidate lists.
+                List<ObjectNode> window = rankingContainer.queryItems(
+                    "SELECT * FROM c " + orderBy + " OFFSET 3 LIMIT 257",
+                    new CosmosQueryRequestOptions(), ObjectNode.class).collectList().block();
+                assertThat(rankingIds(window)).containsExactlyElementsOf(expected.subList(3, RANKING_DOCUMENT_COUNT));
+            }
+        } finally {
+            restoreRankingProperty(previous);
+        }
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void competitionRanksSkipTiedPositions() {
+        List<ObjectNode> documents = rankingTierContainer.queryItems("SELECT * FROM c",
+            new CosmosQueryRequestOptions(), ObjectNode.class).collectList().block();
+        assertThat(documents).hasSize(5);
+        documents.sort((left, right) -> Long.compareUnsigned(documentRid(right), documentRid(left)));
+        List<ObjectNode> titleOrder = new ArrayList<>(documents);
+        // Equal document lengths: two occurrences outrank one, and no occurrence scores zero.
+        titleOrder.sort((left, right) -> Integer.compare(titleTier(left), titleTier(right)));
+        String previous = System.getProperty(RANKING_PROPERTY);
+        try {
+            for (boolean competition : new boolean[] {false, true}) {
+                System.setProperty(RANKING_PROPERTY, Boolean.toString(competition));
+                List<ObjectNode> expected = new ArrayList<>(documents);
+                int[] titleRanks = competition ? new int[] {1, 2, 2, 2, 5} : new int[] {1, 2, 3, 4, 5};
+                expected.sort((left, right) -> {
+                    double leftScore = 1.0 / (60 + titleRanks[titleOrder.indexOf(left)])
+                        + 1.0 / (60 + textRank(left));
+                    double rightScore = 1.0 / (60 + titleRanks[titleOrder.indexOf(right)])
+                        + 1.0 / (60 + textRank(right));
+                    int comparison = Double.compare(rightScore, leftScore);
+                    return comparison != 0 ? comparison : Long.compareUnsigned(documentRid(right), documentRid(left));
+                });
+                List<ObjectNode> results = rankingTierContainer.queryItems("SELECT TOP 5 * FROM c "
+                    + rankingOrderBy(new double[] {1, 1}), new CosmosQueryRequestOptions(), ObjectNode.class)
+                    .collectList().block();
+                assertThat(rankingIds(results)).as("competition=%s", competition)
+                    .containsExactlyElementsOf(rankingIds(expected));
+                List<ObjectNode> topTwo = rankingTierContainer.queryItems("SELECT TOP 2 * FROM c "
+                    + rankingOrderBy(new double[] {1, 1}), new CosmosQueryRequestOptions(), ObjectNode.class)
+                    .collectList().block();
+                assertThat(rankingIds(topTwo)).containsExactlyElementsOf(rankingIds(expected.subList(0, 2)));
+            }
+        } finally {
+            restoreRankingProperty(previous);
+        }
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void emptyHybridQueryReturnsNoDocuments() {
+        List<ObjectNode> results = rankingContainer.queryItems(
+            "SELECT TOP 10 * FROM c WHERE c.id = 'missing' " + rankingOrderBy(new double[] {1, 1}),
+            new CosmosQueryRequestOptions(), ObjectNode.class).collectList().block();
+        assertThat(results).isEmpty();
+    }
+
+    private List<String> expectedTiedRankingOrder(double[] weights, boolean competition) {
+        List<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < rankingDocumentsByRid.size(); i++) {
+            positions.add(i);
+        }
+        // In competition mode every tied score has rank 1. Ordinal rank follows the plan direction;
+        // negative weights reverse that direction before their absolute magnitude is used in fusion.
+        positions.sort((left, right) -> {
+            int comparison = Double.compare(tiedRankingScore(right, weights, competition),
+                tiedRankingScore(left, weights, competition));
+            return comparison != 0 ? comparison : Integer.compare(left, right);
+        });
+        return positions.stream().map(position -> rankingDocumentsByRid.get(position).get("id").asText())
+            .collect(Collectors.toList());
+    }
+
+    private static double tiedRankingScore(int descendingPosition, double[] weights, boolean competition) {
+        double score = 0;
+        for (double weight : weights) {
+            int rank = competition ? 1 : weight < 0 ? RANKING_DOCUMENT_COUNT - descendingPosition : descendingPosition + 1;
+            score += Math.abs(weight) / (60 + rank);
+        }
+        return score;
+    }
+
+    private static int titleTier(ObjectNode document) {
+        String title = document.get("title").asText();
+        return "alpha alpha".equals(title) ? 0 : "alpha filler".equals(title) ? 1 : 2;
+    }
+
+    private static int textRank(ObjectNode document) {
+        // Texts have equal lengths and one through five occurrences of beta, so all scores are distinct.
+        return 5 - Integer.parseInt(document.get("id").asText().substring("tier-".length()));
+    }
+
+    private static String rankingOrderBy(double[] weights) {
+        return "ORDER BY RANK RRF(FullTextScore(c.title, 'alpha'), FullTextScore(c.text, 'beta'), "
+            + Arrays.toString(weights) + ")";
+    }
+
+    private static long documentRid(ObjectNode document) {
+        byte[] bytes = Base64.getDecoder().decode(document.get("_rid").asText().replace('-', '/'));
+        return ByteBuffer.wrap(bytes, 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    }
+
+    private static List<String> rankingIds(List<ObjectNode> documents) {
+        return documents.stream().map(document -> document.get("id").asText()).collect(Collectors.toList());
+    }
+
+    private static void restoreRankingProperty(String previous) {
+        if (previous == null) {
+            System.clearProperty(RANKING_PROPERTY);
+        } else {
+            System.setProperty(RANKING_PROPERTY, previous);
+        }
     }
 
     private IndexingPolicy populateIndexingPolicy() {
