@@ -10,7 +10,9 @@ import com.azure.resourcemanager.commvaultcontentstore.fluent.models.RestorePoin
 public final class RestorePointsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorePointsInner model = BinaryData.fromString("{\"restoreTimes\":[5387832879483701613,6659081413348995373]}")
+        RestorePointsInner model = BinaryData
+            .fromString(
+                "{\"restoreTimes\":[1134026374959990041,3867378913367367279,4969874968491152156,4896642944442173063]}")
             .toObject(RestorePointsInner.class);
     }
 }

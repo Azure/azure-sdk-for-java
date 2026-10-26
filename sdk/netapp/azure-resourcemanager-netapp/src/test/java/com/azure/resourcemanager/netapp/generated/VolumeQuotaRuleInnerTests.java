@@ -15,7 +15,7 @@ public final class VolumeQuotaRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":7851173611055432996,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ty\"},\"location\":\"evxccedcp\",\"tags\":{\"vnhltiugcx\":\"yodnwzxltj\",\"y\":\"avvwxqi\",\"djrkvfgbvfvpd\":\"unyowxwl\"},\"id\":\"odacizs\",\"name\":\"q\",\"type\":\"hkr\"}")
+            "{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":7851173611055432996,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ty\"},\"location\":\"evxccedcp\",\"tags\":{\"vnhltiugcx\":\"yodnwzxltj\",\"y\":\"avvwxqi\",\"djrkvfgbvfvpd\":\"unyowxwl\"},\"id\":\"odacizs\",\"name\":\"q\",\"type\":\"hkr\"}")
             .toObject(VolumeQuotaRuleInner.class);
         Assertions.assertEquals("evxccedcp", model.location());
         Assertions.assertEquals("yodnwzxltj", model.tags().get("vnhltiugcx"));

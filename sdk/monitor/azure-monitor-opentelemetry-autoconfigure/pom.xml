@@ -38,6 +38,7 @@
       --add-opens com.azure.monitor.opentelemetry.autoconfigure/com.azure.monitor.opentelemetry.autoconfigure=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.monitor.opentelemetry.autoconfigure=com.azure.core.tracing.opentelemetry
+      --add-reads com.azure.monitor.opentelemetry.autoconfigure=io.netty.transport
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>
@@ -136,13 +137,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.21.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.7</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -160,7 +161,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.21.8</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.21.9</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
