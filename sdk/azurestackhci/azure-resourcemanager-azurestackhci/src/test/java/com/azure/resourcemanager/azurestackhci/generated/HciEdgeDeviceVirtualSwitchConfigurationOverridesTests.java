@@ -11,7 +11,7 @@ public final class HciEdgeDeviceVirtualSwitchConfigurationOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceVirtualSwitchConfigurationOverrides model
-            = BinaryData.fromString("{\"enableIov\":\"vaknokzwjj\",\"loadBalancingAlgorithm\":\"ltixldzyyfytpq\"}")
+            = BinaryData.fromString("{\"enableIov\":\"qinjipnwjf\",\"loadBalancingAlgorithm\":\"qlafcbahhpzpofoi\"}")
                 .toObject(HciEdgeDeviceVirtualSwitchConfigurationOverrides.class);
     }
 }

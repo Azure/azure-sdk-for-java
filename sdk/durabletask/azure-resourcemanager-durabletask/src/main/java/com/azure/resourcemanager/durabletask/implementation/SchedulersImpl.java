@@ -157,6 +157,14 @@ public final class SchedulersImpl implements Schedulers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
+    public Response<Void> restartWithResponse(String resourceGroupName, String schedulerName, Context context) {
+        return this.serviceClient().restartWithResponse(resourceGroupName, schedulerName, context);
+    }
+
+    public void restart(String resourceGroupName, String schedulerName) {
+        this.serviceClient().restart(resourceGroupName, schedulerName);
+    }
+
     public Scheduler getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

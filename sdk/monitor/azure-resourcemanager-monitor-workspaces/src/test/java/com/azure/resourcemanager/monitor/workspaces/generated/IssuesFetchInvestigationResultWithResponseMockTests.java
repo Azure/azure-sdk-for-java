@@ -23,7 +23,7 @@ public final class IssuesFetchInvestigationResultWithResponseMockTests {
     @Test
     public void testFetchInvestigationResultWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"lgnyhmo\",\"origin\":{\"addedBy\":\"xkk\",\"addedByType\":\"Manual\"},\"createdAt\":\"2021-06-21T18:07:23Z\",\"lastModifiedAt\":\"2021-10-07T20:30:06Z\",\"result\":\"xjb\"}";
+            = "{\"id\":\"vmnnrw\",\"origin\":{\"addedBy\":\"i\",\"addedByType\":\"Manual\"},\"createdAt\":\"2021-02-28T14:54:18Z\",\"lastModifiedAt\":\"2021-07-22T12:33Z\",\"result\":\"ywjhhgdnhx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class IssuesFetchInvestigationResultWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InvestigationResult response = manager.issues()
-            .fetchInvestigationResultWithResponse("zq", "zh", "tw",
-                new FetchInvestigationResultParameters().withInvestigationId("sgogczhonnxk"),
+            .fetchInvestigationResultWithResponse("xconfozauors", "kokwbqplhlvnu", "epzl",
+                new FetchInvestigationResultParameters().withInvestigationId("phwzsoldweyuqdu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lgnyhmo", response.id());
-        Assertions.assertEquals("xkk", response.origin().addedBy());
+        Assertions.assertEquals("vmnnrw", response.id());
+        Assertions.assertEquals("i", response.origin().addedBy());
         Assertions.assertEquals(AddedByType.MANUAL, response.origin().addedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T18:07:23Z"), response.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T20:30:06Z"), response.lastModifiedAt());
-        Assertions.assertEquals("xjb", response.result());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T14:54:18Z"), response.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T12:33Z"), response.lastModifiedAt());
+        Assertions.assertEquals("ywjhhgdnhx", response.result());
     }
 }

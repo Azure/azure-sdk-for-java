@@ -86,6 +86,11 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     private ExtendedProperties extendedProperties;
 
     /*
+     * Specifies how existing Basic VM protection is handled when configuring protection.
+     */
+    private ExistingBasicVMProtection existingBasicVMProtection;
+
+    /*
      * Type of the policy used for protection
      */
     private String policyType;
@@ -347,6 +352,28 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     }
 
     /**
+     * Get the existingBasicVMProtection property: Specifies how existing Basic VM protection is handled when
+     * configuring protection.
+     * 
+     * @return the existingBasicVMProtection value.
+     */
+    public ExistingBasicVMProtection existingBasicVMProtection() {
+        return this.existingBasicVMProtection;
+    }
+
+    /**
+     * Set the existingBasicVMProtection property: Specifies how existing Basic VM protection is handled when
+     * configuring protection.
+     * 
+     * @param existingBasicVMProtection the existingBasicVMProtection value to set.
+     * @return the AzureIaaSvmProtectedItem object itself.
+     */
+    public AzureIaaSvmProtectedItem withExistingBasicVMProtection(ExistingBasicVMProtection existingBasicVMProtection) {
+        this.existingBasicVMProtection = existingBasicVMProtection;
+        return this;
+    }
+
+    /**
      * Get the policyType property: Type of the policy used for protection.
      * 
      * @return the policyType value.
@@ -546,6 +573,8 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
         jsonWriter.writeStringField("lastBackupStatus", this.lastBackupStatus);
         jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
         jsonWriter.writeJsonField("extendedProperties", this.extendedProperties);
+        jsonWriter.writeStringField("existingBasicVMProtection",
+            this.existingBasicVMProtection == null ? null : this.existingBasicVMProtection.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -674,6 +703,9 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
                         = AzureIaaSvmProtectedItemExtendedInfo.fromJson(reader);
                 } else if ("extendedProperties".equals(fieldName)) {
                     deserializedAzureIaaSvmProtectedItem.extendedProperties = ExtendedProperties.fromJson(reader);
+                } else if ("existingBasicVMProtection".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItem.existingBasicVMProtection
+                        = ExistingBasicVMProtection.fromString(reader.getString());
                 } else if ("policyType".equals(fieldName)) {
                     deserializedAzureIaaSvmProtectedItem.policyType = reader.getString();
                 } else {

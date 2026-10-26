@@ -13,19 +13,19 @@ public final class LogCollectionRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCollectionRequestProperties model
-            = BinaryData.fromString("{\"fromDate\":\"2021-03-07T17:24:46Z\",\"toDate\":\"2021-08-12T15:23:33Z\"}")
+            = BinaryData.fromString("{\"fromDate\":\"2021-01-25T18:04:58Z\",\"toDate\":\"2021-11-13T04:56:11Z\"}")
                 .toObject(LogCollectionRequestProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T17:24:46Z"), model.fromDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T15:23:33Z"), model.toDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T18:04:58Z"), model.fromDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T04:56:11Z"), model.toDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogCollectionRequestProperties model
-            = new LogCollectionRequestProperties().withFromDate(OffsetDateTime.parse("2021-03-07T17:24:46Z"))
-                .withToDate(OffsetDateTime.parse("2021-08-12T15:23:33Z"));
+            = new LogCollectionRequestProperties().withFromDate(OffsetDateTime.parse("2021-01-25T18:04:58Z"))
+                .withToDate(OffsetDateTime.parse("2021-11-13T04:56:11Z"));
         model = BinaryData.fromObject(model).toObject(LogCollectionRequestProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T17:24:46Z"), model.fromDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T15:23:33Z"), model.toDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T18:04:58Z"), model.fromDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T04:56:11Z"), model.toDate());
     }
 }

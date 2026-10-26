@@ -68,7 +68,7 @@ public class JdkHttpClientBuilder {
      * </pre>
      * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds. A duration less than or equal to zero disables this timeout.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated {@link JdkHttpClientBuilder} object
@@ -136,6 +136,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -186,6 +188,10 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * Timeouts explicitly set on this builder take precedence over this store, then the global configuration store,
+     * then the default timeout. Missing timeout values fall back to the global store even when
+     * {@link Configuration#none()} is supplied.
      *
      * @param configuration The configuration store used to
      * @return The updated {@link JdkHttpClientBuilder} object.

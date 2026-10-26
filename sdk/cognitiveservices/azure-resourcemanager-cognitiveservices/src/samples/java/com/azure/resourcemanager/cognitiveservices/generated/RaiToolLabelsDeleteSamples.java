@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiToolLabelsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiToolLabel.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiToolLabel.json
      */
     /**
      * Sample code: DeleteRaiToolLabel.
