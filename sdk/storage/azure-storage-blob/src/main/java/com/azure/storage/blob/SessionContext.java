@@ -40,13 +40,13 @@ import java.util.function.Supplier;
  * <!-- src_embed com.azure.storage.blob.SessionContext.create -->
  * <pre>
  * String endpoint = &quot;https:&#47;&#47;account.blob.core.windows.net&quot;;
- * SessionContext sessions = new SessionContext&#40;endpoint, credential&#41;
+ * SessionContext sessionContext = new SessionContext&#40;endpoint, credential&#41;
  *     .setSessionMode&#40;SessionContext.SessionMode.ENABLED&#41;;
  *
  * BlobServiceClient firstClient = new BlobServiceClientBuilder&#40;&#41;.endpoint&#40;endpoint&#41;.credential&#40;credential&#41;
- *     .httpClient&#40;httpClient&#41;.sessionContext&#40;sessions&#41;.buildClient&#40;&#41;;
+ *     .httpClient&#40;httpClient&#41;.sessionContext&#40;sessionContext&#41;.buildClient&#40;&#41;;
  * BlobServiceClient secondClient = new BlobServiceClientBuilder&#40;&#41;.endpoint&#40;endpoint&#41;.credential&#40;credential&#41;
- *     .httpClient&#40;httpClient&#41;.sessionContext&#40;sessions&#41;.buildClient&#40;&#41;;
+ *     .httpClient&#40;httpClient&#41;.sessionContext&#40;sessionContext&#41;.buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.storage.blob.SessionContext.create -->
  *
