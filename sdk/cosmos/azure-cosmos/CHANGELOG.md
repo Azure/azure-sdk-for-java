@@ -3,10 +3,13 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Query-plan request metrics now use recorded HTTP attempts, including their destination, status, RU charge, and retries, while preserving `RequestOperationType=DocumentCollection/QueryPlan`. Cached plans do not emit network request measurements.
+* Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings.
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes
