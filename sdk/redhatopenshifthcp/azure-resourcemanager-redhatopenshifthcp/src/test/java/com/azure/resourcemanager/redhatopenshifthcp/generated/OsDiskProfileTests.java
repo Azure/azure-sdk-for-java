@@ -14,24 +14,24 @@ public final class OsDiskProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OsDiskProfile model = BinaryData.fromString(
-            "{\"sizeGiB\":119879881,\"diskStorageAccountType\":\"StandardSSD_LRS\",\"encryptionSetId\":\"zyiuokk\",\"diskType\":\"Ephemeral\"}")
+            "{\"sizeGiB\":2105680522,\"diskStorageAccountType\":\"Premium_LRS\",\"encryptionSetId\":\"xodpuozmyzydagfu\",\"diskType\":\"Managed\"}")
             .toObject(OsDiskProfile.class);
-        Assertions.assertEquals(119879881, model.sizeGiB());
-        Assertions.assertEquals(DiskStorageAccountType.STANDARD_SSD_LRS, model.diskStorageAccountType());
-        Assertions.assertEquals("zyiuokk", model.encryptionSetId());
-        Assertions.assertEquals(OsDiskType.EPHEMERAL, model.diskType());
+        Assertions.assertEquals(2105680522, model.sizeGiB());
+        Assertions.assertEquals(DiskStorageAccountType.PREMIUM_LRS, model.diskStorageAccountType());
+        Assertions.assertEquals("xodpuozmyzydagfu", model.encryptionSetId());
+        Assertions.assertEquals(OsDiskType.MANAGED, model.diskType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OsDiskProfile model = new OsDiskProfile().withSizeGiB(119879881)
-            .withDiskStorageAccountType(DiskStorageAccountType.STANDARD_SSD_LRS)
-            .withEncryptionSetId("zyiuokk")
-            .withDiskType(OsDiskType.EPHEMERAL);
+        OsDiskProfile model = new OsDiskProfile().withSizeGiB(2105680522)
+            .withDiskStorageAccountType(DiskStorageAccountType.PREMIUM_LRS)
+            .withEncryptionSetId("xodpuozmyzydagfu")
+            .withDiskType(OsDiskType.MANAGED);
         model = BinaryData.fromObject(model).toObject(OsDiskProfile.class);
-        Assertions.assertEquals(119879881, model.sizeGiB());
-        Assertions.assertEquals(DiskStorageAccountType.STANDARD_SSD_LRS, model.diskStorageAccountType());
-        Assertions.assertEquals("zyiuokk", model.encryptionSetId());
-        Assertions.assertEquals(OsDiskType.EPHEMERAL, model.diskType());
+        Assertions.assertEquals(2105680522, model.sizeGiB());
+        Assertions.assertEquals(DiskStorageAccountType.PREMIUM_LRS, model.diskStorageAccountType());
+        Assertions.assertEquals("xodpuozmyzydagfu", model.encryptionSetId());
+        Assertions.assertEquals(OsDiskType.MANAGED, model.diskType());
     }
 }

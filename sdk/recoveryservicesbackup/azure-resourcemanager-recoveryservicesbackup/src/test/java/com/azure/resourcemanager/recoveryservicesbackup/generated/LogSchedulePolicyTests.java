@@ -12,15 +12,15 @@ public final class LogSchedulePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogSchedulePolicy model = BinaryData
-            .fromString("{\"schedulePolicyType\":\"LogSchedulePolicy\",\"scheduleFrequencyInMins\":1087326396}")
+            .fromString("{\"schedulePolicyType\":\"LogSchedulePolicy\",\"scheduleFrequencyInMins\":1142162195}")
             .toObject(LogSchedulePolicy.class);
-        Assertions.assertEquals(1087326396, model.scheduleFrequencyInMins());
+        Assertions.assertEquals(1142162195, model.scheduleFrequencyInMins());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogSchedulePolicy model = new LogSchedulePolicy().withScheduleFrequencyInMins(1087326396);
+        LogSchedulePolicy model = new LogSchedulePolicy().withScheduleFrequencyInMins(1142162195);
         model = BinaryData.fromObject(model).toObject(LogSchedulePolicy.class);
-        Assertions.assertEquals(1087326396, model.scheduleFrequencyInMins());
+        Assertions.assertEquals(1142162195, model.scheduleFrequencyInMins());
     }
 }

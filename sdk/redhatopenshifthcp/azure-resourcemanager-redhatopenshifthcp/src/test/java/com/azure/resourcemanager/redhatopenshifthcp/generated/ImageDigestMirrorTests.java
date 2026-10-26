@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageDigestMirrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageDigestMirror model
-            = BinaryData.fromString("{\"source\":\"ukdkexxppofmxa\",\"mirrors\":[\"fjpgddtocjjxhvp\"]}")
-                .toObject(ImageDigestMirror.class);
-        Assertions.assertEquals("ukdkexxppofmxa", model.source());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.mirrors().get(0));
+        ImageDigestMirror model = BinaryData.fromString("{\"source\":\"gmaajrm\",\"mirrors\":[\"jwzrl\",\"vmclw\"]}")
+            .toObject(ImageDigestMirror.class);
+        Assertions.assertEquals("gmaajrm", model.source());
+        Assertions.assertEquals("jwzrl", model.mirrors().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageDigestMirror model
-            = new ImageDigestMirror().withSource("ukdkexxppofmxa").withMirrors(Arrays.asList("fjpgddtocjjxhvp"));
+            = new ImageDigestMirror().withSource("gmaajrm").withMirrors(Arrays.asList("jwzrl", "vmclw"));
         model = BinaryData.fromObject(model).toObject(ImageDigestMirror.class);
-        Assertions.assertEquals("ukdkexxppofmxa", model.source());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.mirrors().get(0));
+        Assertions.assertEquals("gmaajrm", model.source());
+        Assertions.assertEquals("jwzrl", model.mirrors().get(0));
     }
 }

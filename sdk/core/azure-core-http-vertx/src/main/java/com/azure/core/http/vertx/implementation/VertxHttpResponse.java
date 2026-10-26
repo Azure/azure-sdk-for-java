@@ -7,15 +7,18 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Default HTTP response for Vert.x.
  */
 public final class VertxHttpResponse extends VertxHttpResponseBase {
-    private volatile boolean closed;
+    private final AtomicBoolean closed = new AtomicBoolean();
 
     /**
      * Creates a http response.
@@ -40,20 +43,31 @@ public final class VertxHttpResponse extends VertxHttpResponseBase {
     private Flux<ByteBuffer> streamResponseBody() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
+            if (closed.get()) {
+                sink.complete();
+                return;
+            }
+
             vertxHttpResponse.handler(buffer -> sink.next(ByteBuffer.wrap(buffer.getBytes()))).endHandler(event -> {
-                closed = true;
+                closed.set(true);
                 sink.complete();
             }).exceptionHandler(sink::error);
 
-            vertxHttpResponse.resume();
-        });
+            sink.onDispose(this::close);
+            sink.onRequest(count -> {
+                if (!closed.get()) {
+                    vertxHttpResponse.fetch(count);
+                }
+            });
+        }, FluxSink.OverflowStrategy.ERROR);
     }
 
     @Override
     public void close() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
-        if (vertxHttpResponse != null && !closed) {
-            vertxHttpResponse.netSocket().close().andThen(ignored -> closed = true);
+        if (closed.compareAndSet(false, true)) {
+            VertxUtils.resetRequest(vertxHttpResponse.request(), 0L,
+                new CancellationException("HTTP response body was closed."));
         }
     }
 }

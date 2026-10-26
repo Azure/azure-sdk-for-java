@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The current state of a scheduled action occurrence.
+ * The current state of a recurring bulk action occurrence.
  */
 public final class OccurrenceState extends ExpandableStringEnum<OccurrenceState> {
     /**
