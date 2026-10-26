@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -61,6 +60,7 @@ public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS
         = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
+    private static final String DFS_ENDPOINT = "https://account.dfs.core.windows.net/";
     private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
@@ -78,9 +78,17 @@ public class BuilderHelperTests {
             .setBody(Flux.empty());
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void customSessionAcquisitionUsesDataLakeBuilderTransport(boolean async) {
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportSync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(false);
+    }
+
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportAsync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(true);
+    }
+
+    private void customDfsSessionAcquisitionUsesDataLakeBuilderTransport(boolean async) {
         AtomicInteger acquisitions = new AtomicInteger();
         AtomicInteger reads = new AtomicInteger();
         HttpHeaderName marker = HttpHeaderName.fromString("x-test-datalake");
@@ -111,13 +119,12 @@ public class BuilderHelperTests {
                 .addHeader(HttpHeaderName.LAST_MODIFIED.toString(),
                     new DateTimeRfc1123(OffsetDateTime.now()).toString()));
         };
-        DataLakeServiceClientBuilder builder
-            = new DataLakeServiceClientBuilder().endpoint("https://account.dfs.core.windows.net")
-                .credential(new MockTokenCredential())
-                .httpClient(transport)
-                .addPolicy(new AddHeadersPolicy(new HttpHeaders().set(marker, "configured")))
-                .sessionContext(new SessionContext(ENDPOINT, new MockTokenCredential())
-                    .setSessionMode(SessionContext.SessionMode.ENABLED));
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder().endpoint(DFS_ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(transport)
+            .addPolicy(new AddHeadersPolicy(new HttpHeaders().set(marker, "configured")))
+            .sessionContext(new SessionContext(DFS_ENDPOINT, new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED));
         if (async) {
             for (int i = 0; i < 2; i++) {
                 DataLakeServiceAsyncClient client = builder.buildAsyncClient();

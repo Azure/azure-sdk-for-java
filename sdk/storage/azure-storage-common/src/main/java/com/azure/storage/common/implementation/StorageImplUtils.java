@@ -296,6 +296,25 @@ public class StorageImplUtils {
     }
 
     /**
+     * Replaces a storage service subdomain in an endpoint while leaving account names containing the same text intact.
+     *
+     * @param endpoint The endpoint to convert.
+     * @param desiredEndpoint The desired service subdomain.
+     * @param currentEndpoint The current service subdomain.
+     * @return The converted endpoint, or the original endpoint if it already targets the desired service or doesn't
+     * contain the current service subdomain.
+     */
+    public static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
+        String desiredStringToMatch = "." + desiredEndpoint + ".";
+        String currentRegexToMatch = "\\." + currentEndpoint + "\\.";
+        if (endpoint.contains(desiredStringToMatch)) {
+            return endpoint;
+        } else {
+            return endpoint.replaceFirst(currentRegexToMatch, desiredStringToMatch);
+        }
+    }
+
+    /**
      * Determines whether a host contains the given storage service subdomain.
      *
      * @param host The host string to check.
@@ -351,6 +370,28 @@ public class StorageImplUtils {
                 return accountName;
             }
         }
+        return null;
+    }
+
+    /**
+     * Gets the account name from the first recognized storage service subdomain in a host.
+     *
+     * @param host The host string from a URL.
+     * @param serviceSubDomains The recognized service subdomains in matching order.
+     * @return The account name, or {@code null} if the host doesn't contain a recognized service subdomain.
+     */
+    public static String getAccountNameFromKnownServiceHost(String host, String... serviceSubDomains) {
+        if (serviceSubDomains == null) {
+            return null;
+        }
+
+        for (String serviceSubDomain : serviceSubDomains) {
+            String accountName = getAccountNameFromHost(host, serviceSubDomain);
+            if (accountName != null) {
+                return accountName;
+            }
+        }
+
         return null;
     }
 

@@ -2534,7 +2534,17 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @LiveOnly
     @ResourceLock("DataLakeSessionAuth")
     public void readFileOverSessionAuth() {
-        int fileCount = 5;
+        assertReadFileOverSessionAuth(new SessionContext().setSessionMode(SessionMode.ENABLED), 5);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("DataLakeSessionAuth")
+    public void readFileOverSessionAuthWithDfsAcquisitionEndpoint() {
+        assertReadFileOverSessionAuth(getEnabledDfsSessionContext(), 1);
+    }
+
+    private void assertReadFileOverSessionAuth(SessionContext sessionContext, int fileCount) {
         List<String> fileNames = new ArrayList<>();
         for (int i = 0; i < fileCount; i++) {
             String fileName = generatePathName();
@@ -2561,7 +2571,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             return next.process();
         };
 
-        DataLakeFileSystemClient sessionFileSystemClient = sessionEnabledFileSystemClient(inspect);
+        DataLakeFileSystemClient sessionFileSystemClient = sessionEnabledFileSystemClient(sessionContext, inspect);
 
         for (String fileName : fileNames) {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -2587,9 +2597,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
                 .collect(Collectors.toList()));
     }
 
-    private DataLakeFileSystemClient sessionEnabledFileSystemClient(HttpPipelinePolicy... policies) {
-        return getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), policies)
+    private DataLakeFileSystemClient sessionEnabledFileSystemClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClient(sessionContext, policies)
             .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName());
     }
-
 }

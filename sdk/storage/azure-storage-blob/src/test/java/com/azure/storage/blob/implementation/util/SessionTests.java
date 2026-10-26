@@ -712,6 +712,14 @@ public class SessionTests {
     }
 
     @Test
+    public void dfsAcquisitionEndpointMatchesOnlyTheCorrespondingBlobAccount() {
+        SessionAcquirer acquirer = testAcquirer("https://testaccount.dfs.core.windows.net/mycontainer?comp=session");
+
+        assertTrue(acquirer.isRequestForSessionEndpoint(blobGetRequest()));
+        assertFalse(acquirer.isRequestForSessionEndpoint(blobGetRequest("otheraccount", "mycontainer")));
+    }
+
+    @Test
     public void sessionRequestContextCarriesPolicyAcquirer() {
         SessionAcquirer acquirer = testAcquirer();
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, SessionMode.ENABLED);

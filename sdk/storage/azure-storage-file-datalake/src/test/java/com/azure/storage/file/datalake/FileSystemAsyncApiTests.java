@@ -2620,7 +2620,17 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @LiveOnly
     @ResourceLock("DataLakeSessionAuth")
     public void readFileOverSessionAuth() {
-        int fileCount = 5;
+        assertReadFileOverSessionAuth(new SessionContext().setSessionMode(SessionMode.ENABLED), 5);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("DataLakeSessionAuth")
+    public void readFileOverSessionAuthWithDfsAcquisitionEndpoint() {
+        assertReadFileOverSessionAuth(getEnabledDfsSessionContext(), 1);
+    }
+
+    private void assertReadFileOverSessionAuth(SessionContext sessionContext, int fileCount) {
         List<String> fileNames = new ArrayList<>();
         for (int i = 0; i < fileCount; i++) {
             String fileName = generatePathName();
@@ -2649,7 +2659,8 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             return next.process();
         };
 
-        DataLakeFileSystemAsyncClient sessionFileSystemAsyncClient = sessionEnabledFileSystemAsyncClient(inspect);
+        DataLakeFileSystemAsyncClient sessionFileSystemAsyncClient
+            = sessionEnabledFileSystemAsyncClient(sessionContext, inspect);
 
         for (String fileName : fileNames) {
             StepVerifier
@@ -2670,15 +2681,13 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             "Expected to observe at least one DFS endpoint request; saw none");
         assertTrue(dfsAuthorizationHeaders.stream().allMatch(auth -> auth.startsWith("Bearer ")),
             "Expected all DFS endpoint requests to use Bearer; saw " + dfsAuthorizationHeaders.stream()
-                .map(auth -> auth.startsWith("Bearer ") ? "Bearer"
-                    : auth.startsWith("Session ") ? "Session" : "Other")
+                .map(auth -> auth.startsWith("Bearer ") ? "Bearer" : auth.startsWith("Session ") ? "Session" : "Other")
                 .collect(Collectors.toList()));
     }
 
-    private DataLakeFileSystemAsyncClient sessionEnabledFileSystemAsyncClient(HttpPipelinePolicy... policies) {
-        return getOAuthServiceAsyncClient(new SessionContext().setSessionMode(SessionMode.ENABLED), policies)
+    private DataLakeFileSystemAsyncClient sessionEnabledFileSystemAsyncClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceAsyncClient(sessionContext, policies)
             .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName());
     }
-
 }
-

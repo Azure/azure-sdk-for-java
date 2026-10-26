@@ -212,6 +212,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getOAuthServiceClientBuilder().buildAsyncClient();
     }
 
+    protected SessionContext getEnabledDfsSessionContext() {
+        return new SessionContext(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+            StorageCommonTestUtils.getTokenCredential(interceptorManager))
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+    }
+
     protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext) {
         return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
     }

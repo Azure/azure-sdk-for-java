@@ -203,10 +203,10 @@ public final class BuilderHelper {
         }
 
         BlobUrlParts endpointParts = BlobUrlParts.parse(endpoint);
-        String host = endpointParts.getHost();
-        if (StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN)
-            || StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN)) {
-            return endpointParts.getAccountName();
+        String accountNameFromHost = StorageImplUtils.getAccountNameFromKnownServiceHost(endpointParts.getHost(),
+            Constants.UrlConstants.BLOB_URI_SUBDOMAIN, Constants.UrlConstants.DFS_URI_SUBDOMAIN);
+        if (accountNameFromHost != null) {
+            return accountNameFromHost;
         }
 
         throw new IllegalArgumentException(
@@ -236,13 +236,23 @@ public final class BuilderHelper {
     }
 
     /**
-     * Removes resource and query components while retaining supported account paths.
-     * @param endpoint The Blob endpoint.
-     * @return The account endpoint.
+     * Removes resource and query components while retaining supported account paths. Recognized Data Lake endpoints
+     * are normalized to the corresponding Blob endpoint because session-authenticated Data Lake reads use the Blob
+     * pipeline.
+     *
+     * @param endpoint The Blob or Data Lake endpoint.
+     * @return The Blob account endpoint.
      */
     public static String getSessionEndpoint(String endpoint) {
         try {
-            return getEndpoint(BlobUrlParts.parse(endpoint));
+            BlobUrlParts parts = BlobUrlParts.parse(endpoint);
+            String accountEndpoint = getEndpoint(parts);
+            if (!StorageImplUtils.isServiceEndpoint(parts.getHost(), Constants.UrlConstants.DFS_URI_SUBDOMAIN)) {
+                return accountEndpoint;
+            }
+
+            return StorageImplUtils.endpointToDesiredEndpoint(accountEndpoint,
+                Constants.UrlConstants.BLOB_URI_SUBDOMAIN, Constants.UrlConstants.DFS_URI_SUBDOMAIN);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid session endpoint.", e);
         }
