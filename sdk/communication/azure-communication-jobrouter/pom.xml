@@ -100,20 +100,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.azure:*</include>
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>

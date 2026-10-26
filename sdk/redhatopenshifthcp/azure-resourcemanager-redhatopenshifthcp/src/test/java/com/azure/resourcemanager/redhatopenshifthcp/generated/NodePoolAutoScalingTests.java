@@ -12,16 +12,16 @@ public final class NodePoolAutoScalingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodePoolAutoScaling model
-            = BinaryData.fromString("{\"min\":2073255975,\"max\":334875262}").toObject(NodePoolAutoScaling.class);
-        Assertions.assertEquals(2073255975, model.min());
-        Assertions.assertEquals(334875262, model.max());
+            = BinaryData.fromString("{\"min\":1852056449,\"max\":427242708}").toObject(NodePoolAutoScaling.class);
+        Assertions.assertEquals(1852056449, model.min());
+        Assertions.assertEquals(427242708, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodePoolAutoScaling model = new NodePoolAutoScaling().withMin(2073255975).withMax(334875262);
+        NodePoolAutoScaling model = new NodePoolAutoScaling().withMin(1852056449).withMax(427242708);
         model = BinaryData.fromObject(model).toObject(NodePoolAutoScaling.class);
-        Assertions.assertEquals(2073255975, model.min());
-        Assertions.assertEquals(334875262, model.max());
+        Assertions.assertEquals(1852056449, model.min());
+        Assertions.assertEquals(427242708, model.max());
     }
 }

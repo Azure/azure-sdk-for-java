@@ -8,6 +8,16 @@
 
 ### Bugs Fixed
 
+- Restricted proxy credentials to authentication challenges from the configured proxy host and port, preventing
+  destination servers or other proxies from receiving them.
+- Fixed synchronous response downloads losing bytes when the destination channel performs partial writes.
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Fixed client construction failing when the connection timeout is disabled.
+- Fixed per-call response timeout overrides incorrectly changing asynchronous response-body read timeouts.
+- Fixed response timeouts expiring during otherwise valid request-body uploads.
+- Fixed requests with `Expect: 100-continue` waiting indefinitely when a server sends neither an interim nor a final response. The configured response timeout now bounds the handshake wait independently of the upload.
+
 ### Other Changes
 
 ## 1.2.0 (2026-09-29)

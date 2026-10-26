@@ -28,7 +28,7 @@ public final class AgentDeploymentsStopWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.agentDeployments()
-            .stopWithResponse("prpensbmz", "ritukoym", "bfex", "izzjxwj", "qfzwanduhduw",
+            .stopWithResponse("ofmazhkqqs", "knaqszbwgp", "dmwiwevveswg", "hbq", "hdldarg",
                 com.azure.core.util.Context.NONE);
 
     }

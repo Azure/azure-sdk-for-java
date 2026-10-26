@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -40,6 +41,8 @@ public class HttpClientOptionsTests {
         assertEquals(Duration.ZERO, timeoutGetter.apply(httpClientOptions));
     }
 
+    @ParameterizedTest
+    @MethodSource("timeoutSupplier")
     public void zeroTimeoutDefaultsToInfiniteTimeout(
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
         Function<HttpClientOptions, Duration> timeoutGetter) {
@@ -91,6 +94,59 @@ public class HttpClientOptionsTests {
             Arguments.of(readTimeout, getReadTimeout), Arguments.of(setReadTimeout, getReadTimeout),
 
             Arguments.of(setConnectionIdleTimeout, getConnectionIdleTimeout));
+    }
+
+    @ParameterizedTest
+    @MethodSource("configuredTimeoutSupplier")
+    public void configurationTimeoutsAreUsedUnlessExplicitlyOverridden(String property,
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> setter,
+        Function<HttpClientOptions, Duration> getter) {
+        Configuration configuration = new ConfigurationBuilder(path -> Collections.emptyMap(),
+            path -> Collections.singletonMap(property, "123000"), path -> Collections.emptyMap()).build();
+        HttpClientOptions options = new HttpClientOptions().setConfiguration(configuration);
+        assertEquals(Duration.ofMillis(123000), getter.apply(options));
+
+        Duration[] explicitTimeouts
+            = { Duration.ZERO, Duration.ofNanos(-1), Duration.ofNanos(1), Duration.ofSeconds(3) };
+        long[] expectedMillis = { 0, 0, 1, 3000 };
+        for (int i = 0; i < explicitTimeouts.length; i++) {
+            setter.apply(options, explicitTimeouts[i]);
+            assertEquals(Duration.ofMillis(expectedMillis[i]), getter.apply(options));
+        }
+
+        setter.apply(options, null);
+        assertEquals(Duration.ofMillis(123000), getter.apply(options));
+    }
+
+    @Test
+    public void explicitConfigurationPropertiesAreUsed() {
+        Configuration configuration = new ConfigurationBuilder(path -> Collections.emptyMap(),
+            path -> Collections.emptyMap(), path -> Collections.emptyMap())
+                .putProperty(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "123000")
+                .putProperty(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, "234000")
+                .putProperty(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "345000")
+                .putProperty(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "456000")
+                .build();
+        HttpClientOptions options = new HttpClientOptions().setConfiguration(configuration);
+        assertEquals(Duration.ofMillis(123000), options.getConnectTimeout());
+        assertEquals(Duration.ofMillis(234000), options.getReadTimeout());
+        assertEquals(Duration.ofMillis(345000), options.getWriteTimeout());
+        assertEquals(Duration.ofMillis(456000), options.getResponseTimeout());
+    }
+
+    private static Stream<Arguments> configuredTimeoutSupplier() {
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> connect = HttpClientOptions::setConnectTimeout;
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> write = HttpClientOptions::setWriteTimeout;
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> response = HttpClientOptions::setResponseTimeout;
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> read = HttpClientOptions::setReadTimeout;
+        Function<HttpClientOptions, Duration> getConnect = HttpClientOptions::getConnectTimeout;
+        Function<HttpClientOptions, Duration> getWrite = HttpClientOptions::getWriteTimeout;
+        Function<HttpClientOptions, Duration> getResponse = HttpClientOptions::getResponseTimeout;
+        Function<HttpClientOptions, Duration> getRead = HttpClientOptions::getReadTimeout;
+        return Stream.of(Arguments.of(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, connect, getConnect),
+            Arguments.of(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, write, getWrite),
+            Arguments.of(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, response, getResponse),
+            Arguments.of(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, read, getRead));
     }
 
     @Test

@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TokenClaimValidationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TokenClaimValidationRule model = BinaryData.fromString(
-            "{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"oxuscrpabgyepsbj\",\"requiredValue\":\"azqugxywpmueefj\"}}")
+        TokenClaimValidationRule model = BinaryData
+            .fromString(
+                "{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"ahaquh\",\"requiredValue\":\"dhmdua\"}}")
             .toObject(TokenClaimValidationRule.class);
         Assertions.assertEquals(TokenValidationRuleType.REQUIRED_CLAIM, model.type());
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.requiredClaim().claim());
-        Assertions.assertEquals("azqugxywpmueefj", model.requiredClaim().requiredValue());
+        Assertions.assertEquals("ahaquh", model.requiredClaim().claim());
+        Assertions.assertEquals("dhmdua", model.requiredClaim().requiredValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TokenClaimValidationRule model = new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
-            .withRequiredClaim(
-                new TokenRequiredClaim().withClaim("oxuscrpabgyepsbj").withRequiredValue("azqugxywpmueefj"));
+            .withRequiredClaim(new TokenRequiredClaim().withClaim("ahaquh").withRequiredValue("dhmdua"));
         model = BinaryData.fromObject(model).toObject(TokenClaimValidationRule.class);
         Assertions.assertEquals(TokenValidationRuleType.REQUIRED_CLAIM, model.type());
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.requiredClaim().claim());
-        Assertions.assertEquals("azqugxywpmueefj", model.requiredClaim().requiredValue());
+        Assertions.assertEquals("ahaquh", model.requiredClaim().claim());
+        Assertions.assertEquals("dhmdua", model.requiredClaim().requiredValue());
     }
 }

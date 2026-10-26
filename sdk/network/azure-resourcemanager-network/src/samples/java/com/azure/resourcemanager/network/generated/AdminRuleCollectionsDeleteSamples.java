@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AdminRuleCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkManagerAdminRuleCollectionDelete.json
+     * x-ms-original-file: 2026-03-01/NetworkManagerAdminRuleCollectionDelete.json
      */
     /**
      * Sample code: Deletes an admin rule collection.

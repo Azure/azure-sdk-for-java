@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.horizondb.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,12 +14,13 @@ import java.io.IOException;
 /**
  * Network properties.
  */
-@Immutable
+@Fluent
 public final class Network implements JsonSerializable<Network> {
     /*
-     * The flag indicating whether public ip is requested.
+     * Specifies whether public access is enabled for the cluster. The service defaults to Disabled when this property
+     * is omitted.
      */
-    private PublicNetworkAccessState publicNetworkAccess;
+    private PublicNetworkAccessState publicAccess;
 
     /**
      * Creates an instance of Network class.
@@ -28,12 +29,25 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Get the publicNetworkAccess property: The flag indicating whether public ip is requested.
+     * Get the publicAccess property: Specifies whether public access is enabled for the cluster. The service defaults
+     * to Disabled when this property is omitted.
      * 
-     * @return the publicNetworkAccess value.
+     * @return the publicAccess value.
      */
-    public PublicNetworkAccessState publicNetworkAccess() {
-        return this.publicNetworkAccess;
+    public PublicNetworkAccessState publicAccess() {
+        return this.publicAccess;
+    }
+
+    /**
+     * Set the publicAccess property: Specifies whether public access is enabled for the cluster. The service defaults
+     * to Disabled when this property is omitted.
+     * 
+     * @param publicAccess the publicAccess value to set.
+     * @return the Network object itself.
+     */
+    public Network withPublicAccess(PublicNetworkAccessState publicAccess) {
+        this.publicAccess = publicAccess;
+        return this;
     }
 
     /**
@@ -42,6 +56,7 @@ public final class Network implements JsonSerializable<Network> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicAccess", this.publicAccess == null ? null : this.publicAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -60,8 +75,8 @@ public final class Network implements JsonSerializable<Network> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("publicNetworkAccess".equals(fieldName)) {
-                    deserializedNetwork.publicNetworkAccess = PublicNetworkAccessState.fromString(reader.getString());
+                if ("publicAccess".equals(fieldName)) {
+                    deserializedNetwork.publicAccess = PublicNetworkAccessState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

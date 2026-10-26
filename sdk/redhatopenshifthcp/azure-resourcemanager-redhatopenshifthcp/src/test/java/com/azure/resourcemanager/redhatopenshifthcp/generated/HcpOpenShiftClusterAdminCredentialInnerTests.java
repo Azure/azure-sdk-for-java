@@ -11,7 +11,7 @@ public final class HcpOpenShiftClusterAdminCredentialInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOpenShiftClusterAdminCredentialInner model
-            = BinaryData.fromString("{\"kubeconfig\":\"cftadeh\",\"expirationTimestamp\":\"2020-12-20T16:44:21Z\"}")
+            = BinaryData.fromString("{\"kubeconfig\":\"b\",\"expirationTimestamp\":\"2021-04-23T00:27:35Z\"}")
                 .toObject(HcpOpenShiftClusterAdminCredentialInner.class);
     }
 }
