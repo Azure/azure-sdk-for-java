@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class SchedulersListPrivateLinksSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PrivateLinkResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateLinkResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateLinkResources_List_MaximumSet.

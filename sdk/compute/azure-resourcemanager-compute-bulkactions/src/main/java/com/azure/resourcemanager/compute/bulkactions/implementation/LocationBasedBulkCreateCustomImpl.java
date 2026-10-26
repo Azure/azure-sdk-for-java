@@ -9,8 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.util.Collections;
@@ -46,6 +48,14 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ExtendedLocation extendedLocation() {
+        return this.innerModel().extendedLocation();
+    }
+
+    public Placement placement() {
+        return this.innerModel().placement();
     }
 
     public Map<String, String> tags() {
@@ -186,6 +196,16 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
 
     public LocationBasedBulkCreateCustomImpl withZones(List<String> zones) {
         this.innerModel().withZones(zones);
+        return this;
+    }
+
+    public LocationBasedBulkCreateCustomImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
+        return this;
+    }
+
+    public LocationBasedBulkCreateCustomImpl withPlacement(Placement placement) {
+        this.innerModel().withPlacement(placement);
         return this;
     }
 

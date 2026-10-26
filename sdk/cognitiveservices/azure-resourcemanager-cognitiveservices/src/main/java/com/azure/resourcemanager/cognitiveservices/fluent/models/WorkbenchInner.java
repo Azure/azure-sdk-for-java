@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.WorkbenchProperties;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Workbench resource under a Cognitive Services project.
@@ -30,16 +29,6 @@ public final class WorkbenchInner extends ProxyResource {
      * Resource Etag.
      */
     private String etag;
-
-    /*
-     * The location of the workbench resource.
-     */
-    private String location;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * Identity for the resource.
@@ -99,46 +88,6 @@ public final class WorkbenchInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the location property: The location of the workbench resource.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the workbench resource.
-     * 
-     * @param location the location value to set.
-     * @return the WorkbenchInner object itself.
-     */
-    public WorkbenchInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the WorkbenchInner object itself.
-     */
-    public WorkbenchInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -207,8 +156,6 @@ public final class WorkbenchInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -239,11 +186,6 @@ public final class WorkbenchInner extends ProxyResource {
                     deserializedWorkbenchInner.properties = WorkbenchProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedWorkbenchInner.etag = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedWorkbenchInner.location = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedWorkbenchInner.tags = tags;
                 } else if ("identity".equals(fieldName)) {
                     deserializedWorkbenchInner.identity = Identity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
