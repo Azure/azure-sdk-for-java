@@ -3,6 +3,7 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `CosmosContainerProperties.setChangeFeedPreviousImageRetentionMode` to configure previous image capture for replace, patch, updating upsert, and delete operations in the all versions and deletes change feed on supported accounts.
 
 #### Breaking Changes
 

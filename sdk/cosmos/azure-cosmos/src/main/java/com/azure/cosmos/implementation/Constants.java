@@ -233,6 +233,7 @@ public final class Constants {
         // Change feed policy
         public static final String CHANGE_FEED_POLICY = "changeFeedPolicy";
         public static final String LOG_RETENTION_DURATION = "retentionDuration";
+        public static final String PREVIOUS_IMAGE_RETENTION_POLICY = "previousImageRetentionPolicy";
 
         // Conflict resolution policy
         public static final String CONFLICT_RESOLUTION_POLICY = "conflictResolutionPolicy";
