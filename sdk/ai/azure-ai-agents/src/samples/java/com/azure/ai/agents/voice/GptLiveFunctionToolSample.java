@@ -61,7 +61,7 @@ public class GptLiveFunctionToolSample {
             = GptLiveSampleUtils.createAgent(builder, model, backendModel, "tools", true, keepAgent);
             BetaVoiceAgentLiveWebSocketSessionClient session = agent.builder.beta()
                 .buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession(agent.name)) {
-            GptLiveSampleUtils.runConversation(session,
+            GptLiveSampleUtils.runToolConversation(session,
                 Collections.singletonList(args.length == 0 ? "What is the weather in Seattle?" : args[0]),
                 GptLiveFunctionToolSample::toolResult);
         }

@@ -62,7 +62,7 @@ public class GptLiveAudioConversationAsyncSample {
             = GptLiveSampleUtils.createAgent(builder, model, backendModel, "audio-async", false, keepAgent)) {
             Mono.usingWhen(agent.builder.beta().buildBetaVoiceAgentLiveWebSocketAsyncClient()
                 .openWebSocketSession(agent.name, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store)),
-                GptLiveSampleUtils::runConversation,
+                GptLiveSampleUtils::runAudioConversationAsync,
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync,
                 (session, error) -> session.closeAsync(),
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync).block();

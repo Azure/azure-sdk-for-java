@@ -77,9 +77,9 @@ public class GptLiveTextConversationAsyncSample {
             Mono.usingWhen(agent.builder.beta().buildBetaVoiceAgentLiveWebSocketAsyncClient()
                 .openWebSocketSession(agent.name, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store)),
                 session -> args.length == 0
-                    ? GptLiveSampleUtils.runConversation(session,
+                    ? GptLiveSampleUtils.runInteractiveConversationAsync(session,
                         console == null ? new InputStreamReader(System.in) : console.reader())
-                    : GptLiveSampleUtils.runConversation(session, Arrays.asList(args)),
+                    : GptLiveSampleUtils.runTextConversationAsync(session, Arrays.asList(args)),
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync,
                 (session, error) -> session.closeAsync(),
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync).block();

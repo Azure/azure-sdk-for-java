@@ -441,18 +441,55 @@ public class GptLiveSamplesTests {
         }
     }
 
+    @Test
+    public void blockingConversationConsumesEventsWithoutSession() {
+        java.util.concurrent.BlockingQueue<ServerEvent> incoming = new java.util.concurrent.LinkedBlockingQueue<>();
+        incoming.add(typedEvent(BinaryData.fromString(STARTED)));
+        Iterable<ServerEvent> events = () -> Stream.generate(() -> {
+            try {
+                return incoming.take();
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Event producer interrupted.", error);
+            }
+        }).iterator();
+        java.util.Iterator<String> prompts = Arrays.asList("one", "two").iterator();
+        GptLiveSampleUtils.runConversation(events, command -> {
+            commands.add(GptLiveSampleUtils.object(OpenAIJsonHelper.toBinaryData(command)));
+            if (command.isResponseCreate()) {
+                incoming.add(typedEvent(BinaryData.fromString(COMPLETED)));
+            } else if (command.isSessionClose()) {
+                incoming.add(typedEvent(BinaryData.fromString(CLOSED)));
+            }
+        }, () -> "test close details", transcripts -> prompts.hasNext() ? prompts.next() : null, pcm -> {
+        }, () -> {
+        }, false, null);
+        assertEquals(Arrays.asList("response.item.create", "response.create", "response.item.create", "response.create",
+            "session.close"), commandTypes());
+    }
+
+    @Test
+    public void blockingConversationReportsCloseDetailsWithoutSession() {
+        IllegalStateException error = assertThrows(IllegalStateException.class, () -> GptLiveSampleUtils
+            .runConversation(Collections.singletonList(typedEvent(BinaryData.fromString(CLOSED))), command -> {
+            }, () -> "transport close code=1006, reason=test disconnect", transcripts -> null, pcm -> {
+            }, () -> {
+            }, false, null));
+        assertTrue(error.getMessage().contains("transport close code=1006, reason=test disconnect"));
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void textSamplesWaitForStartupAndCompleteMultipleTurns(boolean async) {
         startTextServer(false, false);
         if (async) {
             Mono.usingWhen(builder().beta().buildBetaVoiceAgentLiveWebSocketAsyncClient().openWebSocketSession("agent"),
-                session -> GptLiveSampleUtils.runConversation(session, Arrays.asList("one", "two")),
+                session -> GptLiveSampleUtils.runTextConversationAsync(session, Arrays.asList("one", "two")),
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync).block(TIMEOUT);
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-                GptLiveSampleUtils.runConversation(session, Arrays.asList("one", "two"));
+                GptLiveSampleUtils.runTextConversation(session, Arrays.asList("one", "two"));
             }
         }
         List<String> expected = Arrays.asList("response.item.create", "response.create", "response.item.create",
@@ -518,12 +555,12 @@ public class GptLiveSamplesTests {
         Runnable drainAudio) {
         if (async) {
             Mono.usingWhen(builder().beta().buildBetaVoiceAgentLiveWebSocketAsyncClient().openWebSocketSession("agent"),
-                session -> GptLiveSampleUtils.runConversation(session, input, playAudio, drainAudio),
+                session -> GptLiveSampleUtils.runInteractiveConversationAsync(session, input, playAudio, drainAudio),
                 BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync).block(TIMEOUT);
         } else {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-                GptLiveSampleUtils.runConversation(session, input, playAudio, drainAudio);
+                GptLiveSampleUtils.runInteractiveConversation(session, input, playAudio, drainAudio);
             }
         }
     }
@@ -589,7 +626,7 @@ public class GptLiveSamplesTests {
                 throw new IOException("Console unavailable");
             }
         };
-        StepVerifier.create(GptLiveSampleUtils.readPrompt(input))
+        StepVerifier.create(GptLiveSampleUtils.readPromptAsync(input))
             .expectErrorMatches(
                 error -> error instanceof IOException && "Console unavailable".equals(error.getMessage()))
             .verify(TIMEOUT);
@@ -598,7 +635,7 @@ public class GptLiveSamplesTests {
     @Test
     public void consoleInputIsSubmittedOnlyAfterEnterWithoutLosingCharacters() throws Exception {
         try (PipedReader input = new PipedReader(); PipedWriter keyboard = new PipedWriter(input)) {
-            CompletableFuture<String> prompt = GptLiveSampleUtils.readPrompt(input).toFuture();
+            CompletableFuture<String> prompt = GptLiveSampleUtils.readPromptAsync(input).toFuture();
             try {
                 keyboard.write("testtesttes testing");
                 keyboard.flush();
@@ -698,7 +735,7 @@ public class GptLiveSamplesTests {
         StepVerifier.withVirtualTime(() -> {
             GptLiveSampleUtils.Greeting pending = new GptLiveSampleUtils.Greeting();
             greeting.set(pending);
-            return pending.awaitPlayback(() -> drained.set(true));
+            return pending.awaitPlaybackAsync(() -> drained.set(true));
         })
             .expectSubscription()
             .then(() -> greeting.get().onTranscript())
@@ -726,7 +763,7 @@ public class GptLiveSamplesTests {
             } else {
                 greeting.onTranscript();
             }
-            return greeting.awaitPlayback(() -> drained.set(true));
+            return greeting.awaitPlaybackAsync(() -> drained.set(true));
         }).expectSubscription().thenAwait(GptLiveSampleUtils.TIMEOUT).expectError(TimeoutException.class).verify();
         assertFalse(drained.get());
     }
@@ -737,7 +774,7 @@ public class GptLiveSamplesTests {
             GptLiveSampleUtils.Greeting greeting = new GptLiveSampleUtils.Greeting();
             greeting.onAudio(new byte[] { 1, 2 });
             greeting.onTranscript();
-            return greeting.awaitPlayback(() -> {
+            return greeting.awaitPlaybackAsync(() -> {
                 throw new IllegalStateException("Speaker drain failed");
             });
         }).expectSubscription().thenAwait(Duration.ofSeconds(1)).expectErrorMessage("Speaker drain failed").verify();
@@ -754,7 +791,7 @@ public class GptLiveSamplesTests {
                 .take(50)
                 .doOnNext(tick -> greeting.onAudio(new byte[960]))
                 .then();
-            return Mono.when(silence, greeting.awaitPlayback(() -> drained.set(true)));
+            return Mono.when(silence, greeting.awaitPlaybackAsync(() -> drained.set(true)));
         }).expectSubscription().thenAwait(Duration.ofSeconds(1)).verifyComplete();
         assertTrue(drained.get());
     }
@@ -794,7 +831,7 @@ public class GptLiveSamplesTests {
             GptLiveSampleUtils.Greeting greeting = new GptLiveSampleUtils.Greeting();
             greeting.onTranscript();
             greeting.onAudio(new byte[] { (byte) peak, (byte) (peak >> 8) });
-            return greeting.awaitPlayback(() -> drained.set(true));
+            return greeting.awaitPlaybackAsync(() -> drained.set(true));
         }).expectSubscription().thenAwait(audible ? Duration.ofSeconds(1) : GptLiveSampleUtils.TIMEOUT);
         if (audible) {
             verification.verifyComplete();
@@ -807,7 +844,7 @@ public class GptLiveSamplesTests {
     @ParameterizedTest
     @ValueSource(strings = { "", "\r\n", "exit\n", "quit\n" })
     public void consoleEofBlankAndExitProduceNoPrompt(String input) {
-        StepVerifier.create(GptLiveSampleUtils.readPrompt(new StringReader(input))).verifyComplete();
+        StepVerifier.create(GptLiveSampleUtils.readPromptAsync(new StringReader(input))).verifyComplete();
     }
 
     @ParameterizedTest
@@ -862,7 +899,7 @@ public class GptLiveSamplesTests {
 
     @Test
     public void silentAudioFramesArePacedAtRealTimePcmRate() {
-        StepVerifier.withVirtualTime(() -> GptLiveSampleUtils.silenceFrames().take(3))
+        StepVerifier.withVirtualTime(() -> GptLiveSampleUtils.silenceFramesAsync().take(3))
             .expectSubscription()
             .thenAwait(Duration.ZERO)
             .assertNext(this::assertSilentAudioFrame)
@@ -877,7 +914,7 @@ public class GptLiveSamplesTests {
 
     @Test
     public void silentAudioFramesWaitForDemandWithoutTimerOverflow() {
-        StepVerifier.withVirtualTime(() -> GptLiveSampleUtils.silenceFrames().take(3), 0)
+        StepVerifier.withVirtualTime(() -> GptLiveSampleUtils.silenceFramesAsync().take(3), 0)
             .expectSubscription()
             .expectNoEvent(Duration.ofSeconds(40))
             .thenRequest(1)
@@ -896,7 +933,7 @@ public class GptLiveSamplesTests {
     @Test
     public void silentAudioToleratesSendsSlowerThanItsFrameRate() {
         StepVerifier
-            .withVirtualTime(() -> GptLiveSampleUtils.silenceFrames()
+            .withVirtualTime(() -> GptLiveSampleUtils.silenceFramesAsync()
                 .concatMap(frame -> Mono.delay(Duration.ofMillis(75)).thenReturn(frame), 1)
                 .take(500))
             .expectSubscription()
@@ -964,7 +1001,7 @@ public class GptLiveSamplesTests {
         try (BetaVoiceAgentLiveWebSocketSessionClient session
             = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
             IllegalStateException error = assertThrows(IllegalStateException.class,
-                () -> GptLiveSampleUtils.runConversation(session, input, pcm -> {
+                () -> GptLiveSampleUtils.runInteractiveConversation(session, input, pcm -> {
                 }, () -> {
                 }));
             assertEquals("Unable to read console input.", error.getMessage());
@@ -980,7 +1017,7 @@ public class GptLiveSamplesTests {
             StepVerifier
                 .create(Mono.usingWhen(
                     builder().beta().buildBetaVoiceAgentLiveWebSocketAsyncClient().openWebSocketSession("agent"),
-                    session -> GptLiveSampleUtils.runConversation(session, Collections.singletonList("one")),
+                    session -> GptLiveSampleUtils.runTextConversationAsync(session, Collections.singletonList("one")),
                     BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync))
                 .expectErrorMatches(error -> error instanceof IllegalStateException
                     && error.getMessage().contains("GPT Live service error"))
@@ -989,7 +1026,7 @@ public class GptLiveSamplesTests {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
                 assertThrows(IllegalStateException.class,
-                    () -> GptLiveSampleUtils.runConversation(session, Collections.singletonList("one")));
+                    () -> GptLiveSampleUtils.runTextConversation(session, Collections.singletonList("one")));
             }
         }
         assertFalse(commandTypes().contains("session.close"));
@@ -1000,7 +1037,7 @@ public class GptLiveSamplesTests {
         startTextServer(true, false);
         try (BetaVoiceAgentLiveWebSocketSessionClient session
             = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-            GptLiveSampleUtils.runConversation(session, Collections.singletonList("Weather in Seattle?"),
+            GptLiveSampleUtils.runToolConversation(session, Collections.singletonList("Weather in Seattle?"),
                 GptLiveFunctionToolSample::toolResult);
         }
         assertEquals(Arrays.asList("response.item.create", "response.create", "response.item.create", "response.create",
@@ -1015,11 +1052,26 @@ public class GptLiveSamplesTests {
     }
 
     @Test
+    public void toolHandlerFailureStopsConversationBeforeContinuation() {
+        startTextServer(true, false);
+        IllegalStateException failure = new IllegalStateException("Tool execution failed");
+        try (BetaVoiceAgentLiveWebSocketSessionClient session
+            = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
+            IllegalStateException error = assertThrows(IllegalStateException.class, () -> GptLiveSampleUtils
+                .runToolConversation(session, Collections.singletonList("Weather in Seattle?"), call -> {
+                    throw failure;
+                }));
+            assertEquals(failure, error);
+        }
+        assertEquals(Arrays.asList("response.item.create", "response.create"), commandTypes());
+    }
+
+    @Test
     public void toolConversationUsesSharedMultiTurnLoop() {
         startTextServer(true, false);
         try (BetaVoiceAgentLiveWebSocketSessionClient session
             = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
-            GptLiveSampleUtils.runConversation(session, Arrays.asList("Weather in Seattle?", "Thanks!"),
+            GptLiveSampleUtils.runToolConversation(session, Arrays.asList("Weather in Seattle?", "Thanks!"),
                 GptLiveFunctionToolSample::toolResult);
         }
         assertEquals(Arrays.asList("response.item.create", "response.create", "response.item.create", "response.create",
@@ -1057,7 +1109,7 @@ public class GptLiveSamplesTests {
             StepVerifier
                 .create(Mono.usingWhen(
                     builder().beta().buildBetaVoiceAgentLiveWebSocketAsyncClient().openWebSocketSession("agent"),
-                    session -> GptLiveSampleUtils.runConversation(session, Collections.singletonList("one")),
+                    session -> GptLiveSampleUtils.runTextConversationAsync(session, Collections.singletonList("one")),
                     BetaVoiceAgentLiveWebSocketSessionAsyncClient::closeAsync))
                 .expectError(IllegalStateException.class)
                 .verify(TIMEOUT);
@@ -1065,7 +1117,7 @@ public class GptLiveSamplesTests {
             try (BetaVoiceAgentLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
                 assertThrows(IllegalStateException.class,
-                    () -> GptLiveSampleUtils.runConversation(session, Collections.singletonList("one")));
+                    () -> GptLiveSampleUtils.runTextConversation(session, Collections.singletonList("one")));
             }
         }
     }
@@ -1189,7 +1241,7 @@ public class GptLiveSamplesTests {
         try {
             GptLiveSampleUtils.AudioProcessor processor = new GptLiveSampleUtils.AudioProcessor(microphone, speaker,
                 pcm -> session.sendEvent(GptLiveSampleUtils.audio(pcm.toBytes())));
-            Mono<Void> conversation = GptLiveSampleUtils.runConversation(session, processor, enterAfterAudio);
+            Mono<Void> conversation = GptLiveSampleUtils.runAudioConversationAsync(session, processor, enterAfterAudio);
             if (moderated) {
                 IllegalStateException error
                     = assertThrows(IllegalStateException.class, () -> conversation.block(TIMEOUT));
@@ -1219,7 +1271,9 @@ public class GptLiveSamplesTests {
     }
 
     private List<String> commandTypes() {
-        return commands.stream().map(GptLiveSampleUtils::type).collect(java.util.stream.Collectors.toList());
+        return commands.stream()
+            .map(command -> GptLiveSampleUtils.string(command, "type"))
+            .collect(java.util.stream.Collectors.toList());
     }
 
     private AgentsClientBuilder builder() {

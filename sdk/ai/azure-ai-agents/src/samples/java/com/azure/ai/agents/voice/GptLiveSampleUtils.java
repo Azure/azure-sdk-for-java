@@ -7,7 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.LiveInitialSessionAudioParam;
 import com.azure.ai.agents.models.LiveResponsesDelegationParam;
@@ -29,6 +29,8 @@ import com.openai.models.live.SessionCloseEvent;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputContent;
 import com.openai.models.responses.ResponseInputText;
+import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseStreamEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,9 +52,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -78,80 +82,52 @@ final class GptLiveSampleUtils {
         return value;
     }
 
-    /**
-     * Microphone entry point called by {@link GptLiveAudioConversationAsyncSample}.
-     */
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session) {
-        return Mono.defer(() -> runConversation(session,
-            new AudioProcessor(
-                null, null, pcm -> session.sendEvent(audio(pcm.toBytes()))), System.in));
-    }
-
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session,
-        AudioProcessor processor, InputStream input) {
-        return Mono.usingWhen(Mono.just(processor),
-            audio -> Mono.firstWithSignal(runConversation(session.receiveEvents(), session::sendEvent,
-                () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
-                transcripts -> VoiceAgentLiveAudioConversationAsyncSample.waitForEnter(input)
-                    .then(closeAudio(audio)).then(Mono.<String>empty()),
-                audio::queueAudio, () -> { }, true, audio), audio.failureSignal()), GptLiveSampleUtils::closeAudio,
-            (audio, error) -> closeAudio(audio), GptLiveSampleUtils::closeAudio);
-    }
-
-    static byte[] decodeAudio(ServerEvent event) {
-        byte[] pcm = Base64.getDecoder().decode(event.asSessionOutputAudioDelta().delta());
-        if (pcm.length % 2 != 0) {
-            throw new IllegalArgumentException("GPT Live PCM16 audio must contain complete two-byte samples.");
-        }
-        return pcm;
-    }
-
-    private static Mono<Void> closeAudio(AudioProcessor audio) {
-        return Mono.<Void>fromRunnable(audio::close).subscribeOn(Schedulers.boundedElastic());
-    }
+    // #region Synchronous conversation
 
     /**
      * Scripted-text entry point called by {@link GptLiveTextConversationSample} when command-line prompts are supplied.
      */
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, List<String> prompts) {
-        runConversation(session, prompts, null);
+    static void runTextConversation(BetaVoiceAgentLiveWebSocketSessionClient session, List<String> prompts) {
+        runToolConversation(session, prompts, null);
     }
 
     /**
      * Called by {@link GptLiveFunctionToolSample}; also serves scripted {@link GptLiveTextConversationSample} calls
      * without a tool handler.
      */
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, List<String> prompts,
+    static void runToolConversation(BetaVoiceAgentLiveWebSocketSessionClient session, List<String> prompts,
         Function<Map<?, ?>, ClientEvent> toolHandler) {
         Iterator<String> pending = prompts.iterator();
-        runConversation(session, () -> {
+        runConversation(session.receiveEvents(TIMEOUT), session::sendEvent,
+            () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(), transcripts -> {
             if (!pending.hasNext()) {
                 return null;
             }
             String prompt = pending.next();
             System.out.println("You: " + prompt);
             return prompt;
-        }, toolHandler);
+        }, pcm -> { }, () -> { }, false, toolHandler);
     }
 
     /**
      * Interactive entry point called by {@link GptLiveTextConversationSample} when no command-line prompts are supplied.
      */
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input) {
+    static void runInteractiveConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input) {
         try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer()) {
-            runConversation(session, input, player::play, player::drain);
+            runInteractiveConversation(session, input, player::play, player::drain);
             player.drain();
             System.out.printf("(received %.2fs of reply audio%s)%n", player.getSecondsReceived(),
                 player.isEnabled() ? " and played it" : "");
         }
     }
 
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input,
+    static void runInteractiveConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input,
         Consumer<byte[]> playAudio, Runnable drainAudio) {
         System.out.println("Type a message and press Enter. Blank line, 'exit' or 'quit' ends the session.");
         System.out.println("Interactive voice streams silent audio while you type; voice usage is billable.");
         BufferedReader console = input instanceof BufferedReader ? (BufferedReader) input : new BufferedReader(input);
-        runConversation(session, transcripts -> {
+        runConversation(session.receiveEvents(TIMEOUT), session::sendEvent,
+            () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(), transcripts -> {
             try {
                 return readPromptBlocking(console, transcripts);
             } catch (IOException error) {
@@ -160,32 +136,41 @@ final class GptLiveSampleUtils {
         }, playAudio, drainAudio, true, null);
     }
 
-    /**
-     * Scripted-text entry point called by {@link GptLiveTextConversationAsyncSample} with command-line prompts.
-     */
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, List<String> prompts) {
-        return Mono.defer(() -> {
-            Iterator<String> pending = prompts.iterator();
-            return runConversation(session, transcripts -> Mono.defer(() -> {
-                if (!pending.hasNext()) {
-                    return Mono.empty();
+    static void runConversation(Iterable<ServerEvent> events, Consumer<ClientEvent> sendEvent,
+        Supplier<String> closeDetails, Function<AudioTranscriptPrinter, String> nextPrompt,
+        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken,
+        Function<Map<?, ?>, ClientEvent> toolHandler) {
+        List<ClientEvent> results = new ArrayList<>();
+        AtomicInteger continuations = new AtomicInteger();
+        runConversationCore(events, sendEvent, closeDetails, nextPrompt, playAudio, drainAudio, spoken, backend -> {
+            if (toolHandler != null && backend.isOutputItemDone()) {
+                ResponseOutputItem item = backend.asOutputItemDone().item();
+                if (item.isFunctionCall()) {
+                    results.add(toolHandler.apply(object(OpenAIJsonHelper.toBinaryData(item.asFunctionCall()))));
                 }
-                String prompt = pending.next();
-                System.out.println("You: " + prompt);
-                return Mono.just(prompt);
-            }), pcm -> { }, () -> { }, false);
+            } else if (backend.isCompleted()) {
+                if (results.isEmpty()) {
+                    continuations.set(0);
+                    return false;
+                }
+                if (continuations.incrementAndGet() > 8) {
+                    throw new IllegalStateException("Sample tool continuation limit exceeded.");
+                }
+                for (ClientEvent result : results) {
+                    sendEvent.accept(result);
+                }
+                results.clear();
+                sendEvent.accept(responseCreate());
+                return true;
+            }
+            return false;
         });
     }
 
-    private static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Supplier<String> nextPrompt,
-        Function<Map<?, ?>, ClientEvent> toolHandler) {
-        runConversation(session, transcripts -> nextPrompt.get(), pcm -> { }, () -> { }, false, toolHandler);
-    }
-
-    private static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session,
-        Function<AudioTranscriptPrinter, String> nextPrompt, Consumer<byte[]> playAudio, Runnable drainAudio,
-        boolean spoken,
-        Function<Map<?, ?>, ClientEvent> toolHandler) {
+    private static void runConversationCore(Iterable<ServerEvent> events, Consumer<ClientEvent> sendEvent,
+        Supplier<String> closeDetails, Function<AudioTranscriptPrinter, String> nextPrompt,
+        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken,
+        Predicate<ResponseStreamEvent> handleResponse) {
         ExecutorService workers = Executors.newFixedThreadPool(2, task -> {
             Thread thread = new Thread(task, "gpt-live-sync-conversation");
             thread.setDaemon(true);
@@ -197,7 +182,7 @@ final class GptLiveSampleUtils {
         AudioTranscriptPrinter transcripts = new AudioTranscriptPrinter(System.console() != null, spoken);
         Future<?> receiver = workers.submit(() -> {
             try {
-                for (ServerEvent event : session.receiveEvents(TIMEOUT)) {
+                for (ServerEvent event : events) {
                     pending.put(event);
                     if (event.isSessionClosed()) {
                         break;
@@ -211,7 +196,6 @@ final class GptLiveSampleUtils {
                 receiveEnded.set(true);
             }
         });
-        List<ClientEvent> results = new ArrayList<>();
         Future<String> prompt = null;
         boolean started = false;
         boolean greetingComplete = !spoken;
@@ -219,7 +203,6 @@ final class GptLiveSampleUtils {
         boolean greetingTranscript = false;
         boolean awaitingResponse = false;
         boolean closing = false;
-        int continuations = 0;
         long deadline = System.nanoTime() + TIMEOUT.toNanos();
         long nextAudio = 0;
         long quietSince = 0;
@@ -246,46 +229,32 @@ final class GptLiveSampleUtils {
                     } else {
                         printEvent(event);
                     }
-                    Map<?, ?> backend = backendEvent(event);
-                    String type = event.isResponseEvent() ? type(backend) : "";
+                    ResponseStreamEvent backend = backendEvent(event);
                     if (event.isSessionStarted()) {
                         if (started) {
                             throw new IllegalStateException("Duplicate session.started event.");
                         }
                         started = true;
                         if (spoken) {
-                            session.sendEvent(silence);
+                            sendEvent.accept(silence);
                             nextAudio = now + TimeUnit.MILLISECONDS.toNanos(20);
-                            session.sendEvent(commentary("Hi, how can I help you today?"));
+                            sendEvent.accept(commentary("Hi, how can I help you today?"));
                         }
-                    } else if ("response.completed".equals(type)) {
+                    } else if (backend != null && backend.isCompleted()) {
                         if (!awaitingResponse && spoken && started) {
                             continue;
                         }
                         if (!awaitingResponse || closing) {
                             throw new IllegalStateException("Unexpected GPT Live response lifecycle event.");
                         }
-                        if (results.isEmpty()) {
+                        if (!handleResponse.test(backend)) {
                             awaitingResponse = false;
-                            continuations = 0;
                             if (!spoken) {
                                 System.out.println();
                             }
-                        } else {
-                            if (++continuations > 8) {
-                                throw new IllegalStateException("Sample tool continuation limit exceeded.");
-                            }
-                            for (ClientEvent result : results) {
-                                session.sendEvent(result);
-                            }
-                            results.clear();
-                            session.sendEvent(responseCreate());
                         }
-                    } else if (toolHandler != null && "response.output_item.done".equals(type)) {
-                        Map<?, ?> item = object(backend.get("item"));
-                        if ("function_call".equals(type(item))) {
-                            results.add(toolHandler.apply(item));
-                        }
+                    } else if (backend != null) {
+                        handleResponse.test(backend);
                     } else if (event.isSessionClosed()) {
                         String reason = event.asSessionClosed().reason().toString();
                         if (started && ("remote_hangup".equals(reason)
@@ -294,7 +263,7 @@ final class GptLiveSampleUtils {
                             return;
                         }
                         throw new IllegalStateException("GPT Live closed before all turns completed. Event: " + event
-                            + "; transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason());
+                            + "; " + closeDetails.get());
                     }
                 } else if (receiveEnded.get()) {
                     if (receiveFailure.get() != null) {
@@ -304,7 +273,7 @@ final class GptLiveSampleUtils {
                 }
 
                 if (started && spoken && !closing && now >= nextAudio) {
-                    session.sendEvent(silence);
+                    sendEvent.accept(silence);
                     nextAudio = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(20);
                 }
                 if (spoken && greetingAudio && greetingTranscript && quietSince != 0
@@ -325,14 +294,14 @@ final class GptLiveSampleUtils {
                     deadline = System.nanoTime() + TIMEOUT.toNanos();
                     if (text == null) {
                         closing = true;
-                        session.sendEvent(closeSession());
+                        sendEvent.accept(closeSession());
                     } else {
                         awaitingResponse = true;
                         if (!spoken) {
                             System.out.print("Assistant: ");
                         }
-                        session.sendEvent(userMessage(text));
-                        session.sendEvent(responseCreate());
+                        sendEvent.accept(userMessage(text));
+                        sendEvent.accept(responseCreate());
                     }
                 }
                 if ((!started || !greetingComplete || awaitingResponse || closing) && now >= deadline) {
@@ -357,14 +326,75 @@ final class GptLiveSampleUtils {
         }
     }
 
+    private static String readPromptBlocking(BufferedReader reader, AudioTranscriptPrinter transcripts) throws IOException {
+        transcripts.beginInput();
+        try {
+            String line = reader.readLine();
+            if (line == null) {
+                return null;
+            }
+            String text = line.trim();
+            return text.isEmpty() || "exit".equalsIgnoreCase(text) || "quit".equalsIgnoreCase(text) ? null : text;
+        } finally {
+            transcripts.endInput();
+        }
+    }
+
+    // #endregion
+
+    // #region Asynchronous conversation
+
+    /**
+     * Microphone entry point called by {@link GptLiveAudioConversationAsyncSample}.
+     */
+    static Mono<Void> runAudioConversationAsync(BetaVoiceAgentLiveWebSocketSessionAsyncClient session) {
+        return Mono.defer(() -> runAudioConversationAsync(session,
+            new AudioProcessor(
+                null, null, pcm -> session.sendEvent(audio(pcm.toBytes()))), System.in));
+    }
+
+    static Mono<Void> runAudioConversationAsync(BetaVoiceAgentLiveWebSocketSessionAsyncClient session,
+        AudioProcessor processor, InputStream input) {
+        return Mono.usingWhen(Mono.just(processor),
+            audio -> Mono.firstWithSignal(runConversationAsync(session.receiveEvents(), session::sendEvent,
+                () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
+                transcripts -> VoiceAgentLiveAudioConversationAsyncSample.waitForEnter(input)
+                    .then(closeAudioAsync(audio)).then(Mono.<String>empty()),
+                audio::queueAudio, () -> { }, true, audio), audio.failureSignalAsync()), GptLiveSampleUtils::closeAudioAsync,
+            (audio, error) -> closeAudioAsync(audio), GptLiveSampleUtils::closeAudioAsync);
+    }
+
+    private static Mono<Void> closeAudioAsync(AudioProcessor audio) {
+        return Mono.<Void>fromRunnable(audio::close).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Scripted-text entry point called by {@link GptLiveTextConversationAsyncSample} with command-line prompts.
+     */
+    static Mono<Void> runTextConversationAsync(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, List<String> prompts) {
+        return Mono.defer(() -> {
+            Iterator<String> pending = prompts.iterator();
+            return runConversationAsync(session.receiveEvents(), session::sendEvent,
+                () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
+                transcripts -> Mono.defer(() -> {
+                if (!pending.hasNext()) {
+                    return Mono.empty();
+                }
+                String prompt = pending.next();
+                System.out.println("You: " + prompt);
+                return Mono.just(prompt);
+            }), pcm -> { }, () -> { }, false, null);
+        });
+    }
+
     /**
      * Interactive entry point called by {@link GptLiveTextConversationAsyncSample} without command-line prompts.
      */
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, Reader input) {
+    static Mono<Void> runInteractiveConversationAsync(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, Reader input) {
         return Mono.usingWhen(
             Mono.fromCallable(VoiceAgentRealtimeSampleUtils.SpeakerPlayer::new)
                 .subscribeOn(Schedulers.boundedElastic()),
-            player -> runConversation(session, input, player::play, player::drain),
+            player -> runInteractiveConversationAsync(session, input, player::play, player::drain),
             player -> Mono.<Void>fromRunnable(() -> {
                 boolean speakerEnabled = player.isEnabled();
                 try {
@@ -376,57 +406,54 @@ final class GptLiveSampleUtils {
             }).subscribeOn(Schedulers.boundedElastic()));
     }
 
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, Reader input,
-        Consumer<byte[]> playAudio) {
-        return runConversation(session, input, playAudio, () -> { });
-    }
-
-    static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, Reader input,
+    static Mono<Void> runInteractiveConversationAsync(BetaVoiceAgentLiveWebSocketSessionAsyncClient session, Reader input,
         Consumer<byte[]> playAudio, Runnable drainAudio) {
-        return Mono.defer(() -> runInteractiveConversation(session.receiveEvents(), session::sendEvent,
+        return Mono.defer(() -> runInteractiveConversationAsync(session.receiveEvents(), session::sendEvent,
             () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
             input, playAudio, drainAudio));
     }
 
-    static Mono<Void> runInteractiveConversation(Flux<ServerEvent> events,
+    static Mono<Void> runInteractiveConversationAsync(Flux<ServerEvent> events,
         Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails, Reader input,
         Consumer<byte[]> playAudio, Runnable drainAudio) {
         return Mono.defer(() -> {
             System.out.println("Type a message and press Enter. Blank line, 'exit' or 'quit' ends the session.");
             System.out.println("Interactive voice streams silent audio while you type; voice usage is billable.");
             BufferedReader console = input instanceof BufferedReader ? (BufferedReader) input : new BufferedReader(input);
-            return runConversation(events, sendEvent, closeDetails, transcripts -> readPrompt(console, transcripts),
-                playAudio, drainAudio, true);
+            return runConversationAsync(events, sendEvent, closeDetails, transcripts -> readPromptAsync(console, transcripts),
+                playAudio, drainAudio, true, null);
         });
     }
 
-    private static Mono<Void> runConversation(BetaVoiceAgentLiveWebSocketSessionAsyncClient session,
-        Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
-        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken) {
-        return Mono.defer(() -> runConversation(session.receiveEvents(), session::sendEvent,
-            () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
-            nextPrompt, playAudio, drainAudio, spoken));
-    }
-
-    private static Mono<Void> runConversation(Flux<ServerEvent> events,
-        Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails,
-        Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
-        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken) {
-        return runConversation(events, sendEvent, closeDetails, nextPrompt, playAudio, drainAudio, spoken, null);
-    }
-
-    private static Mono<Void> runConversation(Flux<ServerEvent> events,
+    private static Mono<Void> runConversationAsync(Flux<ServerEvent> events,
         Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails,
         Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
         Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken, AudioProcessor microphone) {
+        Mono<Void> opening = microphone == null ? Mono.empty()
+            : Mono.defer(() -> sendEvent.apply(userMessage("Greet me briefly with: Hi, how can I help you today?"))
+                .then(sendEvent.apply(responseCreate()))
+                .then(Mono.fromRunnable(() -> System.out.println(
+                    "Opening greeting requested. Speak into the microphone. Press Enter to end the call."))));
+        return runConversationCoreAsync(events, sendEvent, closeDetails, nextPrompt, playAudio, drainAudio, spoken,
+            spoken && microphone == null, microphone == null && System.console() != null,
+            () -> {
+                if (microphone != null) {
+                    microphone.start();
+                }
+            }, opening, reason -> microphone != null);
+    }
+
+    private static Mono<Void> runConversationCoreAsync(Flux<ServerEvent> events,
+        Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails,
+        Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
+        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken, boolean interactive, boolean inputEchoed,
+        Runnable onStarted, Mono<Void> opening, Predicate<String> acceptClose) {
         return Mono.defer(() -> {
-            boolean interactive = spoken && microphone == null;
             AtomicBoolean finalized = new AtomicBoolean();
             AtomicBoolean started = new AtomicBoolean();
             AtomicBoolean closeRequested = new AtomicBoolean();
             AtomicBoolean remoteHangup = new AtomicBoolean();
-            AudioTranscriptPrinter transcripts = new AudioTranscriptPrinter(
-                microphone == null && System.console() != null, interactive);
+            AudioTranscriptPrinter transcripts = new AudioTranscriptPrinter(inputEchoed, interactive);
             Greeting greeting = new Greeting();
             Sinks.Empty<Void> ready = Sinks.empty();
             Sinks.Empty<Void> closed = Sinks.empty();
@@ -450,16 +477,14 @@ final class GptLiveSampleUtils {
                     } else {
                         printEvent(event);
                     }
-                    String type = event.isResponseEvent() ? type(backendEvent(event)) : "";
+                    ResponseStreamEvent backend = backendEvent(event);
                     if (event.isSessionStarted()) {
                         if (!started.compareAndSet(false, true)) {
                             throw new IllegalStateException("Duplicate session.started event.");
                         }
-                        if (microphone != null) {
-                            microphone.start();
-                        }
+                        onStarted.run();
                         ready.tryEmitEmpty();
-                    } else if ("response.completed".equals(type)) {
+                    } else if (backend != null && backend.isCompleted()) {
                         Sinks.Empty<Void> completion = responseCompleted.getAndSet(null);
                         if (spoken && started.get() && completion == null) {
                             return;
@@ -474,13 +499,14 @@ final class GptLiveSampleUtils {
                     } else if (event.isSessionClosed()) {
                         String reason = event.asSessionClosed().reason().toString();
                         boolean remote = started.get() && "remote_hangup".equals(reason);
-                        boolean requested = microphone != null
+                        boolean accepted = acceptClose.test(reason);
+                        boolean requested = accepted
                             || closeRequested.get() && "close_requested".equals(reason);
                         if (!requested && !remote) {
                             throw new IllegalStateException("GPT Live closed before all turns completed. Event: "
                                 + event + "; " + closeDetails.get());
                         }
-                        remoteHangup.set(remote || microphone != null);
+                        remoteHangup.set(remote || accepted);
                         System.out.println("Live session closed (" + reason + ").");
                         finalized.set(true);
                         closed.tryEmitEmpty();
@@ -490,26 +516,22 @@ final class GptLiveSampleUtils {
                 .then(Mono.defer(() -> remoteHangup.get() ? Mono.empty() : finalized.get() ? Mono.never()
                     : Mono.error(new IllegalStateException("GPT Live disconnected without session.closed."))));
             Mono<Void> audio = ready.asMono()
-                .thenMany(silenceFrames().takeUntilOther(stopAudio.asMono())
+                .thenMany(silenceFramesAsync().takeUntilOther(stopAudio.asMono())
                     .concatMap(frame -> sendEvent.apply(frame).doOnSuccess(ignored -> audioStarted.tryEmitEmpty()), 1))
                 .then()
                 .doOnSuccess(ignored -> audioStopped.tryEmitEmpty())
                 .then(Mono.never());
-            Mono<Void> renderTranscripts = greeting.quietPeriods()
+            Mono<Void> renderTranscripts = greeting.quietPeriodsAsync()
                 .doOnNext(ignored -> transcripts.endUtterance()).then();
             Mono<Void> conversation = ready.asMono().timeout(TIMEOUT)
                 .then(Mono.defer(() -> interactive ? audioStarted.asMono().timeout(TIMEOUT) : Mono.empty()))
                 .then(Mono.defer(() -> interactive
                     ? sendEvent.apply(commentary("Hi, how can I help you today?"))
                         .timeout(TIMEOUT)
-                        .then(greeting.awaitPlayback(drainAudio))
+                        .then(greeting.awaitPlaybackAsync(drainAudio))
                         .then(Mono.fromRunnable(transcripts::endUtterance))
-                    : microphone == null ? Mono.empty()
-                        : sendEvent.apply(userMessage("Greet me briefly with: Hi, how can I help you today?"))
-                            .then(sendEvent.apply(responseCreate()))
-                            .then(Mono.fromRunnable(() -> System.out.println(
-                                "Opening greeting requested. Speak into the microphone. Press Enter to end the call.")))))
-                .then(Mono.defer(() -> prompt(sendEvent, nextPrompt, responseCompleted, spoken, transcripts)))
+                    : opening))
+                .then(Mono.defer(() -> promptAsync(sendEvent, nextPrompt, responseCompleted, spoken, transcripts)))
                 .then(Mono.defer(() -> {
                     closeRequested.set(true);
                     stopAudio.tryEmitEmpty();
@@ -522,7 +544,7 @@ final class GptLiveSampleUtils {
         });
     }
 
-    private static Mono<Void> prompt(Function<ClientEvent, Mono<Void>> sendEvent,
+    private static Mono<Void> promptAsync(Function<ClientEvent, Mono<Void>> sendEvent,
         Function<AudioTranscriptPrinter, Mono<String>> nextPrompt,
         AtomicReference<Sinks.Empty<Void>> responseCompleted, boolean spoken,
         AudioTranscriptPrinter transcripts) {
@@ -539,10 +561,10 @@ final class GptLiveSampleUtils {
                 .thenReturn(true);
         }).defaultIfEmpty(false)
             .flatMap(keepGoing -> keepGoing
-                ? Mono.defer(() -> prompt(sendEvent, nextPrompt, responseCompleted, spoken, transcripts)) : Mono.empty());
+                ? Mono.defer(() -> promptAsync(sendEvent, nextPrompt, responseCompleted, spoken, transcripts)) : Mono.empty());
     }
 
-    static Flux<ClientEvent> silenceFrames() {
+    static Flux<ClientEvent> silenceFramesAsync() {
         // Twenty milliseconds of 24-kHz mono PCM16LE.
         ClientEvent silence = audio(new byte[960]);
         return Mono.just(silence)
@@ -567,24 +589,24 @@ final class GptLiveSampleUtils {
             progress.tryEmitNext(received);
         }
 
-        Mono<Void> awaitPlayback(Runnable drainAudio) {
+        Mono<Void> awaitPlaybackAsync(Runnable drainAudio) {
             // Output can continue with silent PCM after speaking; only speech activity restarts this timer.
-            return quietPeriods().next()
+            return quietPeriodsAsync().next()
                 .timeout(TIMEOUT)
                 .then(Mono.<Void>fromRunnable(drainAudio).subscribeOn(Schedulers.boundedElastic()));
         }
 
-        Flux<Long> quietPeriods() {
+        Flux<Long> quietPeriodsAsync() {
             return progress.asFlux().filter(parts -> parts == 3)
                 .switchMap(parts -> Mono.delay(Duration.ofSeconds(1)));
         }
     }
 
-    static Mono<String> readPrompt(Reader input) {
-        return readPrompt(input, new AudioTranscriptPrinter());
+    static Mono<String> readPromptAsync(Reader input) {
+        return readPromptAsync(input, new AudioTranscriptPrinter());
     }
 
-    private static Mono<String> readPrompt(Reader input, AudioTranscriptPrinter transcripts) {
+    private static Mono<String> readPromptAsync(Reader input, AudioTranscriptPrinter transcripts) {
         return Mono.defer(() -> {
             BufferedReader reader = input instanceof BufferedReader ? (BufferedReader) input : new BufferedReader(input);
             return Mono.fromCallable(() -> readPromptBlocking(reader, transcripts)).subscribeOn(Schedulers.boundedElastic())
@@ -592,18 +614,16 @@ final class GptLiveSampleUtils {
         });
     }
 
-    private static String readPromptBlocking(BufferedReader reader, AudioTranscriptPrinter transcripts) throws IOException {
-        transcripts.beginInput();
-        try {
-            String line = reader.readLine();
-            if (line == null) {
-                return null;
-            }
-            String text = line.trim();
-            return text.isEmpty() || "exit".equalsIgnoreCase(text) || "quit".equalsIgnoreCase(text) ? null : text;
-        } finally {
-            transcripts.endInput();
+    // #endregion
+
+    // #region Shared utilities
+
+    static byte[] decodeAudio(ServerEvent event) {
+        byte[] pcm = Base64.getDecoder().decode(event.asSessionOutputAudioDelta().delta());
+        if (pcm.length % 2 != 0) {
+            throw new IllegalArgumentException("GPT Live PCM16 audio must contain complete two-byte samples.");
         }
+        return pcm;
     }
 
     private static boolean hasSpeech(byte[] pcm) {
@@ -627,20 +647,12 @@ final class GptLiveSampleUtils {
         return (Map<?, ?>) value;
     }
 
-    static String type(Map<?, ?> event) {
-        return string(event, "type");
-    }
-
     static String string(Map<?, ?> event, String field) {
         Object value = event.get(field);
         if (!(value instanceof String)) {
             throw new IllegalArgumentException("Missing or invalid Live event field: " + field);
         }
         return (String) value;
-    }
-
-    static BinaryData event(String type) {
-        return event(type, null, null);
     }
 
     static BinaryData event(String type, String field, Object value) {
@@ -683,10 +695,10 @@ final class GptLiveSampleUtils {
         return ClientEvent.ofSessionClose(SessionCloseEvent.builder().build());
     }
 
-    static Map<?, ?> backendEvent(ServerEvent event) {
+    static ResponseStreamEvent backendEvent(ServerEvent event) {
         return event.isResponseEvent()
-            ? JsonValue.from(event.asResponseEvent().event()._additionalProperties()).convert(Map.class)
-            : java.util.Collections.emptyMap();
+            ? JsonValue.from(event.asResponseEvent().event()._additionalProperties()).convert(ResponseStreamEvent.class)
+            : null;
     }
 
     static void checkError(ServerEvent event) {
@@ -703,21 +715,21 @@ final class GptLiveSampleUtils {
         if (event.isResponseEvent()) {
             checkError(backendEvent(event));
         } else if (event._json().isPresent()) {
-            checkError(event._json().get().convert(Map.class));
+            checkError(event._json().get().convert(ResponseStreamEvent.class));
         }
     }
 
-    static void checkError(Map<?, ?> event) {
-        if ("error".equals(type(event)) || "response.failed".equals(type(event))
-            || "response.incomplete".equals(type(event))) {
-            Object error = event.get("error");
+    static void checkError(ResponseStreamEvent event) {
+        if (event.isError() || event.isFailed() || event.isIncomplete()) {
+            BinaryData data = OpenAIJsonHelper.toBinaryData(event);
+            Object error = object(data).get("error");
             if (error instanceof Map<?, ?> && ("content_filter".equals(((Map<?, ?>) error).get("code"))
                 || "content_filter".equals(((Map<?, ?>) error).get("type")))) {
                 throw new IllegalStateException("GPT Live service error: generation stopped by service moderation "
                     + "(content_filter). The call has ended; review the conversation and service diagnostics. Event: "
-                    + BinaryData.fromObject(event));
+                    + data);
             }
-            throw new IllegalStateException("GPT Live service error: " + BinaryData.fromObject(event));
+            throw new IllegalStateException("GPT Live service error: " + data);
         }
     }
 
@@ -734,10 +746,9 @@ final class GptLiveSampleUtils {
         } else if (event.isSessionOutputTranscriptDelta()) {
             System.out.print(event.asSessionOutputTranscriptDelta().delta());
         } else if (event.isResponseEvent()) {
-            Map<?, ?> backend = backendEvent(event);
-            checkError(backend);
-            if ("response.output_text.delta".equals(type(backend))) {
-                System.out.print(string(backend, "delta"));
+            ResponseStreamEvent backend = backendEvent(event);
+            if (backend.isOutputTextDelta()) {
+                System.out.print(backend.asOutputTextDelta().delta());
             }
         }
     }
@@ -759,21 +770,13 @@ final class GptLiveSampleUtils {
         private Thread captureThread;
         private Thread playbackThread;
 
-        AudioProcessor(BetaVoiceAgentWebSocketSessionAsyncClient session) {
-            this(session, null, null);
-        }
-
-        AudioProcessor(BetaVoiceAgentWebSocketSessionAsyncClient session, TargetDataLine microphone, SourceDataLine speaker) {
-            this(microphone, speaker, pcm -> session.appendInputAudio(pcm));
-        }
-
         AudioProcessor(TargetDataLine microphone, SourceDataLine speaker, Function<BinaryData, Mono<Void>> sendAudio) {
             this.sendAudio = sendAudio;
             this.microphone = microphone;
             this.speaker = speaker;
         }
 
-        Mono<Void> failureSignal() {
+        Mono<Void> failureSignalAsync() {
             return failure.asMono();
         }
 
@@ -863,13 +866,6 @@ final class GptLiveSampleUtils {
         private void fail(Throwable error) {
             if (running.compareAndSet(true, false)) {
                 failure.tryEmitError(error);
-            }
-        }
-
-        synchronized void skipPendingAudio() {
-            clearPlayback();
-            if (speaker != null) {
-                speaker.flush();
             }
         }
 
@@ -1100,4 +1096,6 @@ final class GptLiveSampleUtils {
             }
         }
     }
+
+    // #endregion
 }
