@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -383,8 +384,10 @@ public class ServiceBusProcessorAsyncClientIntegrationTest extends IntegrationTe
             new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(telemetry)));
         final int index = entityIndex(sessions);
         if (sessions) {
+            // Session acquisition includes CLI authentication, which can exceed the shared three-second test timeout.
             final ServiceBusClientBuilder.ServiceBusSessionProcessorAsyncClientBuilder asyncBuilder
-                = builder.sessionProcessorAsync()
+                = builder.retryOptions(new AmqpRetryOptions(RETRY_OPTIONS).setTryTimeout(OPERATION_TIMEOUT))
+                    .sessionProcessorAsync()
                     .processMessage(handler)
                     .processError(errors)
                     .maxAutoLockRenewDuration(maxAutoLockRenewDuration)
