@@ -1,6 +1,7 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -27,9 +28,38 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         protectPolymorphicBaseConstructors(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.projects.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
     }
 
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {

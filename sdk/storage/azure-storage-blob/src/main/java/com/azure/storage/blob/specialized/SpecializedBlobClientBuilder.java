@@ -36,6 +36,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -103,11 +104,28 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a new instance of {@link SpecializedBlobClientBuilder}.
      */
     public SpecializedBlobClientBuilder() {
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication of eligible GET blob requests.
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}; requests that are not
+     * eligible continue to use bearer token authentication. Sessions are disabled by default.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache. See {@link SessionContext}
+     * for configuration, cache-sharing requirements, and the effect of changing settings after a client is built.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
+    public SpecializedBlobClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
+        return this;
     }
 
     /**
@@ -242,7 +260,7 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+                perRetryPolicies, configuration, audience, LOGGER, sessionContext, getServiceVersion());
     }
 
     private BlobServiceVersion getServiceVersion() {

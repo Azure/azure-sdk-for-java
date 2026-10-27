@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Resource-specific settings to update in a scheduled action.
+ * Resource-specific settings to update in a recurring bulk action.
  */
 @Fluent
 public final class ResourcePatchRequest implements JsonSerializable<ResourcePatchRequest> {

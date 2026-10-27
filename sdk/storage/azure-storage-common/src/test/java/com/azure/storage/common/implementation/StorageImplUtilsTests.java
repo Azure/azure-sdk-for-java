@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -112,6 +113,28 @@ public class StorageImplUtilsTests {
     @Test
     void pipelineSupportsDataLocalityReturnsFalseWhenPipelineIsNull() {
         assertFalse(StorageImplUtils.pipelineSupportsDataLocality(null));
+    @ParameterizedTest
+    @MethodSource("serviceEndpointValues")
+    void isServiceEndpointDetectsServiceSubdomain(String host, String serviceSubDomain, boolean expected) {
+        if (expected) {
+            assertTrue(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        } else {
+            assertFalse(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("serviceEndpointConversions")
+    void endpointToDesiredEndpointConvertsServiceSubdomain(String endpoint, String desiredEndpoint,
+        String currentEndpoint, String expected) {
+        assertEquals(expected, StorageImplUtils.endpointToDesiredEndpoint(endpoint, desiredEndpoint, currentEndpoint));
+    }
+
+    @ParameterizedTest
+    @MethodSource("knownServiceAccountNames")
+    void getAccountNameFromKnownServiceHostRecognizesSupportedServices(String host, String expected) {
+        assertEquals(expected, StorageImplUtils.getAccountNameFromKnownServiceHost(host,
+            Constants.UrlConstants.BLOB_URI_SUBDOMAIN, Constants.UrlConstants.DFS_URI_SUBDOMAIN));
     }
 
     private static Stream<Arguments> exceptionCallables() {
@@ -135,6 +158,30 @@ public class StorageImplUtilsTests {
             Arguments.of(runtimeCallable, RuntimeException.class),
             Arguments.of(executionCallable, ExecutionException.class),
             Arguments.of(interruptedCallable, InterruptedException.class));
+    }
+
+    private static Stream<Arguments> serviceEndpointValues() {
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "blob", true),
+            Arguments.of("account.dfs.core.windows.net", "dfs", true),
+            Arguments.of("custom.example.com", "blob", false), Arguments.of("account.blob.example.com", "dfs", false),
+            Arguments.of(null, "blob", false), Arguments.of("account.blob.core.windows.net", null, false));
+    }
+
+    private static Stream<Arguments> serviceEndpointConversions() {
+        return Stream.of(
+            Arguments.of("https://account.dfs.core.windows.net", "blob", "dfs",
+                "https://account.blob.core.windows.net"),
+            Arguments.of("https://dfsaccount.dfs.core.windows.net", "blob", "dfs",
+                "https://dfsaccount.blob.core.windows.net"),
+            Arguments.of("https://account.blob.core.windows.net", "blob", "dfs",
+                "https://account.blob.core.windows.net"),
+            Arguments.of("https://custom.example.com", "blob", "dfs", "https://custom.example.com"));
+    }
+
+    private static Stream<Arguments> knownServiceAccountNames() {
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "account"),
+            Arguments.of("account-secondary.dfs.core.windows.net", "account"), Arguments.of("custom.example.com", null),
+            Arguments.of(null, null));
     }
 
     private static Stream<Arguments> etagValues() {

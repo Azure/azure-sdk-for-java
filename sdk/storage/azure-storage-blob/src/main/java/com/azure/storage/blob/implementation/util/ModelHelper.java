@@ -55,6 +55,7 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
@@ -106,6 +107,9 @@ public final class ModelHelper {
      */
     private static final StorageResponseSerializationFormat DEFAULT_SERIALIZATION_FORMAT
         = StorageResponseSerializationFormat.XML;
+
+    // Change this value to switch AUTO session authentication behavior across all clients and policies.
+    private static final SessionMode DEFAULT_SESSION_MODE = SessionMode.DISABLED;
 
     /**
      * The routing mode that {@link LayoutAwareRouting#AUTO} currently resolves to. Changing this constant
@@ -881,6 +885,16 @@ public final class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new BlobStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+    }
+
+    /**
+     * Resolves {@link SessionMode#AUTO} to the session mode selected by the client library.
+     *
+     * @param mode the session mode requested by the caller.
+     * @return the resolved session mode.
+     */
+    public static SessionMode resolveSessionMode(SessionMode mode) {
+        return mode == SessionMode.AUTO ? DEFAULT_SESSION_MODE : mode;
     }
 
     /**
