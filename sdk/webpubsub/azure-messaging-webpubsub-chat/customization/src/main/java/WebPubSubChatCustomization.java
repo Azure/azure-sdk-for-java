@@ -147,14 +147,14 @@ public final class WebPubSubChatCustomization extends Customization {
         model.getMethodsByName("fromText").forEach(method -> method.remove());
         model.getMethodsByName("fromBinary").forEach(method -> method.remove());
         model.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n", "/**",
-            " * Creates text message content.", " * @param text the text content, which may be empty.",
+            " * Creates text message content.", " *", " * @param text the text content, which may be empty.",
             " * @return content containing the text and no binary data.",
             " * @throws NullPointerException if text is null.", " */",
             "public static MessageContent fromText(String text) {",
             "    return new MessageContent(Objects.requireNonNull(text, \"'text' cannot be null.\"), null);", "}")));
         model.addMember(StaticJavaParser.parseBodyDeclaration(
             String.join("\n", "/**", " * Creates binary message content. The supplied array is defensively copied.",
-                " * @param binary the binary content, which may be empty.",
+                " *", " * @param binary the binary content, which may be empty.",
                 " * @return content containing the binary data and no text.",
                 " * @throws NullPointerException if binary is null.", " */",
                 "public static MessageContent fromBinary(byte[] binary) {",
@@ -183,7 +183,7 @@ public final class WebPubSubChatCustomization extends Customization {
                 "        }", "        return text != null ? fromText(text) : fromBinary(binary);", "    });", "}")));
         model.getMethodsByName("fromJson")
             .get(0)
-            .setJavadocComment(String.join("\n", "Reads text or binary message content from JSON.",
+            .setJavadocComment(String.join("\n", "Reads text or binary message content from JSON.", "",
                 "@param jsonReader the JSON reader.", "@return the message content, or null if the JSON value is null.",
                 "@throws IllegalStateException if both representations are non-null or neither is non-null.",
                 "@throws IOException if an error occurs while reading the content."));

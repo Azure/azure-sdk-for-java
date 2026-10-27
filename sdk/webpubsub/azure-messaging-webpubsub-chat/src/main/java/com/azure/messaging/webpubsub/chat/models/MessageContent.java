@@ -4,15 +4,15 @@
 package com.azure.messaging.webpubsub.chat.models;
 
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.messaging.webpubsub.chat.implementation.JsonMergePatchHelper;
 import java.io.IOException;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
@@ -96,6 +96,7 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
 
     /**
      * Reads text or binary message content from JSON.
+     *
      * @param jsonReader the JSON reader.
      * @return the message content, or null if the JSON value is null.
      * @throws IllegalStateException if both representations are non-null or neither is non-null.
@@ -134,6 +135,7 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
 
     /**
      * Creates text message content.
+     *
      * @param text the text content, which may be empty.
      * @return content containing the text and no binary data.
      * @throws NullPointerException if text is null.
@@ -144,6 +146,7 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
 
     /**
      * Creates binary message content. The supplied array is defensively copied.
+     *
      * @param binary the binary content, which may be empty.
      * @return content containing the binary data and no text.
      * @throws NullPointerException if binary is null.
