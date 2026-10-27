@@ -398,7 +398,7 @@ public class ExpectContinueTests {
     public void transportBehaviorOnTheWire(String name, String providerClassName, ContinueSupport expected,
         boolean sync) throws Exception {
         HttpClient httpClient = createHttpClient(providerClassName);
-        assumeTrue(httpClient != null, name + " is not on the test classpath");
+        assumeTrue(httpClient != null, name + " is not available on the test classpath or this Java version");
 
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
@@ -512,13 +512,14 @@ public class ExpectContinueTests {
                 Arguments.of(client[0] + " async", client[1], client[2], false)));
     }
 
-    // Resolved by name so this compiles without a direct dependency on every transport, and skips when one is absent.
+    // Resolved by name so this compiles without a direct dependency on every transport, and skips when one is absent
+    // or cannot run on the current Java version (the JDK client requires Java 12 or later).
     private static HttpClient createHttpClient(String providerClassName) {
         try {
             Class<?> providerClass = Class.forName(providerClassName);
             HttpClientProvider provider = (HttpClientProvider) providerClass.getDeclaredConstructor().newInstance();
             return provider.createInstance();
-        } catch (ReflectiveOperationException | LinkageError ex) {
+        } catch (ReflectiveOperationException | LinkageError | UnsupportedOperationException ex) {
             return null;
         }
     }
