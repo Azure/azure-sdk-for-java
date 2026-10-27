@@ -22,7 +22,7 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ogqxndlkzgxhuri\",\"port\":4682291687998834787,\"provisioningState\":\"Canceled\"},\"id\":\"unkbebx\",\"name\":\"ubyyntw\",\"type\":\"rbqtkoie\"}";
+            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"zrpzb\",\"port\":5891022200470284221,\"provisioningState\":\"Failed\"},\"id\":\"qioxi\",\"name\":\"suiizynkedyat\",\"type\":\"wyhqmibzyhwits\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceConfigurationResource response = manager.serviceConfigurations()
-            .getWithResponse("fzxmhhvhgureodkw", "bdagxt", "bqdxbx", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "jphuopxodlqi", "ntorzihleosjswsr", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ServiceName.WAC, response.serviceName());
-        Assertions.assertEquals("ogqxndlkzgxhuri", response.resourceId());
-        Assertions.assertEquals(4682291687998834787L, response.port());
+        Assertions.assertEquals("zrpzb", response.resourceId());
+        Assertions.assertEquals(5891022200470284221L, response.port());
     }
 }
