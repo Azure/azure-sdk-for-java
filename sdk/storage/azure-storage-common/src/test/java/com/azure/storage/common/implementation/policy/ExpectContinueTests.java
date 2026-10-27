@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.policy;
+package com.azure.storage.common.implementation.policy;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
@@ -23,6 +23,11 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.ExpectContinueMode;
+import com.azure.storage.common.policy.ExpectContinueOptions;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
+import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
