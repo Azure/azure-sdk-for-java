@@ -18,7 +18,7 @@ have to be online at the same time.
 The asynchronous processor accepts reactive message and error handlers through `processorAsync()` and
 `sessionProcessorAsync()`. Its `ServiceBusReceivedMessageAsyncContext` exposes non-blocking manual settlement.
 Return a `Mono` covering all application work and settlement so acknowledgement happens after downstream work succeeds.
-See the [reactive processor sample](src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorAsyncSample.java)
+See the [reactive processor sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorAsyncSample.java)
 for queue and session processing with Microsoft Entra ID authentication.
 
 ## Getting started
