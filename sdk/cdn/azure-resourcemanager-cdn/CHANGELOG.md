@@ -56,8 +56,8 @@
 #### `models.RequestSchemeMatchConditionParameters` was modified
 
 * `withTypeName(java.lang.String)` was removed
-* `withOperator(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withOperator(java.lang.String)` was removed
 
 #### `models.RequestUriMatchConditionParameters` was modified
 
@@ -67,10 +67,10 @@
 #### `models.WafMetricsResponseSeriesItem` was modified
 
 * `WafMetricsResponseSeriesItem()` was changed to private access
-* `withData(java.util.List)` was removed
-* `withMetric(java.lang.String)` was removed
-* `withUnit(models.WafMetricsSeriesUnit)` was removed
 * `withGroups(java.util.List)` was removed
+* `withMetric(java.lang.String)` was removed
+* `withData(java.util.List)` was removed
+* `withUnit(models.WafMetricsSeriesUnit)` was removed
 
 #### `models.RankingsResponseTablesPropertiesItemsItem` was modified
 
@@ -96,16 +96,16 @@
 #### `models.MetricsResponseSeriesItem` was modified
 
 * `MetricsResponseSeriesItem()` was changed to private access
-* `withData(java.util.List)` was removed
 * `withMetric(java.lang.String)` was removed
-* `withGroups(java.util.List)` was removed
 * `withUnit(models.MetricsSeriesUnit)` was removed
+* `withGroups(java.util.List)` was removed
+* `withData(java.util.List)` was removed
 
 #### `models.IpAddressGroup` was modified
 
 * `IpAddressGroup()` was changed to private access
-* `withIpv6Addresses(java.util.List)` was removed
 * `withDeliveryRegion(java.lang.String)` was removed
+* `withIpv6Addresses(java.util.List)` was removed
 * `withIpv4Addresses(java.util.List)` was removed
 
 #### `models.RequestMethodMatchConditionParameters` was modified
@@ -116,20 +116,20 @@
 #### `models.RankingsResponseTablesItem` was modified
 
 * `RankingsResponseTablesItem()` was changed to private access
-* `withRanking(java.lang.String)` was removed
 * `withData(java.util.List)` was removed
+* `withRanking(java.lang.String)` was removed
 
 #### `models.RankingsResponseTablesPropertiesItemsMetricsItem` was modified
 
 * `RankingsResponseTablesPropertiesItemsMetricsItem()` was changed to private access
-* `withValue(java.lang.Long)` was removed
-* `withPercentage(java.lang.Float)` was removed
 * `withMetric(java.lang.String)` was removed
+* `withPercentage(java.lang.Float)` was removed
+* `withValue(java.lang.Long)` was removed
 
 #### `models.UrlFileNameMatchConditionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.RouteConfigurationOverrideActionParameters` was modified
 
@@ -144,8 +144,8 @@
 
 #### `models.UrlRedirectActionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.SslProtocolMatchConditionParameters` was modified
 
@@ -164,8 +164,8 @@
 
 #### `models.HttpVersionMatchConditionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 
 #### `models.MetricsResponseSeriesPropertiesItemsItem` was modified
 
@@ -176,8 +176,8 @@
 #### `models.UsageName` was modified
 
 * `UsageName()` was changed to private access
-* `withLocalizedValue(java.lang.String)` was removed
 * `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
 
 #### `models.PolicySettingsDefaultCustomBlockResponseStatusCode` was modified
 
@@ -203,8 +203,8 @@
 
 #### `models.IsDeviceMatchConditionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 
 #### `models.ManagedRuleGroupDefinition` was modified
 
@@ -212,8 +212,8 @@
 
 #### `models.UrlPathMatchConditionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.HostnameMatchConditionParameters` was modified
 
@@ -223,16 +223,16 @@
 #### `models.ResourcesResponseEndpointsItem` was modified
 
 * `ResourcesResponseEndpointsItem()` was changed to private access
+* `withHistory(java.lang.Boolean)` was removed
+* `withId(java.lang.String)` was removed
 * `withCustomDomains(java.util.List)` was removed
 * `withName(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
-* `withHistory(java.lang.Boolean)` was removed
 
 #### `models.MetricsResponseSeriesItemData` was modified
 
 * `MetricsResponseSeriesItemData()` was changed to private access
-* `withDateTime(java.time.OffsetDateTime)` was removed
 * `withValue(java.lang.Float)` was removed
+* `withDateTime(java.time.OffsetDateTime)` was removed
 
 #### `models.QueryStringMatchConditionParameters` was modified
 
@@ -242,8 +242,8 @@
 #### `models.WafMetricsResponseSeriesPropertiesItemsItem` was modified
 
 * `WafMetricsResponseSeriesPropertiesItemsItem()` was changed to private access
-* `withValue(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.ContinentsResponseContinentsItem` was modified
 
@@ -257,27 +257,27 @@
 
 #### `models.SocketAddrMatchConditionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.LogSpecification` was modified
 
 * `LogSpecification()` was changed to private access
 * `withDisplayName(java.lang.String)` was removed
-* `withLogFilterPattern(java.lang.String)` was removed
 * `withBlobDuration(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withLogFilterPattern(java.lang.String)` was removed
 
 #### `models.RemoteAddressMatchConditionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 
 #### `models.WafMetricsResponseSeriesItemData` was modified
 
 * `WafMetricsResponseSeriesItemData()` was changed to private access
-* `withDateTime(java.time.OffsetDateTime)` was removed
 * `withValue(java.lang.Float)` was removed
+* `withDateTime(java.time.OffsetDateTime)` was removed
 
 #### `models.MetricAvailability` was modified
 
@@ -288,16 +288,16 @@
 #### `models.WafRankingsResponseDataItemMetric` was modified
 
 * `WafRankingsResponseDataItemMetric()` was changed to private access
-* `withValue(java.lang.Long)` was removed
-* `withPercentage(java.lang.Double)` was removed
 * `withMetric(java.lang.String)` was removed
+* `withPercentage(java.lang.Double)` was removed
+* `withValue(java.lang.Long)` was removed
 
 #### `models.DimensionProperties` was modified
 
 * `DimensionProperties()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withDisplayName(java.lang.String)` was removed
 * `withInternalName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ServiceSpecification` was modified
 
@@ -308,8 +308,8 @@
 #### `models.WafRankingsResponseDataItem` was modified
 
 * `WafRankingsResponseDataItem()` was changed to private access
-* `withGroupValues(java.util.List)` was removed
 * `withMetrics(java.util.List)` was removed
+* `withGroupValues(java.util.List)` was removed
 
 #### `models.CustomerCertificateParameters` was modified
 
@@ -317,13 +317,13 @@
 
 #### `models.ClientPortMatchConditionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.ServerPortMatchConditionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 
 #### `models.DomainValidationProperties` was modified
 
@@ -335,28 +335,28 @@
 
 #### `models.UrlFileExtensionMatchConditionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
 
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withAvailabilities(java.util.List)` was removed
-* `withFillGapWithZero(java.lang.Boolean)` was removed
-* `withUnit(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
 * `withName(java.lang.String)` was removed
 * `withDisplayDescription(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
 * `withMetricFilterPattern(java.lang.String)` was removed
 * `withSupportedTimeGrainTypes(java.util.List)` was removed
-* `withDimensions(java.util.List)` was removed
-* `withIsInternal(java.lang.Boolean)` was removed
 * `withDisplayName(java.lang.String)` was removed
 * `withAggregationType(java.lang.String)` was removed
+* `withAvailabilities(java.util.List)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
 
 #### `models.CacheExpirationActionParameters` was modified
 
-* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
 * `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
 
 #### `models.UrlRewriteActionParameters` was modified
 
@@ -370,8 +370,8 @@
 
 #### `models.UrlSigningActionParameters` was modified
 
-* `withTypeName(java.lang.String)` was removed
 * `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
 
 #### `models.ManagedRuleDefinition` was modified
 
@@ -380,10 +380,10 @@
 #### `models.ResourcesResponseEndpointsPropertiesItemsItem` was modified
 
 * `ResourcesResponseEndpointsPropertiesItemsItem()` was changed to private access
+* `withName(java.lang.String)` was removed
 * `withHistory(java.lang.Boolean)` was removed
 * `withEndpointId(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 
 #### `models.RequestBodyMatchConditionParameters` was modified
 
@@ -403,8 +403,8 @@
 #### `models.CidrIpAddress` was modified
 
 * `CidrIpAddress()` was changed to private access
-* `withPrefixLength(java.lang.Integer)` was removed
 * `withBaseIpAddress(java.lang.String)` was removed
+* `withPrefixLength(java.lang.Integer)` was removed
 
 ### Features Added
 
@@ -581,8 +581,8 @@
 #### `models.CdnProfile` was modified
 
 * `afdEndpoints()` was added
-* `originGroups()` was added
 * `ruleSets()` was added
+* `originGroups()` was added
 
 #### `models.CdnProfile$Definition` was modified
 
@@ -594,18 +594,18 @@
 
 #### `models.AfdOriginGroupUpdateParameters` was modified
 
-* `withAuthentication(models.OriginAuthenticationProperties)` was added
 * `authentication()` was added
+* `withAuthentication(models.OriginAuthenticationProperties)` was added
 
 #### `models.PolicySettingsDefaultCustomBlockResponseStatusCode` was modified
 
-* `equals(java.lang.Object)` was added
-* `getValue()` was added
-* `toString()` was added
 * `hashCode()` was added
+* `toString()` was added
+* `getValue()` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `fromValue(java.lang.Integer)` was added
+* `equals(java.lang.Object)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromValue(java.lang.Integer)` was added
 
 #### `models.AfdMinimumTlsVersion` was modified
 
@@ -618,21 +618,21 @@
 
 #### `models.AfdOriginUpdateParameters` was modified
 
-* `withCertificateNameCheckValidationMode(models.CertificateNameCheckValidationMode)` was added
-* `customCertificateSubjects()` was added
 * `withCustomCertificateSubjects(java.util.List)` was added
+* `withCertificateNameCheckValidationMode(models.CertificateNameCheckValidationMode)` was added
 * `certificateNameCheckValidationMode()` was added
+* `customCertificateSubjects()` was added
 
 #### `models.AfdDomainHttpsParameters` was modified
 
+* `withCustomizedCipherSuiteSet(models.AfdDomainHttpsCustomizedCipherSuiteSet)` was added
+* `customizedCipherSuiteSet()` was added
+* `withServerTlsGroupPolicy(models.AfdServerTlsGroupPolicy)` was added
+* `withServerTlsGroups(java.util.List)` was added
+* `withCipherSuiteSetType(models.AfdCipherSuiteSetType)` was added
+* `serverTlsGroupPolicy()` was added
 * `serverTlsGroups()` was added
 * `cipherSuiteSetType()` was added
-* `withServerTlsGroupPolicy(models.AfdServerTlsGroupPolicy)` was added
-* `customizedCipherSuiteSet()` was added
-* `withServerTlsGroups(java.util.List)` was added
-* `serverTlsGroupPolicy()` was added
-* `withCustomizedCipherSuiteSet(models.AfdDomainHttpsCustomizedCipherSuiteSet)` was added
-* `withCipherSuiteSetType(models.AfdCipherSuiteSetType)` was added
 
 #### `models.AfdEndpointUpdateParameters` was modified
 
@@ -641,8 +641,8 @@
 
 #### `models.AfdDomainUpdateParameters` was modified
 
-* `withMtlsSettings(models.AfdDomainMtlsParameters)` was added
 * `mtlsSettings()` was added
+* `withMtlsSettings(models.AfdDomainMtlsParameters)` was added
 
 #### `models.SecretType` was modified
 
@@ -650,8 +650,8 @@
 
 #### `models.SecurityPolicyWebApplicationFirewallParameters` was modified
 
-* `isProfileLevel()` was added
 * `withIsProfileLevel(java.lang.Boolean)` was added
+* `isProfileLevel()` was added
 
 #### `models.DeliveryRuleActionValue` was modified
 
