@@ -24,6 +24,8 @@
 
 ### Other Changes
 
+- Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
+
 ## 12.1.0-beta.2 (2026-08-28)
 
 ### Features Added
