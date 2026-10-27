@@ -487,8 +487,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             }
         } finally {
             try {
-                Mono.whenDelayError(sessionLeases.stream().map(lease -> lease.close).collect(Collectors.toList()))
-                    .block();
+                // Cleanup must not wait for work queued on the controlling thread's own scheduler.
+                Mono.whenDelayError(sessionLeases.stream()
+                    .map(lease -> Mono.<Void>fromRunnable(lease::closeReceiver))
+                    .collect(Collectors.toList())).block();
                 if (client != null) {
                     client.close();
                 }
@@ -623,12 +625,28 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     private static final class SessionLease {
         private final ServiceBusReceiverAsyncClient receiver;
         private final Mono<Void> close;
+        private final AtomicBoolean closeStarted = new AtomicBoolean();
+        private final Sinks.Empty<Void> closeFinished = Sinks.empty();
         private final Sinks.Many<Boolean> activity = Sinks.many().replay().latestOrDefault(false);
         private int pending;
 
         private SessionLease(ServiceBusReceiverAsyncClient receiver) {
             this.receiver = receiver;
-            this.close = Mono.<Void>fromRunnable(receiver::close).subscribeOn(Schedulers.boundedElastic()).cache();
+            this.close = Mono.<Void>fromRunnable(this::closeReceiver).subscribeOn(Schedulers.boundedElastic()).cache();
+        }
+
+        private void closeReceiver() {
+            if (closeStarted.compareAndSet(false, true)) {
+                try {
+                    receiver.close();
+                    closeFinished.tryEmitEmpty();
+                } catch (RuntimeException error) {
+                    closeFinished.tryEmitError(error);
+                    throw error;
+                }
+            } else {
+                closeFinished.asMono().block();
+            }
         }
 
         private synchronized void accepted() {
