@@ -47,13 +47,15 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
     }
 
     /**
-     * Creates a policy reading the opt out from the given configuration.
+     * Creates a policy that applies {@code Expect: 100-continue} for the given interval after the service indicates it
+     * is under load, reading the opt out from the given configuration.
      *
      * @param throttleInterval The interval for which the header is applied after a triggering response.
-     * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
-     * @param configuration The configuration to read the opt out from.
+     * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header. A null value
+     * means every request with a body is eligible.
+     * @param configuration The configuration to read the opt out from. A null value uses the global configuration.
      */
-    ExpectContinueOnThrottlePolicy(Duration throttleInterval, Long contentLengthThreshold,
+    public ExpectContinueOnThrottlePolicy(Duration throttleInterval, Long contentLengthThreshold,
         Configuration configuration) {
         this.throttleIntervalNanos = toNanos(throttleInterval);
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;

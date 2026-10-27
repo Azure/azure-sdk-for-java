@@ -35,11 +35,12 @@ final class ExpectContinuePolicyHelper {
     /**
      * Reads the opt out allowing {@code Expect: 100-continue} to be turned off without a code change.
      *
-     * @param configuration The configuration to read the opt out from.
+     * @param configuration The configuration to read the opt out from. A null value uses the global configuration.
      * @return Whether the header has been turned off.
      */
     static boolean isDisabled(Configuration configuration) {
-        return configuration.get(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, false);
+        Configuration source = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        return source.get(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, false);
     }
 
     /**
@@ -80,26 +81,16 @@ final class ExpectContinuePolicyHelper {
     }
 
     /**
-     * Reads the result of the {@code 100 Continue} observation.
-     *
-     * @param context The pipeline call context.
-     * @return {@link Boolean#TRUE} if a {@code 100 Continue} was observed, {@link Boolean#FALSE} if the header was
-     * applied but no interim response was observed, or {@code null} if no observation was requested for this request.
-     */
-    static Boolean observationResult(HttpPipelineCallContext context) {
-        Object holder = context.getData(EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
-        return (holder instanceof AtomicBoolean) ? ((AtomicBoolean) holder).get() : null;
-    }
-
-    /**
-     * Logs whether the service engaged in the {@code Expect: 100-continue} handshake, when an observation was made.
+     * Logs whether the service engaged in the {@code Expect: 100-continue} handshake, when an observation was
+     * requested for this request.
      *
      * @param context The pipeline call context.
      * @param logger The logger to log to.
      */
     static void logObservation(HttpPipelineCallContext context, ClientLogger logger) {
-        Boolean received = observationResult(context);
-        if (received != null) {
+        Object holder = context.getData(EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
+        if (holder instanceof AtomicBoolean) {
+            boolean received = ((AtomicBoolean) holder).get();
             logger.verbose("Expect: 100-continue was {} by the service.", received ? "honored" : "not observed");
         }
     }

@@ -14,7 +14,8 @@ public enum ExpectContinueMode {
      *
      * <p>Response codes that trigger this behavior are 429, 500, and 503.</p>
      *
-     * <p>This is the default behavior when no options are provided.</p>
+     * <p>This is the default mode of {@link ExpectContinueOptions}. The header is not applied unless options are
+     * explicitly supplied to a client builder.</p>
      */
     APPLY_ON_THROTTLE,
 

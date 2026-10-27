@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -53,6 +54,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,7 +69,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public class ExpectContinueTests {
     private static final String CONTINUE = "100-continue";
     private static final String ENDPOINT = "https://account.blob.core.windows.net/container/blob";
-    private static final byte[] BODY = new byte[1024];
+    private static final byte[] BODY = patternedBody(1024);
 
     // How long the wire level server waits after the headers arrive before deciding the body was not sent.
     private static final long BODY_SETTLE_MILLIS = 500;
@@ -206,7 +208,7 @@ public class ExpectContinueTests {
     @Test
     public void offModeAddsNoPolicy() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.OFF));
+        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.OFF), null);
 
         assertTrue(policies.isEmpty());
     }
@@ -248,7 +250,7 @@ public class ExpectContinueTests {
     @Test
     public void nullOptionsAddNoPolicy() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, null);
+        BuilderUtils.addExpectContinuePolicy(policies, null, null);
 
         assertTrue(policies.isEmpty());
     }
@@ -256,7 +258,7 @@ public class ExpectContinueTests {
     @Test
     public void explicitApplyOnThrottleOptionsAddThePolicy() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.APPLY_ON_THROTTLE));
+        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.APPLY_ON_THROTTLE), null);
 
         assertEquals(1, policies.size());
         assertTrue(policies.get(0) instanceof ExpectContinueOnThrottlePolicy);
@@ -385,6 +387,7 @@ public class ExpectContinueTests {
             assertEquals(201, response.getStatusCode(), name + " did not complete the request");
             assertTrue(server.awaitRequest(), name + " never reached the server");
             assertEquals(BODY.length, server.totalBodyBytes(), name + " did not deliver the full body");
+            assertArrayEquals(BODY, server.receivedBody(), name + " delivered a corrupted body");
 
             switch (expected) {
                 case DEFERS_BODY:
@@ -410,6 +413,67 @@ public class ExpectContinueTests {
                     throw new IllegalStateException("Unhandled expectation: " + expected);
             }
         }
+    }
+
+    // Regression test for the wire level server: body bytes that arrive before it decides whether to send 100 Continue
+    // must be consumed, so the read that follows only counts, and receives, the bytes sent afterwards.
+    @Test
+    public void wireServerConsumesPartiallyBufferedBody() throws Exception {
+        int firstPart = BODY.length / 2;
+
+        try (ExpectContinueServer server = new ExpectContinueServer()) {
+            server.start();
+
+            try (Socket socket = new Socket("localhost", server.port())) {
+                socket.setTcpNoDelay(true);
+                OutputStream out = socket.getOutputStream();
+                out.write(
+                    ("PUT /container/blob HTTP/1.1\r\nHost: localhost\r\nContent-Length: " + BODY.length + "\r\n\r\n")
+                        .getBytes(StandardCharsets.UTF_8));
+                out.write(BODY, 0, firstPart);
+                out.flush();
+
+                // Send the rest only after the server has sampled what was buffered.
+                Thread.sleep(BODY_SETTLE_MILLIS * 2);
+                out.write(BODY, firstPart, BODY.length - firstPart);
+                out.flush();
+
+                assertTrue(server.awaitRequest(), "server never finished handling the request");
+            }
+
+            assertEquals(firstPart, server.bodyBytesBeforeContinue);
+            assertEquals(BODY.length - firstPart, server.bodyBytesAfterContinue);
+            assertArrayEquals(BODY, server.receivedBody());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ExpectContinueMode.class, names = { "ON", "APPLY_ON_THROTTLE" })
+    public void builderUtilsHonorsSuppliedConfigurationOptOut(ExpectContinueMode mode) throws MalformedURLException {
+        Configuration configuration = environmentConfiguration(
+            new TestConfigurationSource().put(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, "true"));
+        RecordingHttpClient client = new RecordingHttpClient(503, 200);
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        BuilderUtils.addExpectContinuePolicy(policies, options(mode), configuration);
+        HttpPipeline pipeline = buildPipeline(policies, client);
+
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+
+        assertNull(client.expectHeaders.get(0));
+        assertNull(client.expectHeaders.get(1));
+    }
+
+    @Test
+    public void builderUtilsHonorsConfigurationNone() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(200);
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.ON), Configuration.NONE);
+        HttpPipeline pipeline = buildPipeline(policies, client);
+
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+
+        assertEquals(CONTINUE, client.expectHeaders.get(0));
     }
 
     static Stream<Arguments> transports() {
@@ -439,6 +503,15 @@ public class ExpectContinueTests {
         return new ExpectContinueOptions().setMode(mode);
     }
 
+    // A non-uniform body, so that a body reassembled out of order or with repeated bytes is detected.
+    private static byte[] patternedBody(int length) {
+        byte[] body = new byte[length];
+        for (int i = 0; i < length; i++) {
+            body[i] = (byte) (i % 251);
+        }
+        return body;
+    }
+
     private static HttpRequest requestWithBody() throws MalformedURLException {
         return requestWithBody(BODY.length);
     }
@@ -449,14 +522,14 @@ public class ExpectContinueTests {
 
     private static HttpPipeline pipeline(ExpectContinueOptions options, HttpClient client) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, options);
+        BuilderUtils.addExpectContinuePolicy(policies, options, null);
         return buildPipeline(policies, client);
     }
 
     private static HttpPipeline retryPipeline(ExpectContinueOptions options, HttpClient client) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new RequestRetryPolicy(FAST_RETRY_OPTIONS));
-        BuilderUtils.addExpectContinuePolicy(policies, options);
+        BuilderUtils.addExpectContinuePolicy(policies, options, null);
         return buildPipeline(policies, client);
     }
 
@@ -565,13 +638,22 @@ public class ExpectContinueTests {
         private volatile String expectHeader;
         private volatile int bodyBytesBeforeContinue = -1;
         private volatile int bodyBytesAfterContinue = -1;
+        private final ByteArrayOutputStream receivedBody = new ByteArrayOutputStream();
 
         ExpectContinueServer() throws IOException {
             this.serverSocket = new ServerSocket(0);
         }
 
+        int port() {
+            return serverSocket.getLocalPort();
+        }
+
         URL url() throws IOException {
-            return new URL("http://localhost:" + serverSocket.getLocalPort() + "/container/blob");
+            return new URL("http://localhost:" + port() + "/container/blob");
+        }
+
+        byte[] receivedBody() {
+            return receivedBody.toByteArray();
         }
 
         void start() {
@@ -597,7 +679,8 @@ public class ExpectContinueTests {
                 int contentLength = readHeaders(in);
 
                 Thread.sleep(BODY_SETTLE_MILLIS);
-                bodyBytesBeforeContinue = in.available();
+                // Consume what has already arrived, so the read after 100 Continue only sees the bytes that follow.
+                bodyBytesBeforeContinue = readBody(in, Math.min(in.available(), contentLength));
 
                 if (expectHeader != null) {
                     out.write("HTTP/1.1 100 Continue\r\n\r\n".getBytes(StandardCharsets.UTF_8));
@@ -647,7 +730,7 @@ public class ExpectContinueTests {
             return contentLength;
         }
 
-        private static int readBody(InputStream in, int remaining) throws IOException {
+        private int readBody(InputStream in, int remaining) throws IOException {
             if (remaining <= 0) {
                 return 0;
             }
@@ -661,6 +744,7 @@ public class ExpectContinueTests {
                 }
                 read += count;
             }
+            receivedBody.write(buffer, 0, read);
             return read;
         }
 

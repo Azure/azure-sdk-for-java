@@ -20,7 +20,10 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -34,6 +37,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.ExpectContinueOnThrottlePolicy;
 import com.azure.storage.common.policy.ExpectContinuePolicy;
 import com.azure.storage.common.policy.ExpectContinueMode;
@@ -43,6 +47,8 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -64,6 +70,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -93,6 +100,9 @@ public class BuilderHelperTests {
             + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
             + "</Credentials></CreateSessionResult>";
     private static final String DATA_RESPONSE_BODY = "data-response";
+
+    // Guards tests that set, or rely on the absence of, the expect-continue opt out in the global configuration.
+    private static final String GLOBAL_CONFIGURATION_LOCK = "ExpectContinueGlobalConfiguration";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setBody(Flux.empty())
@@ -208,7 +218,8 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+            new ArrayList<>(), new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null,
+            null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -666,7 +677,7 @@ public class BuilderHelperTests {
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
             new ExpectContinueOptions().setMode(ExpectContinueMode.APPLY_ON_THROTTLE),
-            new ClientLogger(BuilderHelperTests.class));
+            new ClientLogger(BuilderHelperTests.class), null, null);
 
         int retryIndex = indexOfPolicy(pipeline, RequestRetryPolicy.class);
         int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class);
@@ -684,7 +695,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline
             = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
 
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
@@ -692,16 +703,18 @@ public class BuilderHelperTests {
 
     @Test
     public void expectContinueOptionsAreHonoredByBuilder() {
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
-            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ExpectContinueOptions().setMode(ExpectContinueMode.OFF), new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, new ExpectContinueOptions().setMode(ExpectContinueMode.OFF),
+                new ClientLogger(BuilderHelperTests.class), null, null);
 
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
     }
 
     @Test
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ)
     public void expectContinueHeaderReachesTransport() throws MalformedURLException {
         AtomicReference<String> expectHeader = new AtomicReference<>();
         HttpPipeline pipeline
@@ -713,7 +726,8 @@ public class BuilderHelperTests {
                         return new MockHttpResponse(request, 201);
                     }
                 }, new ArrayList<>(), new ArrayList<>(), null, null,
-                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class));
+                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class),
+                null, null);
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
         pipeline.sendSync(request, Context.NONE);
@@ -726,6 +740,121 @@ public class BuilderHelperTests {
         assertTrue(BuilderHelper.getDefaultHttpLogOptions()
             .getAllowedHeaderNames()
             .contains(HttpHeaderName.EXPECT.getCaseSensitiveName()));
+    }
+
+    // The opt out set in a client's own configuration must be honored, not only one set globally.
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("expectContinueBuilders")
+    public void expectContinueHonorsBuilderConfigurationOptOut(String name,
+        BiFunction<Configuration, HttpClient, HttpPipeline> pipelineFactory) throws MalformedURLException {
+        Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
+            new TestConfigurationSource(),
+            new TestConfigurationSource().put(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, "true"))
+                .build();
+        ExpectHeaderRecordingHttpClient client = new ExpectHeaderRecordingHttpClient();
+
+        sendRequestWithBody(pipelineFactory.apply(configuration, client));
+
+        assertNull(client.expectHeader.get(), name + " ignored the opt out in its configuration");
+    }
+
+    // Configuration.NONE must not inherit an opt out set globally, while no configuration falls back to the global one.
+    @SuppressWarnings("deprecation")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("expectContinueBuilders")
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ_WRITE)
+    public void expectContinueConfigurationNoneIgnoresGlobalOptOut(String name,
+        BiFunction<Configuration, HttpClient, HttpPipeline> pipelineFactory) throws MalformedURLException {
+        String property = Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER;
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        String original = globalConfiguration.remove(property);
+        globalConfiguration.put(property, "true");
+        try {
+            ExpectHeaderRecordingHttpClient noneClient = new ExpectHeaderRecordingHttpClient();
+            sendRequestWithBody(pipelineFactory.apply(Configuration.NONE, noneClient));
+            assertEquals("100-continue", noneClient.expectHeader.get(),
+                name + " inherited the global opt out despite Configuration.NONE");
+
+            ExpectHeaderRecordingHttpClient defaultClient = new ExpectHeaderRecordingHttpClient();
+            sendRequestWithBody(pipelineFactory.apply(null, defaultClient));
+            assertNull(defaultClient.expectHeader.get(),
+                name + " ignored the global opt out when no configuration was supplied");
+        } finally {
+            globalConfiguration.remove(property);
+            if (original != null) {
+                globalConfiguration.put(property, original);
+            }
+        }
+    }
+
+    private static Stream<Arguments> expectContinueBuilders() {
+        return Stream.of(
+            Arguments.of("BlobServiceClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("BlobContainerClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("BlobClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .blobName("blob")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("SpecializedBlobClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .blobName("blob")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildBlockBlobClient()
+                        .getHttpPipeline()));
+    }
+
+    private static ExpectContinueOptions expectContinueOn() {
+        return new ExpectContinueOptions().setMode(ExpectContinueMode.ON);
+    }
+
+    private static void sendRequestWithBody(HttpPipeline pipeline) throws MalformedURLException {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT + "container/blob")).setBody(new byte[1024]);
+        pipeline.sendSync(request, Context.NONE).close();
+    }
+
+    private static final class ExpectHeaderRecordingHttpClient extends NoOpHttpClient {
+        private final AtomicReference<String> expectHeader = new AtomicReference<>();
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return Mono.fromCallable(() -> sendSync(request, Context.NONE));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            expectHeader.set(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+            return new MockHttpResponse(request, 201);
+        }
     }
 
     private static int indexOfPolicy(HttpPipeline pipeline, Class<?> policyType) {
@@ -926,7 +1055,7 @@ public class BuilderHelperTests {
 
         HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
-            Collections.singletonList(perCallPolicy), Collections.singletonList(perRetryPolicy), null, null,
+            Collections.singletonList(perCallPolicy), Collections.singletonList(perRetryPolicy), null, null, null,
             new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
             BlobServiceVersion.getLatest());
 
@@ -957,7 +1086,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(),
-            Collections.singletonList(new HttpLoggingPolicy(new HttpLogOptions())), null, null,
+            Collections.singletonList(new HttpLoggingPolicy(new HttpLogOptions())), null, null, null,
             new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
             BlobServiceVersion.getLatest());
 
@@ -996,7 +1125,7 @@ public class BuilderHelperTests {
             () -> BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null,
                 "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-                new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class),
                 new SessionContext().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
     }
 
@@ -1028,7 +1157,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline
             = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
                 null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(), new ArrayList<>(), null, null,
-                new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
+                null, new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
         return new SessionLoggingTestContext(pipeline, loggedBodies, sessionResponse, dataResponse);
     }
 
@@ -1128,7 +1257,7 @@ public class BuilderHelperTests {
     private static HttpPipeline buildTokenPipeline(SessionContext sessionContext) {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
-            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null, null,
             new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
     }
 
@@ -1138,7 +1267,7 @@ public class BuilderHelperTests {
     private static HttpPipeline buildSharedKeyPipeline() {
         return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
             BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+            new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
     }
 
     /**

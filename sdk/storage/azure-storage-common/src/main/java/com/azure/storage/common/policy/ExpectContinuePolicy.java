@@ -35,12 +35,14 @@ public final class ExpectContinuePolicy extends HttpPipelineSyncPolicy {
     }
 
     /**
-     * Creates a policy reading the opt out from the given configuration.
+     * Creates a policy that applies {@code Expect: 100-continue} to every request with a body at least as large as the
+     * given threshold, reading the opt out from the given configuration.
      *
-     * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
-     * @param configuration The configuration to read the opt out from.
+     * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header. A null value
+     * means every request with a body is eligible.
+     * @param configuration The configuration to read the opt out from. A null value uses the global configuration.
      */
-    ExpectContinuePolicy(Long contentLengthThreshold, Configuration configuration) {
+    public ExpectContinuePolicy(Long contentLengthThreshold, Configuration configuration) {
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
         this.disabled = ExpectContinuePolicyHelper.isDisabled(configuration);
     }

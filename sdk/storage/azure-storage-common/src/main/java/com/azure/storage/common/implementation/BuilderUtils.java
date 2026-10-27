@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.policy.ExpectContinueOnThrottlePolicy;
 import com.azure.storage.common.policy.ExpectContinuePolicy;
@@ -47,9 +48,11 @@ public final class BuilderUtils {
      *
      * @param policies The pipeline policies being built up.
      * @param expectContinueOptions The options, or null to leave the header unapplied.
+     * @param configuration The client's configuration to read the opt out from. A null value uses the global
+     * configuration.
      */
     public static void addExpectContinuePolicy(List<HttpPipelinePolicy> policies,
-        ExpectContinueOptions expectContinueOptions) {
+        ExpectContinueOptions expectContinueOptions, Configuration configuration) {
         if (expectContinueOptions == null) {
             return;
         }
@@ -59,7 +62,7 @@ public final class BuilderUtils {
 
         switch (options.getMode()) {
             case ON:
-                policies.add(new ExpectContinuePolicy(threshold));
+                policies.add(new ExpectContinuePolicy(threshold, configuration));
                 break;
 
             case OFF:
@@ -67,7 +70,8 @@ public final class BuilderUtils {
 
             case APPLY_ON_THROTTLE:
             default:
-                policies.add(new ExpectContinueOnThrottlePolicy(options.getThrottleInterval(), threshold));
+                policies
+                    .add(new ExpectContinueOnThrottlePolicy(options.getThrottleInterval(), threshold, configuration));
                 break;
         }
     }

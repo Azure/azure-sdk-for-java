@@ -97,15 +97,15 @@ public final class BuilderHelper {
      * {@code Expect: 100-continue} is applied to requests.
      * @param sessionContext {@link SessionContext} containing the session mode and optional acquisition configuration.
      * @param serviceVersion The service version for session creation; defaults to the latest version when null.
-dw     * @return A new {@link HttpPipeline} from the passed values.
+     * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, String endpoint,
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ExpectContinueOptions expectContinueOptions,
-        ClientLogger logger, SessionContext sessionContext, BlobServiceVersion serviceVersion) {
+        ExpectContinueOptions expectContinueOptions, ClientLogger logger, SessionContext sessionContext,
+        BlobServiceVersion serviceVersion) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
@@ -143,7 +143,7 @@ dw     * @return A new {@link HttpPipeline} from the passed values.
 
         // Must be after the retry policy so it is evaluated on every attempt, and after content validation so the
         // Content-Length it reads is the encoded length actually sent. Before the credential policies.
-        BuilderUtils.addExpectContinuePolicy(policies, expectContinueOptions);
+        BuilderUtils.addExpectContinuePolicy(policies, expectContinueOptions, configuration);
 
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
