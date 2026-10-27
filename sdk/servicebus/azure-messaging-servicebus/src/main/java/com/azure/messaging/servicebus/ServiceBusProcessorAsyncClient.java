@@ -95,7 +95,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     private volatile String cachedFullyQualifiedNamespace;
     private volatile String cachedEntityPath;
     private volatile boolean closing;
-    private volatile boolean receiveTerminated;
+    private volatile AtomicBoolean receiveTerminated = new AtomicBoolean();
     private Sinks.Empty<Void> resumeProcessing = Sinks.empty();
     private Runnable resumeReceiving;
     private Sinks.Empty<Void> stopReceiving;
@@ -183,8 +183,8 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 closing = false;
                 isRunning.set(true);
                 try {
-                    if (receiveDisposable.get() == null || receiveTerminated) {
-                        if (receiveTerminated) {
+                    if (receiveDisposable.get() == null || receiveTerminated.get()) {
+                        if (receiveTerminated.get()) {
                             disposeReceiver();
                         }
                         subscribeToReceiver();
@@ -351,7 +351,9 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             receivedMessages
                 = Flux.range(0, concurrency).flatMap(ignored -> receiveSession(sessions).repeat(), concurrency, 1);
         }
-        receiveTerminated = false;
+        // A delayed terminal callback must only mark its own receive cycle.
+        final AtomicBoolean terminated = new AtomicBoolean();
+        receiveTerminated = terminated;
         final Sinks.Empty<Void> stop = Sinks.empty();
         final Sinks.Empty<Void> finished = Sinks.empty();
         stopReceiving = stop;
@@ -420,10 +422,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             .subscribe(ignored -> {
             }, throwable -> {
                 LOGGER.info("Error receiving messages.", throwable);
-                markReceiveTerminated(subscriptions);
+                markReceiveTerminated(subscriptions, terminated);
             }, () -> {
                 LOGGER.info("Completed receiving messages.");
-                markReceiveTerminated(subscriptions);
+                markReceiveTerminated(subscriptions, terminated);
             });
         subscriptions.add(disposable);
     }
@@ -535,9 +537,9 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     }
 
     // Let the monitor rebuild terminal streams so persistent non-transient errors cannot cause a hot restart loop.
-    private void markReceiveTerminated(Disposable cycle) {
+    private void markReceiveTerminated(Disposable cycle, AtomicBoolean terminated) {
         if (receiveDisposable.get() == cycle) {
-            receiveTerminated = true;
+            terminated.set(true);
         }
     }
 
@@ -570,7 +572,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 synchronized (this) {
                     final ServiceBusReceiverAsyncClient currentClient = asyncClient.get();
                     final ServiceBusSessionReceiverAsyncClient sessions = sessionClient.get();
-                    if (receiveTerminated
+                    if (receiveTerminated.get()
                         || (currentClient == null && sessions == null)
                         || (currentClient != null && currentClient.isConnectionClosed())
                         || (sessions != null && sessions.isConnectionClosed())) {

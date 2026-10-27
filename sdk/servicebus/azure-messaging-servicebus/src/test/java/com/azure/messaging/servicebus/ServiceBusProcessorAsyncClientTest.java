@@ -54,6 +54,7 @@ import static org.mockito.Mockito.after;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -1104,6 +1105,148 @@ public class ServiceBusProcessorAsyncClientTest {
             verify(mockReceiver).close();
         } finally {
             processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "false, healthy",
+        "true, healthy",
+        "false, terminated",
+        "true, terminated",
+        "false, cleanup",
+        "true, cleanup" })
+    public void staleTerminalCallbackDoesNotChangeReplacementState(boolean complete, String replacementState)
+        throws Exception {
+        final AtomicReference<FluxSink<ServiceBusMessageContext>> intake = new AtomicReference<>();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
+            = nonSessionBuilder(Flux.create(intake::set));
+        final ServiceBusReceiverAsyncClient initialReceiver = mockReceiver;
+        final ServiceBusReceiverAsyncClient replacement = mock(ServiceBusReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient recovered = mock(ServiceBusReceiverAsyncClient.class);
+        stubReceiverBasics(replacement);
+        stubReceiverBasics(recovered);
+        final AtomicReference<FluxSink<ServiceBusMessageContext>> replacementIntake = new AtomicReference<>();
+        when(replacement.receiveMessagesWithContextForAsyncProcessor()).thenReturn(Flux.create(replacementIntake::set));
+        when(recovered.receiveMessagesWithContextForAsyncProcessor()).thenReturn(Flux.never());
+        final CountDownLatch monitorObserved = new CountDownLatch(1);
+        final AtomicInteger builds = new AtomicInteger();
+        when(builder.buildAsyncClientForProcessor()).thenAnswer(invocation -> {
+            final int count = builds.incrementAndGet();
+            if (count == 1) {
+                return initialReceiver;
+            } else if (count == 2) {
+                return replacement;
+            }
+            monitorObserved.countDown();
+            return recovered;
+        });
+        when(replacement.isConnectionClosed()).thenAnswer(invocation -> {
+            monitorObserved.countDown();
+            return false;
+        });
+        final CountDownLatch terminalRead = new CountDownLatch(1);
+        final CountDownLatch releaseTerminal = new CountDownLatch(1);
+        final AtomicBoolean terminalReleased = new AtomicBoolean();
+        final CountDownLatch terminalFinished = new CountDownLatch(1);
+        final CountDownLatch cleanupStarted = new CountDownLatch(1);
+        final Sinks.Empty<Void> handlerFinished = Sinks.empty();
+        final AtomicBoolean handlerCancelled = new AtomicBoolean();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> handlerFinished.asMono().doOnCancel(() -> handlerCancelled.set(true)),
+            error -> Mono.empty(), options(1, false));
+        final FutureTask<Void> terminal = new FutureTask<>(() -> {
+            try {
+                if (complete) {
+                    intake.get().complete();
+                } else {
+                    intake.get().error(new IllegalStateException("old receiver terminated"));
+                }
+            } finally {
+                terminalFinished.countDown();
+            }
+        }, null);
+        final Thread terminalThread = new Thread(terminal, "processor-terminal");
+        FutureTask<Void> restarted = null;
+        try {
+            processor.start().block();
+            final java.lang.reflect.Method disposeMonitor
+                = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("disposeMonitor");
+            disposeMonitor.setAccessible(true);
+            disposeMonitor.invoke(processor);
+            final java.lang.reflect.Field field
+                = ServiceBusProcessorAsyncClient.class.getDeclaredField("receiveDisposable");
+            field.setAccessible(true);
+            final AtomicReference<?> cycles = spy((AtomicReference<?>) field.get(processor));
+            field.set(processor, cycles);
+            // Hold the identity read across replacement to force the old callback's check/write window.
+            doAnswer(invocation -> {
+                final Object cycle = invocation.callRealMethod();
+                if (Thread.currentThread() == terminalThread) {
+                    terminalRead.countDown();
+                    terminalReleased.set(releaseTerminal.await(30, TimeUnit.SECONDS));
+                }
+                return cycle;
+            }).when(cycles).get();
+            final Object cycle = cycles.get();
+            final java.lang.reflect.Method restart
+                = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("restartMessageReceiver", Disposable.class);
+            restart.setAccessible(true);
+            if ("cleanup".equals(replacementState)) {
+                doAnswer(invocation -> {
+                    cleanupStarted.countDown();
+                    assertTrue(terminalFinished.await(5, TimeUnit.SECONDS),
+                        "Terminal callback blocked behind receiver cleanup");
+                    return null;
+                }).when(initialReceiver).close();
+            }
+            terminalThread.start();
+            assertTrue(terminalRead.await(5, TimeUnit.SECONDS), "Terminal callback did not read its receive cycle");
+            restarted = new FutureTask<>(() -> {
+                restart.invoke(processor, cycle);
+                return null;
+            });
+            new Thread(restarted, "processor-restart").start();
+            if ("cleanup".equals(replacementState)) {
+                assertTrue(cleanupStarted.await(5, TimeUnit.SECONDS));
+                releaseTerminal.countDown();
+            }
+            restarted.get(5, TimeUnit.SECONDS);
+            replacementIntake.get().next(messageContext("replacement"));
+            if ("terminated".equals(replacementState)) {
+                replacementIntake.get().error(new IllegalStateException("replacement receiver terminated"));
+            }
+            releaseTerminal.countDown();
+            terminal.get(5, TimeUnit.SECONDS);
+            assertTrue(terminalReleased.get(), "Terminal callback exceeded the interleaving barrier timeout");
+            final java.lang.reflect.Method startMonitor
+                = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("startMonitor");
+            startMonitor.setAccessible(true);
+            startMonitor.invoke(processor);
+            assertTrue(monitorObserved.await(12, TimeUnit.SECONDS), "Recovery monitor did not inspect the replacement");
+            if ("terminated".equals(replacementState)) {
+                verify(builder, times(3)).buildAsyncClientForProcessor();
+                verify(replacement).close();
+            } else {
+                verify(builder, times(2)).buildAsyncClientForProcessor();
+                verify(replacement, never()).close();
+                assertFalse(handlerCancelled.get(), "A stale terminal callback cancelled the replacement's handler");
+                handlerFinished.tryEmitEmpty();
+                verify(replacement).complete(any());
+            }
+        } finally {
+            releaseTerminal.countDown();
+            try {
+                if (terminalThread.getState() != Thread.State.NEW) {
+                    terminal.get(5, TimeUnit.SECONDS);
+                }
+                if (restarted != null) {
+                    restarted.get(5, TimeUnit.SECONDS);
+                }
+            } finally {
+                handlerFinished.tryEmitEmpty();
+                processor.close();
+            }
         }
     }
 
