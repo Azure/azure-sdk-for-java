@@ -10,6 +10,7 @@ import com.azure.search.documents.indexes.BasicField;
 import com.azure.search.documents.indexes.ComplexField;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -297,6 +298,11 @@ public final class FieldBuilder {
             .setFilterable(toBoolean(basicField.isFilterable()))
             .setSortable(toBoolean(basicField.isSortable()))
             .setFacetable(toBoolean(basicField.isFacetable()))
+            .setPermissionFilter(nullOrT(basicField.permissionFilter(), PermissionFilter::fromString))
+            .setSensitivityLabelId(toBoolean(basicField.isSensitivityLabelId()))
+            .setSensitivityLabelName(toBoolean(basicField.isSensitivityLabelName()))
+            .setSourceDocumentId(toBoolean(basicField.isSourceDocumentId()))
+            .setSharepointSiteUrl(toBoolean(basicField.isSharepointSiteUrl()))
             .setOrganizationAccessExpiration(toBoolean(basicField.isOrganizationAccessExpiration()))
             .setAnalyzerName(nullOrT(basicField.analyzerName(), LexicalAnalyzerName::fromString))
             .setSearchAnalyzerName(nullOrT(basicField.searchAnalyzerName(), LexicalAnalyzerName::fromString))

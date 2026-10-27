@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
@@ -97,9 +98,11 @@ public @interface BasicField {
     BooleanHelper isFacetable() default BooleanHelper.NULL;
 
     /**
-     * Indicates if the field or method should be used as a permission filter {@link SearchField field}.
+     * The {@link PermissionFilter} to associate with the {@link SearchField field}.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getPermissionFilter()} value.
      *
-     * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
+     * @return The permission filter associated with the {@link SearchField field}.
      */
     String permissionFilter() default "";
 
@@ -110,6 +113,34 @@ public @interface BasicField {
      * @return A flag indicating if the field or method should generate as a sensitivity label {@link SearchField field}.
      */
     BooleanHelper isSensitivityLabel() default BooleanHelper.NULL;
+
+    /**
+     * Indicates whether the field contains a Microsoft Purview sensitivity label ID used for document-level filtering.
+     *
+     * @return A flag indicating whether the {@link SearchField field} contains sensitivity label IDs.
+     */
+    BooleanHelper isSensitivityLabelId() default BooleanHelper.NULL;
+
+    /**
+     * Indicates whether the field contains the name of a Microsoft Purview sensitivity label applied to the document.
+     *
+     * @return A flag indicating whether the {@link SearchField field} contains sensitivity label names.
+     */
+    BooleanHelper isSensitivityLabelName() default BooleanHelper.NULL;
+
+    /**
+     * Indicates whether the field contains the source document identifier used for Microsoft Purview audit tracking.
+     *
+     * @return A flag indicating whether the {@link SearchField field} contains source document identifiers.
+     */
+    BooleanHelper isSourceDocumentId() default BooleanHelper.NULL;
+
+    /**
+     * Indicates whether the field contains a SharePoint site URL used for SharePoint group-based filtering.
+     *
+     * @return A flag indicating whether the {@link SearchField field} contains SharePoint site URLs.
+     */
+    BooleanHelper isSharepointSiteUrl() default BooleanHelper.NULL;
 
     /**
      * Indicates whether the field contains the expiration time for organization-wide document access.
