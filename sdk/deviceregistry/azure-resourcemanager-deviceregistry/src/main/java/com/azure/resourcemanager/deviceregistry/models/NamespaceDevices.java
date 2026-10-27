@@ -91,7 +91,7 @@ public interface NamespaceDevices {
     PagedIterable<NamespaceDevice> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -104,7 +104,7 @@ public interface NamespaceDevices {
     void revoke(String resourceGroupName, String namespaceName, String deviceName, DeviceCredentialsRevokeRequest body);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

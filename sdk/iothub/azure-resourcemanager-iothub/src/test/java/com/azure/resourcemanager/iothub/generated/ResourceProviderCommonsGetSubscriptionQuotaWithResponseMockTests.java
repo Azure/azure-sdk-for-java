@@ -21,7 +21,7 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
     @Test
     public void testGetSubscriptionQuotaWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"xoi\",\"type\":\"sks\",\"unit\":\"iml\",\"currentValue\":313242233,\"limit\":1639942247,\"name\":{\"value\":\"gxxlxsffgcvizq\",\"localizedValue\":\"wlvwlyoupf\"}},{\"id\":\"bkjubdyhgkfmins\",\"type\":\"wzf\",\"unit\":\"sttktlahbqa\",\"currentValue\":2006118206,\"limit\":118535522,\"name\":{\"value\":\"kxitmmqtgqqqxhr\",\"localizedValue\":\"rxcpjuisavo\"}}],\"nextLink\":\"dzf\"}";
+            = "{\"value\":[{\"id\":\"uvsj\",\"type\":\"wsmystuluqypf\",\"unit\":\"lerchpq\",\"currentValue\":131662933,\"limit\":1988339423,\"name\":{\"value\":\"bwidfcxsspuunn\",\"localizedValue\":\"yhkx\"}}],\"nextLink\":\"ddrihpf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
             .getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xoi", response.value().get(0).id());
-        Assertions.assertEquals("sks", response.value().get(0).type());
-        Assertions.assertEquals("iml", response.value().get(0).unit());
-        Assertions.assertEquals(313242233, response.value().get(0).currentValue());
-        Assertions.assertEquals(1639942247, response.value().get(0).limit());
-        Assertions.assertEquals("gxxlxsffgcvizq", response.value().get(0).name().value());
-        Assertions.assertEquals("wlvwlyoupf", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("uvsj", response.value().get(0).id());
+        Assertions.assertEquals("wsmystuluqypf", response.value().get(0).type());
+        Assertions.assertEquals("lerchpq", response.value().get(0).unit());
+        Assertions.assertEquals(131662933, response.value().get(0).currentValue());
+        Assertions.assertEquals(1988339423, response.value().get(0).limit());
+        Assertions.assertEquals("bwidfcxsspuunn", response.value().get(0).name().value());
+        Assertions.assertEquals("yhkx", response.value().get(0).name().localizedValue());
     }
 }

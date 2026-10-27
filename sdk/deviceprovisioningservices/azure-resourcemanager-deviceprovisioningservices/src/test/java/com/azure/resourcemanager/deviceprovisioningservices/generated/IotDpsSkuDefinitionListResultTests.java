@@ -13,9 +13,9 @@ public final class IotDpsSkuDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotDpsSkuDefinitionListResult model = BinaryData
-            .fromString("{\"value\":[{\"name\":\"S1\"},{\"name\":\"S1\"},{\"name\":\"S1\"}],\"nextLink\":\"zj\"}")
+            .fromString("{\"value\":[{\"name\":\"S1\"},{\"name\":\"S1\"},{\"name\":\"S1\"}],\"nextLink\":\"sub\"}")
             .toObject(IotDpsSkuDefinitionListResult.class);
         Assertions.assertEquals(IotDpsSku.S1, model.value().get(0).name());
-        Assertions.assertEquals("zj", model.nextLink());
+        Assertions.assertEquals("sub", model.nextLink());
     }
 }

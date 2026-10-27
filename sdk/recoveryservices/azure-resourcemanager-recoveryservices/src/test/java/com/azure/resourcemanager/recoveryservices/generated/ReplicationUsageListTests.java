@@ -12,21 +12,21 @@ public final class ReplicationUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":1795094625,\"unHealthyProviderCount\":734884561,\"eventsCount\":1438226066,\"deprecatedProviderCount\":1074926668,\"supportedProviderCount\":1326044907,\"unsupportedProviderCount\":679470188},\"jobsSummary\":{\"failedJobs\":83692384,\"suspendedJobs\":17421119,\"inProgressJobs\":782555579},\"protectedItemCount\":1863766018,\"recoveryPlanCount\":815551540,\"registeredServersCount\":1857239406,\"recoveryServicesProviderAuthType\":1149857481},{\"monitoringSummary\":{\"unHealthyVmCount\":2063322926,\"unHealthyProviderCount\":884144034,\"eventsCount\":2121722850,\"deprecatedProviderCount\":439927989,\"supportedProviderCount\":1133665771,\"unsupportedProviderCount\":384139525},\"jobsSummary\":{\"failedJobs\":1358628547,\"suspendedJobs\":185974467,\"inProgressJobs\":819478207},\"protectedItemCount\":2118768153,\"recoveryPlanCount\":2142840160,\"registeredServersCount\":1096564755,\"recoveryServicesProviderAuthType\":1182551695}],\"nextLink\":\"hsucoc\"}")
+            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":344801541,\"unHealthyProviderCount\":1170549879,\"eventsCount\":823200813,\"deprecatedProviderCount\":830727700,\"supportedProviderCount\":133816698,\"unsupportedProviderCount\":6362345},\"jobsSummary\":{\"failedJobs\":635482352,\"suspendedJobs\":624396177,\"inProgressJobs\":865900212},\"protectedItemCount\":1971435113,\"recoveryPlanCount\":435215346,\"registeredServersCount\":746279797,\"recoveryServicesProviderAuthType\":996509936},{\"monitoringSummary\":{\"unHealthyVmCount\":598884844,\"unHealthyProviderCount\":1104061727,\"eventsCount\":2144077110,\"deprecatedProviderCount\":726916833,\"supportedProviderCount\":2000521047,\"unsupportedProviderCount\":1146165631},\"jobsSummary\":{\"failedJobs\":920561022,\"suspendedJobs\":1908596077,\"inProgressJobs\":108313874},\"protectedItemCount\":2062643229,\"recoveryPlanCount\":329870770,\"registeredServersCount\":1997614477,\"recoveryServicesProviderAuthType\":1058725142},{\"monitoringSummary\":{\"unHealthyVmCount\":871941711,\"unHealthyProviderCount\":2081633134,\"eventsCount\":2108720528,\"deprecatedProviderCount\":1644974889,\"supportedProviderCount\":1711095303,\"unsupportedProviderCount\":1677238877},\"jobsSummary\":{\"failedJobs\":38172527,\"suspendedJobs\":1341187268,\"inProgressJobs\":1981561277},\"protectedItemCount\":1769145157,\"recoveryPlanCount\":1610345619,\"registeredServersCount\":868520929,\"recoveryServicesProviderAuthType\":143506612},{\"monitoringSummary\":{\"unHealthyVmCount\":918188408,\"unHealthyProviderCount\":354304408,\"eventsCount\":320708733,\"deprecatedProviderCount\":767248190,\"supportedProviderCount\":1364621442,\"unsupportedProviderCount\":1872755213},\"jobsSummary\":{\"failedJobs\":560100496,\"suspendedJobs\":1237447101,\"inProgressJobs\":722438368},\"protectedItemCount\":1739821364,\"recoveryPlanCount\":2060505199,\"registeredServersCount\":1344905503,\"recoveryServicesProviderAuthType\":2133356892}],\"nextLink\":\"fj\"}")
             .toObject(ReplicationUsageList.class);
-        Assertions.assertEquals(1795094625, model.value().get(0).monitoringSummary().unHealthyVmCount());
-        Assertions.assertEquals(734884561, model.value().get(0).monitoringSummary().unHealthyProviderCount());
-        Assertions.assertEquals(1438226066, model.value().get(0).monitoringSummary().eventsCount());
-        Assertions.assertEquals(1074926668, model.value().get(0).monitoringSummary().deprecatedProviderCount());
-        Assertions.assertEquals(1326044907, model.value().get(0).monitoringSummary().supportedProviderCount());
-        Assertions.assertEquals(679470188, model.value().get(0).monitoringSummary().unsupportedProviderCount());
-        Assertions.assertEquals(83692384, model.value().get(0).jobsSummary().failedJobs());
-        Assertions.assertEquals(17421119, model.value().get(0).jobsSummary().suspendedJobs());
-        Assertions.assertEquals(782555579, model.value().get(0).jobsSummary().inProgressJobs());
-        Assertions.assertEquals(1863766018, model.value().get(0).protectedItemCount());
-        Assertions.assertEquals(815551540, model.value().get(0).recoveryPlanCount());
-        Assertions.assertEquals(1857239406, model.value().get(0).registeredServersCount());
-        Assertions.assertEquals(1149857481, model.value().get(0).recoveryServicesProviderAuthType());
-        Assertions.assertEquals("hsucoc", model.nextLink());
+        Assertions.assertEquals(344801541, model.value().get(0).monitoringSummary().unHealthyVmCount());
+        Assertions.assertEquals(1170549879, model.value().get(0).monitoringSummary().unHealthyProviderCount());
+        Assertions.assertEquals(823200813, model.value().get(0).monitoringSummary().eventsCount());
+        Assertions.assertEquals(830727700, model.value().get(0).monitoringSummary().deprecatedProviderCount());
+        Assertions.assertEquals(133816698, model.value().get(0).monitoringSummary().supportedProviderCount());
+        Assertions.assertEquals(6362345, model.value().get(0).monitoringSummary().unsupportedProviderCount());
+        Assertions.assertEquals(635482352, model.value().get(0).jobsSummary().failedJobs());
+        Assertions.assertEquals(624396177, model.value().get(0).jobsSummary().suspendedJobs());
+        Assertions.assertEquals(865900212, model.value().get(0).jobsSummary().inProgressJobs());
+        Assertions.assertEquals(1971435113, model.value().get(0).protectedItemCount());
+        Assertions.assertEquals(435215346, model.value().get(0).recoveryPlanCount());
+        Assertions.assertEquals(746279797, model.value().get(0).registeredServersCount());
+        Assertions.assertEquals(996509936, model.value().get(0).recoveryServicesProviderAuthType());
+        Assertions.assertEquals("fj", model.nextLink());
     }
 }

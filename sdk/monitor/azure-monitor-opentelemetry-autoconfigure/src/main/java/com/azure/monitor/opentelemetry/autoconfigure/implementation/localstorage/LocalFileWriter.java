@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.DISK_PERSISTENCE_WRITER_ERROR;
@@ -109,6 +111,12 @@ final class LocalFileWriter {
 
     private static File createTempFile(File telemetryFolder) throws IOException {
         String prefix = System.currentTimeMillis() + "-";
+        if (Files.getFileStore(telemetryFolder.toPath()).supportsFileAttributeView("posix")) {
+            return Files
+                .createTempFile(telemetryFolder.toPath(), prefix, null,
+                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------")))
+                .toFile();
+        }
         return File.createTempFile(prefix, null, telemetryFolder);
     }
 

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * 2025-12-01-preview/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateLinkResources_ListByResource_MaximumSet_Gen.

@@ -12,9 +12,9 @@ public final class DataAnnotationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataAnnotationInner model = BinaryData.fromString(
-            "{\"annotationId\":\"gogtqxepnylbf\",\"createdAt\":\"2021-07-07T20:12:10Z\",\"annotationDetails\":{\"vofqzhvfc\":\"yjt\"},\"description\":\"yfm\"}")
+            "{\"annotationId\":\"zauorsuk\",\"createdAt\":\"2021-02-20T07:01:30Z\",\"annotationDetails\":{\"epzl\":\"qplhlvnu\",\"vmnnrw\":\"phwzsoldweyuqdu\"},\"description\":\"i\"}")
             .toObject(DataAnnotationInner.class);
-        Assertions.assertEquals("yjt", model.annotationDetails().get("vofqzhvfc"));
-        Assertions.assertEquals("yfm", model.description());
+        Assertions.assertEquals("qplhlvnu", model.annotationDetails().get("epzl"));
+        Assertions.assertEquals("i", model.description());
     }
 }

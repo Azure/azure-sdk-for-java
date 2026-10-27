@@ -114,15 +114,6 @@ public final class DataExportSettings extends SettingInner {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataExportSettings withProperties(SettingProperties properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /**
      * Get the enabled property: Is the data export setting enabled.
      * 
      * @return the enabled value.
@@ -154,9 +145,6 @@ public final class DataExportSettings extends SettingInner {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (properties() != null) {
-            properties().validate();
         }
     }
 

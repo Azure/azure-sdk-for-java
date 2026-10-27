@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInRPTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInRP model = BinaryData.fromString("{\"datasourceId\":\"qknp\",\"datasourceName\":\"gnepttwqmsni\"}")
+        DatabaseInRP model = BinaryData.fromString("{\"datasourceId\":\"uyav\",\"datasourceName\":\"wmn\"}")
             .toObject(DatabaseInRP.class);
-        Assertions.assertEquals("qknp", model.datasourceId());
-        Assertions.assertEquals("gnepttwqmsni", model.datasourceName());
+        Assertions.assertEquals("uyav", model.datasourceId());
+        Assertions.assertEquals("wmn", model.datasourceName());
     }
 }

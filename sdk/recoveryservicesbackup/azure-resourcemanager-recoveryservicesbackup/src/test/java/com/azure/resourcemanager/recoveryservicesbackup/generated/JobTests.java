@@ -14,14 +14,14 @@ public final class JobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Job model = BinaryData.fromString(
-            "{\"jobType\":\"Job\",\"entityFriendlyName\":\"ksaoafcluqvox\",\"backupManagementType\":\"DPM\",\"operation\":\"im\",\"status\":\"vwg\",\"startTime\":\"2021-04-28T08:25:10Z\",\"endTime\":\"2020-12-22T05:57:37Z\",\"activityId\":\"zgwe\"}")
+            "{\"jobType\":\"Job\",\"entityFriendlyName\":\"jqpkzfbo\",\"backupManagementType\":\"DefaultBackup\",\"operation\":\"cs\",\"status\":\"qwixvcpwnk\",\"startTime\":\"2021-05-06T03:16:14Z\",\"endTime\":\"2021-10-03T23:21:25Z\",\"activityId\":\"falickduoiqtamty\"}")
             .toObject(Job.class);
-        Assertions.assertEquals("ksaoafcluqvox", model.entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("im", model.operation());
-        Assertions.assertEquals("vwg", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T08:25:10Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T05:57:37Z"), model.endTime());
-        Assertions.assertEquals("zgwe", model.activityId());
+        Assertions.assertEquals("jqpkzfbo", model.entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("cs", model.operation());
+        Assertions.assertEquals("qwixvcpwnk", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T03:16:14Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T23:21:25Z"), model.endTime());
+        Assertions.assertEquals("falickduoiqtamty", model.activityId());
     }
 }

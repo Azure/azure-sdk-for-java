@@ -7,12 +7,6 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -23,7 +17,6 @@ import com.openai.core.JsonValue;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.io.IOException;
-import java.util.Collections;
 
 /**
  * This sample demonstrates streaming hosted-agent session logs.
@@ -46,21 +39,11 @@ public class SessionLogStreamSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
             resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
-
-            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100)
-                        .setAgentVersion(resources.getAgent().getVersion()))))
-                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
-            agentsClient.updateAgentDetails(agentName,
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-            System.out.printf("Agent endpoint configured for agent: %s%n", agentName);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
             com.openai.models.responses.Response openAIResponse = openAIClient.responses().create(

@@ -365,6 +365,8 @@ public class DpmContainer extends ProtectionContainer {
                     deserializedDpmContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedDpmContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedDpmContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedDpmContainer.containerType = ProtectableContainerType.fromString(reader.getString());
                 } else if ("canReRegister".equals(fieldName)) {

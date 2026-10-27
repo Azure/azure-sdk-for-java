@@ -20,42 +20,45 @@ public final class TestRouteInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestRouteInput model = BinaryData.fromString(
-            "{\"message\":{\"body\":\"pnyiropuhp\",\"appProperties\":{\"git\":\"pgylg\",\"zhxgktrmgucn\":\"medjvcslynqwwncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"systemProperties\":{\"kdmoi\":\"dahzxctobg\"}},\"route\":{\"name\":\"postmgrcfbunrm\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"hhkxbp\",\"endpointNames\":[\"ymjhxxjyngudivkr\"],\"isEnabled\":false},\"twin\":{\"tags\":\"\\\"dataxqzvszjfa\\\"\",\"properties\":{\"desired\":\"\\\"datafdxxivetvtcqaqtd\\\"\",\"reported\":\"\\\"datamcbxvwvxysl\\\"\"}}}")
+            "{\"message\":{\"body\":\"kfgohdneue\",\"appProperties\":{\"htozfikdow\":\"hsd\",\"ithhqzon\":\"quuvxzxcl\"},\"systemProperties\":{\"ka\":\"gbhcohfwdsj\",\"dkzzewkfvhqcrail\":\"jutiiswacff\",\"rwdmhdlxyjrxsa\":\"pnppfuf\"}},\"route\":{\"name\":\"afcnih\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"apnedgfbcvkc\",\"dataSchema\":\"vpk\",\"endpointNames\":[\"dcvd\",\"hvoodsotbobzd\",\"pcjwv\"],\"isEnabled\":true},\"twin\":{\"tags\":\"\\\"datad\\\"\",\"properties\":{\"desired\":\"\\\"dataxcxrsl\\\"\",\"reported\":\"\\\"datautwu\\\"\"}}}")
             .toObject(TestRouteInput.class);
-        Assertions.assertEquals("pnyiropuhp", model.message().body());
-        Assertions.assertEquals("pgylg", model.message().appProperties().get("git"));
-        Assertions.assertEquals("dahzxctobg", model.message().systemProperties().get("kdmoi"));
-        Assertions.assertEquals("postmgrcfbunrm", model.route().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.route().source());
-        Assertions.assertEquals("hhkxbp", model.route().condition());
-        Assertions.assertEquals("ymjhxxjyngudivkr", model.route().endpointNames().get(0));
-        Assertions.assertFalse(model.route().isEnabled());
+        Assertions.assertEquals("kfgohdneue", model.message().body());
+        Assertions.assertEquals("hsd", model.message().appProperties().get("htozfikdow"));
+        Assertions.assertEquals("gbhcohfwdsj", model.message().systemProperties().get("ka"));
+        Assertions.assertEquals("afcnih", model.route().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
+        Assertions.assertEquals("apnedgfbcvkc", model.route().condition());
+        Assertions.assertEquals("vpk", model.route().dataSchema());
+        Assertions.assertEquals("dcvd", model.route().endpointNames().get(0));
+        Assertions.assertTrue(model.route().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TestRouteInput model = new TestRouteInput()
-            .withMessage(new RoutingMessage().withBody("pnyiropuhp")
-                .withAppProperties(mapOf("git", "pgylg", "zhxgktrmgucn", "medjvcslynqwwncw", "llwptfdy", "pkteo",
-                    "rhhuaopppcqeqx", "pfqbuaceopzf"))
-                .withSystemProperties(mapOf("kdmoi", "dahzxctobg")))
-            .withRoute(new RouteProperties().withName("postmgrcfbunrm")
-                .withSource(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS)
-                .withCondition("hhkxbp")
-                .withEndpointNames(Arrays.asList("ymjhxxjyngudivkr"))
-                .withIsEnabled(false))
-            .withTwin(new RoutingTwin().withTags("\"dataxqzvszjfa\"")
-                .withProperties(new RoutingTwinProperties().withDesired("\"datafdxxivetvtcqaqtd\"")
-                    .withReported("\"datamcbxvwvxysl\"")));
+            .withMessage(new RoutingMessage().withBody("kfgohdneue")
+                .withAppProperties(mapOf("htozfikdow", "hsd", "ithhqzon", "quuvxzxcl"))
+                .withSystemProperties(
+                    mapOf("ka", "gbhcohfwdsj", "dkzzewkfvhqcrail", "jutiiswacff", "rwdmhdlxyjrxsa", "pnppfuf")))
+            .withRoute(new RouteProperties().withName("afcnih")
+                .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                .withCondition("apnedgfbcvkc")
+                .withDataSchema("vpk")
+                .withEndpointNames(Arrays.asList("dcvd", "hvoodsotbobzd", "pcjwv"))
+                .withIsEnabled(true))
+            .withTwin(new RoutingTwin().withTags("\"datad\"")
+                .withProperties(
+                    new RoutingTwinProperties().withDesired("\"dataxcxrsl\"").withReported("\"datautwu\"")));
         model = BinaryData.fromObject(model).toObject(TestRouteInput.class);
-        Assertions.assertEquals("pnyiropuhp", model.message().body());
-        Assertions.assertEquals("pgylg", model.message().appProperties().get("git"));
-        Assertions.assertEquals("dahzxctobg", model.message().systemProperties().get("kdmoi"));
-        Assertions.assertEquals("postmgrcfbunrm", model.route().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.route().source());
-        Assertions.assertEquals("hhkxbp", model.route().condition());
-        Assertions.assertEquals("ymjhxxjyngudivkr", model.route().endpointNames().get(0));
-        Assertions.assertFalse(model.route().isEnabled());
+        Assertions.assertEquals("kfgohdneue", model.message().body());
+        Assertions.assertEquals("hsd", model.message().appProperties().get("htozfikdow"));
+        Assertions.assertEquals("gbhcohfwdsj", model.message().systemProperties().get("ka"));
+        Assertions.assertEquals("afcnih", model.route().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
+        Assertions.assertEquals("apnedgfbcvkc", model.route().condition());
+        Assertions.assertEquals("vpk", model.route().dataSchema());
+        Assertions.assertEquals("dcvd", model.route().endpointNames().get(0));
+        Assertions.assertTrue(model.route().isEnabled());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -25,7 +24,7 @@ public final class SignalDefinitionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"brjtloqxfuoj\",\"refreshInterval\":\"PT1M\",\"tags\":{\"z\":\"l\",\"zdlyjdfqw\":\"asccbiui\"},\"dataUnit\":\"yoqufdvruz\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":0.3638686621154186,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":34.92953425087704,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT30M\"}}},\"id\":\"dgug\",\"name\":\"yzihgrkyuizabsn\",\"type\":\"fpphoj\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"brjtloqxfuoj\",\"refreshInterval\":\"PT1M\",\"tags\":{\"z\":\"l\",\"zdlyjdfqw\":\"asccbiui\"},\"dataUnit\":\"yoqufdvruz\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":0.3638686621154186,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":57.46778494124541,\"sensitivity\":\"Low\"}}},\"id\":\"tngfdgugeyzihgr\",\"name\":\"yui\",\"type\":\"absnmfpp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -48,15 +47,11 @@ public final class SignalDefinitionsGetWithResponseMockTests {
             response.properties().evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             response.properties().evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M,
-            response.properties().evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(SignalOperator.EQUAL,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(34.92953425087704D,
+        Assertions.assertEquals(57.46778494124541D,
             response.properties().evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             response.properties().evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            response.properties().evaluationRules().unhealthyRule().lookBackWindow());
     }
 }

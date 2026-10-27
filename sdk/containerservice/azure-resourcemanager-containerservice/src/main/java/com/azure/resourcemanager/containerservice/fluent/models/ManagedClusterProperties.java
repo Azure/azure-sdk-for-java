@@ -18,6 +18,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolcha
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentSandboxProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
@@ -32,6 +33,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeProvi
 import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPodSnapshotProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
@@ -184,9 +186,21 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all
      * AKS-managed components, such as the node operating system, addons, and [managed containerized
      * components](https://aka.ms/aks/components/docs). See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more
-     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled.
+     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled. Although this
+     * property is available in a stable API version, cluster-wide FIPS remains a preview feature. Write requests whose
+     * resulting cluster state has this property set to true require the `Microsoft.ContainerService/EnableFIPSPreview`
+     * subscription feature registration.
      */
     private Boolean enableFips;
+
+    /*
+     * Whether to enable node hardening at the cluster level. When enabled, AKS applies hardened defaults for soft
+     * eviction thresholds, kube-reserved, and system-reserved on all Linux node pools in the cluster. Per-node-pool
+     * kubeletConfig settings take precedence over hardening defaults. On agent pools running Kubernetes 1.37 or later,
+     * node hardening is enabled by default and cannot be disabled; setting this field to false has no effect on those
+     * pools.
+     */
+    private Boolean enableNodeHardening;
 
     /*
      * Enable namespace as Azure resource. The default value is false. It can be enabled/disabled on creation and
@@ -318,7 +332,18 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile;
 
     /*
-     * Profile of the pod scheduler configuration.
+     * Agent Sandbox settings that apply to the whole cluster.
+     */
+    private ManagedClusterAgentSandboxProfile agentSandboxProfile;
+
+    /*
+     * The Pod Snapshot Restore profile for the managed cluster.
+     */
+    private ManagedClusterPodSnapshotProfile podSnapshotProfile;
+
+    /*
+     * Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS. See
+     * https://aka.ms/aks/scheduler-profile.
      */
     private SchedulerProfile schedulerProfile;
 
@@ -758,7 +783,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @return the enableFips value.
      */
@@ -771,13 +798,43 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterProperties object itself.
      */
     public ManagedClusterProperties withEnableFips(Boolean enableFips) {
         this.enableFips = enableFips;
+        return this;
+    }
+
+    /**
+     * Get the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @return the enableNodeHardening value.
+     */
+    public Boolean enableNodeHardening() {
+        return this.enableNodeHardening;
+    }
+
+    /**
+     * Set the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @param enableNodeHardening the enableNodeHardening value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withEnableNodeHardening(Boolean enableNodeHardening) {
+        this.enableNodeHardening = enableNodeHardening;
         return this;
     }
 
@@ -1280,7 +1337,48 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Get the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @return the agentSandboxProfile value.
+     */
+    public ManagedClusterAgentSandboxProfile agentSandboxProfile() {
+        return this.agentSandboxProfile;
+    }
+
+    /**
+     * Set the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @param agentSandboxProfile the agentSandboxProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withAgentSandboxProfile(ManagedClusterAgentSandboxProfile agentSandboxProfile) {
+        this.agentSandboxProfile = agentSandboxProfile;
+        return this;
+    }
+
+    /**
+     * Get the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @return the podSnapshotProfile value.
+     */
+    public ManagedClusterPodSnapshotProfile podSnapshotProfile() {
+        return this.podSnapshotProfile;
+    }
+
+    /**
+     * Set the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @param podSnapshotProfile the podSnapshotProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withPodSnapshotProfile(ManagedClusterPodSnapshotProfile podSnapshotProfile) {
+        this.podSnapshotProfile = podSnapshotProfile;
+        return this;
+    }
+
+    /**
+     * Get the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @return the schedulerProfile value.
      */
@@ -1289,7 +1387,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Set the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @param schedulerProfile the schedulerProfile value to set.
      * @return the ManagedClusterProperties object itself.
@@ -1507,6 +1606,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (aiToolchainOperatorProfile() != null) {
             aiToolchainOperatorProfile().validate();
         }
+        if (agentSandboxProfile() != null) {
+            agentSandboxProfile().validate();
+        }
+        if (podSnapshotProfile() != null) {
+            podSnapshotProfile().validate();
+        }
         if (schedulerProfile() != null) {
             schedulerProfile().validate();
         }
@@ -1550,6 +1655,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
         jsonWriter.writeBooleanField("enableFIPS", this.enableFips);
+        jsonWriter.writeBooleanField("enableNodeHardening", this.enableNodeHardening);
         jsonWriter.writeBooleanField("enableNamespaceResources", this.enableNamespaceResources);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
@@ -1576,6 +1682,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeProvisioningProfile", this.nodeProvisioningProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
         jsonWriter.writeJsonField("aiToolchainOperatorProfile", this.aiToolchainOperatorProfile);
+        jsonWriter.writeJsonField("agentSandboxProfile", this.agentSandboxProfile);
+        jsonWriter.writeJsonField("podSnapshotProfile", this.podSnapshotProfile);
         jsonWriter.writeJsonField("schedulerProfile", this.schedulerProfile);
         jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
         jsonWriter.writeJsonField("healthMonitorProfile", this.healthMonitorProfile);
@@ -1655,6 +1763,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                         = KubernetesSupportPlan.fromString(reader.getString());
                 } else if ("enableFIPS".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableFips = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableNodeHardening".equals(fieldName)) {
+                    deserializedManagedClusterProperties.enableNodeHardening
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableNamespaceResources".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableNamespaceResources
                         = reader.getNullable(JsonReader::getBoolean);
@@ -1721,6 +1832,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("aiToolchainOperatorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.aiToolchainOperatorProfile
                         = ManagedClusterAIToolchainOperatorProfile.fromJson(reader);
+                } else if ("agentSandboxProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.agentSandboxProfile
+                        = ManagedClusterAgentSandboxProfile.fromJson(reader);
+                } else if ("podSnapshotProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.podSnapshotProfile
+                        = ManagedClusterPodSnapshotProfile.fromJson(reader);
                 } else if ("schedulerProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.schedulerProfile = SchedulerProfile.fromJson(reader);
                 } else if ("hostedSystemProfile".equals(fieldName)) {

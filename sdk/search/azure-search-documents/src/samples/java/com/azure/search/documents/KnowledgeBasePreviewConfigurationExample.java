@@ -8,91 +8,210 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
-import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
+import com.azure.search.documents.indexes.models.KnowledgeBaseRetrieveDefaults;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
-import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMinimalReasoningEffort;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SemanticConfiguration;
+import com.azure.search.documents.indexes.models.SemanticField;
+import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
+import com.azure.search.documents.indexes.models.SemanticSearch;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalAutoReasoningEffort;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffortKind;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsResult;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
- * This example shows how to create and update a knowledge base using preview-only configuration knobs.
- * <p>
- * It demonstrates:
- * <ul>
- *     <li>Setting GPT-5.x model names for query planning</li>
- *     <li>Configuring KB-level retrieval defaults (reasoning effort, output mode, instructions)</li>
- *     <li>CORS options</li>
- *     <li>Encryption key (CMK)</li>
- *     <li>Knowledge source with preview-relevant defaults (image serving, freshness)</li>
- *     <li>Updating an existing knowledge base</li>
- * </ul>
- * <p>
- * Set the following environment variables before running this sample:
- * <ul>
- *     <li>SEARCH_ENDPOINT - the endpoint of your Azure AI Search service</li>
- *     <li>SEARCH_API_KEY - the admin key of your Azure AI Search service</li>
- * </ul>
+ * Demonstrates knowledge-base and request-level retrieval configuration precedence.
+ *
+ * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
+ * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and {@code SEARCH_OPENAI_MODEL_NAME}. The
+ * deployed model must support automatic reasoning.</p>
  */
 public class KnowledgeBasePreviewConfigurationExample {
-
-    private static final String ENDPOINT = System.getenv("SEARCH_ENDPOINT");
-    private static final String API_KEY = System.getenv("SEARCH_API_KEY");
-    private static final String KB_NAME = "my-knowledge-base";
+    private static final String SEMANTIC_CONFIGURATION_NAME = "sample-semantic-config";
 
     public static void main(String[] args) {
-        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-            .credential(new AzureKeyCredential(API_KEY))
-            .endpoint(ENDPOINT)
-            .buildClient();
+        String endpoint = System.getenv("SEARCH_ENDPOINT");
+        AzureKeyCredential credential = new AzureKeyCredential(System.getenv("SEARCH_API_KEY"));
+        SearchIndexClient searchIndexClient
+            = new SearchIndexClientBuilder().credential(credential).endpoint(endpoint).buildClient();
+
+        String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        String indexName = "kb-config-index-" + suffix;
+        String knowledgeSourceName = "kb-config-source-" + suffix;
+        String knowledgeBaseName = "kb-config-" + suffix;
+        boolean indexCreated = false;
+        boolean knowledgeSourceCreated = false;
+        boolean knowledgeBaseCreated = false;
 
         try {
-            // --- Create a knowledge base with preview configuration knobs ---
+            searchIndexClient.createIndex(createSampleIndex(indexName));
+            indexCreated = true;
+            uploadSampleDocument(searchIndexClient.getSearchClient(indexName));
 
-            // Knowledge source reference with preview-relevant defaults
-            KnowledgeSourceReference knowledgeSource = new KnowledgeSourceReference("my-knowledge-source")
-                .setEnableImageServing(true)
-                .setEnableFreshness(true);
+            SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(knowledgeSourceName,
+                new SearchIndexKnowledgeSourceParameters(indexName)
+                    .setSemanticConfigurationName(SEMANTIC_CONFIGURATION_NAME));
+            searchIndexClient.createKnowledgeSource(knowledgeSource);
+            knowledgeSourceCreated = true;
 
-            KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, knowledgeSource);
+            KnowledgeBase knowledgeBase
+                = new KnowledgeBase(knowledgeBaseName, new KnowledgeSourceReference(knowledgeSourceName))
+                    .setModels(new KnowledgeBaseAzureOpenAIModel(new AzureOpenAIVectorizerParameters()
+                        .setResourceUrl(System.getenv("SEARCH_OPENAI_ENDPOINT"))
+                        .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
+                        .setDeploymentName(System.getenv("SEARCH_OPENAI_DEPLOYMENT_NAME"))
+                        .setModelName(AzureOpenAIModelName.fromString(System.getenv("SEARCH_OPENAI_MODEL_NAME")))))
+                    .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS);
+            searchIndexClient.createKnowledgeBase(knowledgeBase);
+            knowledgeBaseCreated = true;
 
-            // GPT-5.x model for query planning
-            knowledgeBase.setModels(
-                new KnowledgeBaseAzureOpenAIModel(
-                    new AzureOpenAIVectorizerParameters()
-                        .setModelName(AzureOpenAIModelName.GPT54)
-                        .setResourceUrl("https://my-openai-resource.openai.azure.com/")
-                        .setDeploymentName("my-deployment")
-                )
-            );
+            KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder().endpoint(endpoint)
+                .credential(credential)
+                .knowledgeBaseName(knowledgeBaseName)
+                .buildClient();
 
-            // KB-level retrieval defaults
-            knowledgeBase.setRetrievalReasoningEffort(new KnowledgeRetrievalMinimalReasoningEffort());
-            knowledgeBase.setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS);
-            knowledgeBase.setRetrievalInstructions("Focus on finding hotel listings with amenities and pricing information");
-            knowledgeBase.setAnswerInstructions("Provide concise answers in bullet point format");
+            // With neither a request nor KB reasoning setting, the service default is low.
+            verifyReasoningEffort(retrievalClient.retrieve(createRequest()), KnowledgeRetrievalReasoningEffortKind.LOW);
 
-            // CORS and encryption
-            knowledgeBase.setCorsOptions(new CorsOptions("https://my-allowed-origin.com").setMaxAgeInSeconds(3600L));
-            // Uncomment below if your service has managed identity configured for Key Vault access:
-            // knowledgeBase.setEncryptionKey(new SearchResourceEncryptionKey("my-key", "https://my-key-vault.vault.azure.net"));
-            knowledgeBase.setDescription("Knowledge base with custom configuration for retrieval and answer generation");
-
+            KnowledgeBaseRetrieveDefaults retrieveDefaults = new KnowledgeBaseRetrieveDefaults()
+                .setMaxRuntimeInSeconds(30)
+                .setMaxOutputDocuments(5)
+                .setMaxOutputSizeInTokens(6000);
+            knowledgeBase.setRetrievalReasoningEffort(new KnowledgeRetrievalAutoReasoningEffort())
+                .setRetrieveDefaults(retrieveDefaults);
             searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
-            System.out.println("Knowledge base created.");
 
-            // --- Update an existing knowledge base ---
+            KnowledgeBase persistedKnowledgeBase = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
+            if (!(persistedKnowledgeBase.getRetrievalReasoningEffort() instanceof KnowledgeRetrievalAutoReasoningEffort)
+                || persistedKnowledgeBase.getRetrieveDefaults() == null
+                || !Integer.valueOf(6000)
+                    .equals(persistedKnowledgeBase.getRetrieveDefaults().getMaxOutputSizeInTokens())) {
+                throw new IllegalStateException("The KB reasoning effort or retrieve defaults weren't persisted.");
+            }
 
-            KnowledgeBase existingKb = searchIndexClient.getKnowledgeBase(KB_NAME);
-            existingKb.setRetrievalInstructions("Updated: prioritize results from the last 30 days");
-            existingKb.setAnswerInstructions("Updated: answer in full sentences with citations");
-            existingKb.setOutputMode(KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA);
+            // When the request omits these values, KB auto reasoning and retrieveDefaults apply. Auto chooses the
+            // effective billing effort reported by the activity record.
+            KnowledgeBaseAgenticReasoningActivityRecord automaticReasoning
+                = findReasoningActivity(retrievalClient.retrieve(createRequest()));
+            if (automaticReasoning.getRetrievalReasoningEffort() == null) {
+                throw new IllegalStateException("Automatic reasoning didn't report an effective reasoning effort.");
+            }
 
-            searchIndexClient.createOrUpdateKnowledgeBase(existingKb);
-            System.out.println("Knowledge base updated.");
+            // Request values override the KB values. Note the intentionally different property names:
+            // retrieveDefaults.maxOutputSizeInTokens versus request.maxOutputSize.
+            KnowledgeBaseRetrievalOptions requestOverride = createRequest()
+                .setRetrievalReasoningEffort(new KnowledgeRetrievalLowReasoningEffort())
+                .setMaxOutputDocuments(2)
+                .setMaxOutputSize(5000);
+            verifyReasoningEffort(retrievalClient.retrieve(requestOverride), KnowledgeRetrievalReasoningEffortKind.LOW);
+
+            KnowledgeBase unchangedKnowledgeBase = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
+            if (!(unchangedKnowledgeBase.getRetrievalReasoningEffort()
+                instanceof KnowledgeRetrievalAutoReasoningEffort)
+                || !Integer.valueOf(6000)
+                    .equals(unchangedKnowledgeBase.getRetrieveDefaults().getMaxOutputSizeInTokens())) {
+                throw new IllegalStateException("Request overrides must not modify persisted KB configuration.");
+            }
+            System.out.println("Verified request > knowledge base > service-default precedence.");
         } finally {
-            searchIndexClient.deleteKnowledgeBase(KB_NAME);
+            if (knowledgeBaseCreated) {
+                searchIndexClient.deleteKnowledgeBase(knowledgeBaseName);
+            }
+            if (knowledgeSourceCreated) {
+                searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
+            }
+            if (indexCreated) {
+                searchIndexClient.deleteIndex(indexName);
+            }
         }
     }
-}
 
+    private static SearchIndex createSampleIndex(String indexName) {
+        return new SearchIndex(indexName,
+            Arrays.asList(new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("title", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("content", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("category", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true)))
+                    .setSemanticSearch(new SemanticSearch().setConfigurations(new SemanticConfiguration(
+                        SEMANTIC_CONFIGURATION_NAME,
+                        new SemanticPrioritizedFields().setTitleField(new SemanticField("title"))
+                            .setContentFields(new SemanticField("content"))
+                            .setKeywordsFields(new SemanticField("category")))));
+    }
+
+    private static void uploadSampleDocument(SearchClient searchClient) {
+        Map<String, Object> document = new LinkedHashMap<>();
+        document.put("id", "1");
+        document.put("title", "August product update");
+        document.put("content", "The latest product update adds knowledge base reasoning improvements.");
+        document.put("category", "Product update");
+        IndexDocumentsResult result = searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(document)));
+        if (result.getResults().size() != 1 || !result.getResults().get(0).isSucceeded()) {
+            throw new IllegalStateException("The sample document wasn't indexed successfully.");
+        }
+
+        for (int attempt = 0; attempt < 30; attempt++) {
+            if (searchClient.getDocumentCount() > 0) {
+                return;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for the sample document.", ex);
+            }
+        }
+        throw new IllegalStateException("The sample document wasn't available for retrieval.");
+    }
+
+    private static KnowledgeBaseRetrievalOptions createRequest() {
+        return new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the latest product updates?"))
+            .setIncludeActivity(true);
+    }
+
+    private static void verifyReasoningEffort(KnowledgeBaseRetrievalResult result,
+        KnowledgeRetrievalReasoningEffortKind expectedKind) {
+        KnowledgeBaseAgenticReasoningActivityRecord activity = findReasoningActivity(result);
+        if (activity.getRetrievalReasoningEffort() == null
+            || !expectedKind.equals(activity.getRetrievalReasoningEffort().getKind())) {
+            throw new IllegalStateException("The retrieval didn't use the expected reasoning effort.");
+        }
+    }
+
+    private static KnowledgeBaseAgenticReasoningActivityRecord
+        findReasoningActivity(KnowledgeBaseRetrievalResult result) {
+        if (result.getActivity() == null) {
+            throw new IllegalStateException("The retrieval response didn't contain activity records.");
+        }
+        return result.getActivity()
+            .stream()
+            .filter(KnowledgeBaseAgenticReasoningActivityRecord.class::isInstance)
+            .map(KnowledgeBaseAgenticReasoningActivityRecord.class::cast)
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("The response didn't contain agentic reasoning activity."));
+    }
+}

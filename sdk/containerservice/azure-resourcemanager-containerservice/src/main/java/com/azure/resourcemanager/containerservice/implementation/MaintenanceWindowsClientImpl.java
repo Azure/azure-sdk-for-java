@@ -279,11 +279,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -328,11 +326,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -376,10 +372,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
+     * clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner>
@@ -403,10 +397,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
+     * clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner>
@@ -430,10 +422,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
+     * clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner> beginCreateOrUpdate(
@@ -452,10 +442,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
+     * clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner> beginCreateOrUpdate(
@@ -474,10 +462,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows on successful completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowResourceInner> createOrUpdateAsync(String resourceGroupName,
@@ -496,10 +483,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows on successful completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceWindowResourceInner> createOrUpdateAsync(String resourceGroupName,
@@ -517,10 +503,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner createOrUpdate(String resourceGroupName, String maintenanceWindowName,
@@ -538,10 +522,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner createOrUpdate(String resourceGroupName, String maintenanceWindowName,
@@ -558,11 +540,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceWindowResourceInner>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -607,11 +587,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowResourceInner>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -654,10 +632,9 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows on successful completion of {@link Mono}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowResourceInner> updateTagsAsync(String resourceGroupName, String maintenanceWindowName,
@@ -676,10 +653,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows along with {@link Response}.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowResourceInner> updateTagsWithResponse(String resourceGroupName,
@@ -696,10 +671,8 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable
-     * maintenance schedule which can be linked to maintenance configurations on one
-     * or more managed clusters.
-     * For more information, see https://aka.ms/aks/maintenance-windows.
+     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
+     * which can be linked to maintenance configurations on one or more managed clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner updateTags(String resourceGroupName, String maintenanceWindowName,

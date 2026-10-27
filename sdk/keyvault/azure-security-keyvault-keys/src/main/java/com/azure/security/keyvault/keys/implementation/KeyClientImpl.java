@@ -826,7 +826,7 @@ public final class KeyClientImpl {
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -956,7 +956,7 @@ public final class KeyClientImpl {
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1693,7 +1693,7 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1820,7 +1820,7 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     key_ops (Optional): [
-     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/import/export) (Optional)
+     *         String(encrypt/decrypt/sign/verify/wrapKey/unwrapKey/secureWrapKey/secureUnwrapKey/import/export) (Optional)
      *     ]
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -5349,20 +5349,26 @@ public final class KeyClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

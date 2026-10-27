@@ -29,6 +29,11 @@ public final class MccCacheNodeTlsCertificate implements JsonSerializable<MccCac
     private String certificateFileName;
 
     /*
+     * Mcc cache node Tls certificate Type.
+     */
+    private String certType;
+
+    /*
      * Mcc cache node Tls certificate thumbprint.
      */
     private String thumbprint;
@@ -75,6 +80,15 @@ public final class MccCacheNodeTlsCertificate implements JsonSerializable<MccCac
      */
     public String certificateFileName() {
         return this.certificateFileName;
+    }
+
+    /**
+     * Get the certType property: Mcc cache node Tls certificate Type.
+     * 
+     * @return the certType value.
+     */
+    public String certType() {
+        return this.certType;
     }
 
     /**
@@ -150,6 +164,8 @@ public final class MccCacheNodeTlsCertificate implements JsonSerializable<MccCac
                     deserializedMccCacheNodeTlsCertificate.actionRequired = reader.getString();
                 } else if ("certificateFileName".equals(fieldName)) {
                     deserializedMccCacheNodeTlsCertificate.certificateFileName = reader.getString();
+                } else if ("certType".equals(fieldName)) {
+                    deserializedMccCacheNodeTlsCertificate.certType = reader.getString();
                 } else if ("thumbprint".equals(fieldName)) {
                     deserializedMccCacheNodeTlsCertificate.thumbprint = reader.getString();
                 } else if ("expiryDate".equals(fieldName)) {

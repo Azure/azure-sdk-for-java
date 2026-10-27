@@ -21,7 +21,7 @@ public final class SharedLimitsListBySubscriptionLocationResourceMockTests {
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceName\":{\"value\":\"uesnzwdejbavo\",\"localizedValue\":\"zdmohctbqvu\"},\"limit\":624432997,\"unit\":\"ndnvo\",\"provisioningState\":\"Failed\"},\"id\":\"jugwdkcglhsl\",\"name\":\"zj\",\"type\":\"yggdtjixh\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceName\":{\"value\":\"canoaeupf\",\"localizedValue\":\"hltrpmopjmcmatuo\"},\"limit\":607140678,\"unit\":\"uiuaodsfcpkvxodp\",\"provisioningState\":\"Failed\"},\"id\":\"yzydagfuaxbezyi\",\"name\":\"okktwhrdxw\",\"type\":\"ywqsmbsurexim\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SharedLimitsListBySubscriptionLocationResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SharedLimit> response
-            = manager.sharedLimits().listBySubscriptionLocationResource("sop", com.azure.core.util.Context.NONE);
+            = manager.sharedLimits().listBySubscriptionLocationResource("ysou", com.azure.core.util.Context.NONE);
 
     }
 }

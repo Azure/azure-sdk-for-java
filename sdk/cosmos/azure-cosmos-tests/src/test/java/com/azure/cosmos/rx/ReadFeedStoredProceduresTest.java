@@ -4,7 +4,9 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -53,8 +55,12 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedStoredProceduresTest() {
         client = getClientBuilder().buildAsyncClient();
-        createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        cleanUpContainer(createdCollection);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+        createdCollection = createCollection(
+            database,
+            getCollectionDefinitionWithRangeRangeIndex(),
+            new CosmosContainerRequestOptions(),
+            400);
 
         for (int i = 0; i < 5; i++) {
             createdStoredProcedures.add(createStoredProcedures(createdCollection));
@@ -65,6 +71,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        safeDeleteCollection(createdCollection);
         safeClose(client);
     }
 

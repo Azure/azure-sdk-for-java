@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReleaseChannelInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReleaseChannelInfo model = BinaryData.fromString("{\"releaseChannel\":\"ighxpk\",\"version\":\"wzbaiue\"}")
+        ReleaseChannelInfo model = BinaryData.fromString("{\"releaseChannel\":\"lwh\",\"version\":\"lsicohoqqnwv\"}")
             .toObject(ReleaseChannelInfo.class);
-        Assertions.assertEquals("ighxpk", model.releaseChannel());
-        Assertions.assertEquals("wzbaiue", model.version());
+        Assertions.assertEquals("lwh", model.releaseChannel());
+        Assertions.assertEquals("lsicohoqqnwv", model.version());
     }
 }

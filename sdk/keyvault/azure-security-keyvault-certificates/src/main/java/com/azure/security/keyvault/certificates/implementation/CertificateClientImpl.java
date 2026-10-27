@@ -1108,6 +1108,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     cer: byte[] (Optional)
      *     contentType: String (Optional)
@@ -1218,6 +1224,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2294,6 +2306,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
      *     tags (Optional): {
@@ -2425,6 +2443,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2560,6 +2584,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
      *     tags (Optional): {
@@ -2642,6 +2672,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2754,6 +2790,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
      *     tags (Optional): {
@@ -2836,6 +2878,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3156,6 +3204,12 @@ public final class CertificateClientImpl {
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -3248,6 +3302,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3342,6 +3402,12 @@ public final class CertificateClientImpl {
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -3413,6 +3479,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3510,6 +3582,12 @@ public final class CertificateClientImpl {
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -3581,6 +3659,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3678,6 +3762,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
      *     tags (Optional): {
@@ -3759,6 +3849,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3867,6 +3963,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
      *     tags (Optional): {
@@ -3948,6 +4050,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4056,6 +4164,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4167,6 +4281,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4622,6 +4742,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     cer: byte[] (Optional)
      *     contentType: String (Optional)
@@ -4755,6 +4881,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4936,6 +5068,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     cer: byte[] (Optional)
      *     contentType: String (Optional)
@@ -5053,6 +5191,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5396,6 +5540,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     cer: byte[] (Optional)
      *     contentType: String (Optional)
@@ -5506,6 +5656,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5661,6 +5817,12 @@ public final class CertificateClientImpl {
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
      *     cer: byte[] (Optional)
      *     contentType: String (Optional)
@@ -5768,6 +5930,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -6143,20 +6311,26 @@ public final class CertificateClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

@@ -103,6 +103,13 @@ public interface RecoveryServicesBackupManagementClient {
     BackupsClient getBackups();
 
     /**
+     * Gets the ConfigureSourceScansClient object to access its operations.
+     * 
+     * @return the ConfigureSourceScansClient object.
+     */
+    ConfigureSourceScansClient getConfigureSourceScans();
+
+    /**
      * Gets the RecoveryPointsRecommendedForMovesClient object to access its operations.
      * 
      * @return the RecoveryPointsRecommendedForMovesClient object.
@@ -374,6 +381,13 @@ public interface RecoveryServicesBackupManagementClient {
      * @return the TieringCostOperationStatusClient object.
      */
     TieringCostOperationStatusClient getTieringCostOperationStatus();
+
+    /**
+     * Gets the ProtectionContainerRefreshOperationStatusesClient object to access its operations.
+     * 
+     * @return the ProtectionContainerRefreshOperationStatusesClient object.
+     */
+    ProtectionContainerRefreshOperationStatusesClient getProtectionContainerRefreshOperationStatuses();
 
     /**
      * Gets the ProtectionIntentsClient object to access its operations.

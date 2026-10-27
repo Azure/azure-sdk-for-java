@@ -116,6 +116,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private Boolean storedCompletionsDisabled;
 
     /*
+     * Specifies whether A365 logging is enabled. Defaults to true. Set to false to opt out.
+     */
+    private Boolean a365LoggingEnabled;
+
+    /*
      * The quotaLimit property.
      */
     private QuotaLimit quotaLimit;
@@ -201,6 +206,34 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * Specifies the projects, by project name, that are associated with this resource.
      */
     private List<String> associatedProjects;
+
+    /*
+     * Reusable default agent capability settings inherited by child projects.
+     */
+    private CapabilitySettings capabilitySettings;
+
+    /*
+     * Customer-owned AKS hosting configurations for Foundry agents. This property can only be specified when the
+     * account is created; an existing account without a hosting configuration cannot add one later. This API version
+     * supports exactly one configuration, while the array shape is reserved for future API versions that may support
+     * multiple configurations. Once set, the configuration cannot be changed, removed, or reordered. Account update
+     * requests should omit this property or send the complete existing value unchanged. Responses only include hosting
+     * configuration types defined by the requested API version.
+     */
+    private List<AgentHostingConfiguration> agentHostingConfigurations;
+
+    /*
+     * The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     */
+    private List<String> costControlIds;
+
+    /*
+     * The account-level connections used to publish cost control telemetry and events. Application Insights is optional
+     * for attachment, accounting, and enforcement and can be configured later. Event Grid must be configured before
+     * attaching a cost control with an alert threshold.
+     */
+    private CostControlConnections costControlConnections;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -493,6 +526,28 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the a365LoggingEnabled property: Specifies whether A365 logging is enabled. Defaults to true. Set to false to
+     * opt out.
+     * 
+     * @return the a365LoggingEnabled value.
+     */
+    public Boolean a365LoggingEnabled() {
+        return this.a365LoggingEnabled;
+    }
+
+    /**
+     * Set the a365LoggingEnabled property: Specifies whether A365 logging is enabled. Defaults to true. Set to false to
+     * opt out.
+     * 
+     * @param a365LoggingEnabled the a365LoggingEnabled value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withA365LoggingEnabled(Boolean a365LoggingEnabled) {
+        this.a365LoggingEnabled = a365LoggingEnabled;
+        return this;
+    }
+
+    /**
      * Get the quotaLimit property: The quotaLimit property.
      * 
      * @return the quotaLimit value.
@@ -775,6 +830,103 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the capabilitySettings property: Reusable default agent capability settings inherited by child projects.
+     * 
+     * @return the capabilitySettings value.
+     */
+    public CapabilitySettings capabilitySettings() {
+        return this.capabilitySettings;
+    }
+
+    /**
+     * Set the capabilitySettings property: Reusable default agent capability settings inherited by child projects.
+     * 
+     * @param capabilitySettings the capabilitySettings value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withCapabilitySettings(CapabilitySettings capabilitySettings) {
+        this.capabilitySettings = capabilitySettings;
+        return this;
+    }
+
+    /**
+     * Get the agentHostingConfigurations property: Customer-owned AKS hosting configurations for Foundry agents. This
+     * property can only be specified when the account is created; an existing account without a hosting configuration
+     * cannot add one later. This API version supports exactly one configuration, while the array shape is reserved for
+     * future API versions that may support multiple configurations. Once set, the configuration cannot be changed,
+     * removed, or reordered. Account update requests should omit this property or send the complete existing value
+     * unchanged. Responses only include hosting configuration types defined by the requested API version.
+     * 
+     * @return the agentHostingConfigurations value.
+     */
+    public List<AgentHostingConfiguration> agentHostingConfigurations() {
+        return this.agentHostingConfigurations;
+    }
+
+    /**
+     * Set the agentHostingConfigurations property: Customer-owned AKS hosting configurations for Foundry agents. This
+     * property can only be specified when the account is created; an existing account without a hosting configuration
+     * cannot add one later. This API version supports exactly one configuration, while the array shape is reserved for
+     * future API versions that may support multiple configurations. Once set, the configuration cannot be changed,
+     * removed, or reordered. Account update requests should omit this property or send the complete existing value
+     * unchanged. Responses only include hosting configuration types defined by the requested API version.
+     * 
+     * @param agentHostingConfigurations the agentHostingConfigurations value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties
+        withAgentHostingConfigurations(List<AgentHostingConfiguration> agentHostingConfigurations) {
+        this.agentHostingConfigurations = agentHostingConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @return the costControlIds value.
+     */
+    public List<String> costControlIds() {
+        return this.costControlIds;
+    }
+
+    /**
+     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @param costControlIds the costControlIds value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withCostControlIds(List<String> costControlIds) {
+        this.costControlIds = costControlIds;
+        return this;
+    }
+
+    /**
+     * Get the costControlConnections property: The account-level connections used to publish cost control telemetry and
+     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
+     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * 
+     * @return the costControlConnections value.
+     */
+    public CostControlConnections costControlConnections() {
+        return this.costControlConnections;
+    }
+
+    /**
+     * Set the costControlConnections property: The account-level connections used to publish cost control telemetry and
+     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
+     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * 
+     * @param costControlConnections the costControlConnections value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withCostControlConnections(CostControlConnections costControlConnections) {
+        this.costControlConnections = costControlConnections;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -792,6 +944,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("apiProperties", this.apiProperties);
         jsonWriter.writeBooleanField("dynamicThrottlingEnabled", this.dynamicThrottlingEnabled);
         jsonWriter.writeBooleanField("storedCompletionsDisabled", this.storedCompletionsDisabled);
+        jsonWriter.writeBooleanField("a365LoggingEnabled", this.a365LoggingEnabled);
         jsonWriter.writeBooleanField("restrictOutboundNetworkAccess", this.restrictOutboundNetworkAccess);
         jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
             (writer, element) -> writer.writeString(element));
@@ -806,6 +959,12 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeStringField("defaultProject", this.defaultProject);
         jsonWriter.writeArrayField("associatedProjects", this.associatedProjects,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("capabilitySettings", this.capabilitySettings);
+        jsonWriter.writeArrayField("agentHostingConfigurations", this.agentHostingConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("costControlConnections", this.costControlConnections);
         return jsonWriter.writeEndObject();
     }
 
@@ -869,6 +1028,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                 } else if ("storedCompletionsDisabled".equals(fieldName)) {
                     deserializedAccountProperties.storedCompletionsDisabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("a365LoggingEnabled".equals(fieldName)) {
+                    deserializedAccountProperties.a365LoggingEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("quotaLimit".equals(fieldName)) {
                     deserializedAccountProperties.quotaLimit = QuotaLimit.fromJson(reader);
                 } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {
@@ -911,6 +1072,17 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                 } else if ("associatedProjects".equals(fieldName)) {
                     List<String> associatedProjects = reader.readArray(reader1 -> reader1.getString());
                     deserializedAccountProperties.associatedProjects = associatedProjects;
+                } else if ("capabilitySettings".equals(fieldName)) {
+                    deserializedAccountProperties.capabilitySettings = CapabilitySettings.fromJson(reader);
+                } else if ("agentHostingConfigurations".equals(fieldName)) {
+                    List<AgentHostingConfiguration> agentHostingConfigurations
+                        = reader.readArray(reader1 -> AgentHostingConfiguration.fromJson(reader1));
+                    deserializedAccountProperties.agentHostingConfigurations = agentHostingConfigurations;
+                } else if ("costControlIds".equals(fieldName)) {
+                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccountProperties.costControlIds = costControlIds;
+                } else if ("costControlConnections".equals(fieldName)) {
+                    deserializedAccountProperties.costControlConnections = CostControlConnections.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

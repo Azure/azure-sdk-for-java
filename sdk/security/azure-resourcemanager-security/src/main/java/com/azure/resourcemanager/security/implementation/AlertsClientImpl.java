@@ -1110,23 +1110,23 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(String ascLocation,
-        String resourceGroupName) {
-        if (ascLocation == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
-        }
+    private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(String resourceGroupName,
+        String ascLocation) {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         final String apiVersion = "2022-01-01";
         final String accept = "application/json";
@@ -1141,9 +1141,9 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1151,14 +1151,14 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(String ascLocation,
-        String resourceGroupName, Context context) {
-        if (ascLocation == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
-        }
+    private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(String resourceGroupName,
+        String ascLocation, Context context) {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         final String apiVersion = "2022-01-01";
         final String accept = "application/json";
@@ -1173,26 +1173,26 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(String ascLocation, String resourceGroupName) {
-        return new PagedFlux<>(() -> listResourceGroupLevelByRegionSinglePageAsync(ascLocation, resourceGroupName),
+    private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(String resourceGroupName, String ascLocation) {
+        return new PagedFlux<>(() -> listResourceGroupLevelByRegionSinglePageAsync(resourceGroupName, ascLocation),
             nextLink -> listResourceGroupLevelByRegionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1200,35 +1200,35 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(String ascLocation, String resourceGroupName,
+    private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(String resourceGroupName, String ascLocation,
         Context context) {
         return new PagedFlux<>(
-            () -> listResourceGroupLevelByRegionSinglePageAsync(ascLocation, resourceGroupName, context),
+            () -> listResourceGroupLevelByRegionSinglePageAsync(resourceGroupName, ascLocation, context),
             nextLink -> listResourceGroupLevelByRegionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AlertInner> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName) {
-        return new PagedIterable<>(listResourceGroupLevelByRegionAsync(ascLocation, resourceGroupName));
+    public PagedIterable<AlertInner> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation) {
+        return new PagedIterable<>(listResourceGroupLevelByRegionAsync(resourceGroupName, ascLocation));
     }
 
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1236,9 +1236,9 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AlertInner> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName,
+    public PagedIterable<AlertInner> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation,
         Context context) {
-        return new PagedIterable<>(listResourceGroupLevelByRegionAsync(ascLocation, resourceGroupName, context));
+        return new PagedIterable<>(listResourceGroupLevelByRegionAsync(resourceGroupName, ascLocation, context));
     }
 
     /**

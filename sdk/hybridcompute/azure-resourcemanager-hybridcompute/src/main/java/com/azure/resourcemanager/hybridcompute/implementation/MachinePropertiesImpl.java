@@ -18,6 +18,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInsta
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineProperties;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
@@ -82,6 +83,10 @@ public final class MachinePropertiesImpl implements MachineProperties {
         } else {
             return null;
         }
+    }
+
+    public MachineStatusReason statusReason() {
+        return this.innerModel().statusReason();
     }
 
     public String provisioningState() {

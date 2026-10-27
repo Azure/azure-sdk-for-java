@@ -13,16 +13,16 @@ public final class IotHubPropertiesDeviceStreamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubPropertiesDeviceStreams model
-            = BinaryData.fromString("{\"streamingEndpoints\":[\"pukgriwflzlfb\",\"zpuzycisp\"]}")
+            = BinaryData.fromString("{\"streamingEndpoints\":[\"azqugxywpmueefj\",\"wfqkquj\",\"dsuyonobgla\",\"cq\"]}")
                 .toObject(IotHubPropertiesDeviceStreams.class);
-        Assertions.assertEquals("pukgriwflzlfb", model.streamingEndpoints().get(0));
+        Assertions.assertEquals("azqugxywpmueefj", model.streamingEndpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubPropertiesDeviceStreams model
-            = new IotHubPropertiesDeviceStreams().withStreamingEndpoints(Arrays.asList("pukgriwflzlfb", "zpuzycisp"));
+        IotHubPropertiesDeviceStreams model = new IotHubPropertiesDeviceStreams()
+            .withStreamingEndpoints(Arrays.asList("azqugxywpmueefj", "wfqkquj", "dsuyonobgla", "cq"));
         model = BinaryData.fromObject(model).toObject(IotHubPropertiesDeviceStreams.class);
-        Assertions.assertEquals("pukgriwflzlfb", model.streamingEndpoints().get(0));
+        Assertions.assertEquals("azqugxywpmueefj", model.streamingEndpoints().get(0));
     }
 }

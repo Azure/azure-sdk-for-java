@@ -28,7 +28,7 @@ public final class MemberCapOverridesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.memberCapOverrides()
-            .deleteWithResponse("wzbaiue", "baumnyqupedeoj", "a", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ehhseyvjusrts", "hspkdeemao", "mx", com.azure.core.util.Context.NONE);
 
     }
 }

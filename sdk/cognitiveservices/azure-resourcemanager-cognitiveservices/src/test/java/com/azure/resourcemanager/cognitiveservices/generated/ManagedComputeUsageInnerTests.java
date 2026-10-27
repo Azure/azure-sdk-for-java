@@ -13,16 +13,16 @@ public final class ManagedComputeUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeUsageInner model = BinaryData.fromString(
-            "{\"id\":\"sjybvitv\",\"name\":{\"value\":\"y\",\"localizedValue\":\"nu\"},\"type\":\"ggmuwdcho\",\"unit\":\"Percent\",\"limit\":19.106338429113336,\"currentValue\":6.37771194869543,\"offerScope\":\"noakiz\",\"deployments\":[{\"deploymentId\":\"knaqlnuwig\",\"projectId\":\"xly\",\"modelId\":\"phvxz\",\"acceleratorCount\":3064181899118656130,\"instanceCount\":1205134397}]}")
+            "{\"id\":\"eagmceituug\",\"name\":{\"value\":\"fpjstlzmb\",\"localizedValue\":\"yjdeolctaebfs\"},\"type\":\"ledjcustbvtqigd\",\"unit\":\"Percent\",\"limit\":97.0592512722313,\"currentValue\":98.97008949582057,\"offerScope\":\"osehxlzsxez\",\"deployments\":[{\"deploymentId\":\"waaeskyfjl\",\"projectId\":\"eqtoyrpl\",\"modelId\":\"lajmllp\",\"acceleratorCount\":371598371868666796,\"instanceCount\":528311226}]}")
             .toObject(ManagedComputeUsageInner.class);
         Assertions.assertEquals(UnitType.PERCENT, model.unit());
-        Assertions.assertEquals(19.106338429113336D, model.limit());
-        Assertions.assertEquals(6.37771194869543D, model.currentValue());
-        Assertions.assertEquals("noakiz", model.offerScope());
-        Assertions.assertEquals("knaqlnuwig", model.deployments().get(0).deploymentId());
-        Assertions.assertEquals("xly", model.deployments().get(0).projectId());
-        Assertions.assertEquals("phvxz", model.deployments().get(0).modelId());
-        Assertions.assertEquals(3064181899118656130L, model.deployments().get(0).acceleratorCount());
-        Assertions.assertEquals(1205134397, model.deployments().get(0).instanceCount());
+        Assertions.assertEquals(97.0592512722313D, model.limit());
+        Assertions.assertEquals(98.97008949582057D, model.currentValue());
+        Assertions.assertEquals("osehxlzsxez", model.offerScope());
+        Assertions.assertEquals("waaeskyfjl", model.deployments().get(0).deploymentId());
+        Assertions.assertEquals("eqtoyrpl", model.deployments().get(0).projectId());
+        Assertions.assertEquals("lajmllp", model.deployments().get(0).modelId());
+        Assertions.assertEquals(371598371868666796L, model.deployments().get(0).acceleratorCount());
+        Assertions.assertEquals(528311226, model.deployments().get(0).instanceCount());
     }
 }

@@ -622,7 +622,7 @@ public final class RntbdConstants {
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
-        WorkloadId((short)0x00DC, RntbdTokenType.Byte, false),
+        WorkloadId((short)0x00E7, RntbdTokenType.UShort, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
         ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false),
         // QueryPlan headers for proxy — IDs match server-side RntbdConstants.cs

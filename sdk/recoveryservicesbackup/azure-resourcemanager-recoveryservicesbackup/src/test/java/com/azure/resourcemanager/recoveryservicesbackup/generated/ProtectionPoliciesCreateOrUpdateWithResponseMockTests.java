@@ -25,7 +25,7 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1240532352,\"resourceGuardOperationRequests\":[\"bjvbzinzab\",\"mvoglj\"]},\"tags\":{\"ehaqidoyzltgio\":\"pgidnw\",\"sergdtpe\":\"qoqpepiaeap\"},\"location\":\"acyh\",\"eTag\":\"wbpqqncjubkhjoz\",\"id\":\"mcwmbup\",\"name\":\"vqyvl\",\"type\":\"qiipsejb\"}";
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":56660569,\"resourceGuardOperationRequests\":[\"m\",\"ghnysvlpyeuu\"]},\"tags\":{\"xvhhyqq\":\"dixqbo\",\"xch\":\"gatxgrznmginmtsd\",\"jca\":\"kibmgjymn\"},\"location\":\"irwcqzoofjnqjsv\",\"eTag\":\"fbhtleberp\",\"id\":\"jeknfqnw\",\"name\":\"j\",\"type\":\"xowkdnj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,21 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionPolicyResource response = manager.protectionPolicies()
-            .define("rufssjyg")
-            .withExistingVault("pkcdpreyxely", "cghf")
-            .withRegion("quox")
-            .withTags(mapOf("gvqcpdwj", "gmqfme", "djhunhghcgawnr", "quxweyslandkd"))
-            .withProperties(new ProtectionPolicy().withProtectedItemsCount(1781553839)
-                .withResourceGuardOperationRequests(Arrays.asList("bh")))
-            .withEtag("tireimse")
+            .define("rcmvouujx")
+            .withExistingVault("xmzrmtmvwitu", "eyyjshcybwfuppox")
+            .withRegion("zvfbhwbdquf")
+            .withTags(mapOf("hxorpwaltzwu", "ebwf", "h", "exojfccy", "hvazjpwexcdr", "rh", "euxsphlokfpmijp",
+                "probzzxezmnrkjgp"))
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(185040641)
+                .withResourceGuardOperationRequests(Arrays.asList("xrezsvavlrxi", "jmoywlunpipcwybs", "fncn", "atpf")))
+            .withEtag("gnrglaqrwyamb")
             .create();
 
-        Assertions.assertEquals(1240532352, response.properties().protectedItemsCount());
-        Assertions.assertEquals("bjvbzinzab", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("pgidnw", response.tags().get("ehaqidoyzltgio"));
-        Assertions.assertEquals("acyh", response.location());
-        Assertions.assertEquals("wbpqqncjubkhjoz", response.etag());
+        Assertions.assertEquals(56660569, response.properties().protectedItemsCount());
+        Assertions.assertEquals("m", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("dixqbo", response.tags().get("xvhhyqq"));
+        Assertions.assertEquals("irwcqzoofjnqjsv", response.location());
+        Assertions.assertEquals("fbhtleberp", response.etag());
     }
 
     // Use "Map.of" if available

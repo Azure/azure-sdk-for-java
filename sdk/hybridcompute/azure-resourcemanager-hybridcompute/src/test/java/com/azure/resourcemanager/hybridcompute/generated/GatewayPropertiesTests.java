@@ -14,18 +14,21 @@ public final class GatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"udurgkakmokz\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"lffhmouwqlg\",\"allowedFeatures\":[\"zeeyebi\",\"ikayuhqlbjbsybb\",\"wrv\"]}")
+            "{\"provisioningState\":\"Updating\",\"gatewayId\":\"haq\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"mwutwbdsre\",\"allowedFeatures\":[\"rhneuyowq\",\"d\",\"ytisibir\"],\"gatewayBypass\":[\"ikpzimejza\",\"lfzxiavrmbzonoki\"]}")
             .toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("zeeyebi", model.allowedFeatures().get(0));
+        Assertions.assertEquals("rhneuyowq", model.allowedFeatures().get(0));
+        Assertions.assertEquals("ikpzimejza", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayProperties model = new GatewayProperties().withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("zeeyebi", "ikayuhqlbjbsybb", "wrv"));
+            .withAllowedFeatures(Arrays.asList("rhneuyowq", "d", "ytisibir"))
+            .withGatewayBypass(Arrays.asList("ikpzimejza", "lfzxiavrmbzonoki"));
         model = BinaryData.fromObject(model).toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("zeeyebi", model.allowedFeatures().get(0));
+        Assertions.assertEquals("rhneuyowq", model.allowedFeatures().get(0));
+        Assertions.assertEquals("ikpzimejza", model.gatewayBypass().get(0));
     }
 }

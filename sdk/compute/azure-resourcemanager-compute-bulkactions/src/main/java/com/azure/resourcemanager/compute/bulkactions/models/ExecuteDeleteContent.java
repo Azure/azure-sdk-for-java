@@ -12,22 +12,28 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteDeleteRequest for delete VM operation.
+ * The virtual machines and execution settings for a bulk delete action.
  */
 @Fluent
 public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDeleteContent> {
     /*
-     * The execution parameters for the request
+     * The execution settings for the bulk action.
      */
     private ExecutionParameters executionParameters;
 
     /*
-     * The resources for the request
+     * The target virtual machines.
      */
     private Resources resources;
 
     /*
-     * Forced delete resource item
+     * The resources for the request with resource context information. Cannot be provided together with `resources` -
+     * exactly one must be specified.
+     */
+    private ResourcesWithContext resourcesWithContext;
+
+    /*
+     * Indicates whether Bulk Actions uses forced deletion for the target virtual machines.
      */
     private Boolean forceDeletion;
 
@@ -38,7 +44,7 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Get the executionParameters property: The execution parameters for the request.
+     * Get the executionParameters property: The execution settings for the bulk action.
      * 
      * @return the executionParameters value.
      */
@@ -47,7 +53,7 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Set the executionParameters property: The execution parameters for the request.
+     * Set the executionParameters property: The execution settings for the bulk action.
      * 
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteDeleteContent object itself.
@@ -58,7 +64,7 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Get the resources property: The resources for the request.
+     * Get the resources property: The target virtual machines.
      * 
      * @return the resources value.
      */
@@ -67,7 +73,7 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Set the resources property: The resources for the request.
+     * Set the resources property: The target virtual machines.
      * 
      * @param resources the resources value to set.
      * @return the ExecuteDeleteContent object itself.
@@ -78,7 +84,30 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Get the forceDeletion property: Forced delete resource item.
+     * Get the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @return the resourcesWithContext value.
+     */
+    public ResourcesWithContext resourcesWithContext() {
+        return this.resourcesWithContext;
+    }
+
+    /**
+     * Set the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @param resourcesWithContext the resourcesWithContext value to set.
+     * @return the ExecuteDeleteContent object itself.
+     */
+    public ExecuteDeleteContent withResourcesWithContext(ResourcesWithContext resourcesWithContext) {
+        this.resourcesWithContext = resourcesWithContext;
+        return this;
+    }
+
+    /**
+     * Get the forceDeletion property: Indicates whether Bulk Actions uses forced deletion for the target virtual
+     * machines.
      * 
      * @return the forceDeletion value.
      */
@@ -87,7 +116,8 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Set the forceDeletion property: Forced delete resource item.
+     * Set the forceDeletion property: Indicates whether Bulk Actions uses forced deletion for the target virtual
+     * machines.
      * 
      * @param forceDeletion the forceDeletion value to set.
      * @return the ExecuteDeleteContent object itself.
@@ -105,6 +135,7 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeJsonField("resourcesWithContext", this.resourcesWithContext);
         jsonWriter.writeBooleanField("forceDeletion", this.forceDeletion);
         return jsonWriter.writeEndObject();
     }
@@ -129,6 +160,8 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
                     deserializedExecuteDeleteContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteDeleteContent.resources = Resources.fromJson(reader);
+                } else if ("resourcesWithContext".equals(fieldName)) {
+                    deserializedExecuteDeleteContent.resourcesWithContext = ResourcesWithContext.fromJson(reader);
                 } else if ("forceDeletion".equals(fieldName)) {
                     deserializedExecuteDeleteContent.forceDeletion = reader.getNullable(JsonReader::getBoolean);
                 } else {

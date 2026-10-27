@@ -17,6 +17,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
@@ -178,6 +179,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public Cluster cluster() {
         return this.innerModel().cluster();
+    }
+
+    public FipsMode fipsMode() {
+        return this.innerModel().fipsMode();
     }
 
     public Region region() {
@@ -422,8 +427,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
-        this.innerModel().withSourceServerResourceId(sourceServerResourceId);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        } else {
+            this.updateParameters.withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        }
     }
 
     public ServerImpl withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
@@ -462,6 +472,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             return this;
         } else {
             this.updateParameters.withCluster(cluster);
+            return this;
+        }
+    }
+
+    public ServerImpl withFipsMode(FipsMode fipsMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withFipsMode(fipsMode);
+            return this;
+        } else {
+            this.updateParameters.withFipsMode(fipsMode);
             return this;
         }
     }

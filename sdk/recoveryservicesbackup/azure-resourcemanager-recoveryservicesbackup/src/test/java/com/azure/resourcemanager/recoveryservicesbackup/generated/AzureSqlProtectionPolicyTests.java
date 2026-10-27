@@ -14,19 +14,19 @@ public final class AzureSqlProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1181873760,\"resourceGuardOperationRequests\":[\"cnpqwteht\"]}")
+            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":246722999,\"resourceGuardOperationRequests\":[\"ziu\",\"fbzkk\",\"tnhqsycl\",\"selpkpbaf\"]}")
             .toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(1181873760, model.protectedItemsCount());
-        Assertions.assertEquals("cnpqwteht", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(246722999, model.protectedItemsCount());
+        Assertions.assertEquals("ziu", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(1181873760)
-            .withResourceGuardOperationRequests(Arrays.asList("cnpqwteht"))
+        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(246722999)
+            .withResourceGuardOperationRequests(Arrays.asList("ziu", "fbzkk", "tnhqsycl", "selpkpbaf"))
             .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(1181873760, model.protectedItemsCount());
-        Assertions.assertEquals("cnpqwteht", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(246722999, model.protectedItemsCount());
+        Assertions.assertEquals("ziu", model.resourceGuardOperationRequests().get(0));
     }
 }

@@ -5,22 +5,32 @@
 package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityConfiguration;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilitySettings;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityType;
 import org.junit.jupiter.api.Assertions;
 
 public final class ImmutabilitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmutabilitySettings model
-            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
+        ImmutabilitySettings model = BinaryData
+            .fromString(
+                "{\"state\":\"Locked\",\"configuration\":{\"type\":\"TimeBased\",\"durationInDays\":1895244941}}")
+            .toObject(ImmutabilitySettings.class);
+        Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
+        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.configuration().type());
+        Assertions.assertEquals(1895244941, model.configuration().durationInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.DISABLED);
+        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)
+            .withConfiguration(
+                new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED).withDurationInDays(1895244941));
         model = BinaryData.fromObject(model).toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
+        Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
+        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.configuration().type());
+        Assertions.assertEquals(1895244941, model.configuration().durationInDays());
     }
 }

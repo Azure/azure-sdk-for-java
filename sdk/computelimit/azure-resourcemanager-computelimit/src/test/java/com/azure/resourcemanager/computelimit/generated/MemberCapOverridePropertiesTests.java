@@ -12,15 +12,15 @@ public final class MemberCapOverridePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MemberCapOverrideProperties model
-            = BinaryData.fromString("{\"cap\":411376072,\"provisioningState\":\"Succeeded\"}")
+            = BinaryData.fromString("{\"cap\":1399700283,\"provisioningState\":\"Failed\"}")
                 .toObject(MemberCapOverrideProperties.class);
-        Assertions.assertEquals(411376072, model.cap());
+        Assertions.assertEquals(1399700283, model.cap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MemberCapOverrideProperties model = new MemberCapOverrideProperties().withCap(411376072);
+        MemberCapOverrideProperties model = new MemberCapOverrideProperties().withCap(1399700283);
         model = BinaryData.fromObject(model).toObject(MemberCapOverrideProperties.class);
-        Assertions.assertEquals(411376072, model.cap());
+        Assertions.assertEquals(1399700283, model.cap());
     }
 }

@@ -4,12 +4,23 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Context;
+import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
+import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -19,10 +30,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,7 +43,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -47,6 +64,7 @@ public class ServiceBusProcessorAsyncClientTest {
     private static final String ENTITY_NAME = "entity";
 
     private ServiceBusReceiverAsyncClient mockReceiver;
+    private ServiceBusSessionReceiverAsyncClient mockSessionClient;
 
     /**
      * Messages flow to the async handler and, by default, each is completed after the handler {@link Mono} finishes.
@@ -171,7 +189,7 @@ public class ServiceBusProcessorAsyncClientTest {
         when(mockReceiver.isConnectionClosed()).thenReturn(false);
         doNothing().when(mockReceiver).close();
         // First subscription errors; subsequent restart subscribes to a stream that never emits, bounding the retry.
-        when(mockReceiver.receiveMessagesWithContext())
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor())
             .thenReturn(Flux.error(new IllegalStateException("receive failed")))
             .thenReturn(Flux.never());
 
@@ -232,25 +250,29 @@ public class ServiceBusProcessorAsyncClientTest {
     /**
      * Concurrency is bounded by {@code maxConcurrentCalls} - no more than that many handlers run at once.
      */
-    @Test
-    public void concurrencyBoundedByMaxConcurrentCalls() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void concurrencyBoundedByMaxConcurrentCalls(boolean sessions) throws InterruptedException {
         final int maxConcurrentCalls = 2;
         final int messageCount = 8;
         final Flux<ServiceBusMessageContext> messages = messageContexts(messageCount);
-        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messages);
 
         final CountDownLatch latch = new CountDownLatch(messageCount);
         final AtomicInteger inFlight = new AtomicInteger();
         final AtomicInteger maxObserved = new AtomicInteger();
 
-        final ServiceBusProcessorAsyncClient processor
-            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> Mono.fromRunnable(() -> {
-                final int current = inFlight.incrementAndGet();
-                maxObserved.accumulateAndGet(current, Math::max);
-            }).then(Mono.delay(Duration.ofMillis(40))).then(Mono.fromRunnable(() -> {
-                inFlight.decrementAndGet();
-                latch.countDown();
-            })), error -> Mono.empty(), options(maxConcurrentCalls, false));
+        final Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> handler = context -> Mono.fromRunnable(() -> {
+            final int current = inFlight.incrementAndGet();
+            maxObserved.accumulateAndGet(current, Math::max);
+        }).then(Mono.delay(Duration.ofMillis(40))).then(Mono.fromRunnable(() -> {
+            inFlight.decrementAndGet();
+            latch.countDown();
+        }));
+        final ServiceBusProcessorAsyncClient processor = sessions
+            ? new ServiceBusProcessorAsyncClient(sessionBuilder(messages), ENTITY_NAME, null, null, handler,
+                error -> Mono.empty(), options(maxConcurrentCalls, false))
+            : new ServiceBusProcessorAsyncClient(nonSessionBuilder(messages), ENTITY_NAME, null, null, handler,
+                error -> Mono.empty(), options(maxConcurrentCalls, false));
 
         processor.start().block();
         final boolean success = latch.await(10, TimeUnit.SECONDS);
@@ -338,7 +360,8 @@ public class ServiceBusProcessorAsyncClientTest {
         final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString("hi"));
         message.setMessageId("0");
         // First stream emits one message then completes (triggers a restart); the second stream stays open.
-        when(mockReceiver.receiveMessagesWithContext()).thenReturn(Flux.just(new ServiceBusMessageContext(message)))
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor())
+            .thenReturn(Flux.just(new ServiceBusMessageContext(message)))
             .thenReturn(Flux.never());
 
         final CountDownLatch processed = new CountDownLatch(1);
@@ -488,19 +511,22 @@ public class ServiceBusProcessorAsyncClientTest {
     }
 
     /**
-     * During the close drain window, new PEEK_LOCK dispatches are skipped (not processed or settled) so the in-flight
-     * count can reach zero, while the already in-flight handler still settles.
+     * Closing stops PEEK_LOCK dispatch while retaining the receiver subscription for accepted handlers to settle.
      */
     @Test
-    public void skipsNewPeekLockDispatchesDuringDrain() throws InterruptedException {
+    public void stopsReceivingPeekLockMessagesBeforeDraining() throws InterruptedException {
+        final CountDownLatch intakeStopped = new CountDownLatch(1);
         final AtomicReference<FluxSink<ServiceBusMessageContext>> sinkRef = new AtomicReference<>();
-        final Flux<ServiceBusMessageContext> messages = Flux.create(sinkRef::set);
+        final Flux<ServiceBusMessageContext> messages = Flux.create(sink -> {
+            sinkRef.set(sink);
+            sink.onCancel(intakeStopped::countDown);
+        });
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
             = mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         mockReceiver = mock(ServiceBusReceiverAsyncClient.class);
         when(builder.buildAsyncClientForProcessor()).thenReturn(mockReceiver);
         stubReceiverBasics();
-        when(mockReceiver.receiveMessagesWithContext()).thenReturn(messages);
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor()).thenReturn(messages);
         final ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
         when(receiverOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
         when(mockReceiver.getReceiverOptions()).thenReturn(receiverOptions);
@@ -508,10 +534,7 @@ public class ServiceBusProcessorAsyncClientTest {
         final CountDownLatch slowStarted = new CountDownLatch(1);
         final CountDownLatch allowFinish = new CountDownLatch(1);
         final Set<String> processedIds = Collections.synchronizedSet(new HashSet<>());
-        // maxConcurrentCalls = 3 so the two messages that arrive while the slow handler is held enter the dispatch
-        // pipeline concurrently (rather than being buffered behind a single slot). This is what makes the skip path
-        // actually exercised: at concurrency 1 they would never enter dispatch and the test could pass even if the
-        // skip logic were removed.
+        // Spare handler slots ensure cancellation, rather than backpressure, prevents further dispatch.
         final ServiceBusProcessorAsyncClient processor
             = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
                 processedIds.add(context.getMessage().getMessageId());
@@ -538,42 +561,41 @@ public class ServiceBusProcessorAsyncClientTest {
         });
         closeThread.setDaemon(true);
         closeThread.start();
-        // close() is now draining (closing == true), waiting for the slow handler.
-        Thread.sleep(300);
+        assertFalse(intakeStopped.await(300, TimeUnit.MILLISECONDS),
+            "The receiver subscription must stay open for settlement while draining");
+        assertFalse(processor.isRunning(), "The processor must stop dispatching before draining");
+        assertFalse(closeReturned.get(), "The accepted handler must still be draining");
 
-        // Messages that arrive during the drain window must be skipped, not processed/settled.
         sinkRef.get().next(messageContext("fast1"));
         sinkRef.get().next(messageContext("fast2"));
-        Thread.sleep(300);
 
         allowFinish.countDown();
         closeThread.join(TimeUnit.SECONDS.toMillis(5));
         assertTrue(closeReturned.get(), "close() did not return");
-        // Only the slow message was completed; the two PEEK_LOCK messages that arrived during drain were skipped.
         verify(mockReceiver, times(1)).complete(any());
-        // Assert on the skip path directly: the slow handler ran, but the two PEEK_LOCK messages that entered the
-        // dispatch pipeline during the drain window were skipped before reaching the handler.
         assertTrue(processedIds.contains("slow"), "Slow handler should have run");
-        assertFalse(processedIds.contains("fast1"), "fast1 arrived during drain and must be skipped (PEEK_LOCK)");
-        assertFalse(processedIds.contains("fast2"), "fast2 arrived during drain and must be skipped (PEEK_LOCK)");
+        assertTrue(intakeStopped.await(5, TimeUnit.SECONDS), "The receiver subscription must close after draining");
+        assertFalse(processedIds.contains("fast1"), "fast1 must not be accepted during drain");
+        assertFalse(processedIds.contains("fast2"), "fast2 must not be accepted during drain");
     }
 
     /**
-     * During the close drain window, {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} dispatches are NOT skipped - the
-     * broker has already removed the message, so dropping it here would lose it. This is the asymmetric counterpart to
-     * {@link #skipsNewPeekLockDispatchesDuringDrain()}: identical setup, only the receive mode differs, and the
-     * messages that arrive during drain must still be handled.
+     * RECEIVE_AND_DELETE also stops intake before draining the accepted handler, without attempting settlement.
      */
     @Test
-    public void processesReceiveAndDeleteDispatchesDuringDrain() throws InterruptedException {
+    public void stopsReceivingReceiveAndDeleteMessagesBeforeDraining() throws InterruptedException {
+        final CountDownLatch intakeStopped = new CountDownLatch(1);
         final AtomicReference<FluxSink<ServiceBusMessageContext>> sinkRef = new AtomicReference<>();
-        final Flux<ServiceBusMessageContext> messages = Flux.create(sinkRef::set);
+        final Flux<ServiceBusMessageContext> messages = Flux.create(sink -> {
+            sinkRef.set(sink);
+            sink.onCancel(intakeStopped::countDown);
+        });
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
             = mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         mockReceiver = mock(ServiceBusReceiverAsyncClient.class);
         when(builder.buildAsyncClientForProcessor()).thenReturn(mockReceiver);
         stubReceiverBasics();
-        when(mockReceiver.receiveMessagesWithContext()).thenReturn(messages);
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor()).thenReturn(messages);
         final ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
         when(receiverOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.RECEIVE_AND_DELETE);
         when(mockReceiver.getReceiverOptions()).thenReturn(receiverOptions);
@@ -581,8 +603,7 @@ public class ServiceBusProcessorAsyncClientTest {
         final Set<String> processedIds = Collections.synchronizedSet(new HashSet<>());
         final CountDownLatch slowStarted = new CountDownLatch(1);
         final CountDownLatch allowFinish = new CountDownLatch(1);
-        final CountDownLatch fastProcessed = new CountDownLatch(2);
-        // maxConcurrentCalls = 3 so the two drain-window messages run concurrently with the still-held slow handler.
+        // Spare handler slots ensure cancellation, rather than backpressure, prevents further dispatch.
         final ServiceBusProcessorAsyncClient processor
             = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
                 final String id = context.getMessage().getMessageId();
@@ -597,7 +618,6 @@ public class ServiceBusProcessorAsyncClientTest {
                 }
                 return Mono.fromRunnable(() -> {
                     processedIds.add(id);
-                    fastProcessed.countDown();
                 });
             }, error -> Mono.empty(), options(3, false));
 
@@ -612,24 +632,508 @@ public class ServiceBusProcessorAsyncClientTest {
         });
         closeThread.setDaemon(true);
         closeThread.start();
-        // close() is now draining (closing == true), waiting for the slow handler.
-        Thread.sleep(300);
+        assertFalse(intakeStopped.await(300, TimeUnit.MILLISECONDS),
+            "The receiver subscription must stay open while draining");
+        assertFalse(processor.isRunning(), "The processor must stop dispatching before draining");
+        assertFalse(closeReturned.get(), "The accepted handler must still be draining");
 
-        // RECEIVE_AND_DELETE messages that arrive during the drain window must still be handled, not dropped. They are
-        // processed while the slow handler is still held (close() still blocked), proving the not-skip branch.
         sinkRef.get().next(messageContext("fast1"));
         sinkRef.get().next(messageContext("fast2"));
-        final boolean bothHandled = fastProcessed.await(5, TimeUnit.SECONDS);
 
         allowFinish.countDown();
         closeThread.join(TimeUnit.SECONDS.toMillis(5));
         assertTrue(closeReturned.get(), "close() did not return");
-        assertTrue(bothHandled, "RECEIVE_AND_DELETE messages during drain must be processed, not skipped");
-        assertTrue(processedIds.contains("fast1") && processedIds.contains("fast2"),
-            "Both RECEIVE_AND_DELETE messages should have been handled during drain");
+        assertTrue(intakeStopped.await(5, TimeUnit.SECONDS), "The receiver subscription must close after draining");
+        assertTrue(processedIds.isEmpty(), "No messages should be accepted during drain");
         // The broker already removed RECEIVE_AND_DELETE messages on delivery, so the processor must not settle them.
         verify(mockReceiver, never()).complete(any());
         verify(mockReceiver, never()).abandon(any());
+    }
+
+    @Test
+    public void failedStartCanBeRetried() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        when(builder.buildAsyncClientForProcessor()).thenThrow(new IllegalStateException("initialization failed"))
+            .thenReturn(mockReceiver);
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+
+        assertThrows(IllegalStateException.class, () -> processor.start().block());
+        assertFalse(processor.isRunning());
+        processor.start().block();
+        assertTrue(processor.isRunning());
+        processor.close();
+        verify(builder, times(2)).buildAsyncClientForProcessor();
+    }
+
+    @Test
+    public void failedSubscriptionPreservesOriginalErrorAndCanBeRetried() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        final IllegalStateException initialization = new IllegalStateException("subscription initialization failed");
+        final IllegalArgumentException cleanup = new IllegalArgumentException("receiver cleanup failed");
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor()).thenThrow(initialization)
+            .thenReturn(Flux.never());
+        doThrow(cleanup).doNothing().when(mockReceiver).close();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+
+        assertEquals(initialization, assertThrows(IllegalStateException.class, () -> processor.start().block()));
+        assertTrue(java.util.Arrays.asList(initialization.getSuppressed()).contains(cleanup));
+        assertFalse(processor.isRunning());
+        processor.start().block();
+        assertTrue(processor.isRunning());
+        processor.close();
+        verify(builder, times(2)).buildAsyncClientForProcessor();
+    }
+
+    @Test
+    public void failedRestartSubscriptionIsClosedAndRetriedByMonitor() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
+            = nonSessionBuilder(Flux.error(new IllegalStateException("receive failed")));
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor())
+            .thenReturn(Flux.error(new IllegalStateException("receive failed")))
+            .thenReturn(Flux.never());
+        final ServiceBusReceiverAsyncClient broken = mock(ServiceBusReceiverAsyncClient.class);
+        when(broken.receiveMessagesWithContextForAsyncProcessor())
+            .thenThrow(new IllegalStateException("restart initialization failed"));
+        when(builder.buildAsyncClientForProcessor()).thenReturn(mockReceiver)
+            .thenReturn(broken)
+            .thenReturn(mockReceiver);
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+
+        try {
+            processor.start().block();
+            verify(broken, timeout(5000)).close();
+            verify(builder, timeout(15000).times(3)).buildAsyncClientForProcessor();
+            assertTrue(processor.isRunning());
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void manualSettlementPreservesServiceErrorSource() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        when(mockReceiver.complete(any())).thenReturn(Mono
+            .error(new ServiceBusException(new IllegalStateException("lock lost"), ServiceBusErrorSource.COMPLETE)));
+        final AtomicReference<ServiceBusErrorSource> source = new AtomicReference<>();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, ServiceBusReceivedMessageAsyncContext::complete, error -> {
+                source.set(((ServiceBusException) error.getException()).getErrorSource());
+                return Mono.empty();
+            }, options(1, true));
+
+        processor.start().block();
+        assertEquals(ServiceBusErrorSource.COMPLETE, source.get());
+        processor.close();
+        verify(mockReceiver, never()).abandon(any());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "false,false", "false,true", "true,false", "true,true" })
+    public void publicBuildersSupportQueuesAndSubscriptions(boolean sessions, boolean subscription) {
+        final ServiceBusClientBuilder builder
+            = new ServiceBusClientBuilder().credential("namespace.servicebus.windows.net", mock(TokenCredential.class));
+        final ServiceBusProcessorAsyncClient processor;
+        if (sessions) {
+            final ServiceBusClientBuilder.ServiceBusSessionProcessorAsyncClientBuilder asyncBuilder
+                = builder.sessionProcessorAsync()
+                    .processMessage(context -> Mono.empty())
+                    .processError(error -> Mono.empty());
+            if (subscription) {
+                asyncBuilder.topicName("topic").subscriptionName("subscription");
+            } else {
+                asyncBuilder.queueName("queue");
+            }
+            processor = asyncBuilder.buildProcessorAsyncClient();
+        } else {
+            final ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder asyncBuilder
+                = builder.processorAsync().processMessage(context -> Mono.empty()).processError(error -> Mono.empty());
+            if (subscription) {
+                asyncBuilder.topicName("topic").subscriptionName("subscription");
+            } else {
+                asyncBuilder.queueName("queue");
+            }
+            processor = asyncBuilder.buildProcessorAsyncClient();
+        }
+        try {
+            assertEquals(subscription ? null : "queue", processor.getQueueName());
+            assertEquals(subscription ? "topic" : null, processor.getTopicName());
+            assertEquals(subscription ? "subscription" : null, processor.getSubscriptionName());
+            assertFalse(processor.isRunning());
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void publicBuildersRejectMissingHandlersAndInvalidConcurrency() {
+        final ServiceBusClientBuilder builder
+            = new ServiceBusClientBuilder().credential("namespace.servicebus.windows.net", mock(TokenCredential.class));
+        assertThrows(NullPointerException.class,
+            () -> builder.processorAsync()
+                .queueName("queue")
+                .processError(error -> Mono.empty())
+                .buildProcessorAsyncClient());
+        assertThrows(NullPointerException.class,
+            () -> builder.sessionProcessorAsync()
+                .queueName("queue")
+                .processMessage(context -> Mono.empty())
+                .buildProcessorAsyncClient());
+        assertThrows(IllegalArgumentException.class, () -> builder.processorAsync().maxConcurrentCalls(0));
+        assertThrows(IllegalArgumentException.class, () -> builder.sessionProcessorAsync().maxConcurrentCalls(0));
+        assertThrows(IllegalArgumentException.class, () -> builder.sessionProcessorAsync().maxConcurrentSessions(0));
+    }
+
+    @Test
+    public void manualCompletionWaitsForDownstreamFlush() {
+        final Sinks.One<Void> flush = Sinks.one();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        final AtomicBoolean subscribed = new AtomicBoolean();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> flush.asMono().then(context.complete()).doOnSubscribe(ignored -> subscribed.set(true)),
+            error -> Mono.empty(), options(1, true));
+
+        processor.start().block();
+        assertTrue(subscribed.get(), "Handler subscription must return without waiting for the flush");
+        verify(mockReceiver, never()).complete(any());
+        flush.tryEmitEmpty();
+        verify(mockReceiver, times(1)).complete(any());
+        processor.close();
+    }
+
+    @Test
+    public void failedDownstreamFlushDoesNotCompleteMessage() {
+        final Sinks.One<Void> flush = Sinks.one();
+        final AtomicReference<Throwable> error = new AtomicReference<>();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> flush.asMono().then(context.complete()), context -> {
+                error.set(context.getException());
+                return Mono.empty();
+            }, options(1, true));
+
+        processor.start().block();
+        flush.tryEmitError(new IllegalStateException("flush failed"));
+        assertTrue(error.get() instanceof ServiceBusException);
+        verify(mockReceiver, never()).complete(any());
+        processor.close();
+    }
+
+    @Test
+    public void closeCancelsHandlersOnlyAfterDrainTimeout() {
+        final AtomicBoolean cancelled = new AtomicBoolean();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.<Void>never().doOnCancel(() -> cancelled.set(true)), error -> Mono.empty(),
+            options(1, false).setDrainTimeout(Duration.ofMillis(50)));
+
+        processor.start().block();
+        assertFalse(cancelled.get());
+        processor.close();
+        assertTrue(cancelled.get());
+        verify(mockReceiver).close();
+        verify(mockReceiver, never()).complete(any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void sessionFactoryUsesV2AndPreservesDefaultsAndSubQueue(boolean renewalEnabled) throws Exception {
+        final Duration renewalDuration = renewalEnabled ? Duration.ofMinutes(1) : Duration.ZERO;
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
+            = new ServiceBusClientBuilder().credential("namespace.servicebus.windows.net", mock(TokenCredential.class))
+                .sessionReceiver()
+                .queueName("queue")
+                .subQueue(com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE)
+                .maxAutoLockRenewDuration(renewalDuration)
+                .disableAutoComplete();
+        try (ServiceBusSessionReceiverAsyncClient sessions = builder.buildAsyncClientForAsyncProcessor()) {
+            final java.lang.reflect.Field field
+                = ServiceBusSessionReceiverAsyncClient.class.getDeclaredField("sessionAcquirer");
+            field.setAccessible(true);
+            assertTrue(field.get(sessions) != null, "Async session processing must use the V2 acquirer");
+            assertEquals("queue/$deadletterqueue", sessions.getEntityPath());
+            assertEquals(new com.azure.core.amqp.AmqpRetryOptions().getTryTimeout(), sessions.getSessionIdleTimeout());
+            assertFalse(sessions.getReceiverOptions().isEnableAutoComplete());
+            assertEquals(renewalDuration, sessions.getReceiverOptions().getMaxLockRenewDuration());
+            assertEquals(renewalEnabled, sessions.getReceiverOptions().isAutoLockRenewEnabled());
+        }
+    }
+
+    @Test
+    public void lifecycleOperationsAreCold() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        final Mono<Void> start = processor.start();
+        assertFalse(processor.isRunning());
+        verify(builder, never()).buildAsyncClientForProcessor();
+        start.block();
+        final Mono<Void> stop = processor.stop();
+        assertTrue(processor.isRunning());
+        stop.block();
+        assertFalse(processor.isRunning());
+        processor.close();
+    }
+
+    @Test
+    public void stopPreservesSubscriptionAndLetsAcceptedWorkFinish() {
+        final AtomicInteger subscriptions = new AtomicInteger();
+        final AtomicBoolean cancelled = new AtomicBoolean();
+        final Sinks.Empty<Void> finish = Sinks.empty();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
+            = nonSessionBuilder(messageContexts(2).doOnSubscribe(ignored -> subscriptions.incrementAndGet()));
+        final AtomicInteger processed = new AtomicInteger();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
+                processed.incrementAndGet();
+                return finish.asMono().doOnCancel(() -> cancelled.set(true));
+            }, error -> Mono.empty(), options(1, false));
+        try {
+            processor.start().block();
+            processor.stop().block();
+            finish.tryEmitEmpty();
+            assertFalse(cancelled.get());
+            assertEquals(1, processed.get());
+            verify(mockReceiver).complete(any());
+            processor.start().block();
+            assertEquals(2, processed.get());
+            assertEquals(1, subscriptions.get(), "Resume must not resubscribe to the receiver");
+        } finally {
+            finish.tryEmitEmpty();
+            processor.close();
+        }
+    }
+
+    @Test
+    public void terminalErrorHandlerIsAwaitedDuringClose() throws Exception {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
+            = nonSessionBuilder(Flux.error(new IllegalStateException("receive failed")));
+        final Sinks.Empty<Void> reported = Sinks.empty();
+        final CountDownLatch closing = new CountDownLatch(1);
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> reported.asMono(), options(1, false));
+        processor.start().block();
+        final CompletableFuture<Void> closed = CompletableFuture.runAsync(() -> {
+            closing.countDown();
+            processor.close();
+        });
+        try {
+            assertTrue(closing.await(5, TimeUnit.SECONDS));
+            assertThrows(java.util.concurrent.TimeoutException.class, () -> closed.get(100, TimeUnit.MILLISECONDS));
+            verify(builder).buildAsyncClientForProcessor();
+        } finally {
+            reported.tryEmitEmpty();
+            closed.get(5, TimeUnit.SECONDS);
+        }
+        verify(builder).buildAsyncClientForProcessor();
+    }
+
+    @Test
+    public void recoveryErrorHandlerIsAwaitedDuringClose() throws Exception {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        when(builder.buildAsyncClientForProcessor()).thenReturn(mockReceiver)
+            .thenThrow(new IllegalStateException("receiver creation failed"));
+        final Sinks.Empty<Void> reported = Sinks.empty();
+        final CountDownLatch reporting = new CountDownLatch(1);
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> Mono.empty(), error -> {
+                reporting.countDown();
+                return reported.asMono();
+            }, options(1, false));
+        processor.start().block();
+        final java.lang.reflect.Field field
+            = ServiceBusProcessorAsyncClient.class.getDeclaredField("receiveDisposable");
+        field.setAccessible(true);
+        final Object cycle = ((AtomicReference<?>) field.get(processor)).get();
+        final java.lang.reflect.Method restart
+            = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("restartMessageReceiver", Disposable.class);
+        restart.setAccessible(true);
+        restart.invoke(processor, cycle);
+        assertTrue(reporting.await(5, TimeUnit.SECONDS));
+        final CompletableFuture<Void> closed = CompletableFuture.runAsync(processor::close);
+        try {
+            assertThrows(java.util.concurrent.TimeoutException.class, () -> closed.get(100, TimeUnit.MILLISECONDS));
+        } finally {
+            reported.tryEmitEmpty();
+            closed.get(5, TimeUnit.SECONDS);
+        }
+        verify(builder, times(2)).buildAsyncClientForProcessor();
+    }
+
+    @Test
+    public void autoCompleteFailureEndsProcessingSpanWithError() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        final Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
+        when(mockReceiver.getInstrumentation()).thenReturn(
+            new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR));
+        final ServiceBusException failure
+            = new ServiceBusException(new IllegalStateException("complete failed"), ServiceBusErrorSource.COMPLETE);
+        when(mockReceiver.complete(any())).thenReturn(Mono.error(failure));
+        final AtomicReference<Throwable> reported = new AtomicReference<>();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> Mono.empty(), error -> {
+                reported.set(error.getException());
+                return Mono.empty();
+            }, options(1, false));
+        try {
+            processor.start().block();
+            assertEquals(failure, reported.get());
+            verify(tracer).end(isNull(), eq(failure), eq(Context.NONE));
+            verify(mockReceiver, never()).abandon(any());
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void staleRecoveryDoesNotCloseTheReplacementReceiver() throws Exception {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        try {
+            processor.start().block();
+            final java.lang.reflect.Field field
+                = ServiceBusProcessorAsyncClient.class.getDeclaredField("receiveDisposable");
+            field.setAccessible(true);
+            final Object reference = field.get(processor);
+            final Object cycle = ((AtomicReference<?>) reference).get();
+            final java.lang.reflect.Method restart
+                = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("restartMessageReceiver", Disposable.class);
+            restart.setAccessible(true);
+            restart.invoke(processor, cycle);
+            restart.invoke(processor, cycle);
+            verify(builder, times(2)).buildAsyncClientForProcessor();
+            verify(mockReceiver).close();
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void sessionIdleTimeoutWaitsForProcessingAndSettlement() throws Exception {
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
+            = sessionBuilder(messageContexts(1));
+        when(mockSessionClient.getSessionIdleTimeout()).thenReturn(Duration.ofMillis(50));
+        when(mockSessionClient.acceptNextSession()).thenReturn(Mono.just(mockReceiver)).thenReturn(Mono.never());
+        final CountDownLatch receiverClosed = new CountDownLatch(1);
+        org.mockito.Mockito.doAnswer(ignored -> {
+            receiverClosed.countDown();
+            return null;
+        }).when(mockReceiver).close();
+        final Sinks.Empty<Void> flush = Sinks.empty();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> flush.asMono(), error -> Mono.empty(), options(1, false));
+        try {
+            processor.start().block();
+            assertFalse(receiverClosed.await(200, TimeUnit.MILLISECONDS),
+                "Idle rollover closed a session whose handler was still working");
+            flush.tryEmitEmpty();
+            assertTrue(receiverClosed.await(5, TimeUnit.SECONDS), "Idle session was not released");
+            verify(mockSessionClient, timeout(5000).times(2)).acceptNextSession();
+            final org.mockito.InOrder order = org.mockito.Mockito.inOrder(mockReceiver);
+            order.verify(mockReceiver).complete(any());
+            order.verify(mockReceiver).close();
+        } finally {
+            flush.tryEmitEmpty();
+            processor.close();
+        }
+        verify(mockSessionClient).close();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    public void concurrencyIsGlobalAcrossV2Sessions(int concurrency) throws Exception {
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
+            = sessionBuilder(messageContexts(1));
+        final ServiceBusReceiverAsyncClient first = mockReceiver;
+        final ServiceBusReceiverAsyncClient second = mock(ServiceBusReceiverAsyncClient.class);
+        stubReceiverBasics(second);
+        when(second.receiveMessagesWithContextForAsyncProcessor()).thenReturn(messageContexts(1));
+        when(mockSessionClient.getReceiverOptions()).thenReturn(ReceiverOptions.createUnnamedSessionOptions(
+            ServiceBusReceiveMode.PEEK_LOCK, 0, Duration.ZERO, false, 2, Duration.ofMinutes(1)));
+        when(mockSessionClient.acceptNextSession()).thenReturn(Mono.just(first))
+            .thenReturn(Mono.just(second))
+            .thenReturn(Mono.never());
+        final Sinks.Empty<Void> flush = Sinks.empty();
+        final CountDownLatch entered = new CountDownLatch(concurrency);
+        final CountDownLatch processed = new CountDownLatch(2);
+        final AtomicInteger active = new AtomicInteger();
+        final AtomicInteger maximum = new AtomicInteger();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
+                maximum.accumulateAndGet(active.incrementAndGet(), Math::max);
+                entered.countDown();
+                return flush.asMono().doOnSuccess(ignored -> {
+                    active.decrementAndGet();
+                    processed.countDown();
+                });
+            }, error -> Mono.empty(), options(concurrency, false));
+        try {
+            processor.start().block();
+            assertTrue(entered.await(5, TimeUnit.SECONDS));
+            assertEquals(concurrency, maximum.get());
+            flush.tryEmitEmpty();
+            assertTrue(processed.await(5, TimeUnit.SECONDS));
+            assertEquals(concurrency, maximum.get(), "Concurrency must not multiply by the session count");
+        } finally {
+            flush.tryEmitEmpty();
+            processor.close();
+        }
+        verify(first).close();
+        verify(second).close();
+        verify(mockSessionClient).close();
+        verify(builder, never()).buildAsyncClientForProcessor();
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "true,true", "true,false", "false,true", "false,false" })
+    public void invalidCallbacksAreReportedWithoutKillingThePump(boolean throwMessage, boolean throwError) {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(2));
+        final AtomicInteger errors = new AtomicInteger();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
+                if ("0".equals(context.getMessage().getMessageId())) {
+                    if (throwMessage) {
+                        throw new IllegalStateException("handler threw");
+                    }
+                    return null;
+                }
+                return Mono.empty();
+            }, error -> {
+                errors.incrementAndGet();
+                if (throwError) {
+                    throw new IllegalStateException("error handler threw");
+                }
+                return null;
+            }, options(1, false));
+        try {
+            processor.start().block();
+            assertEquals(1, errors.get());
+            verify(mockReceiver).abandon(any());
+            verify(mockReceiver).complete(any());
+            verify(builder).buildAsyncClientForProcessor();
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void closeCancelsAnOutstandingV2SessionAcquire() {
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = sessionBuilder(Flux.never());
+        final AtomicBoolean cancelled = new AtomicBoolean();
+        when(mockSessionClient.acceptNextSession())
+            .thenReturn(Mono.<ServiceBusReceiverAsyncClient>never().doOnCancel(() -> cancelled.set(true)));
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        processor.start().block();
+        processor.close();
+        assertTrue(cancelled.get());
+        verify(mockSessionClient).close();
+        verify(mockReceiver, never()).close();
     }
 
     private ServiceBusProcessorClientOptions options(int maxConcurrentCalls, boolean disableAutoComplete) {
@@ -671,27 +1175,41 @@ public class ServiceBusProcessorAsyncClientTest {
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
             = mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
         mockReceiver = mock(ServiceBusReceiverAsyncClient.class);
-        when(builder.buildAsyncClientForProcessor()).thenReturn(mockReceiver);
+        final ServiceBusSessionReceiverAsyncClient sessions = mock(ServiceBusSessionReceiverAsyncClient.class);
+        mockSessionClient = sessions;
+        when(builder.buildAsyncClientForAsyncProcessor()).thenReturn(sessions);
+        when(sessions.acceptNextSession()).thenReturn(Mono.just(mockReceiver));
+        when(sessions.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(sessions.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(sessions.getReceiverOptions()).thenReturn(ReceiverOptions.createUnnamedSessionOptions(
+            ServiceBusReceiveMode.PEEK_LOCK, 0, Duration.ZERO, false, 1, Duration.ofMinutes(1)));
+        when(sessions.getSessionIdleTimeout()).thenReturn(Duration.ofMinutes(1));
         stubReceiver(messages);
         return builder;
     }
 
     private void stubReceiver(Flux<ServiceBusMessageContext> messages) {
         stubReceiverBasics();
-        when(mockReceiver.receiveMessagesWithContext()).thenReturn(messages);
+        when(mockReceiver.receiveMessagesWithContextForAsyncProcessor()).thenReturn(messages);
     }
 
     private void stubReceiverBasics() {
-        when(mockReceiver.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(mockReceiver.getEntityPath()).thenReturn(ENTITY_NAME);
-        when(mockReceiver.isConnectionClosed()).thenReturn(false);
-        when(mockReceiver.complete(any())).thenReturn(Mono.empty());
-        when(mockReceiver.abandon(any())).thenReturn(Mono.empty());
+        stubReceiverBasics(mockReceiver);
+    }
+
+    private void stubReceiverBasics(ServiceBusReceiverAsyncClient receiver) {
+        when(receiver.getInstrumentation()).thenReturn(
+            new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR));
+        when(receiver.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(receiver.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(receiver.isConnectionClosed()).thenReturn(false);
+        when(receiver.complete(any())).thenReturn(Mono.empty());
+        when(receiver.abandon(any())).thenReturn(Mono.empty());
         // Default the receiver to PEEK_LOCK so auto-settlement is exercised; tests that need RECEIVE_AND_DELETE
         // override getReceiverOptions() after calling this.
         final ReceiverOptions peekLockOptions = mock(ReceiverOptions.class);
         when(peekLockOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
-        when(mockReceiver.getReceiverOptions()).thenReturn(peekLockOptions);
-        doNothing().when(mockReceiver).close();
+        when(receiver.getReceiverOptions()).thenReturn(peekLockOptions);
+        doNothing().when(receiver).close();
     }
 }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class SoftDeletionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SoftDeletion model = BinaryData.fromString("{\"destroyed\":true,\"eradicationTimestamp\":\"sfraoyzko\"}")
+        SoftDeletion model = BinaryData.fromString("{\"destroyed\":true,\"eradicationTimestamp\":\"lwntoego\"}")
             .toObject(SoftDeletion.class);
         Assertions.assertTrue(model.destroyed());
     }

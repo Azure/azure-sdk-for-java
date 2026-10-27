@@ -203,8 +203,10 @@ public class CosmosTracerTest extends TestSuiteBase {
         createAndInitializeDiagnosticsProvider(
             mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
-        CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
-            ThroughputProperties.createManualThroughput(5000)).block();
+        CosmosDatabaseResponse cosmosDatabaseResponse = executeControlPlaneWithRetry(
+            () -> client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
+                ThroughputProperties.createManualThroughput(5000)).block(),
+            mockTracer::reset);
         assertThat(cosmosDatabaseResponse).isNotNull();
         verifyTracerAttributes(
             mockTracer,
@@ -220,7 +222,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
 
         FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases =
-            client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
+            client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().next().block();
         assertThat(feedResponseReadAllDatabases).isNotNull();
         verifyTracerAttributes(
             mockTracer,

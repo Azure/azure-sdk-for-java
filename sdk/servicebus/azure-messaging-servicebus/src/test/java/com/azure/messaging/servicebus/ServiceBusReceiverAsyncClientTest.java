@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
@@ -84,6 +85,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -220,6 +225,75 @@ class ServiceBusReceiverAsyncClientTest {
         sessionReceiver.close();
         mocksCloseable.close();
         Mockito.framework().clearInlineMock(this);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void asyncProcessorOwnsExactlyOneProcessingSpan(boolean isV2) throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
+        when(tracer.extractContext(any())).thenReturn(Context.NONE);
+        arrangeForAsyncProcessor(isV2, tracer);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(receiver);
+        final Sinks.Empty<Void> flush = Sinks.empty();
+        final CountDownLatch entered = new CountDownLatch(1);
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null, null, context -> {
+                entered.countDown();
+                return flush.asMono();
+            }, error -> Mono.empty(), new ServiceBusProcessorClientOptions().setDisableAutoComplete(true));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            Assertions.assertTrue(entered.await(5, TimeUnit.SECONDS));
+            verify(tracer, times(1)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
+            verify(tracer, never()).end(any(), any(), any());
+            flush.tryEmitEmpty();
+            verify(tracer, org.mockito.Mockito.timeout(5000)).end(isNull(), isNull(), eq(Context.NONE));
+        } finally {
+            flush.tryEmitEmpty();
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void asyncProcessorResumesTheRealReceiverWithoutResubscribing(boolean isV2) throws Exception {
+        arrangeForAsyncProcessor(isV2, null);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(receiver);
+        final CountDownLatch first = new CountDownLatch(1);
+        final CountDownLatch second = new CountDownLatch(1);
+        final AtomicInteger processed = new AtomicInteger();
+        final AtomicReference<Throwable> failure = new AtomicReference<>();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null, null, context -> {
+                if (processed.incrementAndGet() == 1) {
+                    first.countDown();
+                } else {
+                    second.countDown();
+                }
+                return Mono.empty();
+            }, error -> {
+                failure.set(error.getException());
+                return Mono.empty();
+            }, new ServiceBusProcessorClientOptions().setDisableAutoComplete(true));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            assertTrue(first.await(5, TimeUnit.SECONDS));
+            processor.stop().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(1), Sinks.EmitFailureHandler.FAIL_FAST);
+            Assertions.assertFalse(second.await(100, TimeUnit.MILLISECONDS));
+            processor.start().block(DEFAULT_TIMEOUT);
+            assertTrue(second.await(5, TimeUnit.SECONDS));
+            assertNull(failure.get());
+            verify(builder).buildAsyncClientForProcessor();
+        } finally {
+            processor.close();
+        }
     }
 
     /**
@@ -1678,6 +1752,19 @@ class ServiceBusReceiverAsyncClientTest {
         assertEquals(NAMESPACE, attributes.get("hostName"));
         assertEquals(ENTITY_PATH, attributes.get("entityName"));
         assertEquals(subscriptionName, attributes.get("subscriptionName"));
+    }
+
+    private void arrangeForAsyncProcessor(boolean isV2, Tracer tracer) {
+        arrangeIfV2(isV2);
+        receiver.close();
+        final ServiceBusReceiverInstrumentation processorInstrumentation
+            = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.PROCESSOR);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, ENTITY_TYPE,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, Duration.ZERO, false), connectionCacheWrapper,
+            CLEANUP_INTERVAL, processorInstrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(new ServiceBusReceivedMessage(BinaryData.fromString(PAYLOAD)));
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
     }
 
     // Once on V2 completely, block of code in this function should be moved to JUnit setup() method.

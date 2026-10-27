@@ -68,7 +68,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.v2</groupId>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.15</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
+      <version>1.10.18</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -120,7 +120,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -129,7 +129,7 @@
                 <include>org.junit.jupiter:junit-jupiter-api:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-engine:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-                <include>org.apache.ant:ant:[1.10.15]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
+                <include>org.apache.ant:ant:[1.10.18]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

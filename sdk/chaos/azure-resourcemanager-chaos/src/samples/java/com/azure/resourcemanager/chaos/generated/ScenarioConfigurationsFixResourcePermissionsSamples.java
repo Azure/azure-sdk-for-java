@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioConfigurationsFixResourcePermissionsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_FixResourcePermissions.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_FixResourcePermissions.json
      */
     /**
      * Sample code: Fixes resource permissions for the given scenario configuration.

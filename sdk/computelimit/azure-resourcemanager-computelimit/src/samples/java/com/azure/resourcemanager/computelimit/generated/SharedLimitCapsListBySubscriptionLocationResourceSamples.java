@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class SharedLimitCapsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_List.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_List.json
      */
     /**
      * Sample code: List shared limit caps in a region for the caller's subscription.

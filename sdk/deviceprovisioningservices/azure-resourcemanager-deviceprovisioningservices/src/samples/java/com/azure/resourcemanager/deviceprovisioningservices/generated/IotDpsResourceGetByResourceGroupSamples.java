@@ -9,7 +9,22 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGet.json
+     * x-ms-original-file: 2026-08-31/DPSGet_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSGet_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSGetDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSGet.json
      */
     /**
      * Sample code: DPSGet.
@@ -18,7 +33,7 @@ public final class IotDpsResourceGetByResourceGroupSamples {
      */
     public static void dPSGet(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .getByResourceGroupWithResponse("myFirstProvisioningService", "myResourceGroup",
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);
     }
 }

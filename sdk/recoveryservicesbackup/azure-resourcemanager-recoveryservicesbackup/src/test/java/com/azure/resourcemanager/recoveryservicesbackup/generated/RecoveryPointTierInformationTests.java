@@ -14,10 +14,10 @@ public final class RecoveryPointTierInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointTierInformation model = BinaryData.fromString(
-            "{\"type\":\"Invalid\",\"status\":\"Deleted\",\"extendedInfo\":{\"wqapnedgfbcvk\":\"yjrxsagafcnih\",\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"}}")
+            "{\"type\":\"IASnapshotRP\",\"status\":\"Invalid\",\"extendedInfo\":{\"wcciuqgbdbu\":\"rpqlp\",\"joxafnndlpi\":\"auvfbtkuwhhmhyk\",\"kpw\":\"hkoymkcdyhbp\",\"jxywsuws\":\"reqnovvqfov\"}}")
             .toObject(RecoveryPointTierInformation.class);
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
-        Assertions.assertEquals("yjrxsagafcnih", model.extendedInfo().get("wqapnedgfbcvk"));
+        Assertions.assertEquals(RecoveryPointTierType.IASNAPSHOT_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.INVALID, model.status());
+        Assertions.assertEquals("rpqlp", model.extendedInfo().get("wcciuqgbdbu"));
     }
 }

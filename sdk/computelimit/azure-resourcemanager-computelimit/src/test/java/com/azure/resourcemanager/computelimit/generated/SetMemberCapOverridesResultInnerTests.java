@@ -12,9 +12,9 @@ public final class SetMemberCapOverridesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SetMemberCapOverridesResultInner model = BinaryData.fromString(
-            "{\"memberCapOverrides\":[{\"subscriptionId\":\"idtqajzyu\",\"cap\":743908174},{\"subscriptionId\":\"kudjkrlkhb\",\"cap\":375716095},{\"subscriptionId\":\"fepgzgq\",\"cap\":132755205}]}")
+            "{\"memberCapOverrides\":[{\"subscriptionId\":\"u\",\"cap\":1232172587},{\"subscriptionId\":\"krlkhbzhfepg\",\"cap\":384033547},{\"subscriptionId\":\"qex\",\"cap\":1025748151}]}")
             .toObject(SetMemberCapOverridesResultInner.class);
-        Assertions.assertEquals("idtqajzyu", model.memberCapOverrides().get(0).subscriptionId());
-        Assertions.assertEquals(743908174, model.memberCapOverrides().get(0).cap());
+        Assertions.assertEquals("u", model.memberCapOverrides().get(0).subscriptionId());
+        Assertions.assertEquals(1232172587, model.memberCapOverrides().get(0).cap());
     }
 }

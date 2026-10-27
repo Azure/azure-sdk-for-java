@@ -21,7 +21,7 @@ public final class MemberCapOverridesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"cap\":74448491,\"provisioningState\":\"Failed\"},\"id\":\"gsxnkjzkdeslpv\",\"name\":\"opwi\",\"type\":\"ighxpk\"}";
+            = "{\"properties\":{\"cap\":757967759,\"provisioningState\":\"Succeeded\"},\"id\":\"ycanuzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class MemberCapOverridesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MemberCapOverride response = manager.memberCapOverrides()
-            .getWithResponse("bhvgy", "gu", "svmkfssxquk", com.azure.core.util.Context.NONE)
+            .getWithResponse("wfudwpzntxhdzhl", "qj", "hckfrlhrx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(74448491, response.properties().cap());
+        Assertions.assertEquals(757967759, response.properties().cap());
     }
 }

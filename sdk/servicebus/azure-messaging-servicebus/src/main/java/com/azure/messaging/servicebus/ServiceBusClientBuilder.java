@@ -1926,7 +1926,7 @@ public final class ServiceBusClientBuilder
     public final class ServiceBusSessionProcessorAsyncClientBuilder {
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private final ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder;
-        private Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage;
+        private Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage;
         private Function<ServiceBusErrorContext, Mono<Void>> processError;
 
         private ServiceBusSessionProcessorAsyncClientBuilder() {
@@ -1953,8 +1953,9 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
-         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * Sets the maximum amount of time to wait for another message when the current session has no pending
+         * handlers. Accepted messages keep the session active until their handlers and settlement finish.
+         * After an idle timeout, the processor closes the session and attempts to process another session.
          *
          * <p>If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.</p>
          * @param sessionIdleTimeout Session idle timeout.
@@ -2065,7 +2066,7 @@ public final class ServiceBusClientBuilder
          * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
          */
         public ServiceBusSessionProcessorAsyncClientBuilder
-            processMessage(Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage) {
+            processMessage(Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage) {
             this.processMessage = processMessage;
             return this;
         }
@@ -2120,8 +2121,8 @@ public final class ServiceBusClientBuilder
 
         /**
          * Disables auto-complete and auto-abandon of received messages. By default, a message whose handler
-         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
-         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon()
+         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageAsyncContext#complete() completed}, and a
+         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageAsyncContext#abandon()
          * abandoned}.
          *
          * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
@@ -2512,9 +2513,19 @@ public final class ServiceBusClientBuilder
          * @return async client to obtain session from session enabled entity.
          */
         private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isForSyncMode, boolean isV2) {
+            return buildAsyncClient(isForSyncMode, isV2, ReceiverKind.ASYNC_RECEIVER);
+        }
+
+        ServiceBusSessionReceiverAsyncClient buildAsyncClientForAsyncProcessor() {
+            return buildAsyncClient(false, true, ReceiverKind.PROCESSOR);
+        }
+
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isForSyncMode, boolean isV2,
+            ReceiverKind receiverKind) {
             final MessagingEntityType entityType
                 = validateEntityPaths(connectionStringEntityName, topicName, queueName);
-            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName, SubQueue.NONE);
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
+                receiverKind == ReceiverKind.PROCESSOR ? subQueue : SubQueue.NONE);
 
             if (isForSyncMode && enableAutoComplete) {
                 LOGGER.warning(
@@ -2559,9 +2570,9 @@ public final class ServiceBusClientBuilder
             // no session (see the type ServiceBusSessionAcquirer), such timeout are propagated to the acceptNextSession() caller.
             final boolean timeoutRetryDisabled = isV2 && isForSyncMode;
 
-            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
-                subscriptionName, ReceiverKind.ASYNC_RECEIVER);
+            final ServiceBusReceiverInstrumentation instrumentation
+                = new ServiceBusReceiverInstrumentation(createTracer(clientOptions), meter,
+                    connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
             return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
                 onClientClose, clientIdentifier, timeoutRetryDisabled);
@@ -2938,7 +2949,7 @@ public final class ServiceBusClientBuilder
     public final class ServiceBusProcessorAsyncClientBuilder {
         private final ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder;
         private final ServiceBusProcessorClientOptions processorClientOptions;
-        private Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage;
+        private Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage;
         private Function<ServiceBusErrorContext, Mono<Void>> processError;
 
         private ServiceBusProcessorAsyncClientBuilder() {
@@ -3033,7 +3044,7 @@ public final class ServiceBusClientBuilder
          * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
          */
         public ServiceBusProcessorAsyncClientBuilder
-            processMessage(Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage) {
+            processMessage(Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage) {
             this.processMessage = processMessage;
             return this;
         }
@@ -3102,8 +3113,8 @@ public final class ServiceBusClientBuilder
 
         /**
          * Disables auto-complete and auto-abandon of received messages. By default, a message whose handler
-         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
-         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon()
+         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageAsyncContext#complete() completed}, and a
+         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageAsyncContext#abandon()
          * abandoned}.
          *
          * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.

@@ -28,9 +28,9 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
     private List<String> ldapServers;
 
     /*
-     * Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
      */
-    private Boolean ldapOverTLS;
+    private SecureLdapType secureLdapType;
 
     /*
      * When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA
@@ -43,6 +43,32 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
      * host entry.
      */
     private String certificateCNHost;
+
+    /*
+     * List of DNS server IPv4 addresses for resolving the CN host certificate. This parameter is used when LDAP over
+     * TLS is enabled.
+     */
+    private List<String> dnsServers;
+
+    /*
+     * Port number for LDAP communication. Default is 389 for LDAP.
+     */
+    private Integer ldapPort;
+
+    /*
+     * This specifies the user DN (Distinguished Name), which overrides the base DN for user lookups.
+     */
+    private String userDN;
+
+    /*
+     * This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
+     */
+    private String groupDN;
+
+    /*
+     * This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
+     */
+    private String netGroupDN;
 
     /*
      * The authentication level to use when binding to the LDAP server, defaults to Anonymous.
@@ -106,22 +132,24 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
     }
 
     /**
-     * Get the ldapOverTLS property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Get the secureLdapType property: Indicates the secure LDAP mode for encrypting communication between ANF storage
+     * and customer LDAP servers.
      * 
-     * @return the ldapOverTLS value.
+     * @return the secureLdapType value.
      */
-    public Boolean ldapOverTLS() {
-        return this.ldapOverTLS;
+    public SecureLdapType secureLdapType() {
+        return this.secureLdapType;
     }
 
     /**
-     * Set the ldapOverTLS property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Set the secureLdapType property: Indicates the secure LDAP mode for encrypting communication between ANF storage
+     * and customer LDAP servers.
      * 
-     * @param ldapOverTLS the ldapOverTLS value to set.
+     * @param secureLdapType the secureLdapType value to set.
      * @return the LdapConfiguration object itself.
      */
-    public LdapConfiguration withLdapOverTLS(Boolean ldapOverTLS) {
-        this.ldapOverTLS = ldapOverTLS;
+    public LdapConfiguration withSecureLdapType(SecureLdapType secureLdapType) {
+        this.secureLdapType = secureLdapType;
         return this;
     }
 
@@ -166,6 +194,114 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
      */
     public LdapConfiguration withCertificateCNHost(String certificateCNHost) {
         this.certificateCNHost = certificateCNHost;
+        return this;
+    }
+
+    /**
+     * Get the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @return the dnsServers value.
+     */
+    public List<String> dnsServers() {
+        return this.dnsServers;
+    }
+
+    /**
+     * Set the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @param dnsServers the dnsServers value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withDnsServers(List<String> dnsServers) {
+        this.dnsServers = dnsServers;
+        return this;
+    }
+
+    /**
+     * Get the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @return the ldapPort value.
+     */
+    public Integer ldapPort() {
+        return this.ldapPort;
+    }
+
+    /**
+     * Set the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @param ldapPort the ldapPort value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withLdapPort(Integer ldapPort) {
+        this.ldapPort = ldapPort;
+        return this;
+    }
+
+    /**
+     * Get the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @return the userDN value.
+     */
+    public String userDN() {
+        return this.userDN;
+    }
+
+    /**
+     * Set the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @param userDN the userDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withUserDN(String userDN) {
+        this.userDN = userDN;
+        return this;
+    }
+
+    /**
+     * Get the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @return the groupDN value.
+     */
+    public String groupDN() {
+        return this.groupDN;
+    }
+
+    /**
+     * Set the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @param groupDN the groupDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withGroupDN(String groupDN) {
+        this.groupDN = groupDN;
+        return this;
+    }
+
+    /**
+     * Get the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @return the netGroupDN value.
+     */
+    public String netGroupDN() {
+        return this.netGroupDN;
+    }
+
+    /**
+     * Set the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @param netGroupDN the netGroupDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withNetGroupDN(String netGroupDN) {
+        this.netGroupDN = netGroupDN;
         return this;
     }
 
@@ -252,9 +388,15 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("domain", this.domain);
         jsonWriter.writeArrayField("ldapServers", this.ldapServers, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTLS);
+        jsonWriter.writeStringField("secureLdapType",
+            this.secureLdapType == null ? null : this.secureLdapType.toString());
         jsonWriter.writeStringField("serverCACertificate", this.serverCACertificate);
         jsonWriter.writeStringField("certificateCNHost", this.certificateCNHost);
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("ldapPort", this.ldapPort);
+        jsonWriter.writeStringField("userDN", this.userDN);
+        jsonWriter.writeStringField("groupDN", this.groupDN);
+        jsonWriter.writeStringField("netGroupDN", this.netGroupDN);
         jsonWriter.writeStringField("bindAuthenticationLevel",
             this.bindAuthenticationLevel == null ? null : this.bindAuthenticationLevel.toString());
         jsonWriter.writeStringField("bindDN", this.bindDN);
@@ -282,12 +424,23 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
                 } else if ("ldapServers".equals(fieldName)) {
                     List<String> ldapServers = reader.readArray(reader1 -> reader1.getString());
                     deserializedLdapConfiguration.ldapServers = ldapServers;
-                } else if ("ldapOverTLS".equals(fieldName)) {
-                    deserializedLdapConfiguration.ldapOverTLS = reader.getNullable(JsonReader::getBoolean);
+                } else if ("secureLdapType".equals(fieldName)) {
+                    deserializedLdapConfiguration.secureLdapType = SecureLdapType.fromString(reader.getString());
                 } else if ("serverCACertificate".equals(fieldName)) {
                     deserializedLdapConfiguration.serverCACertificate = reader.getString();
                 } else if ("certificateCNHost".equals(fieldName)) {
                     deserializedLdapConfiguration.certificateCNHost = reader.getString();
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLdapConfiguration.dnsServers = dnsServers;
+                } else if ("ldapPort".equals(fieldName)) {
+                    deserializedLdapConfiguration.ldapPort = reader.getNullable(JsonReader::getInt);
+                } else if ("userDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.userDN = reader.getString();
+                } else if ("groupDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.groupDN = reader.getString();
+                } else if ("netGroupDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.netGroupDN = reader.getString();
                 } else if ("bindAuthenticationLevel".equals(fieldName)) {
                     deserializedLdapConfiguration.bindAuthenticationLevel
                         = BindAuthenticationLevel.fromString(reader.getString());

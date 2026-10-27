@@ -13,16 +13,16 @@ public final class DeletedVaultUndeleteInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultUndeleteInput model
-            = BinaryData.fromString("{\"properties\":{\"recoveryResourceGroupId\":\"sounqecanoaeu\"}}")
+            = BinaryData.fromString("{\"properties\":{\"recoveryResourceGroupId\":\"svexcsonpclhoco\"}}")
                 .toObject(DeletedVaultUndeleteInput.class);
-        Assertions.assertEquals("sounqecanoaeu", model.properties().recoveryResourceGroupId());
+        Assertions.assertEquals("svexcsonpclhoco", model.properties().recoveryResourceGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeletedVaultUndeleteInput model = new DeletedVaultUndeleteInput()
-            .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("sounqecanoaeu"));
+            .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("svexcsonpclhoco"));
         model = BinaryData.fromObject(model).toObject(DeletedVaultUndeleteInput.class);
-        Assertions.assertEquals("sounqecanoaeu", model.properties().recoveryResourceGroupId());
+        Assertions.assertEquals("svexcsonpclhoco", model.properties().recoveryResourceGroupId());
     }
 }

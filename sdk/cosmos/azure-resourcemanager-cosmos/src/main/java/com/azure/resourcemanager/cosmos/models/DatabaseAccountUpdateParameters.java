@@ -651,6 +651,31 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -697,6 +722,54 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withCapacity(capacity);
+        return this;
+    }
+
+    /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withCapacityMode(CapacityMode capacityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withCapacityMode(capacityMode);
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
         return this;
     }
 
@@ -883,6 +956,56 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
+        return this;
+    }
+
+    /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeleteConfiguration();
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters
+        withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withSoftDeleteConfiguration(softDeleteConfiguration);
         return this;
     }
 

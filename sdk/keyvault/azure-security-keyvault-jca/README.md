@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.11.0</version>
+    <version>2.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -139,18 +139,74 @@ The JCA library supports configuring the following options:
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
-* `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
-* `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
+* `azure.keyvault.jca.certificates-refresh-interval`: The certificate refresh interval as an ISO-8601 duration, for example `-Dazure.keyvault.jca.certificates-refresh-interval=PT30S` for 30 seconds. Millisecond values such as `-Dazure.keyvault.jca.certificates-refresh-interval=30000` remain supported for backward compatibility. Defaults to zero; zero or negative values disable periodic refresh.
+* `azure.keyvault.jca.certificate-alias-filter-pattern`: A regex that filters which Key Vault certificate aliases are eligible for lazy loading. Append a suffix to the property name to configure more than one filter, for example `azure.keyvault.jca.certificate-alias-filter-pattern.1` or `azure.keyvault.jca.certificate-alias-filter-pattern.prod`. If no such property is configured, all discovered Key Vault aliases are eligible for lazy loading. See "Filtering Key Vault certificate aliases" below.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
+* `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility. The value is captured when a Key Vault keystore and its client are initialized.
 
-You can configure these properties using:
+The supported system property names are available from `KeyVaultJcaPropertyNames`. You can configure them using:
 ```java
-System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "<your-azure-keyvault-uri>");
 ```
 or as a JVM argument:
 ```shell
 -Dazure.keyvault.uri=<your-azure-keyvault-uri>
 ```
+
+The system property `azure.keyvault.jca.certificates-refresh-interval-in-ms` has been removed and is ignored. If it is
+configured, the provider logs a warning. Use `azure.keyvault.jca.certificates-refresh-interval` instead, with an ISO-8601
+duration such as `PT30S` or the existing millisecond value.
+
+#### Programmatic configuration
+
+Use `KeyVaultLoadStoreParameter` when each key store needs an explicit configuration instead of global system
+properties:
+
+```java
+KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    "<your-azure-keyvault-uri>",
+    "<your-tenant-id>",
+    "<your-client-id>",
+    "<your-client-secret>")
+    .setCertificatesRefreshInterval(Duration.ofSeconds(60))
+    .setCertificateAliasFilterPatterns(Collections.singleton("^prod-.*"));
+parameter.disableAiaDownload();
+
+Security.addProvider(new KeyVaultJcaProvider());
+KeyStore keyStore = KeyStore.getInstance(
+    KeyVaultKeyStore.KEY_STORE_TYPE,
+    KeyVaultJcaProvider.PROVIDER_NAME);
+keyStore.load(parameter);
+```
+
+When `load(parameter)` is used, the values and defaults in that parameter replace the complete configuration captured
+from system properties. This prevents separate key stores from overwriting one another's configuration. Use
+`KeyVaultLoadStoreParameter.fromSystemProperties()` when a programmatic caller needs the same system-property
+snapshot used by the default key store initialization.
+
+#### Filtering Key Vault certificate aliases
+
+Each filter is configured as its own property, so no delimiter is required and a pattern may contain any character. Filters use Java-based regex:
+
+```shell
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^cert-.*'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.prod='^prod-\d{1,5}$'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.exclude-old='!.*-old$'
+```
+
+* Inclusion patterns are used directly and exclusion patterns start with a `!` prefix.
+* A suffix for the property name can be a number or a string; it is used to keep the property names unique and does not affect evaluation. The filters are unordered. Property names are case-sensitive, which means `.prod` and `.PROD` are two different filters.
+* Patterns use full-alias matching (`Pattern.matcher(alias).matches()`).
+* An alias is loaded only if it matches at least one inclusion pattern, or if no inclusion pattern is configured, and matches no exclusion pattern.
+* An invalid pattern fails fast with an `IllegalArgumentException` that names the offending pattern.
+
+Quote the filter value as required by your shell, otherwise characters such as `^` and `\` can be altered before the JVM receives them:
+
+| Shell | Example |
+| --- | --- |
+| Bash, including Git Bash | `-Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^prod-.*'` |
+| PowerShell | `'-Dazure.keyvault.jca.certificate-alias-filter-pattern.1=^prod-.*'` |
+| Windows `cmd.exe` | `"-Dazure.keyvault.jca.certificate-alias-filter-pattern.1=^^prod-.*"` |
 
 ### SSL/TLS
 #### Server side SSL
@@ -163,13 +219,17 @@ System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>"
 System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
 
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
+// Load the certificate and private key that identify this server to connecting clients.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Key managers select the server certificate and private key during each TLS handshake.
 KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 managerFactory.init(keyStore, "".toCharArray());
 
+// Configure one-way TLS: clients aren't required to present a certificate.
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(managerFactory.getKeyManagers(), null, null);
 
@@ -177,13 +237,15 @@ SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 
 while (true) {
+    // Accept a TLS connection and write a minimal HTTP response over it.
     SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
-    String response =
-        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+    // Build a minimal HTTP response and calculate Content-Length from the UTF-8 body bytes.
+    String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+        + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -194,7 +256,7 @@ while (true) {
 **Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side SSL
-If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
+If you are looking to integrate the JCA provider for client side socket connections, see the HTTPS URL connection example below.
 
 ```java readme-sample-clientSSL
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
@@ -203,38 +265,93 @@ System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>"
 System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
 
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-SSLContext sslContext = SSLContexts
-    .custom()
-    .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
-    .build();
+// Create trust managers from the certificates in the Key Vault-backed KeyStore.
+TrustManagerFactory trustManagerFactory
+    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+trustManagerFactory.init(keyStore);
+TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
 
-SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-    sslContext, (hostname, session) -> true);
+// The local server may use a self-signed certificate. Accept a one-certificate server chain while delegating
+// validation of all other chains to the platform trust manager. Do not use this behavior in production.
+for (int i = 0; i < trustManagers.length; i++) {
+    if (trustManagers[i] instanceof X509TrustManager) {
+        X509TrustManager delegate = (X509TrustManager) trustManagers[i];
+        trustManagers[i] = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                delegate.checkClientTrusted(chain, authType);
+            }
 
-PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-    RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build());
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                if (chain.length != 1) {
+                    delegate.checkServerTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return delegate.getAcceptedIssuers();
+            }
+        };
+    }
+}
+
+// Configure one-way TLS: the client validates the server but doesn't present a client certificate.
+SSLContext sslContext = SSLContext.getInstance("TLS");
+sslContext.init(null, trustManagers, null);
 
 String result = null;
+HttpsURLConnection connection = null;
+try {
+    // openConnection will return HttpsURLConnection when the protocol is 'https'.
+    connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-    HttpGet httpGet = new HttpGet("https://localhost:8765");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
-        String result1 = "Not success";
-        if (status == 200) {
-            result1 = EntityUtils.toString(response.getEntity());
+    // Apply the custom trust configuration to this HTTPS connection.
+    connection.setSSLSocketFactory(sslContext.getSocketFactory());
+    // Allow the sample certificate to use a hostname other than localhost. Do not do this in production.
+    connection.setHostnameVerifier((hostname, session) -> true);
+
+    connection.setRequestMethod("GET");
+    int status = connection.getResponseCode();
+    if (status == 200) {
+        // Decode the response using its declared charset, or UTF-8 when no charset is present.
+        Charset responseCharset = StandardCharsets.UTF_8;
+        String contentType = connection.getContentType();
+        if (contentType != null) {
+            Matcher matcher = Pattern.compile("(?i)\\bcharset\\s*=\\s*\"?([^;\\s\"]+)")
+                .matcher(contentType);
+            if (matcher.find()) {
+                responseCharset = Charset.forName(matcher.group(1));
+            }
         }
-        return result1;
-    };
-    result = client.execute(httpGet, responseHandler);
+
+        // Read the complete body without changing its line endings.
+        try (Reader reader = new InputStreamReader(connection.getInputStream(), responseCharset)) {
+            StringBuilder responseBody = new StringBuilder();
+            char[] buffer = new char[1024];
+            int read;
+            while ((read = reader.read(buffer)) != -1) {
+                responseBody.append(buffer, 0, read);
+            }
+            result = responseBody.toString();
+        }
+    } else {
+        result = "Not success";
+    }
 } catch (IOException ioe) {
     ioe.printStackTrace();
+} finally {
+    if (connection != null) {
+        connection.disconnect();
+    }
 }
 System.out.println(result);
 ```
@@ -247,14 +364,17 @@ If you are looking to integrate the JCA provider to create an SSLServerSocket se
 
 ```java readme-sample-serverMTLS
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+// Load the certificate and private key that identify this server to connecting clients.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Key managers select the server certificate and private key during each mTLS handshake.
 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 kmf.init(keyStore, "".toCharArray());
 
@@ -262,26 +382,32 @@ System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+// Load the client certificates that this server trusts.
 KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Trust managers validate the certificate presented by each client.
 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 tmf.init(trustStore);
 
+// Combine the server identity with the client trust configuration.
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
 SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
+// Require every client to present a trusted certificate during the TLS handshake.
 serverSocket.setNeedClientAuth(true);
 
 while (true) {
+    // Accept an mTLS connection and write a minimal HTTP response over it.
     SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
-    String response =
-        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+    // Build a minimal HTTP response and calculate Content-Length from the UTF-8 body bytes.
+    String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+        + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -292,54 +418,117 @@ while (true) {
 **Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side mTLS
-If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
+If you are looking to integrate the JCA provider for client side socket connections, see the HTTPS URL connection example below.
 
 ```java readme-sample-clientMTLS
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+// Load the certificate and private key that identify this client to the server.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+// Load the server certificates that this client trusts.
 KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-SSLContext sslContext = SSLContexts
-    .custom()
-    .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-    .loadKeyMaterial(keyStore, "".toCharArray())
-    .build();
+// Create trust managers from the server trust material.
+TrustManagerFactory trustManagerFactory
+    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+trustManagerFactory.init(trustStore);
+TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
 
-SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-    sslContext, (hostname, session) -> true);
+// The local server may use a self-signed certificate. Accept a one-certificate server chain while delegating
+// validation of all other chains to the platform trust manager. Do not use this behavior in production.
+for (int i = 0; i < trustManagers.length; i++) {
+    if (trustManagers[i] instanceof X509TrustManager) {
+        X509TrustManager delegate = (X509TrustManager) trustManagers[i];
+        trustManagers[i] = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                delegate.checkClientTrusted(chain, authType);
+            }
 
-PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-    RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build());
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                if (chain.length != 1) {
+                    delegate.checkServerTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return delegate.getAcceptedIssuers();
+            }
+        };
+    }
+}
+
+// Create key managers that select the client certificate and private key during the mTLS handshake.
+KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+keyManagerFactory.init(keyStore, "".toCharArray());
+
+// Combine the client identity with the server trust configuration.
+SSLContext sslContext = SSLContext.getInstance("TLS");
+sslContext.init(keyManagerFactory.getKeyManagers(), trustManagers, null);
 
 String result = null;
+HttpsURLConnection connection = null;
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-    HttpGet httpGet = new HttpGet("https://localhost:8765");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
-        String result1 = "Not success";
-        if (status == 200) {
-            result1 = EntityUtils.toString(response.getEntity());
+try {
+    // openConnection will return HttpsURLConnection when the protocol is 'https'.
+    connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
+
+    // Apply the custom identity and trust configuration to this HTTPS connection.
+    connection.setSSLSocketFactory(sslContext.getSocketFactory());
+    // Allow the sample certificate to use a hostname other than localhost. Do not do this in production.
+    connection.setHostnameVerifier((hostname, session) -> true);
+
+    connection.setRequestMethod("GET");
+    int status = connection.getResponseCode();
+
+    if (status == 200) {
+        // Decode the response using its declared charset, or UTF-8 when no charset is present.
+        Charset responseCharset = StandardCharsets.UTF_8;
+        String contentType = connection.getContentType();
+        if (contentType != null) {
+            Matcher matcher = Pattern.compile("(?i)\\bcharset\\s*=\\s*\"?([^;\\s\"]+)")
+                .matcher(contentType);
+            if (matcher.find()) {
+                responseCharset = Charset.forName(matcher.group(1));
+            }
         }
-        return result1;
-    };
-    result = client.execute(httpGet, responseHandler);
+
+        // Read the complete body without changing its line endings.
+        try (Reader reader = new InputStreamReader(connection.getInputStream(), responseCharset)) {
+            StringBuilder responseBody = new StringBuilder();
+            char[] buffer = new char[1024];
+            int read;
+            while ((read = reader.read(buffer)) != -1) {
+                responseBody.append(buffer, 0, read);
+            }
+            result = responseBody.toString();
+        }
+    } else {
+        result = "Not success";
+    }
 } catch (IOException ioe) {
     ioe.printStackTrace();
+} finally {
+    if (connection != null) {
+        connection.disconnect();
+    }
 }
+
 System.out.println(result);
 ```
 
@@ -367,10 +556,19 @@ You can load the certificate in the file system as a trusted certificate by conf
 
 | Certificate Type       | Description                                 | Usage                                                                                     |
 |------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|
-| Well-Known Certificate | The file path to the well-known certificate | `System.setProperty("azure.cert-path.well-known", "<well-known-certificate-file-path>")]` |
-| Custom Certificate     | The file path to the custom certificate     | `System.setProperty("azure.cert-path.custom", "<custom-certificate-file-path>")`          |
+| Well-Known Certificate | The directory containing well-known certificates | `System.setProperty("azure.cert-path.well-known", "<well-known-certificate-directory>")` |
+| Custom Certificate     | The directory containing custom certificates     | `System.setProperty("azure.cert-path.custom", "<custom-certificate-directory>")`         |
 
 Note: These properties support certificate files only (e.g., `.cer`, `.pem`, `.der`, `.crt`). Private keys are not supported.
+
+Each keystore loads its own snapshot of these directories when it is constructed and whenever either `KeyStore.load(...)`
+overload is called. Added, replaced, and removed certificate files are reflected after the next load. Calling
+`load(null, null)` or `load((KeyStore.LoadStoreParameter) null)` retains the keystore's configured paths, including paths
+previously supplied through `KeyVaultLoadStoreParameter`; it does not reread system properties.
+
+After changing certificate files, reload the keystore and rebuild the trust managers and `SSLContext` that use it.
+Existing trust managers, TLS connections, and TLS sessions are not automatically refreshed. Directory changes are not
+watched, and the Key Vault certificate refresh interval does not reload these filesystem sources.
 
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
@@ -605,6 +803,51 @@ Before you start debugging, make sure the code of your JCA jar is the same as yo
 
    ![debug breakpoints](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/debug-breakpoints.png)
 
+### Configure an HTTP proxy
+
+Except for VM IMDS requests, the Azure Key Vault JCA provider uses the JDK's proxy selection. The default JDK proxy selector uses the following system properties based on the protocol of the request URL:
+
+| Request URL | Proxy properties |
+| --- | --- |
+| `http://` | `http.proxyHost` and `http.proxyPort` |
+| `https://` | `https.proxyHost` and `https.proxyPort` |
+
+Key Vault and standard Microsoft Entra token endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. The default JDK proxy selector uses `http.nonProxyHosts` for both protocols to identify hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
+
+VM managed identity authentication uses the HTTP IMDS endpoint at `169.254.169.254`. The provider opens IMDS connections with `Proxy.NO_PROXY` to bypass HTTP proxy routing; no additional `http.nonProxyHosts` entry is required for IMDS. This follows the [IMDS proxy requirements](https://learn.microsoft.com/azure/virtual-machines/instance-metadata-service#proxies).
+
+App Service and Container Apps managed identity endpoints are supplied by their hosting environment and may use HTTP. These requests use the JDK's proxy selection, like Key Vault, Microsoft Entra, and AIA requests; the IMDS bypass does not apply to them. When using the default JDK proxy selector, configure `http.nonProxyHosts` for the endpoint host if your environment requires direct access.
+
+For a Java application, pass the properties as JVM `-D` options before `-jar`:
+
+```shell
+java \
+    -Dhttp.proxyHost=<proxy-host> \
+    -Dhttp.proxyPort=<proxy-port> \
+    -Dhttps.proxyHost=<proxy-host> \
+    -Dhttps.proxyPort=<proxy-port> \
+    -Dhttp.nonProxyHosts="localhost|127.*|*.example.com" \
+    -jar <application-jar>
+```
+
+The `jarsigner` command runs in its own JVM. Prefix each JVM option with `-J` to pass the same properties to that JVM:
+
+```shell
+jarsigner \
+    -J-Dhttp.proxyHost=<proxy-host> \
+    -J-Dhttp.proxyPort=<proxy-port> \
+    -J-Dhttps.proxyHost=<proxy-host> \
+    -J-Dhttps.proxyPort=<proxy-port> \
+    -J-Dhttp.nonProxyHosts="localhost|127.*|*.example.com" \
+    <other-jarsigner-options>
+```
+
+HTTPS requests use the HTTP `CONNECT` method to create a tunnel through the proxy.
+
+To use the operating system proxy settings instead, set `-Djava.net.useSystemProxies=true` when starting the JVM. The JDK reads this property only at startup. For `jarsigner`, pass it as `-J-Djava.net.useSystemProxies=true`.
+
+For the complete property definitions, see the [JDK Networking Properties](https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html#Proxies).
+
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
@@ -681,5 +924,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
-

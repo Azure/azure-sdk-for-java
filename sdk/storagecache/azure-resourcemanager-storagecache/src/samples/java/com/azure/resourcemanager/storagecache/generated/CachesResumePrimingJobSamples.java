@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
  */
 public final class CachesResumePrimingJobSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ResumePrimingJob.json
+     * x-ms-original-file: 2026-08-01/ResumePrimingJob.json
      */
     /**
      * Sample code: ResumePrimingJob.
@@ -20,7 +20,7 @@ public final class CachesResumePrimingJobSamples {
      */
     public static void resumePrimingJob(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches()
-            .resumePrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("0"),
+            .resumePrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("00000000000_0000000000"),
                 com.azure.core.util.Context.NONE);
     }
 }

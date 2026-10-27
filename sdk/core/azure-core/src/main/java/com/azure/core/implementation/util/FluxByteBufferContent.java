@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -100,9 +101,24 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         return serializer.deserializeFromBytes(toBytes(), typeReference);
     }
 
+    /**
+     * Returns an in-memory stream for cached or replayable content. Uncached non-replayable content is streamed
+     * incrementally without buffering the full Flux.
+     *
+     * @return A stream over this content.
+     */
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(toBytes());
+        byte[] cachedBytes = BYTES_UPDATER.get(this);
+        if (cachedBytes != null) {
+            return new ByteArrayInputStream(cachedBytes);
+        }
+
+        if (isReplayable) {
+            return new ByteArrayInputStream(toBytes());
+        }
+
+        return new FluxInputStream(content);
     }
 
     @Override

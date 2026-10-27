@@ -11,120 +11,132 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for Collection Lifecycle operations (Group 08a: Tests 01-03).
+ * Tests for Collection Lifecycle operations (Group 08a).
+ * Combined into a single test following the Python/JS SDK pattern:
+ * - Python: create_collection → update_collection (in planetary_computer_00_stac_collection.py)
+ * - JS: "should create, replace, and delete a collection" (07_collectionLifecycle.spec.ts)
  */
 @Tag("CollectionLifecycle")
 public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryComputerTestBase {
 
-    // Fixed collection ID to match recording
-    private static final String TEST_COLLECTION_ID = "test-collection-1769514824114";
+    private static final String TEST_COLLECTION_ID = "test-collection-lifecycle-java";
 
+    /**
+     * Test full collection lifecycle: create → replace → delete.
+     * Follows the JS SDK pattern of a single test covering the full lifecycle.
+     * Python equivalent: create_collection + update_collection
+     * JS equivalent: "should create, replace, and delete a collection"
+     */
     @Test
-    @Tag("CreateCollection")
-    public void test08_01_BeginCreateCollection() {
+    @Tag("CollectionLifecycle")
+    public void test08_01_CreateReplaceDeleteCollection() {
         StacClient stacClient = getStacClient();
 
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
 
-        // Check if collection exists and delete it first
+        // Step 1: Clean up if exists from a previous failed run
+        // Matching JS: try { deleteCollection } catch { ignore }
         try {
-            stacClient.getCollection(TEST_COLLECTION_ID);
-            System.out.println("Collection '" + TEST_COLLECTION_ID + "' already exists, deleting first...");
-            SyncPoller<Operation, Void> deletePoller = stacClient.beginDeleteCollection(TEST_COLLECTION_ID);
-            deletePoller.getFinalResult();
-            System.out.println("Deleted existing collection '" + TEST_COLLECTION_ID + "'");
+            SyncPoller<BinaryData, Void> cleanupPoller
+                = stacClient.beginDeleteCollection(TEST_COLLECTION_ID, new RequestOptions());
+            cleanupPoller.waitForCompletion();
+            System.out.println("Cleaned up existing collection");
+
+            // Wait for collection to be fully removed (matching JS: setTimeout 30s)
+            waitForCollectionDeletion(stacClient, TEST_COLLECTION_ID, 60);
         } catch (Exception ex) {
-            System.out.println("Collection '" + TEST_COLLECTION_ID + "' does not exist, proceeding with creation");
+            System.out.println("No existing collection to clean up");
         }
 
-        // Create collection
-        StacExtensionSpatialExtent spatialExtent
-            = new StacExtensionSpatialExtent().setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0)));
+        // Step 2: Create collection using protocol method with raw JSON
+        // Matching Python: begin_create_collection(body=collection_data)
+        // Matching JS: createCollectionWithRetry({...})
+        String collectionJson = "{" + "\"id\": \"" + TEST_COLLECTION_ID + "\"," + "\"type\": \"Collection\","
+            + "\"stac_version\": \"1.0.0\"," + "\"title\": \"Java SDK Test Collection\","
+            + "\"description\": \"Test collection for Java SDK lifecycle tests\"," + "\"license\": \"proprietary\","
+            + "\"extent\": {" + "  \"spatial\": {\"bbox\": [[-180, -90, 180, 90]]},"
+            + "  \"temporal\": {\"interval\": [[\"2020-01-01T00:00:00Z\", \"2024-12-31T23:59:59Z\"]]}" + "},"
+            + "\"links\": []" + "}";
 
-        List<OffsetDateTime> temporalInterval
-            = Arrays.asList(OffsetDateTime.parse("2018-01-01T00:00:00Z"), OffsetDateTime.parse("2018-12-31T23:59:59Z"));
-        StacCollectionTemporalExtent temporalExtent = new StacCollectionTemporalExtent(Arrays.asList(temporalInterval));
-
-        StacExtensionExtent extent = new StacExtensionExtent(spatialExtent, temporalExtent);
-
-        Map<String, Object> additionalProperties = new HashMap<>();
-        additionalProperties.put("id", TEST_COLLECTION_ID);
-
-        StacCollection collection = new StacCollection("An example collection", Arrays.asList(), "CC-BY-4.0", extent);
-        collection.setStacVersion("1.0.0");
-        collection.setTitle("Example Collection");
-        collection.setType("Collection");
-        collection.setShortDescription("An example collection");
-        collection.setAdditionalProperties(additionalProperties);
-
-        System.out.println("Calling: beginCreateCollection(...)");
-
-        SyncPoller<Operation, Void> createPoller = stacClient.beginCreateCollection(collection);
+        System.out.println("Step 2: Creating collection...");
+        SyncPoller<BinaryData, BinaryData> createPoller
+            = stacClient.beginCreateCollection(BinaryData.fromString(collectionJson), new RequestOptions());
         createPoller.getFinalResult();
+        System.out.println("Collection created");
 
-        System.out.println("Collection creation operation completed");
+        // Step 3: Verify creation
+        // Matching JS: getCollection → expect(id), expect(title)
+        StacCollection collection = stacClient.getCollection(TEST_COLLECTION_ID);
+        assertEquals(TEST_COLLECTION_ID, collection.getId(), "Collection ID should match");
+        assertEquals("Java SDK Test Collection", collection.getTitle(), "Title should match");
+        System.out.println("Step 3: Collection verified - ID: " + collection.getId());
 
-        // Verify creation by retrieving the collection
-        StacCollection verifyCollection = stacClient.getCollection(TEST_COLLECTION_ID);
-
-        assertEquals(TEST_COLLECTION_ID, verifyCollection.getId(), "Collection ID should match");
-        assertEquals("Example Collection", verifyCollection.getTitle(), "Title should match");
-        assertEquals("Collection", verifyCollection.getType(), "Type should be Collection");
-
-        System.out.println("Collection '" + TEST_COLLECTION_ID + "' created successfully");
-    }
-
-    @Test
-    @Tag("UpdateCollection")
-    public void test08_02_CreateOrReplaceCollection() {
-        StacClient stacClient = getStacClient();
-
-        System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
-
-        // Use protocol method to work around StacCollection.toJson() codegen bug
-        // that omits the 'id' field during serialization
+        // Step 4: Replace (update) the collection
+        // Matching Python: replace_collection(collection_id, body=updated)
+        // Matching JS: replaceCollection(id, {...description: "UPDATED"})
         Response<BinaryData> getResponse
             = stacClient.getCollectionWithResponse(TEST_COLLECTION_ID, new RequestOptions());
-        String collectionJson = getResponse.getValue().toString();
+        String currentJson = getResponse.getValue().toString();
+        String updatedJson = currentJson.replace("Test collection for Java SDK lifecycle tests",
+            "UPDATED - Test collection for Java SDK lifecycle tests");
 
-        // Modify the description in the raw JSON
-        collectionJson = collectionJson.replace("An example collection", "Test collection - UPDATED");
+        System.out.println("Step 4: Replacing collection...");
+        Response<BinaryData> replaceResponse = stacClient.replaceCollectionWithResponse(TEST_COLLECTION_ID,
+            BinaryData.fromString(updatedJson), new RequestOptions());
 
-        // Replace collection using protocol method (raw JSON preserves all fields including 'id')
-        System.out.println("Calling: createOrReplaceCollection(...)");
-        Response<BinaryData> updateResponse = stacClient.createOrReplaceCollectionWithResponse(TEST_COLLECTION_ID,
-            BinaryData.fromString(collectionJson), new RequestOptions());
+        assertTrue(replaceResponse.getStatusCode() >= 200 && replaceResponse.getStatusCode() < 300);
+        String replaceBody = replaceResponse.getValue().toString();
+        assertTrue(replaceBody.contains("UPDATED"), "Description should be updated");
+        System.out.println("Step 4: Collection replaced successfully");
 
-        assertTrue(updateResponse.getStatusCode() >= 200 && updateResponse.getStatusCode() < 300);
-        String updatedJson = updateResponse.getValue().toString();
-        assertTrue(updatedJson.contains("Test collection - UPDATED"), "Description should be updated");
-
-        System.out.println("Collection '" + TEST_COLLECTION_ID + "' updated successfully");
-    }
-
-    @Test
-    @Tag("DeleteCollection")
-    public void test08_03_DeleteCollection() {
-        StacClient stacClient = getStacClient();
-
-        System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
-        System.out.println("Calling: beginDeleteCollection(...)");
-
-        // Use protocol method and just start the LRO without waiting for completion
-        // (matching .NET test pattern which uses WaitUntil.Started)
+        // Step 5: Delete collection
+        // Matching Python: begin_delete_collection(collection_id, polling=True).result()
+        // Matching JS: deleteCollection().pollUntilDone()
+        System.out.println("Step 5: Deleting collection...");
         SyncPoller<BinaryData, Void> deletePoller
             = stacClient.beginDeleteCollection(TEST_COLLECTION_ID, new RequestOptions());
-        deletePoller.poll();
+        deletePoller.waitForCompletion();
+        System.out.println("Step 5: Collection deleted successfully");
 
-        System.out.println("Collection '" + TEST_COLLECTION_ID + "' delete initiated successfully");
+        System.out.println("Full collection lifecycle completed: create → replace → delete");
+    }
+
+    /**
+     * Waits until a collection is fully deleted by polling getCollection until it returns 404.
+     * Matching JS pattern: setTimeout with retry loop.
+     */
+    private void waitForCollectionDeletion(StacClient stacClient, String collectionId, int maxWaitSeconds) {
+        long deadline = System.currentTimeMillis() + (maxWaitSeconds * 1000L);
+        int attempt = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            attempt++;
+            try {
+                stacClient.getCollection(collectionId);
+                System.out.println("  Attempt " + attempt + ": collection still exists, waiting...");
+                Thread.sleep(5000);
+            } catch (com.azure.core.exception.HttpResponseException ex) {
+                if (ex.getResponse().getStatusCode() == 404) {
+                    System.out.println("  Attempt " + attempt + ": collection fully deleted (404)");
+                    return;
+                }
+                System.out
+                    .println("  Attempt " + attempt + ": HTTP " + ex.getResponse().getStatusCode() + ", waiting...");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+
+        System.out.println("  Collection not fully deleted after " + maxWaitSeconds + "s — proceeding anyway");
     }
 }

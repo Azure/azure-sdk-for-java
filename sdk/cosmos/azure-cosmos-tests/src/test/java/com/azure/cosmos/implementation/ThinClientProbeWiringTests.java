@@ -157,6 +157,7 @@ public class ThinClientProbeWiringTests {
 
             // Probe is fire-and-forget on a scheduler -> wait briefly for it to run.
             waitForProbeCallCount(probeCallCount, 2, Duration.ofSeconds(5));
+            waitForProxyDecision(gem, Boolean.TRUE, Duration.ofSeconds(5));
 
             assertThat(probeCallCount.get()).as("probe was issued for each thin-client region").isGreaterThanOrEqualTo(2);
             assertThat(gem.getProxyProbeDecision()).as("after all-200 cycle, proxy is healthy").isEqualTo(Boolean.TRUE);

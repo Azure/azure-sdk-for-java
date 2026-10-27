@@ -54,6 +54,13 @@ public interface ComputeRecommenderManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the SkuMixPlacementScoresClient object to access its operations.
+     * 
+     * @return the SkuMixPlacementScoresClient object.
+     */
+    SkuMixPlacementScoresClient getSkuMixPlacementScores();
+
+    /**
      * Gets the SpotPlacementScoresClient object to access its operations.
      * 
      * @return the SpotPlacementScoresClient object.

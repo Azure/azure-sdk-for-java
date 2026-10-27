@@ -9,16 +9,24 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import org.reactivestreams.Subscription;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The asynchronous processor client for processing Service Bus messages with reactive, non-blocking message handlers.
@@ -34,26 +42,24 @@ import java.util.function.Function;
  * of {@link ServiceBusReceiverAsyncClient}.</p>
  *
  * <p>Messages are dispatched to the handler with up to {@code maxConcurrentCalls} concurrent invocations in flight;
- * a new message is requested from the broker only as an in-flight handler completes. By default a message whose
- * handler {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
- * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon() abandoned};
+ * receiver demand is replenished as in-flight handlers complete. Configured prefetch can buffer additional messages.
+ * By default a message whose
+ * handler {@link Mono} completes successfully is {@link ServiceBusReceivedMessageAsyncContext#complete() completed}, and a
+ * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageAsyncContext#abandon() abandoned};
  * this auto-settlement can be disabled via
  * {@link ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder#disableAutoComplete()
  * disableAutoComplete()}.</p>
  *
  * <p>A {@link ServiceBusProcessorAsyncClient} can be created for a session-enabled or a non-session-enabled Service
- * Bus entity through {@link ServiceBusClientBuilder#processorAsync()} and
- * {@link ServiceBusClientBuilder#sessionProcessorAsync()} respectively.</p>
+ * Bus entity through {@link ServiceBusClientBuilder#sessionProcessorAsync()} and
+ * {@link ServiceBusClientBuilder#processorAsync()} respectively.</p>
  *
  * <p><strong>Auto-settlement and manual settlement</strong></p>
  * <p>Auto-settlement (the default) is fully non-blocking - the completion or abandonment is issued reactively when the
  * handler {@link Mono} terminates. When auto-settlement is disabled, the handler is responsible for settling each
- * message through the {@link ServiceBusReceivedMessageContext} passed to it. Note that the settlement methods on
- * {@link ServiceBusReceivedMessageContext} ({@link ServiceBusReceivedMessageContext#complete() complete()},
- * {@link ServiceBusReceivedMessageContext#abandon() abandon()}, etc.) are <strong>blocking</strong>; a handler that
- * settles manually should perform that call on a scheduler that permits blocking (for example by wrapping it in
- * {@link Mono#fromRunnable(Runnable)} subscribed on {@code Schedulers.boundedElastic()}), or
- * rely on auto-settlement, which is non-blocking. A future revision may add reactive settlement methods.</p>
+ * message through the {@link ServiceBusReceivedMessageAsyncContext} passed to it. Compose settlement into the
+ * returned handler {@link Mono}, after all downstream work has completed. Do not start detached subscriptions
+ * inside a handler: its returned {@link Mono} must represent the entire processing and settlement lifetime.</p>
  *
  * <p><strong>Lifecycle</strong></p>
  * <p>The lifecycle operations {@link #start()}, {@link #stop()}, and {@link #close()} are not designed to be invoked
@@ -71,7 +77,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
 
     private final ServiceBusReceiverClientBuilder receiverBuilder;
     private final ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
-    private final Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage;
+    private final Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage;
     private final Function<ServiceBusErrorContext, Mono<Void>> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
     private final boolean autoComplete;
@@ -82,23 +88,21 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     private final String subscriptionName;
 
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
+    private final AtomicReference<ServiceBusSessionReceiverAsyncClient> sessionClient = new AtomicReference<>();
+    private final Set<SessionLease> sessionLeases = ConcurrentHashMap.newKeySet();
     private final AtomicReference<Disposable> receiveDisposable = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
-    private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
-    private final Object drainLock = new Object();
     private volatile String cachedFullyQualifiedNamespace;
     private volatile String cachedEntityPath;
-    // True while close() is draining. New PEEK_LOCK dispatches are skipped (without counting toward the drain) so the
-    // in-flight count can reach zero; RECEIVE_AND_DELETE dispatches are never skipped because the broker has already
-    // removed the message and dropping it here would lose it. Reset by start() so the processor can restart.
     private volatile boolean closing;
-    // PEEK_LOCK is safe to skip during drain (the broker still owns the lock and will redeliver). Cached per receive
-    // cycle; defaults to false (no-skip) when the receive mode cannot be determined, so messages are never dropped.
-    private volatile boolean skipDuringDrain;
-    // Auto-settlement (complete/abandon) is applied only for PEEK_LOCK: in RECEIVE_AND_DELETE the broker already
-    // removed the message on delivery, so a settlement call is meaningless and would fail. Cached per receive cycle.
-    private volatile boolean settleMessages;
+    private volatile boolean receiveTerminated;
+    private Sinks.Empty<Void> resumeProcessing = Sinks.empty();
+    private Runnable resumeReceiving;
+    private Sinks.Empty<Void> stopReceiving;
+    private Sinks.Empty<Void> processingFinished;
     private Disposable monitorDisposable;
+    private Disposable recoveryErrorDisposable;
+    private Mono<Void> recoveryErrorFinished = Mono.empty();
 
     /**
      * Constructor to create a non-session async processor.
@@ -112,7 +116,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorAsyncClient(ServiceBusReceiverClientBuilder receiverBuilder, String queueName, String topicName,
-        String subscriptionName, Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage,
+        String subscriptionName, Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage,
         Function<ServiceBusErrorContext, Mono<Void>> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.sessionReceiverBuilder = null;
@@ -139,7 +143,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      */
     ServiceBusProcessorAsyncClient(ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder, String queueName,
         String topicName, String subscriptionName,
-        Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage,
+        Function<ServiceBusReceivedMessageAsyncContext, Mono<Void>> processMessage,
         Function<ServiceBusErrorContext, Mono<Void>> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder
             = Objects.requireNonNull(sessionReceiverBuilder, "'sessionReceiverBuilder' cannot be null");
@@ -172,25 +176,38 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     public Mono<Void> start() {
         return Mono.fromRunnable(() -> {
             synchronized (this) {
-                if (isRunning.getAndSet(true)) {
+                if (isRunning.get()) {
                     LOGGER.info("Processor is already running");
                     return;
                 }
                 closing = false;
-                if (asyncClient.get() == null) {
-                    asyncClient.set(createNewReceiver());
+                isRunning.set(true);
+                try {
+                    if (receiveDisposable.get() == null || receiveTerminated) {
+                        if (receiveTerminated) {
+                            disposeReceiver();
+                        }
+                        subscribeToReceiver();
+                    } else {
+                        resumeProcessing.tryEmitEmpty();
+                        resumeReceiving.run();
+                    }
+                    startMonitor();
+                } catch (RuntimeException error) {
+                    isRunning.set(false);
+                    cleanupAfterFailure(error);
+                    disposeMonitor();
+                    throw LOGGER.logExceptionAsError(error);
                 }
-                subscribeToReceiver(asyncClient.get());
-                startMonitor();
             }
         });
     }
 
     /**
      * Stops message processing for this processor. The receiving links and sessions are kept active and processing can
-     * be resumed by subscribing to {@link #start()} again. This does not wait for in-flight handlers to finish;
-     * disposing the receive subscription cancels any handlers that are still running. Use {@link #close()} to give
-     * in-flight handlers a best-effort chance to drain.
+     * be resumed by subscribing to {@link #start()} again. This does not wait for or cancel in-flight handlers;
+     * they can finish processing and settlement while the processor is stopped. Use {@link #close()} to drain
+     * accepted handlers and release the receivers.
      * <p><strong>The returned {@link Mono} is cold: it takes effect only when subscribed to (or
      * blocked on).</strong></p>
      *
@@ -199,10 +216,8 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     public Mono<Void> stop() {
         return Mono.fromRunnable(() -> {
             synchronized (this) {
-                isRunning.set(false);
-                final Disposable disposable = receiveDisposable.getAndSet(null);
-                if (disposable != null) {
-                    disposable.dispose();
+                if (isRunning.getAndSet(false)) {
+                    resumeProcessing = Sinks.empty();
                 }
             }
         });
@@ -214,53 +229,55 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      *
      * <p>This method blocks while waiting for in-flight message handlers to complete (up to the configured drain
      * timeout, default 30 seconds) before cancelling the subscription and closing the underlying client, so handlers
-     * that are already running can finish settlement against a live receiver. Draining is <strong>best-effort</strong>:
-     * a message the pump had already accepted at the instant {@code close()} begins may occasionally start after the
-     * drain observes an empty in-flight set, in which case it may settle against a closing receiver - for
-     * {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} the broker simply redelivers such a message, and for
-     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} no settlement is required. Callers should
-     * avoid invoking {@code close()} on latency-sensitive threads.</p>
+     * that are already running can finish settlement against a live receiver. Dispatch and further receive demand stop
+     * before waiting; receiving links remain open until draining ends. Callers should avoid invoking {@code close()}
+     * on latency-sensitive threads.</p>
      *
      * <p><strong>RECEIVE_AND_DELETE and shutdown:</strong> the broker removes
-     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} messages on delivery, and the receiver keeps
-     * delivering while the drain waits. Under sustained traffic the in-flight set may not reach zero before the drain
-     * timeout; handlers still running when it elapses are cancelled and those messages are lost (they cannot be
-     * redelivered). A future revision may decouple handler execution from the receiver subscription to bound this.</p>
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} messages on delivery. Handlers still running
+     * when the drain timeout elapses are cancelled and their messages cannot be redelivered. Prefetched messages
+     * that have not reached a handler can also be lost in this mode.</p>
      *
      * <p>Do not call {@code close()} from within a message or error handler: it blocks until in-flight handlers
      * drain, so invoking it from a handler that has not yet returned would deadlock. Calling {@link #stop()} from a
-     * handler is also unsafe: it disposes the receive subscription and cancels the very handler that invoked it.
-     * Schedule shutdown from a separate controlling thread.</p>
+     * handler does not wait for that handler to finish. Schedule shutdown from a separate controlling thread.</p>
      */
     @Override
     public void close() {
-        final Duration drainTimeout;
+        final Mono<Void> finished;
         synchronized (this) {
-            if (!isRunning.getAndSet(false) && asyncClient.get() == null) {
+            if (!isRunning.getAndSet(false)
+                && asyncClient.get() == null
+                && sessionClient.get() == null
+                && monitorDisposable == null
+                && recoveryErrorDisposable == null) {
                 return;
             }
-            // Signal the pump to stop accepting new PEEK_LOCK dispatches so the in-flight count can drain to zero.
             closing = true;
-            drainTimeout = processorOptions.getDrainTimeout();
+            resumeProcessing.tryEmitEmpty();
+            finished = Mono.when(processingFinished == null ? Mono.empty() : processingFinished.asMono(),
+                recoveryErrorFinished);
+            if (stopReceiving != null) {
+                stopReceiving.tryEmitEmpty();
+            }
         }
 
-        // Drain in-flight handlers BEFORE disposing the subscription and closing the receiver, so handlers that are
-        // already running can settle against a live receiver. Best-effort: a dispatch accepted by the pump at the
-        // instant close() begins may still slip past the drain (see the close() Javadoc).
-        drainHandlers(drainTimeout);
-
-        synchronized (this) {
-            final Disposable disposable = receiveDisposable.getAndSet(null);
-            if (disposable != null) {
-                disposable.dispose();
-            }
-            if (monitorDisposable != null) {
-                monitorDisposable.dispose();
-                monitorDisposable = null;
-            }
-            final ServiceBusReceiverAsyncClient client = asyncClient.getAndSet(null);
-            if (client != null) {
-                client.close();
+        try {
+            finished.timeout(processorOptions.getDrainTimeout(), Mono
+                .fromRunnable(() -> LOGGER.warning("Drain timeout elapsed; cancelling remaining message handlers.")))
+                .block();
+        } finally {
+            synchronized (this) {
+                try {
+                    disposeReceiver();
+                } finally {
+                    disposeMonitor();
+                    if (recoveryErrorDisposable != null) {
+                        recoveryErrorDisposable.dispose();
+                        recoveryErrorDisposable = null;
+                    }
+                    recoveryErrorFinished = Mono.empty();
+                }
             }
         }
     }
@@ -306,107 +323,188 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * Gets the identifier of the instance of {@link ServiceBusProcessorAsyncClient}.
      *
      * @return The identifier that can identify the instance of {@link ServiceBusProcessorAsyncClient}, or {@code null}
-     *     if no receiver has been created yet (before the first {@link #start() start()}).
+     *     before the first {@link #start() start()} or after {@link #close()}.
      */
     public String getIdentifier() {
         final ServiceBusReceiverAsyncClient client = asyncClient.get();
-        return client == null ? null : client.getIdentifier();
+        final ServiceBusSessionReceiverAsyncClient sessions = sessionClient.get();
+        return client != null ? client.getIdentifier() : sessions == null ? null : sessions.getIdentifier();
     }
 
-    private void subscribeToReceiver(ServiceBusReceiverAsyncClient receiverClient) {
-        cachedFullyQualifiedNamespace = receiverClient.getFullyQualifiedNamespace();
-        cachedEntityPath = receiverClient.getEntityPath();
-        // Only PEEK_LOCK is safe to skip during drain, and PEEK_LOCK is the only mode the processor settles. Default
-        // to no-skip and no-settle when the mode is unavailable.
-        final ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
-        final boolean isPeekLock
-            = receiverOptions != null && receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
-        this.skipDuringDrain = isPeekLock;
-        this.settleMessages = autoComplete && isPeekLock;
+    private void subscribeToReceiver() {
+        final Flux<ReceivedMessage> receivedMessages;
+        if (receiverBuilder != null) {
+            final ServiceBusReceiverAsyncClient receiver = receiverBuilder.buildAsyncClientForProcessor();
+            asyncClient.set(receiver);
+            cachedFullyQualifiedNamespace = receiver.getFullyQualifiedNamespace();
+            cachedEntityPath = receiver.getEntityPath();
+            receivedMessages = receiver.receiveMessagesWithContextForAsyncProcessor()
+                .map(context -> new ReceivedMessage(receiver, context, () -> {
+                }));
+        } else {
+            final ServiceBusSessionReceiverAsyncClient sessions
+                = sessionReceiverBuilder.buildAsyncClientForAsyncProcessor();
+            sessionClient.set(sessions);
+            cachedFullyQualifiedNamespace = sessions.getFullyQualifiedNamespace();
+            cachedEntityPath = sessions.getEntityPath();
+            final int concurrency = sessions.getReceiverOptions().getMaxConcurrentSessions();
+            receivedMessages
+                = Flux.range(0, concurrency).flatMap(ignored -> receiveSession(sessions).repeat(), concurrency, 1);
+        }
+        receiveTerminated = false;
+        final Sinks.Empty<Void> stop = Sinks.empty();
+        final Sinks.Empty<Void> finished = Sinks.empty();
+        stopReceiving = stop;
+        processingFinished = finished;
 
-        final Disposable disposable = receiverClient.receiveMessagesWithContext()
-            .flatMap(messageContext -> dispatchMessage(messageContext, receiverClient), maxConcurrentCalls, 1)
+        final Disposable.Composite subscriptions = Disposables.composite();
+        receiveDisposable.set(subscriptions);
+        // Completing intake must not cancel the underlying receiver: cancellation can close its AMQP links,
+        // which accepted handlers still need for settlement. The composite cancels it after drain finishes.
+        final Flux<ReceivedMessage> messages = Flux.create(sink -> {
+            final BaseSubscriber<ReceivedMessage> subscriber = new BaseSubscriber<ReceivedMessage>() {
+                private long pending;
+
+                @Override
+                protected void hookOnSubscribe(Subscription subscription) {
+                    sink.onRequest(count -> {
+                        synchronized (ServiceBusProcessorAsyncClient.this) {
+                            if (!closing) {
+                                pending += count;
+                                resume();
+                            }
+                        }
+                    });
+                    resumeReceiving = this::resume;
+                }
+
+                private void resume() {
+                    if (isRunning.get() && !closing) {
+                        final long count = pending;
+                        pending = 0;
+                        if (count > 0) {
+                            request(count);
+                        }
+                    }
+                }
+
+                @Override
+                protected void hookOnNext(ReceivedMessage message) {
+                    sink.next(message);
+                }
+
+                @Override
+                protected void hookOnError(Throwable error) {
+                    sink.error(error);
+                }
+
+                @Override
+                protected void hookOnComplete() {
+                    sink.complete();
+                }
+            };
+            subscriptions.add(subscriber);
+            sink.onCancel(subscriber);
+            final Disposable stopSubscription = stop.asMono().subscribe(ignored -> {
+            }, sink::error, sink::complete);
+            subscriptions.add(stopSubscription);
+            sink.onDispose(stopSubscription);
+            receivedMessages.subscribe(subscriber);
+        }, FluxSink.OverflowStrategy.ERROR);
+
+        final Disposable disposable = messages
+            .flatMap(message -> awaitRunning().then(Mono.defer(() -> dispatchMessage(message)))
+                .doFinally(signal -> message.finished.run()), maxConcurrentCalls, 1)
+            .onErrorResume(error -> handleError(error).then(Mono.error(error)))
+            .doFinally(signal -> finished.tryEmitEmpty())
             .subscribe(ignored -> {
             }, throwable -> {
                 LOGGER.info("Error receiving messages.", throwable);
-                handleError(throwable).subscribe();
-                scheduleRestart();
+                markTerminatedAndRestart(subscriptions);
             }, () -> {
                 LOGGER.info("Completed receiving messages.");
-                scheduleRestart();
+                markTerminatedAndRestart(subscriptions);
             });
-        receiveDisposable.set(disposable);
+        subscriptions.add(disposable);
     }
 
-    private Mono<Void> dispatchMessage(ServiceBusMessageContext messageContext,
-        ServiceBusReceiverAsyncClient receiverClient) {
+    private synchronized Mono<Void> awaitRunning() {
+        return isRunning.get() || closing ? Mono.empty() : resumeProcessing.asMono();
+    }
+
+    private Mono<Void> dispatchMessage(ReceivedMessage received) {
+        final ServiceBusMessageContext messageContext = received.context;
+        final ServiceBusReceiverAsyncClient receiverClient = received.receiver;
         if (messageContext.hasError()) {
             return handleError(messageContext.getThrowable());
         }
+        if (closing) {
+            return Mono.empty();
+        }
 
         return Mono.defer(() -> {
-            // Fast path: a redeliverable PEEK_LOCK message that arrives while close() is draining is skipped WITHOUT
-            // touching the in-flight counter, so churn from skipped messages under sustained load cannot keep the
-            // drain above zero and push shutdown toward the drain timeout. (The broker redelivers a skipped message.)
-            if (closing && skipDuringDrain) {
-                LOGGER.verbose("Skipping dispatch, processor is closing.");
-                return Mono.<Void>empty();
-            }
-            // Publish intent-to-run, then re-check: this handles the check-then-act race where closing flips between
-            // the fast-path check and the increment, and narrows (best-effort, per the close() Javadoc) the window in
-            // which a dispatch could start after the drain has observed an empty in-flight set.
-            activeHandlerCount.incrementAndGet();
-            if (closing && skipDuringDrain) {
-                LOGGER.verbose("Skipping dispatch, processor is closing.");
-                decrementAndNotifyDrain();
-                return Mono.<Void>empty();
-            }
-            final ServiceBusReceivedMessageContext receivedMessageContext;
-            try {
-                receivedMessageContext = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
-            } catch (RuntimeException e) {
-                // Constructor threw before the doFinally decrement could attach; release the count so a synchronous
-                // failure here cannot leave the drain permanently above zero.
-                decrementAndNotifyDrain();
-                throw LOGGER.logExceptionAsError(e);
-            }
+            final boolean settleMessages = autoComplete
+                && receiverClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
+            final AtomicBoolean handlerSucceeded = new AtomicBoolean();
+            final ServiceBusReceivedMessageAsyncContext receivedMessageContext
+                = new ServiceBusReceivedMessageAsyncContext(receiverClient, messageContext);
 
-            return Mono.defer(() -> processMessage.apply(receivedMessageContext)).then(Mono.defer(() -> {
-                // The handler succeeded. Auto-settle only in PEEK_LOCK; a completion failure is reported to the error
-                // handler with its OWN error source (e.g. COMPLETE) and must NOT trigger an abandon - the handler
-                // did its job.
-                if (!settleMessages) {
-                    return Mono.<Void>empty();
-                }
-                return receiverClient.complete(messageContext.getMessage())
-                    .onErrorResume(completeError -> handleError(completeError));
-            }))
-                // Only a handler error reaches here (completion errors were handled above). Report it as USER_CALLBACK
-                // and abandon the message (when settling, i.e. PEEK_LOCK with auto-complete enabled).
-                .onErrorResume(handlerError -> handleError(
-                    new ServiceBusException(handlerError, ServiceBusErrorSource.USER_CALLBACK)).then(Mono.defer(() -> {
-                        if (settleMessages) {
-                            LOGGER.warning("Error when processing message. Abandoning message.", handlerError);
-                            return receiverClient.abandon(messageContext.getMessage()).onErrorResume(abandonError -> {
-                                LOGGER.verbose("Failed to abandon message", abandonError);
-                                return Mono.<Void>empty();
-                            });
-                        }
+            final Mono<Void> processing = Mono.defer(() -> processMessage.apply(receivedMessageContext))
+                .doOnSuccess(ignored -> handlerSucceeded.set(true))
+                .then(Mono.defer(() -> {
+                    if (!settleMessages) {
                         return Mono.<Void>empty();
-                    })))
-                .then()
-                .doFinally(signalType -> decrementAndNotifyDrain());
+                    }
+                    return receiverClient.complete(messageContext.getMessage());
+                }));
+            return receiverClient.getInstrumentation()
+                .instrumentProcessAsync(messageContext.getMessage(), processing)
+                // Preserve service error sources from reactive manual settlement.
+                .onErrorResume(
+                    handlerError -> handleError(handlerSucceeded.get() || handlerError instanceof ServiceBusException
+                        ? handlerError
+                        : new ServiceBusException(handlerError, ServiceBusErrorSource.USER_CALLBACK))
+                            .then(Mono.defer(() -> {
+                                if (settleMessages && !handlerSucceeded.get()) {
+                                    LOGGER.warning("Error when processing message. Abandoning message.", handlerError);
+                                    return receiverClient.abandon(messageContext.getMessage())
+                                        .onErrorResume(this::handleError);
+                                }
+                                return Mono.<Void>empty();
+                            })))
+                .then();
         });
     }
 
-    /**
-     * Decrements the in-flight handler count and, when it reaches zero, wakes any thread blocked in
-     * {@link #drainHandlers(Duration)} waiting for the drain to complete.
-     */
-    private void decrementAndNotifyDrain() {
-        if (activeHandlerCount.decrementAndGet() <= 0) {
-            synchronized (drainLock) {
-                drainLock.notifyAll();
+    private void disposeReceiver() {
+        final Disposable disposable = receiveDisposable.getAndSet(null);
+        final ServiceBusReceiverAsyncClient client = asyncClient.getAndSet(null);
+        final ServiceBusSessionReceiverAsyncClient sessions = sessionClient.getAndSet(null);
+        try {
+            if (disposable != null) {
+                disposable.dispose();
+            }
+        } finally {
+            try {
+                Mono.whenDelayError(sessionLeases.stream().map(lease -> lease.close).collect(Collectors.toList()))
+                    .block();
+                if (client != null) {
+                    client.close();
+                }
+            } finally {
+                if (sessions != null) {
+                    sessions.close();
+                }
+            }
+        }
+    }
+
+    private void cleanupAfterFailure(RuntimeException error) {
+        try {
+            disposeReceiver();
+        } catch (RuntimeException cleanupError) {
+            if (cleanupError != error) {
+                error.addSuppressed(cleanupError);
             }
         }
     }
@@ -433,74 +531,119 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
         });
     }
 
-    // Restart off the reactive receive thread: restartMessageReceiver() calls the blocking client close(), which must
-    // not run on the subscription's onError/onComplete callback thread. restartMessageReceiver() guards on
-    // isRunning/closing, so a stale schedule after stop()/close() is a no-op.
-    private void scheduleRestart() {
-        Mono.fromRunnable(this::restartMessageReceiver).subscribeOn(Schedulers.boundedElastic()).subscribe();
+    // Closing a receiver can block. Bind recovery to its receive cycle and move it off the receive thread.
+    private void markTerminatedAndRestart(Disposable cycle) {
+        if (receiveDisposable.get() == cycle) {
+            receiveTerminated = true;
+        }
+        Mono.fromRunnable(() -> restartMessageReceiver(cycle)).subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
     // Auto-recovery is one restart per receive-stream terminal (error/completion). There is deliberately no backoff
     // or attempt cap here: the underlying ServiceBusReceiverAsyncClient applies the configured retry policy (with
     // backoff) before surfacing a terminal error, so transient failures are absorbed there. This matches the sync
     // ServiceBusProcessorClient - a fast persistent failure (entity deleted, credentials revoked) relies on that
-    // receiver-level policy rather than a second backoff layer here. Unlike close(), a restart does NOT drain in-flight
-    // handlers before closing the stale receiver: a handler still running settles against a closing receiver, so a
-    // PEEK_LOCK message is redelivered (no loss) and RECEIVE_AND_DELETE needs no settlement.
-    private synchronized void restartMessageReceiver() {
-        if (!isRunning.get() || closing) {
+    // receiver-level policy rather than a second backoff layer here. A terminal receive error cancels accepted
+    // handlers; unlike close(), recovery cannot promise to retain their links for settlement.
+    private synchronized void restartMessageReceiver(Disposable cycle) {
+        if (!isRunning.get()
+            || closing
+            || receiveDisposable.get() != cycle
+            || (recoveryErrorDisposable != null && !recoveryErrorDisposable.isDisposed())) {
             return;
         }
-        final Disposable disposable = receiveDisposable.getAndSet(null);
-        if (disposable != null) {
-            disposable.dispose();
+        try {
+            disposeReceiver();
+            subscribeToReceiver();
+        } catch (RuntimeException error) {
+            cleanupAfterFailure(error);
+            LOGGER.warning("Failed to restart the receiver; the processor monitor will retry.", error);
+            final Sinks.Empty<Void> reported = Sinks.empty();
+            recoveryErrorFinished = reported.asMono();
+            recoveryErrorDisposable = handleError(new ServiceBusException(error, ServiceBusErrorSource.RECEIVE))
+                .doFinally(signal -> reported.tryEmitEmpty())
+                .subscribe();
         }
-        final ServiceBusReceiverAsyncClient staleClient = asyncClient.get();
-        if (staleClient != null) {
-            staleClient.close();
-        }
-        final ServiceBusReceiverAsyncClient freshClient = createNewReceiver();
-        asyncClient.set(freshClient);
-        subscribeToReceiver(freshClient);
     }
 
     private synchronized void startMonitor() {
         if (monitorDisposable == null) {
             monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
-                final ServiceBusReceiverAsyncClient currentClient = this.asyncClient.get();
-                if (currentClient == null) {
-                    return;
-                }
-                if (currentClient.isConnectionClosed()) {
-                    restartMessageReceiver();
+                synchronized (this) {
+                    final ServiceBusReceiverAsyncClient currentClient = asyncClient.get();
+                    final ServiceBusSessionReceiverAsyncClient sessions = sessionClient.get();
+                    if (receiveTerminated
+                        || (currentClient == null && sessions == null)
+                        || (currentClient != null && currentClient.isConnectionClosed())
+                        || (sessions != null && sessions.isConnectionClosed())) {
+                        restartMessageReceiver(receiveDisposable.get());
+                    }
                 }
             }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
         }
     }
 
-    private ServiceBusReceiverAsyncClient createNewReceiver() {
-        return this.receiverBuilder == null
-            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-            : this.receiverBuilder.buildAsyncClientForProcessor();
+    private void disposeMonitor() {
+        if (monitorDisposable != null) {
+            monitorDisposable.dispose();
+            monitorDisposable = null;
+        }
     }
 
-    private void drainHandlers(Duration timeout) {
-        final long deadlineNanos = System.nanoTime() + timeout.toNanos();
-        synchronized (drainLock) {
-            while (activeHandlerCount.get() > 0) {
-                final long remainingNanos = deadlineNanos - System.nanoTime();
-                if (remainingNanos <= 0) {
-                    LOGGER.info("Drain timeout elapsed with {} handler(s) still in flight; proceeding with shutdown.",
-                        activeHandlerCount.get());
-                    break;
-                }
-                try {
-                    final long remainingMillis = Math.max(1, remainingNanos / 1_000_000);
-                    drainLock.wait(remainingMillis);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
+    private Flux<ReceivedMessage> receiveSession(ServiceBusSessionReceiverAsyncClient sessions) {
+        return Flux.usingWhen(Mono.defer(sessions::acceptNextSession).map(receiver -> {
+            final SessionLease lease = new SessionLease(receiver);
+            sessionLeases.add(lease);
+            return lease;
+        }), lease -> {
+            final Duration idleTimeout = sessions.getSessionIdleTimeout();
+            return lease.receiver.receiveMessagesWithContextForAsyncProcessor().map(context -> {
+                lease.accepted();
+                return new ReceivedMessage(lease.receiver, context, lease::finished);
+            })
+                .takeUntilOther(lease.activity.asFlux()
+                    .switchMap(active -> active ? Mono.never() : Mono.delay(idleTimeout))
+                    .next());
+        }, this::closeSession, (lease, error) -> closeSession(lease), this::closeSession);
+    }
+
+    private Mono<Void> closeSession(SessionLease lease) {
+        return lease.close.doFinally(signal -> sessionLeases.remove(lease));
+    }
+
+    private static final class ReceivedMessage {
+        private final ServiceBusReceiverAsyncClient receiver;
+        private final ServiceBusMessageContext context;
+        private final Runnable finished;
+
+        private ReceivedMessage(ServiceBusReceiverAsyncClient receiver, ServiceBusMessageContext context,
+            Runnable finished) {
+            this.receiver = receiver;
+            this.context = context;
+            this.finished = finished;
+        }
+    }
+
+    private static final class SessionLease {
+        private final ServiceBusReceiverAsyncClient receiver;
+        private final Mono<Void> close;
+        private final Sinks.Many<Boolean> activity = Sinks.many().replay().latestOrDefault(false);
+        private int pending;
+
+        private SessionLease(ServiceBusReceiverAsyncClient receiver) {
+            this.receiver = receiver;
+            this.close = Mono.<Void>fromRunnable(receiver::close).subscribeOn(Schedulers.boundedElastic()).cache();
+        }
+
+        private synchronized void accepted() {
+            if (pending++ == 0) {
+                activity.emitNext(true, Sinks.EmitFailureHandler.FAIL_FAST);
+            }
+        }
+
+        private synchronized void finished() {
+            if (--pending == 0) {
+                activity.emitNext(false, Sinks.EmitFailureHandler.FAIL_FAST);
             }
         }
     }

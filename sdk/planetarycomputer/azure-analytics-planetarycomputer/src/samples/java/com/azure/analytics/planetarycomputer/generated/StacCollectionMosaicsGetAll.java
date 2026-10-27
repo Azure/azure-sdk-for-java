@@ -17,8 +17,8 @@ public class StacCollectionMosaicsGetAll {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-mosaics.stac-collection-mosaics-get-all
-        List<StacMosaic> response = stacClient.listMosaics("naip-atl");
-        // END:com.azure.analytics.planetarycomputer.generated.stac-list-mosaics.stac-collection-mosaics-get-all
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-mosaics.stac-collection-mosaics-get-all
+        List<StacMosaic> response = stacClient.getMosaics("naip-atl");
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-mosaics.stac-collection-mosaics-get-all
     }
 }

@@ -12,15 +12,14 @@ public final class RoutingTwinTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingTwin model = BinaryData.fromString(
-            "{\"tags\":\"\\\"datalmwlxkvugfhzo\\\"\",\"properties\":{\"desired\":\"\\\"datajvzunluthnnp\\\"\",\"reported\":\"\\\"dataxipeilpjzuaejx\\\"\"}}")
+            "{\"tags\":\"\\\"datahszhedplvwiwu\\\"\",\"properties\":{\"desired\":\"\\\"datambes\\\"\",\"reported\":\"\\\"datankww\\\"\"}}")
             .toObject(RoutingTwin.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingTwin model = new RoutingTwin().withTags("\"datalmwlxkvugfhzo\"")
-            .withProperties(
-                new RoutingTwinProperties().withDesired("\"datajvzunluthnnp\"").withReported("\"dataxipeilpjzuaejx\""));
+        RoutingTwin model = new RoutingTwin().withTags("\"datahszhedplvwiwu\"")
+            .withProperties(new RoutingTwinProperties().withDesired("\"datambes\"").withReported("\"datankww\""));
         model = BinaryData.fromObject(model).toObject(RoutingTwin.class);
     }
 }

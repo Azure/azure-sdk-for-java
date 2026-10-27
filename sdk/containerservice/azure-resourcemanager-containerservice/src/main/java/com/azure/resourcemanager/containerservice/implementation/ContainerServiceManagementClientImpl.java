@@ -8,7 +8,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.containerservice.fluent.AgentFabricMembershipsClient;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerservice.fluent.AlertConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.IdentityBindingsClient;
 import com.azure.resourcemanager.containerservice.fluent.JWTAuthenticatorsClient;
@@ -28,6 +30,7 @@ import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServi
 import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRoleBindingsClient;
 import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClient;
+import com.azure.resourcemanager.containerservice.fluent.UpgradeInsightsClient;
 import com.azure.resourcemanager.containerservice.fluent.VmSkusClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -319,6 +322,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The AgentFabricMembershipsClient object to access its operations.
+     */
+    private final AgentFabricMembershipsClient agentFabricMemberships;
+
+    /**
+     * Gets the AgentFabricMembershipsClient object to access its operations.
+     * 
+     * @return the AgentFabricMembershipsClient object.
+     */
+    public AgentFabricMembershipsClient getAgentFabricMemberships() {
+        return this.agentFabricMemberships;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -330,6 +347,34 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The AlertConfigurationsClient object to access its operations.
+     */
+    private final AlertConfigurationsClient alertConfigurations;
+
+    /**
+     * Gets the AlertConfigurationsClient object to access its operations.
+     * 
+     * @return the AlertConfigurationsClient object.
+     */
+    public AlertConfigurationsClient getAlertConfigurations() {
+        return this.alertConfigurations;
+    }
+
+    /**
+     * The UpgradeInsightsClient object to access its operations.
+     */
+    private final UpgradeInsightsClient upgradeInsights;
+
+    /**
+     * Gets the UpgradeInsightsClient object to access its operations.
+     * 
+     * @return the UpgradeInsightsClient object.
+     */
+    public UpgradeInsightsClient getUpgradeInsights() {
+        return this.upgradeInsights;
     }
 
     /**
@@ -420,7 +465,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-02-preview";
+        this.apiVersion = "2026-08-02-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
@@ -435,7 +480,10 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.identityBindings = new IdentityBindingsClientImpl(this);
         this.jWTAuthenticators = new JWTAuthenticatorsClientImpl(this);
         this.meshMemberships = new MeshMembershipsClientImpl(this);
+        this.agentFabricMemberships = new AgentFabricMembershipsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.alertConfigurations = new AlertConfigurationsClientImpl(this);
+        this.upgradeInsights = new UpgradeInsightsClientImpl(this);
         this.operationStatusResults = new OperationStatusResultsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);

@@ -835,7 +835,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -856,7 +856,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -873,7 +873,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -892,7 +892,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -912,7 +912,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -930,7 +930,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -949,7 +949,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -966,7 +966,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -981,7 +981,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     }
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.

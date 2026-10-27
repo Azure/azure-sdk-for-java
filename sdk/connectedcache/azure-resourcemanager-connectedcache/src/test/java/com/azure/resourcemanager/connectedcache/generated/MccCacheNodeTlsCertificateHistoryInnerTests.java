@@ -12,9 +12,9 @@ public final class MccCacheNodeTlsCertificateHistoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccCacheNodeTlsCertificateHistoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"customerId\":\"njhf\",\"cacheNodeId\":\"wmszkk\",\"tlsCertificateHistory\":[{\"actionRequired\":\"eyfkzikfja\",\"certificateFileName\":\"eaivxwczel\",\"thumbprint\":\"irels\",\"expiryDate\":\"2021-01-23T17:50:30Z\",\"notBeforeDate\":\"2021-09-24T09:17:18Z\",\"subject\":\"abfatkl\",\"subjectAltName\":\"xbjhwuaanozjosph\"},{\"actionRequired\":\"ulpjr\",\"certificateFileName\":\"ag\",\"thumbprint\":\"vimjwos\",\"expiryDate\":\"2020-12-23T18:35:53Z\",\"notBeforeDate\":\"2021-01-07T09:14:38Z\",\"subject\":\"skfc\",\"subjectAltName\":\"qumiek\"}]},\"location\":\"zzikhlyfjhdg\",\"tags\":{\"eqidbqfatpx\":\"ebdunyg\",\"cyjmoadsuvarmy\":\"lr\",\"hhyxxrw\":\"dmjsjqb\"},\"id\":\"yc\",\"name\":\"duhpk\",\"type\":\"kgymareqnajxqug\"}")
+            "{\"properties\":{\"customerId\":\"jmoadsuv\",\"cacheNodeId\":\"m\",\"tlsCertificateHistory\":[{\"actionRequired\":\"jsjqbjhhyx\",\"certificateFileName\":\"wlycoduhpkxkg\",\"certType\":\"areqna\",\"thumbprint\":\"qugjhkycube\",\"expiryDate\":\"2021-03-22T14:35:21Z\",\"notBeforeDate\":\"2021-04-18T16:03:28Z\",\"subject\":\"fwqmzqalkrmn\",\"subjectAltName\":\"jpxac\"},{\"actionRequired\":\"udfnbyxba\",\"certificateFileName\":\"bjyvay\",\"certType\":\"imrzrtuzqog\",\"thumbprint\":\"xnevfdnwn\",\"expiryDate\":\"2021-11-23T01:14:46Z\",\"notBeforeDate\":\"2021-07-23T17:12:42Z\",\"subject\":\"yyceuzsoi\",\"subjectAltName\":\"ud\"}]},\"location\":\"rx\",\"tags\":{\"ytdw\":\"hzv\",\"pdtii\":\"qbrqubpaxhexiili\",\"d\":\"q\",\"fxrxxle\":\"oaxoruzfgsqu\"},\"id\":\"tramxjez\",\"name\":\"lwnwxuqlcvydyp\",\"type\":\"tdooaoj\"}")
             .toObject(MccCacheNodeTlsCertificateHistoryInner.class);
-        Assertions.assertEquals("zzikhlyfjhdg", model.location());
-        Assertions.assertEquals("ebdunyg", model.tags().get("eqidbqfatpx"));
+        Assertions.assertEquals("rx", model.location());
+        Assertions.assertEquals("hzv", model.tags().get("ytdw"));
     }
 }

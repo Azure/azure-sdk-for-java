@@ -27,7 +27,7 @@ public final class ElasticSansDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.elasticSans().delete("ujmkcjhwqy", "jrybnwjewgdrjer", com.azure.core.util.Context.NONE);
+        manager.elasticSans().delete("pulpqblylsyxk", "jnsjervtiagxsd", com.azure.core.util.Context.NONE);
 
     }
 }

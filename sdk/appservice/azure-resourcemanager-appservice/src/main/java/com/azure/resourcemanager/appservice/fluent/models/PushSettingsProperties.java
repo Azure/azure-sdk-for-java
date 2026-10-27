@@ -28,6 +28,7 @@ public final class PushSettingsProperties implements JsonSerializable<PushSettin
     private String tagWhitelistJson;
 
     /*
+     * 
      * Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push
      * registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
@@ -91,8 +92,9 @@ public final class PushSettingsProperties implements JsonSerializable<PushSettin
     }
 
     /**
-     * Get the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint.
+     * Get the tagsRequiringAuth property:
+     * Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push
+     * registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
      * '_', '&#064;', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.
@@ -104,8 +106,9 @@ public final class PushSettingsProperties implements JsonSerializable<PushSettin
     }
 
     /**
-     * Set the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint.
+     * Set the tagsRequiringAuth property:
+     * Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push
+     * registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
      * '_', '&#064;', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.

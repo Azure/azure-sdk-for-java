@@ -23,72 +23,77 @@ public final class AzureWorkloadSapAsePointInTimeRestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSapAsePointInTimeRestoreRequest model = BinaryData.fromString(
-            "{\"objectType\":\"AzureWorkloadSAPAsePointInTimeRestoreRequest\",\"pointInTime\":\"2020-12-24T22:02:25Z\",\"recoveryType\":\"RestoreDisks\",\"sourceResourceId\":\"xotngfdguge\",\"propertyBag\":{\"i\":\"hgrky\"},\"targetInfo\":{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"mfp\",\"databaseName\":\"ojeevy\",\"targetDirectoryForFileRestore\":\"hsgz\"},\"recoveryMode\":\"WorkloadRecovery\",\"targetResourceGroupName\":\"gomfgbeglq\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"o\",\"identityName\":\"betnluankrrfxee\",\"userAssignedIdentityProperties\":{\"clientId\":\"ij\",\"principalId\":\"cvbmqzb\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":true,\"logPointInTimeForDBRecovery\":\"jrnwxacev\"},\"targetVirtualMachineId\":\"jkuyxoafgaoq\",\"resourceGuardOperationRequests\":[\"aeylinm\"]}")
+            "{\"objectType\":\"AzureWorkloadSAPAsePointInTimeRestoreRequest\",\"pointInTime\":\"2021-06-02T01:00:58Z\",\"recoveryType\":\"Offline\",\"sourceResourceId\":\"rupdwvnphcnzq\",\"propertyBag\":{\"smlzzhzdtxetlgy\":\"hmqrhvthlaiwdc\",\"geaar\":\"lhqvlnnpxybafi\",\"lidwcwvmzegjon\":\"gjekglklby\"},\"targetInfo\":{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"wgdnqzbr\",\"databaseName\":\"spzhzmtksjc\",\"targetDirectoryForFileRestore\":\"digsxcdgl\"},\"recoveryMode\":\"SnapshotAttach\",\"targetResourceGroupName\":\"euachtomfl\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"swfpfmd\",\"identityName\":\"cxnmskwhqjjyslu\",\"userAssignedIdentityProperties\":{\"clientId\":\"shhkvpedw\",\"principalId\":\"lsrhmpqvwwskond\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"muvqejosovyr\",\"disksToDetachOnClash\":[\"a\",\"sinuqtljqobbpih\"]},\"targetVirtualMachineId\":\"cecybmrqbrjbbmpx\",\"resourceGuardOperationRequests\":[\"yk\",\"rexcrseqwjksghu\",\"gzhxog\"]}")
             .toObject(AzureWorkloadSapAsePointInTimeRestoreRequest.class);
-        Assertions.assertEquals("aeylinm", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.RESTORE_DISKS, model.recoveryType());
-        Assertions.assertEquals("xotngfdguge", model.sourceResourceId());
-        Assertions.assertEquals("hgrky", model.propertyBag().get("i"));
+        Assertions.assertEquals("yk", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("rupdwvnphcnzq", model.sourceResourceId());
+        Assertions.assertEquals("hmqrhvthlaiwdc", model.propertyBag().get("smlzzhzdtxetlgy"));
         Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("mfp", model.targetInfo().containerId());
-        Assertions.assertEquals("ojeevy", model.targetInfo().databaseName());
-        Assertions.assertEquals("hsgz", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("gomfgbeglq", model.targetResourceGroupName());
-        Assertions.assertEquals("o", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("betnluankrrfxee", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("ij",
+        Assertions.assertEquals("wgdnqzbr", model.targetInfo().containerId());
+        Assertions.assertEquals("spzhzmtksjc", model.targetInfo().databaseName());
+        Assertions.assertEquals("digsxcdgl", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH, model.recoveryMode());
+        Assertions.assertEquals("euachtomfl", model.targetResourceGroupName());
+        Assertions.assertEquals("swfpfmd", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("cxnmskwhqjjyslu", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("shhkvpedw",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("cvbmqzb",
+        Assertions.assertEquals("lsrhmpqvwwskond",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("jrnwxacev", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("jkuyxoafgaoq", model.targetVirtualMachineId());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T22:02:25Z"), model.pointInTime());
+        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("muvqejosovyr", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("a", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("cecybmrqbrjbbmpx", model.targetVirtualMachineId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:00:58Z"), model.pointInTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSapAsePointInTimeRestoreRequest model = new AzureWorkloadSapAsePointInTimeRestoreRequest()
-            .withResourceGuardOperationRequests(Arrays.asList("aeylinm"))
-            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-            .withSourceResourceId("xotngfdguge")
-            .withPropertyBag(mapOf("i", "hgrky"))
+            .withResourceGuardOperationRequests(Arrays.asList("yk", "rexcrseqwjksghu", "gzhxog"))
+            .withRecoveryType(RecoveryType.OFFLINE)
+            .withSourceResourceId("rupdwvnphcnzq")
+            .withPropertyBag(
+                mapOf("smlzzhzdtxetlgy", "hmqrhvthlaiwdc", "geaar", "lhqvlnnpxybafi", "lidwcwvmzegjon", "gjekglklby"))
             .withTargetInfo(new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.FAIL_ON_CONFLICT)
-                .withContainerId("mfp")
-                .withDatabaseName("ojeevy")
-                .withTargetDirectoryForFileRestore("hsgz"))
-            .withRecoveryMode(RecoveryMode.WORKLOAD_RECOVERY)
-            .withTargetResourceGroupName("gomfgbeglq")
-            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails().withIdentityArmId("o")
-                .withIdentityName("betnluankrrfxee")
-                .withUserAssignedIdentityProperties(
-                    new UserAssignedIdentityProperties().withClientId("ij").withPrincipalId("cvbmqzb")))
-            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(true)
-                .withLogPointInTimeForDBRecovery("jrnwxacev"))
-            .withTargetVirtualMachineId("jkuyxoafgaoq")
-            .withPointInTime(OffsetDateTime.parse("2020-12-24T22:02:25Z"));
+                .withContainerId("wgdnqzbr")
+                .withDatabaseName("spzhzmtksjc")
+                .withTargetDirectoryForFileRestore("digsxcdgl"))
+            .withRecoveryMode(RecoveryMode.SNAPSHOT_ATTACH)
+            .withTargetResourceGroupName("euachtomfl")
+            .withUserAssignedManagedIdentityDetails(
+                new UserAssignedManagedIdentityDetails().withIdentityArmId("swfpfmd")
+                    .withIdentityName("cxnmskwhqjjyslu")
+                    .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties().withClientId("shhkvpedw")
+                        .withPrincipalId("lsrhmpqvwwskond")))
+            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(false)
+                .withLogPointInTimeForDBRecovery("muvqejosovyr")
+                .withDisksToDetachOnClash(Arrays.asList("a", "sinuqtljqobbpih")))
+            .withTargetVirtualMachineId("cecybmrqbrjbbmpx")
+            .withPointInTime(OffsetDateTime.parse("2021-06-02T01:00:58Z"));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSapAsePointInTimeRestoreRequest.class);
-        Assertions.assertEquals("aeylinm", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.RESTORE_DISKS, model.recoveryType());
-        Assertions.assertEquals("xotngfdguge", model.sourceResourceId());
-        Assertions.assertEquals("hgrky", model.propertyBag().get("i"));
+        Assertions.assertEquals("yk", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("rupdwvnphcnzq", model.sourceResourceId());
+        Assertions.assertEquals("hmqrhvthlaiwdc", model.propertyBag().get("smlzzhzdtxetlgy"));
         Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("mfp", model.targetInfo().containerId());
-        Assertions.assertEquals("ojeevy", model.targetInfo().databaseName());
-        Assertions.assertEquals("hsgz", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("gomfgbeglq", model.targetResourceGroupName());
-        Assertions.assertEquals("o", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("betnluankrrfxee", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("ij",
+        Assertions.assertEquals("wgdnqzbr", model.targetInfo().containerId());
+        Assertions.assertEquals("spzhzmtksjc", model.targetInfo().databaseName());
+        Assertions.assertEquals("digsxcdgl", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH, model.recoveryMode());
+        Assertions.assertEquals("euachtomfl", model.targetResourceGroupName());
+        Assertions.assertEquals("swfpfmd", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("cxnmskwhqjjyslu", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("shhkvpedw",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("cvbmqzb",
+        Assertions.assertEquals("lsrhmpqvwwskond",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("jrnwxacev", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("jkuyxoafgaoq", model.targetVirtualMachineId());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T22:02:25Z"), model.pointInTime());
+        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("muvqejosovyr", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("a", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("cecybmrqbrjbbmpx", model.targetVirtualMachineId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:00:58Z"), model.pointInTime());
     }
 
     // Use "Map.of" if available

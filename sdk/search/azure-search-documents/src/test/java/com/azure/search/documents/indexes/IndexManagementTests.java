@@ -3,6 +3,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -14,6 +15,7 @@ import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
@@ -412,6 +414,78 @@ public class IndexManagementTests extends SearchTestBase {
         StepVerifier.create(asyncClient.listIndexNames().collect(Collectors.toSet()))
             .assertNext(actualIndexNames2 -> assertTrue(actualIndexNames2.containsAll(expectedIndexNames)))
             .verifyComplete();
+    }
+
+    @Test
+    public void canListIndexesByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
+
+        List<PagedResponse<SearchIndex>> pages = new ArrayList<>();
+        client.listIndexes(requestOptions).iterableByPage().forEach(pages::add);
+
+        assertEquals(expectedIndexes.size(), pages.size());
+        assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+            pages.stream()
+                .flatMap(page -> page.getElements().stream())
+                .map(SearchIndex::getName)
+                .collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        assertNull(pages.get(pages.size() - 1).getContinuationToken());
+    }
+
+    @Test
+    public void canListIndexesByPrefixAcrossPagesAsync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
+
+        StepVerifier.create(asyncClient.listIndexes(requestOptions).byPage().collectList()).assertNext(pages -> {
+            assertEquals(expectedIndexes.size(), pages.size());
+            assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+                pages.stream()
+                    .flatMap(page -> page.getElements().stream())
+                    .map(SearchIndex::getName)
+                    .collect(Collectors.toSet()));
+            pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+            assertNotNull(pages.get(0).getContinuationToken());
+            assertNull(pages.get(pages.size() - 1).getContinuationToken());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void listIndexesRejectsPageSizeAboveServiceMaximumSync() {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("pageSize", "5000");
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> client.listIndexes(requestOptions).iterableByPage().iterator().next());
+
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void canListIndexStatsByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+
+        List<PagedResponse<IndexStatisticsSummary>> pages = new ArrayList<>();
+        client.listIndexStatsSummary(prefix, 1, ListingSearchType.PREFIX).iterableByPage().forEach(pages::add);
+
+        assertEquals(expectedIndexes.size(), pages.size());
+        assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+            pages.stream()
+                .flatMap(page -> page.getElements().stream())
+                .map(IndexStatisticsSummary::getName)
+                .collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        assertNull(pages.get(pages.size() - 1).getContinuationToken());
     }
 
     @Test
@@ -1152,6 +1226,7 @@ public class IndexManagementTests extends SearchTestBase {
     // --- Pagination Tests (Serverless MVP: top/skip/count) ---
 
     @Test
+    @Disabled("TODO: Replace top with a service-side pageSize option")
     public void canListIndexesWithSelectedPropertiesAndTopSync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1161,10 +1236,9 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
+        // TODO: The replacement overload currently exposes select but not pageSize.
         List<SearchIndexResponse> indexes
-            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, null, null)
-                .stream()
-                .collect(Collectors.toList());
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name")).stream().collect(Collectors.toList());
 
         assertNotNull(indexes);
         assertTrue(indexes.size() >= 1);
@@ -1174,6 +1248,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace top with a service-side pageSize option")
     public void canListIndexesWithSelectedPropertiesAndTopAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1183,8 +1258,8 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        StepVerifier
-            .create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, null, null).collectList())
+        // TODO: The replacement overload currently exposes select but not pageSize.
+        StepVerifier.create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).collectList())
             .assertNext(indexes -> {
                 assertNotNull(indexes);
                 assertTrue(indexes.size() >= 1);
@@ -1196,6 +1271,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace numeric skip with service continuation-token pagination")
     public void canListIndexesWithSelectedPropertiesAndSkipSync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1207,8 +1283,9 @@ public class IndexManagementTests extends SearchTestBase {
 
         List<SearchIndexResponse> allIndexes
             = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
+        // TODO: Replace this client-side skip with a test that forces and follows @odata.nextLink.
         List<SearchIndexResponse> skippedIndexes
-            = client.listIndexesWithSelectedProperties(null, null, 1, null).stream().collect(Collectors.toList());
+            = client.listIndexesWithSelectedProperties().stream().skip(1).collect(Collectors.toList());
 
         if (allIndexes.size() > 1) {
             assertEquals(allIndexes.size() - 1, skippedIndexes.size());
@@ -1216,6 +1293,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace numeric skip with service continuation-token pagination")
     public void canListIndexesWithSelectedPropertiesAndSkipAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1225,10 +1303,11 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
+        // TODO: Replace the client-side skip with a test that forces and follows @odata.nextLink.
         Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono
             = asyncClient.listIndexesWithSelectedProperties()
                 .collectList()
-                .zipWith(asyncClient.listIndexesWithSelectedProperties(null, null, 1, null).collectList());
+                .zipWith(asyncClient.listIndexesWithSelectedProperties().skip(1).collectList());
 
         StepVerifier.create(resultMono).assertNext(tuple -> {
             List<SearchIndexResponse> allIndexes = tuple.getT1();
@@ -1240,29 +1319,29 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
     public void canListIndexesWithSelectedPropertiesAndCountSync() {
         SearchIndex index = createTestIndex(null);
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
+        // TODO: SearchIndexResponse remains the item model, but there is no replacement total-count property.
         List<SearchIndexResponse> indexes
-            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), null, null, true)
-                .stream()
-                .collect(Collectors.toList());
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name")).stream().collect(Collectors.toList());
 
         assertNotNull(indexes);
         assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
     }
 
     @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
     public void canListIndexesWithSelectedPropertiesAndCountAsync() {
         SearchIndex index = createTestIndex(null);
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
-        StepVerifier
-            .create(
-                asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), null, null, true).collectList())
+        // TODO: SearchIndexResponse remains the item model, but there is no replacement total-count property.
+        StepVerifier.create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).collectList())
             .assertNext(indexes -> {
                 assertNotNull(indexes);
                 assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
@@ -1271,6 +1350,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
     public void canListIndexesWithSelectedPropertiesTopAndSkipSync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1286,11 +1366,12 @@ public class IndexManagementTests extends SearchTestBase {
         List<SearchIndexResponse> allIndexes
             = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
 
-        // Skip 1, take 1 — should return a subset
-        List<SearchIndexResponse> pagedIndexes
-            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, 1, null)
-                .stream()
-                .collect(Collectors.toList());
+        // TODO: Replace client-side skip/limit with pageSize and @odata.nextLink traversal.
+        List<SearchIndexResponse> pagedIndexes = client.listIndexesWithSelectedProperties(Arrays.asList("name"))
+            .stream()
+            .skip(1)
+            .limit(1)
+            .collect(Collectors.toList());
 
         assertNotNull(pagedIndexes);
         if (allIndexes.size() > 1) {
@@ -1299,6 +1380,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
     public void canListIndexesWithSelectedPropertiesTopAndSkipAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1311,10 +1393,12 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index3);
         indexesToDelete.add(index3.getName());
 
-        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono = asyncClient
-            .listIndexesWithSelectedProperties()
-            .collectList()
-            .zipWith(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, 1, null).collectList());
+        // TODO: Replace client-side skip/take with pageSize and @odata.nextLink traversal.
+        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono
+            = asyncClient.listIndexesWithSelectedProperties()
+                .collectList()
+                .zipWith(
+                    asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).skip(1).take(1).collectList());
 
         StepVerifier.create(resultMono).assertNext(tuple -> {
             List<SearchIndexResponse> allIndexes = tuple.getT1();
@@ -1325,6 +1409,8 @@ public class IndexManagementTests extends SearchTestBase {
             }
         }).verifyComplete();
     }
+
+    // --- Stats summary page-size tests ---
 
     @Test
     public void canListIndexStatsSummaryWithTopSync() {
@@ -1337,7 +1423,7 @@ public class IndexManagementTests extends SearchTestBase {
         indexesToDelete.add(index2.getName());
 
         List<IndexStatisticsSummary> stats
-            = client.listIndexStatsSummary(1, null, null).stream().collect(Collectors.toList());
+            = client.listIndexStatsSummary(null, 1, null).stream().collect(Collectors.toList());
 
         assertNotNull(stats);
         assertTrue(stats.size() >= 1);
@@ -1359,7 +1445,7 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        StepVerifier.create(asyncClient.listIndexStatsSummary(1, null, null).collectList()).assertNext(stats -> {
+        StepVerifier.create(asyncClient.listIndexStatsSummary(null, 1, null).collectList()).assertNext(stats -> {
             assertNotNull(stats);
             assertTrue(stats.size() >= 1);
             for (IndexStatisticsSummary stat : stats) {
@@ -1372,6 +1458,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace numeric skip with search or continuation-token pagination")
     public void canListIndexStatsSummaryWithSkipSync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1381,15 +1468,16 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
+        // TODO: Replace the client-side skip with search/ListingSearchType or @odata.nextLink traversal.
         List<IndexStatisticsSummary> skippedStats
-            = client.listIndexStatsSummary(null, 1, null).stream().collect(Collectors.toList());
+            = client.listIndexStatsSummary().stream().skip(1).collect(Collectors.toList());
 
-        // Verify skip returned fewer results than the total number of indexes
         assertNotNull(skippedStats);
         assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
     }
 
     @Test
+    @Disabled("TODO: Replace numeric skip with search or continuation-token pagination")
     public void canListIndexStatsSummaryWithSkipAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1399,39 +1487,43 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        StepVerifier.create(asyncClient.listIndexStatsSummary(null, 1, null).collectList()).assertNext(skippedStats -> {
-            // Verify skip returned results and skipped at least one
+        // TODO: Replace the client-side skip with search/ListingSearchType or @odata.nextLink traversal.
+        StepVerifier.create(asyncClient.listIndexStatsSummary().skip(1).collectList()).assertNext(skippedStats -> {
             assertNotNull(skippedStats);
             assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
         }).verifyComplete();
     }
 
     @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
     public void canListIndexStatsSummaryWithCountSync() {
         SearchIndex index = createTestIndex(null);
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
-        List<IndexStatisticsSummary> stats
-            = client.listIndexStatsSummary(null, null, true).stream().collect(Collectors.toList());
+        // TODO: IndexStatisticsSummary remains the item model, but there is no replacement total-count property.
+        List<IndexStatisticsSummary> stats = client.listIndexStatsSummary().stream().collect(Collectors.toList());
 
         assertNotNull(stats);
         assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
     }
 
     @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
     public void canListIndexStatsSummaryWithCountAsync() {
         SearchIndex index = createTestIndex(null);
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
-        StepVerifier.create(asyncClient.listIndexStatsSummary(null, null, true).collectList()).assertNext(stats -> {
+        // TODO: IndexStatisticsSummary remains the item model, but there is no replacement total-count property.
+        StepVerifier.create(asyncClient.listIndexStatsSummary().collectList()).assertNext(stats -> {
             assertNotNull(stats);
             assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
         }).verifyComplete();
     }
 
     @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
     public void canListIndexStatsSummaryWithTopAndSkipSync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1446,9 +1538,9 @@ public class IndexManagementTests extends SearchTestBase {
 
         List<IndexStatisticsSummary> allStats = client.listIndexStatsSummary().stream().collect(Collectors.toList());
 
-        // Skip 1, take 1
+        // TODO: Replace client-side skip with @odata.nextLink traversal; top is now pageSize.
         List<IndexStatisticsSummary> pagedStats
-            = client.listIndexStatsSummary(1, 1, null).stream().collect(Collectors.toList());
+            = client.listIndexStatsSummary(null, 1, null).stream().skip(1).limit(1).collect(Collectors.toList());
 
         assertNotNull(pagedStats);
         if (allStats.size() > 1) {
@@ -1457,6 +1549,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
     public void canListIndexStatsSummaryWithTopAndSkipAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -1469,10 +1562,11 @@ public class IndexManagementTests extends SearchTestBase {
         client.createIndex(index3);
         indexesToDelete.add(index3.getName());
 
+        // TODO: Replace client-side skip with @odata.nextLink traversal; top is now pageSize.
         Mono<Tuple2<List<IndexStatisticsSummary>, List<IndexStatisticsSummary>>> resultMono
             = asyncClient.listIndexStatsSummary()
                 .collectList()
-                .zipWith(asyncClient.listIndexStatsSummary(1, 1, null).collectList());
+                .zipWith(asyncClient.listIndexStatsSummary(null, 1, null).skip(1).take(1).collectList());
 
         StepVerifier.create(resultMono).assertNext(tuple -> {
             List<IndexStatisticsSummary> allStats = tuple.getT1();
@@ -1504,6 +1598,16 @@ public class IndexManagementTests extends SearchTestBase {
         assertEquals(true, labelIdField.isSensitivityLabelId());
         assertEquals(true, labelNameField.isSensitivityLabelName());
         assertEquals(true, sourceDocField.isSourceDocumentId());
+    }
+
+    private List<SearchIndex> createIndexesForPagination(String prefix) {
+        List<SearchIndex> indexes = Arrays.asList(createTestIndex(prefix + "-a"), createTestIndex(prefix + "-b"),
+            createTestIndex(prefix + "-c"));
+        indexes.forEach(index -> {
+            client.createIndex(index);
+            indexesToDelete.add(index.getName());
+        });
+        return indexes;
     }
 
     @Test

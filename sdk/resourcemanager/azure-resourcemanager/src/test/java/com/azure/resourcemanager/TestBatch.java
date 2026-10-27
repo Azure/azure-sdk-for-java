@@ -9,7 +9,7 @@
 // import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 // import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 // import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerUtils;
-// import org.junit.Assert;
+// import org.junit.jupiter.api.Assertions;
 // import rx.Observable;
 // import rx.functions.Action1;
 //
@@ -36,7 +36,7 @@
 //                });
 //
 //        batchAccounts[0] = future.get();
-//        Assert.assertNull(batchAccounts[0].autoStorage());
+//        Assertions.assertNull(batchAccounts[0].autoStorage());
 //
 //        return batchAccounts[0];
 //    }
@@ -49,7 +49,7 @@
 //                .withNewStorageAccount(storageAccountName)
 //                .apply();
 //
-//        Assert.assertNotNull(resource.autoStorage());
+//        Assertions.assertNotNull(resource.autoStorage());
 //
 //        return resource;
 //    }

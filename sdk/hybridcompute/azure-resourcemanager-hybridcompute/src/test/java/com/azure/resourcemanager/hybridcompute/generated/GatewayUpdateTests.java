@@ -14,21 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayUpdate model = BinaryData
-            .fromString(
-                "{\"properties\":{\"allowedFeatures\":[\"mfpgv\",\"pip\"]},\"tags\":{\"wbdsr\":\"thaqfxssmwu\"}}")
+        GatewayUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"allowedFeatures\":[\"cirgzp\"],\"gatewayBypass\":[\"azszrnwoiindfpw\",\"jylwbtlhflsj\"]},\"tags\":{\"rqmq\":\"szfjvfbgofelja\",\"tvsexsowuel\":\"ldvriiiojnalghfk\"}}")
             .toObject(GatewayUpdate.class);
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
-        Assertions.assertEquals("mfpgv", model.allowedFeatures().get(0));
+        Assertions.assertEquals("szfjvfbgofelja", model.tags().get("rqmq"));
+        Assertions.assertEquals("cirgzp", model.allowedFeatures().get(0));
+        Assertions.assertEquals("azszrnwoiindfpw", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayUpdate model = new GatewayUpdate().withTags(mapOf("wbdsr", "thaqfxssmwu"))
-            .withAllowedFeatures(Arrays.asList("mfpgv", "pip"));
+        GatewayUpdate model
+            = new GatewayUpdate().withTags(mapOf("rqmq", "szfjvfbgofelja", "tvsexsowuel", "ldvriiiojnalghfk"))
+                .withAllowedFeatures(Arrays.asList("cirgzp"))
+                .withGatewayBypass(Arrays.asList("azszrnwoiindfpw", "jylwbtlhflsj"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdate.class);
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
-        Assertions.assertEquals("mfpgv", model.allowedFeatures().get(0));
+        Assertions.assertEquals("szfjvfbgofelja", model.tags().get("rqmq"));
+        Assertions.assertEquals("cirgzp", model.allowedFeatures().get(0));
+        Assertions.assertEquals("azszrnwoiindfpw", model.gatewayBypass().get(0));
     }
 
     // Use "Map.of" if available

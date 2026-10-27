@@ -178,7 +178,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -226,7 +226,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -336,7 +336,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -390,7 +390,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -619,7 +619,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -672,7 +672,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -853,8 +853,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -887,7 +890,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -898,8 +901,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -933,7 +939,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             capacityReservationGroupName, capacityReservationName, context);
@@ -942,8 +948,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -965,8 +974,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -990,8 +1002,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1011,8 +1026,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1033,8 +1051,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1054,8 +1075,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1077,8 +1101,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1095,8 +1122,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1147,7 +1177,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCapacityReservationGroup(this.client.getEndpoint(), apiVersion,
@@ -1194,7 +1224,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

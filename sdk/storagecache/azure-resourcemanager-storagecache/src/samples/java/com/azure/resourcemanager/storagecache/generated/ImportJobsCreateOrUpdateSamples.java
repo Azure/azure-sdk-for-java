@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ImportJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/importJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/importJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: importJobs_CreateOrUpdate.

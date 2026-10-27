@@ -197,7 +197,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         Flux<Document> componentQueryResults = getComponentQueryResults(targetFeedRanges, initialPageSize, collection, rewrittenQueryInfos);
 
         // Coalesce the results on unique _rids, and sort it based on the _rid
-        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults = coalesceAndSortResults(componentQueryResults);
+        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults =
+            coalesceAndSortResults(componentQueryResults).cache();
 
         // Compose component scores matrix, where each tuple is (score, index)
         Mono<List<List<ScoreTuple>>> componentScoresList = retrieveComponentScores(coalescedAndSortedResults, componentWeights);

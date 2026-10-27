@@ -603,7 +603,8 @@ public final class IngestionsImpl {
     }
 
     /**
-     * Cancel all running operations of a geo-catalog collection.
+     * Cancel all pending and running operations across the entire GeoCatalog instance. This is a catalog-wide operation
+     * and is not scoped to a specific collection.
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -619,7 +620,8 @@ public final class IngestionsImpl {
     }
 
     /**
-     * Cancel all running operations of a geo-catalog collection.
+     * Cancel all pending and running operations across the entire GeoCatalog instance. This is a catalog-wide operation
+     * and is not scoped to a specific collection.
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1015,6 +1017,13 @@ public final class IngestionsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion run</td></tr>
+     * </table>
+     * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1068,6 +1077,13 @@ public final class IngestionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion run</td></tr>
+     * </table>
      * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
@@ -1456,9 +1472,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1473,9 +1490,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1483,6 +1501,13 @@ public final class IngestionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion</td></tr>
+     * </table>
      * 
      * @param collectionId Catalog collection id.
      * @param body Definition of the ingestion.
@@ -1512,9 +1537,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1529,9 +1555,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1539,6 +1566,13 @@ public final class IngestionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion</td></tr>
+     * </table>
      * 
      * @param collectionId Catalog collection id.
      * @param body Definition of the ingestion.
@@ -1903,9 +1937,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1939,9 +1974,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -1983,9 +2019,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2028,9 +2065,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2072,9 +2110,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2116,9 +2155,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2152,9 +2192,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2169,9 +2210,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2209,9 +2251,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2226,9 +2269,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -2282,6 +2326,13 @@ public final class IngestionsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
+     * 
      * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2324,6 +2375,13 @@ public final class IngestionsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
+     * 
      * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2365,6 +2423,13 @@ public final class IngestionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
      * 
      * @param id Ingestion source id.
      * @param body Definition of the ingestion source.
@@ -2409,6 +2474,13 @@ public final class IngestionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
      * 
      * @param id Ingestion source id.
      * @param body Definition of the ingestion source.
@@ -3015,9 +3087,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -3052,9 +3125,10 @@ public final class IngestionsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -3209,20 +3283,26 @@ public final class IngestionsImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

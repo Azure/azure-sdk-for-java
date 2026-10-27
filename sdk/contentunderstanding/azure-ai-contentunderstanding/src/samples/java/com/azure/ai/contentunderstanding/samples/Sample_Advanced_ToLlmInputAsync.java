@@ -12,24 +12,53 @@ import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.ToLlmInputOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.nio.file.Paths;
 
 /**
  * Async sample demonstrating advanced usage of the {@link LlmInputHelper#toLlmInput} helper.
  *
  * <p>This is the async counterpart of {@link Sample_Advanced_ToLlmInput}. See that class for detailed
- * documentation on each scenario.
+ * documentation on each scenario.</p>
+ *
+ * <p>The output is suitable for LLM prompts, vector databases, and agent tool output. Only the service-extracted
+ * analysis-result metadata scenario requires service API version {@code 2026-06-01-preview}; the other scenarios use
+ * the service version configured on the client.</p>
+ *
+ * <p>Service-extracted values remain under {@code metadata}, while caller-provided values remain under
+ * {@code customMetadata}:</p>
+ * <pre>{@code
+ * ---
+ * metadata:
+ *   author: Megan Bowen
+ *   contentType: application/pdf
+ *   language: en-US
+ *   pageCount: 1
+ *   title: Contoso Metadata Extraction Sample
+ * customMetadata:
+ *   source: invoice.pdf
+ *   department: finance
+ * ---
+ * }</pre>
+ *
+ * <p>Configure model deployment defaults before running the document search, video, and audio scenarios; see
+ * {@link Sample00_UpdateDefaultsAsync}. API key authentication is intended for local testing; prefer
+ * {@link DefaultAzureCredentialBuilder} for production applications.</p>
  */
 public class Sample_Advanced_ToLlmInputAsync {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sampleAdvancedAsync.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = SampleEnvironmentConfiguration.requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -59,33 +88,48 @@ public class Sample_Advanced_ToLlmInputAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> invoicePoller
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(new AnalysisInput().setUrl(invoiceUrl)));
 
-        AnalysisResult result = invoicePoller.last()
-            .flatMap(pollResponse -> pollResponse.getFinalResult())
-            .block();
-
-        String text = LlmInputHelper.toLlmInput(result);
-        System.out.println("Default output (fields + markdown):");
-        System.out.println(text);
+        Mono<AnalysisResult> invoiceAnalysis = requireSuccessfulAnalysis(invoicePoller, "Invoice analysis")
+            .map(result -> {
+                String text = LlmInputHelper.toLlmInput(result);
+                System.out.println("Default output (fields + markdown):");
+                System.out.println(text);
+                return result;
+            });
         // END:ContentUnderstandingToLlmInputAsync
 
         // BEGIN:ContentUnderstandingToLlmInputOptionsAsync
-        String fieldsOnly
-            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
-        System.out.println("\n--- Fields only (includeMarkdown=false) ---");
-        System.out.println(fieldsOnly);
+        Mono<Boolean> workflow = invoiceAnalysis.map(result -> {
+            String fieldsOnly
+                = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
+            System.out.println("\n--- Fields only (includeMarkdown=false) ---");
+            System.out.println(fieldsOnly);
 
-        String markdownOnly
-            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeFields(false));
-        System.out.println("\n--- Markdown only (includeFields=false) ---");
-        System.out.println(markdownOnly);
+            String markdownOnly
+                = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeFields(false));
+            System.out.println("\n--- Markdown only (includeFields=false) ---");
+            System.out.println(markdownOnly);
 
-        Map<String, Object> metadata = new LinkedHashMap<>();
-        metadata.put("source", "invoice.pdf");
-        metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
-        System.out.println("\n--- With metadata ---");
-        System.out.println(withMetadata);
+            Map<String, Object> customMetadata = new LinkedHashMap<>();
+            customMetadata.put("source", "invoice.pdf");
+            customMetadata.put("department", "finance");
+            String withCustomMetadata = LlmInputHelper.toLlmInput(result, customMetadata);
+            System.out.println("\n--- With customMetadata ---");
+            System.out.println(withCustomMetadata);
+            return Boolean.TRUE;
+        });
         // END:ContentUnderstandingToLlmInputOptionsAsync
+
+        // BEGIN:ContentUnderstandingToLlmInputMetadataFromAnalysisResultPreviewAsync
+        BinaryData metadataPdf = BinaryData.fromFile(Paths.get("src/samples/resources/sample_metadata.pdf"));
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> metadataPoller
+            = client.beginAnalyzeBinary("prebuilt-layout", metadataPdf);
+        workflow = workflow.then(requireSuccessfulAnalysis(metadataPoller, "Metadata analysis").map(metadataResult -> {
+            String analysisMetadataText = LlmInputHelper.toLlmInput(metadataResult);
+            System.out.println("\n--- Preview metadata from analysis result ---");
+            System.out.println(analysisMetadataText);
+            return Boolean.TRUE;
+        }));
+        // END:ContentUnderstandingToLlmInputMetadataFromAnalysisResultPreviewAsync
 
         // ================================================================
         // 2. MULTI-PAGE PDF WITH CONTENT RANGE
@@ -99,17 +143,18 @@ public class Sample_Advanced_ToLlmInputAsync {
         System.out.println("MULTI-PAGE PDF WITH CONTENT RANGE (Async)");
         System.out.println("============================================================");
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> multiPagePoller
-            = client.beginAnalyze("prebuilt-documentSearch",
-                Arrays.asList(new AnalysisInput().setUrl(multiPageUrl).setContentRange(new ContentRange("2-3,5"))));
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> multiPagePoller = client.beginAnalyze(
+            "prebuilt-documentSearch",
+            Arrays.asList(new AnalysisInput().setUrl(multiPageUrl)
+                .setContentRange(ContentRange.combine(ContentRange.pages(2, 3), ContentRange.page(5)))));
 
-        AnalysisResult multiPageResult = multiPagePoller.last()
-            .flatMap(pollResponse -> pollResponse.getFinalResult())
-            .block();
-
-        String multiPageText = LlmInputHelper.toLlmInput(multiPageResult);
-        System.out.println("Output:");
-        System.out.println(multiPageText);
+        workflow = workflow
+            .then(requireSuccessfulAnalysis(multiPagePoller, "Multi-page analysis").map(multiPageResult -> {
+                String multiPageText = LlmInputHelper.toLlmInput(multiPageResult);
+                System.out.println("Output:");
+                System.out.println(multiPageText);
+                return Boolean.TRUE;
+            }));
         // END:ContentUnderstandingToLlmInputContentRangeAsync
 
         // ================================================================
@@ -127,14 +172,13 @@ public class Sample_Advanced_ToLlmInputAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> videoPoller
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(new AnalysisInput().setUrl(videoUrl)));
 
-        AnalysisResult videoResult = videoPoller.last()
-            .flatMap(pollResponse -> pollResponse.getFinalResult())
-            .block();
-
-        String videoText = LlmInputHelper.toLlmInput(videoResult);
-        System.out.println("Video produced " + videoResult.getContents().size() + " segment(s)");
-        System.out.println("\nOutput:");
-        System.out.println(videoText);
+        workflow = workflow.then(requireSuccessfulAnalysis(videoPoller, "Video analysis").map(videoResult -> {
+            String videoText = LlmInputHelper.toLlmInput(videoResult);
+            System.out.println("Video produced " + videoResult.getContents().size() + " segment(s)");
+            System.out.println("\nOutput:");
+            System.out.println(videoText);
+            return Boolean.TRUE;
+        }));
         // END:ContentUnderstandingToLlmInputVideoAsync
 
         // ================================================================
@@ -153,16 +197,36 @@ public class Sample_Advanced_ToLlmInputAsync {
             "prebuilt-audioSearch",
             Arrays.asList(new AnalysisInput().setUrl(audioUrl).setContentRange(new ContentRange("0-10000"))));
 
-        AnalysisResult audioResult = audioPoller.last()
-            .flatMap(pollResponse -> pollResponse.getFinalResult())
-            .block();
-
-        Map<String, Object> audioMetadata = new LinkedHashMap<>();
-        audioMetadata.put("source", "callCenterRecording.mp3");
-        String audioText
-            = LlmInputHelper.toLlmInput(audioResult, audioMetadata);
-        System.out.println("Output:");
-        System.out.println(audioText);
+        workflow = workflow.then(requireSuccessfulAnalysis(audioPoller, "Audio analysis").map(audioResult -> {
+            Map<String, Object> audioCustomMetadata = new LinkedHashMap<>();
+            audioCustomMetadata.put("source", "callCenterRecording.mp3");
+            String audioText = LlmInputHelper.toLlmInput(audioResult, audioCustomMetadata);
+            System.out.println("Output:");
+            System.out.println(audioText);
+            return Boolean.TRUE;
+        }));
         // END:ContentUnderstandingToLlmInputAudioAsync
+
+        Boolean completed = workflow.block();
+        if (!Boolean.TRUE.equals(completed)) {
+            throw new IllegalStateException("ToLlmInput workflow returned no result.");
+        }
+    }
+
+    static Mono<AnalysisResult> requireSuccessfulAnalysis(
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller, String operationName) {
+        return poller.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(), operationName))
+            .map(result -> Sample_Advanced_ToLlmInput.requireAnalysisContents(result, operationName));
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

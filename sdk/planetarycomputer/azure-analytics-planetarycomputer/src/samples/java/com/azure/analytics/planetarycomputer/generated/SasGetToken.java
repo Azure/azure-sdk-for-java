@@ -17,7 +17,7 @@ public class SasGetToken {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
-        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", null);
+        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
     }
 }

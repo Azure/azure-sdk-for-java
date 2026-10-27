@@ -14,20 +14,22 @@ import java.io.IOException;
 /**
  * The match criteria for an egress rule.
  * If both host and path are omitted, the rule matches all traffic.
- * Host uses DNS wildcard syntax (e.g., "*.openai.com" matches "api.openai.com").
- * Path uses URI prefix matching with '*' as a single-segment wildcard (e.g., "/v1/*" matches "/v1/chat").
+ * Host uses DNS wildcard syntax (e.g., "\*.openai.com" matches "api.openai.com").
+ * Path uses URI prefix matching with an asterisk as a single-segment wildcard.
+ * For example, "/v1/\*" matches "/v1/chat".
  */
 @Fluent
 public final class RaiEgressRuleMatch implements JsonSerializable<RaiEgressRuleMatch> {
     /*
-     * Host pattern to match using DNS wildcard syntax (e.g., "*.openai.com").
-     * A leading "*." matches any subdomain. Omit to match all hosts.
+     * Host pattern to match using DNS wildcard syntax (e.g., "\*.openai.com").
+     * A leading "\*." matches any subdomain. Omit to match all hosts.
      */
     private String host;
 
     /*
-     * Path pattern to match using URI prefix with '*' wildcard (e.g., "/v1/*").
-     * Omit to match all paths.
+     * Path pattern to match using URI prefix matching.
+     * An asterisk serves as a single-segment wildcard.
+     * For example, "/v1/\*" matches "/v1/chat". Omit to match all paths.
      */
     private String path;
 
@@ -38,8 +40,8 @@ public final class RaiEgressRuleMatch implements JsonSerializable<RaiEgressRuleM
     }
 
     /**
-     * Get the host property: Host pattern to match using DNS wildcard syntax (e.g., "*.openai.com").
-     * A leading "*." matches any subdomain. Omit to match all hosts.
+     * Get the host property: Host pattern to match using DNS wildcard syntax (e.g., "\*.openai.com").
+     * A leading "\*." matches any subdomain. Omit to match all hosts.
      * 
      * @return the host value.
      */
@@ -48,8 +50,8 @@ public final class RaiEgressRuleMatch implements JsonSerializable<RaiEgressRuleM
     }
 
     /**
-     * Set the host property: Host pattern to match using DNS wildcard syntax (e.g., "*.openai.com").
-     * A leading "*." matches any subdomain. Omit to match all hosts.
+     * Set the host property: Host pattern to match using DNS wildcard syntax (e.g., "\*.openai.com").
+     * A leading "\*." matches any subdomain. Omit to match all hosts.
      * 
      * @param host the host value to set.
      * @return the RaiEgressRuleMatch object itself.
@@ -60,8 +62,9 @@ public final class RaiEgressRuleMatch implements JsonSerializable<RaiEgressRuleM
     }
 
     /**
-     * Get the path property: Path pattern to match using URI prefix with '*' wildcard (e.g., "/v1/*").
-     * Omit to match all paths.
+     * Get the path property: Path pattern to match using URI prefix matching.
+     * An asterisk serves as a single-segment wildcard.
+     * For example, "/v1/\*" matches "/v1/chat". Omit to match all paths.
      * 
      * @return the path value.
      */
@@ -70,8 +73,9 @@ public final class RaiEgressRuleMatch implements JsonSerializable<RaiEgressRuleM
     }
 
     /**
-     * Set the path property: Path pattern to match using URI prefix with '*' wildcard (e.g., "/v1/*").
-     * Omit to match all paths.
+     * Set the path property: Path pattern to match using URI prefix matching.
+     * An asterisk serves as a single-segment wildcard.
+     * For example, "/v1/\*" matches "/v1/chat". Omit to match all paths.
      * 
      * @param path the path value to set.
      * @return the RaiEgressRuleMatch object itself.

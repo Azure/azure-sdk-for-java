@@ -30,7 +30,7 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
     private String id;
 
     /*
-     * Type of the virtual machine
+     * ARM resource type - virtual machine
      */
     private String type;
 
@@ -44,6 +44,21 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
      * Error information when `operationStatus` is `Failed`.
      */
     private ApiError error;
+
+    /*
+     * The VM size of the virtual machine.
+     */
+    private String vmSize;
+
+    /*
+     * The availability zone of the virtual machine.
+     */
+    private String zone;
+
+    /*
+     * The priority of the virtual machine.
+     */
+    private String priority;
 
     /**
      * Creates an instance of VirtualMachineInner class.
@@ -71,7 +86,7 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
     }
 
     /**
-     * Get the type property: Type of the virtual machine.
+     * Get the type property: ARM resource type - virtual machine.
      * 
      * @return the type value.
      */
@@ -96,6 +111,33 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
      */
     public ApiError error() {
         return this.error;
+    }
+
+    /**
+     * Get the vmSize property: The VM size of the virtual machine.
+     * 
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Get the zone property: The availability zone of the virtual machine.
+     * 
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
+    }
+
+    /**
+     * Get the priority property: The priority of the virtual machine.
+     * 
+     * @return the priority value.
+     */
+    public String priority() {
+        return this.priority;
     }
 
     /**
@@ -133,6 +175,12 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
                     deserializedVirtualMachineInner.type = reader.getString();
                 } else if ("error".equals(fieldName)) {
                     deserializedVirtualMachineInner.error = ApiError.fromJson(reader);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedVirtualMachineInner.vmSize = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedVirtualMachineInner.zone = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVirtualMachineInner.priority = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

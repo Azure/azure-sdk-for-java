@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computelimit.models.SharedLimitCapProperties;
  */
 public final class SharedLimitCapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a shared limit cap for a VM family.

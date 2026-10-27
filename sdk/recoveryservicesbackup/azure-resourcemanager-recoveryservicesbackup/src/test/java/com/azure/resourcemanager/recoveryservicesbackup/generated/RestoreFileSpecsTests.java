@@ -12,22 +12,21 @@ public final class RestoreFileSpecsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreFileSpecs model = BinaryData
-            .fromString(
-                "{\"path\":\"dnqqskawaoqvmmb\",\"fileSpecType\":\"qfr\",\"targetFolderPath\":\"lkzmegnitgvkxl\"}")
+            .fromString("{\"path\":\"bnfxofvc\",\"fileSpecType\":\"gdirazf\",\"targetFolderPath\":\"ejwabmdujtmvco\"}")
             .toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("dnqqskawaoqvmmb", model.path());
-        Assertions.assertEquals("qfr", model.fileSpecType());
-        Assertions.assertEquals("lkzmegnitgvkxl", model.targetFolderPath());
+        Assertions.assertEquals("bnfxofvc", model.path());
+        Assertions.assertEquals("gdirazf", model.fileSpecType());
+        Assertions.assertEquals("ejwabmdujtmvco", model.targetFolderPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreFileSpecs model = new RestoreFileSpecs().withPath("dnqqskawaoqvmmb")
-            .withFileSpecType("qfr")
-            .withTargetFolderPath("lkzmegnitgvkxl");
+        RestoreFileSpecs model = new RestoreFileSpecs().withPath("bnfxofvc")
+            .withFileSpecType("gdirazf")
+            .withTargetFolderPath("ejwabmdujtmvco");
         model = BinaryData.fromObject(model).toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("dnqqskawaoqvmmb", model.path());
-        Assertions.assertEquals("qfr", model.fileSpecType());
-        Assertions.assertEquals("lkzmegnitgvkxl", model.targetFolderPath());
+        Assertions.assertEquals("bnfxofvc", model.path());
+        Assertions.assertEquals("gdirazf", model.fileSpecType());
+        Assertions.assertEquals("ejwabmdujtmvco", model.targetFolderPath());
     }
 }

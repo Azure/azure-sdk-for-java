@@ -12,9 +12,9 @@ public final class MemberCapOverrideListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MemberCapOverrideListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"cap\":177005491,\"provisioningState\":\"Canceled\"},\"id\":\"xobnbdxkqpxok\",\"name\":\"jionpimexgstxgc\",\"type\":\"odgmaajrmvdjwz\"},{\"properties\":{\"cap\":1705200326,\"provisioningState\":\"Succeeded\"},\"id\":\"lwhijcoejctbzaq\",\"name\":\"qsycbkbfkgu\",\"type\":\"dkexxppofm\"},{\"properties\":{\"cap\":159547648,\"provisioningState\":\"Succeeded\"},\"id\":\"pg\",\"name\":\"dtocj\",\"type\":\"xhvpmoue\"},{\"properties\":{\"cap\":1945947631,\"provisioningState\":\"Canceled\"},\"id\":\"bqe\",\"name\":\"jnxqbzvddntwn\",\"type\":\"eic\"}],\"nextLink\":\"w\"}")
+            "{\"value\":[{\"properties\":{\"cap\":948601207,\"provisioningState\":\"Succeeded\"},\"id\":\"ionpimexg\",\"name\":\"txgcpodgmaajr\",\"type\":\"vdjwzrlovm\"},{\"properties\":{\"cap\":1219720111,\"provisioningState\":\"Succeeded\"},\"id\":\"coejctbzaqs\",\"name\":\"sycbkbfk\",\"type\":\"ukdkexxppofmxa\"},{\"properties\":{\"cap\":1757077121,\"provisioningState\":\"Succeeded\"},\"id\":\"ddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"nextLink\":\"i\"}")
             .toObject(MemberCapOverrideListResult.class);
-        Assertions.assertEquals(177005491, model.value().get(0).properties().cap());
-        Assertions.assertEquals("w", model.nextLink());
+        Assertions.assertEquals(948601207, model.value().get(0).properties().cap());
+        Assertions.assertEquals("i", model.nextLink());
     }
 }

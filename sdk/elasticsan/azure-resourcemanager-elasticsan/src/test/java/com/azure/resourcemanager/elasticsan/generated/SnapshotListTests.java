@@ -12,9 +12,9 @@ public final class SnapshotListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"vei\"},\"provisioningState\":\"Updating\",\"sourceVolumeSizeGiB\":2837447101588730204,\"volumeName\":\"fj\"},\"id\":\"njbkcnxdhbttkph\",\"name\":\"wpn\",\"type\":\"jtoqne\"}],\"nextLink\":\"clfp\"}")
+            "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"llwptfdy\"},\"provisioningState\":\"Restoring\",\"sourceVolumeSizeGiB\":816546176101077379,\"volumeName\":\"ceopzfqrhhuaopp\",\"snapshotAccessState\":\"Available\",\"completionPercent\":61.531967707401435},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"},{\"properties\":{\"creationData\":{\"sourceId\":\"nrmfqjhhk\"},\"provisioningState\":\"Deleted\",\"sourceVolumeSizeGiB\":2053374072394272999,\"volumeName\":\"jhxxjyn\",\"snapshotAccessState\":\"Pending\",\"completionPercent\":16.517279372130524},\"id\":\"tswb\",\"name\":\"qzvszjf\",\"type\":\"uvjfdxxive\"},{\"properties\":{\"creationData\":{\"sourceId\":\"vtcqaqtdo\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":2279476010639149698,\"volumeName\":\"vxysl\",\"snapshotAccessState\":\"InstantAccess\",\"completionPercent\":52.15753549523032},\"id\":\"blytk\",\"name\":\"lmpewwwfbkr\",\"type\":\"rn\"}],\"nextLink\":\"shqjohxcrsbf\"}")
             .toObject(SnapshotList.class);
-        Assertions.assertEquals("vei", model.value().get(0).creationData().sourceId());
-        Assertions.assertEquals("clfp", model.nextLink());
+        Assertions.assertEquals("llwptfdy", model.value().get(0).creationData().sourceId());
+        Assertions.assertEquals("shqjohxcrsbf", model.nextLink());
     }
 }

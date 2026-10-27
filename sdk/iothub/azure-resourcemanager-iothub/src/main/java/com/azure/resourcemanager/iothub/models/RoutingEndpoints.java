@@ -45,6 +45,11 @@ public final class RoutingEndpoints implements JsonSerializable<RoutingEndpoints
      */
     private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers;
 
+    /*
+     * The list of event stream endpoints that IoT hub routes messages to, based on the routing rules.
+     */
+    private List<RoutingEventStreamProperties> eventStreams;
+
     /**
      * Creates an instance of RoutingEndpoints class.
      */
@@ -162,6 +167,28 @@ public final class RoutingEndpoints implements JsonSerializable<RoutingEndpoints
     }
 
     /**
+     * Get the eventStreams property: The list of event stream endpoints that IoT hub routes messages to, based on the
+     * routing rules.
+     * 
+     * @return the eventStreams value.
+     */
+    public List<RoutingEventStreamProperties> eventStreams() {
+        return this.eventStreams;
+    }
+
+    /**
+     * Set the eventStreams property: The list of event stream endpoints that IoT hub routes messages to, based on the
+     * routing rules.
+     * 
+     * @param eventStreams the eventStreams value to set.
+     * @return the RoutingEndpoints object itself.
+     */
+    public RoutingEndpoints withEventStreams(List<RoutingEventStreamProperties> eventStreams) {
+        this.eventStreams = eventStreams;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -176,6 +203,7 @@ public final class RoutingEndpoints implements JsonSerializable<RoutingEndpoints
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("cosmosDBSqlContainers", this.cosmosDBSqlContainers,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventStreams", this.eventStreams, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -214,6 +242,10 @@ public final class RoutingEndpoints implements JsonSerializable<RoutingEndpoints
                     List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers
                         = reader.readArray(reader1 -> RoutingCosmosDBSqlApiProperties.fromJson(reader1));
                     deserializedRoutingEndpoints.cosmosDBSqlContainers = cosmosDBSqlContainers;
+                } else if ("eventStreams".equals(fieldName)) {
+                    List<RoutingEventStreamProperties> eventStreams
+                        = reader.readArray(reader1 -> RoutingEventStreamProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.eventStreams = eventStreams;
                 } else {
                     reader.skipChildren();
                 }

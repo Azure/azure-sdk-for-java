@@ -13,6 +13,8 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ManagementConstants;
+import com.azure.messaging.servicebus.implementation.MessageSessionsResult;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -40,8 +42,15 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
@@ -368,5 +377,206 @@ class ServiceBusSessionReceiverAsyncClientTest {
         assertNull(actual.getThrowable());
 
         assertEquals(expected, actual.getMessage());
+    }
+
+    private ServiceBusSessionReceiverAsyncClient newSessionReceiver() {
+        final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            Duration.ZERO, false, null, SESSION_IDLE_TIMEOUT);
+        return new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
+            }, CLIENT_IDENTIFIER, false);
+    }
+
+    /**
+     * Builds a full page of {@code count} session IDs ("{prefix}0" .. "{prefix}{count-1}") as a
+     * mutable list. A full page (count == the requested page size) drives a further page request
+     * under short-page pagination termination.
+     */
+    private static List<String> fullPage(String prefix, int count) {
+        return IntStream.range(0, count).mapToObj(i -> prefix + i).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private static List<String> fullPage(String prefix) {
+        return fullPage(prefix, 100);
+    }
+
+    /**
+     * Verifies the no-arg listSessions() drives the broker with the default-listing sentinel and
+     * collects every page until the broker returns a short page (fewer IDs than the requested page
+     * size), which terminates pagination.
+     */
+    @Test
+    void listSessionsDefaultListingModeStreamsAllPagesUntilShortPage() {
+        // First page: a full page (100 sessions) continues; server-returned skip = 100.
+        final List<String> firstPage = fullPage("s");
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
+        // Cursor for the second page is server-skip (100) + base64url(lastSessionId "s99"). The second
+        // page is short (2 < 100), which terminates pagination.
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
+            eq("s99"))).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("t1", "t2"), 102)));
+
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions())
+            .expectNextSequence(firstPage)
+            .expectNext("t1", "t2")
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies the cursor uses the server-returned skip (which may differ from {@code requestSkip +
+     * page.size()} when the broker filters expired entries between pages) and the last session ID
+     * of the previous page, matching Track 1's SessionBrowser semantics.
+     */
+    @Test
+    void listSessionsHonorsServerSkipAndLastSessionId() {
+        final OffsetDateTime sessionStateUpdatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        // First page returns a full page of 100 items but the server reports skip = 107 (extra entries
+        // filtered server-side), so the second-page request must use the server-returned skip, not
+        // requestSkip + page.size().
+        final List<String> firstPage = fullPage("a");
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(0), eq(100), isNull()))
+            .thenReturn(Mono.just(new MessageSessionsResult(firstPage, 107)));
+        // Second-page request must use the server-returned skip (107) and lastSessionId ("a99"). It is
+        // short (1 < 100), which terminates pagination.
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(107), eq(100), eq("a99")))
+            .thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("c"), 108)));
+
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions(sessionStateUpdatedAfter))
+            .expectNextSequence(firstPage)
+            .expectNext("c")
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that null {@code sessionStateUpdatedAfter} surfaces as a logged {@link NullPointerException} via
+     * the {@link reactor.core.publisher.Flux} returned by the {@link com.azure.core.http.rest.PagedFlux},
+     * matching the contract documented on the public method.
+     */
+    @Test
+    void listSessionsRejectsNullSessionStateUpdatedAfter() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions(null)).expectError(NullPointerException.class).verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies the continuation token round-trips arbitrary session IDs (including ones that
+     * contain the {@code |} separator character) without escaping the cursor. This is the
+     * Base64url-encoded payload guarantee.
+     */
+    @Test
+    void listSessionsRoundTripsArbitrarySessionIdsThroughCursor() {
+        final String sessionWithPipe = "weird|session|id";
+
+        // First page is full (100 items) with the pipe-containing id LAST, so the cursor for the next
+        // page encodes it; a full page also drives the second request under short-page termination.
+        final List<String> firstPage = fullPage("x", 99);
+        firstPage.add(sessionWithPipe);
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
+        // The second-page request must decode the cursor back to lastSessionId=sessionWithPipe intact
+        // (pipe and all); the short (empty) page then terminates pagination.
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
+            eq(sessionWithPipe))).thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 100)));
+
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions())
+            .expectNextSequence(firstPage)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that calling {@link com.azure.core.http.rest.PagedFlux#byPage(String)} with a token
+     * that doesn't match the {@code <skip>|<base64url(lastSessionId)>} format surfaces a clear
+     * {@link IllegalArgumentException} via {@code monoError(LOGGER, ...)} rather than
+     * {@code NumberFormatException} / {@code IndexOutOfBoundsException}.
+     */
+    @Test
+    void listSessionsRejectsInvalidContinuationToken() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("not-a-valid-token"))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that a continuation token whose decoded skip is negative (e.g., {@code "-1|...")} is
+     * rejected with {@link IllegalArgumentException} rather than producing an invalid management
+     * request with a negative {@code skip} on the wire.
+     */
+    @Test
+    void listSessionsRejectsNegativeSkipInContinuationToken() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("-1|YWJj"))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that a continuation token whose Base64 payload decodes to bytes that aren't valid
+     * UTF-8 is rejected with {@link IllegalArgumentException}. Without strict decoding,
+     * {@code new String(decoded, UTF_8)} would silently substitute U+FFFD and we'd send a
+     * corrupted session ID to the broker.
+     */
+    @Test
+    void listSessionsRejectsNonUtf8ContinuationToken() {
+        // 0xFF, 0xFE is a stray UTF-16 BOM and isn't valid UTF-8. Base64url("0xFF 0xFE") = "__4".
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("0|__4"))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that an empty continuation token completes the {@link PagedFlux} without error,
+     * matching the convention used by {@code ServiceBusAdministrationAsyncClient.listQueuesNextPage}
+     * and the wider Azure SDK paging APIs (null or empty token = no more pages). Tolerant of
+     * callers that persist the token to storage and read back an empty string.
+     */
+    @Test
+    void listSessionsEmptyContinuationTokenCompletes() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("")).expectComplete().verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Verifies that a caller-supplied page size from {@link PagedFlux#byPage(int)} flows through
+     * to the management request's {@code top} parameter. Without page-size propagation the broker
+     * would always be asked for the default of 100 entries even when the caller requested fewer.
+     */
+    @Test
+    void listSessionsHonorsCallerPageSize() {
+        // Caller asks for pages of 25; both first-page and next-page calls must pass top=25. The first
+        // page is full (25 items) so a second page is requested; the short second page (1 < 25)
+        // terminates pagination.
+        final List<String> firstPage = fullPage("s", 25);
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(25),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 25)));
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(25), eq(25),
+            eq("s24"))).thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("t1"), 26)));
+
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage(25)).assertNext(page -> {
+            org.junit.jupiter.api.Assertions.assertEquals(25, page.getValue().size());
+            org.junit.jupiter.api.Assertions.assertEquals("s0", page.getValue().get(0));
+            org.junit.jupiter.api.Assertions.assertEquals("s24", page.getValue().get(24));
+        }).assertNext(page -> {
+            org.junit.jupiter.api.Assertions.assertEquals(1, page.getValue().size());
+            org.junit.jupiter.api.Assertions.assertEquals("t1", page.getValue().get(0));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

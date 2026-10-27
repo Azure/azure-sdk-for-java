@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityInfo model
-            = BinaryData.fromString("{\"isSystemAssignedIdentity\":false,\"managedIdentityResourceId\":\"uvr\"}")
-                .toObject(IdentityInfo.class);
-        Assertions.assertFalse(model.isSystemAssignedIdentity());
-        Assertions.assertEquals("uvr", model.managedIdentityResourceId());
+        IdentityInfo model = BinaryData
+            .fromString("{\"isSystemAssignedIdentity\":true,\"managedIdentityResourceId\":\"tyasiibmiybnnust\"}")
+            .toObject(IdentityInfo.class);
+        Assertions.assertTrue(model.isSystemAssignedIdentity());
+        Assertions.assertEquals("tyasiibmiybnnust", model.managedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentityInfo model
-            = new IdentityInfo().withIsSystemAssignedIdentity(false).withManagedIdentityResourceId("uvr");
+            = new IdentityInfo().withIsSystemAssignedIdentity(true).withManagedIdentityResourceId("tyasiibmiybnnust");
         model = BinaryData.fromObject(model).toObject(IdentityInfo.class);
-        Assertions.assertFalse(model.isSystemAssignedIdentity());
-        Assertions.assertEquals("uvr", model.managedIdentityResourceId());
+        Assertions.assertTrue(model.isSystemAssignedIdentity());
+        Assertions.assertEquals("tyasiibmiybnnust", model.managedIdentityResourceId());
     }
 }

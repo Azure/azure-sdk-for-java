@@ -4,7 +4,7 @@ package ${package};
 import org.junit.Test;
 #end
 
-#if( ${junitVersion} == 5)
+#if( ${junitVersion} == 5 || ${junitVersion} == 6)
 import org.junit.jupiter.api.Test;
 #end
 

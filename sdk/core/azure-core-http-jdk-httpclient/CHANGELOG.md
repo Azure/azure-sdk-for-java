@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,50 @@
 
 ### Bugs Fixed
 
+- Restricted proxy credentials to authentication challenges from the configured proxy host and port, preventing
+  destination servers or other proxies from receiving them.
+- Fixed synchronous response downloads losing bytes when the destination channel performs partial writes.
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Fixed client construction failing when the connection timeout is disabled.
+- Fixed per-call response timeout overrides incorrectly changing asynchronous response-body read timeouts.
+- Fixed response timeouts expiring during otherwise valid request-body uploads.
+- Fixed requests with `Expect: 100-continue` waiting indefinitely when a server sends neither an interim nor a final response. The configured response timeout now bounds the handshake wait independently of the upload.
+- Added GraalVM native-image metadata (`reflect-config.json`, `native-image.properties`) so `JdkHttpClientProvider` is discoverable via `ServiceLoader` and its `GlobalJdkAsyncHttpClient` holder initializes at run time under a native image, mirroring the existing support in `azure-core-http-netty`. Previously, an application built with this module as its `HttpClientProvider` under GraalVM native-image could fail at run time with an `IllegalStateException` indicating that the default HttpClient provider could not be found on the classpath.
+
 ### Other Changes
+
+- Documented the `jdk.httpclient.allowRestrictedHeaders` setting for explicit `Host` headers.
+
+## 1.2.0 (2026-09-29)
+
+### Features Added
+- Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent and the request
+  body is withheld until the service responds `100 Continue`. Previously the header was dropped and the body was sent
+  immediately.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+
+## 1.1.7 (2026-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
+
+## 1.1.6 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
 
 ## 1.1.5 (2026-06-08)
 
@@ -281,5 +324,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-jdk-httpclient/README.md)
 
 Initial release. Please see the README and wiki for information on the new design.
-
-

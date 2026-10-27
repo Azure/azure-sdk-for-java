@@ -11,10 +11,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.purestorageblock.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.LimitDetailsInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingStatusInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingUsageReportInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationInner;
+import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
 import com.azure.resourcemanager.purestorageblock.models.ReservationUpdate;
 
 /**
@@ -354,4 +356,100 @@ public interface ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ReservationBillingUsageReportInner getBillingReport(String resourceGroupName, String reservationName);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
+        String reservationName, LinkSaaSRequest body);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
+        String reservationName, LinkSaaSRequest body, Context context);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String reservationName, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String reservationName);
 }

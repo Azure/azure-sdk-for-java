@@ -28,7 +28,7 @@ public final class SubvolumesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.subvolumes()
-            .delete("fuofixcnpcfykkp", "ycpawm", "jp", "dpwrp", "fpcfjf", com.azure.core.util.Context.NONE);
+            .delete("u", "maxljalfihcj", "obcancdexxqcw", "a", "fgvaknokzwj", com.azure.core.util.Context.NONE);
 
     }
 }

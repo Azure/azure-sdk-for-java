@@ -166,10 +166,11 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
                            containerConfig: CosmosContainerConfig,
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None,
-                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): BulkWriter = {
+                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
+                           itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): BulkWriter = {
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
-   ItemWriteStrategy.ItemPatch,
+   itemWriteStrategy,
    5,
    bulkEnabled = true,
    bulkTransactional = false,
@@ -215,11 +216,12 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
                             container: CosmosAsyncContainer,
                             partitionKeyDefinition: PartitionKeyDefinition,
                             patchPredicateFilter: Option[String] = None,
-                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): PointWriter = {
+                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
+                            itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): PointWriter = {
 
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
-   ItemWriteStrategy.ItemPatch,
+   itemWriteStrategy,
    5,
    bulkEnabled = false,
    bulkTransactional = false,

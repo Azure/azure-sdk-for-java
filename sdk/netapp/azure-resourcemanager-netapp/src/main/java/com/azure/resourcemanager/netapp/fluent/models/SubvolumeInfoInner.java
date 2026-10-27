@@ -13,7 +13,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Subvolume Information properties.
+ * Subvolume Information properties
+ * Deprecated. This resource type will be removed in a future API version.
  */
 @Fluent
 public final class SubvolumeInfoInner extends ProxyResource {

@@ -11,7 +11,7 @@ public final class ResourceUsagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsagesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"limit\":1894418598,\"unit\":\"slfaoqzpiyyl\",\"currentValue\":1666369692,\"name\":{\"value\":\"whccs\",\"localizedValue\":\"kaivwit\"}},{\"limit\":264431505,\"unit\":\"wuggwolu\",\"currentValue\":1547983325,\"name\":{\"value\":\"emh\",\"localizedValue\":\"rsbrgzdwm\"}},{\"limit\":1592939681,\"unit\":\"pqwd\",\"currentValue\":1064810748,\"name\":{\"value\":\"ccnxqhuex\",\"localizedValue\":\"ttlstvlzywemhz\"}}],\"nextLink\":\"csdtclusiypbs\"}")
+            "{\"value\":[{\"limit\":46928565,\"unit\":\"llqwjygvjayvblmh\",\"currentValue\":1458242132,\"name\":{\"value\":\"bxvvyhg\",\"localizedValue\":\"pbyrqufegxu\"}},{\"limit\":950135360,\"unit\":\"bnhlmc\",\"currentValue\":25336970,\"name\":{\"value\":\"gitvg\",\"localizedValue\":\"hrixkwmy\"}},{\"limit\":1630324691,\"unit\":\"veg\",\"currentValue\":1540423394,\"name\":{\"value\":\"aixexccbdreaxh\",\"localizedValue\":\"xdrrvqahqkghtp\"}}],\"nextLink\":\"jnhyjsvf\"}")
             .toObject(ResourceUsagesListResult.class);
     }
 }

@@ -49,6 +49,22 @@ public final class JWTAuthenticatorProperties implements JsonSerializable<JWTAut
      */
     private List<JWTAuthenticatorValidationRule> userValidationRules;
 
+    /*
+     * PEM-encoded CA certificate bundle used to validate the connection when fetching discovery information. Use this
+     * for issuer endpoints that use private certificate authorities
+     * or environments where TLS inspection is performed.
+     * 
+     * The bundle must contain only CERTIFICATE PEM blocks, up to 10 CA certificates, and must be no larger than 20 KB
+     * in total. Include all CA certificates needed to validate
+     * the issuer endpoint's TLS certificate. Certificate revocation checking is not supported.
+     * 
+     * If provided, only these CAs are trusted instead of the well-known root CAs.
+     * If not provided and the managed cluster's properties.securityProfile.customCATrustCertificates is set, those
+     * certificates will be used instead. Otherwise, only the well-known
+     * root CAs are trusted.
+     */
+    private String certificateAuthorityBundle;
+
     /**
      * Creates an instance of JWTAuthenticatorProperties class.
      */
@@ -151,6 +167,48 @@ public final class JWTAuthenticatorProperties implements JsonSerializable<JWTAut
     }
 
     /**
+     * Get the certificateAuthorityBundle property: PEM-encoded CA certificate bundle used to validate the connection
+     * when fetching discovery information. Use this for issuer endpoints that use private certificate authorities
+     * or environments where TLS inspection is performed.
+     * 
+     * The bundle must contain only CERTIFICATE PEM blocks, up to 10 CA certificates, and must be no larger than 20 KB
+     * in total. Include all CA certificates needed to validate
+     * the issuer endpoint's TLS certificate. Certificate revocation checking is not supported.
+     * 
+     * If provided, only these CAs are trusted instead of the well-known root CAs.
+     * If not provided and the managed cluster's properties.securityProfile.customCATrustCertificates is set, those
+     * certificates will be used instead. Otherwise, only the well-known
+     * root CAs are trusted.
+     * 
+     * @return the certificateAuthorityBundle value.
+     */
+    public String certificateAuthorityBundle() {
+        return this.certificateAuthorityBundle;
+    }
+
+    /**
+     * Set the certificateAuthorityBundle property: PEM-encoded CA certificate bundle used to validate the connection
+     * when fetching discovery information. Use this for issuer endpoints that use private certificate authorities
+     * or environments where TLS inspection is performed.
+     * 
+     * The bundle must contain only CERTIFICATE PEM blocks, up to 10 CA certificates, and must be no larger than 20 KB
+     * in total. Include all CA certificates needed to validate
+     * the issuer endpoint's TLS certificate. Certificate revocation checking is not supported.
+     * 
+     * If provided, only these CAs are trusted instead of the well-known root CAs.
+     * If not provided and the managed cluster's properties.securityProfile.customCATrustCertificates is set, those
+     * certificates will be used instead. Otherwise, only the well-known
+     * root CAs are trusted.
+     * 
+     * @param certificateAuthorityBundle the certificateAuthorityBundle value to set.
+     * @return the JWTAuthenticatorProperties object itself.
+     */
+    public JWTAuthenticatorProperties withCertificateAuthorityBundle(String certificateAuthorityBundle) {
+        this.certificateAuthorityBundle = certificateAuthorityBundle;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -192,6 +250,7 @@ public final class JWTAuthenticatorProperties implements JsonSerializable<JWTAut
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("userValidationRules", this.userValidationRules,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("certificateAuthorityBundle", this.certificateAuthorityBundle);
         return jsonWriter.writeEndObject();
     }
 
@@ -227,6 +286,8 @@ public final class JWTAuthenticatorProperties implements JsonSerializable<JWTAut
                     List<JWTAuthenticatorValidationRule> userValidationRules
                         = reader.readArray(reader1 -> JWTAuthenticatorValidationRule.fromJson(reader1));
                     deserializedJWTAuthenticatorProperties.userValidationRules = userValidationRules;
+                } else if ("certificateAuthorityBundle".equals(fieldName)) {
+                    deserializedJWTAuthenticatorProperties.certificateAuthorityBundle = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

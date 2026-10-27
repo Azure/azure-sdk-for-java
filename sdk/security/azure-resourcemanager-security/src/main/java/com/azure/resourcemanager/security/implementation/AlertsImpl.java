@@ -107,16 +107,16 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName) {
+    public PagedIterable<Alert> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation) {
         PagedIterable<AlertInner> inner
-            = this.serviceClient().listResourceGroupLevelByRegion(ascLocation, resourceGroupName);
+            = this.serviceClient().listResourceGroupLevelByRegion(resourceGroupName, ascLocation);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName,
+    public PagedIterable<Alert> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation,
         Context context) {
         PagedIterable<AlertInner> inner
-            = this.serviceClient().listResourceGroupLevelByRegion(ascLocation, resourceGroupName, context);
+            = this.serviceClient().listResourceGroupLevelByRegion(resourceGroupName, ascLocation, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 

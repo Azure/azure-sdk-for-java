@@ -1,0 +1,42 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicepreparedimgspec/
+    exclude:
+      - sdk/containerservicepreparedimgspec/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicepreparedimgspec/
+    exclude:
+      - sdk/containerservicepreparedimgspec/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerservicepreparedimgspec
+    displayName: azure-resourcemanager-containerservicepreparedimgspec
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerservicepreparedimgspec
+    Artifacts:
+      - name: azure-resourcemanager-containerservicepreparedimgspec
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicepreparedimgspec
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicepreparedimgspec }}

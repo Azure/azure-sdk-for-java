@@ -14,14 +14,14 @@ public final class VaultUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultUsageInner model = BinaryData.fromString(
-            "{\"unit\":\"Count\",\"quotaPeriod\":\"svmkfssxquk\",\"nextResetTime\":\"2021-01-31T09:41:09Z\",\"currentValue\":4186813659074842761,\"limit\":7460763687758835204,\"name\":{\"value\":\"jzkdeslpvlopwi\",\"localizedValue\":\"ghxpkdw\"}}")
+            "{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"seyvj\",\"nextResetTime\":\"2021-09-13T12:12:28Z\",\"currentValue\":3556126798879742397,\"limit\":6845900513521781120,\"name\":{\"value\":\"eemaofmxagkvtme\",\"localizedValue\":\"qkrhahvljua\"}}")
             .toObject(VaultUsageInner.class);
-        Assertions.assertEquals(UsagesUnit.COUNT, model.unit());
-        Assertions.assertEquals("svmkfssxquk", model.quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T09:41:09Z"), model.nextResetTime());
-        Assertions.assertEquals(4186813659074842761L, model.currentValue());
-        Assertions.assertEquals(7460763687758835204L, model.limit());
-        Assertions.assertEquals("jzkdeslpvlopwi", model.name().value());
-        Assertions.assertEquals("ghxpkdw", model.name().localizedValue());
+        Assertions.assertEquals(UsagesUnit.COUNT_PER_SECOND, model.unit());
+        Assertions.assertEquals("seyvj", model.quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:12:28Z"), model.nextResetTime());
+        Assertions.assertEquals(3556126798879742397L, model.currentValue());
+        Assertions.assertEquals(6845900513521781120L, model.limit());
+        Assertions.assertEquals("eemaofmxagkvtme", model.name().value());
+        Assertions.assertEquals("qkrhahvljua", model.name().localizedValue());
     }
 }

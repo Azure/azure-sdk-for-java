@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ActionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ActionVersions_Get.json
+     * x-ms-original-file: 2026-08-01-preview/ActionVersions_Get.json
      */
     /**
      * Sample code: Get an Action Version for westus2 location.

@@ -5,26 +5,18 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.ContentUnderstandingServiceVersion;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
-import com.azure.ai.contentunderstanding.models.AnalysisResult;
-import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
-import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.AudioVisualSource;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
-import com.azure.ai.contentunderstanding.models.PointF;
-import com.azure.ai.contentunderstanding.models.RectangleF;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Async version of {@link Sample_Advanced_ContentSource}. Demonstrates how to access
@@ -36,14 +28,25 @@ import java.util.stream.Collectors;
  *
  * <p>For audio/video content, sources are {@link AudioVisualSource} instances
  * with a timestamp and an optional bounding box.</p>
+ *
+ * <p>Document sources use {@code D(page,x1,y1,...,xN,yN)} and audio/video sources use
+ * {@code AV(timeMs[,x,y,w,h])}; semicolons separate multiple regions. Document coordinates use
+ * {@link DocumentContent#getUnit()}, which is commonly inches for document input.</p>
+ *
+ * <p><b>Supported service API version:</b> {@code 2025-11-01}.</p>
+ *
+ * <p>For client and model deployment setup, see {@link Sample00_UpdateDefaultsAsync}. API key authentication is
+ * intended for local testing; prefer {@link DefaultAzureCredentialBuilder} for production applications.</p>
  */
 public class Sample_Advanced_ContentSourceAsync {
 
-    public static void main(String[] args) throws InterruptedException {
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+    public static void main(String[] args) {
+        String endpoint = SampleEnvironmentConfiguration.requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint)
+            .serviceVersion(ContentUnderstandingServiceVersion.V2025_11_01);
 
         ContentUnderstandingAsyncClient client;
         if (key != null && !key.trim().isEmpty()) {
@@ -59,136 +62,33 @@ public class Sample_Advanced_ContentSourceAsync {
         AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+        Boolean completed = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input))
+            .last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Invoice analysis"))
+            .map(result -> {
+                DocumentContent documentContent = Sample_Advanced_ContentSource.getDocumentContent(result);
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        operation.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
+                Sample_Advanced_ContentSource.documentContentSourceFromAnalysis(documentContent);
+                Sample_Advanced_ContentSource.contentSourceParseRoundTrip(documentContent);
+                return Boolean.TRUE;
             })
-            .doOnNext(result -> {
-                DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
-
-                // Part 1: Document ContentSource from analysis
-                documentContentSourceFromAnalysis(documentContent);
-
-                // Part 2: DocumentSource.parse() and ContentSource.parseAll() round-trip
-                contentSourceParseRoundTrip(documentContent);
-            })
-            .doOnError(error -> System.err.println("Analysis failed: " + error))
-            .doFinally(signal -> latch.countDown())
-            .subscribe();
-
-        // Surface timeouts as failures so the sample doesn't exit silently.
-        if (!latch.await(5, TimeUnit.MINUTES)) {
-            throw new RuntimeException("Sample timed out waiting for analysis to complete.");
+            .block();
+        if (!Boolean.TRUE.equals(completed)) {
+            throw new IllegalStateException("Content source workflow returned no result.");
         }
     }
 
-    /**
-     * Analyzes an invoice asynchronously and iterates over field grounding sources,
-     * casting each to {@link DocumentSource} to access page, polygon, and bounding box.
-     */
-    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis.async
-    private static void documentContentSourceFromAnalysis(DocumentContent documentContent) {
-        // Iterate over all fields and access their grounding sources.
-        for (Map.Entry<String, ContentField> entry : documentContent.getFields().entrySet()) {
-            String fieldName = entry.getKey();
-            ContentField field = entry.getValue();
-
-            System.out.println("Field: " + fieldName + " = " + field.getValue());
-
-            List<ContentSource> sources = field.getSources();
-            if (sources != null) {
-                for (ContentSource source : sources) {
-                    if (source instanceof DocumentSource) {
-                        DocumentSource docSource = (DocumentSource) source;
-                        System.out.println("  Source: page " + docSource.getPageNumber());
-
-                        // Polygon may be null for page-only D(page) wire-format sources.
-                        List<PointF> polygon = docSource.getPolygon();
-                        if (polygon != null) {
-                            String coords = polygon.stream()
-                                .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
-                                .collect(Collectors.joining(", "));
-                            System.out.println("  Polygon: [" + coords + "]");
-                        }
-
-                        // BoundingBox is null when Polygon is null.
-                        RectangleF bbox = docSource.getBoundingBox();
-                        if (bbox != null) {
-                            System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
-                                bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-                        }
-                    }
-                }
-            }
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
         }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
-    // END: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis.async
 
-    /**
-     * Demonstrates the two public parse methods and {@link ContentSource#toRawString(List)}:
-     * <ul>
-     *   <li>{@link DocumentSource#parse(String)} — typed method, returns {@code List<DocumentSource>}</li>
-     *   <li>{@link ContentSource#parseAll(String)} — base-class method, returns {@code List<ContentSource>}</li>
-     * </ul>
-     */
-    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.parse.async
-    private static void contentSourceParseRoundTrip(DocumentContent documentContent) {
-        // --- DocumentSource.parse() — typed method ---
-        // DocumentSource.parse() is the typed convenience method. It returns List<DocumentSource>
-        // directly — no casting needed. Use this when you know the source string contains only D() segments.
-        ContentField multiSourceField = documentContent.getFields().values().stream()
-            .filter(f -> f.getSources() != null && f.getSources().size() > 1)
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("No field with multiple sources found"));
-        String multiWireFormat = ContentSource.toRawString(multiSourceField.getSources());
-        System.out.println("Multi-segment wire format: " + multiWireFormat);
-
-        List<DocumentSource> docSources = DocumentSource.parse(multiWireFormat);
-        for (DocumentSource ds : docSources) {
-            RectangleF bbox = ds.getBoundingBox();
-            System.out.printf("  parse -> page %d, bbox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
-                ds.getPageNumber(), bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-        }
-
-        // --- toRawString + ContentSource.parseAll() round-trip ---
-        // ContentSource.parseAll() is the base-class method that handles both D() and AV() formats.
-        // It returns List<ContentSource>, so you cast each element to the appropriate subclass.
-        ContentField fieldWithSource = documentContent.getFields().values().stream()
-            .filter(f -> f.getSources() != null)
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("No field with sources found"));
-
-        String wireFormat = ContentSource.toRawString(fieldWithSource.getSources());
-        System.out.println("Wire format: " + wireFormat);
-
-        List<ContentSource> parsed = ContentSource.parseAll(wireFormat);
-        for (ContentSource cs : parsed) {
-            if (cs instanceof DocumentSource) {
-                DocumentSource ds = (DocumentSource) cs;
-                System.out.println("  parseAll -> DocumentSource: page " + ds.getPageNumber()
-                    + ", polygon points: " + (ds.getPolygon() != null ? ds.getPolygon().size() : 0));
-            }
-            // AudioVisualSource would be handled here once the service returns AV sources.
-        }
-    }
-    // END: com.azure.ai.contentunderstanding.advanced.contentsource.parse.async
-
-    // TODO: AudioVisualContentSource — demonstrate real AudioVisualSource grounding
-    // from audio/video analysis. The CU service does not currently return AudioVisualSource
-    // grounding (field.getSources()) for AI-generated audio fields. Once the service supports
-    // timestamp-level source grounding for audio/video content, implement a method here that:
-    //   1. Analyzes an audio/video file with a custom analyzer (estimateFieldSourceAndConfidence = true)
-    //   2. Iterates over fields and casts getSources() elements to AudioVisualSource
-    //   3. Shows AudioVisualSource.getTime() (Duration) and AudioVisualSource.getBoundingBox() (optional Rectangle)
-    //   4. Demonstrates ContentSource.parseAll() with AV(...) format strings
+    // AudioVisualSource grounding is not yet returned for AI-generated audio/video fields. Once supported, the
+    // corresponding timestamp and optional bounding-box flow can use the same parsing APIs demonstrated above.
 }

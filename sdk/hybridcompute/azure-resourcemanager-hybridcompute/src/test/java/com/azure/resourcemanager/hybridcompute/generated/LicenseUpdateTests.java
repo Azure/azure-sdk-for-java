@@ -19,12 +19,12 @@ public final class LicenseUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":269319267}},\"tags\":{\"utduqktapspwgcu\":\"ougpbkwt\",\"hbmdgbbjfdd\":\"rtumkdosvq\"}}")
+            "{\"properties\":{\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":269319267}},\"tags\":{\"utduqktapspwgcu\":\"ougpbkwt\",\"hbmdgbbjfdd\":\"rtumkdosvq\"}}")
             .toObject(LicenseUpdate.class);
         Assertions.assertEquals("ougpbkwt", model.tags().get("utduqktapspwgcu"));
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
         Assertions.assertEquals(269319267, model.processors());
@@ -36,7 +36,7 @@ public final class LicenseUpdateTests {
             = new LicenseUpdate().withTags(mapOf("utduqktapspwgcu", "ougpbkwt", "hbmdgbbjfdd", "rtumkdosvq"))
                 .withLicenseType(LicenseType.ESU)
                 .withState(LicenseState.ACTIVATED)
-                .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
                 .withEdition(LicenseEdition.DATACENTER)
                 .withType(LicenseCoreType.P_CORE)
                 .withProcessors(269319267);
@@ -44,7 +44,7 @@ public final class LicenseUpdateTests {
         Assertions.assertEquals("ougpbkwt", model.tags().get("utduqktapspwgcu"));
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
         Assertions.assertEquals(269319267, model.processors());
