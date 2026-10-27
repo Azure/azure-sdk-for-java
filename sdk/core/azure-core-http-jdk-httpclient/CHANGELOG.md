@@ -1,10 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.3.0 (2026-10-27)
 
 ### Bugs Fixed
 
@@ -22,6 +18,10 @@
 ### Other Changes
 
 - Documented the `jdk.httpclient.allowRestrictedHeaders` setting for explicit `Host` headers.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 
 ## 1.2.0 (2026-09-29)
 
