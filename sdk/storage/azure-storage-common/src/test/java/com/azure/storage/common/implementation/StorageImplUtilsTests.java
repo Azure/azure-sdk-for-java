@@ -113,6 +113,8 @@ public class StorageImplUtilsTests {
     @Test
     void pipelineSupportsDataLocalityReturnsFalseWhenPipelineIsNull() {
         assertFalse(StorageImplUtils.pipelineSupportsDataLocality(null));
+    }
+
     @ParameterizedTest
     @MethodSource("serviceEndpointValues")
     void isServiceEndpointDetectsServiceSubdomain(String host, String serviceSubDomain, boolean expected) {
