@@ -96,6 +96,12 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 
 
+Query-plan metrics preserve two existing series: `Document/QueryPlan` reports recorded Gateway attempts with their
+actual status, while `DocumentCollection/QueryPlan` reports plan-context counts, latency, and timelines
+with `RequestStatusCode=NONE`, including cached-plan contexts. When `ServiceEndpoint` is enabled, recorded attempts
+use their actual destination and plan-context measurements use `NONE` because they are not tied to an individual attempt.
+Neither QueryPlan series emits Gateway request RU-charge metrics.
+
 ## What metrics are emitted?
 
 
