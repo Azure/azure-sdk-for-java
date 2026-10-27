@@ -16,11 +16,6 @@
 
 * `V2026_04_01` was added and is the default service version.
 
-### Breaking Changes
-
-* Removed `CertificateServiceVersion.V2026_03_01_PREVIEW`, which was introduced in `4.10.0-beta.1`.
-  Use `CertificateServiceVersion.V2026_04_01` instead.
-
 ## 4.9.3 (2026-10-06)
 
 ### Other Changes
