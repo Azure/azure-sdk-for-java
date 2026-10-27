@@ -44,8 +44,8 @@ final class ExpectContinuePolicyHelper {
     }
 
     /**
-     * Determines whether the request carries a body at least as large as the given threshold. A body whose length
-     * cannot be determined ahead of time is always eligible.
+     * Determines whether the request carries a non-empty body at least as large as the given threshold. A body whose
+     * length cannot be determined ahead of time is always eligible, and a body known to be empty never is.
      *
      * @param request The request about to be sent.
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
@@ -57,8 +57,9 @@ final class ExpectContinuePolicyHelper {
             return false;
         }
 
+        // HTTP prohibits the expectation on requests without content, so a known empty body is never eligible.
         Long contentLength = getContentLength(request, body);
-        return contentLength == null || contentLength >= contentLengthThreshold;
+        return contentLength == null || (contentLength > 0 && contentLength >= contentLengthThreshold);
     }
 
     /**

@@ -51,7 +51,8 @@ public final class ExpectContinueOptions {
     /**
      * Gets the minimum request {@code Content-Length} for applying {@code Expect: 100-continue}. Requests whose body
      * length is known and smaller than this value will not have the header applied. Requests whose body length cannot
-     * be determined ahead of time are always eligible for the header.
+     * be determined ahead of time are always eligible for the header. Requests whose body is known to be empty never
+     * have the header applied.
      *
      * @return The threshold in bytes, or null if every request with a body is eligible.
      */
@@ -62,7 +63,8 @@ public final class ExpectContinueOptions {
     /**
      * Sets the minimum request {@code Content-Length} for applying {@code Expect: 100-continue}. Requests whose body
      * length is known and smaller than this value will not have the header applied. Requests whose body length cannot
-     * be determined ahead of time are always eligible for the header.
+     * be determined ahead of time are always eligible for the header. Requests whose body is known to be empty never
+     * have the header applied.
      *
      * @param contentLengthThreshold The threshold in bytes. A null value means every request with a body is eligible.
      * @return The updated options.

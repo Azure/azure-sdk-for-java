@@ -92,6 +92,30 @@ public class ExpectContinueTests {
         assertEquals(hasBody ? CONTINUE : null, client.expectHeaders.get(0));
     }
 
+    @SyncAsyncTest
+    public void onModeDoesNotApplyHeaderToEmptyBody() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), client);
+
+        send(pipeline, requestWithBody(0));
+
+        assertNull(client.expectHeaders.get(0));
+    }
+
+    @Test
+    public void throttleWindowDoesNotApplyHeaderToEmptyBody() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(503, 200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
+
+        // Opens the throttle window.
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        pipeline.sendSync(requestWithBody(0), Context.NONE);
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+
+        assertNull(client.expectHeaders.get(1), "an empty body must not carry the header");
+        assertEquals(CONTINUE, client.expectHeaders.get(2), "the throttle window should still be active");
+    }
+
     @ParameterizedTest
     @CsvSource({ "1024, 2048, true", "2048, 1024, false", "1024, 1024, true" })
     public void policyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
