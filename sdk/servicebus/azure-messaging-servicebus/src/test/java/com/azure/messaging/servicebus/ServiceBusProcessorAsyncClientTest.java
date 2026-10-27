@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -15,6 +16,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.Disposable;
@@ -47,6 +49,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.after;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -205,10 +209,57 @@ public class ServiceBusProcessorAsyncClientTest {
 
         assertTrue(errored, "Receive error was not surfaced to the error handler");
         // The terminal receive error triggers a restart - a second receiver is built.
-        verify(builder, timeout(5000).times(2)).buildAsyncClientForProcessor();
+        verify(builder, timeout(15000).times(2)).buildAsyncClientForProcessor();
         processor.close();
         // close() must not trigger a further restart - the count stays at two.
         verify(builder, times(2)).buildAsyncClientForProcessor();
+    }
+
+    @Test
+    public void persistentReceiveFailureWaitsForMonitor() {
+        final AtomicInteger subscriptions = new AtomicInteger();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.defer(() -> {
+            if (subscriptions.incrementAndGet() <= 5) {
+                return Flux.error(new AmqpException(false, "The entity does not exist.", null));
+            }
+            return Flux.never();
+        }));
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        try {
+            processor.start().block();
+            verify(builder, after(250).times(1)).buildAsyncClientForProcessor();
+            verify(builder, timeout(12000).times(2)).buildAsyncClientForProcessor();
+            processor.stop().block();
+            verify(builder, after(250).times(2)).buildAsyncClientForProcessor();
+        } finally {
+            processor.close();
+        }
+    }
+
+    @Test
+    public void stoppedTerminatedReceiverRestartsOffNonBlockingThread() {
+        final AtomicReference<FluxSink<ServiceBusMessageContext>> intake = new AtomicReference<>();
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder
+            = nonSessionBuilder(Flux.create(intake::set));
+        doAnswer(invocation -> {
+            assertFalse(Schedulers.isInNonBlockingThread(), "Receiver cleanup must allow blocking");
+            return null;
+        }).when(mockReceiver).close();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        try {
+            processor.start().block();
+            processor.stop().block();
+            intake.get().error(new IllegalStateException("receive failed while stopped"));
+            when(mockReceiver.receiveMessagesWithContextForAsyncProcessor()).thenReturn(Flux.never());
+            processor.start().subscribeOn(Schedulers.parallel()).block(Duration.ofSeconds(5));
+            assertTrue(processor.isRunning());
+            verify(builder, times(2)).buildAsyncClientForProcessor();
+            verify(mockReceiver).close();
+        } finally {
+            processor.close();
+        }
     }
 
     /**
@@ -374,7 +425,7 @@ public class ServiceBusProcessorAsyncClientTest {
         processor.start().block();
         assertTrue(processed.await(5, TimeUnit.SECONDS), "Message was not processed");
         // Exactly one restart: the original receiver plus one rebuild. The second (open) stream does not restart.
-        verify(builder, timeout(5000).times(2)).buildAsyncClientForProcessor();
+        verify(builder, timeout(15000).times(2)).buildAsyncClientForProcessor();
         processor.close();
         verify(builder, times(2)).buildAsyncClientForProcessor();
     }
@@ -704,7 +755,7 @@ public class ServiceBusProcessorAsyncClientTest {
 
         try {
             processor.start().block();
-            verify(broken, timeout(5000)).close();
+            verify(broken, timeout(15000)).close();
             verify(builder, timeout(15000).times(3)).buildAsyncClientForProcessor();
             assertTrue(processor.isRunning());
         } finally {
@@ -838,9 +889,11 @@ public class ServiceBusProcessorAsyncClientTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void sessionFactoryUsesV2AndPreservesDefaultsAndSubQueue(boolean renewalEnabled) throws Exception {
-        final Duration renewalDuration = renewalEnabled ? Duration.ofMinutes(1) : Duration.ZERO;
+    @NullSource
+    @ValueSource(ints = { 0, 60 })
+    public void sessionFactoryUsesV2AndPreservesDefaultsAndSubQueue(Integer renewalSeconds) throws Exception {
+        final Duration renewalDuration = renewalSeconds == null ? null : Duration.ofSeconds(renewalSeconds);
+        final Duration expectedDuration = renewalDuration == null ? Duration.ZERO : renewalDuration;
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
             = new ServiceBusClientBuilder().credential("namespace.servicebus.windows.net", mock(TokenCredential.class))
                 .sessionReceiver()
@@ -856,8 +909,9 @@ public class ServiceBusProcessorAsyncClientTest {
             assertEquals("queue/$deadletterqueue", sessions.getEntityPath());
             assertEquals(new com.azure.core.amqp.AmqpRetryOptions().getTryTimeout(), sessions.getSessionIdleTimeout());
             assertFalse(sessions.getReceiverOptions().isEnableAutoComplete());
-            assertEquals(renewalDuration, sessions.getReceiverOptions().getMaxLockRenewDuration());
-            assertEquals(renewalEnabled, sessions.getReceiverOptions().isAutoLockRenewEnabled());
+            assertEquals(expectedDuration, sessions.getReceiverOptions().getMaxLockRenewDuration());
+            assertEquals(renewalSeconds != null && renewalSeconds > 0,
+                sessions.getReceiverOptions().isAutoLockRenewEnabled());
         }
     }
 
@@ -985,6 +1039,44 @@ public class ServiceBusProcessorAsyncClientTest {
             verify(tracer).end(isNull(), eq(failure), eq(Context.NONE));
             verify(mockReceiver, never()).abandon(any());
         } finally {
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handlerFailureSpanIncludesErrorHandlingAndAbandon(boolean abandonFails) {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messageContexts(1));
+        final Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
+        when(mockReceiver.getInstrumentation()).thenReturn(
+            new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR));
+        final IllegalStateException failure = new IllegalStateException("handler failed");
+        final Sinks.Empty<Void> errorHandled = Sinks.empty();
+        final Sinks.Empty<Void> abandoned = Sinks.empty();
+        when(mockReceiver.abandon(any())).thenReturn(abandoned.asMono());
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.error(failure), error -> errorHandled.asMono(), options(1, false));
+        try {
+            processor.start().block();
+            verify(tracer, never()).end(any(), any(), any());
+            verify(mockReceiver, never()).abandon(any());
+            errorHandled.tryEmitEmpty();
+            verify(mockReceiver).abandon(any());
+            verify(tracer, never()).end(any(), any(), any());
+            if (abandonFails) {
+                abandoned.tryEmitError(new ServiceBusException(new IllegalStateException("abandon failed"),
+                    ServiceBusErrorSource.ABANDON));
+            } else {
+                abandoned.tryEmitEmpty();
+            }
+            verify(tracer).end(isNull(), eq(failure), eq(Context.NONE));
+            verify(mockReceiver, never()).complete(any());
+            verify(builder).buildAsyncClientForProcessor();
+        } finally {
+            errorHandled.tryEmitEmpty();
+            abandoned.tryEmitEmpty();
             processor.close();
         }
     }

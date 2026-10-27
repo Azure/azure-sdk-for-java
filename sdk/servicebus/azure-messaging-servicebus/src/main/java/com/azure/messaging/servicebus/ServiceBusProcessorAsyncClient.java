@@ -174,7 +174,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the processor has started.
      */
     public Mono<Void> start() {
-        return Mono.fromRunnable(() -> {
+        return Mono.<Void>fromRunnable(() -> {
             synchronized (this) {
                 if (isRunning.get()) {
                     LOGGER.info("Processor is already running");
@@ -200,7 +200,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                     throw LOGGER.logExceptionAsError(error);
                 }
             }
-        });
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -420,10 +420,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             .subscribe(ignored -> {
             }, throwable -> {
                 LOGGER.info("Error receiving messages.", throwable);
-                markTerminatedAndRestart(subscriptions);
+                markReceiveTerminated(subscriptions);
             }, () -> {
                 LOGGER.info("Completed receiving messages.");
-                markTerminatedAndRestart(subscriptions);
+                markReceiveTerminated(subscriptions);
             });
         subscriptions.add(disposable);
     }
@@ -456,9 +456,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                         return Mono.<Void>empty();
                     }
                     return receiverClient.complete(messageContext.getMessage());
-                }));
-            return receiverClient.getInstrumentation()
-                .instrumentProcessAsync(messageContext.getMessage(), processing)
+                }))
                 // Preserve service error sources from reactive manual settlement.
                 .onErrorResume(
                     handlerError -> handleError(handlerSucceeded.get() || handlerError instanceof ServiceBusException
@@ -467,12 +465,15 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                             .then(Mono.defer(() -> {
                                 if (settleMessages && !handlerSucceeded.get()) {
                                     LOGGER.warning("Error when processing message. Abandoning message.", handlerError);
-                                    return receiverClient.abandon(messageContext.getMessage())
-                                        .onErrorResume(this::handleError);
+                                    return receiverClient.abandon(messageContext.getMessage());
                                 }
                                 return Mono.<Void>empty();
-                            })))
-                .then();
+                            }).onErrorResume(this::handleError))
+                            .then(Mono.error(handlerError)));
+            return receiverClient.getInstrumentation()
+                .instrumentProcessAsync(messageContext.getMessage(), processing)
+                // Recovery has reported the error; expose it to tracing without terminating intake.
+                .onErrorComplete();
         });
     }
 
@@ -531,20 +532,15 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
         });
     }
 
-    // Closing a receiver can block. Bind recovery to its receive cycle and move it off the receive thread.
-    private void markTerminatedAndRestart(Disposable cycle) {
+    // Let the monitor rebuild terminal streams so persistent non-transient errors cannot cause a hot restart loop.
+    private void markReceiveTerminated(Disposable cycle) {
         if (receiveDisposable.get() == cycle) {
             receiveTerminated = true;
         }
-        Mono.fromRunnable(() -> restartMessageReceiver(cycle)).subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
-    // Auto-recovery is one restart per receive-stream terminal (error/completion). There is deliberately no backoff
-    // or attempt cap here: the underlying ServiceBusReceiverAsyncClient applies the configured retry policy (with
-    // backoff) before surfacing a terminal error, so transient failures are absorbed there. This matches the sync
-    // ServiceBusProcessorClient - a fast persistent failure (entity deleted, credentials revoked) relies on that
-    // receiver-level policy rather than a second backoff layer here. A terminal receive error cancels accepted
-    // handlers; unlike close(), recovery cannot promise to retain their links for settlement.
+    // A terminal receive error cancels accepted handlers; unlike close(), recovery cannot retain their links
+    // for settlement.
     private synchronized void restartMessageReceiver(Disposable cycle) {
         if (!isRunning.get()
             || closing

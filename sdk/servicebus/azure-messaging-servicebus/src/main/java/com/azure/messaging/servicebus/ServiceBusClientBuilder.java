@@ -2517,6 +2517,9 @@ public final class ServiceBusClientBuilder
         }
 
         ServiceBusSessionReceiverAsyncClient buildAsyncClientForAsyncProcessor() {
+            if (maxAutoLockRenewDuration == null) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
             return buildAsyncClient(false, true, ReceiverKind.PROCESSOR);
         }
 

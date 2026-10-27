@@ -69,6 +69,8 @@ the asynchronous durable write or flush in your application, and complete the Se
 Do not return `Mono.empty()` while a detached callback is still working: the processor uses the returned operation's
 lifetime to bound concurrency, track processing spans, and drain handlers on shutdown.
 Automatic settlement is also reactive; when enabled, successful handler completion triggers message completion.
+On failure, the processing span includes the error handler and automatic abandonment. Recovery checks run every ten
+seconds so persistent receive failures cannot create a tight restart loop.
 The session processor's `maxConcurrentCalls` bounds total concurrent handlers across sessions, not handlers per session.
 For ordered work, use sessions and set `maxConcurrentCalls` to one. Higher values allow handlers for the same session
 to overlap. Setting concurrency to one on a non-session queue does not guarantee ordering.
