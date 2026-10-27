@@ -14,7 +14,6 @@
 
 #### `CertificateServiceVersion` was modified
 
-* `V2026_03_01_PREVIEW` was added
 * `V2026_04_01` was added and is the default service version.
 
 ## 4.9.3 (2026-10-06)
