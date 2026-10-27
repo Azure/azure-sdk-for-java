@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class HcpOpenShiftClustersRequestAdminCredentialMockTests {
     @Test
     public void testRequestAdminCredential() throws Exception {
-        String responseStr = "{\"kubeconfig\":\"oz\",\"expirationTimestamp\":\"2021-03-28T00:35:09Z\"}";
+        String responseStr = "{\"kubeconfig\":\"hfkvtvsexsowuel\",\"expirationTimestamp\":\"2021-08-05T12:32:54Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class HcpOpenShiftClustersRequestAdminCredentialMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HcpOpenShiftClusterAdminCredential response = manager.hcpOpenShiftClusters()
-            .requestAdminCredential("vxwc", "elpcirelsfeaenwa",
-                new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest("atklddxbjhwuaa"),
+            .requestAdminCredential("qhl", "vriiio",
+                new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest("al"),
                 com.azure.core.util.Context.NONE);
 
     }

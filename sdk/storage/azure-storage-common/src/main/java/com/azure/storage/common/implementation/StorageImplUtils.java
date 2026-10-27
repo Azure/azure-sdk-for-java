@@ -296,6 +296,38 @@ public class StorageImplUtils {
     }
 
     /**
+     * Replaces a storage service subdomain in an endpoint while leaving account names containing the same text intact.
+     *
+     * @param endpoint The endpoint to convert.
+     * @param desiredEndpoint The desired service subdomain.
+     * @param currentEndpoint The current service subdomain.
+     * @return The converted endpoint, or the original endpoint if it already targets the desired service or doesn't
+     * contain the current service subdomain.
+     */
+    public static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
+        String desiredStringToMatch = "." + desiredEndpoint + ".";
+        String currentRegexToMatch = "\\." + currentEndpoint + "\\.";
+        if (endpoint.contains(desiredStringToMatch)) {
+            return endpoint;
+        } else {
+            return endpoint.replaceFirst(currentRegexToMatch, desiredStringToMatch);
+        }
+    }
+
+    /**
+     * Determines whether a host contains the given storage service subdomain.
+     *
+     * @param host The host string to check.
+     * @param serviceSubDomain The service subdomain (e.g., "blob", "file", "queue", or "dfs").
+     * @return {@code true} if the host contains the service subdomain.
+     */
+    public static boolean isServiceEndpoint(String host, String serviceSubDomain) {
+        return !CoreUtils.isNullOrEmpty(host)
+            && !CoreUtils.isNullOrEmpty(serviceSubDomain)
+            && host.toLowerCase(Locale.ROOT).contains("." + serviceSubDomain + ".");
+    }
+
+    /**
      * Gets the account name from a host string, stripping IPv6, dualstack, and secondary suffixes.
      * <p>
      * For IPv6/dualstack endpoints, hosts look like {@code accountname-ipv6.blob.core.windows.net} or
@@ -316,8 +348,7 @@ public class StorageImplUtils {
 
         int accountEndIndex = host.indexOf('.');
         if (accountEndIndex >= 0) {
-            int serviceStartIndex = host.indexOf(serviceSubDomain, accountEndIndex);
-            if (serviceStartIndex > -1) {
+            if (isServiceEndpoint(host, serviceSubDomain)) {
                 String accountName = host.substring(0, accountEndIndex);
 
                 // Note: The suffixes are specifically checked/trimmed in this order to
@@ -339,6 +370,28 @@ public class StorageImplUtils {
                 return accountName;
             }
         }
+        return null;
+    }
+
+    /**
+     * Gets the account name from the first recognized storage service subdomain in a host.
+     *
+     * @param host The host string from a URL.
+     * @param serviceSubDomains The recognized service subdomains in matching order.
+     * @return The account name, or {@code null} if the host doesn't contain a recognized service subdomain.
+     */
+    public static String getAccountNameFromKnownServiceHost(String host, String... serviceSubDomains) {
+        if (serviceSubDomains == null) {
+            return null;
+        }
+
+        for (String serviceSubDomain : serviceSubDomains) {
+            String accountName = getAccountNameFromHost(host, serviceSubDomain);
+            if (accountName != null) {
+                return accountName;
+            }
+        }
+
         return null;
     }
 

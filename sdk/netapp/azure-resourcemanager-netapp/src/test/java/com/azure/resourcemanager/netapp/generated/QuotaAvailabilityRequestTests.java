@@ -12,24 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"cxtczhupeukn\",\"type\":\"Microsoft.NetApp/netAppAccounts/backupVaults/backups\",\"resourceGroup\":\"d\"}")
+        QuotaAvailabilityRequest model = BinaryData
+            .fromString(
+                "{\"name\":\"i\",\"type\":\"Microsoft.NetApp/netAppAccounts\",\"resourceGroup\":\"wncvjtszcofiz\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("cxtczhupeukn", model.name());
-        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_BACKUP_VAULTS_BACKUPS,
-            model.type());
-        Assertions.assertEquals("d", model.resourceGroup());
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("wncvjtszcofiz", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("cxtczhupeukn")
-            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_BACKUP_VAULTS_BACKUPS)
-            .withResourceGroup("d");
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("i")
+            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+            .withResourceGroup("wncvjtszcofiz");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("cxtczhupeukn", model.name());
-        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_BACKUP_VAULTS_BACKUPS,
-            model.type());
-        Assertions.assertEquals("d", model.resourceGroup());
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("wncvjtszcofiz", model.resourceGroup());
     }
 }

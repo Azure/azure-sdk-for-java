@@ -93,6 +93,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private BlobServiceVersion version;
     private BlobAudience audience;
     private ExpectContinueOptions expectContinueOptions;
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -100,6 +101,23 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      */
     public BlobContainerClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication of eligible GET blob requests made by blob
+     * clients derived from this container client.
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}; requests that are not
+     * eligible continue to use bearer token authentication. Sessions are disabled by default.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache. See {@link SessionContext}
+     * for configuration, cache-sharing requirements, and the effect of changing settings after a client is built.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated BlobContainerClientBuilder object.
+     */
+    public BlobContainerClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
+        return this;
     }
 
     /**
@@ -135,7 +153,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -176,18 +194,19 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER, sessionContext, serviceVersion);
     }
 
     /**
@@ -622,4 +641,5 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         this.expectContinueOptions = expectContinueOptions;
         return this;
     }
+
 }

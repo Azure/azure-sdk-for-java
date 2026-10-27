@@ -95,6 +95,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private BlobAudience audience;
     private ExpectContinueOptions expectContinueOptions;
     private boolean anonymousAccess;
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -125,7 +126,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -141,6 +142,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
+                foundCredential = true;
+                break;
+            }
         }
         anonymousAccess = !foundCredential;
 
@@ -148,12 +153,13 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER);
+    private HttpPipeline constructPipeline(BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER, sessionContext, serviceVersion);
     }
 
     /**
@@ -177,7 +183,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -190,6 +196,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 break;
             }
             if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
                 foundCredential = true;
                 break;
             }
@@ -601,6 +611,32 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      */
     public BlobServiceClientBuilder expectContinueBehavior(ExpectContinueOptions expectContinueOptions) {
         this.expectContinueOptions = expectContinueOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication by container and blob clients derived from
+     * this service client.
+     * <p>
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}. The default session mode,
+     * {@link SessionContext.SessionMode#AUTO}, currently disables sessions. Set the context's session mode to
+     * {@link SessionContext.SessionMode#ENABLED} to enable session authentication for eligible GET blob requests.
+     * Other requests, and requests for which session acquisition fails, use bearer token authentication.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache, including independently built
+     * clients. Each client acquires sessions through its own pipeline. The context can override the endpoint and credential
+     * used for session acquisition without changing the client's settings for other requests. Share the context only
+     * across clients targeting the same endpoint with compatible identity and network contexts, or use separate instances
+     * for independent caches.
+     * <p>
+     * The session mode and account name are captured when the client is built. Changing them on the context affects only
+     * clients built afterward; the session cache remains shared.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated BlobServiceClientBuilder object.
+     */
+    public BlobServiceClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
         return this;
     }
 }

@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-03-25T11:59:34Z\",\"state\":\"Active\",\"severity\":\"Low\",\"clearedCount\":665890978,\"reportedCount\":72207954,\"suspects\":[{\"extension\":\"jts\",\"resolution\":\"FalsePositive\",\"fileCount\":120239759,\"suspectFiles\":[{}]},{\"extension\":\"zarpzeqacdldt\",\"resolution\":\"FalsePositive\",\"fileCount\":1809146245,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"pc\"},\"id\":\"hnuqndaizu\",\"name\":\"fkhuytu\",\"type\":\"zx\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-09-30T11:14:47Z\",\"state\":\"Active\",\"severity\":\"Moderate\",\"clearedCount\":896412004,\"reportedCount\":834436934,\"suspects\":[{\"extension\":\"bxubmdna\",\"resolution\":\"FalsePositive\",\"fileCount\":1699844776,\"suspectFiles\":[{}]},{\"extension\":\"jelaqacigele\",\"resolution\":\"PotentialThreat\",\"fileCount\":883742006,\"suspectFiles\":[{},{}]},{\"extension\":\"z\",\"resolution\":\"FalsePositive\",\"fileCount\":1120950278,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"nrlkwzdqy\",\"resolution\":\"PotentialThreat\",\"fileCount\":1893687260,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"ptsoqfyiase\"},\"id\":\"hkrttzrazis\",\"name\":\"ykiue\",\"type\":\"vanbwzohmnrxxbs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("odacpunettepdjxq", "skoynuiylpc", "aewse", "vesk", com.azure.core.util.Context.NONE);
+            .list("ueayfbpcmsplb", "rrueqthwmg", "mbscbbx", "gdhxi", com.azure.core.util.Context.NONE);
 
     }
 }

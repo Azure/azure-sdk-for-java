@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import reactor.core.Exceptions;
 
@@ -14,14 +15,7 @@ import java.util.stream.Collectors;
 
 public class DataLakeImplUtils {
     public static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
-        // Add the . on either side to prevent overwriting an account name.
-        String desiredStringToMatch = "." + desiredEndpoint + ".";
-        String currentRegexToMatch = "\\." + currentEndpoint + "\\.";
-        if (endpoint.contains(desiredStringToMatch)) {
-            return endpoint;
-        } else {
-            return endpoint.replaceFirst(currentRegexToMatch, desiredStringToMatch);
-        }
+        return StorageImplUtils.endpointToDesiredEndpoint(endpoint, desiredEndpoint, currentEndpoint);
     }
 
     public static Throwable transformBlobStorageException(Throwable ex) {

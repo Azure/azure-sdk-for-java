@@ -7,6 +7,9 @@
   `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
   requires an HTTP client that withholds the request body until the service responds.
 
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -50,6 +53,12 @@
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
+
+- Updated the documentation of `BlobContainerClient`/`BlobContainerAsyncClient` `delete`, `deleteWithResponse`,
+  `deleteIfExists`, and `deleteIfExistsWithResponse`, and `BlobServiceClient`/`BlobServiceAsyncClient`
+  `deleteBlobContainer`, `deleteBlobContainerWithResponse`, `deleteBlobContainerIfExists`, and
+  `deleteBlobContainerIfExistsWithResponse` to note that operations on blobs within a deleted container, including reads
+  and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
 
 ## 12.35.2 (2026-10-06)
 

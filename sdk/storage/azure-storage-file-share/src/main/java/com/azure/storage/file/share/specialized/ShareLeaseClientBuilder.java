@@ -11,7 +11,9 @@ import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
+import com.azure.storage.file.share.ShareFileClientBuilder;
 import com.azure.storage.file.share.ShareServiceVersion;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.URL;
@@ -116,12 +118,18 @@ public final class ShareLeaseClientBuilder {
      * Configures the builder based on the passed {@link ShareFileClient}. This will set the {@link HttpPipeline} and
      * {@link URL} that are used to interact with the service.
      *
+     * <p>File-ID-addressed clients are not supported for lease operations. A client created via
+     * {@link ShareFileClient#getFileId()} or {@link ShareFileClientBuilder#fileId(String)} must be rejected before any
+     * request is sent.</p>
+     *
      * @param fileClient ShareFileClient used to configure the builder.
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileClient} is {@code null}.
+     * @throws IllegalStateException If {@code fileClient} is file-ID-addressed.
      */
     public ShareLeaseClientBuilder fileClient(ShareFileClient fileClient) {
         Objects.requireNonNull(fileClient);
+        ShareErrors.validatePathOperation(fileClient.getFileId(), "fileClient");
         this.pipeline = fileClient.getHttpPipeline();
         this.url = fileClient.getAccountUrl();
         this.shareName = fileClient.getShareName();
@@ -136,12 +144,18 @@ public final class ShareLeaseClientBuilder {
      * Configures the builder based on the passed {@link ShareFileAsyncClient}. This will set the {@link HttpPipeline}
      * and {@link URL} that are used to interact with the service.
      *
+     * <p>File-ID-addressed clients are not supported for lease operations. A client created via
+     * {@link ShareFileAsyncClient#getFileId()} or {@link ShareFileClientBuilder#fileId(String)} must be rejected before
+     * any request is sent.</p>
+     *
      * @param fileAsyncClient ShareFileAsyncClient used to configure the builder.
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileAsyncClient} is {@code null}.
+     * @throws IllegalStateException If {@code fileAsyncClient} is file-ID-addressed.
      */
     public ShareLeaseClientBuilder fileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
         Objects.requireNonNull(fileAsyncClient);
+        ShareErrors.validatePathOperation(fileAsyncClient.getFileId(), "fileAsyncClient");
         this.pipeline = fileAsyncClient.getHttpPipeline();
         this.url = fileAsyncClient.getAccountUrl();
         this.shareName = fileAsyncClient.getShareName();
