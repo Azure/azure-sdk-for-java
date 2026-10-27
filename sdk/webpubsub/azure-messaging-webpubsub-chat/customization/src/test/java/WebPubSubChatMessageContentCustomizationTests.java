@@ -17,16 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WebPubSubChatMessageContentCustomizationTests {
     @Test
-    public void customizesGeneratedModelAndIsIdempotent() {
-        CompilationUnit ast = StaticJavaParser
-            .parse(String.join("\n", "import com.azure.core.annotation.Fluent;", "import java.util.Set;",
-                "import java.util.HashSet;", "@Fluent public final class MessageContent {", "    private String text;",
-                "    private byte[] binary;", "    private final Set<String> updatedProperties = new HashSet<>();",
-                "    public MessageContent() {}", "    public MessageContent setText(String text) { return this; }",
-                "    public MessageContent setBinary(byte[] binary) { return this; }",
-                "    public JsonWriter toJson(JsonWriter writer) { return writer; }",
-                "    private JsonWriter toJsonMergePatch(JsonWriter writer) { return writer; }",
-                "    public static MessageContent fromJson(JsonReader reader) { return null; }", "}"));
+    public void removesRegeneratedMutableMembersAndIsIdempotent() throws IOException {
+        CompilationUnit ast = readModel();
+        ClassOrInterfaceDeclaration original = ast.getClassByName("MessageContent").get();
+        original.addMember(StaticJavaParser.parseBodyDeclaration(
+            "private final java.util.Set<String> updatedProperties = new java.util.HashSet<>();"));
+        original.addMember(
+            StaticJavaParser.parseBodyDeclaration("public MessageContent setText(String text) { return this; }"));
+        original.addMember(
+            StaticJavaParser.parseBodyDeclaration("public MessageContent setBinary(byte[] binary) { return this; }"));
+        original.addMember(StaticJavaParser
+            .parseBodyDeclaration("private JsonWriter toJsonMergePatch(JsonWriter writer) { return writer; }"));
 
         WebPubSubChatCustomization.customizeMessageContent(ast);
         ClassOrInterfaceDeclaration model = ast.getClassByName("MessageContent").get();
@@ -48,11 +49,22 @@ public class WebPubSubChatMessageContentCustomizationTests {
 
     @Test
     public void checkedInModelIncludesCustomization() throws IOException {
-        String source = new String(Files.readAllBytes(Paths.get("..", "src", "main", "java", "com", "azure",
-            "messaging", "webpubsub", "chat", "models", "MessageContent.java")), StandardCharsets.UTF_8);
-        CompilationUnit expected = StaticJavaParser.parse(source);
+        CompilationUnit expected = readModel();
+        ClassOrInterfaceDeclaration model = expected.getClassByName("MessageContent").get();
+        for (String name : new String[] { "toJson", "fromJson", "fromText", "fromBinary" }) {
+            assertFalse(model.getMethodsByName(name).get(0).getAnnotationByName("Generated").isPresent());
+        }
+        for (String name : new String[] { "text", "binary" }) {
+            assertFalse(model.getFieldByName(name).get().getAnnotationByName("Generated").isPresent());
+        }
         CompilationUnit actual = expected.clone();
         WebPubSubChatCustomization.customizeMessageContent(actual);
         assertEquals(expected.toString(), actual.toString());
+    }
+
+    private static CompilationUnit readModel() throws IOException {
+        String source = new String(Files.readAllBytes(Paths.get("..", "src", "main", "java", "com", "azure",
+            "messaging", "webpubsub", "chat", "models", "MessageContent.java")), StandardCharsets.UTF_8);
+        return StaticJavaParser.parse(source);
     }
 }

@@ -7,7 +7,6 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import org.slf4j.Logger;
 
@@ -113,6 +112,7 @@ public final class WebPubSubChatCustomization extends Customization {
     }
 
     static void customizeMessageContent(CompilationUnit ast) {
+        // Partial update preserves handwritten members without @Generated, but regenerates removed setters.
         ClassOrInterfaceDeclaration model = ast.getClassByName("MessageContent")
             .orElseThrow(() -> new IllegalStateException("MessageContent model not found."));
         ast.getImports()
@@ -121,8 +121,6 @@ public final class WebPubSubChatCustomization extends Customization {
                     || importDeclaration.getNameAsString().equals("java.util.HashSet")
                     || importDeclaration.getNameAsString().equals("java.util.Set"));
         ast.addImport("com.azure.core.annotation.Immutable");
-        ast.addImport("com.azure.core.util.logging.ClientLogger");
-        ast.addImport("java.util.Objects");
         model.getAnnotations().removeIf(annotation -> annotation.getNameAsString().equals("Fluent"));
         if (!model.getAnnotationByName("Immutable").isPresent()) {
             model.addMarkerAnnotation("Immutable");
@@ -130,63 +128,10 @@ public final class WebPubSubChatCustomization extends Customization {
         model.setJavadocComment("Message content containing exactly one of text or binary data.\n"
             + "Use {@link #fromText(String)} or {@link #fromBinary(byte[])} to create content.\n"
             + "The getter for the unselected representation returns {@code null}.");
-        model.getFieldByName("text").get().setFinal(true);
-        model.getFieldByName("binary").get().setFinal(true);
         model.getFieldByName("updatedProperties").ifPresent(field -> field.remove());
-        if (!model.getFieldByName("LOGGER").isPresent()) {
-            model.addFieldWithInitializer("ClientLogger", "LOGGER",
-                StaticJavaParser.parseExpression("new ClientLogger(MessageContent.class)"), Modifier.Keyword.PRIVATE,
-                Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
-        }
-        model.getConstructors().forEach(constructor -> constructor.remove());
-        model.addMember(StaticJavaParser
-            .parseBodyDeclaration(String.join("\n", "private MessageContent(String text, byte[] binary) {",
-                "    this.text = text;", "    this.binary = CoreUtils.clone(binary);", "}")));
         model.getMethodsByName("setText").forEach(method -> method.remove());
         model.getMethodsByName("setBinary").forEach(method -> method.remove());
-        model.getMethodsByName("fromText").forEach(method -> method.remove());
-        model.getMethodsByName("fromBinary").forEach(method -> method.remove());
-        model.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n", "/**",
-            " * Creates text message content.", " *", " * @param text the text content, which may be empty.",
-            " * @return content containing the text and no binary data.",
-            " * @throws NullPointerException if text is null.", " */",
-            "public static MessageContent fromText(String text) {",
-            "    return new MessageContent(Objects.requireNonNull(text, \"'text' cannot be null.\"), null);", "}")));
-        model.addMember(StaticJavaParser.parseBodyDeclaration(
-            String.join("\n", "/**", " * Creates binary message content. The supplied array is defensively copied.",
-                " *", " * @param binary the binary content, which may be empty.",
-                " * @return content containing the binary data and no text.",
-                " * @throws NullPointerException if binary is null.", " */",
-                "public static MessageContent fromBinary(byte[] binary) {",
-                "    return new MessageContent(null, Objects.requireNonNull(binary, \"'binary' cannot be null.\"));",
-                "}")));
         model.getMethodsByName("toJsonMergePatch").forEach(method -> method.remove());
-        model.getMethodsByName("toJson")
-            .get(0)
-            .setBody(StaticJavaParser.parseBlock(String.join("\n", "{", "    jsonWriter.writeStartObject();",
-                "    if (this.text != null) {", "        jsonWriter.writeStringField(\"text\", this.text);",
-                "    } else {", "        jsonWriter.writeBinaryField(\"binary\", this.binary);", "    }",
-                "    return jsonWriter.writeEndObject();", "}")));
-        model.getMethodsByName("fromJson")
-            .get(0)
-            .setBody(StaticJavaParser.parseBlock(String.join("\n", "{", "    return jsonReader.readObject(reader -> {",
-                "        String text = null;", "        byte[] binary = null;",
-                "        while (reader.nextToken() != JsonToken.END_OBJECT) {",
-                "            String fieldName = reader.getFieldName();", "            reader.nextToken();",
-                "            if (\"text\".equals(fieldName)) {", "                text = reader.getString();",
-                "            } else if (\"binary\".equals(fieldName)) {",
-                "                binary = reader.getBinary();", "            } else {",
-                "                reader.skipChildren();", "            }", "        }",
-                "        if ((text == null) == (binary == null)) {",
-                "            throw LOGGER.logExceptionAsError(new IllegalStateException(",
-                "                \"Message content must contain exactly one non-null text or binary value.\"));",
-                "        }", "        return text != null ? fromText(text) : fromBinary(binary);", "    });", "}")));
-        model.getMethodsByName("fromJson")
-            .get(0)
-            .setJavadocComment(String.join("\n", "Reads text or binary message content from JSON.", "",
-                "@param jsonReader the JSON reader.", "@return the message content, or null if the JSON value is null.",
-                "@throws IllegalStateException if both representations are non-null or neither is non-null.",
-                "@throws IOException if an error occurs while reading the content."));
     }
 
     private static void customizeTokenClient(PackageCustomization chatPackage, String className) {

@@ -26,13 +26,11 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
     /*
      * Text content.
      */
-    @Generated
     private final String text;
 
     /*
      * Binary content (base64 encoded).
      */
-    @Generated
     private final byte[] binary;
 
     @Generated
@@ -82,7 +80,6 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +99,6 @@ public final class MessageContent implements JsonSerializable<MessageContent> {
      * @throws IllegalStateException if both representations are non-null or neither is non-null.
      * @throws IOException if an error occurs while reading the content.
      */
-    @Generated
     public static MessageContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
