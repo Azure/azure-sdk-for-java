@@ -3,14 +3,12 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings. - See [PR 50888](https://github.com/Azure/azure-sdk-for-java/pull/50888)
+* Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings. - See [PR 50888](https://github.com/Azure/azure-sdk-for-java/pull/50888), [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
-* Excluded `Document/QueryPlan` attempts from Gateway request RU-charge metrics. - See [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
-* Preserved existing QueryPlan metric tags, counts, latency measurements, and cached-plan reporting when adding Gateway endpoint tags. - See [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes
