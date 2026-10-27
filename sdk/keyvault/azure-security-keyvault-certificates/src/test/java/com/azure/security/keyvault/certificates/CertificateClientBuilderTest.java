@@ -50,13 +50,18 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
+        assertEquals("2026-04-01", CertificateServiceVersion.getLatest().getVersion());
         CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(request -> {
+                assertEquals("api-version=2026-04-01", request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            })
             .buildClient();
 
         assertNotNull(certificateClient);
         assertEquals(CertificateClient.class.getSimpleName(), certificateClient.getClass().getSimpleName());
+        assertThrows(HttpResponseException.class, () -> certificateClient.getCertificate(certificateName));
     }
 
     @Test
@@ -73,13 +78,18 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
+        assertEquals("2026-04-01", CertificateServiceVersion.getLatest().getVersion());
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(request -> {
+                assertEquals("api-version=2026-04-01", request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            })
             .buildAsyncClient();
 
         assertNotNull(certificateAsyncClient);
         assertEquals(CertificateAsyncClient.class.getSimpleName(), certificateAsyncClient.getClass().getSimpleName());
+        assertThrows(HttpResponseException.class, () -> certificateAsyncClient.getCertificate(certificateName).block());
     }
 
     @Test
