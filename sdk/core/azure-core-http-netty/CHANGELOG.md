@@ -11,6 +11,10 @@
 
 ### Bugs Fixed
 
+- Fixed asynchronous response downloads blocking Netty event-loop threads while waiting for destination writes.
+  Response bytes are copied to heap buffers so pending writes remain safe after Netty releases its network buffers.
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
 - Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
 - Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
 - Fixed response and read timeouts not being enforced when the write timeout is disabled.

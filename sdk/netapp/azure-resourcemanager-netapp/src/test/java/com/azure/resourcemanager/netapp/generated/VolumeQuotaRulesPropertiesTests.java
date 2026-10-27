@@ -13,7 +13,7 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":4257608581453488752,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"p\"}")
+            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":4257608581453488752,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"p\"}")
             .toObject(VolumeQuotaRulesProperties.class);
         Assertions.assertEquals(4257608581453488752L, model.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());

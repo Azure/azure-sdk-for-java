@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,15 +26,24 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
+ * <p>
+ * To send an explicit {@code Host} header, start the JVM with
+ * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
+ * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
+ * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
  */
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
@@ -191,6 +201,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -218,8 +230,10 @@ public class JdkHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store used to
      * @return The updated JdkHttpClientBuilder object.
@@ -241,14 +255,18 @@ public class JdkHttpClientBuilder {
         // Azure JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
-        Duration connectionTimeout = getTimeout(this.connectionTimeout, getDefaultConnectTimeout());
+        Duration connectionTimeout = getTimeout(this.connectionTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT);
         if (!connectionTimeout.isZero()) {
             httpClientBuilder.connectTimeout(connectionTimeout);
         }
 
-        Duration writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
-        Duration responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout());
-        Duration readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout());
+        Duration writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
+        Duration responseTimeout = getTimeout(this.responseTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT);
+        Duration readTimeout
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -270,8 +288,8 @@ public class JdkHttpClientBuilder {
                     buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                httpClientBuilder.authenticator(
-                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
+                httpClientBuilder.authenticator(new ProxyAuthenticator(buildProxyOptions.getAddress(),
+                    buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
@@ -318,16 +336,23 @@ public class JdkHttpClientBuilder {
     }
 
     private static class ProxyAuthenticator extends Authenticator {
+        private final InetSocketAddress proxyAddress;
         private final String userName;
         private final String password;
 
-        ProxyAuthenticator(String userName, String password) {
+        ProxyAuthenticator(InetSocketAddress proxyAddress, String userName, String password) {
+            this.proxyAddress = proxyAddress;
             this.userName = userName;
             this.password = password;
         }
 
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
+            if (getRequestorType() != RequestorType.PROXY
+                || getRequestingPort() != proxyAddress.getPort()
+                || !proxyAddress.getHostString().equalsIgnoreCase(getRequestingHost())) {
+                return null;
+            }
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
     }
