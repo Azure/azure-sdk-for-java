@@ -45,7 +45,11 @@ public enum CertificateServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2026-03-01-preview}.
      */
-    V2026_03_01_PREVIEW("2026-03-01-preview");
+    V2026_03_01_PREVIEW("2026-03-01-preview"),
+    /**
+     * Service version {@code 2026-04-01}.
+     */
+    V2026_04_01("2026-04-01");
 
     private final String version;
 
@@ -67,6 +71,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      * @return The latest {@link CertificateServiceVersion}.
      */
     public static CertificateServiceVersion getLatest() {
-        return V2026_03_01_PREVIEW;
+        return V2026_04_01;
     }
 }
