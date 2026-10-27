@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.Arrays;
 import java.util.Map;
 import java.nio.charset.StandardCharsets;
 
@@ -59,9 +60,13 @@ public class PreviewApiTests {
         + "\"@search.graphExplain\":{\"logical\":{\"operator\":\"scan\"}}}";
 
     @Test
-    public void preservesPreviousVersionsAndDefaultsToNewPreview() {
+    public void preservesGaVersionsAndOnlyLatestPreview() {
         assertEquals("2026-11-01-preview", SearchServiceVersion.getLatest().getVersion());
-        assertEquals("2026-08-01-preview", SearchServiceVersion.V2026_08_01_PREVIEW.getVersion());
+        assertEquals(Collections.singletonList(SearchServiceVersion.V2026_11_01_PREVIEW),
+            Arrays.stream(SearchServiceVersion.values())
+                .filter(version -> version.getVersion().endsWith("-preview"))
+                .collect(java.util.stream.Collectors.toList()));
+        assertEquals("2026-10-01", SearchServiceVersion.V2026_10_01.getVersion());
         assertEquals("2026-04-01", SearchServiceVersion.V2026_04_01.getVersion());
         assertEquals("2020-06-30", SearchServiceVersion.V2020_06_30.getVersion());
     }
