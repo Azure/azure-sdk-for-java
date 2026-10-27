@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -969,10 +969,11 @@ public class ServiceBusProcessorAsyncClientTest {
         final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
             null, context -> Mono.empty(), error -> reported.asMono(), options(1, false));
         processor.start().block();
-        final CompletableFuture<Void> closed = CompletableFuture.runAsync(() -> {
+        final FutureTask<Void> closed = new FutureTask<>(() -> {
             closing.countDown();
             processor.close();
-        });
+        }, null);
+        new Thread(closed, "processor-close").start();
         try {
             assertTrue(closing.await(5, TimeUnit.SECONDS));
             assertThrows(java.util.concurrent.TimeoutException.class, () -> closed.get(100, TimeUnit.MILLISECONDS));
@@ -1006,7 +1007,8 @@ public class ServiceBusProcessorAsyncClientTest {
         restart.setAccessible(true);
         restart.invoke(processor, cycle);
         assertTrue(reporting.await(5, TimeUnit.SECONDS));
-        final CompletableFuture<Void> closed = CompletableFuture.runAsync(processor::close);
+        final FutureTask<Void> closed = new FutureTask<>(processor::close, null);
+        new Thread(closed, "processor-close").start();
         try {
             assertThrows(java.util.concurrent.TimeoutException.class, () -> closed.get(100, TimeUnit.MILLISECONDS));
         } finally {

@@ -17,7 +17,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -112,7 +112,8 @@ public class ServiceBusProcessorAsyncClientSingleWorkerTest {
         }).when(sessions).close();
         processor.start().block(Duration.ofSeconds(5));
         assertTrue(closing.await(5, TimeUnit.SECONDS));
-        final CompletableFuture<Void> closed = CompletableFuture.runAsync(processor::close);
+        final FutureTask<Void> closed = new FutureTask<>(processor::close, null);
+        new Thread(closed, "processor-close").start();
         try {
             assertThrows(TimeoutException.class, () -> closed.get(100, TimeUnit.MILLISECONDS));
             verify(sessions, never()).close();
