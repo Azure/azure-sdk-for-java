@@ -52,6 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -70,7 +71,7 @@ public class GatewayEndpointMetricsTest {
     }
 
     @Test(groups = {"unit"}, dataProvider = "queryPlanTagConfigurations")
-    public void queryPlanAndGatewayRequestsUseTheSameTagKeys(
+    public void queryPlanMetricsPreserveLegacyRequestTags(
         boolean endpointEnabled, boolean suppressEndpoint, boolean queryPlanFirst) throws Exception {
 
         try (TestState state = new TestState(
@@ -106,6 +107,10 @@ public class GatewayEndpointMetricsTest {
                 state.recordQueryPlan();
             }
 
+            String expectedPartitionKeyRangeId = endpointEnabled ? "NONE" : null;
+            String expectedEndpoint = endpointEnabled && !suppressEndpoint
+                ? "account.documents.azure.com_443" : null;
+            String expectedPlanContextEndpoint = endpointEnabled && !suppressEndpoint ? "NONE" : null;
             for (String name : new String[] {
                 CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString(),
                 CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString(),
@@ -113,16 +118,17 @@ public class GatewayEndpointMetricsTest {
                 List<Meter> meters = state.registry.getMeters().stream()
                     .filter(meter -> name.equals(meter.getId().getName()))
                     .collect(Collectors.toList());
-                assertThat(meters).hasSize(3);
-                for (Meter meter : meters) {
-                    boolean planContextMetric = "DocumentCollection/QueryPlan".equals(
-                        meter.getId().getTag(TagName.RequestOperationType.toString()));
-                    String expectedEndpoint = endpointEnabled && !suppressEndpoint
-                        ? (planContextMetric ? "NONE" : "account.documents.azure.com_443") : null;
-                    assertThat(meter.getId().getTag(SERVICE_ENDPOINT)).isEqualTo(expectedEndpoint);
-                    assertThat(meter.getId().getTag(TagName.RequestStatusCode.toString()))
-                        .isEqualTo(planContextMetric ? "NONE" : "200/0");
-                }
+                assertThat(meters).as("Pre-existing request tags for %s", name)
+                    .extracting(
+                        meter -> meter.getId().getTag(TagName.RequestOperationType.toString()),
+                        meter -> meter.getId().getTag(TagName.RequestStatusCode.toString()),
+                        meter -> meter.getId().getTag(TagName.PartitionKeyRangeId.toString()),
+                        meter -> meter.getId().getTag(SERVICE_ENDPOINT))
+                    .containsExactlyInAnyOrder(
+                        tuple("Document/Read", "200/0", expectedPartitionKeyRangeId, expectedEndpoint),
+                        tuple("Document/QueryPlan", "200/0", expectedPartitionKeyRangeId, expectedEndpoint),
+                        tuple("DocumentCollection/QueryPlan", "NONE",
+                            expectedPartitionKeyRangeId, expectedPlanContextEndpoint));
             }
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
