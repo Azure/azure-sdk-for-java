@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.chat.models.BuiltInChatRoles;
 import com.azure.messaging.webpubsub.chat.models.ChatPermission;
+import com.azure.messaging.webpubsub.chat.models.ChatMessage;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import com.azure.messaging.webpubsub.chat.models.ChatRoom;
 import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
@@ -14,6 +15,7 @@ import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatTopicState;
 import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.HumanChatUser;
+import com.azure.messaging.webpubsub.chat.models.MessageContent;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 
 import java.time.Duration;
@@ -21,6 +23,16 @@ import java.util.Arrays;
 
 /** Code snippets used by the package README. */
 public final class WebPubSubChatSamples {
+    /** Updates an existing message with text or binary content. */
+    public void updateMessage(WebPubSubChatServiceClient client, String conversationId, String messageId) {
+        // BEGIN: readme-sample-updateChatMessageContent
+        client.updateMessage(conversationId, messageId,
+            new ChatMessage().setContent(MessageContent.fromText("Updated message")));
+        client.updateMessage(conversationId, messageId,
+            new ChatMessage().setContent(MessageContent.fromBinary(new byte[] { 1, 2, 3 })));
+        // END: readme-sample-updateChatMessageContent
+    }
+
     /** Creates a client from a connection string. */
     public void createClientWithConnectionString() {
         // BEGIN: readme-sample-createChatClientWithConnectionString

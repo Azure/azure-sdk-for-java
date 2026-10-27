@@ -78,14 +78,9 @@ WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
 For more information, see [Authenticate Azure-hosted Java applications][azure_identity_auth] and [Microsoft Entra authorization for Azure Web PubSub][entra_authorization].
 
 ## Key concepts
-
-### Client
-
-`WebPubSubChatServiceClient` is the entry point for managing Chat resources in one Web PubSub hub. Create one client for each endpoint and hub combination, and reuse the client for multiple operations. For nonblocking operations, use `WebPubSubChatServiceAsyncClient`, which is created by calling `buildAsyncClient` on the same builder.
-
 ### Hub
 
-A hub is a logical collection of WebSocket connections. A standard hub offers event-based real-time messaging through the Web PubSub subprotocol or a custom subprotocol. A chat hub adds built-in rooms, member management, message persistence, and chat-specific APIs.
+A hub is a logical collection of WebSocket connections. A chat hub adds built-in rooms, member management, message persistence, and chat-specific APIs.
 
 This SDK applies only to chat hubs. Chat must be enabled on the target hub before the SDK can manage roles, users, rooms, members, conversations, or messages.
 
@@ -97,38 +92,26 @@ User roles control operations such as creating rooms. Room roles control what a 
 
 ### User
 
-A user represents an application identity that can send and receive messages. A user is identified by a user ID and assigned a user role. A human user also has a nickname. Client access credentials associate WebSocket connections with a user ID.
+A user represents an identity participating in chat, such as a human end user or an application. Client access credentials associate WebSocket connections with a user ID.
 
 ### Room
 
 A room groups users together and is the primary organizational unit for chat interactions. Every room has an automatically created default conversation.
 
-### Topic
-
-A topic is a named conversation in a room. Each topic has a title, creation time,
-creator, conversation ID, ETag, and lifecycle state. `ChatTopicState` includes
-`NORMAL`, `ARCHIVED`, and `SOFT_DELETED`. The August API adds topic management;
-topic deletion is a soft delete rather than a room deletion.
-
-### User's rooms
-
-`listRoomsForUser` returns read-only `ChatUserRoom` projections of the rooms
-associated with a user. A projection contains the room ID, title, default
-conversation ID, and ETag; it does not provide a separate room lifecycle.
-
 ### Room member
 
-A room member represents a user added to a room. Membership controls which users can receive and send messages in the room. Each room member is assigned a room role.
+A room member represents a user added to a room. Membership controls which users can receive and send messages in the room. In the service API, each room member is assigned a room role.
 
 ### Conversation and message history
 
-A conversation is a message thread that belongs to a room. Every room has a default conversation and can contain multiple conversations.
+A conversation is an ordered message stream within a room. Every room has a default conversation, and additional named conversations can be created through topics.
 
-Messages sent to a conversation are delivered in real time to the room's connected members. The Chat service manages ordering and persistence, allowing members to load message history after reconnecting or joining later. The service client can list, update, and delete persisted messages.
+Messages sent to a conversation are delivered in real time to the room's connected members. The chat service manages ordering and persistence, allowing members to load message history after reconnecting or joining later. The service client can list, update, and delete persisted messages.
 
-### Client access credentials
+### Topic
 
-`getClientAccessToken` returns a token and WebSocket connection URL. Clients configured with a connection string or access key sign the token locally. Clients configured with Microsoft Entra ID request the token from the Web PubSub service.
+A topic represents a named conversation within a room. Topics can be created,
+renamed, archived, and soft deleted independently of the room's default conversation.
 
 ## Examples
 
@@ -275,6 +258,23 @@ client.listMessages(conversationId).forEach(message ->
 Use a conversation ID returned by room or topic creation. Message history
 queries return messages from latest to earliest.
 
+### Update message content
+
+Use `MessageContent.fromText` or `MessageContent.fromBinary` to select exactly one
+content representation. The getter for the unselected representation returns
+`null`. Both factories accept empty content but reject `null`; binary arrays are
+defensively copied.
+
+```java readme-sample-updateChatMessageContent
+client.updateMessage(conversationId, messageId,
+    new ChatMessage().setContent(MessageContent.fromText("Updated message")));
+client.updateMessage(conversationId, messageId,
+    new ChatMessage().setContent(MessageContent.fromBinary(new byte[] { 1, 2, 3 })));
+```
+
+The request contains only the selected content field. To explicitly set the
+entire content to JSON `null` in a PATCH request, use `new ChatMessage().setContent(null)`.
+
 ### Use the asynchronous client
 
 ```java readme-sample-createAsyncChatClient
@@ -303,14 +303,6 @@ asyncClient.listTopics("general").byPage(10).subscribe(
     error -> System.err.println("Could not list topic pages: " + error.getMessage()));
 ```
 
-### Service API versions
-
-The default is `WebPubSubChatServiceVersion.V2026_08_01_PREVIEW`. The library also
-supports `V2026_02_01_PREVIEW` for existing operations. Topic operations and the
-new room/user listing operations require the August version. To select a version,
-pass it to the builder's `serviceVersion` method. All operations are supported
-with the August API; no separate client is needed for existing operations.
-
 ## Troubleshooting
 
 ### Handle service errors
@@ -320,12 +312,6 @@ Service operations throw `HttpResponseException` or a more specific subclass whe
 ### Logging
 
 Enable SDK logging by setting the `AZURE_LOG_LEVEL` environment variable. See [Azure SDK logging][logging] for the supported levels and logging configuration. HTTP logs can contain sensitive information. Do not enable detailed logging in production without reviewing how logs are collected and protected, and never log connection strings, access keys, bearer tokens, or generated client access tokens.
-
-### Authentication and authorization
-
-- Confirm that the endpoint and hub name identify the Web PubSub resource and Chat-enabled hub you intend to use.
-- For Microsoft Entra ID, confirm that the principal has an appropriate Web PubSub data-plane role and that role assignment propagation has completed.
-- Connection-string and access-key authentication are unavailable when local authentication is disabled on the Web PubSub resource.
 
 
 ## Next steps

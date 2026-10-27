@@ -11,6 +11,8 @@
 
 ### Breaking Changes
 
+- Replaced the public `MessageContent` constructor and `setText`/`setBinary` methods with `MessageContent.fromText` and `MessageContent.fromBinary`. Each instance contains exactly one non-null representation; empty text and binary payloads remain supported.
+
 ### Bugs Fixed
 
 - Corrected request and response Javadoc schemas to reflect read-only properties and partial-update optionality, and clarified that topic state is optional on creation.

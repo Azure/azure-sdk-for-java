@@ -155,14 +155,13 @@ public class ChatServiceClientLiveTests extends ChatServiceClientTestBase {
                 .orElseThrow(() -> new AssertionError("The seeded Chat message was not found."));
             messageId = createdMessage.getId();
 
-            ChatMessage updatedText
-                = client.updateMessage(conversationId, messageId, new ChatMessage().setCreatedBy(userId)
-                    .setContent(new MessageContent().setText(messageText + " updated")));
+            ChatMessage updatedText = client.updateMessage(conversationId, messageId,
+                new ChatMessage().setCreatedBy(userId).setContent(MessageContent.fromText(messageText + " updated")));
             assertEquals(messageText + " updated", updatedText.getContent().getText());
 
             byte[] binary = new byte[] { 0, 1, 2, (byte) 254, (byte) 255 };
             ChatMessage updatedBinary = client.updateMessage(conversationId, messageId,
-                new ChatMessage().setCreatedBy(userId).setContent(new MessageContent().setBinary(binary)));
+                new ChatMessage().setCreatedBy(userId).setContent(MessageContent.fromBinary(binary)));
             assertArrayEquals(binary, updatedBinary.getContent().getBinary());
             client.deleteMessage(conversationId, messageId);
         } finally {

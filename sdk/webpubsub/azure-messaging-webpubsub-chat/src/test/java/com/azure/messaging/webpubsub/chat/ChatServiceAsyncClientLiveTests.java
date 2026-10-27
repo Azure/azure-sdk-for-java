@@ -159,7 +159,7 @@ public class ChatServiceAsyncClientLiveTests extends ChatServiceClientTestBase {
                 = asyncClient
                     .updateMessage(conversationId, messageId,
                         new ChatMessage().setCreatedBy(userId)
-                            .setContent(new MessageContent().setText(messageText + " updated")))
+                            .setContent(MessageContent.fromText(messageText + " updated")))
                     .block();
             assertEquals(messageText + " updated", updatedText.getContent().getText());
 
@@ -167,7 +167,7 @@ public class ChatServiceAsyncClientLiveTests extends ChatServiceClientTestBase {
             ChatMessage updatedBinary
                 = asyncClient
                     .updateMessage(conversationId, messageId,
-                        new ChatMessage().setCreatedBy(userId).setContent(new MessageContent().setBinary(binary)))
+                        new ChatMessage().setCreatedBy(userId).setContent(MessageContent.fromBinary(binary)))
                     .block();
             assertArrayEquals(binary, updatedBinary.getContent().getBinary());
             asyncClient.deleteMessage(conversationId, messageId).block();
