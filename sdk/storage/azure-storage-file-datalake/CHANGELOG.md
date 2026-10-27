@@ -1,12 +1,25 @@
 # Release History
 
-## 12.29.0-beta.2 (Unreleased)
+## 12.30.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.29.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Bugs Fixed
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
 - Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
   name a second time, causing subsequent requests made through that client to target a double-encoded path when the
   name contained characters such as `%`, `#`, or a space.
@@ -19,13 +32,22 @@
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
   `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
   Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+- Updated the documentation of `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` `delete`,
+  `deleteWithResponse`, `deleteIfExists`, and `deleteIfExistsWithResponse`, and
+  `DataLakeServiceClient`/`DataLakeServiceAsyncClient` `deleteFileSystem` and `deleteFileSystemWithResponse` to note
+  that operations on paths within a deleted file system, including reads and writes, may continue to succeed for up to
+  30 seconds after the delete request is accepted.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.36.0`.
 
 ## 12.28.2 (2026-10-06)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.

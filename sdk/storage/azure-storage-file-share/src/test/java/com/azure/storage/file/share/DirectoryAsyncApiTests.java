@@ -4,7 +4,14 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -27,16 +34,17 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
-import com.azure.storage.file.share.options.ShareFileCreateOptions;
-import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -76,7 +84,11 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
-    public void setup() {
+    public void setup(TestInfo testInfo) {
+        if (testInfo.getTags().contains("file-id-mock")) {
+            return;
+        }
+
         shareName = generateShareName();
         directoryPath = generatePathName();
         shareClient = shareBuilderHelper(shareName).buildClient();
@@ -95,6 +107,196 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath);
         String directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl();
         assertEquals(expectURL, directoryURL);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncDirectoryPropertiesByFileId(boolean snapshot) {
+        primaryDirectoryAsyncClient.createWithResponse(new ShareDirectoryCreateOptions().setMetadata(testMetadata))
+            .block();
+        ShareDirectoryProperties expected = primaryDirectoryAsyncClient.getProperties().block();
+        String fileId = expected.getSmbProperties().getFileId();
+        assertNotNull(fileId);
+        ShareAsyncClient source = shareBuilderHelper(shareName).buildAsyncClient();
+        if (snapshot) {
+            source = source.getSnapshotClient(source.createSnapshot().block().getSnapshot());
+            primaryDirectoryAsyncClient.setMetadata(Collections.singletonMap("changed", "after-snapshot")).block();
+        }
+
+        ShareDirectoryAsyncClient directoryClient = source.getDirectoryClientByFileId(fileId);
+        assertEquals(fileId, directoryClient.getFileId());
+        StepVerifier.create(directoryClient.getPropertiesWithResponse()).assertNext(response -> {
+            ShareDirectoryProperties actual = response.getValue();
+            assertEquals(200, response.getStatusCode());
+            assertEquals(directoryPath, actual.getFileName());
+            assertEquals(expected.getMetadata(), actual.getMetadata());
+            assertEquals(expected.getETag(), actual.getETag());
+            assertEquals(expected.getLastModified(), actual.getLastModified());
+            assertEquals(expected.isServerEncrypted(), actual.isServerEncrypted());
+            assertEquals(fileId, actual.getSmbProperties().getFileId());
+            assertEquals(expected.getSmbProperties().getParentId(), actual.getSmbProperties().getParentId());
+            assertEquals(expected.getSmbProperties().getFileCreationTime(),
+                actual.getSmbProperties().getFileCreationTime());
+            assertEquals(expected.getSmbProperties().getFileLastWriteTime(),
+                actual.getSmbProperties().getFileLastWriteTime());
+        }).verifyComplete();
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncDirectoryPropertiesByFileIdLive() {
+        StepVerifier.create(primaryDirectoryAsyncClient.create()
+            .then(primaryDirectoryAsyncClient.getProperties())
+            .flatMap(expected -> shareBuilderHelper(shareName).buildAsyncClient()
+                .getDirectoryClientByFileId(expected.getSmbProperties().getFileId())
+                .getProperties()
+                .doOnNext(actual -> {
+                    assertEquals(directoryPath, actual.getFileName());
+                    assertEquals(expected.getSmbProperties().getFileId(), actual.getSmbProperties().getFileId());
+                    assertEquals(expected.getSmbProperties().getParentId(), actual.getSmbProperties().getParentId());
+                })))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncDirectoryPropertiesByFileIdMapServiceErrors() {
+        ShareAsyncClient source = shareBuilderHelper(shareName).buildAsyncClient();
+        StepVerifier.create(source.getDirectoryClientByFileId("invalid-file-id").getProperties())
+            .verifyErrorSatisfies(error -> {
+                ShareStorageException exception = assertInstanceOf(ShareStorageException.class, error);
+                assertEquals(400, exception.getStatusCode());
+                assertEquals(ShareErrorCode.INVALID_QUERY_PARAMETER_VALUE, exception.getErrorCode());
+            });
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncDirectoryClientByFileIdUrl(boolean snapshot) {
+        ShareAsyncClient source = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        if (snapshot) {
+            source = source.getSnapshotClient("snapshot");
+        }
+        ShareDirectoryAsyncClient original = source.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID);
+        ShareDirectoryAsyncClient directoryClient = new ShareDirectoryAsyncClient(original);
+        assertEquals(original.getDirectoryUrl(), directoryClient.getDirectoryUrl());
+        assertEquals(FileIdTestHelper.FILE_ID, directoryClient.getFileId());
+        assertEquals("", directoryClient.getDirectoryPath());
+        assertEquals(ShareServiceVersion.V2027_03_07, directoryClient.getServiceVersion());
+        assertEquals(
+            FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+                + (snapshot ? "?sharesnapshot=snapshot&" : "?") + "fileid=" + FileIdTestHelper.FILE_ID,
+            directoryClient.getDirectoryUrl());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void asyncRootDirectoryAllowsMetadataUpdates() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(HttpMethod.PUT, request.getHttpMethod());
+            assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/", request.getUrl().getPath());
+            assertFalse(request.getUrl().getQuery().contains("fileid="));
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")
+                .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")));
+        }).build();
+        ShareDirectoryAsyncClient directoryClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME)
+            .getRootDirectoryClient();
+
+        StepVerifier.create(directoryClient.setMetadata(Collections.singletonMap("key", "value")))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { " ", "\t", "\n" })
+    public void asyncDirectoryClientByFileIdRejectsBlankIds(String fileId) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            throw new AssertionError("Invalid file IDs must be rejected before sending a request.");
+        }).build();
+        ShareAsyncClient source = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> source.getDirectoryClientByFileId(fileId));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void asyncDirectoryPropertiesWithoutFileName() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            HttpHeaders headers = FileIdTestHelper.fileHeaders("directory");
+            headers.remove(HttpHeaderName.fromString("x-ms-file-name"));
+            return Mono.just(new MockHttpResponse(request, 200, headers));
+        }).build();
+        ShareDirectoryAsyncClient directoryClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .resourcePath("directory")
+            .pipeline(pipeline)
+            .buildDirectoryAsyncClient();
+        assertEquals("", directoryClient.getFileId());
+        StepVerifier.create(directoryClient.getProperties()).assertNext(properties -> {
+            assertNull(properties.getFileName());
+            FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
+        }).verifyComplete();
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(strings = { "", "parent/directory" })
+    public void asyncDirectoryPathClientSnapshotUrls(String path) {
+        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        ShareDirectoryAsyncClient directoryClient
+            = testShareClient.getSnapshotClient("snapshot").getDirectoryClient(path);
+        Assertions.assertEquals(path, directoryClient.getDirectoryPath());
+        Assertions.assertEquals(
+            FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/" + path + "?sharesnapshot=snapshot",
+            directoryClient.getDirectoryUrl());
+        assertEquals("", directoryClient.getFileId());
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/"
+            + (path.isEmpty() ? "" : path + "/") + "child?sharesnapshot=snapshot",
+            directoryClient.getSubdirectoryClient("child").getDirectoryUrl());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(strings = { "", "parent/directory" })
+    public void asyncDirectoryClientBuilderClearsFileIdForPath(String path) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .fileId(FileIdTestHelper.FILE_ID);
+        ShareDirectoryAsyncClient directoryClient = builder.resourcePath(path).buildDirectoryAsyncClient();
+        Assertions.assertEquals(path, directoryClient.getDirectoryPath());
+        assertEquals("", directoryClient.getFileId());
+        String expectedUrl = FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/" + path;
+        Assertions.assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
+        Assertions.assertEquals(expectedUrl + (path.isEmpty() ? "" : "/") + "file.txt",
+            directoryClient.getFileClient("file.txt").getFileUrl());
+        Assertions.assertEquals(expectedUrl,
+            builder.fileId(FileIdTestHelper.FILE_ID)
+                .endpoint(expectedUrl)
+                .buildDirectoryAsyncClient()
+                .getDirectoryUrl());
     }
 
     @Test
@@ -537,154 +739,6 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
     private static Stream<Arguments> listFilesAndDirectoriesArgsSupplier() {
         return Stream.of(Arguments.of("", null, 3), Arguments.of("", 1, 3), Arguments.of("noops", 3, 0));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
-    @Test
-    public void listFilesAndDirectoriesAllTraitsSmb() {
-        String fileName = generatePathName();
-        String subdirName = generatePathName();
-        Mono<List<ShareFileItem>> listResults = primaryDirectoryAsyncClient.create()
-            .then(primaryDirectoryAsyncClient.createFile(fileName, Constants.KB))
-            .then(primaryDirectoryAsyncClient.createSubdirectory(subdirName))
-            .thenMany(primaryDirectoryAsyncClient.listFilesAndDirectories(
-                new ShareListFilesAndDirectoriesOptions().setIncludeExtendedInfo(true).setIncludeAll(true)))
-            .collectList();
-
-        StepVerifier.create(listResults).assertNext(items -> {
-            assertEquals(2, items.size());
-
-            ShareFileItem fileItem = items.stream()
-                .filter(item -> fileName.equals(item.getName()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Expected listed item not found: " + fileName));
-            assertFalse(fileItem.isDirectory());
-            assertNotNull(fileItem.getId());
-            assertEquals(EnumSet.of(NtfsFileAttributes.ARCHIVE), fileItem.getFileAttributes());
-            assertNotNull(fileItem.getPermissionKey());
-            assertNotNull(fileItem.getProperties());
-            assertNotNull(fileItem.getProperties().getCreatedOn());
-            assertNotNull(fileItem.getProperties().getLastAccessedOn());
-            assertNotNull(fileItem.getProperties().getLastWrittenOn());
-            assertNotNull(fileItem.getProperties().getChangedOn());
-            assertNotNull(fileItem.getProperties().getLastModified());
-            assertNotNull(fileItem.getProperties().getETag());
-            assertNull(fileItem.getLinkCount());
-            assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
-            assertNull(fileItem.getProperties().getOwner());
-            assertNull(fileItem.getProperties().getGroup());
-            assertNull(fileItem.getProperties().getFileMode());
-
-            ShareFileItem dirItem = items.stream()
-                .filter(item -> subdirName.equals(item.getName()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Expected listed item not found: " + subdirName));
-            assertTrue(dirItem.isDirectory());
-            assertNotNull(dirItem.getId());
-            assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), dirItem.getFileAttributes());
-            assertNotNull(dirItem.getPermissionKey());
-            assertNotNull(dirItem.getProperties());
-            assertNotNull(dirItem.getProperties().getCreatedOn());
-            assertNotNull(dirItem.getProperties().getLastAccessedOn());
-            assertNotNull(dirItem.getProperties().getLastWrittenOn());
-            assertNotNull(dirItem.getProperties().getChangedOn());
-            assertNotNull(dirItem.getProperties().getLastModified());
-            assertNotNull(dirItem.getProperties().getETag());
-            assertNull(dirItem.getLinkCount());
-
-            assertNull(dirItem.getProperties().getOwner());
-            assertNull(dirItem.getProperties().getGroup());
-            assertNull(dirItem.getProperties().getFileMode());
-        }).verifyComplete();
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
-    @Test
-    public void listFilesAndDirectoriesNfs() {
-        String premiumShareName = generateShareName();
-        String fileName = generatePathName();
-        String subdirName = generatePathName();
-        String symlinkName = generatePathName();
-        String owner = "345";
-        String group = "123";
-        String fileMode = "7777";
-
-        Mono<List<ShareFileItem>> createAndList
-            = getPremiumNFSShareAsyncClient(premiumShareName).flatMap(premiumShareClient -> {
-                ShareDirectoryAsyncClient parent = premiumShareClient.getDirectoryClient(generatePathName());
-                FilePosixProperties posixProperties
-                    = new FilePosixProperties().setOwner(owner).setGroup(group).setFileMode(fileMode);
-
-                ShareFileAsyncClient file = parent.getFileClient(fileName);
-                ShareDirectoryAsyncClient subdir = parent.getSubdirectoryClient(subdirName);
-                ShareFileAsyncClient symlink = parent.getFileClient(symlinkName);
-
-                ShareFileCreateOptions fileOptions
-                    = new ShareFileCreateOptions(Constants.MB).setPosixProperties(posixProperties);
-                ShareDirectoryCreateOptions subdirOptions
-                    = new ShareDirectoryCreateOptions().setPosixProperties(posixProperties);
-                ShareFileCreateSymbolicLinkOptions symlinkOptions
-                    = new ShareFileCreateSymbolicLinkOptions(file.getFileUrl()).setOwner(owner).setGroup(group);
-                ShareListFilesAndDirectoriesOptions listOptions
-                    = new ShareListFilesAndDirectoriesOptions().setIncludeExtendedInfo(true)
-                        .setIncludeTimestamps(true)
-                        .setIncludeETag(true)
-                        .setIncludePermissions(true)
-                        .setIncludeLinkCount(true)
-                        .setIncludeNfsAttributes(true);
-
-                return parent.create()
-                    .then(file.createWithResponse(fileOptions))
-                    .then(subdir.createWithResponse(subdirOptions))
-                    .then(symlink.createSymbolicLinkWithResponse(symlinkOptions))
-                    .thenMany(parent.listFilesAndDirectories(listOptions))
-                    .collectList();
-            });
-
-        try {
-            StepVerifier.create(createAndList).assertNext(items -> {
-                assertEquals(3, items.size());
-
-                ShareFileItem fileItem = items.stream()
-                    .filter(item -> fileName.equals(item.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("Expected listed item not found: " + fileName));
-                assertFalse(fileItem.isDirectory());
-                assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
-                assertNotNull(fileItem.getLinkCount());
-                assertNotNull(fileItem.getProperties());
-                assertEquals(owner, fileItem.getProperties().getOwner());
-                assertEquals(group, fileItem.getProperties().getGroup());
-                assertEquals(fileMode, fileItem.getProperties().getFileMode());
-
-                ShareFileItem dirItem = items.stream()
-                    .filter(item -> subdirName.equals(item.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("Expected listed item not found: " + subdirName));
-                assertTrue(dirItem.isDirectory());
-                assertEquals(NfsFileType.DIRECTORY, dirItem.getFileType());
-                assertNotNull(dirItem.getLinkCount());
-                assertNotNull(dirItem.getProperties());
-                assertEquals(owner, dirItem.getProperties().getOwner());
-                assertEquals(group, dirItem.getProperties().getGroup());
-                assertEquals(fileMode, dirItem.getProperties().getFileMode());
-
-                ShareFileItem symlinkItem = items.stream()
-                    .filter(item -> symlinkName.equals(item.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("Expected listed item not found: " + symlinkName));
-                assertFalse(symlinkItem.isDirectory());
-                assertEquals(NfsFileType.SYM_LINK, symlinkItem.getFileType());
-                assertNotNull(symlinkItem.getLinkCount());
-                assertNotNull(symlinkItem.getLinkText());
-                assertFalse(FileShareTestHelper.isAllWhitespace(symlinkItem.getLinkText()));
-                assertNotNull(symlinkItem.getProperties());
-                assertEquals(owner, symlinkItem.getProperties().getOwner());
-                assertEquals(group, symlinkItem.getProperties().getGroup());
-            }).verifyComplete();
-        } finally {
-            premiumFileServiceAsyncClient.getShareAsyncClient(premiumShareName).delete().block();
-        }
     }
 
     @ParameterizedTest

@@ -13,11 +13,11 @@ public final class OperatorIdentityRolesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperatorIdentityRoles model = BinaryData.fromString(
-            "{\"name\":\"hhszh\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"lvwiwubmwmbesl\",\"resourceId\":\"nkww\"},{\"name\":\"pp\",\"resourceId\":\"flcxoga\"},{\"name\":\"konzmnsik\",\"resourceId\":\"mkqzeqqkdltfzxmh\"},{\"name\":\"v\",\"resourceId\":\"gureodkwobdag\"}]}")
+            "{\"name\":\"agxsdszuemps\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"f\",\"resourceId\":\"beyvpnqicvinvkjj\"},{\"name\":\"dxrbuukzcle\",\"resourceId\":\"yhmlwpaztzp\"},{\"name\":\"fn\",\"resourceId\":\"ckw\"},{\"name\":\"fz\",\"resourceId\":\"whxxbuyqax\"}]}")
             .toObject(OperatorIdentityRoles.class);
-        Assertions.assertEquals("hhszh", model.name());
+        Assertions.assertEquals("agxsdszuemps", model.name());
         Assertions.assertEquals(OperatorIdentityRequired.ALWAYS, model.required());
-        Assertions.assertEquals("lvwiwubmwmbesl", model.roleDefinitions().get(0).name());
-        Assertions.assertEquals("nkww", model.roleDefinitions().get(0).resourceId());
+        Assertions.assertEquals("f", model.roleDefinitions().get(0).name());
+        Assertions.assertEquals("beyvpnqicvinvkjj", model.roleDefinitions().get(0).resourceId());
     }
 }

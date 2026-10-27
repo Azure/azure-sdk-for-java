@@ -12,11 +12,11 @@ public final class OccurrencesListByScheduledActionSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListByScheduledAction_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - List recurring scheduled action occurrences.
+     * Sample code: 01 - List recurring bulk action occurrences.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
+    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecurringSpacebulkSpaceactionSpaceoccurrences(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
@@ -25,12 +25,12 @@ public final class OccurrencesListByScheduledActionSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListByScheduledAction_PagedSuccess.json
      */
     /**
-     * Sample code: 02 - List a page of recurring scheduled action occurrences.
+     * Sample code: 02 - List recurring bulk action occurrences with mixed results.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
+        zeroTwoSpaceHyphenMinusSpaceListSpacerecurringSpacebulkSpaceactionSpaceoccurrencesSpacewithSpacemixedSpaceresults(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
@@ -32,15 +33,38 @@ public class ShareStorageCustomization extends Customization {
                     + "that all file/directory ACLs are bypassed and full permissions are granted. User must also have "
                     + "required RBAC permission.")));
 
-        customization.getClass("com.azure.storage.file.share.models", "NfsFileType")
-            .customizeAst(ast -> ast.getClassByName("NfsFileType").ifPresent(clazz -> clazz.setJavadocComment(
-
-                "Type of the file.\n<p>\n"
-                    + "This enumeration represents the type of file item in Azure Files shares. "
-                    + "The file type is populated for all item types in both SMB and NFS-enabled shares.\n\n"
-                    + "@see ShareFileItem#getFileType()")));
-
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
+        reusePropertyHeaders(customization.getRawEditor(), "Directories", logger);
+        reusePropertyHeaders(customization.getRawEditor(), "Files", logger);
+    }
+
+    private static void reusePropertyHeaders(Editor editor, String operationGroup, Logger logger) {
+        String implementationPath = "src/main/java/com/azure/storage/file/share/implementation/";
+        String headersName = operationGroup + "GetPropertiesHeaders";
+        String fileIdHeadersName = operationGroup + "GetPropertiesByFileIdHeaders";
+        String headersPath = implementationPath + "models/" + headersName + ".java";
+        String fileIdHeadersPath = implementationPath + "models/" + fileIdHeadersName + ".java";
+        String clientPath = implementationPath + operationGroup + "Impl.java";
+        String headers = editor.getFileContent(headersPath);
+        String fileIdHeaders = editor.getFileContent(fileIdHeadersPath);
+        String client = editor.getFileContent(clientPath);
+        if (headers == null || fileIdHeaders == null || client == null) {
+            throw new IllegalStateException("Missing generated sources for " + operationGroup + " property headers.");
+        }
+        if (!client.contains(fileIdHeadersName)) {
+            throw new IllegalStateException(clientPath + " no longer references " + fileIdHeadersName + ".");
+        }
+
+        // Compare the entire model, including parsing, before discarding the operation-specific copy.
+        if (!headers.replace("\r\n", "\n")
+            .equals(fileIdHeaders.replace(fileIdHeadersName, headersName).replace("\r\n", "\n"))) {
+            logger.warn("{} differs from {}; preserving both generated response header models.",
+                fileIdHeadersName, headersName);
+            return;
+        }
+
+        editor.replaceFile(clientPath, client.replace(fileIdHeadersName, headersName));
+        editor.removeFile(fileIdHeadersPath);
     }
 
     /**

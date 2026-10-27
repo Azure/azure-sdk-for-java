@@ -1,17 +1,17 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
+## 12.33.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added support for NFS List Files and Directories V2. `ShareDirectoryClient.listFilesAndDirectories` now returns
-  symbolic links, block devices, character devices, FIFOs and sockets in addition to files and directories.
-- Added `ShareFileItem.getLinkCount()`, `ShareFileItem.getFileType()`, `ShareFileItem.getLinkText()`,
-  `ShareFileItem.getDeviceMajor()` and `ShareFileItem.getDeviceMinor()`.
-- Added `ShareFileItemProperties.getOwner()`, `ShareFileItemProperties.getGroup()` and
-  `ShareFileItemProperties.getFileMode()`.
-- Added `NfsFileType.BLOCK_DEVICE`, `NfsFileType.CHARACTER_DEVICE`, `NfsFileType.SOCKET` and `NfsFileType.FIFO`.
-- Added `ShareListFilesAndDirectoriesOptions.setIncludePermissions`, `setIncludeLinkCount`, `setIncludeNfsAttributes`
-  and `setIncludeAll`.
+- Added support for retrieving file and directory properties by file ID
+- Added support for retrieving a file's hard links by file ID on SMB shares.
+- Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` and `ShareSetPropertiesOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` to enable and configure change feed.
+- Added `ShareProperties.isChangeFeedEnabled()`, `getChangeFeedRetentionInDays()` and
+  `getChangeFeedBlobContainerName()`.
+- Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
+  creation time returned in list and get properties responses.
 
 ### Breaking Changes
 
@@ -19,12 +19,25 @@
 
 ### Other Changes
 
+## 12.32.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for sync `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs, and async counterparts.
+
+### Other Changes
+- Deprecated the `listRanges` overloads, `listRangesDiff`, and `listRangesDiffWithResponse` on `ShareFileClient` and `ShareFileAsyncClient`.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
+
 ## 12.31.2 (2026-10-06)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
