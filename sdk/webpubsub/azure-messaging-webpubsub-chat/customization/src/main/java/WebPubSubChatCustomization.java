@@ -48,8 +48,7 @@ public final class WebPubSubChatCustomization extends Customization {
         for (String file : new String[] {
             "WebPubSubChatServiceClient.java",
             "WebPubSubChatServiceAsyncClient.java",
-            "implementation/WebPubSubChatServiceClientImpl.java",
-            "models/ChatTopic.java" }) {
+            "implementation/WebPubSubChatServiceClientImpl.java" }) {
             String path = root + file;
             String source = libraryCustomization.getRawEditor().getFileContent(path);
             libraryCustomization.getRawEditor().replaceFile(path, correctLifecycleDocumentation(source));
@@ -106,15 +105,6 @@ public final class WebPubSubChatCustomization extends Customization {
                     "Create or replace a topic.\n     *\n"
                         + "     * <p>When creating a topic, omit state or set it to Normal. "
                         + "Other states are only valid when updating an existing topic.</p>");
-            }
-            if (method.getNameAsString().equals("setState")) {
-                corrected = corrected.replace("Required when create the resource.",
-                    "When creating a topic, omit this property or set it to {@link ChatTopicState#NORMAL}. "
-                        + "Other states are only valid when updating an existing topic.");
-                corrected = corrected.replace(
-                    "Optional when creating a topic. Set this property to change the topic state when updating it.",
-                    "When creating a topic, omit this property or set it to {@link ChatTopicState#NORMAL}. "
-                        + "Other states are only valid when updating an existing topic.");
             }
             if (!original.equals(corrected)) {
                 source = source.replace(original, corrected);

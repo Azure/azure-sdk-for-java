@@ -173,7 +173,6 @@ public final class ChatTopic implements JsonSerializable<ChatTopic> {
      * @param state the state value to set.
      * @return the ChatTopic object itself.
      */
-    @Generated
     public ChatTopic setState(ChatTopicState state) {
         this.state = state;
         this.updatedProperties.add("state");

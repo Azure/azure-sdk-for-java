@@ -28,7 +28,7 @@ public class WebPubSubChatDocumentationTests {
     @Test
     public void generatedDocumentationMatchesCustomization() throws IOException {
         for (String file : Arrays.asList("WebPubSubChatServiceClient.java", "WebPubSubChatServiceAsyncClient.java",
-            "implementation/WebPubSubChatServiceClientImpl.java", "models/ChatTopic.java")) {
+            "implementation/WebPubSubChatServiceClientImpl.java")) {
             String source = new String(Files.readAllBytes(SOURCE.resolve(file)), StandardCharsets.UTF_8);
             assertEquals(source, WebPubSubChatCustomization.correctLifecycleDocumentation(source), file);
         }
@@ -194,22 +194,19 @@ public class WebPubSubChatDocumentationTests {
     }
 
     @Test
-    public void stateSetterDoesNotRequireStateOnCreate() throws IOException {
+    public void stateSetterPreservesHandwrittenDocumentation() throws IOException {
         MethodDeclaration setter = StaticJavaParser.parse(SOURCE.resolve("models/ChatTopic.java"))
             .findAll(MethodDeclaration.class)
             .stream()
             .filter(method -> method.getNameAsString().equals("setState"))
             .findFirst()
             .get();
+        assertFalse(setter.getAnnotationByName("Generated").isPresent());
         String doc = setter.getJavadocComment().get().getContent().replaceAll("\\s*\\R\\s*\\*\\s*", " ");
         assertTrue(doc.contains("When creating a topic, omit this property"));
         assertTrue(doc.contains("{@link ChatTopicState#NORMAL}"));
         assertTrue(doc.contains("Other states are only valid when updating an existing topic."));
         assertFalse(doc.contains("Required when create"));
-        String original = "/**\n * <p>Required when create the resource.</p>\n */\n"
-            + "class Example { /** <p>Required when create the resource.</p> */ void setState() {} }";
-        assertTrue(WebPubSubChatCustomization.correctLifecycleDocumentation(original)
-            .contains("When creating a topic, omit this property"));
     }
 
     @Test
