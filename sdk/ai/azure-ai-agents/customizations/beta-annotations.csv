@@ -282,6 +282,7 @@ class;com.azure.ai.agents.models.VoiceAgentMaxOutputTokens;Preview API. VoiceAge
 class;com.azure.ai.agents.models.VoiceAgentMcpTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReduction;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReductionType;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentProfanityFilterMode;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRealtimeResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDeltaEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDoneEvent;Preview API. VoiceAgents=V1Preview;
