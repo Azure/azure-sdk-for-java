@@ -47,12 +47,14 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
@@ -2760,7 +2762,9 @@ public class BlobApiTests extends BlobTestBase {
 
         bc.setAccessTier(tier);
         assertEquals(tier, bc.getProperties().getAccessTier());
-        assertEquals(tier, cc.listBlobs().iterator().next().getProperties().getAccessTier());
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        assertEquals(tier, cc.listBlobs(options, null).iterator().next().getProperties().getAccessTier());
 
         // cleanup:
         cc.delete();

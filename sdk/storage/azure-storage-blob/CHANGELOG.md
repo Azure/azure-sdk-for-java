@@ -12,6 +12,10 @@
 
 ### Breaking Changes
 
+- Changed the default response serialization format for `listBlobs` and `listBlobsByHierarchy` from XML to Apache Arrow
+  for both synchronous and asynchronous clients, with support for XML fallback responses from the service. To explicitly
+  request XML, use `new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)`.
+
 ### Bugs Fixed
 
 ### Other Changes
