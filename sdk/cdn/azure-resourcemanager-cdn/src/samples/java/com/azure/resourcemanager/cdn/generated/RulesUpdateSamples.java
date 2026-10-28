@@ -4,9 +4,13 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
+import com.azure.resourcemanager.cdn.models.DeliveryRuleEdgeActionParameters;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleResponseHeaderAction;
+import com.azure.resourcemanager.cdn.models.EdgeAction;
 import com.azure.resourcemanager.cdn.models.HeaderAction;
 import com.azure.resourcemanager.cdn.models.HeaderActionParameters;
+import com.azure.resourcemanager.cdn.models.InvocationPoint;
+import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.RuleUpdateParameters;
 import java.util.Arrays;
 
@@ -15,7 +19,7 @@ import java.util.Arrays;
  */
 public final class RulesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Rules_Update.json
+     * x-ms-original-file: 2026-10-01/Rules_Update.json
      */
     /**
      * Sample code: Rules_Update.
@@ -25,12 +29,16 @@ public final class RulesUpdateSamples {
     public static void rulesUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getRules()
-            .update("RG", "profile1", "ruleSet1", "rule1",
-                new RuleUpdateParameters().withOrder(1)
-                    .withActions(Arrays.asList(new DeliveryRuleResponseHeaderAction()
+            .update("RG", "profile1", "ruleSet1", "rule1", new RuleUpdateParameters().withOrder(1)
+                .withActions(Arrays.asList(
+                    new DeliveryRuleResponseHeaderAction()
                         .withParameters(new HeaderActionParameters().withHeaderAction(HeaderAction.OVERWRITE)
                             .withHeaderName("X-CDN")
-                            .withValue("MSFT")))),
+                            .withValue("MSFT")),
+                    new EdgeAction().withParameters(new DeliveryRuleEdgeActionParameters()
+                        .withEdgeActionReference(new ResourceReference().withId(
+                            "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/edgeActions/edgeAction1"))
+                        .withInvocationPoint(InvocationPoint.CLIENT_RESPONSE)))),
                 com.azure.core.util.Context.NONE);
     }
 }
