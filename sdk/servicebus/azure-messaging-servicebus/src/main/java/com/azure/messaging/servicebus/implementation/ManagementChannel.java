@@ -434,8 +434,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 .addKeyValue("delay", delay)
                 .log("Retrying scheduling after a server-busy response.");
             return Mono.delay(delay)
-                .then(Mono.defer(() -> sendScheduleRequest(channel, requestBody, associatedLinkName, deliveryState,
-                    retryCount + 1)));
+                .then(Mono
+                    .defer(() -> sendScheduleRequest(channel, requestBody, associatedLinkName, null, retryCount + 1)));
         });
     }
 
