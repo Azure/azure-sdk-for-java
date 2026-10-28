@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class PrivateLinkResourcesListByStorageAccountSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountListPrivateLinkResources.json
+     * x-ms-original-file: 2026-09-01/StorageAccountListPrivateLinkResources.json
      */
     /**
      * Sample code: StorageAccountListPrivateLinkResources.

@@ -19,6 +19,15 @@ import java.util.concurrent.Executor;
  * Due to the JDK preventing some headers from being sent on requests, Java 12 is required to create an instance of this
  * {@link HttpClient} implementation.
  * <p>
+ * To send an explicit {@code Host} header, start the JVM with
+ * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
+ * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
+ * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
+ * <p>
+ * The JDK's HTTP/2 {@code :authority} is derived from the request URI even when {@code Host} is allowed. To override
+ * the request authority, also configure {@link #setMaximumHttpVersion(HttpProtocolVersion)} with
+ * {@link HttpProtocolVersion#HTTP_1_1 HTTP_1_1}.
+ * <p>
  * This class leverages multi-release JAR functionality. If the JDK version is 11 or lower, this class will throw an
  * {@link UnsupportedOperationException} when any method is invoked. This same issue will also happen if the application
  * using this functionality is running Java 12 or later but doesn't have {@code Multi-Release: true} in its
@@ -68,7 +77,7 @@ public class JdkHttpClientBuilder {
      * </pre>
      * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds. A duration less than or equal to zero disables this timeout.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated {@link JdkHttpClientBuilder} object
@@ -136,6 +145,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -186,6 +197,10 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * Timeouts explicitly set on this builder take precedence over this store, then the global configuration store,
+     * then the default timeout. Missing timeout values fall back to the global store even when
+     * {@link Configuration#none()} is supplied.
      *
      * @param configuration The configuration store used to
      * @return The updated {@link JdkHttpClientBuilder} object.

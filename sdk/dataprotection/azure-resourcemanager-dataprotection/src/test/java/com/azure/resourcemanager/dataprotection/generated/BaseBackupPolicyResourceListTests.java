@@ -12,9 +12,9 @@ public final class BaseBackupPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"mnguxawqaldsyu\",\"ximerqfobwyznk\"]},\"id\":\"kutwpf\",\"name\":\"pagmhrskdsnf\",\"type\":\"sd\"}],\"nextLink\":\"kgtdlmkkze\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"dnwzxltjcvnhltiu\"]},\"id\":\"xnavvwxq\",\"name\":\"byqunyow\",\"type\":\"wlmdjrkv\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"vfvpdbodaciz\",\"j\",\"lhkrribdeibqipqk\"]},\"id\":\"vxndz\",\"name\":\"mkrefajpjorwkq\",\"type\":\"yhgbijtjivfx\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"ab\",\"bsystawfsdjpvk\",\"p\"]},\"id\":\"xbkzbzkdvncj\",\"name\":\"budurgkakmo\",\"type\":\"zhjjklffhmouwq\"}],\"nextLink\":\"zrfze\"}")
             .toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("kgtdlmkkze", model.nextLink());
-        Assertions.assertEquals("mnguxawqaldsyu", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("zrfze", model.nextLink());
+        Assertions.assertEquals("dnwzxltjcvnhltiu", model.value().get(0).properties().datasourceTypes().get(0));
     }
 }

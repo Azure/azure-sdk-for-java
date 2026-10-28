@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-agents</artifactId>
-  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
+  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Agents</name>
@@ -51,6 +51,8 @@
       --add-reads com.azure.ai.agents=java.desktop
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-reads com.azure.ai.agents=com.azure.core.tracing.opentelemetry
+      --add-reads com.azure.ai.agents=com.azure.core.metrics.opentelemetry
     </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
@@ -63,42 +65,47 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.61.0</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.17.0</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
-      <version>1.2.18</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+      <version>1.3.7</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport</artifactId>
-      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-common</artifactId>
-      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
-      <artifactId>netty-codec</artifactId>
-      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
+      <artifactId>netty-codec-base</artifactId>
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-codec-base;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
-      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
@@ -133,7 +140,49 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.20</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.67</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-metrics-opentelemetry</artifactId>
+      <version>1.0.0-beta.40</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-testing</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-logging</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -150,12 +199,12 @@
             <bannedDependencies>
               <includes>
                 <include>com.openai:openai-java:[4.69.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty-http:[1.2.18]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
-                <include>io.netty:netty-codec-http:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                <include>io.netty:netty-transport:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
-                <include>io.netty:netty-common:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
-                <include>io.netty:netty-codec:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
-                <include>io.netty:netty-buffer:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.3.7]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-transport:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+                <include>io.netty:netty-common:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
+                <include>io.netty:netty-codec-base:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-codec-base;external_dependency} -->
+                <include>io.netty:netty-buffer:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>com.squareup.okhttp3:okhttp:[4.12.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
                 <include>com.squareup.okio:okio-jvm:[3.18.1]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
               </includes>

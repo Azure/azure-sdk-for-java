@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NatRulesListByVpnGatewaySamples {
     /*
-     * x-ms-original-file: 2026-01-01/NatRuleList.json
+     * x-ms-original-file: 2026-03-01/NatRuleList.json
      */
     /**
      * Sample code: NatRuleList.

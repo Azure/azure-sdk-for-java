@@ -13,6 +13,15 @@ import java.security.spec.PSSParameterSpec;
  * key vault Rsa signature to support key less
  */
 public class KeyVaultKeylessRsaSsaPssSignature extends KeyVaultKeylessRsaSignature {
+    /**
+     * Algorithm name used by this implementation.
+     */
+    public static final String ALGORITHM_NAME = "RSASSA-PSS";
+
+    @Override
+    public String getAlgorithmName() {
+        return ALGORITHM_NAME;
+    }
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
@@ -41,10 +50,5 @@ public class KeyVaultKeylessRsaSsaPssSignature extends KeyVaultKeylessRsaSignatu
                 throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, exception);
             }
         }
-    }
-
-    @Override
-    public String getAlgorithmName() {
-        return "RSASSA-PSS";
     }
 }

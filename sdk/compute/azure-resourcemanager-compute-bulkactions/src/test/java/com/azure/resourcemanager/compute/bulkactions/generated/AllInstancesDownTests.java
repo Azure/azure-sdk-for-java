@@ -12,14 +12,14 @@ public final class AllInstancesDownTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllInstancesDown model
-            = BinaryData.fromString("{\"automaticallyApprove\":false}").toObject(AllInstancesDown.class);
-        Assertions.assertFalse(model.allInstancesDownAutomaticallyApprove());
+            = BinaryData.fromString("{\"automaticallyApprove\":true}").toObject(AllInstancesDown.class);
+        Assertions.assertTrue(model.allInstancesDownAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllInstancesDown model = new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(false);
+        AllInstancesDown model = new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(true);
         model = BinaryData.fromObject(model).toObject(AllInstancesDown.class);
-        Assertions.assertFalse(model.allInstancesDownAutomaticallyApprove());
+        Assertions.assertTrue(model.allInstancesDownAutomaticallyApprove());
     }
 }
