@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+- Deprecated `BrowserAutomationPreviewTool`, `BrowserAutomationPreviewToolboxTool`, and the corresponding
+  `BROWSER_AUTOMATION_PREVIEW` tool-type values. Use `BrowserAutomationTool`, `BrowserAutomationToolboxTool`,
+  and the `BROWSER_AUTOMATION` values instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
+
 ## 2.8.0 (2026-10-19)
 
 ### Features Added
