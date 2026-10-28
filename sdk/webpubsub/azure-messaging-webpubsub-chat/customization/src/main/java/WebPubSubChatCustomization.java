@@ -100,9 +100,21 @@ public final class WebPubSubChatCustomization extends Customization {
                 }
                 corrected = corrected.substring(0, requestStart) + request + corrected.substring(responseStart);
             }
+            if (method.getNameAsString().startsWith("createOrReplaceTopic")
+                && !corrected.contains("When creating a topic, omit state")) {
+                corrected = corrected.replace("Create or replace a topic.",
+                    "Create or replace a topic.\n     *\n"
+                        + "     * <p>When creating a topic, omit state or set it to Normal. "
+                        + "Other states are only valid when updating an existing topic.</p>");
+            }
             if (method.getNameAsString().equals("setState")) {
                 corrected = corrected.replace("Required when create the resource.",
-                    "Optional when creating a topic. Set this property to change the topic state when updating it.");
+                    "When creating a topic, omit this property or set it to {@link ChatTopicState#NORMAL}. "
+                        + "Other states are only valid when updating an existing topic.");
+                corrected = corrected.replace(
+                    "Optional when creating a topic. Set this property to change the topic state when updating it.",
+                    "When creating a topic, omit this property or set it to {@link ChatTopicState#NORMAL}. "
+                        + "Other states are only valid when updating an existing topic.");
             }
             if (!original.equals(corrected)) {
                 source = source.replace(original, corrected);

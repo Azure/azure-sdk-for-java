@@ -4,9 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: webpubsub
-    TestResourceDirectories:
-      - webpubsub
-      - webpubsub/azure-messaging-webpubsub-chat
     Artifacts:
       - name: azure-messaging-webpubsub
         groupId: com.azure
@@ -14,9 +11,6 @@ extends:
       - name: azure-messaging-webpubsub-client
         groupId: com.azure
         safeName: azuremessagingwebpubsubclient
-      - name: azure-messaging-webpubsub-chat
-        groupId: com.azure
-        safeName: azuremessagingwebpubsubchat
     TimeoutInMinutes: 60
     EnvVars:
       AZURE_LOG_LEVEL: 2

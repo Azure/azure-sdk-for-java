@@ -4,10 +4,6 @@ param baseName string = resourceGroup().name
 @description('This is the object id of the service principal used to run tests.')
 param testApplicationOid string
 
-@description('Principal type of the identity used to run tests.')
-@allowed([ 'ServicePrincipal', 'User' ])
-param testPrincipalType string = 'ServicePrincipal'
-
 @description('Location of the resource.')
 param location string = resourceGroup().location
 
@@ -127,7 +123,7 @@ resource webPubSubOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2
   properties: {
     roleDefinitionId: webPubSubOwnerRoleId
     principalId: testApplicationOid
-    principalType: testPrincipalType
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -137,7 +133,7 @@ resource webPubSubOperatorRoleAssignment 'Microsoft.Authorization/roleAssignment
   properties: {
     roleDefinitionId: webPubSubOperatorRoleId
     principalId: testApplicationOid
-    principalType: testPrincipalType
+    principalType: 'ServicePrincipal'
   }
 }
 

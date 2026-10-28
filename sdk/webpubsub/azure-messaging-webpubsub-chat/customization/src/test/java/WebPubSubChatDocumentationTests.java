@@ -201,13 +201,31 @@ public class WebPubSubChatDocumentationTests {
             .filter(method -> method.getNameAsString().equals("setState"))
             .findFirst()
             .get();
-        String doc = setter.getJavadocComment().get().getContent();
-        assertTrue(doc.contains("Optional when creating a topic."));
+        String doc = setter.getJavadocComment().get().getContent().replaceAll("\\s*\\R\\s*\\*\\s*", " ");
+        assertTrue(doc.contains("When creating a topic, omit this property"));
+        assertTrue(doc.contains("{@link ChatTopicState#NORMAL}"));
+        assertTrue(doc.contains("Other states are only valid when updating an existing topic."));
         assertFalse(doc.contains("Required when create"));
         String original = "/**\n * <p>Required when create the resource.</p>\n */\n"
             + "class Example { /** <p>Required when create the resource.</p> */ void setState() {} }";
         assertTrue(WebPubSubChatCustomization.correctLifecycleDocumentation(original)
-            .contains("Optional when creating a topic."));
+            .contains("When creating a topic, omit this property"));
+    }
+
+    @Test
+    public void topicCreationDocumentsAllowedInitialState() throws IOException {
+        for (String file : Arrays.asList("WebPubSubChatServiceClient.java", "WebPubSubChatServiceAsyncClient.java",
+            "implementation/WebPubSubChatServiceClientImpl.java")) {
+            for (MethodDeclaration method : StaticJavaParser.parse(SOURCE.resolve(file))
+                .findAll(MethodDeclaration.class)) {
+                if (method.getNameAsString().startsWith("createOrReplaceTopic")
+                    && method.getJavadocComment().isPresent()) {
+                    String doc = method.getJavadocComment().get().getContent().replaceAll("\\s*\\R\\s*\\*\\s*", " ");
+                    assertTrue(doc.contains("When creating a topic, omit state or set it to Normal."), file);
+                    assertTrue(doc.contains("Other states are only valid when updating an existing topic."), file);
+                }
+            }
+        }
     }
 
     private static String withoutComments(String source) {

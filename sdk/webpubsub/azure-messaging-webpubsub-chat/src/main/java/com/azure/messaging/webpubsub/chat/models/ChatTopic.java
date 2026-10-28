@@ -167,7 +167,8 @@ public final class ChatTopic implements JsonSerializable<ChatTopic> {
 
     /**
      * Set the state property: Current lifecycle state of the topic.
-     * <p>Optional when creating a topic. Set this property to change the topic state when updating it.</p>
+     * <p>When creating a topic, omit this property or set it to {@link ChatTopicState#NORMAL}. Other states are only
+     * valid when updating an existing topic.</p>
      *
      * @param state the state value to set.
      * @return the ChatTopic object itself.

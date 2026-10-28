@@ -25,9 +25,6 @@ Use this client library in an application server to:
 
 ### Install the package
 
-The following dependency shows the current development version. It has not been
-released to Maven Central; build it locally when evaluating the new API.
-
 [//]: # ({x-version-update-start;com.azure:azure-messaging-webpubsub-chat;current})
 ```xml
 <dependency>
@@ -78,6 +75,7 @@ WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
 For more information, see [Authenticate Azure-hosted Java applications][azure_identity_auth] and [Microsoft Entra authorization for Azure Web PubSub][entra_authorization].
 
 ## Key concepts
+
 ### Hub
 
 A hub is a logical collection of WebSocket connections. A chat hub adds built-in rooms, member management, message persistence, and chat-specific APIs.
@@ -114,6 +112,26 @@ A topic represents a named conversation within a room. Topics can be created,
 renamed, archived, and soft deleted independently of the room's default conversation.
 
 ## Examples
+
+- [Generate a client access token](#generate-a-client-access-token)
+- [Work with built-in values](#work-with-built-in-values)
+- [Create a custom role](#create-a-custom-role)
+- [List roles](#list-roles)
+- [Delete a custom role](#delete-a-custom-role)
+- [Create a user](#create-a-user)
+- [Create a room](#create-a-room)
+- [Add a room member](#add-a-room-member)
+- [List rooms](#list-rooms)
+- [List users](#list-users)
+- [List rooms for a user](#list-rooms-for-a-user)
+- [Create a topic](#create-a-topic)
+- [Get a topic](#get-a-topic)
+- [Update a topic](#update-a-topic)
+- [List topics](#list-topics)
+- [Soft delete a topic](#soft-delete-a-topic)
+- [List persisted messages](#list-persisted-messages)
+- [Update message content](#update-message-content)
+- [Use the asynchronous client](#use-the-asynchronous-client)
 
 ### Generate a client access token
 
@@ -211,6 +229,9 @@ ChatTopic topic = client.createOrReplaceTopic("general", "announcements",
     new ChatTopic().setTitle("Announcements"));
 String conversationId = topic.getConversationId();
 ```
+
+When creating a topic, leave `state` unset (as above) or set it to
+`ChatTopicState.NORMAL`. Other states are only valid when updating an existing topic.
 
 Use the returned conversation ID when a Chat WebSocket client sends messages to
 the topic. This server-side library manages resources and persisted messages;

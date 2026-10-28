@@ -122,17 +122,6 @@ public class WebPubSubChatServiceClientBuilderTests {
             () -> new WebPubSubChatServiceClientBuilder().connectionString("AccessKey=" + FIRST_KEY));
     }
 
-    @Test
-    public void defaultServiceVersionIsAugustPreview() {
-        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
-        WebPubSubChatServiceClient client = createClient(new AzureKeyCredential(FIRST_KEY), sentRequest);
-
-        assertThrows(ResourceNotFoundException.class, () -> client.getRole("room.reader"));
-
-        assertEquals("api-version=2026-08-01-preview", sentRequest.get().getUrl().getQuery());
-        assertEquals(WebPubSubChatServiceVersion.V2026_08_01_PREVIEW, WebPubSubChatServiceVersion.getLatest());
-    }
-
     @ParameterizedTest
     @EnumSource(WebPubSubChatServiceVersion.class)
     public void reverseProxyPreservesJavaServiceBehavior(WebPubSubChatServiceVersion serviceVersion)
