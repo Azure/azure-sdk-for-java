@@ -13,27 +13,27 @@ public final class NamespaceDiscoveredDatasetDataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredDatasetDataPoint model = BinaryData.fromString(
-            "{\"name\":\"kvtvsexso\",\"dataSource\":\"ueluqhhahhxvrhmz\",\"dataPointConfiguration\":\"pjgwwspug\",\"lastUpdatedOn\":\"2021-10-04T11:20:51Z\",\"typeRef\":\"sxhqxujx\"}")
+            "{\"name\":\"drhneuyow\",\"dataSource\":\"kdw\",\"dataPointConfiguration\":\"i\",\"lastUpdatedOn\":\"2020-12-27T08:51:44Z\",\"typeRef\":\"rcgp\"}")
             .toObject(NamespaceDiscoveredDatasetDataPoint.class);
-        Assertions.assertEquals("kvtvsexso", model.name());
-        Assertions.assertEquals("ueluqhhahhxvrhmz", model.dataSource());
-        Assertions.assertEquals("pjgwwspug", model.dataPointConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T11:20:51Z"), model.lastUpdatedOn());
-        Assertions.assertEquals("sxhqxujx", model.typeRef());
+        Assertions.assertEquals("drhneuyow", model.name());
+        Assertions.assertEquals("kdw", model.dataSource());
+        Assertions.assertEquals("i", model.dataPointConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T08:51:44Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("rcgp", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredDatasetDataPoint model = new NamespaceDiscoveredDatasetDataPoint().withName("kvtvsexso")
-            .withDataSource("ueluqhhahhxvrhmz")
-            .withDataPointConfiguration("pjgwwspug")
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-10-04T11:20:51Z"))
-            .withTypeRef("sxhqxujx");
+        NamespaceDiscoveredDatasetDataPoint model = new NamespaceDiscoveredDatasetDataPoint().withName("drhneuyow")
+            .withDataSource("kdw")
+            .withDataPointConfiguration("i")
+            .withLastUpdatedOn(OffsetDateTime.parse("2020-12-27T08:51:44Z"))
+            .withTypeRef("rcgp");
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredDatasetDataPoint.class);
-        Assertions.assertEquals("kvtvsexso", model.name());
-        Assertions.assertEquals("ueluqhhahhxvrhmz", model.dataSource());
-        Assertions.assertEquals("pjgwwspug", model.dataPointConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T11:20:51Z"), model.lastUpdatedOn());
-        Assertions.assertEquals("sxhqxujx", model.typeRef());
+        Assertions.assertEquals("drhneuyow", model.name());
+        Assertions.assertEquals("kdw", model.dataSource());
+        Assertions.assertEquals("i", model.dataPointConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T08:51:44Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("rcgp", model.typeRef());
     }
 }

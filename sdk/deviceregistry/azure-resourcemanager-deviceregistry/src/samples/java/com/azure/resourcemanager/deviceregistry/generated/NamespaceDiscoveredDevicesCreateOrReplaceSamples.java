@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredDevice.
@@ -36,9 +36,9 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(new NamespaceDiscoveredDeviceProperties()
                 .withEndpoints(new DiscoveredMessagingEndpoints()
-                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
+                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices")
+                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
                 .withDiscoveryId("discoveryId1")
                 .withVersion(1L))
             .create();
