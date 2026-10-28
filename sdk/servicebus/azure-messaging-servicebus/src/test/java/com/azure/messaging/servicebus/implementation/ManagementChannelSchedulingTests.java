@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
@@ -87,10 +90,14 @@ class ManagementChannelSchedulingTests {
     void setup() {
         channel = mock(RequestResponseChannel.class);
         when(channel.getErrorContext()).thenReturn(new SessionErrorContext("namespace", "queue"));
+        management = createManagementChannel();
+    }
+
+    private ManagementChannel createManagementChannel() {
         TokenManager tokenManager = mock(TokenManager.class);
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.OK));
-        management = new ManagementChannel(new ChannelCacheWrapper(Mono.just(channel)), "namespace", "queue",
-            tokenManager, TestUtils.createMessageSerializer(), retryOptions);
+        return new ManagementChannel(new ChannelCacheWrapper(Mono.just(channel)), "namespace", "queue", tokenManager,
+            TestUtils.createMessageSerializer(), retryOptions);
     }
 
     @ParameterizedTest
@@ -178,19 +185,36 @@ class ManagementChannelSchedulingTests {
     @ParameterizedTest
     @EnumSource(AmqpRetryMode.class)
     void observesConfiguredRetryDelay(AmqpRetryMode mode) {
-        retryOptions.setMode(mode);
+        retryOptions.setMode(mode).setMaxDelay(Duration.ofSeconds(30));
+        management = createManagementChannel();
+        AmqpRetryPolicy expectedPolicy = mode == AmqpRetryMode.FIXED
+            ? new FixedAmqpRetryPolicy(retryOptions)
+            : new ExponentialAmqpRetryPolicy(retryOptions);
+        AmqpException busy = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "busy", null);
+        Duration firstDelay = expectedPolicy.calculateRetryDelay(busy, 1);
+        Duration secondDelay = expectedPolicy.calculateRetryDelay(busy, 2);
+        assertTrue(secondDelay.compareTo(retryOptions.getMaxDelay()) < 0);
+        if (mode == AmqpRetryMode.EXPONENTIAL) {
+            assertTrue(secondDelay.compareTo(firstDelay) > 0);
+        } else {
+            assertEquals(firstDelay, secondDelay);
+        }
         when(channel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(busyResponse()))
+            .thenReturn(Mono.just(busyResponse()))
             .thenReturn(Mono.just(success(42L)));
 
         StepVerifier.withVirtualTime(() -> schedule(null))
             .expectSubscription()
-            .expectNoEvent(Duration.ofMillis(999))
+            .expectNoEvent(firstDelay.minusNanos(1))
             .then(() -> verify(channel).sendWithAck(any(Message.class), isNull()))
-            .thenAwait(Duration.ofMillis(1))
+            .thenAwait(Duration.ofNanos(1))
+            .expectNoEvent(secondDelay.minusNanos(1))
+            .then(() -> verify(channel, times(2)).sendWithAck(any(Message.class), isNull()))
+            .thenAwait(Duration.ofNanos(1))
             .expectNext(42L)
             .verifyComplete();
 
-        verify(channel, times(2)).sendWithAck(any(Message.class), isNull());
+        verify(channel, times(3)).sendWithAck(any(Message.class), isNull());
     }
 
     @Test
