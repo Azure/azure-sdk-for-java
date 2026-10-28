@@ -16,27 +16,27 @@ public final class PrivateEndpointOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"PrivateEndpoint\",\"destination\":{\"serviceResourceId\":\"idisczskosw\",\"subresourceTarget\":\"iqazugamxzkr\"},\"fqdns\":[\"iisb\",\"mnppccekuztd\",\"bezaxyfukzxuiz\",\"y\"],\"category\":\"Recommended\",\"status\":\"Active\",\"errorInformation\":\"etiarxqiubxdukec\",\"parentRuleNames\":[\"azvdhctmmkosz\",\"dblnsntrp\",\"aqkiofkb\"]}")
+            "{\"type\":\"PrivateEndpoint\",\"destination\":{\"serviceResourceId\":\"aqidoyzltgiomqo\",\"subresourceTarget\":\"epiaeapfsergd\"},\"fqdns\":[\"qnacyheq\"],\"category\":\"Recommended\",\"status\":\"Active\",\"errorInformation\":\"cjubkhjozfymcwm\",\"parentRuleNames\":[\"yvqyvliqiips\",\"jbsv\"]}")
             .toObject(PrivateEndpointOutboundRule.class);
         Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
         Assertions.assertEquals(RuleStatus.ACTIVE, model.status());
-        Assertions.assertEquals("idisczskosw", model.destination().serviceResourceId());
-        Assertions.assertEquals("iqazugamxzkr", model.destination().subresourceTarget());
-        Assertions.assertEquals("iisb", model.fqdns().get(0));
+        Assertions.assertEquals("aqidoyzltgiomqo", model.destination().serviceResourceId());
+        Assertions.assertEquals("epiaeapfsergd", model.destination().subresourceTarget());
+        Assertions.assertEquals("qnacyheq", model.fqdns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointOutboundRule model = new PrivateEndpointOutboundRule().withCategory(RuleCategory.RECOMMENDED)
             .withStatus(RuleStatus.ACTIVE)
-            .withDestination(new PrivateEndpointOutboundRuleDestination().withServiceResourceId("idisczskosw")
-                .withSubresourceTarget("iqazugamxzkr"))
-            .withFqdns(Arrays.asList("iisb", "mnppccekuztd", "bezaxyfukzxuiz", "y"));
+            .withDestination(new PrivateEndpointOutboundRuleDestination().withServiceResourceId("aqidoyzltgiomqo")
+                .withSubresourceTarget("epiaeapfsergd"))
+            .withFqdns(Arrays.asList("qnacyheq"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointOutboundRule.class);
         Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
         Assertions.assertEquals(RuleStatus.ACTIVE, model.status());
-        Assertions.assertEquals("idisczskosw", model.destination().serviceResourceId());
-        Assertions.assertEquals("iqazugamxzkr", model.destination().subresourceTarget());
-        Assertions.assertEquals("iisb", model.fqdns().get(0));
+        Assertions.assertEquals("aqidoyzltgiomqo", model.destination().serviceResourceId());
+        Assertions.assertEquals("epiaeapfsergd", model.destination().subresourceTarget());
+        Assertions.assertEquals("qnacyheq", model.fqdns().get(0));
     }
 }

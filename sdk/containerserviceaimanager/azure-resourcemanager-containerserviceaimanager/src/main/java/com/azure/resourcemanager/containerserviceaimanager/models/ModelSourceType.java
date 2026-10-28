@@ -17,6 +17,12 @@ public final class ModelSourceType extends ExpandableStringEnum<ModelSourceType>
     public static final ModelSourceType HUGGING_FACE = fromString("HuggingFace");
 
     /**
+     * A Microsoft Foundry project. Tenant-private models produced by internal training pipelines. Authenticated via a
+     * user-assigned managed identity (referenced in the credential and granted the `Foundry User` role on the project).
+     */
+    public static final ModelSourceType MICROSOFT_FOUNDRY = fromString("MicrosoftFoundry");
+
+    /**
      * Creates a new instance of ModelSourceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

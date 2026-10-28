@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.Project;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
@@ -27,7 +28,7 @@ public final class ProjectsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"agjhxerxlobkdbtq\",\"description\":\"mmniiqyholhjnskb\",\"endpoints\":{\"blxk\":\"cnqwlctmw\"},\"isDefault\":true},\"tags\":{\"sp\":\"xrktjcjigcw\",\"sevchefpg\":\"nbqx\",\"mmrimaabsq\":\"edyybruholaemwcg\",\"smihrijezbfsjwfc\":\"lonbzaowcahdkmb\"},\"location\":\"lkvbgukbsv\",\"etag\":\"yotygnb\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"clxaxw\",\"principalId\":\"faspsdzkucszghd\",\"userAssignedIdentities\":{\"u\":{\"principalId\":\"pmnxclfr\",\"clientId\":\"zrn\"}}},\"id\":\"vp\",\"name\":\"ofddtbfmek\",\"type\":\"cnginxdvm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ebzqz\",\"description\":\"sviujojzd\",\"endpoints\":{\"etqhdbitqsby\":\"naosxsxoxvimd\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"mrihu\",\"vectorStore\":\"rmsdbvqxgfyg\",\"blobStore\":\"gxbdpbcehwbdpse\"}},\"tags\":{\"orrvk\":\"ynpyt\",\"npjnezjighdumltp\":\"tfctanetinqxd\",\"xvfhuqhn\":\"rzwvwetqff\",\"clmr\":\"qqxjbsot\"},\"location\":\"u\",\"etag\":\"deatwxpx\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"xbboceksramqch\",\"principalId\":\"gfnlvvkswurxd\",\"userAssignedIdentities\":{\"ivlqcwyzhndqkzst\":{\"principalId\":\"auimnntf\",\"clientId\":\"pwqcnbn\"},\"cimtcaumviud\":{\"principalId\":\"zecdlceirta\",\"clientId\":\"u\"},\"mpjbh\":{\"principalId\":\"sjqrmlujmtun\",\"clientId\":\"fwuzebfq\"},\"xocjcd\":{\"principalId\":\"enfspetxeu\",\"clientId\":\"khdlckd\"}}},\"id\":\"zpf\",\"name\":\"eortwwyjmgvr\",\"type\":\"hfxmrhjnnhbcj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +37,32 @@ public final class ProjectsCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Project response = manager.projects()
-            .define("bjepzwhj")
-            .withExistingAccount("yawkch", "apitskshfyftt")
-            .withRegion("tcxmmqm")
-            .withTags(mapOf("pzupzwwy", "s", "mxpqkjnpyriwn", "bdjzghximkg"))
-            .withProperties(new ProjectProperties().withDisplayName("bggcj").withDescription("hblivwehsudym"))
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("acan", new UserAssignedIdentity(), "nydscdkx",
-                    new UserAssignedIdentity(), "fixoskk", new UserAssignedIdentity())))
-            .create();
+        Project response
+            = manager.projects()
+                .define("lwruklfq")
+                .withExistingAccount("khhk", "mrvkxeojtdyulglh")
+                .withRegion("nyjtuqgzyvextchs")
+                .withTags(mapOf("uayiqyl", "orjvudyhgtrtt", "q", "kmmxzifbqgqexo", "fy", "rtgqrqkk", "inpgobothxiew",
+                    "kuobpw"))
+                .withProperties(new ProjectProperties().withDisplayName("gogypbztgaex")
+                    .withDescription("skvctvu")
+                    .withCapabilitySettings(new CapabilitySettings().withDocumentStore("zjggkwd")
+                        .withVectorStore("emzia")
+                        .withBlobStore("iqii")))
+                .withIdentity(
+                    new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("cfgdwzauz", new UserAssignedIdentity(), "lykqadfge",
+                            new UserAssignedIdentity(), "iljqovqmx", new UserAssignedIdentity(), "kgltsxooiobhieb",
+                            new UserAssignedIdentity())))
+                .create();
 
-        Assertions.assertEquals("agjhxerxlobkdbtq", response.properties().displayName());
-        Assertions.assertEquals("mmniiqyholhjnskb", response.properties().description());
-        Assertions.assertEquals("xrktjcjigcw", response.tags().get("sp"));
-        Assertions.assertEquals("lkvbgukbsv", response.location());
+        Assertions.assertEquals("ebzqz", response.properties().displayName());
+        Assertions.assertEquals("sviujojzd", response.properties().description());
+        Assertions.assertEquals("mrihu", response.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("rmsdbvqxgfyg", response.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("gxbdpbcehwbdpse", response.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals("ynpyt", response.tags().get("orrvk"));
+        Assertions.assertEquals("u", response.location());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 

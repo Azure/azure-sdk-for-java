@@ -4,22 +4,17 @@
 
 package com.azure.resourcemanager.monitor.workspaces.generated;
 
-import com.azure.resourcemanager.monitor.workspaces.models.IssueCreationNotificationType;
 import com.azure.resourcemanager.monitor.workspaces.models.IssuePropertiesUpdate;
 import com.azure.resourcemanager.monitor.workspaces.models.IssueResource;
-import com.azure.resourcemanager.monitor.workspaces.models.Notifications;
-import com.azure.resourcemanager.monitor.workspaces.models.OnChangeNotificationType;
 import com.azure.resourcemanager.monitor.workspaces.models.Status;
-import com.azure.resourcemanager.monitor.workspaces.models.TimeBasedUpdatesNotificationType;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 
 /**
  * Samples for Issue Update.
  */
 public final class IssueUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-03/Issue_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-03-preview/Issue_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Issue_Update_MaximumSet.
@@ -35,13 +30,7 @@ public final class IssueUpdateSamples {
             .withProperties(new IssuePropertiesUpdate().withTitle("Alert fired on VM CPU")
                 .withStatus(Status.NEW)
                 .withSeverity("Sev2")
-                .withImpactTime(OffsetDateTime.parse("2024-12-13T02:45:33"))
-                .withNotifications(new Notifications()
-                    .withUpdateTypes(Arrays.asList(new IssueCreationNotificationType(), new OnChangeNotificationType(),
-                        new TimeBasedUpdatesNotificationType().withUpdateInterval("PT1H")))
-                    .withActionGroupIds(Arrays.asList(
-                        "/subscriptions/aceaa046-91f0-492a-96dc-45e10a9183dc/resourceGroups/rg1/providers/Microsoft.Insights/actionGroups/myActionGroup"))
-                    .withExcludeDefaultActionGroups(false)))
+                .withImpactTime(OffsetDateTime.parse("2024-12-13T02:45:33")))
             .apply();
     }
 }

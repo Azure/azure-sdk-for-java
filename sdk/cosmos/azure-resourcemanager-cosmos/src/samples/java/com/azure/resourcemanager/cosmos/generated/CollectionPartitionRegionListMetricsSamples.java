@@ -9,15 +9,14 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CollectionPartitionRegionListMetricsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBCollectionPartitionRegionGetMetrics.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCollectionPartitionRegionGetMetrics.json
      */
     /**
-     * Sample code: CosmosDBCollectionPartitionRegionGetMetrics.
+     * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.
      * 
      * @param manager Entry point to CosmosManager.
      */
-    public static void
-        cosmosDBCollectionPartitionRegionGetMetrics(com.azure.resourcemanager.cosmos.CosmosManager manager) {
+    public static void cosmosDBDatabaseAccountRegionGetMetrics(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getCollectionPartitionRegions()
             .listMetrics("rg1", "ddb1", "North Europe", "databaseRid", "collectionRid",

@@ -12,21 +12,21 @@ public final class ReservationBillingStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReservationBillingStatusInner model = BinaryData.fromString(
-            "{\"timestamp\":\"m\",\"totalUsedCapacityReported\":199478075825684377,\"lowDrrPoolCount\":1338226566,\"drrWeightedAverage\":5.773117540744533,\"totalNonReducibleReported\":4291268661905691897,\"extraUsedCapacityNonReducible\":5532394837865502846,\"extraUsedCapacityLowUsageRounding\":4811588424327006022,\"extraUsedCapacityNonReduciblePlanDiscount\":8189670768631717659,\"totalUsedCapacityBilled\":1144092009173010962,\"totalUsedCapacityIncludedPlan\":3105636476634467949,\"totalUsedCapacityOverage\":3694853900658231195,\"totalPerformanceReported\":7982526886149094942,\"totalPerformanceIncludedPlan\":8505816739590036821,\"totalPerformanceOverage\":6433366187327369612}")
+            "{\"timestamp\":\"jthjqkwpyei\",\"totalUsedCapacityReported\":5249632183286427435,\"lowDrrPoolCount\":1907104888,\"drrWeightedAverage\":41.64201526730872,\"totalNonReducibleReported\":5650616844832545685,\"extraUsedCapacityNonReducible\":6968905495959747775,\"extraUsedCapacityLowUsageRounding\":5154702853155489872,\"extraUsedCapacityNonReduciblePlanDiscount\":5115351983117671001,\"totalUsedCapacityBilled\":5654168720621130688,\"totalUsedCapacityIncludedPlan\":4083184887004469884,\"totalUsedCapacityOverage\":1606432780866459111,\"totalPerformanceReported\":6491877655864517038,\"totalPerformanceIncludedPlan\":1866958004161497380,\"totalPerformanceOverage\":2441730285810886150}")
             .toObject(ReservationBillingStatusInner.class);
-        Assertions.assertEquals("m", model.timestamp());
-        Assertions.assertEquals(199478075825684377L, model.totalUsedCapacityReported());
-        Assertions.assertEquals(1338226566, model.lowDrrPoolCount());
-        Assertions.assertEquals(5.773117540744533, model.drrWeightedAverage());
-        Assertions.assertEquals(4291268661905691897L, model.totalNonReducibleReported());
-        Assertions.assertEquals(5532394837865502846L, model.extraUsedCapacityNonReducible());
-        Assertions.assertEquals(4811588424327006022L, model.extraUsedCapacityLowUsageRounding());
-        Assertions.assertEquals(8189670768631717659L, model.extraUsedCapacityNonReduciblePlanDiscount());
-        Assertions.assertEquals(1144092009173010962L, model.totalUsedCapacityBilled());
-        Assertions.assertEquals(3105636476634467949L, model.totalUsedCapacityIncludedPlan());
-        Assertions.assertEquals(3694853900658231195L, model.totalUsedCapacityOverage());
-        Assertions.assertEquals(7982526886149094942L, model.totalPerformanceReported());
-        Assertions.assertEquals(8505816739590036821L, model.totalPerformanceIncludedPlan());
-        Assertions.assertEquals(6433366187327369612L, model.totalPerformanceOverage());
+        Assertions.assertEquals("jthjqkwpyei", model.timestamp());
+        Assertions.assertEquals(5249632183286427435L, model.totalUsedCapacityReported());
+        Assertions.assertEquals(1907104888, model.lowDrrPoolCount());
+        Assertions.assertEquals(41.64201526730872, model.drrWeightedAverage());
+        Assertions.assertEquals(5650616844832545685L, model.totalNonReducibleReported());
+        Assertions.assertEquals(6968905495959747775L, model.extraUsedCapacityNonReducible());
+        Assertions.assertEquals(5154702853155489872L, model.extraUsedCapacityLowUsageRounding());
+        Assertions.assertEquals(5115351983117671001L, model.extraUsedCapacityNonReduciblePlanDiscount());
+        Assertions.assertEquals(5654168720621130688L, model.totalUsedCapacityBilled());
+        Assertions.assertEquals(4083184887004469884L, model.totalUsedCapacityIncludedPlan());
+        Assertions.assertEquals(1606432780866459111L, model.totalUsedCapacityOverage());
+        Assertions.assertEquals(6491877655864517038L, model.totalPerformanceReported());
+        Assertions.assertEquals(1866958004161497380L, model.totalPerformanceIncludedPlan());
+        Assertions.assertEquals(2441730285810886150L, model.totalPerformanceOverage());
     }
 }

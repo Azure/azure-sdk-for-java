@@ -13,14 +13,14 @@ public final class IaasVmProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IaasVmProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"IaaSVMProtectableItem\",\"virtualMachineId\":\"qhykincn\",\"virtualMachineVersion\":\"mehllizhceu\",\"resourceGroup\":\"qodkadppyibngql\",\"backupManagementType\":\"ywrxw\",\"workloadType\":\"dtluvvadswzsn\",\"friendlyName\":\"emlowuowhl\",\"protectionState\":\"NotProtected\"}")
+            "{\"protectableItemType\":\"IaaSVMProtectableItem\",\"virtualMachineId\":\"r\",\"virtualMachineVersion\":\"ajglzrsubklr\",\"resourceGroup\":\"jnltcetjdvqydi\",\"backupManagementType\":\"qkwaruwd\",\"workloadType\":\"qzxoebwgjxbi\",\"friendlyName\":\"nbau\",\"protectionState\":\"Protecting\"}")
             .toObject(IaasVmProtectableItem.class);
-        Assertions.assertEquals("ywrxw", model.backupManagementType());
-        Assertions.assertEquals("dtluvvadswzsn", model.workloadType());
-        Assertions.assertEquals("emlowuowhl", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("qhykincn", model.virtualMachineId());
-        Assertions.assertEquals("mehllizhceu", model.virtualMachineVersion());
-        Assertions.assertEquals("qodkadppyibngql", model.resourceGroup());
+        Assertions.assertEquals("qkwaruwd", model.backupManagementType());
+        Assertions.assertEquals("qzxoebwgjxbi", model.workloadType());
+        Assertions.assertEquals("nbau", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals("r", model.virtualMachineId());
+        Assertions.assertEquals("ajglzrsubklr", model.virtualMachineVersion());
+        Assertions.assertEquals("jnltcetjdvqydi", model.resourceGroup());
     }
 }

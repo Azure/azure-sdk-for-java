@@ -7,20 +7,25 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerserviceaimanager.models.CredentialValue;
 import com.azure.resourcemanager.containerserviceaimanager.models.InlineCredential;
+import com.azure.resourcemanager.containerserviceaimanager.models.ManagedIdentityCredential;
 import org.junit.jupiter.api.Assertions;
 
 public final class CredentialValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialValue model
-            = BinaryData.fromString("{\"inline\":{\"value\":\"fbebrjcxer\"}}").toObject(CredentialValue.class);
-        Assertions.assertEquals("fbebrjcxer", model.inline().value());
+        CredentialValue model = BinaryData
+            .fromString("{\"inline\":{\"value\":\"dpuozmyz\"},\"managedIdentity\":{\"resourceId\":\"agfuaxbezyiu\"}}")
+            .toObject(CredentialValue.class);
+        Assertions.assertEquals("dpuozmyz", model.inline().value());
+        Assertions.assertEquals("agfuaxbezyiu", model.managedIdentity().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialValue model = new CredentialValue().withInline(new InlineCredential().withValue("fbebrjcxer"));
+        CredentialValue model = new CredentialValue().withInline(new InlineCredential().withValue("dpuozmyz"))
+            .withManagedIdentity(new ManagedIdentityCredential().withResourceId("agfuaxbezyiu"));
         model = BinaryData.fromObject(model).toObject(CredentialValue.class);
-        Assertions.assertEquals("fbebrjcxer", model.inline().value());
+        Assertions.assertEquals("dpuozmyz", model.inline().value());
+        Assertions.assertEquals("agfuaxbezyiu", model.managedIdentity().resourceId());
     }
 }

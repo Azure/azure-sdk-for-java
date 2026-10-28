@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class MonitorsListAppServicesSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_ListAppServices_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_ListAppServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MaximumSet_Gen.
@@ -30,7 +30,7 @@ public final class MonitorsListAppServicesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_ListAppServices_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_ListAppServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MinimumSet_Gen.

@@ -22,7 +22,7 @@ public final class DpsCertificatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subject\":\"lihkaetcktvfc\",\"expiry\":\"Tue, 13 Jul 2021 01:18:13 GMT\",\"thumbprint\":\"nkymuctqhjfbebrj\",\"isVerified\":true,\"created\":\"Fri, 05 Feb 2021 11:19:07 GMT\",\"updated\":\"Wed, 03 Feb 2021 12:30:06 GMT\"},\"etag\":\"ttxfvjr\",\"id\":\"rp\",\"name\":\"xepcyvahfn\",\"type\":\"jky\"}]}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"sxnkjzkdeslpvlo\",\"expiry\":\"Wed, 14 Jul 2021 18:42:26 GMT\",\"thumbprint\":\"ighxpk\",\"isVerified\":false,\"created\":\"Sat, 31 Jul 2021 11:53:44 GMT\",\"updated\":\"Wed, 18 Aug 2021 18:32:22 GMT\"},\"etag\":\"baumnyqupedeoj\",\"id\":\"bckhsmtxpsi\",\"name\":\"btfhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DpsCertificatesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CertificateResponse> response
-            = manager.dpsCertificates().list("senhwlrs", "frzpwvlqdqgb", com.azure.core.util.Context.NONE);
+            = manager.dpsCertificates().list("kfssxqukkf", "l", com.azure.core.util.Context.NONE);
 
-        Assertions.assertTrue(response.iterator().next().properties().isVerified());
+        Assertions.assertFalse(response.iterator().next().properties().isVerified());
     }
 }

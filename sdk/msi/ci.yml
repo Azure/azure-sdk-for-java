@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/msi/
+    exclude:
+      - sdk/msi/pom.xml
+      - sdk/msi/azure-resourcemanager-msi/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/msi/
+    exclude:
+      - sdk/msi/pom.xml
+      - sdk/msi/azure-resourcemanager-msi/pom.xml
 
 parameters:
 - name: release_azureresourcemanagermsi

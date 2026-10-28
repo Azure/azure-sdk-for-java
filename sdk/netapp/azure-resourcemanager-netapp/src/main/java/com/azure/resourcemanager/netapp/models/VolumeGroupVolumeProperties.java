@@ -255,7 +255,9 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -264,7 +266,9 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -724,6 +728,31 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbOplocks();
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withSmbOplocks(smbOplocks);
+        return this;
+    }
+
+    /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -1079,6 +1108,29 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.innerProperties() == null ? null : this.innerProperties().asyncDirectoryDelete();
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withAsyncDirectoryDelete(asyncDirectoryDelete);
+        return this;
+    }
+
+    /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
      * 
@@ -1410,6 +1462,29 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withBreakthroughMode(breakthroughMode);
+        return this;
+    }
+
+    /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumeNamespaceProperties geoNamespaceProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoNamespaceProperties();
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withGeoNamespaceProperties(geoNamespaceProperties);
         return this;
     }
 

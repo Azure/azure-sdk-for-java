@@ -29,6 +29,12 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     private AzureKeyVaultKms azureKeyVaultKms;
 
     /*
+     * Encryption at rest of Kubernetes resource objects. More information on this can be found under
+     * https://aka.ms/aks/kubernetesResourceObjectEncryption
+     */
+    private KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile;
+
+    /*
      * Workload identity settings for the security profile. Workload identity enables Kubernetes applications to access
      * Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for more details.
      */
@@ -40,11 +46,30 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     private ManagedClusterSecurityProfileImageCleaner imageCleaner;
 
     /*
+     * Image integrity is a feature that works with Azure Policy to verify image integrity by signature. This will not
+     * have any effect unless Azure Policy is applied to enforce image signatures. See
+     * https://aka.ms/aks/image-integrity for how to use this feature via policy.
+     */
+    private ManagedClusterSecurityProfileImageIntegrity imageIntegrity;
+
+    /*
+     * [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     */
+    private ManagedClusterSecurityProfileNodeRestriction nodeRestriction;
+
+    /*
      * A list of up to 10 base64 encoded CAs that will be added to the trust store on all nodes in the cluster. For more
      * information see [Custom CA Trust
      * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
      */
     private List<byte[]> customCATrustCertificates;
+
+    /*
+     * Defines service account based image pull settings.
+     */
+    private ServiceAccountImagePullProfile serviceAccountImagePullProfile;
 
     /**
      * Creates an instance of ManagedClusterSecurityProfile class.
@@ -95,6 +120,29 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     }
 
     /**
+     * Get the kubernetesResourceObjectEncryptionProfile property: Encryption at rest of Kubernetes resource objects.
+     * More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+     * 
+     * @return the kubernetesResourceObjectEncryptionProfile value.
+     */
+    public KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile() {
+        return this.kubernetesResourceObjectEncryptionProfile;
+    }
+
+    /**
+     * Set the kubernetesResourceObjectEncryptionProfile property: Encryption at rest of Kubernetes resource objects.
+     * More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+     * 
+     * @param kubernetesResourceObjectEncryptionProfile the kubernetesResourceObjectEncryptionProfile value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withKubernetesResourceObjectEncryptionProfile(
+        KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile) {
+        this.kubernetesResourceObjectEncryptionProfile = kubernetesResourceObjectEncryptionProfile;
+        return this;
+    }
+
+    /**
      * Get the workloadIdentity property: Workload identity settings for the security profile. Workload identity enables
      * Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for
      * more details.
@@ -140,6 +188,56 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     }
 
     /**
+     * Get the imageIntegrity property: Image integrity is a feature that works with Azure Policy to verify image
+     * integrity by signature. This will not have any effect unless Azure Policy is applied to enforce image signatures.
+     * See https://aka.ms/aks/image-integrity for how to use this feature via policy.
+     * 
+     * @return the imageIntegrity value.
+     */
+    public ManagedClusterSecurityProfileImageIntegrity imageIntegrity() {
+        return this.imageIntegrity;
+    }
+
+    /**
+     * Set the imageIntegrity property: Image integrity is a feature that works with Azure Policy to verify image
+     * integrity by signature. This will not have any effect unless Azure Policy is applied to enforce image signatures.
+     * See https://aka.ms/aks/image-integrity for how to use this feature via policy.
+     * 
+     * @param imageIntegrity the imageIntegrity value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile
+        withImageIntegrity(ManagedClusterSecurityProfileImageIntegrity imageIntegrity) {
+        this.imageIntegrity = imageIntegrity;
+        return this;
+    }
+
+    /**
+     * Get the nodeRestriction property: [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     * 
+     * @return the nodeRestriction value.
+     */
+    public ManagedClusterSecurityProfileNodeRestriction nodeRestriction() {
+        return this.nodeRestriction;
+    }
+
+    /**
+     * Set the nodeRestriction property: [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     * 
+     * @param nodeRestriction the nodeRestriction value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile
+        withNodeRestriction(ManagedClusterSecurityProfileNodeRestriction nodeRestriction) {
+        this.nodeRestriction = nodeRestriction;
+        return this;
+    }
+
+    /**
      * Get the customCATrustCertificates property: A list of up to 10 base64 encoded CAs that will be added to the trust
      * store on all nodes in the cluster. For more information see [Custom CA Trust
      * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
@@ -164,6 +262,27 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     }
 
     /**
+     * Get the serviceAccountImagePullProfile property: Defines service account based image pull settings.
+     * 
+     * @return the serviceAccountImagePullProfile value.
+     */
+    public ServiceAccountImagePullProfile serviceAccountImagePullProfile() {
+        return this.serviceAccountImagePullProfile;
+    }
+
+    /**
+     * Set the serviceAccountImagePullProfile property: Defines service account based image pull settings.
+     * 
+     * @param serviceAccountImagePullProfile the serviceAccountImagePullProfile value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile
+        withServiceAccountImagePullProfile(ServiceAccountImagePullProfile serviceAccountImagePullProfile) {
+        this.serviceAccountImagePullProfile = serviceAccountImagePullProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,11 +294,23 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
         if (azureKeyVaultKms() != null) {
             azureKeyVaultKms().validate();
         }
+        if (kubernetesResourceObjectEncryptionProfile() != null) {
+            kubernetesResourceObjectEncryptionProfile().validate();
+        }
         if (workloadIdentity() != null) {
             workloadIdentity().validate();
         }
         if (imageCleaner() != null) {
             imageCleaner().validate();
+        }
+        if (imageIntegrity() != null) {
+            imageIntegrity().validate();
+        }
+        if (nodeRestriction() != null) {
+            nodeRestriction().validate();
+        }
+        if (serviceAccountImagePullProfile() != null) {
+            serviceAccountImagePullProfile().validate();
         }
     }
 
@@ -191,10 +322,15 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("defender", this.defender);
         jsonWriter.writeJsonField("azureKeyVaultKms", this.azureKeyVaultKms);
+        jsonWriter.writeJsonField("kubernetesResourceObjectEncryptionProfile",
+            this.kubernetesResourceObjectEncryptionProfile);
         jsonWriter.writeJsonField("workloadIdentity", this.workloadIdentity);
         jsonWriter.writeJsonField("imageCleaner", this.imageCleaner);
+        jsonWriter.writeJsonField("imageIntegrity", this.imageIntegrity);
+        jsonWriter.writeJsonField("nodeRestriction", this.nodeRestriction);
         jsonWriter.writeArrayField("customCATrustCertificates", this.customCATrustCertificates,
             (writer, element) -> writer.writeBinary(element));
+        jsonWriter.writeJsonField("serviceAccountImagePullProfile", this.serviceAccountImagePullProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -219,15 +355,27 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
                         = ManagedClusterSecurityProfileDefender.fromJson(reader);
                 } else if ("azureKeyVaultKms".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.azureKeyVaultKms = AzureKeyVaultKms.fromJson(reader);
+                } else if ("kubernetesResourceObjectEncryptionProfile".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.kubernetesResourceObjectEncryptionProfile
+                        = KubernetesResourceObjectEncryptionProfile.fromJson(reader);
                 } else if ("workloadIdentity".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.workloadIdentity
                         = ManagedClusterSecurityProfileWorkloadIdentity.fromJson(reader);
                 } else if ("imageCleaner".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.imageCleaner
                         = ManagedClusterSecurityProfileImageCleaner.fromJson(reader);
+                } else if ("imageIntegrity".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.imageIntegrity
+                        = ManagedClusterSecurityProfileImageIntegrity.fromJson(reader);
+                } else if ("nodeRestriction".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.nodeRestriction
+                        = ManagedClusterSecurityProfileNodeRestriction.fromJson(reader);
                 } else if ("customCATrustCertificates".equals(fieldName)) {
                     List<byte[]> customCATrustCertificates = reader.readArray(reader1 -> reader1.getBinary());
                     deserializedManagedClusterSecurityProfile.customCATrustCertificates = customCATrustCertificates;
+                } else if ("serviceAccountImagePullProfile".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.serviceAccountImagePullProfile
+                        = ServiceAccountImagePullProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -36,6 +36,7 @@ import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.BucketsClient;
 import com.azure.resourcemanager.netapp.fluent.CachesClient;
+import com.azure.resourcemanager.netapp.fluent.ClusterPeersClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticBackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticBackupVaultsClient;
@@ -44,6 +45,10 @@ import com.azure.resourcemanager.netapp.fluent.ElasticCapacityPoolsClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.ElasticVolumesClient;
+import com.azure.resourcemanager.netapp.fluent.ExternalCacheConnectionsClient;
+import com.azure.resourcemanager.netapp.fluent.ExternalCachesClient;
+import com.azure.resourcemanager.netapp.fluent.ExternalClustersClient;
+import com.azure.resourcemanager.netapp.fluent.ExternalSvmsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
@@ -56,6 +61,7 @@ import com.azure.resourcemanager.netapp.fluent.RansomwareReportsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
+import com.azure.resourcemanager.netapp.fluent.SvmPeersClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
@@ -466,6 +472,90 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The ExternalClustersClient object to access its operations.
+     */
+    private final ExternalClustersClient externalClusters;
+
+    /**
+     * Gets the ExternalClustersClient object to access its operations.
+     * 
+     * @return the ExternalClustersClient object.
+     */
+    public ExternalClustersClient getExternalClusters() {
+        return this.externalClusters;
+    }
+
+    /**
+     * The ClusterPeersClient object to access its operations.
+     */
+    private final ClusterPeersClient clusterPeers;
+
+    /**
+     * Gets the ClusterPeersClient object to access its operations.
+     * 
+     * @return the ClusterPeersClient object.
+     */
+    public ClusterPeersClient getClusterPeers() {
+        return this.clusterPeers;
+    }
+
+    /**
+     * The ExternalSvmsClient object to access its operations.
+     */
+    private final ExternalSvmsClient externalSvms;
+
+    /**
+     * Gets the ExternalSvmsClient object to access its operations.
+     * 
+     * @return the ExternalSvmsClient object.
+     */
+    public ExternalSvmsClient getExternalSvms() {
+        return this.externalSvms;
+    }
+
+    /**
+     * The SvmPeersClient object to access its operations.
+     */
+    private final SvmPeersClient svmPeers;
+
+    /**
+     * Gets the SvmPeersClient object to access its operations.
+     * 
+     * @return the SvmPeersClient object.
+     */
+    public SvmPeersClient getSvmPeers() {
+        return this.svmPeers;
+    }
+
+    /**
+     * The ExternalCachesClient object to access its operations.
+     */
+    private final ExternalCachesClient externalCaches;
+
+    /**
+     * Gets the ExternalCachesClient object to access its operations.
+     * 
+     * @return the ExternalCachesClient object.
+     */
+    public ExternalCachesClient getExternalCaches() {
+        return this.externalCaches;
+    }
+
+    /**
+     * The ExternalCacheConnectionsClient object to access its operations.
+     */
+    private final ExternalCacheConnectionsClient externalCacheConnections;
+
+    /**
+     * Gets the ExternalCacheConnectionsClient object to access its operations.
+     * 
+     * @return the ExternalCacheConnectionsClient object.
+     */
+    public ExternalCacheConnectionsClient getExternalCacheConnections() {
+        return this.externalCacheConnections;
+    }
+
+    /**
      * The NetAppResourceQuotaLimitsClient object to access its operations.
      */
     private final NetAppResourceQuotaLimitsClient netAppResourceQuotaLimits;
@@ -622,7 +712,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-15-preview";
+        this.apiVersion = "2026-08-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -645,6 +735,12 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.elasticBackupPolicies = new ElasticBackupPoliciesClientImpl(this);
         this.elasticBackups = new ElasticBackupsClientImpl(this);
         this.activeDirectoryConfigs = new ActiveDirectoryConfigsClientImpl(this);
+        this.externalClusters = new ExternalClustersClientImpl(this);
+        this.clusterPeers = new ClusterPeersClientImpl(this);
+        this.externalSvms = new ExternalSvmsClientImpl(this);
+        this.svmPeers = new SvmPeersClientImpl(this);
+        this.externalCaches = new ExternalCachesClientImpl(this);
+        this.externalCacheConnections = new ExternalCacheConnectionsClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);

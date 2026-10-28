@@ -10,6 +10,6 @@ import com.azure.resourcemanager.monitor.workspaces.models.IngestionEndpoints;
 public final class IngestionEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IngestionEndpoints model = BinaryData.fromString("{\"metrics\":\"vsnb\"}").toObject(IngestionEndpoints.class);
+        IngestionEndpoints model = BinaryData.fromString("{\"metrics\":\"cpr\"}").toObject(IngestionEndpoints.class);
     }
 }

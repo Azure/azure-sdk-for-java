@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiEgressRuleMatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiEgressRuleMatch model = BinaryData.fromString("{\"host\":\"qchiszep\",\"path\":\"bjcrxgibbdaxco\"}")
+        RaiEgressRuleMatch model = BinaryData.fromString("{\"host\":\"oxfrkenxpmyyefr\",\"path\":\"pdnqqskawaoqvmmb\"}")
             .toObject(RaiEgressRuleMatch.class);
-        Assertions.assertEquals("qchiszep", model.host());
-        Assertions.assertEquals("bjcrxgibbdaxco", model.path());
+        Assertions.assertEquals("oxfrkenxpmyyefr", model.host());
+        Assertions.assertEquals("pdnqqskawaoqvmmb", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiEgressRuleMatch model = new RaiEgressRuleMatch().withHost("qchiszep").withPath("bjcrxgibbdaxco");
+        RaiEgressRuleMatch model = new RaiEgressRuleMatch().withHost("oxfrkenxpmyyefr").withPath("pdnqqskawaoqvmmb");
         model = BinaryData.fromObject(model).toObject(RaiEgressRuleMatch.class);
-        Assertions.assertEquals("qchiszep", model.host());
-        Assertions.assertEquals("bjcrxgibbdaxco", model.path());
+        Assertions.assertEquals("oxfrkenxpmyyefr", model.host());
+        Assertions.assertEquals("pdnqqskawaoqvmmb", model.path());
     }
 }

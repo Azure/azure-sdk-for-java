@@ -13,17 +13,17 @@ public final class ResourceProviderManifestPropertiesProviderAuthenticationTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesProviderAuthentication model
-            = BinaryData.fromString("{\"allowedAudiences\":[\"hdjhlimmbcx\",\"h\"]}")
+            = BinaryData.fromString("{\"allowedAudiences\":[\"o\",\"buffkmrqemvvhm\",\"tdrjfutacoebj\"]}")
                 .toObject(ResourceProviderManifestPropertiesProviderAuthentication.class);
-        Assertions.assertEquals("hdjhlimmbcx", model.allowedAudiences().get(0));
+        Assertions.assertEquals("o", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesProviderAuthentication model
             = new ResourceProviderManifestPropertiesProviderAuthentication()
-                .withAllowedAudiences(Arrays.asList("hdjhlimmbcx", "h"));
+                .withAllowedAudiences(Arrays.asList("o", "buffkmrqemvvhm", "tdrjfutacoebj"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesProviderAuthentication.class);
-        Assertions.assertEquals("hdjhlimmbcx", model.allowedAudiences().get(0));
+        Assertions.assertEquals("o", model.allowedAudiences().get(0));
     }
 }
