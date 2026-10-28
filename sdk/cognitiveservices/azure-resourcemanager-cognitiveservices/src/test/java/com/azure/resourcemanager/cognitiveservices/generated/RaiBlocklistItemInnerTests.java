@@ -15,22 +15,22 @@ public final class RaiBlocklistItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"pattern\":\"vusfzld\",\"isRegex\":true},\"etag\":\"xylfsb\",\"tags\":{\"s\":\"dp\",\"tgkbugrjqctojc\":\"wn\",\"cuplcplcwkhih\":\"isofieypefojyqd\"},\"id\":\"lhzdsqtzb\",\"name\":\"rgnowcjhfgm\",\"type\":\"ecactx\"}")
+            "{\"properties\":{\"pattern\":\"ql\",\"isRegex\":false},\"etag\":\"ibg\",\"tags\":{\"qoxwd\":\"nxfyqonm\"},\"id\":\"dbxiqx\",\"name\":\"iiqbi\",\"type\":\"htmwwinh\"}")
             .toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("vusfzld", model.properties().pattern());
-        Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("dp", model.tags().get("s"));
+        Assertions.assertEquals("ql", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("nxfyqonm", model.tags().get("qoxwd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistItemInner model = new RaiBlocklistItemInner()
-            .withProperties(new RaiBlocklistItemProperties().withPattern("vusfzld").withIsRegex(true))
-            .withTags(mapOf("s", "dp", "tgkbugrjqctojc", "wn", "cuplcplcwkhih", "isofieypefojyqd"));
+            .withProperties(new RaiBlocklistItemProperties().withPattern("ql").withIsRegex(false))
+            .withTags(mapOf("qoxwd", "nxfyqonm"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("vusfzld", model.properties().pattern());
-        Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("dp", model.tags().get("s"));
+        Assertions.assertEquals("ql", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("nxfyqonm", model.tags().get("qoxwd"));
     }
 
     // Use "Map.of" if available

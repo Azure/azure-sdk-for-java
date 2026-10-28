@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanActionBaseResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanActionBaseResponseInner model = BinaryData.fromString("{\"jobId\":\"lwnwxuqlcvydyp\"}")
+        RecoveryPlanActionBaseResponseInner model = BinaryData.fromString("{\"jobId\":\"zfoqouicybxar\"}")
             .toObject(RecoveryPlanActionBaseResponseInner.class);
-        Assertions.assertEquals("lwnwxuqlcvydyp", model.jobId());
+        Assertions.assertEquals("zfoqouicybxar", model.jobId());
     }
 }

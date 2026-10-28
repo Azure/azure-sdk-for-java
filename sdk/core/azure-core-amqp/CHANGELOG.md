@@ -1,14 +1,12 @@
 # Release History
 
-## 2.13.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.13.0 (2026-10-27)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 
 ## 2.12.2 (2026-09-29)
 
@@ -17,6 +15,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.59.0` to `1.60.0`.
+- Upgraded `proton-j` from `0.34.1` to `0.35.0` to pick up AMQP decoder hardening (maximum nesting depth and frame/transfer limits).
 
 ## 2.13.0-beta.1 (2026-08-27)
 

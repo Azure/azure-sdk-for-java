@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
@@ -22,7 +23,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.maintenance.fluent.ScheduledEventsClient;
-import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventApproveResponseInner;
+import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsIdList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,7 +63,7 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents/{scheduledEventId}/acknowledge")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduledEventApproveResponseInner>> acknowledge(@HostParam("endpoint") String endpoint,
+        Mono<Response<ScheduledEventsApproveResponseInner>> acknowledge(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceType") String resourceType,
             @PathParam("resourceName") String resourceName, @PathParam("scheduledEventId") String scheduledEventId,
@@ -71,29 +73,49 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents/{scheduledEventId}/acknowledge")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ScheduledEventApproveResponseInner> acknowledgeSync(@HostParam("endpoint") String endpoint,
+        Response<ScheduledEventsApproveResponseInner> acknowledgeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceType") String resourceType,
             @PathParam("resourceName") String resourceName, @PathParam("scheduledEventId") String scheduledEventId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ScheduledEventsApproveResponseInner>> acknowledgeList(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ScheduledEventsIdList scheduledEventsIdList, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ScheduledEventsApproveResponseInner> acknowledgeListSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ScheduledEventsIdList scheduledEventsIdList, Context context);
     }
 
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge along with {@link Response} on successful completion of
+     * @return response of ScheduledEvents acknowledge along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduledEventApproveResponseInner>> acknowledgeWithResponseAsync(String resourceGroupName,
+    private Mono<Response<ScheduledEventsApproveResponseInner>> acknowledgeWithResponseAsync(String resourceGroupName,
         String resourceType, String resourceName, String scheduledEventId) {
         final String accept = "application/json";
         return FluxUtil
@@ -104,41 +126,41 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
     }
 
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge on successful completion of {@link Mono}.
+     * @return response of ScheduledEvents acknowledge on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduledEventApproveResponseInner> acknowledgeAsync(String resourceGroupName, String resourceType,
+    private Mono<ScheduledEventsApproveResponseInner> acknowledgeAsync(String resourceGroupName, String resourceType,
         String resourceName, String scheduledEventId) {
         return acknowledgeWithResponseAsync(resourceGroupName, resourceType, resourceName, scheduledEventId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge along with {@link Response}.
+     * @return response of ScheduledEvents acknowledge along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduledEventApproveResponseInner> acknowledgeWithResponse(String resourceGroupName,
+    public Response<ScheduledEventsApproveResponseInner> acknowledgeWithResponse(String resourceGroupName,
         String resourceType, String resourceName, String scheduledEventId, Context context) {
         final String accept = "application/json";
         return service.acknowledgeSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -147,22 +169,117 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
     }
 
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge.
+     * @return response of ScheduledEvents acknowledge.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduledEventApproveResponseInner acknowledge(String resourceGroupName, String resourceType,
+    public ScheduledEventsApproveResponseInner acknowledge(String resourceGroupName, String resourceType,
         String resourceName, String scheduledEventId) {
         return acknowledgeWithResponse(resourceGroupName, resourceType, resourceName, scheduledEventId, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ScheduledEventsApproveResponseInner>> acknowledgeListWithResponseAsync(
+        String resourceGroupName, String resourceType, String resourceName,
+        ScheduledEventsIdList scheduledEventsIdList) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.acknowledgeList(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceType, resourceName, contentType, accept,
+                scheduledEventsIdList, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ScheduledEventsApproveResponseInner> acknowledgeListAsync(String resourceGroupName,
+        String resourceType, String resourceName, ScheduledEventsIdList scheduledEventsIdList) {
+        return acknowledgeListWithResponseAsync(resourceGroupName, resourceType, resourceName, scheduledEventsIdList)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduledEventsApproveResponseInner> acknowledgeListWithResponse(String resourceGroupName,
+        String resourceType, String resourceName, ScheduledEventsIdList scheduledEventsIdList, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.acknowledgeListSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceType, resourceName, contentType, accept,
+            scheduledEventsIdList, context);
+    }
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduledEventsApproveResponseInner acknowledgeList(String resourceGroupName, String resourceType,
+        String resourceName, ScheduledEventsIdList scheduledEventsIdList) {
+        return acknowledgeListWithResponse(resourceGroupName, resourceType, resourceName, scheduledEventsIdList,
+            Context.NONE).getValue();
     }
 }

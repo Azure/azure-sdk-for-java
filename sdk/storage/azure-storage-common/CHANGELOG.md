@@ -1,18 +1,43 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
+## 12.36.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
-  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
-  across many different upload and download operations.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
+  before a buffer's position, when that position was not 0 and the buffer was larger than the block size. This affected
+  both the sync and async clients.
+
 ### Other Changes
+
+## 12.35.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
+  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
+  across many different upload and download operations.
+
+### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.34.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 
 ## 12.34.1 (2026-08-18)
 

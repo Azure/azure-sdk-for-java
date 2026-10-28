@@ -13,20 +13,21 @@ public final class HcpOperatorIdentityRoleSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOperatorIdentityRoleSetInner model = BinaryData.fromString(
-            "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"ouwaboekqvkeln\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"bxwyjsflhhcaa\",\"resourceId\":\"n\"},{\"name\":\"ixisxyawjoy\",\"resourceId\":\"qcslyjpkiid\"},{\"name\":\"yexz\",\"resourceId\":\"eli\"}]},{\"name\":\"hnrztfol\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"xknalaulppg\",\"resourceId\":\"dtpnapnyiropuhp\"},{\"name\":\"gvpgy\",\"resourceId\":\"gqgitxmedjvcsl\"},{\"name\":\"n\",\"resourceId\":\"wwncwzzhxgk\"}]},{\"name\":\"rmgucnap\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"oellwp\",\"resourceId\":\"fdygpfqbuaceopz\"},{\"name\":\"qrhhu\",\"resourceId\":\"opppcqeq\"},{\"name\":\"ol\",\"resourceId\":\"dahzxctobg\"},{\"name\":\"kdmoi\",\"resourceId\":\"postmgrcfbunrm\"}]}],\"dataPlaneOperators\":[{\"name\":\"jhhkxbp\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"mjh\",\"resourceId\":\"xjyngudivk\"},{\"name\":\"tswb\",\"resourceId\":\"qzvszjf\"},{\"name\":\"uvjfdxxive\",\"resourceId\":\"vtcqaqtdo\"},{\"name\":\"mcbxvwvxysl\",\"resourceId\":\"bhsfxob\"}]},{\"name\":\"ytkblmpew\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"bkrvrnsvshqj\",\"resourceId\":\"hxcr\"},{\"name\":\"bfovasrruvwbhsq\",\"resourceId\":\"sub\"},{\"name\":\"gjb\",\"resourceId\":\"rxbpyb\"}]},{\"name\":\"rfbjf\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"ssotftpv\",\"resourceId\":\"zbexilzznfqqnvw\"}]}]},\"id\":\"qtaruoujmkcjhwq\",\"name\":\"tjrybnwjewgdr\",\"type\":\"ervnaenqpehi\"}")
+            "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"itc\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"cktqumiekkezzi\",\"resourceId\":\"hlyfjhdgqgg\"},{\"name\":\"bdunygaeqid\",\"resourceId\":\"qfatpxllrxcyjm\"},{\"name\":\"a\",\"resourceId\":\"su\"}]}],\"dataPlaneOperators\":[{\"name\":\"r\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"dmjsjqb\",\"resourceId\":\"hhyxxrw\"},{\"name\":\"yc\",\"resourceId\":\"duhpk\"},{\"name\":\"kgymareqnajxqug\",\"resourceId\":\"hky\"},{\"name\":\"ubeddg\",\"resourceId\":\"sofwqmzqalkrmnji\"}]}]},\"id\":\"xacqqudfnbyx\",\"name\":\"aaabjyvayff\",\"type\":\"m\"}")
             .toObject(HcpOperatorIdentityRoleSetInner.class);
-        Assertions.assertEquals("ouwaboekqvkeln", model.properties().controlPlaneOperators().get(0).name());
+        Assertions.assertEquals("itc", model.properties().controlPlaneOperators().get(0).name());
         Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
             model.properties().controlPlaneOperators().get(0).required());
-        Assertions.assertEquals("bxwyjsflhhcaa",
+        Assertions.assertEquals("cktqumiekkezzi",
             model.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("n",
+        Assertions.assertEquals("hlyfjhdgqgg",
             model.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
-        Assertions.assertEquals("jhhkxbp", model.properties().dataPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
+        Assertions.assertEquals("r", model.properties().dataPlaneOperators().get(0).name());
+        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
             model.properties().dataPlaneOperators().get(0).required());
-        Assertions.assertEquals("mjh", model.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("xjyngudivk",
+        Assertions.assertEquals("dmjsjqb",
+            model.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).name());
+        Assertions.assertEquals("hhyxxrw",
             model.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
     }
 }

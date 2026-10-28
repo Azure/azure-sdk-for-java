@@ -1,14 +1,17 @@
 # Release History
 
-## 1.27.0-beta.20 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.27.0-beta.20 (2026-10-27)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+- Upgraded `azure-core-http-jdk-httpclient` from `1.2.0` to `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+- Upgraded `azure-core-http-okhttp` from `1.13.8` to `1.14.0`.
+- Upgraded `azure-core-http-vertx` from `1.2.0` to `1.3.0`.
+- Upgraded Reactor to `3.8.7` and the shared Netty transport to Netty `4.2.19.Final` / Reactor Netty `1.3.7`.
 
 ## 1.27.0-beta.19 (2026-09-29)
 

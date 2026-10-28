@@ -55,6 +55,11 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     private byte[] minInstancePercentage;
 
+    /*
+     * The current deployment or provisioning state, which only appears in the response
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of StatelessServiceProperties class.
      */
@@ -173,6 +178,17 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     public StatelessServiceProperties withMinInstancePercentage(byte[] minInstancePercentage) {
         this.minInstancePercentage = CoreUtils.clone(minInstancePercentage);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -317,7 +333,7 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
                 } else if ("defaultMoveCost".equals(fieldName)) {
                     deserializedStatelessServiceProperties.withDefaultMoveCost(MoveCost.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatelessServiceProperties.withProvisioningState(reader.getString());
+                    deserializedStatelessServiceProperties.provisioningState = reader.getString();
                 } else if ("serviceTypeName".equals(fieldName)) {
                     deserializedStatelessServiceProperties.withServiceTypeName(reader.getString());
                 } else if ("partitionDescription".equals(fieldName)) {

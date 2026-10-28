@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.3 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,79 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.5.0 (2026-10-21)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NetAppAccountPatch` was modified
+
+* `models.AccountEncryption encryption()` -> `models.AccountEncryptionPatch encryption()`
+* `multiAdStatus()` was removed
+* `provisioningState()` was removed
+* `type()` was removed
+* `id()` was removed
+* `name()` was removed
+* `withLocation(java.lang.String)` was removed
+* `location()` was removed
+* `withEncryption(models.AccountEncryption)` was removed
+* `disableShowmount()` was removed
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withEncryption(models.AccountEncryption)` was removed
+
+### Features Added
+
+* `models.LdapConfiguration` was added
+
+* `models.AccountEncryptionPatch` was added
+
+* `models.EncryptionIdentityPatch` was added
+
+* `models.KeyVaultPropertiesPatch` was added
+
+* `models.BindPasswordAkvConfigPatch` was added
+
+* `models.BindPasswordAkvConfig` was added
+
+* `models.LdapConfigurationPatch` was added
+
+* `models.BindAuthenticationLevel` was added
+
+* `models.SecureLdapType` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.ProvisioningState` was modified
+
+* `CANCELED` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withEncryption(models.AccountEncryptionPatch)` was added
+* `ldapConfiguration()` was added
+* `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withEncryption(models.AccountEncryptionPatch)` was added
+* `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+
+#### `models.Accounts` was modified
+
+* `refreshLdapBindPassword(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `refreshLdapBindPassword(java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `ldapConfiguration()` was added
+* `refreshLdapBindPassword()` was added
+* `refreshLdapBindPassword(com.azure.core.util.Context)` was added
 
 ## 2.5.0-beta.2 (2026-08-26)
 

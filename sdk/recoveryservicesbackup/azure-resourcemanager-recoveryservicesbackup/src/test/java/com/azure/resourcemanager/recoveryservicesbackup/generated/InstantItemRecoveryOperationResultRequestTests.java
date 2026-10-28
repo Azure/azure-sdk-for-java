@@ -12,16 +12,16 @@ public final class InstantItemRecoveryOperationResultRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstantItemRecoveryOperationResultRequest model
-            = BinaryData.fromString("{\"provisionInstantItemRecoveryOperationId\":\"jrgywwpgjxsn\"}")
+            = BinaryData.fromString("{\"provisionInstantItemRecoveryOperationId\":\"zqjhhhqxuwyvca\"}")
                 .toObject(InstantItemRecoveryOperationResultRequest.class);
-        Assertions.assertEquals("jrgywwpgjxsn", model.provisionInstantItemRecoveryOperationId());
+        Assertions.assertEquals("zqjhhhqxuwyvca", model.provisionInstantItemRecoveryOperationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InstantItemRecoveryOperationResultRequest model = new InstantItemRecoveryOperationResultRequest()
-            .withProvisionInstantItemRecoveryOperationId("jrgywwpgjxsn");
+            .withProvisionInstantItemRecoveryOperationId("zqjhhhqxuwyvca");
         model = BinaryData.fromObject(model).toObject(InstantItemRecoveryOperationResultRequest.class);
-        Assertions.assertEquals("jrgywwpgjxsn", model.provisionInstantItemRecoveryOperationId());
+        Assertions.assertEquals("zqjhhhqxuwyvca", model.provisionInstantItemRecoveryOperationId());
     }
 }

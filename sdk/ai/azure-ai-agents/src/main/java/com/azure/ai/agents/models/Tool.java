@@ -79,6 +79,8 @@ public class Tool implements JsonSerializable<Tool> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("mcp".equals(discriminatorValue)) {
                     return McpTool.fromJson(readerToUse.reset());
+                } else if ("microsoft_copilot_toolset_preview".equals(discriminatorValue)) {
+                    return MicrosoftCopilotToolsetPreview.fromJson(readerToUse.reset());
                 } else if ("github_copilot_toolset_preview".equals(discriminatorValue)) {
                     return GitHubCopilotToolsetPreview.fromJson(readerToUse.reset());
                 } else if ("bing_grounding".equals(discriminatorValue)) {
@@ -95,6 +97,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return BingCustomSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {
                     return BrowserAutomationPreviewTool.fromJson(readerToUse.reset());
+                } else if ("browser_automation".equals(discriminatorValue)) {
+                    return BrowserAutomationTool.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
                     return AzureFunctionTool.fromJson(readerToUse.reset());
                 } else if ("capture_structured_outputs".equals(discriminatorValue)) {
