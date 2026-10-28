@@ -77,21 +77,21 @@ com.azure:azure-communication-sms;1.1.42;1.2.0-beta.1
 com.azure:azure-compute-batch;1.0.0-beta.6;1.0.0
 com.azure:azure-containers-containerregistry;1.2.26;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.60.0;1.61.0
-com.azure:azure-core-amqp;2.12.2;2.13.0
-com.azure:azure-core-experimental;1.0.0-beta.71;1.0.0-beta.72
-com.azure:azure-core-http-jdk-httpclient;1.2.0;1.3.0
-com.azure:azure-core-http-netty;1.16.8;1.17.0
-com.azure:azure-core-http-okhttp;1.13.8;1.14.0
-com.azure:azure-core-http-vertx;1.2.0;1.3.0
-com.azure:azure-core-management;1.19.8;1.20.0
-com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.40;1.0.0-beta.41
+com.azure:azure-core;1.61.0;1.62.0-beta.1
+com.azure:azure-core-amqp;2.13.0;2.14.0-beta.1
+com.azure:azure-core-experimental;1.0.0-beta.72;1.0.0-beta.73
+com.azure:azure-core-http-jdk-httpclient;1.3.0;1.4.0-beta.1
+com.azure:azure-core-http-netty;1.17.0;1.18.0-beta.1
+com.azure:azure-core-http-okhttp;1.14.0;1.15.0-beta.1
+com.azure:azure-core-http-vertx;1.3.0;1.4.0-beta.1
+com.azure:azure-core-management;1.20.0;1.21.0-beta.1
+com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.41;1.0.0-beta.42
 com.azure:azure-core-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-serializer-avro-apache;1.0.0-beta.68;1.0.0-beta.69
-com.azure:azure-core-serializer-json-gson;1.4.8;1.5.0
-com.azure:azure-core-serializer-json-jackson;1.6.8;1.7.0
-com.azure:azure-core-test;1.27.0-beta.19;1.27.0-beta.20
-com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.67;1.0.0-beta.68
+com.azure:azure-core-serializer-avro-apache;1.0.0-beta.69;1.0.0-beta.70
+com.azure:azure-core-serializer-json-gson;1.5.0;1.6.0-beta.1
+com.azure:azure-core-serializer-json-jackson;1.7.0;1.8.0-beta.1
+com.azure:azure-core-test;1.27.0-beta.20;1.27.0-beta.21
+com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.68;1.0.0-beta.69
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos;4.83.0;4.84.0-beta.1
@@ -558,9 +558,6 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-core;1.61.0
-unreleased_com.azure:azure-core-http-netty;1.17.0
-unreleased_com.azure:azure-core-test;1.27.0-beta.20
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
