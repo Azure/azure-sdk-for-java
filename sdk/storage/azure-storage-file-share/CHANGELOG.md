@@ -1,10 +1,6 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.32.1 (2026-10-28)
 
 ### Bugs Fixed
 - Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
@@ -12,6 +8,9 @@
   position was not 0 and the buffer was larger than the range size.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
 
 ## 12.32.0 (2026-10-07)
 
