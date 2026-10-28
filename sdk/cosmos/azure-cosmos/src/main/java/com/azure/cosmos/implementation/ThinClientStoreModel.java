@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -53,6 +54,19 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         Map<String, String> additionalHeaders) {
+        this(clientContext, sessionContainer, defaultConsistencyLevel, userAgentContainer,
+            globalEndpointManager, httpClient, additionalHeaders, null);
+    }
+
+    public ThinClientStoreModel(
+        DiagnosticsClientContext clientContext,
+        ISessionContainer sessionContainer,
+        ConsistencyLevel defaultConsistencyLevel,
+        UserAgentContainer userAgentContainer,
+        GlobalEndpointManager globalEndpointManager,
+        HttpClient httpClient,
+        Map<String, String> additionalHeaders,
+        CosmosClientTelemetryConfig clientTelemetryConfig) {
         super(
             clientContext,
             sessionContainer,
@@ -62,7 +76,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL,
-            additionalHeaders);
+            additionalHeaders,
+            clientTelemetryConfig);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()

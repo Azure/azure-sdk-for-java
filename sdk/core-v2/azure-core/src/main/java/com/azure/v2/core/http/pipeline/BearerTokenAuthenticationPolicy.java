@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.http.pipeline;
 
+import com.azure.v2.core.credentials.AccessTokenCache;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
