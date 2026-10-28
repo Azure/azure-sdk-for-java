@@ -202,6 +202,11 @@ public class BlobTestBase extends TestProxyTestBase {
         super.beforeTest();
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
+        // Mock-only tests do not need service clients or a live container.
+        if (testContextManager.doNotRecordTest()) {
+            return;
+        }
+
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager
                 .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
@@ -253,7 +258,7 @@ public class BlobTestBase extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.PLAYBACK || testContextManager.doNotRecordTest()) {
             return;
         }
 
