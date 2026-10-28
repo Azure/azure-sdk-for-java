@@ -313,6 +313,11 @@ class;com.azure.ai.agents.models.VoiceAgentSessionSubagentCompletedEvent;Preview
 class;com.azure.ai.agents.models.VoiceAgentSessionSubagentStartedEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionUpdate;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionUpdateConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeConfig;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeSound;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeSourceConfig;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeTrackConfig;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeWorkingTrackConfig;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentStaticInterimResponseConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSubagent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSubagentAbortReason;Preview API. VoiceAgents=V1Preview;

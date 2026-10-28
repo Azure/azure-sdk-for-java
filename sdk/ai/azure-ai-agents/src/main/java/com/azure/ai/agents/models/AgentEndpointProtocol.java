@@ -86,4 +86,11 @@ public final class AgentEndpointProtocol extends ExpandableStringEnum<AgentEndpo
     @Generated
     @Beta(warningText = "Preview API.")
     public static final AgentEndpointProtocol VOICE = fromString("voice");
+
+    /**
+     * Text conversation protocol for a hosted agent used by Voice Live Bridge. Declare version `1.0.0`; audio transport
+     * remains outside this protocol.
+     */
+    @Generated
+    public static final AgentEndpointProtocol VOICE_CONVERSATION_ENGINE = fromString("voice_conversation_engine");
 }
