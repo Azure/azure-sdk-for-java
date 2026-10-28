@@ -123,6 +123,11 @@
       <artifactId>okio-jvm</artifactId>
       <version>3.18.1</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+    </dependency>
 
     <!-- test scope -->
     <dependency>
@@ -185,6 +190,18 @@
       <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-testing</artifactId>
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
@@ -207,6 +224,7 @@
                 <include>io.netty:netty-buffer:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>com.squareup.okhttp3:okhttp:[4.12.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
                 <include>com.squareup.okio:okio-jvm:[3.18.1]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
               </includes>
             </bannedDependencies>
             <requireReleaseDeps>
