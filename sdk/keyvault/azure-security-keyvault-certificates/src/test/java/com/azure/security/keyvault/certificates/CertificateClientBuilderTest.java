@@ -15,10 +15,14 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -90,6 +94,46 @@ public class CertificateClientBuilderTest {
         assertNotNull(certificateAsyncClient);
         assertEquals(CertificateAsyncClient.class.getSimpleName(), certificateAsyncClient.getClass().getSimpleName());
         assertThrows(HttpResponseException.class, () -> certificateAsyncClient.getCertificate(certificateName).block());
+    }
+
+    @Test
+    public void supportedServiceVersions() {
+        assertArrayEquals(new String[] { "7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "2025-07-01", "2026-04-01" },
+            Arrays.stream(CertificateServiceVersion.values())
+                .map(CertificateServiceVersion::getVersion)
+                .toArray(String[]::new));
+    }
+
+    @ParameterizedTest
+    @EnumSource(CertificateServiceVersion.class)
+    public void buildClientsUsingExplicitApiVersion(CertificateServiceVersion version) {
+        CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(vaultUrl)
+            .serviceVersion(version)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                assertEquals("api-version=" + version.getVersion(), request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            });
+
+        assertThrows(HttpResponseException.class, () -> builder.buildClient().getCertificate(certificateName));
+        assertThrows(HttpResponseException.class,
+            () -> builder.buildAsyncClient().getCertificate(certificateName).block());
+    }
+
+    @Test
+    public void nullServiceVersionResetsToDefault() {
+        CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .serviceVersion(null)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                assertEquals("api-version=2026-04-01", request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            });
+
+        assertThrows(HttpResponseException.class, () -> builder.buildClient().getCertificate(certificateName));
+        assertThrows(HttpResponseException.class,
+            () -> builder.buildAsyncClient().getCertificate(certificateName).block());
     }
 
     @Test

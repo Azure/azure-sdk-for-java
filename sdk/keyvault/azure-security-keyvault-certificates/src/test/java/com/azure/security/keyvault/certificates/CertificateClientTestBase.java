@@ -699,12 +699,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static Stream<Arguments> getPlatformManagedTestParameters() {
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients().forEach(httpClient -> Arrays
-            .stream(new CertificateServiceVersion[] {
-                CertificateServiceVersion.V2026_03_01_PREVIEW,
-                CertificateServiceVersion.V2026_04_01 })
-            .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
-            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        getHttpClients().forEach(
+            httpClient -> Arrays.stream(new CertificateServiceVersion[] { CertificateServiceVersion.V2026_04_01 })
+                .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
 
         return argumentsList.stream();
     }
