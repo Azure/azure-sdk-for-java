@@ -42,6 +42,18 @@ enable-sync-stack: true
 disable-client-builder: true
 ```
 
+### Preserve the endpoint scheme
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.useSchemePrefix = false;
+  - from: swagger-document
+    where: $.parameters.Endpoint
+    transform: $.description = "The Service Bus namespace endpoint, including its scheme and optional port.";
+```
+
 ### Change Return Types of Subscription REST Methods
 
 Replaces `object` as the return type for subscription REST APIs to either `SubscriptionDescriptionFeed` or

@@ -271,7 +271,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final ServiceBusServiceVersion serviceVersion = interceptorManager.isLiveMode()
             ? ServiceBusServiceVersion.getLatest()
             : ServiceBusServiceVersion.V2021_05;
-        return new ServiceBusManagementClientImpl(pipeline, SERIALIZER, fullyQualifiedNamespace,
+        return new ServiceBusManagementClientImpl(pipeline, SERIALIZER, "https://" + fullyQualifiedNamespace,
             serviceVersion.getVersion());
     }
 
