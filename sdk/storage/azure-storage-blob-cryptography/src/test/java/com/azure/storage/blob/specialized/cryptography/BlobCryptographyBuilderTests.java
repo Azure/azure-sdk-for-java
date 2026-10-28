@@ -15,24 +15,32 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,14 +71,15 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
     @Test
     public void pipelineIntegrity() {
-        // Http pipeline of encrypted client additionally includes decryption policy,
-        // blob user agent modification policy, and fetch encryption version policy
-        assertEquals(bc.getHttpPipeline().getPolicyCount() + 2, beac.getHttpPipeline().getPolicyCount());
+        // The encrypted pipeline removes data locality and adds decryption and blob user-agent policies.
+        assertEquals(bc.getHttpPipeline().getPolicyCount() + 1, beac.getHttpPipeline().getPolicyCount());
         assertEquals(bc.getBlobUrl(), beac.getBlobUrl());
 
         List<HttpPipelinePolicy> originalPolicies = getAllPolicies(bc.getHttpPipeline());
         List<HttpPipelinePolicy> encryptionPolicies = getAllPolicies(beac.getHttpPipeline());
 
+        assertTrue(originalPolicies.stream().anyMatch(policy -> policy instanceof DataLocalityPolicy));
+        assertTrue(encryptionPolicies.stream().noneMatch(policy -> policy instanceof DataLocalityPolicy));
         assertTrue(encryptionPolicies.removeAll(originalPolicies));
         assertEquals(2, encryptionPolicies.size());
         assertTrue(encryptionPolicies.stream().anyMatch(policy -> policy instanceof BlobDecryptionPolicy));
@@ -96,6 +105,29 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     }
 
     @Test
+    public void encryptedDownloadWithEnabledDataLocalitySucceeds() throws IOException {
+        cc.create();
+        File source = getRandomFile(Constants.KB);
+        File destination = File.createTempFile(testResourceNamer.randomName(prefix, 60), ".txt");
+        Files.deleteIfExists(destination.toPath());
+
+        try {
+            beac.uploadFromFile(source.toPath().toString()).block();
+
+            Response<BlobProperties> response
+                = beac.downloadToFileWithResponse(new BlobDownloadToFileOptions(destination.toPath().toString())
+                    .setLayoutAwareRouting(LayoutAwareRouting.ENABLED)).block();
+
+            assertNotNull(response);
+            assertFalse(StorageImplUtils.pipelineSupportsDataLocality(beac.getHttpPipeline()));
+            compareFiles(source, destination, 0, source.length());
+        } finally {
+            Files.deleteIfExists(source.toPath());
+            Files.deleteIfExists(destination.toPath());
+        }
+    }
+
+    @Test
     public void httpPipeline() {
         BlobClient regularClient = cc.getBlobClient(generateBlobName());
         EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(
@@ -104,12 +136,13 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
                 .blobName(regularClient.getBlobName())
                 .buildEncryptedBlobAsyncClient()));
 
-        // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy
-        // and a blob user agent modification policy
-        assertEquals(encryptedClient.getHttpPipeline().getPolicyCount() - 2,
+        // The encrypted pipeline removes data locality and adds decryption and blob user-agent policies.
+        assertEquals(encryptedClient.getHttpPipeline().getPolicyCount() - 1,
             regularClient.getHttpPipeline().getPolicyCount());
         assertInstanceOf(BlobDecryptionPolicy.class, encryptedClient.getHttpPipeline().getPolicy(0));
         assertInstanceOf(BlobUserAgentModificationPolicy.class, encryptedClient.getHttpPipeline().getPolicy(2));
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(regularClient.getHttpPipeline()));
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedClient.getHttpPipeline()));
     }
 
     @Test
