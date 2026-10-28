@@ -153,7 +153,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayout() {
         Iterator<BlobLayoutRange> iterator = bc.getLayout(null, Context.NONE).iterator();
@@ -164,7 +164,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertNotNull(range.getEndpoint());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutEmptyBlob() {
         BlobClient emptyBlob = cc.getBlobClient(generateBlobName());
@@ -173,7 +173,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertDoesNotThrow(() -> emptyBlob.getLayout(null, Context.NONE).stream().count());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutRange() {
         bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
@@ -184,7 +184,7 @@ public class BlobClientBaseTests extends BlobTestBase {
                 .count());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutPageSize() {
         Iterator<PagedResponse<BlobLayoutRange>> iterator
@@ -200,7 +200,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertTrue(pageCount > 0);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutContinuationToken() {
         Iterator<PagedResponse<BlobLayoutRange>> iterator
@@ -210,7 +210,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertDoesNotThrow(() -> bc.getLayout(null, Context.NONE).iterableByPage(token).iterator().hasNext());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -231,7 +231,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             () -> bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE).stream().count());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -247,7 +247,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             () -> bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE).stream().count());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutError() {
         BlobClient blobClient = cc.getBlobClient(generateBlobName());
@@ -256,7 +256,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     }
 
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveSmallBlobIsSinglePageCoveringWholeBlob() {
         String accountHost = URI.create(bc.getBlobUrl()).getHost();
@@ -271,7 +271,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     }
 
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveLargeBlobCoversWholeBlobAcrossPages() {
         BlobClient blobClient = uploadLargeLiveBlob();
@@ -300,7 +300,7 @@ public class BlobClientBaseTests extends BlobTestBase {
      * pagination tests, which are the only place they can be exercised while the bug stands.
      */
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveRangeRequestCoversRequestedWindow() {
         BlobClient blobClient = uploadLargeLiveBlob();
@@ -332,7 +332,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Disabled("Service bug: ranged getLayout returns a NextMarker that fails with 400 InvalidQueryParameterValue "
         + "when followed. Re-enable when the service fix ships.")
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveRangeRequestEnumeratesEveryPage() {
         BlobClient blobClient = uploadLargeLiveBlob();
