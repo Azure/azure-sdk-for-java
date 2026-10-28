@@ -339,8 +339,8 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             cachedFullyQualifiedNamespace = receiver.getFullyQualifiedNamespace();
             cachedEntityPath = receiver.getEntityPath();
             receivedMessages = receiver.receiveMessagesWithContextForAsyncProcessor()
-                .map(context -> new ReceivedMessage(receiver, context, () -> {
-                }));
+                .map(context -> new ReceivedMessage(receiver, context,
+                    () -> receiver.endLockRenewal(context.getMessage())));
         } else {
             final ServiceBusSessionReceiverAsyncClient sessions
                 = sessionReceiverBuilder.buildAsyncClientForAsyncProcessor();

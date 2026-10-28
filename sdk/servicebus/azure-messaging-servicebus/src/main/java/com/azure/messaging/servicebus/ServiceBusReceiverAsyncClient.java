@@ -1914,6 +1914,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiverOptions.isAutoLockRenewEnabled();
     }
 
+    void endLockRenewal(ServiceBusReceivedMessage message) {
+        if (!isSessionEnabled
+            && receiverOptions.isAutoLockRenewEnabled()
+            && message != null
+            && message.getLockToken() != null) {
+            renewalContainer.remove(message.getLockToken());
+        }
+    }
+
     boolean isV2() {
         return isOnV2;
     }

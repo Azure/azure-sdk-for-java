@@ -136,6 +136,49 @@ public class ServiceBusProcessorAsyncClientIntegrationTest extends IntegrationTe
     }
 
     @ParameterizedTest
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    void failedManualHandlerStopsRenewalAndRedelivers(MessagingEntityType entityType) throws Exception {
+        final String messageId = UUID.randomUUID().toString();
+        final CountDownLatch failed = new CountDownLatch(1);
+        final CountDownLatch redelivered = new CountDownLatch(1);
+        final AtomicInteger attempts = new AtomicInteger();
+        final AtomicReference<Throwable> processingError = new AtomicReference<>();
+        final ServiceBusSenderAsyncClient sender
+            = toClose(getSenderBuilder(entityType, entityIndex(false), false, false).buildAsyncClient());
+        sender.sendMessage(getMessage(messageId, false).setMessageId(messageId)).block(TIMEOUT);
+        final ServiceBusProcessorAsyncClient processor = toClose(processor(entityType, false, context -> {
+            assertEquals(messageId, context.getMessage().getMessageId());
+            if (attempts.incrementAndGet() == 1) {
+                return Mono.delay(Duration.ofSeconds(17)).then(Mono.defer(() -> {
+                    assertTrue(successfulRenewals.get() > 0, "The active handler must successfully renew its lock");
+                    return Mono.error(new IllegalStateException("manual handler failed after renewal"));
+                }));
+            }
+            assertTrue(context.getMessage().getDeliveryCount() > 0);
+            return context.complete().doOnSuccess(ignored -> redelivered.countDown());
+        }, context -> {
+            processingError.compareAndSet(null, context.getException());
+            failed.countDown();
+            return Mono.empty();
+        }, true, ServiceBusReceiveMode.PEEK_LOCK, Duration.ofMinutes(3)));
+        try {
+            processor.start().block(TIMEOUT);
+            assertTrue(failed.await(45, TimeUnit.SECONDS), "The first manual handler did not fail");
+            assertTrue(redelivered.await(30, TimeUnit.SECONDS),
+                "Renewal after handler failure prevented redelivery while the processor remained open");
+            assertTrue(processor.isRunning());
+            assertEquals(2, attempts.get());
+            assertTrue(processingError.get() instanceof ServiceBusException);
+            final ServiceBusException error = (ServiceBusException) processingError.get();
+            assertEquals(ServiceBusErrorSource.USER_CALLBACK, error.getErrorSource());
+            assertEquals("manual handler failed after renewal", error.getCause().getMessage());
+            assertEntityEmpty(entityType, false);
+        } finally {
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     void receiveAndDeleteProcessesWithoutSettlement(MessagingEntityType entityType, boolean sessions) throws Exception {
         final String messageId = UUID.randomUUID().toString();
