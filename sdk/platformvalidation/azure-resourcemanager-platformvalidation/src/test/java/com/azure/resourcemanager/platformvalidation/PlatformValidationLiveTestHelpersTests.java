@@ -6,6 +6,9 @@ package com.azure.resourcemanager.platformvalidation;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -17,8 +20,81 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlatformValidationLiveTestHelpersTests {
+    @Test
+    public void parentDeletionRetriesOnlyKnownConflictAndRechecksChildren() {
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicInteger guards = new AtomicInteger();
+        AtomicInteger delays = new AtomicInteger();
+        PlatformValidationLiveTests.deleteWithRetry(() -> {
+            if (attempts.incrementAndGet() < 3) {
+                throw deletionError(409, "CannotDeleteResource");
+            }
+        }, guards::incrementAndGet, delays::incrementAndGet);
+        Assertions.assertEquals(3, attempts.get());
+        Assertions.assertEquals(3, guards.get());
+        Assertions.assertEquals(2, delays.get());
+        Assertions.assertThrows(AssertionError.class, () -> PlatformValidationLiveTests.deleteWithRetry(() -> {
+            throw deletionError(409, "CannotDeleteResource");
+        }, () -> {
+            throw new AssertionError("A child remains.");
+        }, () -> Assertions.fail("Must not retry when a child remains.")));
+    }
+
+    @Test
+    public void parentDeletionDoesNotRetryUnrelatedErrors() {
+        for (ManagementException error : new ManagementException[] {
+            deletionError(403, "AuthorizationFailed"),
+            deletionError(409, "AnotherConflict") }) {
+            AtomicInteger attempts = new AtomicInteger();
+            Assertions.assertSame(error, Assertions.assertThrows(ManagementException.class,
+                () -> PlatformValidationLiveTests.deleteWithRetry(() -> {
+                    attempts.incrementAndGet();
+                    throw error;
+                }, () -> {
+                }, () -> Assertions.fail("Unexpected retry."))));
+            Assertions.assertEquals(1, attempts.get());
+        }
+    }
+
+    @Test
+    public void parentDeletionRetainsFailureAfterBoundedRetries() {
+        AtomicInteger attempts = new AtomicInteger();
+        ManagementException error = deletionError(409, "CannotDeleteResource");
+        Assertions.assertSame(error,
+            Assertions.assertThrows(ManagementException.class, () -> PlatformValidationLiveTests.deleteWithRetry(() -> {
+                attempts.incrementAndGet();
+                throw error;
+            }, () -> {
+            }, () -> {
+            })));
+        Assertions.assertEquals(30, attempts.get());
+    }
+
+    private static ManagementException deletionError(int status, String code) {
+        return new ManagementException("Test deletion response",
+            new MockHttpResponse(new HttpRequest(HttpMethod.DELETE, "https://management.azure.com/"), status),
+            new ManagementError(code, "Test deletion error"));
+    }
+
+    @Test
+    public void regionalArmEndpointPreservesPublicCloudAuthentication() {
+        AzureEnvironment environment
+            = PlatformValidationLiveTests.testEnvironment("https://eastus2euap.management.azure.com");
+        Assertions.assertEquals("https://eastus2euap.management.azure.com", environment.getResourceManagerEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            environment.getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getManagementEndpoint(), environment.getManagementEndpoint());
+        Assertions.assertEquals("https://management.azure.com/",
+            PlatformValidationLiveTests.testEnvironment(null).getResourceManagerEndpoint());
+        Assertions.assertThrows(AssertionError.class,
+            () -> PlatformValidationLiveTests.testEnvironment("http://management.azure.com"));
+        Assertions.assertThrows(AssertionError.class,
+            () -> PlatformValidationLiveTests.testEnvironment("https://management.azure.com/?sig=example"));
+    }
+
     @Test
     public void missingResourceRequires404() {
         PlatformValidationLiveTests.assertMissing(() -> {

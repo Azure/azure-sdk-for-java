@@ -71,7 +71,8 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         subscription = required("AZURE_SUBSCRIPTION_ID");
         group = required("AZURE_RESOURCE_GROUP_NAME");
         location = CONFIG.get("PLATFORMVALIDATION_LOCATION", "southcentralusstg");
-        AzureProfile profile = new AzureProfile(required("AZURE_TENANT_ID"), subscription, AzureEnvironment.AZURE);
+        AzureProfile profile = new AzureProfile(required("AZURE_TENANT_ID"), subscription,
+            testEnvironment(CONFIG.get("PLATFORMVALIDATION_ARM_ENDPOINT")));
         TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         HttpLogOptions logging = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
         client = PlatformValidationManager.configure()
@@ -145,7 +146,8 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
     public void bootExecutionLifecycle() {
         Assumptions.assumeTrue(CONFIG.get("PLATFORMVALIDATION_RUN_EXECUTION", false),
             "Boot execution requires explicit opt-in and an approved image fixture.");
-        String source = sourceImage();
+        String source = required("PLATFORMVALIDATION_SOURCE_VHD_URI");
+        validateImageSource(source, OffsetDateTime.now());
         safeServiceCall(() -> exerciseExecution(source, true));
     }
 
@@ -315,10 +317,34 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
             resources.resourceGroups().deleteByName(name + "-mrg");
             waitForManagedGroupDeletion(name + "-mrg");
         }
-        complete(client.getCloudValidations().beginDelete(group, name));
+        deleteWithRetry(() -> complete(client.getCloudValidations().beginDelete(group, name)),
+            () -> Assertions.assertFalse(
+                client.getValidationExecutionPlans().listByResourceGroup(group, name).iterator().hasNext(),
+                "Plans remain; refusing parent deletion."),
+            () -> sleepIfRunningAgainstService(10000));
         assertMissing(() -> client.getCloudValidations().getByResourceGroup(group, name));
         waitForManagedGroupDeletion(name + "-mrg");
         System.out.println("JAVA_TEST_CV_DELETED " + cvId(name));
+    }
+
+    static void deleteWithRetry(Runnable delete, Runnable verifyNoPlans, Runnable delay) {
+        for (int attempt = 0;; attempt++) {
+            verifyNoPlans.run();
+            try {
+                delete.run();
+                return;
+            } catch (ManagementException error) {
+                if (attempt == 29
+                    || error.getResponse() == null
+                    || error.getResponse().getStatusCode() != 409
+                    || error.getValue() == null
+                    || !"CannotDeleteResource".equals(error.getValue().getCode())) {
+                    throw error;
+                }
+                // Child deletion can precede the service's parent-deletion eligibility check.
+                delay.run();
+            }
+        }
     }
 
     private ExecutionPlanRunInner waitForWorkload(String cv, String plan, String run) {
@@ -435,6 +461,22 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         Matcher matcher = Pattern.compile("/locations/([^/]+)/operationStatuses/([^/]+)$", Pattern.CASE_INSENSITIVE)
             .matcher(URI.create(url).getPath());
         return matcher.find() ? new String[] { matcher.group(1), matcher.group(2) } : null;
+    }
+
+    static AzureEnvironment testEnvironment(String endpoint) {
+        if (endpoint == null || endpoint.isEmpty()) {
+            return AzureEnvironment.AZURE;
+        }
+        URI uri = URI.create(endpoint);
+        Assertions.assertTrue("https".equals(uri.getScheme())
+            && uri.getHost() != null
+            && uri.getRawUserInfo() == null
+            && uri.getRawQuery() == null
+            && uri.getRawFragment() == null
+            && (uri.getPath().isEmpty() || "/".equals(uri.getPath())), "ARM endpoint must be an HTTPS origin.");
+        Map<String, String> endpoints = new LinkedHashMap<>(AzureEnvironment.AZURE.getEndpoints());
+        endpoints.put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
+        return new AzureEnvironment(endpoints);
     }
 
     private static String name(String prefix) {

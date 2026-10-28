@@ -86,7 +86,7 @@ For details on contributing to this repository, see the [contributing guide][cg]
 The handwritten `PlatformValidationLiveTests` use the repository's `TestProxyTestBase` and
 `@LiveOnly` convention. Normal Maven tests run the generated model/mock tests and skip live
 scenarios; no live recordings are produced. See the
-[management-plane live-test guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/HOW_TO_ADD_LIVE_TESTS.md).
+[management-plane test framework guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-test).
 
 Authenticate with Azure CLI or the supported pipeline credential and set `AZURE_TENANT_ID`,
 `AZURE_SUBSCRIPTION_ID`, and `AZURE_RESOURCE_GROUP_NAME` to a dedicated test resource group.
@@ -94,10 +94,15 @@ The live-test pipeline sets `PLATFORMVALIDATION_LOCATION=eastus2euap` (Canary).
 When this setting is absent, the tests default to `southcentralusstg` (South Central US Stage).
 This is a configuration default, not automatic failover after a service or test failure.
 The provider must already be registered in that subscription.
+For regional Canary ARM routing, also set
+`PLATFORMVALIDATION_ARM_ENDPOINT=https://eastus2euap.management.azure.com`.
+This overrides only the resource-manager endpoint, preserving public-cloud authentication.
+Leave `PLATFORMVALIDATION_CREATE_MANAGED_GROUP` unset for the current Canary deployment:
+the service provisions and deletes the managed group; no manual group or role assignment is needed.
 
 ```powershell
 $env:AZURE_TEST_MODE = "LIVE"
-mvn -f sdk\platformvalidation\azure-resourcemanager-platformvalidation\pom.xml -Dtest=PlatformValidationLiveTests test
+mvn -f sdk\platformvalidation\azure-resourcemanager-platformvalidation\pom.xml "-Djunit.jupiter.execution.parallel.enabled=false" "-Dtest=PlatformValidationLiveTests" test
 ```
 
 CloudValidation tests cover create, GET, both LIST scopes, PATCH, PUT update, and DELETE.
@@ -107,8 +112,9 @@ Plan tests require `PLATFORMVALIDATION_SOURCE_VHD_URI`, an approved Linux Gen1 X
 HTTPS URL, supplied as a secret environment variable. They check plan create, GET, LIST,
 metadata PATCH, and DELETE. Boot execution additionally requires
 `PLATFORMVALIDATION_RUN_EXECUTION=true` and checks execution results, VTR GET/LIST, and
-child absence after execution deletion. Missing optional fixtures are reported as skipped,
-not successful execution coverage.
+child absence after execution deletion. Plan-only tests without an image fixture are
+reported as skipped, not successful execution coverage. Explicitly enabling boot execution
+without a valid image fixture fails rather than silently skipping the workload.
 Both plan creation and boot execution require the referenced boot test to be available in
 the target environment's TestStore. Wait for its deployment and publishing before running
 these scenarios; disabling boot execution alone does not bypass plan-time TestStore resolution.
@@ -118,6 +124,9 @@ validity before creating resources (the service requires at least one day).
 Each scenario creates unique Java-owned names; no existing CV or plan is accepted as input.
 Failures retain resources and log their IDs for investigation. Parent deletion stops if a
 child remains. The supplied parent resource group is never deleted by the tests.
+After child deletion, CloudValidation cleanup retries only HTTP 409
+`CannotDeleteResource`, at most 30 attempts ten seconds apart, verifying the plan
+list is empty before every attempt. Other failures remain failures.
 For an explicitly approved environment without automatic managed-group provisioning,
 `PLATFORMVALIDATION_CREATE_MANAGED_GROUP=true` creates a new, tagged `<CV>-mrg` and
 deletes it only when empty after successful child cleanup. It never adopts existing groups
@@ -125,13 +134,18 @@ or grants roles; arrange service permissions separately. Do not enable this sett
 environments that automatically provision managed groups.
 
 `sdk/platformvalidation/tests.mgmt.yml` and `test-resources.bicep` provide the standard
-live-test pipeline setup. The YAML enables manual managed-group provisioning and keeps
-boot execution disabled until the target environment's TestStore is ready.
+live-test pipeline setup. The YAML uses regional Canary ARM routing, service-managed
+resource groups, and serial test execution. Boot execution remains an explicit opt-in:
+set the `RunExecution` pipeline parameter to `true` and configure the secret pipeline
+variable `PlatformValidationSourceVhdUri` with the approved image URL.
+An unset or expired fixture fails an opted-in run. The default pipeline run exercises
+discovery and CloudValidation lifecycle; image-dependent scenarios are skipped.
 Before queuing a run, configure the intended subscription and identity through the shared
 pipeline's service connection and subscription configuration. Overriding only
 `AZURE_SUBSCRIPTION_ID` does not move pipeline-provisioned resources to that subscription.
-The identity needs the separately approved permissions to create sibling managed groups;
-the Bicep template grants Contributor only on the supplied parent resource group.
+The Bicep template grants Contributor only on the supplied parent resource group.
+The service owns managed-group provisioning; the test identity does not create sibling
+managed groups or assign service roles.
 Supply the approved image through a secret environment variable, never through checked-in YAML.
 After opening the test PR, `/azp run prepare-pipelines` requests
 pipeline creation and `/azp run java - platformvalidation - mgmt - tests` requests a run.
