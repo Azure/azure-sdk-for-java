@@ -7,17 +7,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -79,6 +83,30 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.fromCallable(this::readResponseBody).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        try {
+            return BinaryData.fromBytes(readResponseBody());
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to read token proxy response body.", e));
+        }
+    }
+
+    @Override
+    public InputStream getBodyAsInputStreamSync() {
+        return getBodyAsBinaryData().toStream();
+    }
+
+    @Override
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        Objects.requireNonNull(channel, "'channel' must not be null.");
+        try {
+            BinaryData.fromBytes(readResponseBody()).writeTo(channel);
+        } finally {
+            close();
+        }
     }
 
     private synchronized byte[] readResponseBody() throws IOException {

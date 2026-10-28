@@ -126,6 +126,9 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     private volatile String responseBodyOverride;
     private volatile String redirectLocation;
     private volatile boolean throttleFirstRequest;
+    private volatile boolean closeFirstTokenRequest;
+    private volatile SslContext retrySslContext;
+    private final AtomicInteger connectionCount = new AtomicInteger();
     private final List<String> tokenRequestUris = new CopyOnWriteArrayList<>();
 
     @BeforeEach
@@ -603,6 +606,36 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     }
 
     @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void testAksProxyValidatesSniOnAutomaticPostRetry(boolean matchingServerName) throws Exception {
+        String resource = matchingServerName ? "/test-aks-cert.p12" : "/test-aks-cert-no-sni.p12";
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        try (InputStream stream = getClass().getResourceAsStream(resource)) {
+            assertNotNull(stream);
+            keyStore.load(stream, "password".toCharArray());
+        }
+        X509Certificate retryCertificate = (X509Certificate) keyStore.getCertificate("test-cert");
+        retrySslContext = SslContextBuilder
+            .forServer((PrivateKey) keyStore.getKey("test-cert", "password".toCharArray()), retryCertificate)
+            .sslProvider(SslProvider.JDK)
+            .build();
+        closeFirstTokenRequest = true;
+        String trustedCertificates = caCertPemData + toPemFormat(retryCertificate);
+        CustomTokenProxyHttpClient client = new CustomTokenProxyHttpClient(new ProxyConfig(new URL(serverBaseUrl),
+            AKS_SNI_NAME, null, trustedCertificates.getBytes(StandardCharsets.UTF_8)));
+
+        if (matchingServerName) {
+            sendProxyRequest(client);
+            assertEquals(2, tokenRequestCount.get(), "A retry with a matching TLS name must still succeed");
+        } else {
+            assertThrows(RuntimeException.class, () -> sendProxyRequest(client));
+            assertEquals(1, tokenRequestCount.get(),
+                "The retried assertion must not reach a trusted server with the wrong TLS name");
+        }
+        assertTrue(connectionCount.get() >= 2, "The JDK must establish a new TLS connection for the retry");
+    }
+
+    @ParameterizedTest
     @CsvSource({
         "proxy.example.com, true",
         "PROXY.EXAMPLE.COM, true",
@@ -972,7 +1005,10 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 protected void initChannel(SocketChannel ch) {
                     ChannelPipeline pipeline = ch.pipeline();
 
-                    SslHandler sslHandler = sslContext.newHandler(ch.alloc());
+                    SslContext connectionContext = connectionCount.incrementAndGet() > 1 && retrySslContext != null
+                        ? retrySslContext
+                        : sslContext;
+                    SslHandler sslHandler = connectionContext.newHandler(ch.alloc());
 
                     pipeline.addLast(sslHandler);
                     pipeline.addLast(new HttpServerCodec());
@@ -1022,6 +1058,10 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             } else {
                 tokenRequestCount.incrementAndGet();
                 tokenRequestUris.add(uri);
+                if (closeFirstTokenRequest && tokenRequestCount.get() == 1) {
+                    ctx.close();
+                    return;
+                }
                 responseBody = String.format(
                     "{\"token_type\":\"Bearer\",\"expires_in\":3600,\"ext_expires_in\":3600,\"access_token\":\"%s\"}",
                     MOCK_ACCESS_TOKEN);

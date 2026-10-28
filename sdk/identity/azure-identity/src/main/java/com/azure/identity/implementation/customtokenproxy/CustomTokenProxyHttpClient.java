@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.IDN;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -18,6 +19,7 @@ import java.security.KeyStore;
 import java.security.GeneralSecurityException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -27,9 +29,13 @@ import java.util.List;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
@@ -165,9 +171,12 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         try {
             if (CoreUtils.isNullOrEmpty(caFile)) {
                 if (cachedSSLContext == null) {
-                    cachedSSLContext = caData == null || caData.length == 0
-                        ? SSLContext.getDefault()
-                        : createSslContextFromBytes(caData);
+                    if (caData != null && caData.length > 0) {
+                        cachedSSLContext = createSslContextFromBytes(caData);
+                    } else {
+                        cachedSSLContext
+                            = CoreUtils.isNullOrEmpty(sniName) ? SSLContext.getDefault() : initializeSslContext(null);
+                    }
                 }
                 return cachedSSLContext;
             }
@@ -226,11 +235,26 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         for (Certificate caCert : certificates) {
             keystore.setCertificateEntry("ca-cert-" + index++, caCert);
         }
+        return initializeSslContext(keystore);
+    }
+
+    private SSLContext initializeSslContext(KeyStore keystore) throws GeneralSecurityException {
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(keystore);
+        TrustManager[] trustManagers = tmf.getTrustManagers();
+        if (!CoreUtils.isNullOrEmpty(sniName)) {
+            for (int i = 0; i < trustManagers.length; i++) {
+                if (trustManagers[i] instanceof X509ExtendedTrustManager) {
+                    trustManagers[i]
+                        = new SniExtendedTrustManager((X509ExtendedTrustManager) trustManagers[i], sniName);
+                } else if (trustManagers[i] instanceof X509TrustManager) {
+                    trustManagers[i] = new SniTrustManager((X509TrustManager) trustManagers[i], sniName);
+                }
+            }
+        }
 
         SSLContext context = SSLContext.getInstance("TLS");
-        context.init(null, tmf.getTrustManagers(), null);
+        context.init(null, trustManagers, null);
         return context;
     }
 
@@ -292,6 +316,90 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 && certificateDnsName.substring(1).equalsIgnoreCase(asciiDnsName.substring(firstDot));
         } catch (IllegalArgumentException e) {
             return false;
+        }
+    }
+
+    private static final class SniTrustManager implements X509TrustManager {
+        private final X509TrustManager delegate;
+        private final String serverName;
+
+        private SniTrustManager(X509TrustManager delegate, String serverName) {
+            this.delegate = delegate;
+            this.serverName = serverName;
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            delegate.checkServerTrusted(chain, authType);
+            checkServerName(chain);
+        }
+
+        private void checkServerName(X509Certificate[] chain) throws CertificateException {
+            // JDK-internal retries can open new connections without repeating the HTTP-level name check.
+            if (!certificateMatchesServerName(chain, serverName)) {
+                throw new CertificateException("Token proxy certificate does not match AZURE_KUBERNETES_SNI_NAME.");
+            }
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            delegate.checkClientTrusted(chain, authType);
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return delegate.getAcceptedIssuers();
+        }
+    }
+
+    private static final class SniExtendedTrustManager extends X509ExtendedTrustManager {
+        private final X509ExtendedTrustManager delegate;
+        private final SniTrustManager sniTrustManager;
+
+        private SniExtendedTrustManager(X509ExtendedTrustManager delegate, String serverName) {
+            this.delegate = delegate;
+            this.sniTrustManager = new SniTrustManager(delegate, serverName);
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            sniTrustManager.checkServerTrusted(chain, authType);
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
+            throws CertificateException {
+            delegate.checkServerTrusted(chain, authType, socket);
+            sniTrustManager.checkServerName(chain);
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+            throws CertificateException {
+            delegate.checkServerTrusted(chain, authType, engine);
+            sniTrustManager.checkServerName(chain);
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            delegate.checkClientTrusted(chain, authType);
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
+            throws CertificateException {
+            delegate.checkClientTrusted(chain, authType, socket);
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+            throws CertificateException {
+            delegate.checkClientTrusted(chain, authType, engine);
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return delegate.getAcceptedIssuers();
         }
     }
 
