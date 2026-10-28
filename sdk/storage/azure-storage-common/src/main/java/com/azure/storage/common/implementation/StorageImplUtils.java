@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -426,17 +427,20 @@ public class StorageImplUtils {
      * request to that endpoint.
      *
      * @param context The call context. May be null.
-     * @param dataLocalityEndpoint The endpoint the request should be routed to. May be null or empty, in which case
-     * the context is returned unchanged.
+     * @param dataLocalityEndpoint The absolute or authority-only URI the request should be routed to. May be null or
+     * empty, in which case the context is returned unchanged.
      * @return The context carrying the data locality endpoint, or the original context if no endpoint was supplied.
      */
-    public static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
-        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+    public static Context addDataLocalityEndpoint(Context context, URI dataLocalityEndpoint) {
+        if (dataLocalityEndpoint == null || dataLocalityEndpoint.toString().isEmpty()) {
             return context;
         }
 
+        String endpoint = dataLocalityEndpoint.getRawAuthority() == null
+            ? dataLocalityEndpoint.toString()
+            : dataLocalityEndpoint.getRawAuthority();
         Context finalContext = context == null ? Context.NONE : context;
-        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint);
     }
 
     /**

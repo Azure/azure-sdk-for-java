@@ -107,7 +107,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final int PLAYBACK_DOWNLOAD_BLOCK_SIZE = 2 * Constants.KB;
     private static final int CONTENT_PATTERN_LENGTH = 4 * Constants.KB;
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
-    private static final String DATA_LOCALITY_ENDPOINT = "https://host-a:443";
+    private static final URI DATA_LOCALITY_ENDPOINT = URI.create("https://host-a:443");
     private static final String DATA_LOCALITY_HOST = "host-a";
     private static final byte[] MOCK_BODY
         = "the quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8);
@@ -549,13 +549,14 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void downloadStreamWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void downloadStreamWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         OneShotHttpClient httpClient = new OneShotHttpClient();
         BlobClient client = mockClient(httpClient);
 
         client.downloadStreamWithResponse(new ByteArrayOutputStream(),
-            new BlobDownloadStreamOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE);
+            new BlobDownloadStreamOptions().setDataLocalityEndpoint(endpoint), null, Context.NONE);
         client.downloadStreamWithResponse(new ByteArrayOutputStream(), new BlobDownloadStreamOptions(), null,
             Context.NONE);
 
@@ -577,13 +578,14 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void downloadContentWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void downloadContentWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         OneShotHttpClient httpClient = new OneShotHttpClient();
         BlobClient client = mockClient(httpClient);
 
-        client.downloadContentWithResponse(
-            new BlobDownloadContentOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE);
+        client.downloadContentWithResponse(new BlobDownloadContentOptions().setDataLocalityEndpoint(endpoint), null,
+            Context.NONE);
         client.downloadContentWithResponse(new BlobDownloadContentOptions(), null, Context.NONE);
 
         assertRoutedThenUnrouted(httpClient);
@@ -604,31 +606,51 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void asyncDownloadStreamWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void asyncDownloadStreamWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         OneShotHttpClient httpClient = new OneShotHttpClient();
         BlobAsyncClient client = mockAsyncClient(httpClient);
 
-        drain(client.downloadStreamWithResponse(
-            new BlobDownloadStreamOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT)));
+        drain(client.downloadStreamWithResponse(new BlobDownloadStreamOptions().setDataLocalityEndpoint(endpoint)));
         drain(client.downloadStreamWithResponse(new BlobDownloadStreamOptions()));
 
         assertRoutedThenUnrouted(httpClient);
     }
 
     @DoNotRecord
-    @Test
-    public void asyncDownloadContentWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void asyncDownloadContentWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         OneShotHttpClient httpClient = new OneShotHttpClient();
         BlobAsyncClient client = mockAsyncClient(httpClient);
 
-        client
-            .downloadContentWithResponse(
-                new BlobDownloadContentOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT))
-            .block();
+        client.downloadContentWithResponse(new BlobDownloadContentOptions().setDataLocalityEndpoint(endpoint)).block();
         client.downloadContentWithResponse(new BlobDownloadContentOptions()).block();
 
         assertRoutedThenUnrouted(httpClient);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @NullSource
+    @MethodSource("dataLocalityEndpointUris")
+    public void downloadOptionsRoundTripDataLocalityEndpoint(URI endpoint) {
+        BlobDownloadStreamOptions streamOptions = new BlobDownloadStreamOptions();
+        BlobDownloadContentOptions contentOptions = new BlobDownloadContentOptions();
+
+        assertNull(streamOptions.getDataLocalityEndpoint());
+        assertNull(contentOptions.getDataLocalityEndpoint());
+        assertSame(streamOptions, streamOptions.setDataLocalityEndpoint(endpoint));
+        assertSame(contentOptions, contentOptions.setDataLocalityEndpoint(endpoint));
+        assertSame(endpoint, streamOptions.getDataLocalityEndpoint());
+        assertSame(endpoint, contentOptions.getDataLocalityEndpoint());
+        assertNull(streamOptions.setDataLocalityEndpoint(null).getDataLocalityEndpoint());
+        assertNull(contentOptions.setDataLocalityEndpoint(null).getDataLocalityEndpoint());
+    }
+
+    private static Stream<URI> dataLocalityEndpointUris() {
+        return Stream.of(DATA_LOCALITY_ENDPOINT, URI.create("//host-a:443"));
     }
 
     /**

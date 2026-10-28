@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -67,14 +68,14 @@ public class StorageImplUtilsTests {
     @Test
     void addDataLocalityEndpointReturnsContextUnchangedWhenEndpointIsEmpty() {
         Context context = new Context("key", "value");
-        Context result = StorageImplUtils.addDataLocalityEndpoint(context, "");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, URI.create(""));
 
         assertSame(context, result);
     }
 
     @Test
     void addDataLocalityEndpointUsesContextNoneWhenContextIsNull() {
-        Context result = StorageImplUtils.addDataLocalityEndpoint(null, "layout.example.net:8443");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(null, URI.create("//layout.example.net:8443"));
 
         assertNotNull(result);
         assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
@@ -84,12 +85,27 @@ public class StorageImplUtilsTests {
     @Test
     void addDataLocalityEndpointPreservesExistingContextData() {
         Context context = new Context("existingKey", "existingValue");
-        Context result = StorageImplUtils.addDataLocalityEndpoint(context, "layout.example.net");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, URI.create("https://layout.example.net"));
 
         assertTrue(result.getData("existingKey").isPresent());
         assertEquals("existingValue", result.getData("existingKey").get());
         assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
         assertEquals("layout.example.net", result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    void addDataLocalityEndpointUsesRawAuthority(URI endpoint, String expectedAuthority) {
+        Context result = StorageImplUtils.addDataLocalityEndpoint(Context.NONE, endpoint);
+
+        assertEquals(expectedAuthority, result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    private static Stream<Arguments> dataLocalityEndpointUris() {
+        return Stream.of(Arguments.of(URI.create("https://layout.example.net:8443/"), "layout.example.net:8443"),
+            Arguments.of(URI.create("//layout.example.net:8443"), "layout.example.net:8443"),
+            Arguments.of(URI.create("https://[::1]:8443/"), "[::1]:8443"),
+            Arguments.of(URI.create("//[::1]:8443"), "[::1]:8443"));
     }
 
     @Test

@@ -22,12 +22,14 @@ import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +37,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -47,7 +50,7 @@ public class DataLakeDataLocalityOptionsTests {
     private static final String ORIGINAL_DFS_ENDPOINT = "https://account.dfs.core.windows.net/filesystem/path";
     private static final String ORIGINAL_BLOB_HOST = "account.blob.core.windows.net";
     private static final String DATA_LOCALITY_HOST = "other-host.blob.core.windows.net";
-    private static final String DATA_LOCALITY_ENDPOINT = "https://" + DATA_LOCALITY_HOST;
+    private static final URI DATA_LOCALITY_ENDPOINT = URI.create("https://" + DATA_LOCALITY_HOST);
     private static final byte[] DOWNLOAD_BODY = "test".getBytes(StandardCharsets.UTF_8);
     private static final String LAYOUT_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"3\" EndpointIndex=\"0\" /></Ranges>"
@@ -120,14 +123,15 @@ public class DataLakeDataLocalityOptionsTests {
         assertNull(Transforms.toBlobDownloadStreamOptions(null));
     }
 
-    @Test
-    public void fileReadWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void fileReadWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         ReadHttpClient httpClient = new ReadHttpClient();
         DataLakeFileClient client = client(httpClient);
 
         client.readWithResponse(new ByteArrayOutputStream(),
             new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
-                .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT),
+                .setDataLocalityEndpoint(endpoint),
             null, Context.NONE);
         client.readWithResponse(new ByteArrayOutputStream(),
             new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length)), null, Context.NONE);
@@ -141,13 +145,14 @@ public class DataLakeDataLocalityOptionsTests {
         assertNull(unmodified.hostHeader);
     }
 
-    @Test
-    public void fileAsyncReadWithResponseUsesDataLocalityEndpoint() {
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    public void fileAsyncReadWithResponseUsesDataLocalityEndpoint(URI endpoint) {
         ReadHttpClient httpClient = new ReadHttpClient();
         DataLakeFileAsyncClient client = asyncClient(httpClient);
 
         client.readWithResponse(new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
-            .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT)).block();
+            .setDataLocalityEndpoint(endpoint)).block();
         client.readWithResponse(new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block();
 
         CapturedRequest rewritten = httpClient.captured.get(0);
@@ -157,6 +162,23 @@ public class DataLakeDataLocalityOptionsTests {
         CapturedRequest unmodified = httpClient.captured.get(1);
         assertEquals(ORIGINAL_BLOB_HOST, unmodified.urlHost);
         assertNull(unmodified.hostHeader);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @MethodSource("dataLocalityEndpointUris")
+    public void fileReadOptionsRoundTripDataLocalityEndpoint(URI endpoint) {
+        FileReadOptions options = new FileReadOptions();
+
+        assertNull(options.getDataLocalityEndpoint());
+        assertSame(options, options.setDataLocalityEndpoint(endpoint));
+        assertSame(endpoint, options.getDataLocalityEndpoint());
+        assertSame(endpoint, Transforms.toBlobDownloadStreamOptions(options).getDataLocalityEndpoint());
+        assertNull(options.setDataLocalityEndpoint(null).getDataLocalityEndpoint());
+    }
+
+    private static Stream<URI> dataLocalityEndpointUris() {
+        return Stream.of(DATA_LOCALITY_ENDPOINT, URI.create("//" + DATA_LOCALITY_HOST));
     }
 
     @ParameterizedTest

@@ -100,8 +100,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         if (layoutCache != null) {
             BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
             URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
-            callContext = StorageImplUtils.addDataLocalityEndpoint(context,
-                endpoint == null ? null : endpoint.getRawAuthority());
+            callContext = StorageImplUtils.addDataLocalityEndpoint(context, endpoint);
         }
 
         int initialPosition = dst.position();

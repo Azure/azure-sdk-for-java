@@ -1639,8 +1639,7 @@ public class BlobAsyncClientBase {
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
-                        Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext,
-                            endpoint == null ? null : endpoint.getRawAuthority());
+                        Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext, endpoint);
                         return this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
                             rangeGetContentMd5, contentValidationAlgorithm, callContext);
                     });

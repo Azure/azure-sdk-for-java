@@ -9,6 +9,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 
+import java.net.URI;
+
 /**
  * Extended options that may be passed when reading a file range to an output stream.
  */
@@ -18,7 +20,7 @@ public final class FileReadOptions {
     private DownloadRetryOptions downloadRetryOptions;
     private DataLakeRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
-    private String dataLocalityEndpoint;
+    private URI dataLocalityEndpoint;
     private Boolean userPrincipalName;
 
     /**
@@ -112,7 +114,7 @@ public final class FileReadOptions {
      *
      * @return The data locality endpoint, or {@code null} if the client's configured endpoint should be used.
      */
-    public String getDataLocalityEndpoint() {
+    public URI getDataLocalityEndpoint() {
         return dataLocalityEndpoint;
     }
 
@@ -122,10 +124,11 @@ public final class FileReadOptions {
      * Using a data locality endpoint preserves the original storage account authority in the {@code Host} header.
      * See {@link LayoutAwareRouting#ENABLED} for JDK HTTP transport requirements.
      *
-     * @param dataLocalityEndpoint The absolute endpoint selected from file layout information.
+     * @param dataLocalityEndpoint The endpoint selected from file layout information, as an absolute URI or an
+     * authority-only URI reference such as {@code //host:port}. The request's scheme is preserved.
      * @return The updated options.
      */
-    public FileReadOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
+    public FileReadOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
         this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }

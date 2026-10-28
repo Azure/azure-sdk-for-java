@@ -11,6 +11,8 @@ import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ValidatableContent;
 
+import java.net.URI;
+
 /**
  * Extended options that may be passed when downloading a blob range to an output stream.
  */
@@ -21,7 +23,7 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private ContentValidationAlgorithm contentValidationAlgorithm;
-    private String dataLocalityEndpoint;
+    private URI dataLocalityEndpoint;
 
     /**
      * Creates a new instance of {@link BlobDownloadStreamOptions}.
@@ -139,7 +141,7 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
      *
      * @return The data locality endpoint, or null if the client's configured endpoint should be used.
      */
-    public String getDataLocalityEndpoint() {
+    public URI getDataLocalityEndpoint() {
         return dataLocalityEndpoint;
     }
 
@@ -149,10 +151,11 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
      * Using a data locality endpoint preserves the original storage account authority in the {@code Host} header.
      * See {@link LayoutAwareRouting#ENABLED} for JDK HTTP transport requirements.
      *
-     * @param dataLocalityEndpoint The absolute endpoint selected from blob layout information.
+     * @param dataLocalityEndpoint The endpoint selected from blob layout information, as an absolute URI or an
+     * authority-only URI reference such as {@code //host:port}. The request's scheme is preserved.
      * @return The updated options.
      */
-    public BlobDownloadStreamOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
+    public BlobDownloadStreamOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
         this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }

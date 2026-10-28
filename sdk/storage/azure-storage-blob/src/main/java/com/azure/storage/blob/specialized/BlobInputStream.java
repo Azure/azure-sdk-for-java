@@ -92,8 +92,7 @@ public final class BlobInputStream extends StorageInputStream {
             if (layoutCache != null) {
                 BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
                 URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
-                callContext = StorageImplUtils.addDataLocalityEndpoint(this.context,
-                    endpoint == null ? null : endpoint.getRawAuthority());
+                callContext = StorageImplUtils.addDataLocalityEndpoint(this.context, endpoint);
             }
 
             ByteBuffer currentBuffer = this.blobClient
