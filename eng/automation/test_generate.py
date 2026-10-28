@@ -1,8 +1,10 @@
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from generate import update_revapi_skip
+from generate_data import sdk_automation_typespec_project
 from utils import is_first_release
 
 POM_WITH_REVAPI_TRUE = """\
@@ -33,6 +35,23 @@ POM_WITHOUT_REVAPI = """\
   </properties>
 </project>
 """
+
+
+class TestTypespecGenerationResult(unittest.TestCase):
+    def test_build_failure_is_warning_only_for_validation_modes(self):
+        project = (True, False, "sdk/test/pkg", "test", "pkg")
+        for mode, expected in (("batch", "warning"), ("spec-pull-request", "warning"), ("generate", "failed")):
+            with self.subTest(mode=mode), \
+                    patch("generate_data.generate_typespec_project", return_value=project), \
+                    patch("generate_data.set_or_default_version", return_value=("1.0.0", "1.1.0-beta.1")), \
+                    patch("generate_data.compile_package", return_value=False), \
+                    patch("generate_data.clean_sdk_folder", return_value=False), \
+                    patch("generate_data.glob.glob", return_value=[]):
+                result = sdk_automation_typespec_project(
+                    "test", {"specFolder": ".", "headSha": "sha", "repoHttpsUrl": "url", "runMode": mode}
+                )
+                self.assertEqual(expected, result["result"])
+                self.assertEqual([], result["artifacts"])
 
 
 class TestUpdateRevapiSkip(unittest.TestCase):
