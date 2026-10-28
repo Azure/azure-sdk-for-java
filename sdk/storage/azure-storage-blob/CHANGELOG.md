@@ -3,6 +3,9 @@
 ## 12.37.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
+  `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
+  requires an HTTP client that withholds the request body until the service responds.
 
 - Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
   it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.

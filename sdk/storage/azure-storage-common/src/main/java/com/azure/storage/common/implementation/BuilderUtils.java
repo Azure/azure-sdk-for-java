@@ -3,10 +3,17 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.ExpectContinueMode;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
+
+import java.util.List;
 
 /**
  * This class provides helper methods for client builders.
@@ -30,5 +37,26 @@ public final class BuilderUtils {
             retryOptions = new RequestRetryOptions();
         }
         return new RequestRetryPolicy(retryOptions);
+    }
+
+    /**
+     * Adds the policy applying HTTP header {@code Expect: 100-continue}, if the given options call for one. Must be
+     * called after the retry policy has been added, and before the credential policies.
+     * <p>
+     * The header is only applied when options are supplied. It is not applied by default, as the handshake needs
+     * support from the HTTP client and the default transport does not withhold the request body.
+     *
+     * @param policies The pipeline policies being built up.
+     * @param expectContinueOptions The options, or null to leave the header unapplied.
+     * @param configuration The client's configuration to read the opt out from. A null value uses the global
+     * configuration.
+     */
+    public static void addExpectContinuePolicy(List<HttpPipelinePolicy> policies,
+        ExpectContinueOptions expectContinueOptions, Configuration configuration) {
+        if (expectContinueOptions == null || expectContinueOptions.getMode() == ExpectContinueMode.OFF) {
+            return;
+        }
+
+        policies.add(new ExpectContinuePolicy(expectContinueOptions, configuration));
     }
 }
