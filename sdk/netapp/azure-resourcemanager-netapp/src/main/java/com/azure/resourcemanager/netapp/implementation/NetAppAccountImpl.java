@@ -13,6 +13,8 @@ import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
+import com.azure.resourcemanager.netapp.models.EntraIdConfig;
+import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
@@ -77,6 +79,10 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public EntraIdConfig entraIdConfig() {
+        return this.innerModel().entraIdConfig();
     }
 
     public AccountEncryption encryption() {
@@ -272,6 +278,11 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
+    public NetAppAccountImpl withEntraIdConfig(EntraIdConfig entraIdConfig) {
+        this.innerModel().withEntraIdConfig(entraIdConfig);
+        return this;
+    }
+
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
         this.innerModel().withEncryption(encryption);
         return this;
@@ -294,6 +305,11 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
         this.updateBody.withEncryption(encryption);
+        return this;
+    }
+
+    public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
+        this.updateBody.withEntraIdConfig(entraIdConfig);
         return this;
     }
 

@@ -1089,6 +1089,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1099,6 +1100,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1120,18 +1129,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1141,9 +1144,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -1204,6 +1204,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1214,6 +1215,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1235,18 +1244,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1256,9 +1259,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -1341,6 +1341,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1351,6 +1352,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1372,18 +1381,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1393,9 +1396,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -1454,6 +1454,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1464,6 +1465,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1485,18 +1494,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1506,9 +1509,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -1570,6 +1570,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1580,6 +1581,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1601,18 +1610,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1622,9 +1625,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -1665,6 +1665,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
      *     status (Optional): {
      *     }
@@ -1675,6 +1676,14 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -1696,18 +1705,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
-     *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     *         }
-     *     ]
-     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1717,9 +1720,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)

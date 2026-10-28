@@ -17,6 +17,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
+
 ### Other Changes
 
 ## 12.32.0 (2026-10-07)

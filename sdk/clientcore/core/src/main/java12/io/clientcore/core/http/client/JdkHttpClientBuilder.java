@@ -14,6 +14,7 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +35,15 @@ import static io.clientcore.core.implementation.utils.ImplUtils.getTimeout;
  * <p>
  * Due to the JDK preventing some headers from being sent on requests, Java 12 is required to create an instance of this
  * {@link HttpClient} implementation.
+ * <p>
+ * To send an explicit {@code Host} header, start the JVM with
+ * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
+ * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
+ * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
+ * <p>
+ * The JDK's HTTP/2 {@code :authority} is derived from the request URI even when {@code Host} is allowed. To override
+ * the request authority, also configure {@link #setMaximumHttpVersion(HttpProtocolVersion)} with
+ * {@link HttpProtocolVersion#HTTP_1_1 HTTP_1_1}.
  * <p>
  * This class leverages multi-release JAR functionality. If the JDK version is 11 or lower, this class will throw an
  * {@link UnsupportedOperationException} when any method is invoked. This same issue will also happen if the application
@@ -179,6 +189,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -304,7 +316,8 @@ public class JdkHttpClientBuilder {
 
             if (buildProxyOptions.getUsername() != null) {
                 httpClientBuilder.authenticator(
-                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
+                    new ProxyAuthenticator(buildProxyOptions.getAddress(), buildProxyOptions.getUsername(),
+                        buildProxyOptions.getPassword()));
             }
         }
 
@@ -356,16 +369,23 @@ public class JdkHttpClientBuilder {
     }
 
     private static class ProxyAuthenticator extends Authenticator {
+        private final InetSocketAddress proxyAddress;
         private final String userName;
         private final String password;
 
-        ProxyAuthenticator(String userName, String password) {
+        ProxyAuthenticator(InetSocketAddress proxyAddress, String userName, String password) {
+            this.proxyAddress = proxyAddress;
             this.userName = userName;
             this.password = password;
         }
 
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
+            if (getRequestorType() != RequestorType.PROXY
+                || getRequestingPort() != proxyAddress.getPort()
+                || !proxyAddress.getHostString().equalsIgnoreCase(getRequestingHost())) {
+                return null;
+            }
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
     }

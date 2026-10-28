@@ -38,6 +38,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -839,6 +840,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void startCopyFromURLSmartAccessTier() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
@@ -854,6 +856,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void copyFromURLSmartAccessTier() {
         String srcBlobSas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
@@ -872,6 +875,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmart() {
         bc.setAccessTier(AccessTier.SMART);
 
@@ -882,6 +886,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartGetBlobs() {
         String blobName1 = generateBlobName();
         String blobName2 = generateBlobName();
@@ -906,6 +911,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartRehydrate() {
         bc.setAccessTier(AccessTier.ARCHIVE);
 
@@ -919,6 +925,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartRehydrateGetBlobs() {
         String blobName1 = generateBlobName();
         String blobName2 = generateBlobName();
