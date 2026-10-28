@@ -360,6 +360,18 @@ This project welcomes contributions and suggestions. See the [contributing guide
 
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ][code_of_conduct_faq] or contact opencode@microsoft.com with questions or comments.
 
+### Running live tests locally
+
+Playback tests do not require Azure resources. To provision resources for live tests, the shared test-resource script uses your signed-in user by default. From the repository root, specify the matching principal type so the Chat data-plane roles are assigned to that user:
+
+```powershell
+.\eng\common\TestResources\New-TestResources.ps1 `
+    -ServiceDirectory webpubsub\azure-messaging-webpubsub-chat `
+    -AdditionalParameters @{ testPrincipalType = 'User' }
+```
+
+CI and local provisioning with `-ServicePrincipalAuth` use the default `ServicePrincipal` type; omit the `testPrincipalType` override for those runs. This parameter is only needed when provisioning resources, not when running tests against an existing deployment.
+
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/webpubsub/azure-messaging-webpubsub-chat/src
 [package]: https://central.sonatype.com/artifact/com.azure/azure-messaging-webpubsub-chat
