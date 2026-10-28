@@ -79,10 +79,22 @@ public class SearchCustomizations extends Customization {
         // that mirror what the sync client already has as hand-written methods.
         addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
 
-        // SearchResourceEncryptionKey workaround: the spec marks keyVaultUri and keyVaultKeyName as required,
-        // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
-        addNoArgConstructorToEncryptionKey(libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
-            .getClass("SearchResourceEncryptionKey"));
+        // The JSON property remains docUrl; only the Java getter name changes.
+        libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
+            .getClass("KnowledgeBaseIndexedSqlReference")
+            .customizeAst(ast -> {
+                List<MethodDeclaration> getters = ast.getClassByName("KnowledgeBaseIndexedSqlReference")
+                    .orElseThrow(() -> new IllegalStateException("Class KnowledgeBaseIndexedSqlReference not found."))
+                    .getMethodsByName("getDocUrl")
+                    .stream()
+                    .filter(method -> method.getParameters().isEmpty())
+                    .collect(java.util.stream.Collectors.toList());
+                if (getters.size() != 1) {
+                    throw new IllegalStateException("Expected exactly one zero-argument getDocUrl() method in "
+                        + "KnowledgeBaseIndexedSqlReference but found " + getters.size() + ".");
+                }
+                getters.get(0).setName("getDocumentUrl");
+            });
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -542,22 +554,7 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
-    // SearchResourceEncryptionKey has keyName and vaultUrl as required (final) fields, but when
-    // isServiceLevelKey is true, they are not needed. This adds a no-arg constructor and makes those fields non-final.
-    private static void addNoArgConstructorToEncryptionKey(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            // Make keyName and vaultUrl non-final
-            clazz.getFieldByName("keyName").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
-            clazz.getFieldByName("vaultUrl").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
 
-            // Add no-arg constructor
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration("/**\n"
-                + " * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is\n"
-                + " * set to true, in which case keyName and vaultUrl are not required.\n" + " */\n"
-                + "public SearchResourceEncryptionKey() {\n" + "    this.keyName = null;\n"
-                + "    this.vaultUrl = null;\n" + "}\n"));
-        }));
-    }
 
     // Adds public convenience methods to SearchIndexAsyncClient for knowledge base and knowledge source
     // createOrUpdate operations. The sync client has equivalent hand-written wrappers, but the async client

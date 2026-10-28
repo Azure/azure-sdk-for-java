@@ -48,9 +48,14 @@ from a preview release are not included.
 - Added `modelName` and `modelDeployment` to `ContentUnderstandingSkill`, fixed-size and semantic chunking method
   selection, and token-based chunking units.
 - Added `GPT54`, `GPT55`, `GPT56SOL`, `GPT56TERRA`, and `GPT56LUNA` to `AzureOpenAIModelName`.
-- Added a parameterless `SearchResourceEncryptionKey` constructor.
 
 ### Breaking Changes
+
+These removals correct preview-only APIs accidentally exposed by the GA specification. The corresponding features
+were not supported by the previous GA service API. The specification correction was signed off as a bug fix in
+[Azure/azure-rest-api-specs#47112](https://github.com/Azure/azure-rest-api-specs/pull/47112).
+Removing these published Java APIs remains a source and binary compatibility break, despite the lack of supported
+service behavior.
 
 The following APIs were public in GA `12.0.2` and have been removed in `12.1.0`:
 

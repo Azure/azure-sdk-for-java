@@ -40,6 +40,12 @@ Use `SearchServiceVersion.V2026_10_01` to select this version explicitly on a cl
 Preview-only APIs that are not included in this GA service version are not available in this development version.
 Previously supported GA service versions remain selectable with `SearchServiceVersion`.
 
+This release also removes public Java APIs for preview-only features accidentally exposed by the previous GA
+specification. The corresponding features were not supported by that GA service API, but removing the published Java
+APIs is a source and binary compatibility break. Selecting an older service version does not restore removed Java
+APIs. See the changelog's [Breaking Changes](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/CHANGELOG.md#breaking-changes)
+section and the [specification correction](https://github.com/Azure/azure-rest-api-specs/pull/47112) for details.
+
 Knowledge bases, typed retrieval streaming, and file knowledge sources are included in this GA API.
 See the [knowledge base configuration sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java),
 [retrieval response sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),

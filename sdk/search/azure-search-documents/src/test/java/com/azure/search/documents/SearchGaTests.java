@@ -32,16 +32,19 @@ import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
 import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecordModel;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelWebSummarizationActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
@@ -78,6 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.CONCURRENT)
@@ -102,6 +106,50 @@ public class SearchGaTests {
         assertEquals("2026-10-01", SearchServiceVersion.getLatest().getVersion());
         for (SearchServiceVersion version : SearchServiceVersion.values()) {
             assertFalse(version.getVersion().contains("preview"));
+        }
+    }
+
+    @Test
+    public void encryptionKeyRequiresNameAndVaultUrl() {
+        assertThrows(NoSuchMethodException.class, () -> SearchResourceEncryptionKey.class.getConstructor());
+    }
+
+    @Test
+    public void encryptionKeyPreservesWireProperties() throws IOException {
+        SearchResourceEncryptionKey key
+            = new SearchResourceEncryptionKey("encryption-key", "https://example.vault.azure.net")
+                .setKeyVersion("key-version");
+        String json = key.toJsonString();
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            Map<String, Object> properties = reader.readMap(JsonReader::readUntyped);
+            assertEquals(key.getKeyName(), properties.get("keyVaultKeyName"));
+            assertEquals(key.getVaultUrl(), properties.get("keyVaultUri"));
+            assertEquals(key.getKeyVersion(), properties.get("keyVaultKeyVersion"));
+            assertFalse(properties.containsKey("isServiceLevelKey"));
+        }
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            SearchResourceEncryptionKey roundTrip = SearchResourceEncryptionKey.fromJson(reader);
+            assertEquals(key.getKeyName(), roundTrip.getKeyName());
+            assertEquals(key.getVaultUrl(), roundTrip.getVaultUrl());
+            assertEquals(key.getKeyVersion(), roundTrip.getKeyVersion());
+        }
+    }
+
+    @Test
+    public void indexedSqlReferencePreservesDocUrlWireProperty() throws IOException {
+        String documentUrl = "https://example.test/document";
+        String json
+            = "{\"type\":\"indexedSql\",\"id\":\"sql-1\",\"activitySource\":1,\"docUrl\":\"" + documentUrl + "\"}";
+        KnowledgeBaseIndexedSqlReference reference;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            reference
+                = assertInstanceOf(KnowledgeBaseIndexedSqlReference.class, KnowledgeBaseReference.fromJson(reader));
+        }
+        assertEquals(documentUrl, reference.getDocumentUrl());
+        try (JsonReader reader = JsonProviders.createReader(reference.toJsonString())) {
+            Map<String, Object> properties = reader.readMap(JsonReader::readUntyped);
+            assertEquals(documentUrl, properties.get("docUrl"));
+            assertFalse(properties.containsKey("documentUrl"));
         }
     }
 
