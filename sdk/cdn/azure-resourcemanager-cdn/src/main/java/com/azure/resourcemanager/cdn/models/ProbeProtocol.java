@@ -21,12 +21,7 @@ public enum ProbeProtocol {
     /**
      * Enum value Https.
      */
-    HTTPS("Https"),
-
-    /**
-     * Enum value Grpc.
-     */
-    GRPC("Grpc");
+    HTTPS("Https");
 
     /**
      * The actual serialized value for a ProbeProtocol instance.

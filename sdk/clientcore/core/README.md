@@ -43,6 +43,32 @@ The key concepts of Core (and therefore all client libraries using Core) include
 
 These will be introduced by way of the examples presented below.
 
+### JDK HTTP client host overrides
+
+The JDK HTTP transport connects to the request URI. By default, the SDK filters out the restricted `Host` header
+and logs a warning. To allow an explicit `Host` header, start the application JVM with:
+
+```text
+java -Djdk.httpclient.allowRestrictedHeaders=host -jar application.jar
+```
+
+If `jdk.httpclient.allowRestrictedHeaders` already lists other headers, add `host` to that comma-separated list.
+The JDK caches this setting, so it must be configured before the JDK HTTP client is initialized.
+
+The default SDK configuration reads this system property. If you supply a custom `Configuration` to
+`JdkHttpClientBuilder.configuration(...)`, include the same setting there so the SDK's header filter also permits `Host`.
+`Configuration.none()` does not read system properties. Setting the property only in the builder's configuration does not
+enable the native JDK override.
+
+The JDK derives HTTP/2 `:authority` from the URI even when `Host` is allowed. If you need `Host` to override the request
+authority, also call `setMaximumHttpVersion(HttpProtocolVersion.HTTP_1_1)` on your `JdkHttpClientBuilder`.
+Enabling the restricted-header setting does not change HTTP/2 `:authority` or automatically switch protocols.
+Requests without an explicit `Host` header continue to use the URI's authority.
+
+This setting affects all JDK HTTP clients in the JVM. The JDK documents it as a testing-oriented option; consult the
+[JDK HTTP client properties](https://docs.oracle.com/en/java/javase/25/docs/api/java.net.http/module-summary.html#jdk.httpclient.allowRestrictedHeaders)
+for its restrictions.
+
 ### JsonSerializable
 
 `JsonSerializable` is used to define how an object is JSON serialized and deserialized using stream-style serialization

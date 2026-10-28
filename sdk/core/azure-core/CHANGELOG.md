@@ -1,13 +1,14 @@
 # Release History
 
-## 1.61.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.61.0 (2026-10-27)
 
 ### Bugs Fixed
 
+- Fixed concurrent or cancelled `PollerFlux` subscriptions busy-waiting for activation. Pending activation is now
+  shared without blocking, and successful activation is reused even when its first subscriber cancels.
+- Fixed asynchronous channel and file writes blocking producer threads. Writes now use completion handlers,
+  preserve partial writes, copy producer-owned buffers before returning from `onNext`, and stop requesting source
+  data when cancelled.
 - Fixed HTTP timeout resolution, including `HttpClientOptions`, to prefer explicit values, then builder-specific
   configuration, then global configuration, and finally SDK defaults. Global timeouts are resolved when needed rather
   than cached at class initialization, and nonpositive timeout values disable the timeout. Global timeout settings
@@ -15,6 +16,10 @@
 - Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
   refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
   the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
+- Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
+  complete.
+- Fixed virtual-thread carrier starvation during synchronous paging, which could deadlock token acquisition on Java 21
+  when authentication uses the shared executor.
 
 ### Other Changes
 

@@ -22,6 +22,11 @@ public final class PublicCloudConnectorPropertiesUpdate
      */
     private AwsCloudProfileUpdate awsCloudProfile;
 
+    /*
+     * Cloud profile for GCP.
+     */
+    private GcpCloudProfileUpdate gcpCloudProfile;
+
     /**
      * Creates an instance of PublicCloudConnectorPropertiesUpdate class.
      */
@@ -49,12 +54,33 @@ public final class PublicCloudConnectorPropertiesUpdate
     }
 
     /**
+     * Get the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @return the gcpCloudProfile value.
+     */
+    public GcpCloudProfileUpdate gcpCloudProfile() {
+        return this.gcpCloudProfile;
+    }
+
+    /**
+     * Set the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @param gcpCloudProfile the gcpCloudProfile value to set.
+     * @return the PublicCloudConnectorPropertiesUpdate object itself.
+     */
+    public PublicCloudConnectorPropertiesUpdate withGcpCloudProfile(GcpCloudProfileUpdate gcpCloudProfile) {
+        this.gcpCloudProfile = gcpCloudProfile;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("awsCloudProfile", this.awsCloudProfile);
+        jsonWriter.writeJsonField("gcpCloudProfile", this.gcpCloudProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,6 +103,9 @@ public final class PublicCloudConnectorPropertiesUpdate
                 if ("awsCloudProfile".equals(fieldName)) {
                     deserializedPublicCloudConnectorPropertiesUpdate.awsCloudProfile
                         = AwsCloudProfileUpdate.fromJson(reader);
+                } else if ("gcpCloudProfile".equals(fieldName)) {
+                    deserializedPublicCloudConnectorPropertiesUpdate.gcpCloudProfile
+                        = GcpCloudProfileUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
