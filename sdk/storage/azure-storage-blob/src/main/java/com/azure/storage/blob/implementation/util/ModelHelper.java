@@ -106,7 +106,7 @@ public final class ModelHelper {
      * but it is not a public API change.
      */
     private static final StorageResponseSerializationFormat DEFAULT_SERIALIZATION_FORMAT
-        = StorageResponseSerializationFormat.XML;
+        = StorageResponseSerializationFormat.ARROW;
 
     // Change this value to switch AUTO session authentication behavior across all clients and policies.
     private static final SessionMode DEFAULT_SESSION_MODE = SessionMode.DISABLED;
@@ -911,6 +911,34 @@ public final class ModelHelper {
             return DEFAULT_SERIALIZATION_FORMAT;
         }
         return format;
+    }
+
+    /**
+     * Copies list blobs options.
+     *
+     * @param options the listing options to copy, or {@code null}.
+     * @return the copied options.
+     */
+    public static ListBlobsOptions copyListBlobsOptions(ListBlobsOptions options) {
+        if (options == null) {
+            return new ListBlobsOptions();
+        }
+        return new ListBlobsOptions().setMaxResultsPerPage(options.getMaxResultsPerPage())
+            .setPrefix(options.getPrefix())
+            .setStartFrom(options.getStartFrom())
+            .setEndBefore(options.getEndBefore())
+            .setDetails(options.getDetails())
+            .setStorageResponseSerializationFormat(options.getStorageResponseSerializationFormat());
+    }
+
+    /**
+     * Replaces the requested serialization format with the concrete wire format.
+     *
+     * @param options the listing options to update.
+     */
+    public static void applyDefaultsToListBlobsOptions(ListBlobsOptions options) {
+        options.setStorageResponseSerializationFormat(
+            resolveSerializationFormat(options.getStorageResponseSerializationFormat()));
     }
 
     /**

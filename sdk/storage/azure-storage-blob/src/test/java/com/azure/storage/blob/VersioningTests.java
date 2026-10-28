@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -250,7 +251,8 @@ public class VersioningTests extends BlobTestBase {
             = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
         PagedIterable<BlobItem> blobs = blobContainerClient
-            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null);
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true))
+                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML), null);
 
         Iterator<BlobItem> iterator = blobs.stream().iterator();
         assertEquals(3, blobs.stream().count());
