@@ -23,6 +23,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -259,6 +260,77 @@ public class ServiceBusProcessorAsyncClientTest {
             verify(builder, times(2)).buildAsyncClientForProcessor();
             verify(mockReceiver).close();
         } finally {
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void stopSubscriptionDoesNotBlockDuringRecoveryCleanup(boolean recovering) throws Exception {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        final CountDownLatch cleanupEntered = new CountDownLatch(1);
+        final CountDownLatch releaseCleanup = new CountDownLatch(1);
+        doAnswer(invocation -> {
+            if (recovering && cleanupEntered.getCount() > 0) {
+                cleanupEntered.countDown();
+                if (!releaseCleanup.await(30, TimeUnit.SECONDS)) {
+                    throw new IllegalStateException("Recovery cleanup was not released");
+                }
+            }
+            return null;
+        }).when(mockReceiver).close();
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
+            null, context -> Mono.empty(), error -> Mono.empty(), options(1, false));
+        final Scheduler scheduler = Schedulers.newSingle("processor-stop-nonblocking");
+        final CountDownLatch subscribed = new CountDownLatch(1);
+        final CountDownLatch stopped = new CountDownLatch(1);
+        final AtomicBoolean nonBlocking = new AtomicBoolean();
+        final AtomicReference<Throwable> stopError = new AtomicReference<>();
+        try {
+            processor.start().block(Duration.ofSeconds(5));
+            final Mono<Void> stop = processor.stop();
+            assertTrue(processor.isRunning(), "stop() must remain cold");
+            final java.lang.reflect.Field field
+                = ServiceBusProcessorAsyncClient.class.getDeclaredField("receiveDisposable");
+            field.setAccessible(true);
+            final Disposable cycle = (Disposable) ((AtomicReference<?>) field.get(processor)).get();
+            final java.lang.reflect.Method restart
+                = ServiceBusProcessorAsyncClient.class.getDeclaredMethod("restartMessageReceiver", Disposable.class);
+            restart.setAccessible(true);
+            final FutureTask<Void> recovery = new FutureTask<>(() -> {
+                restart.invoke(processor, cycle);
+                return null;
+            });
+            if (recovering) {
+                new Thread(recovery, "processor-stop-recovery").start();
+                assertTrue(cleanupEntered.await(5, TimeUnit.SECONDS));
+            }
+
+            scheduler.schedule(() -> {
+                try {
+                    nonBlocking.set(Schedulers.isInNonBlockingThread());
+                    stop.subscribe(ignored -> {
+                    }, stopError::set, stopped::countDown);
+                } finally {
+                    subscribed.countDown();
+                }
+            });
+            assertTrue(subscribed.await(2, TimeUnit.SECONDS),
+                "Subscribing to stop() blocked a Reactor non-blocking thread");
+            assertTrue(nonBlocking.get());
+            if (recovering) {
+                assertEquals(1, stopped.getCount(), "Stop must still wait for recovery to release the monitor");
+            }
+            releaseCleanup.countDown();
+            if (recovering) {
+                recovery.get(5, TimeUnit.SECONDS);
+            }
+            assertTrue(stopped.await(5, TimeUnit.SECONDS));
+            assertNull(stopError.get());
+            assertFalse(processor.isRunning());
+        } finally {
+            releaseCleanup.countDown();
+            scheduler.dispose();
             processor.close();
         }
     }

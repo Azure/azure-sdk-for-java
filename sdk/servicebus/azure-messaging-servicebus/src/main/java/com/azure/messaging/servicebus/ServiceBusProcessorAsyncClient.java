@@ -214,13 +214,13 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the processor has stopped requesting new messages.
      */
     public Mono<Void> stop() {
-        return Mono.fromRunnable(() -> {
+        return Mono.<Void>fromRunnable(() -> {
             synchronized (this) {
                 if (isRunning.getAndSet(false)) {
                     resumeProcessing = Sinks.empty();
                 }
             }
-        });
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**

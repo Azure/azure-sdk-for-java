@@ -47,6 +47,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_SENDER;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.VIA_ENTITY_NAME_KEY;
 
@@ -468,7 +469,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLinkWithRetry("create-batch")
+        return withContext(context -> getSendLinkWithRetry("create-batch")
             .flatMap(link -> link.getMaxBatchSize().flatMap(batchSizeFromLink -> {
                 // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
                 // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
@@ -482,10 +483,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                             maxSize, maximumBatchSize)));
                 }
                 final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
-                return Mono.just(
-                    new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
-            }))
-            .onErrorMap(this::mapError);
+                return Mono.just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer,
+                    messageSerializer, context));
+            }))).onErrorMap(this::mapError);
     }
 
     /**
@@ -928,11 +928,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         // Start the producer message span and the "ServiceBus.send" span on the subscribing (caller) thread,
         // BEFORE the first send triggers AMQP connection/link establishment on a background thread. Starting
-        // the spans here ensures the caller's ambient (thread-local) trace context is used as the parent.
+        // the spans here preserves the subscriber's Reactor parent or the caller's ambient thread-local parent.
         // Doing this lazily downstream (after the connection thread hop) is what caused the first send to get
         // a new, disconnected trace id. See https://github.com/Azure/azure-sdk-for-java/issues/44958.
-        return Mono.defer(() -> {
-            tracer.reportMessageSpan(message);
+        return withContext(context -> {
+            tracer.reportMessageSpan(message, context);
             return instrumentation.instrumentSendBatch("ServiceBus.send", send, messageList);
         });
     }
