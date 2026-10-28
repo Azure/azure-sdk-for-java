@@ -9,9 +9,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
@@ -42,6 +47,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -57,6 +63,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -69,11 +77,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * Tests for {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}.
+ * Tests for {@link ExpectContinuePolicy}.
  */
 public class ExpectContinueTests {
     private static final String CONTINUE = "100-continue";
     private static final String ENDPOINT = "https://account.blob.core.windows.net/container/blob";
+    private static final String JDK_PROVIDER = "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider";
     private static final byte[] BODY = patternedBody(1024);
 
     // How long the wire level server waits after the headers arrive before deciding the body was not sent.
@@ -290,19 +299,18 @@ public class ExpectContinueTests {
         BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.APPLY_ON_THROTTLE), null);
 
         assertEquals(1, policies.size());
-        assertTrue(policies.get(0) instanceof ExpectContinueOnThrottlePolicy);
+        assertTrue(policies.get(0) instanceof ExpectContinuePolicy);
     }
 
     // The observation holder key must match the one the Netty client reads
-    // (AzureNettyHttpClientContext.EXPECT_CONTINUE_RECEIVED_KEY). This guards against the two drifting apart.
+    // (NettyAsyncHttpClient.EXPECT_CONTINUE_RECEIVED_KEY). This guards against the two drifting apart.
     @Test
     public void observationKeyMatchesTransportContract() {
-        assertEquals("azure-http-client-expect-continue-received",
-            ExpectContinuePolicyHelper.EXPECT_CONTINUE_RECEIVED_KEY);
+        assertEquals("azure-http-client-expect-continue-received", ExpectContinuePolicy.EXPECT_CONTINUE_RECEIVED_KEY);
     }
 
     // When the header is applied, the policy installs an observation holder that a supporting client sets, and the
-    // result is readable through the helper. This is the storage half of the bridge; the Netty half is covered by
+    // result is readable by the policy. This is the storage half of the bridge; the Netty half is covered by
     // NettyExpectContinueObservationTests.
     @SyncAsyncTest
     public void observationHolderIsSetWhenServiceSendsContinue() throws MalformedURLException {
@@ -371,8 +379,9 @@ public class ExpectContinueTests {
         Configuration configuration = environmentConfiguration(
             new TestConfigurationSource().put(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, value));
         RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline = buildPipeline(Arrays.asList(new ExpectContinuePolicy(null, configuration),
-            new ExpectContinueOnThrottlePolicy(Duration.ofMinutes(1), null, configuration)), client);
+        HttpPipeline pipeline
+            = buildPipeline(Arrays.asList(new ExpectContinuePolicy(options(ExpectContinueMode.ON), configuration),
+                new ExpectContinuePolicy(options(ExpectContinueMode.APPLY_ON_THROTTLE), configuration)), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
         pipeline.sendSync(requestWithBody(), Context.NONE);
@@ -385,7 +394,8 @@ public class ExpectContinueTests {
     public void configurationOptOutDefaultsToEnabled() throws MalformedURLException {
         Configuration configuration = environmentConfiguration(new TestConfigurationSource());
         RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = buildPipeline(Arrays.asList(new ExpectContinuePolicy(null, configuration)), client);
+        HttpPipeline pipeline = buildPipeline(
+            Arrays.asList(new ExpectContinuePolicy(options(ExpectContinueMode.ON), configuration)), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
 
@@ -403,7 +413,6 @@ public class ExpectContinueTests {
     public void transportBehaviorOnTheWire(String name, String providerClassName, ContinueSupport expected,
         boolean sync) throws Exception {
         HttpClient httpClient = createHttpClient(providerClassName);
-        assumeTrue(httpClient != null, name + " is not available on the test classpath or this Java version");
 
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
@@ -509,7 +518,7 @@ public class ExpectContinueTests {
         Object[][] clients = {
             { "netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY },
             { "okhttp", "com.azure.core.http.okhttp.OkHttpAsyncClientProvider", ContinueSupport.DEFERS_BODY },
-            { "jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider", ContinueSupport.DEFERS_BODY },
+            { "jdk", JDK_PROVIDER, ContinueSupport.DEFERS_BODY },
             { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.DEFERS_BODY } };
 
         return Stream.of(clients)
@@ -517,16 +526,124 @@ public class ExpectContinueTests {
                 Arguments.of(client[0] + " async", client[1], client[2], false)));
     }
 
-    // Resolved by name so this compiles without a direct dependency on every transport, and skips when one is absent
-    // or cannot run on the current Java version (the JDK client requires Java 12 or later).
-    private static HttpClient createHttpClient(String providerClassName) {
-        try {
-            Class<?> providerClass = Class.forName(providerClassName);
-            HttpClientProvider provider = (HttpClientProvider) providerClass.getDeclaredConstructor().newInstance();
-            return provider.createInstance();
-        } catch (ReflectiveOperationException | LinkageError | UnsupportedOperationException ex) {
-            return null;
+    // Only the transports that withhold the body can save bandwidth when the service rejects the request early.
+    static Stream<Arguments> deferringTransports() {
+        return transports().map(Arguments::get)
+            .filter(args -> args[2] == ContinueSupport.DEFERS_BODY)
+            .map(args -> Arguments.of(args[0], args[1], args[3]));
+    }
+
+    // The service rejecting an upload before sending 100 Continue must cost no body bandwidth, and the retry that
+    // follows must complete the handshake and deliver the full body.
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("deferringTransports")
+    public void earlyRejectionSendsNoBodyAndRetrySucceeds(String name, String providerClassName, boolean sync)
+        throws Exception {
+        HttpClient httpClient = createHttpClient(providerClassName);
+
+        try (ExpectContinueServer server = new ExpectContinueServer(true)) {
+            server.start();
+
+            List<Integer> statusCodes = new CopyOnWriteArrayList<>();
+            HttpPipeline pipeline
+                = retryPipeline(options(ExpectContinueMode.ON), httpClient, new StatusRecordingPolicy(statusCodes));
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            try (HttpResponse response
+                = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block()) {
+                assertNotNull(response, name + " returned no response");
+                assertEquals(201, response.getStatusCode(), name + " did not complete the retried request");
+            }
+
+            assertTrue(server.awaitRequest(), name + " never retried the request");
+            assertEquals(CONTINUE, server.rejectedExpectHeader, name + " did not put the header on the first attempt");
+            assertEquals(0, server.rejectedBodyBytes, name + " sent body bytes on the rejected connection");
+            assertEquals(CONTINUE, server.expectHeader, name + " did not put the header on the retry");
+            assertEquals(0, server.bodyBytesBeforeContinue, name + " sent the retried body before 100 Continue");
+            assertArrayEquals(BODY, server.receivedBody(), name + " did not deliver the full body on the retry");
+            assertEquals(Arrays.asList(503, 201), statusCodes, name + " did not retry after the rejection");
         }
+    }
+
+    // An attempt inside the throttle window carries the header, but a retry made after the window has elapsed must
+    // not, and must not see the observation holder left by the earlier attempt.
+    @ParameterizedTest(name = "sync={0}, coreRetryPolicy={1}")
+    @CsvSource({ "true, false", "false, false", "true, true", "false, true" })
+    public void throttleWindowExpiryBetweenRetriesDropsHeader(boolean sync, boolean coreRetryPolicy)
+        throws MalformedURLException {
+        Duration interval = Duration.ofSeconds(1);
+        // Starts negative, as System.nanoTime() may, to check the window does not appear open before any throttling.
+        AtomicLong clock = new AtomicLong(-10 * interval.toNanos());
+        ExpectContinuePolicy policy
+            = new ExpectContinuePolicy(options(ExpectContinueMode.APPLY_ON_THROTTLE).setThrottleInterval(interval),
+                Configuration.NONE, clock::get);
+        ScriptedHttpClient client = new ScriptedHttpClient(attempt -> {
+            switch (attempt) {
+                case 0:
+                    // Opens the throttle window.
+                    return 503;
+
+                case 1:
+                    // The window elapses before the retry of this failed attempt.
+                    clock.addAndGet(2 * interval.toNanos());
+                    return null;
+
+                default:
+                    return 201;
+            }
+        });
+        HttpPipelinePolicy retryPolicy = coreRetryPolicy
+            ? new RetryPolicy(new RetryOptions(new FixedDelayOptions(4, Duration.ofMillis(1))))
+            : new RequestRetryPolicy(FAST_RETRY_OPTIONS);
+        HttpPipeline pipeline = buildPipeline(Arrays.asList(retryPolicy, policy), client);
+
+        HttpRequest request = requestWithBody();
+        try (HttpResponse response = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block()) {
+            assertEquals(201, response.getStatusCode());
+        }
+
+        assertEquals(Arrays.asList(null, CONTINUE, null), client.expectHeaders);
+        assertEquals(Arrays.asList(false, true, false), client.observationHolders);
+    }
+
+    // Two throttling responses can be processed out of order relative to when their time was read. Simulated by the
+    // clock moving backwards, the later processed but earlier timed response must not shorten the window.
+    @Test
+    public void throttleWindowIsNeverShortenedByAnEarlierResponse() throws MalformedURLException {
+        long second = Duration.ofSeconds(1).toNanos();
+        AtomicLong clock = new AtomicLong();
+        ExpectContinuePolicy policy = new ExpectContinuePolicy(
+            options(ExpectContinueMode.APPLY_ON_THROTTLE).setThrottleInterval(Duration.ofSeconds(10)),
+            Configuration.NONE, clock::get);
+        RecordingHttpClient client = new RecordingHttpClient(503, 503, 201);
+        HttpPipeline pipeline = buildPipeline(Arrays.asList(policy), client);
+
+        clock.set(5 * second);
+        pipeline.sendSync(requestWithBody(), Context.NONE).close();
+        clock.set(second);
+        pipeline.sendSync(requestWithBody(), Context.NONE).close();
+        clock.set(12 * second);
+        pipeline.sendSync(requestWithBody(), Context.NONE).close();
+
+        assertEquals(CONTINUE, client.expectHeaders.get(2), "the window should still be open until 15 seconds");
+    }
+
+    // The transports are always on the test classpath through azure-core-test, so failing to create one is an error.
+    // The only expected gap is the JDK client, which requires Java 12 or later.
+    private static HttpClient createHttpClient(String providerClassName) throws ReflectiveOperationException {
+        if (JDK_PROVIDER.equals(providerClassName)) {
+            assumeTrue(javaFeatureVersion() >= 12, "The JDK HttpClient requires Java 12 or later");
+        }
+
+        return Class.forName(providerClassName)
+            .asSubclass(HttpClientProvider.class)
+            .getDeclaredConstructor()
+            .newInstance()
+            .createInstance();
+    }
+
+    private static int javaFeatureVersion() {
+        String version = System.getProperty("java.specification.version");
+        return Integer.parseInt(version.startsWith("1.") ? version.substring(2) : version);
     }
 
     private static ExpectContinueOptions options(ExpectContinueMode mode) {
@@ -556,10 +673,12 @@ public class ExpectContinueTests {
         return buildPipeline(policies, client);
     }
 
-    private static HttpPipeline retryPipeline(ExpectContinueOptions options, HttpClient client) {
+    private static HttpPipeline retryPipeline(ExpectContinueOptions options, HttpClient client,
+        HttpPipelinePolicy... perAttemptPolicies) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new RequestRetryPolicy(FAST_RETRY_OPTIONS));
         BuilderUtils.addExpectContinuePolicy(policies, options, null);
+        policies.addAll(Arrays.asList(perAttemptPolicies));
         return buildPipeline(policies, client);
     }
 
@@ -620,7 +739,7 @@ public class ExpectContinueTests {
         }
 
         private HttpResponse handle(HttpRequest request, Context context) {
-            Object holder = context.getData(ExpectContinuePolicyHelper.EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
+            Object holder = context.getData(ExpectContinuePolicy.EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
             if (holder instanceof AtomicBoolean) {
                 holderInstalled = true;
                 boolean hasExpect = CONTINUE.equals(request.getHeaders().getValue(HttpHeaderName.EXPECT));
@@ -645,6 +764,66 @@ public class ExpectContinueTests {
         }
     }
 
+    /**
+     * Replies to each attempt as the script directs, given the zero based attempt number: with the returned status
+     * code, or by failing with an {@link IOException} when the script returns null. Records the {@code Expect} header
+     * and whether an observation holder was present for every attempt.
+     */
+    private static final class ScriptedHttpClient extends NoOpHttpClient {
+        private final List<String> expectHeaders = new CopyOnWriteArrayList<>();
+        private final List<Boolean> observationHolders = new CopyOnWriteArrayList<>();
+        private final IntFunction<Integer> script;
+        private final AtomicInteger attempt = new AtomicInteger();
+
+        ScriptedHttpClient(IntFunction<Integer> script) {
+            this.script = script;
+        }
+
+        private Integer record(HttpRequest request, Context context) {
+            expectHeaders.add(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+            observationHolders.add(context.getData(ExpectContinuePolicy.EXPECT_CONTINUE_RECEIVED_KEY)
+                .filter(AtomicBoolean.class::isInstance)
+                .isPresent());
+            return script.apply(attempt.getAndIncrement());
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            return Mono.defer(() -> {
+                Integer status = record(request, context);
+                return status == null
+                    ? Mono.error(new IOException("Simulated network failure."))
+                    : Mono.just(new MockHttpResponse(request, status));
+            });
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            Integer status = record(request, context);
+            if (status == null) {
+                throw new UncheckedIOException(new IOException("Simulated network failure."));
+            }
+            return new MockHttpResponse(request, status);
+        }
+    }
+
+    /**
+     * Records the status code of every attempt's response. Placed after the retry policy so each attempt is seen.
+     */
+    private static final class StatusRecordingPolicy extends HttpPipelineSyncPolicy {
+        private final List<Integer> statusCodes;
+
+        StatusRecordingPolicy(List<Integer> statusCodes) {
+            this.statusCodes = statusCodes;
+        }
+
+        @Override
+        protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+            statusCodes.add(response.getStatusCode());
+            return response;
+        }
+    }
+
     private enum ContinueSupport {
         /** Waits for {@code 100 Continue} before sending the body. */
         DEFERS_BODY,
@@ -658,20 +837,29 @@ public class ExpectContinueTests {
 
     /**
      * A minimal HTTP/1.1 server that answers the 100-continue handshake by hand, recording how many body bytes had
-     * arrived before it responded.
+     * arrived before it responded. Optionally, it first rejects a request with a final 503 instead of sending
+     * 100 Continue, recording how many body bytes arrive on that rejected connection.
      */
     private static final class ExpectContinueServer implements AutoCloseable {
         private final ServerSocket serverSocket;
+        private final boolean rejectFirstRequest;
         private final CountDownLatch requestHandled = new CountDownLatch(1);
         private volatile Thread thread;
 
+        private volatile String rejectedExpectHeader;
+        private volatile int rejectedBodyBytes = -1;
         private volatile String expectHeader;
         private volatile int bodyBytesBeforeContinue = -1;
         private volatile int bodyBytesAfterContinue = -1;
         private final ByteArrayOutputStream receivedBody = new ByteArrayOutputStream();
 
         ExpectContinueServer() throws IOException {
+            this(false);
+        }
+
+        ExpectContinueServer(boolean rejectFirstRequest) throws IOException {
             this.serverSocket = new ServerSocket(0);
+            this.rejectFirstRequest = rejectFirstRequest;
         }
 
         int port() {
@@ -701,31 +889,75 @@ public class ExpectContinueTests {
         }
 
         private void serve() {
-            try (Socket socket = serverSocket.accept()) {
-                socket.setTcpNoDelay(true);
-                InputStream in = socket.getInputStream();
-                OutputStream out = socket.getOutputStream();
-
-                int contentLength = readHeaders(in);
-
-                Thread.sleep(BODY_SETTLE_MILLIS);
-                // Consume what has already arrived, so the read after 100 Continue only sees the bytes that follow.
-                bodyBytesBeforeContinue = readBody(in, Math.min(in.available(), contentLength));
-
-                if (expectHeader != null) {
-                    out.write("HTTP/1.1 100 Continue\r\n\r\n".getBytes(StandardCharsets.UTF_8));
-                    out.flush();
+            try {
+                if (rejectFirstRequest) {
+                    try (Socket socket = serverSocket.accept()) {
+                        reject(socket);
+                    }
                 }
 
-                bodyBytesAfterContinue = readBody(in, contentLength - bodyBytesBeforeContinue);
-
-                out.write("HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n".getBytes(StandardCharsets.UTF_8));
-                out.flush();
+                try (Socket socket = serverSocket.accept()) {
+                    continueAndReceive(socket);
+                }
             } catch (IOException | InterruptedException ex) {
                 // Leave the recorded values as they are; the test assertions report the failure.
             } finally {
                 requestHandled.countDown();
             }
+        }
+
+        private void reject(Socket socket) throws IOException {
+            socket.setTcpNoDelay(true);
+            InputStream in = socket.getInputStream();
+            readHeaders(in);
+            rejectedExpectHeader = expectHeader;
+            expectHeader = null;
+
+            OutputStream out = socket.getOutputStream();
+            out.write("HTTP/1.1 503 Server Busy\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+                .getBytes(StandardCharsets.UTF_8));
+            out.flush();
+
+            rejectedBodyBytes = countBytesUntilQuiet(socket, in);
+        }
+
+        // Counts the bytes arriving until the peer closes the connection or none arrive for the settle period, so a
+        // body written after a delay is still counted.
+        private static int countBytesUntilQuiet(Socket socket, InputStream in) throws IOException {
+            socket.setSoTimeout((int) BODY_SETTLE_MILLIS);
+            byte[] buffer = new byte[8192];
+            int total = 0;
+            try {
+                int count;
+                while ((count = in.read(buffer)) != -1) {
+                    total += count;
+                }
+            } catch (IOException ex) {
+                // Nothing more arrived within the settle period, or the peer reset the connection.
+            }
+            return total;
+        }
+
+        private void continueAndReceive(Socket socket) throws IOException, InterruptedException {
+            socket.setTcpNoDelay(true);
+            InputStream in = socket.getInputStream();
+            OutputStream out = socket.getOutputStream();
+
+            int contentLength = readHeaders(in);
+
+            Thread.sleep(BODY_SETTLE_MILLIS);
+            // Consume what has already arrived, so the read after 100 Continue only sees the bytes that follow.
+            bodyBytesBeforeContinue = readBody(in, Math.min(in.available(), contentLength));
+
+            if (expectHeader != null) {
+                out.write("HTTP/1.1 100 Continue\r\n\r\n".getBytes(StandardCharsets.UTF_8));
+                out.flush();
+            }
+
+            bodyBytesAfterContinue = readBody(in, contentLength - bodyBytesBeforeContinue);
+
+            out.write("HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n".getBytes(StandardCharsets.UTF_8));
+            out.flush();
         }
 
         // Reads one byte at a time up to the end of the headers, so that no part of the body is consumed.

@@ -38,7 +38,7 @@ import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.policy.ExpectContinueOnThrottlePolicy;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
 import com.azure.storage.common.policy.ExpectContinueMode;
 import com.azure.storage.common.policy.ExpectContinueOptions;
@@ -51,6 +51,7 @@ import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
@@ -680,7 +681,7 @@ public class BuilderHelperTests {
             new ClientLogger(BuilderHelperTests.class), null, null);
 
         int retryIndex = indexOfPolicy(pipeline, RequestRetryPolicy.class);
-        int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class);
+        int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinuePolicy.class);
         int credentialIndex = indexOfPolicy(pipeline, StorageSharedKeyCredentialPolicy.class);
 
         assertNotEquals(-1, expectContinueIndex, "Expect-continue policy was not added to the pipeline.");
@@ -697,7 +698,6 @@ public class BuilderHelperTests {
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
                 new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
 
-        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
     }
 
@@ -709,7 +709,6 @@ public class BuilderHelperTests {
                 new ArrayList<>(), null, null, new ExpectContinueOptions().setMode(ExpectContinueMode.OFF),
                 new ClientLogger(BuilderHelperTests.class), null, null);
 
-        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
     }
 
@@ -737,9 +736,65 @@ public class BuilderHelperTests {
 
     @Test
     public void expectHeaderIsAllowedInDefaultLogOptions() {
-        assertTrue(BuilderHelper.getDefaultHttpLogOptions()
-            .getAllowedHeaderNames()
-            .contains(HttpHeaderName.EXPECT.getCaseSensitiveName()));
+        assertTrue(
+            BuilderHelper.getDefaultHttpLogOptions().getAllowedHttpHeaderNames().contains(HttpHeaderName.EXPECT));
+    }
+
+    // The threshold must be compared with the Content-Length actually sent, which content validation encoding grows.
+    // With a threshold between the raw and encoded sizes, only an encoded request qualifies, on every attempt.
+    @ParameterizedTest(name = "encoded={0}, sync={1}")
+    @CsvSource({ "true, true", "true, false", "false, true", "false, false" })
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ)
+    public void expectContinueThresholdUsesEncodedContentLength(boolean encoded, boolean sync)
+        throws MalformedURLException {
+        byte[] body = new byte[1024];
+        List<String> expectHeaders = Collections.synchronizedList(new ArrayList<>());
+        List<Long> contentLengths = Collections.synchronizedList(new ArrayList<>());
+        AtomicInteger attempts = new AtomicInteger();
+        HttpClient httpClient = new NoOpHttpClient() {
+            private HttpResponse handle(HttpRequest request) {
+                expectHeaders.add(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+                contentLengths.add(Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)));
+                return new MockHttpResponse(request, attempts.getAndIncrement() == 0 ? 503 : 201);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request, Context context) {
+                return Mono.fromCallable(() -> handle(request));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return handle(request);
+            }
+        };
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            new RequestRetryOptions(RetryPolicyType.FIXED, 2, (Integer) null, 1L, 5L, null), null,
+            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), httpClient, new ArrayList<>(),
+            new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.ON).setContentLengthThreshold(body.length + 1L),
+            new ClientLogger(BuilderHelperTests.class), null, null);
+
+        Context context = encoded
+            ? new Context(StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY,
+                StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT)
+            : Context.NONE;
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT + "container/blob")).setBody(body);
+        try (HttpResponse response
+            = sync ? pipeline.sendSync(request, context) : pipeline.send(request, context).block()) {
+            assertEquals(201, response.getStatusCode());
+        }
+
+        assertEquals(2, expectHeaders.size(), "the 503 should have been retried");
+        for (int attempt = 0; attempt < 2; attempt++) {
+            if (encoded) {
+                assertTrue(contentLengths.get(attempt) > body.length, "attempt " + attempt + " was not encoded");
+                assertEquals("100-continue", expectHeaders.get(attempt), "attempt " + attempt);
+            } else {
+                assertEquals(body.length, contentLengths.get(attempt), "attempt " + attempt);
+                assertNull(expectHeaders.get(attempt), "attempt " + attempt);
+            }
+        }
     }
 
     // The opt out set in a client's own configuration must be honored, not only one set globally.

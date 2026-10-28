@@ -315,7 +315,7 @@ public final class BuilderHelper {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
         BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        defaultOptions.addAllowedHeaderName(HttpHeaderName.EXPECT.getCaseSensitiveName());
+        defaultOptions.addAllowedHttpHeaderName(HttpHeaderName.EXPECT);
         return defaultOptions;
     }
 
