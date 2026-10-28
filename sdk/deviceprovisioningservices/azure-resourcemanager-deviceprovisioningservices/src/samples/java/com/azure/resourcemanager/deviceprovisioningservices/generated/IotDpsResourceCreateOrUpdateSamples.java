@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthTrue.json
+     * x-ms-original-file: 2026-11-01/DPSCreate_DisableLocalAuthTrue.json
      */
     /**
      * Sample code: DPSCreate_DisableLocalAuthTrue.
@@ -43,7 +43,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSUpdate_DisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/DPSUpdate_DisableLocalAuth.json
      */
     /**
      * Sample code: DPSUpdate_DisableLocalAuth.
@@ -63,7 +63,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSUpdate.json
+     * x-ms-original-file: 2026-11-01/DPSUpdate.json
      */
     /**
      * Sample code: DPSUpdate.
@@ -87,7 +87,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate.json
+     * x-ms-original-file: 2026-11-01/DPSCreate.json
      */
     /**
      * Sample code: DPSCreate.
@@ -106,7 +106,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateWithIotHub.json
+     * x-ms-original-file: 2026-11-01/DPSCreateWithIotHub.json
      */
     /**
      * Sample code: DPSCreateWithIotHub.
@@ -138,7 +138,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthFalse.json
+     * x-ms-original-file: 2026-11-01/DPSCreate_DisableLocalAuthFalse.json
      */
     /**
      * Sample code: DPSCreate_DisableLocalAuthFalse.
@@ -159,7 +159,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateWithNamespace.json
+     * x-ms-original-file: 2026-11-01/DPSCreateWithNamespace.json
      */
     /**
      * Sample code: DPSCreateWithNamespace.
