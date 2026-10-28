@@ -85,8 +85,13 @@ public class ExpectContinueTests {
     private static final String JDK_PROVIDER = "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider";
     private static final byte[] BODY = patternedBody(1024);
 
-    // How long the wire level server waits after the headers arrive before deciding the body was not sent.
-    private static final long BODY_SETTLE_MILLIS = 500;
+    // How long the wire level server waits after the headers arrive before deciding the body was not sent. Kept well
+    // under the 1 second some clients wait for 100 Continue before sending the body anyway, as RFC 9110 allows.
+    private static final long BODY_SETTLE_MILLIS = 250;
+
+    // How long a rejected connection must stay quiet before concluding no body follows. Longer than the clients'
+    // fallback wait, so a body written after that wait is still counted.
+    private static final long REJECTED_QUIET_MILLIS = 2000;
 
     // Negligible backoff so the retry tests stay fast.
     private static final RequestRetryOptions FAST_RETRY_OPTIONS
@@ -889,11 +894,10 @@ public class ExpectContinueTests {
         }
 
         private void serve() {
+            Thread rejectedDrain = null;
             try {
                 if (rejectFirstRequest) {
-                    try (Socket socket = serverSocket.accept()) {
-                        reject(socket);
-                    }
+                    rejectedDrain = reject(serverSocket.accept());
                 }
 
                 try (Socket socket = serverSocket.accept()) {
@@ -902,29 +906,53 @@ public class ExpectContinueTests {
             } catch (IOException | InterruptedException ex) {
                 // Leave the recorded values as they are; the test assertions report the failure.
             } finally {
+                if (rejectedDrain != null) {
+                    try {
+                        rejectedDrain.join(TimeUnit.SECONDS.toMillis(30));
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
                 requestHandled.countDown();
             }
         }
 
-        private void reject(Socket socket) throws IOException {
-            socket.setTcpNoDelay(true);
-            InputStream in = socket.getInputStream();
-            readHeaders(in);
-            rejectedExpectHeader = expectHeader;
-            expectHeader = null;
+        // Answers with a final 503 instead of 100 Continue, then counts any body bytes on a separate thread, so the
+        // retry, which arrives on a new connection, is answered without delay.
+        private Thread reject(Socket socket) throws IOException {
+            try {
+                socket.setTcpNoDelay(true);
+                InputStream in = socket.getInputStream();
+                readHeaders(in);
+                rejectedExpectHeader = expectHeader;
+                expectHeader = null;
 
-            OutputStream out = socket.getOutputStream();
-            out.write("HTTP/1.1 503 Server Busy\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
-                .getBytes(StandardCharsets.UTF_8));
-            out.flush();
+                OutputStream out = socket.getOutputStream();
+                out.write("HTTP/1.1 503 Server Busy\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+                    .getBytes(StandardCharsets.UTF_8));
+                out.flush();
+            } catch (IOException ex) {
+                socket.close();
+                throw ex;
+            }
 
-            rejectedBodyBytes = countBytesUntilQuiet(socket, in);
+            Thread drain = new Thread(() -> {
+                try (Socket rejected = socket) {
+                    rejectedBodyBytes = countBytesUntilQuiet(rejected);
+                } catch (IOException ex) {
+                    // Leave the recorded value as it is; the test assertions report the failure.
+                }
+            }, "expect-continue-rejected-drain");
+            drain.setDaemon(true);
+            drain.start();
+            return drain;
         }
 
-        // Counts the bytes arriving until the peer closes the connection or none arrive for the settle period, so a
+        // Counts the bytes arriving until the peer closes the connection or none arrive for the quiet period, so a
         // body written after a delay is still counted.
-        private static int countBytesUntilQuiet(Socket socket, InputStream in) throws IOException {
-            socket.setSoTimeout((int) BODY_SETTLE_MILLIS);
+        private static int countBytesUntilQuiet(Socket socket) throws IOException {
+            socket.setSoTimeout((int) REJECTED_QUIET_MILLIS);
+            InputStream in = socket.getInputStream();
             byte[] buffer = new byte[8192];
             int total = 0;
             try {
@@ -933,7 +961,7 @@ public class ExpectContinueTests {
                     total += count;
                 }
             } catch (IOException ex) {
-                // Nothing more arrived within the settle period, or the peer reset the connection.
+                // Nothing more arrived within the quiet period, or the peer reset the connection.
             }
             return total;
         }
