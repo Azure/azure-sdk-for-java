@@ -98,9 +98,11 @@ public interface Volume {
 
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -294,6 +296,14 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
+     * Gets the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    SmbOplocks smbOplocks();
+
+    /**
      * Gets the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -332,6 +342,13 @@ public interface Volume {
      * @return the ldapEnabled value.
      */
     Boolean ldapEnabled();
+
+    /**
+     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    LdapServerType ldapServerType();
 
     /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
@@ -420,6 +437,13 @@ public interface Volume {
      * @return the isDefaultQuotaEnabled value.
      */
     Boolean isDefaultQuotaEnabled();
+
+    /**
+     * Gets the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    AsyncDirectoryDelete asyncDirectoryDelete();
 
     /**
      * Gets the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
@@ -521,6 +545,17 @@ public interface Volume {
     Boolean isLargeVolume();
 
     /**
+     * Gets the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+     * volume is created with standard configuration.
+     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
+     * with cool access enabled,
+     * delivering higher capacity limit with lower costs.
+     * 
+     * @return the largeVolumeType value.
+     */
+    LargeVolumeType largeVolumeType();
+
+    /**
      * Gets the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
@@ -535,11 +570,25 @@ public interface Volume {
     Long inheritedSizeInBytes();
 
     /**
+     * Gets the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    VolumeLanguage language();
+
+    /**
      * Gets the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
      * 
      * @return the breakthroughMode value.
      */
     BreakthroughMode breakthroughMode();
+
+    /**
+     * Gets the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    VolumeNamespaceProperties geoNamespaceProperties();
 
     /**
      * Gets the region of the resource.
@@ -645,12 +694,16 @@ public interface Volume {
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
              * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
-             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
-             * Values expressed in bytes as multiples of 1 GiB.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -683,16 +736,19 @@ public interface Volume {
             DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
             DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
-            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
-            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithSmbOplocks,
+            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
+            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
+            DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
             DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
             DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
-            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
-            DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
-            DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
-            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
-            DefinitionStages.WithIsLargeVolume, DefinitionStages.WithBreakthroughMode {
+            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithAsyncDirectoryDelete,
+            DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
+            DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
+            DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
+            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume,
+            DefinitionStages.WithLargeVolumeType, DefinitionStages.WithLanguage, DefinitionStages.WithBreakthroughMode,
+            DefinitionStages.WithGeoNamespaceProperties {
             /**
              * Executes the create request.
              * 
@@ -990,6 +1046,21 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            WithCreate withSmbOplocks(SmbOplocks smbOplocks);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify throughputMibps.
          */
         interface WithThroughputMibps {
@@ -1048,6 +1119,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withLdapEnabled(Boolean ldapEnabled);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify ldapServerType.
+         */
+        interface WithLdapServerType {
+            /**
+             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
+             * 
+             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapServerType(LdapServerType ldapServerType);
         }
 
         /**
@@ -1176,6 +1260,19 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify asyncDirectoryDelete.
+         */
+        interface WithAsyncDirectoryDelete {
+            /**
+             * Specifies the asyncDirectoryDelete property: Async Directory Delete configuration for the volume..
+             * 
+             * @param asyncDirectoryDelete Async Directory Delete configuration for the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify defaultUserQuotaInKiBs.
          */
         interface WithDefaultUserQuotaInKiBs {
@@ -1290,6 +1387,40 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify largeVolumeType.
+         */
+        interface WithLargeVolumeType {
+            /**
+             * Specifies the largeVolumeType property: Specifies the type of the Large Volume. When set to
+             * 'LargeVolume', the large volume is created with standard configuration.
+             * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit
+             * 7.2PiB with cool access enabled,
+             * delivering higher capacity limit with lower costs..
+             * 
+             * @param largeVolumeType Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+             * volume is created with standard configuration.
+             * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit
+             * 7.2PiB with cool access enabled,
+             * delivering higher capacity limit with lower costs.
+             * @return the next definition stage.
+             */
+            WithCreate withLargeVolumeType(LargeVolumeType largeVolumeType);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify language.
+         */
+        interface WithLanguage {
+            /**
+             * Specifies the language property: Language supported for volume..
+             * 
+             * @param language Language supported for volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLanguage(VolumeLanguage language);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify breakthroughMode.
          */
         interface WithBreakthroughMode {
@@ -1300,6 +1431,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withBreakthroughMode(BreakthroughMode breakthroughMode);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify geoNamespaceProperties.
+         */
+        interface WithGeoNamespaceProperties {
+            /**
+             * Specifies the geoNamespaceProperties property: Geographic namespace properties for this volume..
+             * 
+             * @param geoNamespaceProperties Geographic namespace properties for this volume.
+             * @return the next definition stage.
+             */
+            WithCreate withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties);
         }
     }
 
@@ -1315,12 +1459,12 @@ public interface Volume {
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithServiceLevel, UpdateStages.WithUsageThreshold,
         UpdateStages.WithExportPolicy, UpdateStages.WithProtocolTypes, UpdateStages.WithThroughputMibps,
-        UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled,
+        UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled, UpdateStages.WithAsyncDirectoryDelete,
         UpdateStages.WithDefaultUserQuotaInKiBs, UpdateStages.WithDefaultGroupQuotaInKiBs,
         UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
         UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithCoolAccessTieringPolicy,
         UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
-        UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithSmbNonBrowsable, UpdateStages.WithSmbOplocks, UpdateStages.WithGeoNamespaceProperties {
         /**
          * Executes the update request.
          * 
@@ -1375,12 +1519,16 @@ public interface Volume {
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
              * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
-             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
-             * Values expressed in bytes as multiples of 1 GiB.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -1457,6 +1605,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify asyncDirectoryDelete.
+         */
+        interface WithAsyncDirectoryDelete {
+            /**
+             * Specifies the asyncDirectoryDelete property: Async Directory Delete configuration for the volume..
+             * 
+             * @param asyncDirectoryDelete Async Directory Delete configuration for the volume.
+             * @return the next definition stage.
+             */
+            Update withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete);
         }
 
         /**
@@ -1629,6 +1790,34 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            Update withSmbOplocks(SmbOplocks smbOplocks);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify geoNamespaceProperties.
+         */
+        interface WithGeoNamespaceProperties {
+            /**
+             * Specifies the geoNamespaceProperties property: Geographic namespace properties for this volume..
+             * 
+             * @param geoNamespaceProperties Geographic namespace properties for this volume.
+             * @return the next definition stage.
+             */
+            Update withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties);
         }
     }
 

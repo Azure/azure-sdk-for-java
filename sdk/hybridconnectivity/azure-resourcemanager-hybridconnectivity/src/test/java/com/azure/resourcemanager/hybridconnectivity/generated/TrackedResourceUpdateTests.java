@@ -14,16 +14,17 @@ public final class TrackedResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrackedResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"djwzrlov\":\"gmaajrm\"},\"id\":\"lwhijcoejctbzaq\",\"name\":\"qsycbkbfkgu\",\"type\":\"dkexxppofm\"}")
+            "{\"tags\":{\"yexfwh\":\"qweykhmenev\",\"amdecte\":\"bcibvyvdcsitynn\",\"qsc\":\"f\"},\"id\":\"ypvhezrkg\",\"name\":\"hcjrefovgmk\",\"type\":\"sle\"}")
             .toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("gmaajrm", model.tags().get("djwzrlov"));
+        Assertions.assertEquals("qweykhmenev", model.tags().get("yexfwh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackedResourceUpdate model = new TrackedResourceUpdate().withTags(mapOf("djwzrlov", "gmaajrm"));
+        TrackedResourceUpdate model = new TrackedResourceUpdate()
+            .withTags(mapOf("yexfwh", "qweykhmenev", "amdecte", "bcibvyvdcsitynn", "qsc", "f"));
         model = BinaryData.fromObject(model).toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("gmaajrm", model.tags().get("djwzrlov"));
+        Assertions.assertEquals("qweykhmenev", model.tags().get("yexfwh"));
     }
 
     // Use "Map.of" if available
