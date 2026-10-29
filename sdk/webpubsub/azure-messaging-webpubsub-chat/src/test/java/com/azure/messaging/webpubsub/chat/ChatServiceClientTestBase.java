@@ -6,15 +6,19 @@ package com.azure.messaging.webpubsub.chat;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 abstract class ChatServiceClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ChatServiceClientTestBase.class);
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("WPS_CHAT_CONNECTION_STRING",
             "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
@@ -35,6 +39,12 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(
                 Collections.singletonList(new TestProxySanitizer("https://(?<host>[^/]+[.]webpubsub[.]azure[.]com)",
                     "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("host")));
+        }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            // Standard sanitizers remove these volatile headers from recordings.
+            interceptorManager.addMatchers(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization", "x-ms-client-request-id"))
+                    .setComparingBodies(true));
         }
 
         HttpClient httpClient
@@ -67,8 +77,8 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
     protected static void cleanup(Runnable cleanup) {
         try {
             cleanup.run();
-        } catch (RuntimeException ignored) {
-            // Preserve the original test failure while making a best effort to remove live resources.
+        } catch (RuntimeException exception) {
+            LOGGER.warning("Failed to clean up live test resources.", exception);
         }
     }
 }

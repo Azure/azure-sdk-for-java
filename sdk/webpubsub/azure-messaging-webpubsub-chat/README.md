@@ -6,6 +6,8 @@ Use this client library in an application server to:
 
 - Create and manage Chat roles and permissions.
 - Create users, rooms, and room memberships.
+- List rooms and users in a hub, or list the rooms associated with a user.
+- Create, get, update, list, and soft delete topics in a room.
 - Get room conversations and query persisted message history.
 - Update and delete persisted messages.
 - Generate client access credentials for Chat WebSocket clients.
@@ -21,19 +23,19 @@ Use this client library in an application server to:
 - An [Azure Web PubSub resource][create_instance].
 - A Web PubSub hub with [Chat enabled][enable_chat].
 
-### 1. Add the package to your project
+### Install the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-webpubsub-chat;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub-chat</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### 2. Create and authenticate a `WebPubSubChatServiceClient`
+### Create and authenticate a client
 
 The client supports a connection string, an `AzureKeyCredential`, or a Microsoft Entra ID token credential. The hub passed to the client must have Chat enabled.
 
@@ -74,13 +76,9 @@ For more information, see [Authenticate Azure-hosted Java applications][azure_id
 
 ## Key concepts
 
-### Client
-
-`WebPubSubChatServiceClient` is the entry point for managing Chat resources in one Web PubSub hub. Create one client for each endpoint and hub combination, and reuse the client for multiple operations. For nonblocking operations, use `WebPubSubChatServiceAsyncClient`, which is created by calling `buildAsyncClient` on the same builder.
-
 ### Hub
 
-A hub is a logical collection of WebSocket connections. A standard hub offers event-based real-time messaging through the Web PubSub subprotocol or a custom subprotocol. A chat hub adds built-in rooms, member management, message persistence, and chat-specific APIs.
+A hub is a logical collection of WebSocket connections. A chat hub adds built-in rooms, member management, message persistence, and chat-specific APIs.
 
 This SDK applies only to chat hubs. Chat must be enabled on the target hub before the SDK can manage roles, users, rooms, members, conversations, or messages.
 
@@ -92,7 +90,7 @@ User roles control operations such as creating rooms. Room roles control what a 
 
 ### User
 
-A user represents an application identity that can send and receive messages. A user is identified by a user ID and assigned a user role. A human user also has a nickname. Client access credentials associate WebSocket connections with a user ID.
+A user represents an identity participating in chat, such as a human end user or an application. Client access credentials associate WebSocket connections with a user ID.
 
 ### Room
 
@@ -100,27 +98,52 @@ A room groups users together and is the primary organizational unit for chat int
 
 ### Room member
 
-A room member represents a user added to a room. Membership controls which users can receive and send messages in the room. Each room member is assigned a room role.
+A room member represents a user added to a room. Membership controls which users can receive and send messages in the room. In the service API, each room member is assigned a room role.
 
 ### Conversation and message history
 
-A conversation is a message thread that belongs to a room. Every room has a default conversation and can contain multiple conversations.
+A conversation is an ordered message stream within a room. Every room has a default conversation, and additional named conversations can be created through topics.
 
-Messages sent to a conversation are delivered in real time to the room's connected members. The Chat service manages ordering and persistence, allowing members to load message history after reconnecting or joining later. The service client can list, update, and delete persisted messages.
+Messages sent to a conversation are delivered in real time to the room's connected members. The chat service manages ordering and persistence, allowing members to load message history after reconnecting or joining later. The service client can list, update, and delete persisted messages.
 
-### Client access credentials
+### Topic
 
-`getClientAccessToken` returns a token and WebSocket connection URL. Clients configured with a connection string or access key sign the token locally. Clients configured with Microsoft Entra ID request the token from the Web PubSub service.
+A topic represents a named conversation within a room. Topics can be created,
+renamed, archived, and soft deleted independently of the room's default conversation.
 
 ## Examples
+
+- [Generate a client access token](#generate-a-client-access-token)
+- [Work with built-in values](#work-with-built-in-values)
+- [Create a custom role](#create-a-custom-role)
+- [List roles](#list-roles)
+- [Delete a custom role](#delete-a-custom-role)
+- [Create a user](#create-a-user)
+- [Create a room](#create-a-room)
+- [Add a room member](#add-a-room-member)
+- [List rooms](#list-rooms)
+- [List users](#list-users)
+- [List rooms for a user](#list-rooms-for-a-user)
+- [Create a topic](#create-a-topic)
+- [Get a topic](#get-a-topic)
+- [Update a topic](#update-a-topic)
+- [List topics](#list-topics)
+- [Soft delete a topic](#soft-delete-a-topic)
+- [List persisted messages](#list-persisted-messages)
+- [Update message content](#update-message-content)
+- [Use the asynchronous client](#use-the-asynchronous-client)
 
 ### Generate a client access token
 
 ```java readme-sample-getChatClientAccessToken
 WebPubSubClientAccessToken accessToken = client.getClientAccessToken(
-    new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
+    new ClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
 String clientConnectionUrl = accessToken.getUrl();
 ```
+
+`ClientAccessTokenOptions` specifies the user ID and token lifetime (one hour by default).
+With an access key or connection string, the SDK signs the token locally. With Microsoft Entra ID,
+the SDK requests the token from the service.
 
 The returned URL contains an access token. Send it only to the intended client, and do not log or persist it in production.
 
@@ -131,46 +154,153 @@ String memberRole = BuiltInChatRoles.ROOM_MEMBER;
 ChatPermission publishPermission = ChatPermission.ROOM_PUBLISH_MESSAGE;
 ```
 
-### Create and list a custom role
+The following examples are independent operations. Where an operation refers to
+`general`, `alice`, or `announcements`, the corresponding resources must already
+exist. All examples use the default `2026-08-01-preview` API version.
 
-```java readme-sample-manageChatRoles
+### Create a custom role
+
+```java readme-sample-createChatRole
 ChatRole moderator = new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
     ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE));
 client.createOrReplaceRole("room.moderator", moderator);
+```
 
+### List roles
+
+```java readme-sample-listChatRoles
 client.listRoles().forEach(role -> System.out.println(role.getName()));
+```
+
+### Delete a custom role
+
+```java readme-sample-deleteChatRole
 client.deleteRole("room.moderator");
 ```
 
-### Create a user, room, and room membership
+Remove references to a custom role before deleting it.
 
-```java readme-sample-manageChatRooms
-client.createOrReplaceRole("user.room_creator",
-    new ChatRole(Arrays.asList(ChatPermission.USER_CREATE_ROOM)));
-client.createOrReplaceRole("room.contributor",
-    new ChatRole(Arrays.asList(ChatPermission.ROOM_PUBLISH_MESSAGE)));
-client.createOrReplaceUser("alice", new HumanChatUser("Alice", "user.room_creator"));
+### Create a user
 
-ChatRoom room = client.createOrReplaceRoom("general", new ChatRoom("General"));
-ChatRoomMember member = client.createOrReplaceRoomMember(
-    room.getId(), "alice", new ChatRoomMember("room.contributor"));
-System.out.printf("%s: %s%n", member.getUserId(), member.getRoleName());
-
-client.deleteRoom(room.getId());
-client.deleteUser("alice");
-client.deleteRole("room.contributor");
-client.deleteRole("user.room_creator");
+```java readme-sample-createChatUser
+client.createOrReplaceUser("alice", new HumanChatUser("Alice", BuiltInChatRoles.USER_NORMAL));
 ```
 
-Delete dependent resources in reverse order when they are no longer needed: room, user, and then roles.
+### Create a room
+
+```java readme-sample-createChatRoom
+ChatRoom room = client.createOrReplaceRoom("general", new ChatRoom("General"));
+String defaultConversationId = room.getDefaultConversation();
+```
+
+### Add a room member
+
+```java readme-sample-addChatRoomMember
+ChatRoomMember member = client.createOrReplaceRoomMember(
+    "general", "alice", new ChatRoomMember(BuiltInChatRoles.ROOM_MEMBER));
+System.out.printf("%s: %s%n", member.getUserId(), member.getRoleName());
+```
+
+### List rooms
+
+```java readme-sample-listChatRooms
+client.listRooms().forEach(room -> System.out.printf("%s: %s%n", room.getId(), room.getTitle()));
+```
+
+### List users
+
+```java readme-sample-listChatUsers
+client.listUsers().forEach(user -> System.out.printf("%s: %s%n", user.getId(), user.getNickname()));
+```
+
+### List rooms for a user
+
+```java readme-sample-listChatRoomsForUser
+client.listRoomsForUser("alice").forEach(room ->
+    System.out.printf("%s: %s%n", room.getId(), room.getTitle()));
+```
+
+List operations return `PagedIterable` on the synchronous client and `PagedFlux`
+on the asynchronous client. Iteration fetches subsequent pages automatically.
+To process synchronous results page by page, use `iterableByPage(pageSize)`.
+
+### Create a topic
+
+The parent room must already exist.
+
+```java readme-sample-createChatTopic
+ChatTopic topic = client.createOrReplaceTopic("general", "announcements",
+    new ChatTopic().setTitle("Announcements"));
+String conversationId = topic.getConversationId();
+```
+
+When creating a topic, leave `state` unset (as above) or set it to
+`ChatTopicState.NORMAL`. For `createOrReplaceTopic`, other states are only valid when
+replacing an existing topic. Use `updateTopic` to change selected properties of an
+existing topic.
+
+Use the returned conversation ID when a Chat WebSocket client sends messages to
+the topic. This server-side library manages resources and persisted messages;
+it is not a WebSocket chat client.
+
+### Get a topic
+
+```java readme-sample-getChatTopic
+ChatTopic topic = client.getTopic("general", "announcements");
+System.out.printf("%s: %s%n", topic.getTitle(), topic.getState());
+```
+
+### Update a topic
+
+Only explicitly set properties are included in the merge-patch request.
+Use the overload accepting `MatchConditions` and the current ETag to prevent
+overwriting another caller's changes.
+
+```java readme-sample-updateChatTopic
+ChatTopic updated = client.updateTopic("general", "announcements",
+    new ChatTopic().setTitle("Archived announcements").setState(ChatTopicState.ARCHIVED));
+```
+
+### List topics
+
+```java readme-sample-listChatTopics
+client.listTopics("general").forEach(topic ->
+    System.out.printf("%s: %s%n", topic.getId(), topic.getTitle()));
+```
+
+### Soft delete a topic
+
+```java readme-sample-deleteChatTopic
+client.deleteTopic("general", "announcements");
+```
 
 ### List persisted messages
 
 ```java readme-sample-listChatMessages
-ChatRoom room = client.getRoom("general");
-client.listMessages(room.getDefaultConversation()).forEach(message ->
+String conversationId = "<conversation-id>";
+client.listMessages(conversationId).forEach(message ->
     System.out.printf("%s: %s%n", message.getCreatedBy(), message.getContent().getText()));
 ```
+
+Use a conversation ID returned by room or topic creation. Message history
+queries return messages from latest to earliest.
+
+### Update message content
+
+Use `MessageContent.fromText` or `MessageContent.fromBinary` to select exactly one
+content representation. The getter for the unselected representation returns
+`null`. Both factories accept empty content but reject `null`; binary arrays are
+defensively copied.
+
+```java readme-sample-updateChatMessageContent
+client.updateMessage(conversationId, messageId,
+    new ChatMessage().setContent(MessageContent.fromText("Updated message")));
+client.updateMessage(conversationId, messageId,
+    new ChatMessage().setContent(MessageContent.fromBinary(new byte[] { 1, 2, 3 })));
+```
+
+The request contains only the selected content field. To explicitly set the
+entire content to JSON `null` in a PATCH request, use `new ChatMessage().setContent(null)`.
 
 ### Use the asynchronous client
 
@@ -179,13 +309,26 @@ WebPubSubChatServiceAsyncClient asyncClient = new WebPubSubChatServiceClientBuil
     .connectionString("<web-pubsub-connection-string>")
     .hub("chat")
     .buildAsyncClient();
-
-asyncClient.listRoles().subscribe(role -> System.out.println(role.getName()));
 ```
 
-### Service API versions
+Subscribe to the returned publisher to execute an asynchronous operation, and
+handle errors explicitly:
 
-The client library targets the latest service API version by default. To use another supported version, pass a `WebPubSubChatServiceVersion` to the builder's `serviceVersion` method. Verify that the selected version supports the operations and models used by your application.
+```java readme-sample-listChatTopicsAsync
+asyncClient.listTopics("general").subscribe(
+    topic -> System.out.println(topic.getTitle()),
+    error -> System.err.println("Could not list topics: " + error.getMessage()));
+```
+
+#### Asynchronous paging
+
+Use `byPage(pageSize)` on typed asynchronous collections to request a page size:
+
+```java readme-sample-listChatTopicsAsyncByPage
+asyncClient.listTopics("general").byPage(10).subscribe(
+    page -> page.getValue().forEach(topic -> System.out.println(topic.getTitle())),
+    error -> System.err.println("Could not list topic pages: " + error.getMessage()));
+```
 
 ## Troubleshooting
 
@@ -197,12 +340,6 @@ Service operations throw `HttpResponseException` or a more specific subclass whe
 
 Enable SDK logging by setting the `AZURE_LOG_LEVEL` environment variable. See [Azure SDK logging][logging] for the supported levels and logging configuration. HTTP logs can contain sensitive information. Do not enable detailed logging in production without reviewing how logs are collected and protected, and never log connection strings, access keys, bearer tokens, or generated client access tokens.
 
-### Authentication and authorization
-
-- Confirm that the endpoint and hub name identify the Web PubSub resource and Chat-enabled hub you intend to use.
-- For Microsoft Entra ID, confirm that the principal has an appropriate Web PubSub data-plane role and that role assignment propagation has completed.
-- Connection-string and access-key authentication are unavailable when local authentication is disabled on the Web PubSub resource.
-
 
 ## Next steps
 
@@ -210,6 +347,8 @@ Explore the [complete package samples][samples] to learn how to:
 
 - Authenticate with a connection string, access key, or Microsoft Entra ID.
 - Manage roles, permissions, users, rooms, and room members.
+- List rooms and users, and query rooms associated with a user.
+- Manage topics and their lifecycle states.
 - Generate client access credentials.
 - Query, update, and delete message history.
 - Use synchronous and asynchronous clients.
@@ -218,7 +357,7 @@ Explore the [complete package samples][samples] to learn how to:
 
 - [Azure Web PubSub documentation][webpubsub_documentation]
 - [Web PubSub Chat documentation][product_documentation]
-- [Web PubSub Chat REST API][rest_api]
+- [Web PubSub Chat REST API specification][rest_api]
 - [Azure SDK for Java design guidelines][design_guidelines]
 
 ## Contributing
@@ -244,7 +383,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_identity_auth]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/overview
 [entra_authorization]: https://learn.microsoft.com/azure/azure-web-pubsub/concept-azure-ad-authorization
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
-[rest_api]: https://learn.microsoft.com/rest/api/webpubsub/dataplane/webpubsubchat/web-pub-sub-chat-service
+[rest_api]: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/webpubsub/data-plane/WebPubSubChat
 [design_guidelines]: https://azure.github.io/azure-sdk/java_introduction.html
 [contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

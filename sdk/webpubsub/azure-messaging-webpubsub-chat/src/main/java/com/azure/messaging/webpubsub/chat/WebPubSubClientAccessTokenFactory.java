@@ -7,7 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.messaging.webpubsub.chat.implementation.WebPubSubChatServiceClientImpl;
 import com.azure.messaging.webpubsub.chat.implementation.models.GenerateClientTokenResponse;
-import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.chat.models.ClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +20,7 @@ final class WebPubSubClientAccessTokenFactory {
     private static final List<String> CHAT_ROLES = Arrays.asList("webpubsub.getGroupState", "webpubsub.setGroupState");
 
     static WebPubSubClientAccessToken create(WebPubSubChatServiceClientImpl serviceClient,
-        AzureKeyCredential keyCredential, GetClientAccessTokenOptions options) {
+        AzureKeyCredential keyCredential, ClientAccessTokenOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         Duration expiresAfter = validateExpiresAfter(options.getExpiresAfter());
         String token;
@@ -38,7 +38,7 @@ final class WebPubSubClientAccessTokenFactory {
     }
 
     static Mono<WebPubSubClientAccessToken> createAsync(WebPubSubChatServiceClientImpl serviceClient,
-        AzureKeyCredential keyCredential, GetClientAccessTokenOptions options) {
+        AzureKeyCredential keyCredential, ClientAccessTokenOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         Duration expiresAfter = validateExpiresAfter(options.getExpiresAfter());
         if (keyCredential == null) {
@@ -51,7 +51,7 @@ final class WebPubSubClientAccessTokenFactory {
         return Mono.fromCallable(() -> create(serviceClient, keyCredential, options));
     }
 
-    private static RequestOptions createRequestOptions(GetClientAccessTokenOptions options, Duration expiresAfter) {
+    private static RequestOptions createRequestOptions(ClientAccessTokenOptions options, Duration expiresAfter) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("clientType", "default");
         if (options.getUserId() != null) {
