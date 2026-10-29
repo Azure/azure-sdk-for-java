@@ -83,8 +83,10 @@ public final class KnowledgeBaseRetrievalClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * @param retrievalRequest The retrieval request to process.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param retrievalRequest The retrieval request to process. Its query-source authorization is sent only as the
+     * x-ms-query-source-authorization header, not in the request body.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it. An authorization
+     * header set through these options overrides the authorization in retrievalRequest.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -95,7 +97,8 @@ public final class KnowledgeBaseRetrievalClient {
     public Response<KnowledgeBaseRetrievalResult> retrieveWithResponse(KnowledgeBaseRetrievalOptions retrievalRequest,
         RequestOptions requestOptions) {
         return convertResponse(
-            this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest),
+                retrievalRequest == null ? null : retrievalRequest.getQuerySourceAuthorization(), requestOptions),
             KnowledgeBaseRetrievalResult.class);
     }
 
@@ -227,7 +230,9 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -239,8 +244,7 @@ public final class KnowledgeBaseRetrievalClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, null);
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
@@ -375,13 +379,15 @@ public final class KnowledgeBaseRetrievalClient {
      * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
      * failures are thrown during iteration. The client does not reconnect automatically.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
     public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
-        RequestOptions requestOptions = new RequestOptions();
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, null);
         return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
@@ -405,19 +411,19 @@ public final class KnowledgeBaseRetrievalClient {
      * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
      * failures are thrown during iteration. The client does not reconnect automatically.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
      * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
     public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
         return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
@@ -426,9 +432,13 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -441,12 +451,7 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
         String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
@@ -484,5 +489,17 @@ public final class KnowledgeBaseRetrievalClient {
         }
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .getValue();
+    }
+
+    private static RequestOptions createRetrieveRequestOptions(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        RequestOptions requestOptions = new RequestOptions();
+        String authorization = querySourceAuthorization != null
+            ? querySourceAuthorization
+            : (retrievalRequest == null ? null : retrievalRequest.getQuerySourceAuthorization());
+        if (authorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"), authorization);
+        }
+        return requestOptions;
     }
 }

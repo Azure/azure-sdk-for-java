@@ -363,4 +363,37 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
         this.outputMode = outputMode;
         return this;
     }
+
+    /**
+     * Token identifying the user for which the query is being executed. Client-only value that is sent as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
+     */
+    private String querySourceAuthorization;
+
+    /**
+     * Get the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
+     * token is used to enforce security restrictions on documents. It is only sent as the
+     * x-ms-query-source-authorization request header and is never part of the request body. A non-null authorization
+     * passed explicitly to a retrieve method overrides this value; a null explicit authorization falls back to it.
+     *
+     * @return the querySourceAuthorization value.
+     */
+    public String getQuerySourceAuthorization() {
+        return this.querySourceAuthorization;
+    }
+
+    /**
+     * Set the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
+     * token is used to enforce security restrictions on documents. It is only sent as the
+     * x-ms-query-source-authorization request header and is never part of the request body. A non-null authorization
+     * passed explicitly to a retrieve method overrides this value; a null explicit authorization falls back to it. An
+     * empty string is treated as a value.
+     *
+     * @param querySourceAuthorization the querySourceAuthorization value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    public KnowledgeBaseRetrievalOptions setQuerySourceAuthorization(String querySourceAuthorization) {
+        this.querySourceAuthorization = querySourceAuthorization;
+        return this;
+    }
 }

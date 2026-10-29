@@ -7,8 +7,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CloseableIterableStream;
+import com.azure.core.util.Context;
 import com.azure.json.JsonSerializable;
 import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
@@ -26,7 +29,6 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCom
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStatusCode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseStreamErrorEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexActivityRecord;
@@ -70,6 +72,182 @@ public class KnowledgeBaseRetrievalStreamTests {
         = "{\"requestId\":\"request\",\"knowledgeBaseName\":\"kb\",\"outputMode\":\"answerSynthesis\","
             + "\"reasoningEffort\":{\"kind\":\"low\"}}";
     private static final String RESPONSE_COMPLETED_JSON = "{\"statusCode\":200,\"response\":{}}";
+
+    @ParameterizedTest
+    @ValueSource(ints = { 200, 206, 299 })
+    public void completionStatusCodesRemainNumeric(int statusCode) throws NoSuchMethodException {
+        KnowledgeBaseResponseCompletedEvent event
+            = BinaryData.fromString("{\"statusCode\":" + statusCode + ",\"response\":{}}")
+                .toObject(KnowledgeBaseResponseCompletedEvent.class);
+        assertEquals(Integer.class,
+            KnowledgeBaseResponseCompletedEvent.class.getMethod("getStatusCode").getReturnType());
+        assertEquals(Integer.valueOf(statusCode), event.getStatusCode());
+        String json = BinaryData.fromObject(event).toString();
+        assertTrue(json.contains("\"statusCode\":" + statusCode));
+        assertEquals(event.getStatusCode(),
+            BinaryData.fromString(json).toObject(KnowledgeBaseResponseCompletedEvent.class).getStatusCode());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "{}", "{\"statusCode\":null}" })
+    public void missingCompletionStatusRemainsNull(String json) {
+        KnowledgeBaseResponseCompletedEvent event
+            = BinaryData.fromString(json).toObject(KnowledgeBaseResponseCompletedEvent.class);
+        assertNull(event.getStatusCode());
+        assertNull(BinaryData.fromString(BinaryData.fromObject(event).toString())
+            .toObject(KnowledgeBaseResponseCompletedEvent.class)
+            .getStatusCode());
+    }
+
+    @Test
+    public void authorizationIsClientOnlyMetadata() {
+        KnowledgeBaseRetrievalOptions options
+            = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(QUERY_SOURCE_TOKEN);
+        assertEquals(QUERY_SOURCE_TOKEN, options.getQuerySourceAuthorization());
+        assertEquals("{}", BinaryData.fromObject(options).toString());
+        KnowledgeBaseRetrievalOptions deserialized
+            = BinaryData.fromString("{\"querySourceAuthorization\":\"untrusted-json-token\"}")
+                .toObject(KnowledgeBaseRetrievalOptions.class);
+        assertNull(deserialized.getQuerySourceAuthorization());
+        assertNull(options.setQuerySourceAuthorization(null).getQuerySourceAuthorization());
+    }
+
+    private static Stream<Arguments> authorizationCases() {
+        return Stream.of(Arguments.of(null, null, false, null),
+            Arguments.of(QUERY_SOURCE_TOKEN, null, false, QUERY_SOURCE_TOKEN),
+            Arguments.of(null, "explicit-token", true, "explicit-token"),
+            Arguments.of(QUERY_SOURCE_TOKEN, "explicit-token", true, "explicit-token"),
+            Arguments.of(QUERY_SOURCE_TOKEN, null, true, QUERY_SOURCE_TOKEN), Arguments.of(null, null, true, null),
+            Arguments.of(QUERY_SOURCE_TOKEN, "", true, ""));
+    }
+
+    @ParameterizedTest
+    @MethodSource("authorizationCases")
+    public void bothClientsForwardAuthorizationForRegularRetrieval(String option, String explicit,
+        boolean useExplicitOverload, String expected) {
+        KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(option);
+        KnowledgeBaseRetrievalClient client = authorizationBuilder("{}", expected, false).buildClient();
+        assertNotNull(useExplicitOverload ? client.retrieve(options, explicit) : client.retrieve(options));
+        KnowledgeBaseRetrievalAsyncClient asyncClient = authorizationBuilder("{}", expected, false).buildAsyncClient();
+        assertNotNull(
+            (useExplicitOverload ? asyncClient.retrieve(options, explicit) : asyncClient.retrieve(options)).block());
+        assertEquals(option, options.getQuerySourceAuthorization());
+    }
+
+    @ParameterizedTest
+    @MethodSource("authorizationCases")
+    public void bothClientsForwardAuthorizationForStreamingRetrieval(String option, String explicit,
+        boolean useExplicitOverload, String expected) throws IOException {
+        KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(option);
+        String body = frame("response.completed", RESPONSE_COMPLETED_JSON);
+        KnowledgeBaseRetrievalClient client = authorizationBuilder(body, expected, true).buildClient();
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events
+            = useExplicitOverload ? client.retrieveStream(options, explicit) : client.retrieveStream(options)) {
+            assertEvent(events.iterator().next(), "response.completed", true);
+        }
+        KnowledgeBaseRetrievalAsyncClient asyncClient = authorizationBuilder(body, expected, true).buildAsyncClient();
+        StepVerifier.create(
+            useExplicitOverload ? asyncClient.retrieveStream(options, explicit) : asyncClient.retrieveStream(options))
+            .assertNext(event -> assertEvent(event, "response.completed", true))
+            .verifyComplete();
+        assertEquals(option, options.getQuerySourceAuthorization());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void typedResponsesForwardOptionWithNullRequestOptions(boolean async) {
+        KnowledgeBaseRetrievalOptions options
+            = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(QUERY_SOURCE_TOKEN);
+        KnowledgeBaseRetrievalClientBuilder builder = authorizationBuilder("{}", QUERY_SOURCE_TOKEN, false);
+        if (async) {
+            StepVerifier.create(builder.buildAsyncClient().retrieveWithResponse(options, null))
+                .assertNext(response -> assertNotNull(response.getValue()))
+                .verifyComplete();
+        } else {
+            assertNotNull(builder.buildClient().retrieveWithResponse(options, null).getValue());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void typedResponsesPreserveRequestOptionsAndExplicitHeaders(boolean async) {
+        AtomicInteger callbacks = new AtomicInteger();
+        Context context = new Context("authorization-test", "context-value");
+        RequestOptions requestOptions = new RequestOptions().setContext(context)
+            .setHeader(QUERY_SOURCE_AUTHORIZATION, "request-options-token")
+            .addRequestCallback(request -> {
+                callbacks.incrementAndGet();
+                request.setHeader(HttpHeaderName.fromString("test-header"), "preserved");
+            });
+        KnowledgeBaseRetrievalOptions options
+            = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(QUERY_SOURCE_TOKEN);
+        KnowledgeBaseRetrievalClientBuilder builder
+            = authorizationBuilder("{}", "request-options-token", false).addPolicy((pipelineContext, next) -> {
+                assertEquals("context-value", pipelineContext.getContext().getData("authorization-test").orElse(null));
+                assertEquals("preserved", pipelineContext.getHttpRequest().getHeaders().getValue("test-header"));
+                return next.process();
+            });
+        if (async) {
+            assertNotNull(builder.buildAsyncClient().retrieveWithResponse(options, requestOptions).block());
+        } else {
+            assertNotNull(builder.buildClient().retrieveWithResponse(options, requestOptions));
+        }
+        assertEquals(1, callbacks.get());
+        assertEquals(context, requestOptions.getContext());
+
+        KnowledgeBaseRetrievalOptions noAuthorization = new KnowledgeBaseRetrievalOptions();
+        KnowledgeBaseRetrievalClientBuilder reused = authorizationBuilder("{}", "request-options-token", false);
+        if (async) {
+            assertNotNull(reused.buildAsyncClient().retrieveWithResponse(noAuthorization, requestOptions).block());
+        } else {
+            assertNotNull(reused.buildClient().retrieveWithResponse(noAuthorization, requestOptions));
+        }
+        assertEquals(2, callbacks.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void typedResponseFallbackDoesNotModifyReusedRequestOptions(boolean async) {
+        AtomicInteger callbacks = new AtomicInteger();
+        Context context = new Context("authorization-test", "context-value");
+        RequestOptions requestOptions
+            = new RequestOptions().setContext(context).addRequestCallback(request -> callbacks.incrementAndGet());
+        KnowledgeBaseRetrievalOptions options
+            = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(QUERY_SOURCE_TOKEN);
+        for (String expected : Arrays.asList(QUERY_SOURCE_TOKEN, "second-token", null)) {
+            options.setQuerySourceAuthorization(expected);
+            KnowledgeBaseRetrievalClientBuilder builder
+                = authorizationBuilder("{}", expected, false).addPolicy((pipelineContext, next) -> {
+                    assertEquals("context-value",
+                        pipelineContext.getContext().getData("authorization-test").orElse(null));
+                    return next.process();
+                });
+            if (async) {
+                assertNotNull(builder.buildAsyncClient().retrieveWithResponse(options, requestOptions).block());
+            } else {
+                assertNotNull(builder.buildClient().retrieveWithResponse(options, requestOptions));
+            }
+        }
+        assertEquals(3, callbacks.get());
+        assertEquals(context, requestOptions.getContext());
+    }
+
+    private static KnowledgeBaseRetrievalClientBuilder authorizationBuilder(String body, String expected,
+        boolean streaming) {
+        return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
+            .knowledgeBaseName("kb")
+            .credential(new AzureKeyCredential("key"))
+            .httpClient(request -> {
+                assertEquals("api-version=2026-10-01", request.getUrl().getQuery());
+                assertEquals(expected, request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
+                String json = request.getBodyAsBinaryData().toString();
+                assertFalse(json.contains("querySourceAuthorization"));
+                assertFalse(json.contains("token"));
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE,
+                    streaming ? "text/event-stream" : "application/json");
+                return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+            });
+    }
 
     @Test
     public void baseEventRemainsAbstract() {
@@ -215,7 +393,7 @@ public class KnowledgeBaseRetrievalStreamTests {
                 = assertInstanceOf(KnowledgeBaseActivityCompletedStreamEvent.class, events.get(0));
             KnowledgeBaseResponseCompletedStreamEvent completed
                 = assertInstanceOf(KnowledgeBaseResponseCompletedStreamEvent.class, events.get(1));
-            assertEquals(KnowledgeBaseRetrievalStatusCode.OK, completed.getValue().getStatusCode());
+            assertEquals(Integer.valueOf(200), completed.getValue().getStatusCode());
             assertEquals(1, completed.getValue().getResponse().getActivity().size());
             for (KnowledgeBaseActivityRecord record : Arrays.asList(progress.getValue(),
                 completed.getValue().getResponse().getActivity().get(0))) {

@@ -10,7 +10,9 @@ from a preview release are not included.
 - Added support for the `2026-10-01` GA service version, which is now the default service version.
 - Added `SearchOptions.moreLikeThis` to find documents similar to an existing document.
 - Added query-source authorization and elevated-read controls to `SearchOptions` and document lookup overloads, and
-  query-source authorization overloads to knowledge base retrieval.
+  query-source authorization overloads and a header-only `KnowledgeBaseRetrievalOptions.querySourceAuthorization`
+  option to knowledge base retrieval. Non-null explicit authorization arguments override the option; null falls
+  back to the option.
 - Added document-level permission configuration through `SearchField.permissionFilter`, `organizationAccessExpiration`,
   and `sharepointSiteUrl`, `SearchIndex.permissionFilterOption`, and `SharePointConnectorAppRegistration`.
 - Added `SearchIndexerDataSourceConnection.indexerPermissionOptions`,
@@ -45,6 +47,7 @@ from a preview release are not included.
 - Added typed `retrieveStream` APIs returning `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` on the
   synchronous retrieval client and `Flux<KnowledgeBaseRetrievalStreamEvent>` on the asynchronous client. Events
   include retrieval start, activity start and completion, answers, references, errors, and response completion.
+  Response-completion events expose their numeric status code as `Integer`, including unknown status values.
 - Added `modelName` and `modelDeployment` to `ContentUnderstandingSkill`, fixed-size and semantic chunking method
   selection, and token-based chunking units.
 - Added `GPT54`, `GPT55`, `GPT56SOL`, `GPT56TERRA`, and `GPT56LUNA` to `AzureOpenAIModelName`.

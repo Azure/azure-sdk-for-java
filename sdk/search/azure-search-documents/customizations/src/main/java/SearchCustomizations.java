@@ -14,6 +14,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.Type;
 import org.slf4j.Logger;
 
@@ -66,6 +67,16 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
 
         customizeKnowledgeBaseRetrievalStream(libraryCustomization, logger);
+        addQuerySourceAuthorizationOption(
+            libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
+                .getClass("KnowledgeBaseRetrievalOptions"));
+        forwardQuerySourceAuthorizationOption(knowledge.getClass("KnowledgeBaseRetrievalClient"));
+        forwardQuerySourceAuthorizationOption(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+        addQuerySourceAuthorizationToRetrieveImpl(
+            libraryCustomization.getPackage("com.azure.search.documents.implementation")
+                .getClass("KnowledgeBaseRetrievalClientImpl"));
+
+        customizeResponseCompletedStatusCode(libraryCustomization);
         customizeKnowledgeSourceStatusDurationParsing(
             libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
                 .getClass("KnowledgeSourceStatus"));
@@ -310,6 +321,262 @@ public class SearchCustomizations extends Customization {
                         + "@return A closeable stream of typed knowledge base retrieval events.");
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
+    }
+
+    private static final String KNOWLEDGE_MODELS_PACKAGE = "com.azure.search.documents.knowledgebases.models";
+
+    // The status code is exposed as a nullable Integer so unknown values round trip without a public wrapper type.
+    private static void customizeResponseCompletedStatusCode(LibraryCustomization libraryCustomization) {
+        String className = "KnowledgeBaseResponseCompletedEvent";
+        libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE)
+            .getClass(className)
+            .customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                clazz.getFieldByName("statusCode")
+                    .orElseThrow(() -> new IllegalStateException("statusCode field not found."))
+                    .getVariable(0)
+                    .setType("Integer");
+                clazz.getConstructors().get(0).getParameter(0).setType("Integer");
+                clazz.getMethodsByName("getStatusCode").get(0).setType("Integer");
+
+                MethodDeclaration toJson = clazz.getMethodsByName("toJson").get(0);
+                String toJsonBody = toJson.getBody().orElseThrow(() -> new IllegalStateException("No body.")).toString();
+                String generatedWrite = "this.statusCode == null ? null : this.statusCode.getValue()";
+                if (!toJsonBody.contains(generatedWrite)) {
+                    throw new IllegalStateException("toJson no longer uses the expected generated statusCode write.");
+                }
+                toJson.setBody(StaticJavaParser.parseBlock(toJsonBody.replace(generatedWrite, "this.statusCode")));
+
+                MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
+                String fromJsonBody
+                    = fromJson.getBody().orElseThrow(() -> new IllegalStateException("No body.")).toString();
+                String generatedDeclaration = "KnowledgeBaseRetrievalStatusCode statusCode = null;";
+                String generatedRead = "statusCode = KnowledgeBaseRetrievalStatusCode.fromValue(reader.getInt());";
+                if (!fromJsonBody.contains(generatedDeclaration) || !fromJsonBody.contains(generatedRead)) {
+                    throw new IllegalStateException("fromJson no longer uses the expected generated statusCode read.");
+                }
+                fromJson.setBody(StaticJavaParser.parseBlock(
+                    fromJsonBody.replace(generatedDeclaration, "Integer statusCode = null;")
+                        .replace(generatedRead, "statusCode = reader.getNullable(JsonReader::getInt);")));
+
+                MethodDeclaration getStatusCode = clazz.getMethodsByName("getStatusCode").get(0);
+                getStatusCode.setJavadocComment("Get the statusCode property: The semantic HTTP status of the completed "
+                    + "retrieval, not the actual HTTP transport response status. The service wire schema requires "
+                    + "this value, but the SDK treats it as nullable: it returns null when the status code is missing "
+                    + "or JSON null, and unknown values round trip as plain integers.\n\n"
+                    + "@return the statusCode value, or null if it was not provided.");
+            }));
+
+        libraryCustomization.getRawEditor().removeFile(MODELS_PATH + "KnowledgeBaseRetrievalStatusCode.java");
+    }
+
+    // Client-only transport metadata: stored on the options but never serialized to or read from JSON.
+    private static void addQuerySourceAuthorizationOption(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            clazz.getFieldByName("querySourceAuthorization").ifPresent(FieldDeclaration::remove);
+            clazz.getMethodsByName("getQuerySourceAuthorization").forEach(MethodDeclaration::remove);
+            clazz.getMethodsByName("setQuerySourceAuthorization").forEach(MethodDeclaration::remove);
+
+            FieldDeclaration field = clazz.addField("String", "querySourceAuthorization", Modifier.Keyword.PRIVATE);
+            field.addMarkerAnnotation("Generated");
+            field.setJavadocComment("Token identifying the user for which the query is being executed. Client-only "
+                + "value that is sent as the x-ms-query-source-authorization header and is never serialized "
+                + "into the request body.");
+
+            MethodDeclaration getter = StaticJavaParser
+                .parseBodyDeclaration("@Generated\n"
+                    + "public String getQuerySourceAuthorization() {\n    return this.querySourceAuthorization;\n}\n")
+                .asMethodDeclaration();
+            getter.setJavadocComment("Get the querySourceAuthorization property: Token identifying the user for which "
+                + "the query is being executed. This token is used to enforce security restrictions on documents. "
+                + "It is only sent as the x-ms-query-source-authorization request header and is never part of the "
+                + "request body. A non-null authorization passed explicitly to a retrieve method overrides this "
+                + "value; a null explicit authorization falls back to it.\n\n"
+                + "@return the querySourceAuthorization value.");
+            clazz.addMember(getter);
+
+            MethodDeclaration setter = StaticJavaParser.parseBodyDeclaration("@Generated\n"
+                + "public KnowledgeBaseRetrievalOptions setQuerySourceAuthorization(String querySourceAuthorization) {\n"
+                    + "    this.querySourceAuthorization = querySourceAuthorization;\n    return this;\n}\n")
+                .asMethodDeclaration();
+            setter.setJavadocComment("Set the querySourceAuthorization property: Token identifying the user for which "
+                + "the query is being executed. This token is used to enforce security restrictions on documents. "
+                + "It is only sent as the x-ms-query-source-authorization request header and is never part of the "
+                + "request body. A non-null authorization passed explicitly to a retrieve method overrides this "
+                + "value; a null explicit authorization falls back to it. An empty string is treated as a value.\n\n"
+                + "@param querySourceAuthorization the querySourceAuthorization value to set.\n"
+                + "@return the KnowledgeBaseRetrievalOptions object itself.");
+            clazz.addMember(setter);
+        }));
+    }
+
+    // Must run after the stream methods are assembled. A non-null explicit parameter overrides the option, and a null
+    // explicit parameter falls back to KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization().
+    private static void forwardQuerySourceAuthorizationOption(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            clazz.getMethodsByName("createRetrieveRequestOptions").forEach(MethodDeclaration::remove);
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration("@Generated\n"
+                + "private static RequestOptions createRetrieveRequestOptions("
+                + "KnowledgeBaseRetrievalOptions retrievalRequest,\n" + "    String querySourceAuthorization) {\n"
+                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                + "    String authorization = querySourceAuthorization != null\n"
+                + "        ? querySourceAuthorization\n"
+                + "        : (retrievalRequest == null ? null : retrievalRequest.getQuerySourceAuthorization());\n"
+                + "    if (authorization != null) {\n"
+                + "        requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                + "            authorization);\n" + "    }\n" + "    return requestOptions;\n" + "}\n"));
+
+            int updated = 0;
+            for (MethodDeclaration method : clazz.getMethods()) {
+                String name = method.getNameAsString();
+                if (!method.isPublic() || !("retrieve".equals(name) || "retrieveStream".equals(name))) {
+                    continue;
+                }
+                boolean hasExplicit = method.getParameters().size() == 2;
+                BlockStmt body = method.getBody()
+                    .orElseThrow(() -> new IllegalStateException("Retrieve method has no body."));
+                body.getStatements().removeIf(SearchCustomizations::isQuerySourceAuthorizationHeaderBlock);
+                boolean replaced = false;
+                for (int i = 0; i < body.getStatements().size(); i++) {
+                    if (body.getStatements().get(i).toString().contains("new RequestOptions()")) {
+                        body.getStatements()
+                            .set(i, StaticJavaParser.parseStatement("RequestOptions requestOptions = "
+                                + "createRetrieveRequestOptions(retrievalRequest, "
+                                + (hasExplicit ? "querySourceAuthorization" : "null") + ");"));
+                        replaced = true;
+                        break;
+                    }
+                }
+                if (!replaced) {
+                    throw new IllegalStateException("Could not find the request options in " + name + ".");
+                }
+
+                method.getJavadocComment().ifPresent(javadoc -> {
+                    String content = javadoc.getContent()
+                        .replaceFirst("@param retrievalRequest The retrieval request to process\\.",
+                            "@param retrievalRequest The retrieval request to process. If its "
+                                + "{@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is "
+                                + "sent only as the x-ms-query-source-authorization header and is never serialized "
+                                + "into the request body.");
+                    if (hasExplicit) {
+                        content = content.replaceFirst("security[\\s*]+restrictions[\\s*]+on[\\s*]+documents\\.",
+                            "security restrictions on documents. A non-null value overrides "
+                                + "{@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls "
+                                + "back to it, and an empty string is treated as an explicit value.");
+                    }
+                    javadoc.setContent(content);
+                });
+                updated++;
+            }
+            if (updated != 4) {
+                throw new IllegalStateException("Expected to update 4 retrieve methods in "
+                    + customization.getClassName() + " but updated " + updated + ".");
+            }
+        }));
+    }
+
+    // Adds a querySourceAuthorization header parameter to the internal retrieve REST methods so typed callers can
+    // supply the header without mutating or copying the caller's RequestOptions. RestProxy applies the header before
+    // RequestOptions callbacks, so a header explicitly set on RequestOptions still takes precedence.
+    private static void addQuerySourceAuthorizationToRetrieveImpl(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.core.annotation.Generated");
+            com.github.javaparser.ast.body.ClassOrInterfaceDeclaration clazz
+                = ast.getClassByName(customization.getClassName())
+                    .orElseThrow(() -> new IllegalStateException("Class not found."));
+
+            com.github.javaparser.ast.body.ClassOrInterfaceDeclaration service = clazz.getMembers()
+                .stream()
+                .filter(member -> member.isClassOrInterfaceDeclaration())
+                .map(member -> member.asClassOrInterfaceDeclaration())
+                .filter(type -> "KnowledgeBaseRetrievalClientService".equals(type.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("KnowledgeBaseRetrievalClientService not found."));
+            int serviceUpdated = 0;
+            for (String name : Arrays.asList("retrieve", "retrieveSync")) {
+                for (MethodDeclaration method : service.getMethodsByName(name)) {
+                    method.getParameters().removeIf(p -> "querySourceAuthorization".equals(p.getNameAsString()));
+                    int index = -1;
+                    for (int i = 0; i < method.getParameters().size(); i++) {
+                        if ("requestOptions".equals(method.getParameter(i).getNameAsString())) {
+                            index = i;
+                        }
+                    }
+                    if (index < 0) {
+                        throw new IllegalStateException("requestOptions parameter not found in " + name + ".");
+                    }
+                    method.getParameters()
+                        .add(index, StaticJavaParser.parseParameter(
+                            "@HeaderParam(\"x-ms-query-source-authorization\") String querySourceAuthorization"));
+                    serviceUpdated++;
+                }
+            }
+            if (serviceUpdated != 2) {
+                throw new IllegalStateException(
+                    "Expected to update 2 service retrieve methods but updated " + serviceUpdated + ".");
+            }
+
+            for (boolean async : new boolean[] { true, false }) {
+                String name = async ? "retrieveWithResponseAsync" : "retrieveWithResponse";
+                clazz.getMethodsByName(name)
+                    .stream()
+                    .filter(method -> method.getParameters().size() == 3)
+                    .collect(java.util.stream.Collectors.toList())
+                    .forEach(MethodDeclaration::remove);
+                MethodDeclaration original = clazz.getMethodsByName(name)
+                    .stream()
+                    .filter(method -> method.getParameters().size() == 2
+                        && "BinaryData".equals(method.getParameter(0).getTypeAsString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(name + " not found."));
+
+                String returnType = original.getTypeAsString();
+                String signature = "@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n" + "public " + returnType
+                    + " " + name + "(BinaryData retrievalRequest, String querySourceAuthorization,\n"
+                    + "    RequestOptions requestOptions) {\n"
+                    + "    final String accept = \"application/json;odata.metadata=minimal\";\n"
+                    + "    final String contentType = \"application/json\";\n";
+                String overloadSource;
+                String delegate;
+                if (async) {
+                    overloadSource = signature
+                        + "    return FluxUtil.withContext(context -> service.retrieve(this.getEndpoint(),\n"
+                        + "        this.getServiceVersion().getVersion(), accept, this.getKnowledgeBaseName(), "
+                        + "contentType,\n"
+                        + "        retrievalRequest, querySourceAuthorization, requestOptions, context));\n" + "}\n";
+                    delegate = "{\n    return retrieveWithResponseAsync(retrievalRequest, null, requestOptions);\n}";
+                } else {
+                    overloadSource = signature
+                        + "    return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(),\n"
+                        + "        accept, this.getKnowledgeBaseName(), contentType, retrievalRequest,\n"
+                        + "        querySourceAuthorization, requestOptions, Context.NONE);\n" + "}\n";
+                    delegate = "{\n    return retrieveWithResponse(retrievalRequest, null, requestOptions);\n}";
+                }
+                MethodDeclaration overload
+                    = StaticJavaParser.parseBodyDeclaration(overloadSource).asMethodDeclaration();
+                original.getJavadocComment().ifPresent(javadoc -> {
+                    String content = javadoc.getContent();
+                    String updated = content.replaceFirst("(\\* @param retrievalRequest [^\\n]*\\n)",
+                        "$1     * @param querySourceAuthorization Token identifying the user for which the query is "
+                            + "being executed. This token is used to enforce security restrictions on documents. A "
+                            + "header set explicitly on requestOptions takes precedence.\n");
+                    if (updated.equals(content)) {
+                        throw new IllegalStateException("Could not locate retrievalRequest javadoc for " + name + ".");
+                    }
+                    overload.setJavadocComment(updated);
+                });
+                original.setBody(StaticJavaParser.parseBlock(delegate));
+                clazz.addMember(overload);
+            }
+        });
+    }
+
+
+
+    // Matches only the generated `if (querySourceAuthorization != null) { requestOptions.setHeader(...); }` block.
+    private static boolean isQuerySourceAuthorizationHeaderBlock(Statement statement) {
+        return statement.isIfStmt()
+            && "querySourceAuthorization != null".equals(statement.asIfStmt().getCondition().toString())
+            && statement.toString().contains("x-ms-query-source-authorization");
     }
 
     private static String streamEventDocumentation() {
