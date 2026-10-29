@@ -4,9 +4,15 @@
 
 ### Features Added
 
+- Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
+  and audio. Live WebSocket transport is not included.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed voice-agent definition deserialization through `AgentDefinition` and `VoiceAgentBaseDefinition` to select
+  Realtime for an omitted or `realtime` sub-protocol and Live for `live`.
 
 ### Other Changes
 
@@ -30,8 +36,6 @@
   `MicrosoftCopilotHarness`, `MicrosoftCopilotToolsetPreview`, and related configuration types.
   `AgentsClientBuilder.allowPreview(true)` and beta agent clients include the `MicrosoftCopilot=V1Preview` feature
   opt-in. The legacy GitHub Copilot types remain available for compatibility.
-- Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
-  and audio. Live WebSocket transport is not included.
 
 ### Breaking Changes
 
@@ -52,8 +56,6 @@
 
 - Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
   including when resuming from a continuation token, instead of ignoring it.
-- Fixed voice-agent definition deserialization through `AgentDefinition` and `VoiceAgentBaseDefinition` to select
-  Realtime for an omitted or `realtime` sub-protocol and Live for `live`.
 
 ### Other Changes
 

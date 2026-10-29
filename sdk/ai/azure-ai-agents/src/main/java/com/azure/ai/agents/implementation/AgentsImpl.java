@@ -36,7 +36,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncPoller;
@@ -3591,7 +3590,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listAgents(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -3747,34 +3746,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentsAsync(RequestOptions requestOptions) {
-        return listAgentsAsync(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAgentsAsync(String initialContinuationToken, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentsSinglePageAsync(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentsSinglePageAsync(requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listAgentsSinglePageAsync(requestOptions));
     }
 
     /**
@@ -3934,7 +3906,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listAgentsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -4090,34 +4062,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
-        return listAgents(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgents(String initialContinuationToken, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentsSinglePage(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentsSinglePage(requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listAgentsSinglePage(requestOptions));
     }
 
     /**
@@ -4892,7 +4837,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listAgentVersions(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -4985,35 +4930,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentVersionsAsync(String agentName, RequestOptions requestOptions) {
-        return listAgentVersionsAsync(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAgentVersionsAsync(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentVersionsSinglePageAsync(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentVersionsSinglePageAsync(agentName, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listAgentVersionsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -5110,7 +5027,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listAgentVersionsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -5203,35 +5120,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgentVersions(String agentName, RequestOptions requestOptions) {
-        return listAgentVersions(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgentVersions(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentVersionsSinglePage(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentVersionsSinglePage(agentName, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listAgentVersionsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -6336,7 +6225,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listSessions(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -6391,35 +6280,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSessionsAsync(String agentName, RequestOptions requestOptions) {
-        return listSessionsAsync(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessionsAsync(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listSessionsSinglePageAsync(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listSessionsSinglePageAsync(agentName, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listSessionsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -6478,7 +6339,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listSessionsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -6533,35 +6394,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSessions(String agentName, RequestOptions requestOptions) {
-        return listSessions(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSessions(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listSessionsSinglePage(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listSessionsSinglePage(agentName, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listSessionsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -6898,7 +6731,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, sessionId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "entries"), null, null));
     }
 
     /**
@@ -6954,35 +6787,7 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSessionFilesAsync(String agentName, String sessionId,
         RequestOptions requestOptions) {
-        return listSessionFilesAsync(null, agentName, sessionId, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessionFilesAsync(String initialContinuationToken, String agentName,
-        String sessionId, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listSessionFilesSinglePageAsync(agentName, sessionId, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listSessionFilesSinglePageAsync(agentName, sessionId, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listSessionFilesSinglePageAsync(agentName, sessionId, requestOptions));
     }
 
     /**
@@ -7042,7 +6847,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listSessionFilesSync(this.client.getEndpoint(), agentName, sessionId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "entries"), null, null);
     }
 
     /**
@@ -7098,35 +6903,7 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSessionFiles(String agentName, String sessionId,
         RequestOptions requestOptions) {
-        return listSessionFiles(null, agentName, sessionId, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSessionFiles(String initialContinuationToken, String agentName,
-        String sessionId, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listSessionFilesSinglePage(agentName, sessionId, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listSessionFilesSinglePage(agentName, sessionId, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listSessionFilesSinglePage(agentName, sessionId, requestOptions));
     }
 
     /**
@@ -9442,7 +9219,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listOptimizationJobs(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -9567,35 +9344,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listOptimizationJobsAsync(RequestOptions requestOptions) {
-        return listOptimizationJobsAsync(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOptimizationJobsAsync(String initialContinuationToken,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listOptimizationJobsSinglePageAsync(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listOptimizationJobsSinglePageAsync(requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listOptimizationJobsSinglePageAsync(requestOptions));
     }
 
     /**
@@ -9724,7 +9473,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listOptimizationJobsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -9849,35 +9598,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOptimizationJobs(RequestOptions requestOptions) {
-        return listOptimizationJobs(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOptimizationJobs(String initialContinuationToken,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listOptimizationJobsSinglePage(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listOptimizationJobsSinglePage(requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listOptimizationJobsSinglePage(requestOptions));
     }
 
     /**
@@ -10207,7 +9928,7 @@ public final class AgentsImpl {
             .withContext(context -> service.listOptimizationCandidates(this.client.getEndpoint(), jobId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -10279,35 +10000,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listOptimizationCandidatesAsync(String jobId, RequestOptions requestOptions) {
-        return listOptimizationCandidatesAsync(null, jobId, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOptimizationCandidatesAsync(String initialContinuationToken, String jobId,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listOptimizationCandidatesSinglePageAsync(jobId, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listOptimizationCandidatesSinglePageAsync(jobId, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listOptimizationCandidatesSinglePageAsync(jobId, requestOptions));
     }
 
     /**
@@ -10384,7 +10077,7 @@ public final class AgentsImpl {
         Response<BinaryData> res = service.listOptimizationCandidatesSync(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -10456,35 +10149,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOptimizationCandidates(String jobId, RequestOptions requestOptions) {
-        return listOptimizationCandidates(null, jobId, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOptimizationCandidates(String initialContinuationToken, String jobId,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listOptimizationCandidatesSinglePage(jobId, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listOptimizationCandidatesSinglePage(jobId, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listOptimizationCandidatesSinglePage(jobId, requestOptions));
     }
 
     /**
@@ -10787,7 +10452,7 @@ public final class AgentsImpl {
             .withContext(
                 context -> service.listAgentConversations(this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -10851,35 +10516,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentConversationsAsync(RequestOptions requestOptions) {
-        return listAgentConversationsAsync(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAgentConversationsAsync(String initialContinuationToken,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentConversationsSinglePageAsync(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentConversationsSinglePageAsync(requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listAgentConversationsSinglePageAsync(requestOptions));
     }
 
     /**
@@ -10947,7 +10584,7 @@ public final class AgentsImpl {
         Response<BinaryData> res
             = service.listAgentConversationsSync(this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -11011,35 +10648,7 @@ public final class AgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgentConversations(RequestOptions requestOptions) {
-        return listAgentConversations(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgentConversations(String initialContinuationToken,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listAgentConversationsSinglePage(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listAgentConversationsSinglePage(requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listAgentConversationsSinglePage(requestOptions));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String... path) {

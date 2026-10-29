@@ -768,7 +768,7 @@ public final class ToolboxesClient {
     public PagedIterable<ToolboxDetails> listToolboxes() {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listToolboxes(null, requestOptions)
+        return serviceClient.listToolboxes(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
 
@@ -791,7 +791,7 @@ public final class ToolboxesClient {
     public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listToolboxVersions(null, name, requestOptions)
+        return serviceClient.listToolboxVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 
@@ -991,10 +991,13 @@ public final class ToolboxesClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listToolboxes(after, requestOptions)
+        return serviceClient.listToolboxes(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
 
@@ -1034,10 +1037,13 @@ public final class ToolboxesClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listToolboxVersions(after, name, requestOptions)
+        return serviceClient.listToolboxVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 }

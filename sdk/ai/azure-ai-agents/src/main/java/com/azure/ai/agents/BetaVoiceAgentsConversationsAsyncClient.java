@@ -884,8 +884,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
     public PagedFlux<VoiceConversation> listAgentConversations(String agentName) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -983,7 +982,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationResponsesAsync(null, agentName, conversationId, requestOptions);
+            = listAgentConversationResponses(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1061,8 +1060,8 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         String conversationId, String responseId) {
         // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentConversationResponseItemsAsync(null, agentName,
-            conversationId, responseId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1107,8 +1106,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
     public PagedFlux<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId) {
         // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationItemsAsync(null, agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversationItems(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1402,11 +1400,13 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationsAsync(after, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1467,11 +1467,14 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationResponsesAsync(after, agentName, conversationId, requestOptions);
+            = listAgentConversationResponses(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1534,11 +1537,14 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentConversationResponseItemsAsync(after,
-            agentName, conversationId, responseId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1600,11 +1606,13 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentConversationItemsAsync(after, agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversationItems(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

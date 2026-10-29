@@ -1272,7 +1272,7 @@ public final class BetaMemoryStoresAsyncClient {
     public PagedFlux<MemoryStoreDetails> listMemoryStores() {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listMemoryStoresAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listMemoryStores(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1586,11 +1586,13 @@ public final class BetaMemoryStoresAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listMemoriesAsync(after, name, listMemoriesRequest, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listMemories(name, listMemoriesRequest, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1646,10 +1648,13 @@ public final class BetaMemoryStoresAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listMemoryStoresAsync(after, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listMemoryStores(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

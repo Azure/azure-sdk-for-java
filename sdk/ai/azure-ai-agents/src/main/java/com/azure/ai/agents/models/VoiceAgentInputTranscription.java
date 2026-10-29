@@ -366,6 +366,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /*
+     * 
      * Controls how profanity is handled in input transcripts. Supported only with managed Azure Speech
      * (`azure-speech`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
@@ -378,8 +379,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     private VoiceAgentProfanityFilterMode profanityFilter;
 
     /**
-     * Get the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
-     * managed Azure Speech
+     * Get the profanityFilter property:
+     * Controls how profanity is handled in input transcripts. Supported only with managed Azure Speech
      * (`azure-speech`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
      * You cannot change the mode during a session.
@@ -395,8 +396,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Set the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
-     * managed Azure Speech
+     * Set the profanityFilter property:
+     * Controls how profanity is handled in input transcripts. Supported only with managed Azure Speech
      * (`azure-speech`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
      * You cannot change the mode during a session.

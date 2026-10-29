@@ -14,9 +14,6 @@ import java.util.Map;
 
 /**
  * A browser automation tool stored in a toolbox.
- * BrowserAutomationPreviewToolboxTool is deprecated.
- * Please use BrowserAutomationToolboxTool instead.
- * See https://aka.ms/bat/docs for more information on Browser automation tool.
  *
  * @deprecated This legacy Browser Automation tool is deprecated and is no longer available. Use
  * {@link BrowserAutomationToolboxTool} instead. See <a href="https://aka.ms/bat/docs">Browser Automation

@@ -521,7 +521,7 @@ public final class AgentsClient {
     public PagedIterable<AgentDetails> listAgents() {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgents(null, requestOptions)
+        return serviceClient.listAgents(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
@@ -544,7 +544,7 @@ public final class AgentsClient {
     public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentVersions(null, agentName, requestOptions)
+        return serviceClient.listAgentVersions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
@@ -1953,7 +1953,7 @@ public final class AgentsClient {
     public PagedIterable<Conversation> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversations(null, requestOptions)
+        return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
@@ -2254,6 +2254,9 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -2266,7 +2269,7 @@ public final class AgentsClient {
         if (userIdentity != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
-        return serviceClient.listAgentConversations(after, requestOptions)
+        return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
@@ -3637,7 +3640,7 @@ public final class AgentsClient {
     public PagedIterable<AgentSessionResource> listSessions(String agentName) {
         // Generated convenience method for listSessions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSessions(null, agentName, requestOptions)
+        return serviceClient.listSessions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
     }
 
@@ -3716,7 +3719,7 @@ public final class AgentsClient {
     public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId) {
         // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSessionFiles(null, agentName, sessionId, requestOptions)
+        return serviceClient.listSessionFiles(agentName, sessionId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
@@ -5303,7 +5306,7 @@ public final class AgentsClient {
     public PagedIterable<AgentOptimizationJob> listOptimizationJobs() {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listOptimizationJobs(null, requestOptions)
+        return serviceClient.listOptimizationJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 
@@ -5711,7 +5714,7 @@ public final class AgentsClient {
     public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId) {
         // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listOptimizationCandidates(null, jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 
@@ -5806,10 +5809,13 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgents(after, requestOptions)
+        return serviceClient.listAgents(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
@@ -5851,13 +5857,16 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
         if (includeDrafts != null) {
             requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
         }
-        return serviceClient.listAgentVersions(after, agentName, requestOptions)
+        return serviceClient.listAgentVersions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
@@ -5897,10 +5906,13 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSessions(after, agentName, requestOptions)
+        return serviceClient.listSessions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
     }
 
@@ -5948,10 +5960,13 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSessionFiles(after, agentName, sessionId, requestOptions)
+        return serviceClient.listSessionFiles(agentName, sessionId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
@@ -5992,6 +6007,9 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -6001,7 +6019,7 @@ public final class AgentsClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        return serviceClient.listOptimizationJobs(after, requestOptions)
+        return serviceClient.listOptimizationJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 
@@ -6047,10 +6065,13 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listOptimizationCandidates(after, jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 }

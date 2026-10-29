@@ -1181,7 +1181,7 @@ public final class BetaMemoryStoresClient {
     public PagedIterable<MemoryStoreDetails> listMemoryStores() {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listMemoryStores(null, requestOptions)
+        return serviceClient.listMemoryStores(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 
@@ -1543,10 +1543,13 @@ public final class BetaMemoryStoresClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listMemories(after, name, listMemoriesRequest, requestOptions)
+        return serviceClient.listMemories(name, listMemoriesRequest, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryItem.class));
     }
 
@@ -1585,10 +1588,13 @@ public final class BetaMemoryStoresClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listMemoryStores(after, requestOptions)
+        return serviceClient.listMemoryStores(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 }

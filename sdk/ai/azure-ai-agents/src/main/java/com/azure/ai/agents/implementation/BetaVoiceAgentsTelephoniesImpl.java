@@ -37,7 +37,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -626,7 +625,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             .withContext(context -> service.listTelephonyBindings(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -683,35 +682,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTelephonyBindingsAsync(String agentName, RequestOptions requestOptions) {
-        return listTelephonyBindingsAsync(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTelephonyBindingsAsync(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listTelephonyBindingsSinglePageAsync(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listTelephonyBindingsSinglePageAsync(agentName, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listTelephonyBindingsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -772,7 +743,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> res = service.listTelephonyBindingsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -829,35 +800,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
-        return listTelephonyBindings(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTelephonyBindings(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listTelephonyBindingsSinglePage(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listTelephonyBindingsSinglePage(agentName, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listTelephonyBindingsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -1198,7 +1141,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             .withContext(context -> service.listTelephonyCalls(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -1269,35 +1212,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTelephonyCallsAsync(String agentName, RequestOptions requestOptions) {
-        return listTelephonyCallsAsync(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTelephonyCallsAsync(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listTelephonyCallsSinglePageAsync(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listTelephonyCallsSinglePageAsync(agentName, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listTelephonyCallsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -1372,7 +1287,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> res = service.listTelephonyCallsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -1443,35 +1358,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
-        return listTelephonyCalls(null, agentName, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTelephonyCalls(String initialContinuationToken, String agentName,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listTelephonyCallsSinglePage(agentName, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listTelephonyCallsSinglePage(agentName, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listTelephonyCallsSinglePage(agentName, requestOptions));
     }
 
     /**

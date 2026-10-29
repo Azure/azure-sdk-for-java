@@ -1025,7 +1025,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
         // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTelephonyBindings(null, agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1098,7 +1098,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName) {
         // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTelephonyCalls(null, agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 
@@ -1419,10 +1419,13 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listTelephonyBindings(after, agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1479,10 +1482,13 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listTelephonyCalls(after, agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 }

@@ -1045,8 +1045,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
     public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
         // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyBindingsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1141,8 +1140,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
     public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName) {
         // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyCallsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1490,11 +1488,13 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyBindingsAsync(after, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1570,11 +1570,13 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyCallsAsync(after, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

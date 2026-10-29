@@ -101,7 +101,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets the BetaVoiceAgentsLiveConversationsImpl object to access its operations.
-     * 
+     *
      * @return the BetaVoiceAgentsLiveConversationsImpl object.
      */
     public BetaVoiceAgentsLiveConversationsImpl getBetaVoiceAgentsLiveConversations() {

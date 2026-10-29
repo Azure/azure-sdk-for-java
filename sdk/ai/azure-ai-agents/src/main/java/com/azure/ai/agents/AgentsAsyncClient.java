@@ -528,7 +528,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<AgentDetails> listAgents() {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgents(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -569,7 +569,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<AgentVersionDetails> listAgentVersions(String agentName) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentVersionsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentVersions(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -2008,7 +2008,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<Conversation> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentConversationsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -2331,6 +2331,9 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -2343,7 +2346,7 @@ public final class AgentsAsyncClient {
         if (userIdentity != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentConversationsAsync(after, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -3750,7 +3753,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<AgentSessionResource> listSessions(String agentName) {
         // Generated convenience method for listSessions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSessionsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -3849,8 +3852,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId) {
         // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listSessionFilesAsync(null, agentName, sessionId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, sessionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -5464,7 +5466,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<AgentOptimizationJob> listOptimizationJobs() {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -5897,8 +5899,7 @@ public final class AgentsAsyncClient {
     public PagedFlux<AgentOptimizationCandidate> listOptimizationCandidates(String jobId) {
         // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listOptimizationCandidatesAsync(null, jobId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationCandidates(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6011,10 +6012,13 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentsAsync(after, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgents(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6074,14 +6078,16 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
         if (includeDrafts != null) {
             requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentVersionsAsync(after, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentVersions(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6140,10 +6146,13 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSessionsAsync(after, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6210,11 +6219,13 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listSessionFilesAsync(after, agentName, sessionId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, sessionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6274,6 +6285,9 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -6283,7 +6297,7 @@ public final class AgentsAsyncClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(after, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6348,11 +6362,13 @@ public final class AgentsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listOptimizationCandidatesAsync(after, jobId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationCandidates(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

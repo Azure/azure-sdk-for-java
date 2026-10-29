@@ -781,7 +781,7 @@ public final class ToolboxesAsyncClient {
     public PagedFlux<ToolboxDetails> listToolboxes() {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listToolboxesAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -822,7 +822,7 @@ public final class ToolboxesAsyncClient {
     public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listToolboxVersionsAsync(null, name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1043,10 +1043,13 @@ public final class ToolboxesAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listToolboxesAsync(after, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1104,10 +1107,13 @@ public final class ToolboxesAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listToolboxVersionsAsync(after, name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

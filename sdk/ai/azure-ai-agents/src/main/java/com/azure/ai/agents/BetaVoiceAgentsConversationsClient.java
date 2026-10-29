@@ -876,7 +876,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<VoiceConversation> listAgentConversations(String agentName) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversations(null, agentName, requestOptions)
+        return serviceClient.listAgentConversations(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -953,7 +953,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId) {
         // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversationResponses(null, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1012,8 +1012,7 @@ public final class BetaVoiceAgentsConversationsClient {
         String conversationId, String responseId) {
         // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-            .listAgentConversationResponseItems(null, agentName, conversationId, responseId, requestOptions)
+        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1039,7 +1038,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId) {
         // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversationItems(null, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1308,10 +1307,13 @@ public final class BetaVoiceAgentsConversationsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversations(after, agentName, requestOptions)
+        return serviceClient.listAgentConversations(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -1354,10 +1356,13 @@ public final class BetaVoiceAgentsConversationsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversationResponses(after, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1402,11 +1407,13 @@ public final class BetaVoiceAgentsConversationsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient
-            .listAgentConversationResponseItems(after, agentName, conversationId, responseId, requestOptions)
+        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1449,10 +1456,13 @@ public final class BetaVoiceAgentsConversationsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversationItems(after, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 }

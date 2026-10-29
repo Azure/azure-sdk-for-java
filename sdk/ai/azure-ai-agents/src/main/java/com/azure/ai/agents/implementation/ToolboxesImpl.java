@@ -33,7 +33,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -810,7 +809,7 @@ public final class ToolboxesImpl {
             .withContext(context -> service.listToolboxes(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -911,34 +910,7 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listToolboxesAsync(RequestOptions requestOptions) {
-        return listToolboxesAsync(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listToolboxesAsync(String initialContinuationToken, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listToolboxesSinglePageAsync(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listToolboxesSinglePageAsync(requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listToolboxesSinglePageAsync(requestOptions));
     }
 
     /**
@@ -1043,7 +1015,7 @@ public final class ToolboxesImpl {
         Response<BinaryData> res = service.listToolboxesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -1144,34 +1116,7 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listToolboxes(RequestOptions requestOptions) {
-        return listToolboxes(null, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listToolboxes(String initialContinuationToken, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listToolboxesSinglePage(requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listToolboxesSinglePage(requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listToolboxesSinglePage(requestOptions));
     }
 
     /**
@@ -1272,7 +1217,7 @@ public final class ToolboxesImpl {
             .withContext(context -> service.listToolboxVersions(this.client.getEndpoint(), name,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+                getValues(res.getValue(), "data"), null, null));
     }
 
     /**
@@ -1366,35 +1311,7 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listToolboxVersionsAsync(String name, RequestOptions requestOptions) {
-        return listToolboxVersionsAsync(null, name, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listToolboxVersionsAsync(String initialContinuationToken, String name,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listToolboxVersionsSinglePageAsync(name, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listToolboxVersionsSinglePageAsync(name, requestOptionsLocal);
-        });
+        return new PagedFlux<>(() -> listToolboxVersionsSinglePageAsync(name, requestOptions));
     }
 
     /**
@@ -1492,7 +1409,7 @@ public final class ToolboxesImpl {
         Response<BinaryData> res = service.listToolboxVersionsSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+            getValues(res.getValue(), "data"), null, null);
     }
 
     /**
@@ -1586,35 +1503,7 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listToolboxVersions(String name, RequestOptions requestOptions) {
-        return listToolboxVersions(null, name, requestOptions);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listToolboxVersions(String initialContinuationToken, String name,
-        RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (initialContinuationToken != null) {
-                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
-            }
-            return listToolboxVersionsSinglePage(name, requestOptionsLocal);
-        }, (after) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            requestOptionsLocal.addRequestCallback(requestLocal -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                urlBuilder.setQueryParameter("after", null);
-                requestLocal.setUrl(urlBuilder.toString());
-            });
-            if (after != null) {
-                requestOptionsLocal.addQueryParam("after", after, false);
-            }
-            return listToolboxVersionsSinglePage(name, requestOptionsLocal);
-        });
+        return new PagedIterable<>(() -> listToolboxVersionsSinglePage(name, requestOptions));
     }
 
     /**
