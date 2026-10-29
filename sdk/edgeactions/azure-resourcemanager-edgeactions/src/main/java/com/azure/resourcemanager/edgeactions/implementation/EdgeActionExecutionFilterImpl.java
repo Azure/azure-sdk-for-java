@@ -132,9 +132,15 @@ public final class EdgeActionExecutionFilterImpl
         com.azure.resourcemanager.edgeactions.EdgeActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeActions");
-        this.executionFilter = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "executionFilters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "resourceGroupName");
+        this.edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "edgeActionName");
+        this.executionFilter = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "executionFilter");
     }
 
     public EdgeActionExecutionFilter refresh() {

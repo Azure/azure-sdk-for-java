@@ -131,9 +131,15 @@ public final class RuntimeLinkImpl implements RuntimeLink, RuntimeLink.Definitio
         com.azure.resourcemanager.compute.workloadmanager.ComputeWorkloadManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadSpaces");
-        this.linkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "runtimeLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "resourceGroupName");
+        this.spaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "spaceName");
+        this.linkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "linkName");
     }
 
     public RuntimeLink refresh() {
