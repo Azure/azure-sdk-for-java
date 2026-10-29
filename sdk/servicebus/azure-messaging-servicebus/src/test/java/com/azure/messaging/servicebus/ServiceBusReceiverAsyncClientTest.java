@@ -11,6 +11,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -1655,6 +1656,34 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
         when(receivedMessage.getEnqueuedTime()).thenReturn(enqueuedTime.atOffset(ZoneOffset.UTC));
         return receivedMessage;
+    }
+
+    @Test
+    void receiveResourceLimitRetriesWithoutRemovingTheSession() {
+        final Exception resourceLimit = ExceptionUtil
+            .toException(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition(), "resource limit", null);
+        final AmqpException terminal = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED, "terminal", null);
+        final ConnectionCacheWrapper wrapper = mock(ConnectionCacheWrapper.class);
+        when(wrapper.getConnection()).thenReturn(Mono.just(connection));
+        when(wrapper.getRetryOptions()).thenReturn(new AmqpRetryOptions().setDelay(Duration.ofMillis(1)));
+        when(wrapper.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
+            any(MessagingEntityType.class), anyString())).thenReturn(Mono.error(resourceLimit))
+                .thenReturn(Mono.error(terminal));
+        final ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            ENTITY_TYPE, createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), wrapper,
+            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+        try {
+            StepVerifier.create(client.receiveMessages())
+                .expectErrorSatisfies(error -> assertSame(terminal, error.getCause()))
+                .verify(DEFAULT_TIMEOUT);
+            verify(connection, times(2)).createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class),
+                any(), any(MessagingEntityType.class), anyString());
+            verify(connection, never()).removeSession(anyString());
+            verify(wrapper, never()).invalidateConnection(any(ServiceBusAmqpConnection.class));
+        } finally {
+            client.close();
+        }
     }
 
     @Test

@@ -1782,7 +1782,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     final Throwable retriable = RecoveryUtils.asRetriable(e);
                     return recovery.then(Mono.error(retriable));
                 }
-                return Mono.error(e);
+                return Mono.error(RecoveryUtils.asRetriable(e));
             }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below

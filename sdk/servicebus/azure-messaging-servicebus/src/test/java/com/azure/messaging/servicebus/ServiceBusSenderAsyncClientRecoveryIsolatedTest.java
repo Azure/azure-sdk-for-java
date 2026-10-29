@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -13,6 +14,7 @@ import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -43,6 +45,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -660,6 +663,66 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     }
 
     @Test
+    void resourceLimitFromExceptionUtilRetriesWithoutClosingResources() {
+        final Exception error
+            = ExceptionUtil.toException(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition(),
+                "resource limit", new AmqpErrorContext(FQDN));
+        Assertions.assertFalse(((AmqpException) error).isTransient());
+        final AmqpException retriable = (AmqpException) RecoveryUtils.asRetriable(error);
+        Assertions.assertTrue(retriable.isTransient());
+        Assertions.assertEquals(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED, retriable.getErrorCondition());
+        Assertions.assertSame(((AmqpException) error).getContext(), retriable.getContext());
+        Assertions.assertSame(error, retriable.getCause());
+        try (MockEndpoint endpoint = createMockEndpoint(1, new int[] { 1 })) {
+            final AmqpSendLink link = endpoint.getAmqpSendLink(0, 0);
+            when(link.send(any(Message.class))).thenReturn(Mono.error(error)).thenReturn(Mono.empty());
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(singleConnectionSupplier(endpoint));
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                verify(link, times(2)).send(any(Message.class));
+                verify(link, Mockito.never()).closeAsync();
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = AmqpErrorCondition.class,
+        names = { "NOT_FOUND", "UNAUTHORIZED_ACCESS", "MESSAGE_LOCK_LOST", "SESSION_CANNOT_BE_LOCKED" })
+    void nonRetriableErrorsStayNonRetriable(AmqpErrorCondition condition) {
+        final AmqpException error = new AmqpException(false, condition, "terminal", null);
+        Assertions.assertSame(error, RecoveryUtils.asRetriable(error));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void sessionRemovalUsesTheSameKeyAsCreation(boolean crossEntityTransactions) {
+        try (MockEndpoint endpoint = createMockEndpoint(2, new int[] { 0, 0 })) {
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> endpoint.arrange(crossEntityTransactions));
+            try {
+                final ServiceBusReactorAmqpConnection connection = cache.get().block(Duration.ofSeconds(5));
+                final AmqpSession first = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+                Assertions.assertNotNull(first);
+                Assertions.assertTrue(connection.removeSession(QUEUE_NAME));
+                final AmqpSession replacement = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+                Assertions.assertNotNull(replacement);
+                Assertions.assertNotSame(first, replacement);
+            } finally {
+                cache.dispose();
+            }
+        }
+    }
+
+    @Test
     void shouldRecoverAfterNegotiationRetriesAreExhausted() {
         try (MockEndpoint endpoint = createMockEndpoint(1, new int[] { 2 })) {
             final AmqpSendLink failed = endpoint.getAmqpSendLink(0, 0);
@@ -970,6 +1033,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
 
         ServiceBusReactorAmqpConnection arrange() {
+            return arrange(false);
+        }
+
+        ServiceBusReactorAmqpConnection arrange(boolean crossEntityTransactions) {
             if (arranged.getAndSet(true)) {
                 throw new RuntimeException("Only one connection can be obtained from a MockEndpoint instance.");
             }
@@ -1010,7 +1077,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             // New tests only for ReactorConnectionCache introduced in v2.
             final boolean isV2 = true;
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, reactorProvider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, isV2, false);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, crossEntityTransactions, isV2,
+                false);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {

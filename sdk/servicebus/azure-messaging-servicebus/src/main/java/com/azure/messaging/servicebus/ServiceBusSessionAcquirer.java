@@ -187,7 +187,7 @@ final class ServiceBusSessionAcquirer {
                             if (failedConnection != null) {
                                 connectionCacheWrapper.invalidateConnection(failedConnection);
                             }
-                            return Mono.delay(Duration.ZERO);
+                            return Mono.delay(retryBackoff);
                         }
                         if (isTimeoutError(t)) {
                             logger.atVerbose()

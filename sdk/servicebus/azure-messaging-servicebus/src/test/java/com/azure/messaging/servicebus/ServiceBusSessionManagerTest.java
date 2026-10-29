@@ -204,6 +204,10 @@ class ServiceBusSessionManagerTest {
             messageSerializer, options, CLIENT_IDENTIFIER, NOOP_TRACER);
         final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
         when(hungLink.getEndpointStates()).thenReturn(Flux.never());
+        final AtomicBoolean abandonedLinkClosed = new AtomicBoolean();
+        final Sinks.Empty<Void> closeCompletion = Sinks.empty();
+        when(hungLink.closeAsync())
+            .thenReturn(closeCompletion.asMono().doOnSubscribe(ignored -> abandonedLinkClosed.set(true)));
         final AtomicReference<String> firstLinkName = new AtomicReference<>();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull())).thenAnswer(invocation -> {
@@ -219,6 +223,32 @@ class ServiceBusSessionManagerTest {
         verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH),
             any(ServiceBusReceiveMode.class), isNull(), eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull());
         assertEquals(2, linkNameCaptor.getAllValues().stream().distinct().count());
+        assertTrue(abandonedLinkClosed.get(), "the abandoned link must be closed independently of the retry");
+        verify(amqpReceiveLink, Mockito.never()).closeAsync();
+        closeCompletion.tryEmitEmpty();
+    }
+
+    @Test
+    void cancellingUnnamedSessionAcquisitionClosesOnlyThePendingLink() {
+        final ReceiverOptions options = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
+            messageSerializer, options, CLIENT_IDENTIFIER, NOOP_TRACER);
+        final ServiceBusReceiveLink pending = mock(ServiceBusReceiveLink.class);
+        when(pending.getEndpointStates()).thenReturn(Flux.never());
+        final AtomicBoolean closed = new AtomicBoolean();
+        final Sinks.Empty<Void> closeCompletion = Sinks.empty();
+        when(pending.closeAsync()).thenReturn(closeCompletion.asMono().doOnSubscribe(ignored -> closed.set(true)));
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull())).thenReturn(Mono.just(pending));
+
+        StepVerifier.create(sessionManager.getActiveLink())
+            .thenAwait(Duration.ofMillis(10))
+            .thenCancel()
+            .verify(Duration.ofSeconds(2));
+        assertTrue(closed.get(), "cancellation must close the link before it can acquire an unconsumed session");
+        verify(pending).closeAsync();
+        closeCompletion.tryEmitEmpty();
     }
 
     @Test

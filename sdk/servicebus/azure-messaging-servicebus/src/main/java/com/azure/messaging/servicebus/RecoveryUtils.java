@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.RecoveryKind;
 import reactor.core.Exceptions;
@@ -36,12 +37,18 @@ final class RecoveryUtils {
      *
      * @param error the original error emitted from a send/receive operation.
      * @return the same error if it already passes the retry filter, otherwise a transient
-     *     {@link AmqpException} wrapping it (only for LINK/CONNECTION-classified errors).
+     *     {@link AmqpException} wrapping it for LINK/CONNECTION errors or a same-link resource-limit retry.
      */
     static Throwable asRetriable(Throwable error) {
         if (error instanceof TimeoutException
             || (error instanceof AmqpException && ((AmqpException) error).isTransient())) {
             return error;
+        }
+        if (error instanceof AmqpException) {
+            final AmqpException amqpError = (AmqpException) error;
+            if (amqpError.getErrorCondition() == AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED) {
+                return new AmqpException(true, amqpError.getErrorCondition(), amqpError, amqpError.getContext());
+            }
         }
         final RecoveryKind kind = RecoveryKind.classify(error);
         if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {

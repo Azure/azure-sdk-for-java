@@ -299,6 +299,10 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                 //
                 .switchIfEmpty(Mono
                     .error(() -> new AmqpException(true, "Session receive link completed without being active", null)))
+                .doOnCancel(() -> link.closeAsync().subscribe(unused -> {
+                }, error -> LOGGER.atWarning()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log("Error closing abandoned session receive link.", error)))
                 .timeout(operationTimeout)
                 .then(Mono.just(link))).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                     final Throwable failure = signal.failure();

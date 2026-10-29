@@ -162,6 +162,32 @@ public class ServiceBusSessionAcquirerIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldBackOffBetweenConnectionRecoveryAttempts() {
+        final AmqpException connectionError
+            = new AmqpException(true, AmqpErrorCondition.CONNECTION_FORCED, "connection forced", null);
+        final RuntimeException terminal = new RuntimeException("stop after two failures");
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.error(connectionError));
+        links.add(Mono.error(connectionError));
+        links.add(Mono.error(terminal));
+        final OnCreateSessionLink onCreate = new OnCreateSessionLink(links);
+        final ConnectionCacheWrapper wrapper = createMockConnectionWrapper(onCreate);
+        final ServiceBusSessionAcquirer acquirer = createSessionAcquirer(wrapper, false);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(acquirer::acquire)
+                .thenAwait(RETRY_BACKOFF.dividedBy(2))
+                .then(() -> Assertions.assertEquals(2, onCreate.pending()))
+                .thenAwait(RETRY_BACKOFF)
+                .then(() -> Assertions.assertEquals(1, onCreate.pending()))
+                .thenAwait(RETRY_BACKOFF)
+                .verifyErrorSatisfies(error -> Assertions.assertSame(terminal, error));
+        }
+        Mockito.verify(wrapper, Mockito.times(2)).invalidateConnection(any(ServiceBusAmqpConnection.class));
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     public void shouldRetryOnBrokerTimeoutErrorIfRetryEnabled() {
         final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(2);
         sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));

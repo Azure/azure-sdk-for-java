@@ -215,6 +215,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
     }
 
+    @Override
+    public boolean removeSession(String sessionName) {
+        return super.removeSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
+    }
+
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
      * same {@code linkName}. Otherwise, a new link is created and returned.
