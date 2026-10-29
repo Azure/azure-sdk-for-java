@@ -30,7 +30,7 @@ public final class ElasticVolumesRevertMockTests {
     @Test
     public void testRevert() throws Exception {
         String responseStr
-            = "{\"properties\":{\"filePath\":\"vcebxeetqujxcxxq\",\"size\":4290239630152162906,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":937589961,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"mrvvxwj\",\"ngz\",\"ehqqrsilcchs\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":470051968,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"gv\",\"ojrulfuctejrt\",\"cfjzhxl\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":77627949,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"qmtzzb\",\"qrztrxal\",\"rdhabsr\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":1111086602,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"kvyanxkvvc\",\"ems\"],\"rootAccess\":\"Enabled\"}]},\"protocolTypes\":[\"SMB\",\"SMB\",\"NFSv4\"],\"provisioningState\":\"Succeeded\",\"availabilityStatus\":\"Offline\",\"snapshotResourceId\":\"mlivrjjxnwx\",\"mountTargets\":[{\"ipAddress\":\"ojxl\",\"smbServerFqdn\":\"z\"},{\"ipAddress\":\"pgfquwzpwiibelwc\",\"smbServerFqdn\":\"wkwbpjx\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"busqtbxxniuisdz\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"d\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"gsecnadbuwqrgx\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"nezoellnkki\",\"restorationState\":\"Failed\"},\"eTag\":\"tumxpymdj\",\"zones\":[\"xroq\",\"qpilrgu\",\"canlduwzorxs\",\"mxaqklxym\"],\"location\":\"qvfqepdxc\",\"tags\":{\"jbowcpj\":\"ubwyv\",\"gixexkydfbwlj\":\"du\",\"tcvbiiftk\":\"vhuerkjddvrglieg\"},\"id\":\"dwgdn\",\"name\":\"efgmwdhcebuv\",\"type\":\"zldbglzoutbaaqg\"}";
+            = "{\"properties\":{\"filePath\":\"sdyepfno\",\"size\":2703217900378871776,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":412855773,\"unixAccessRule\":\"ReadOnly\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"qejg\",\"aokctgkp\"],\"rootAccess\":\"Disabled\"},{\"ruleIndex\":1842142596,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"gdyfcixrhlcqvhoe\",\"goiutgw\",\"mkahpqha\",\"yntacihnco\"],\"rootAccess\":\"Disabled\"},{\"ruleIndex\":679415262,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"hikea\",\"grvgpomxp\",\"pdtsdfjyiesocwi\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":918198505,\"unixAccessRule\":\"ReadOnly\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"ofjsbgbwwzvdaj\",\"wnncfmaciqg\"],\"rootAccess\":\"Disabled\"}]},\"protocolTypes\":[\"NFSv3\"],\"provisioningState\":\"Succeeded\",\"availabilityStatus\":\"Offline\",\"snapshotResourceId\":\"xvtbougux\",\"mountTargets\":[{\"ipAddress\":\"pg\",\"smbServerFqdn\":\"tbasu\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"dl\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"eaqbkixv\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"npbbfqv\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Enabled\"},\"backupResourceId\":\"gzfeuzj\",\"restorationState\":\"Restoring\"},\"eTag\":\"hfkyez\",\"zones\":[\"jzmicuydocc\"],\"location\":\"shanzbui\",\"tags\":{\"dohzniucbdaombwi\":\"batecaat\",\"xu\":\"njdllwktlepowavv\",\"ulynkgfcfd\":\"jgcq\",\"kxx\":\"uws\"},\"id\":\"clhuulriqbyokv\",\"name\":\"gbzsxebrslt\",\"type\":\"fyhcdjw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,36 +40,36 @@ public final class ElasticVolumesRevertMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticVolume response = manager.elasticVolumes()
-            .revert("cgrllc", "na", "vjowazhpabac", "mlyotg",
-                new ElasticVolumeRevert().withSnapshotResourceId("sxnsrqorcge"), com.azure.core.util.Context.NONE);
+            .revert("vdgxly", "kxitds", "ezsvkolrupjov", "ozsaye",
+                new ElasticVolumeRevert().withSnapshotResourceId("azwzlpzbtzuykyki"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qvfqepdxc", response.location());
-        Assertions.assertEquals("ubwyv", response.tags().get("jbowcpj"));
-        Assertions.assertEquals("vcebxeetqujxcxxq", response.properties().filePath());
-        Assertions.assertEquals(4290239630152162906L, response.properties().size());
-        Assertions.assertEquals(937589961, response.properties().exportPolicy().rules().get(0).ruleIndex());
-        Assertions.assertEquals(ElasticUnixAccessRule.READ_WRITE,
+        Assertions.assertEquals("shanzbui", response.location());
+        Assertions.assertEquals("batecaat", response.tags().get("dohzniucbdaombwi"));
+        Assertions.assertEquals("sdyepfno", response.properties().filePath());
+        Assertions.assertEquals(2703217900378871776L, response.properties().size());
+        Assertions.assertEquals(412855773, response.properties().exportPolicy().rules().get(0).ruleIndex());
+        Assertions.assertEquals(ElasticUnixAccessRule.READ_ONLY,
             response.properties().exportPolicy().rules().get(0).unixAccessRule());
         Assertions.assertEquals(ElasticNfsv3Access.DISABLED,
             response.properties().exportPolicy().rules().get(0).nfsv3());
-        Assertions.assertEquals(ElasticNfsv4Access.DISABLED,
+        Assertions.assertEquals(ElasticNfsv4Access.ENABLED,
             response.properties().exportPolicy().rules().get(0).nfsv4());
-        Assertions.assertEquals("mrvvxwj", response.properties().exportPolicy().rules().get(0).allowedClients().get(0));
-        Assertions.assertEquals(ElasticRootAccess.ENABLED,
+        Assertions.assertEquals("qejg", response.properties().exportPolicy().rules().get(0).allowedClients().get(0));
+        Assertions.assertEquals(ElasticRootAccess.DISABLED,
             response.properties().exportPolicy().rules().get(0).rootAccess());
-        Assertions.assertEquals(ElasticProtocolType.SMB, response.properties().protocolTypes().get(0));
-        Assertions.assertEquals("mlivrjjxnwx", response.properties().snapshotResourceId());
-        Assertions.assertEquals("busqtbxxniuisdz",
-            response.properties().dataProtection().snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("d", response.properties().dataProtection().backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED,
+        Assertions.assertEquals(ElasticProtocolType.NFSV3, response.properties().protocolTypes().get(0));
+        Assertions.assertEquals("xvtbougux", response.properties().snapshotResourceId());
+        Assertions.assertEquals("dl", response.properties().dataProtection().snapshot().snapshotPolicyResourceId());
+        Assertions.assertEquals("eaqbkixv",
+            response.properties().dataProtection().backup().elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED,
             response.properties().dataProtection().backup().policyEnforcement());
-        Assertions.assertEquals("gsecnadbuwqrgx",
+        Assertions.assertEquals("npbbfqv",
             response.properties().dataProtection().backup().elasticBackupVaultResourceId());
         Assertions.assertEquals(SnapshotDirectoryVisibility.VISIBLE,
             response.properties().snapshotDirectoryVisibility());
-        Assertions.assertEquals(ElasticSmbEncryption.DISABLED, response.properties().smbProperties().smbEncryption());
-        Assertions.assertEquals("nezoellnkki", response.properties().backupResourceId());
-        Assertions.assertEquals("xroq", response.zones().get(0));
+        Assertions.assertEquals(ElasticSmbEncryption.ENABLED, response.properties().smbProperties().smbEncryption());
+        Assertions.assertEquals("gzfeuzj", response.properties().backupResourceId());
+        Assertions.assertEquals("jzmicuydocc", response.zones().get(0));
     }
 }

@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
@@ -283,13 +284,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
-        if (isInCreateMode()) {
-            this.innerModel().withEncryption(encryption);
-            return this;
-        } else {
-            this.updateBody.withEncryption(encryption);
-            return this;
-        }
+        this.innerModel().withEncryption(encryption);
+        return this;
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
@@ -304,6 +300,11 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
         this.innerModel().withLdapConfiguration(ldapConfiguration);
+        return this;
+    }
+
+    public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
+        this.updateBody.withEncryption(encryption);
         return this;
     }
 

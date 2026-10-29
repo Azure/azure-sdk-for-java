@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate;
 
@@ -293,10 +292,11 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an edge action version.
+     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
+    SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner>
         beginDeployVersionCode(String resourceGroupName, String edgeActionName, String version, VersionCodeInner body);
 
     /**
@@ -310,10 +310,11 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an edge action version.
+     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner> beginDeployVersionCode(
+    SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginDeployVersionCode(
         String resourceGroupName, String edgeActionName, String version, VersionCodeInner body, Context context);
 
     /**
@@ -326,10 +327,10 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+    EdgeActionVersionInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
         VersionCodeInner body);
 
     /**
@@ -343,10 +344,10 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+    EdgeActionVersionInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
         VersionCodeInner body, Context context);
 
     /**
