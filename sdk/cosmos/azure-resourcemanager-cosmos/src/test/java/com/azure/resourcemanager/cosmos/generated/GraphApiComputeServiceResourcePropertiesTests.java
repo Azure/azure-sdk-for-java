@@ -13,10 +13,10 @@ public final class GraphApiComputeServiceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GraphApiComputeServiceResourceProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"GraphAPICompute\",\"graphApiComputeEndpoint\":\"kbjuckcatuqbhp\",\"locations\":[{\"graphApiComputeEndpoint\":\"xtpzdlyse\",\"name\":\"toakatprytgrhz\",\"location\":\"fdpfawrptvcsht\",\"status\":\"Creating\"},{\"graphApiComputeEndpoint\":\"ct\",\"name\":\"qgdirda\",\"location\":\"tzjgcfjfxtbwj\",\"status\":\"Updating\"},{\"graphApiComputeEndpoint\":\"uydgfttmdofgeoa\",\"name\":\"uoft\",\"location\":\"odwxmdajwiygmgs\",\"status\":\"Stopped\"}],\"creationTime\":\"2021-03-19T08:47:31Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":518703643,\"status\":\"Deleting\",\"tjva\":\"\\\"datafczljdnci\\\"\"}")
+            "{\"serviceType\":\"GraphAPICompute\",\"graphApiComputeEndpoint\":\"zhcwjgwa\",\"locations\":[{\"graphApiComputeEndpoint\":\"ofgrutvnp\",\"name\":\"xzivxp\",\"location\":\"zghhh\",\"status\":\"Running\"},{\"graphApiComputeEndpoint\":\"jd\",\"name\":\"jq\",\"location\":\"hnjvpmxnhtmzstql\",\"status\":\"Running\"},{\"graphApiComputeEndpoint\":\"rwvtlgxyfjswequf\",\"name\":\"yyopoaytwwgw\",\"location\":\"b\",\"status\":\"Stopped\"},{\"graphApiComputeEndpoint\":\"ufrkwjiemimdt\",\"name\":\"owewjskr\",\"location\":\"edddr\",\"status\":\"Deleting\"}],\"creationTime\":\"2021-03-02T06:29:02Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":665322326,\"status\":\"Running\",\"qyxfed\":\"\\\"dataigeeuwbr\\\"\",\"nxoqgv\":\"\\\"datanetdqw\\\"\"}")
             .toObject(GraphApiComputeServiceResourceProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(518703643, model.instanceCount());
-        Assertions.assertEquals("kbjuckcatuqbhp", model.graphApiComputeEndpoint());
+        Assertions.assertEquals(665322326, model.instanceCount());
+        Assertions.assertEquals("zhcwjgwa", model.graphApiComputeEndpoint());
     }
 }

@@ -187,7 +187,7 @@ public final class EdgeActionsManagementClientImpl implements EdgeActionsManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-12-01-preview";
+        this.apiVersion = "2026-10-01";
         this.edgeActions = new EdgeActionsClientImpl(this);
         this.edgeActionVersions = new EdgeActionVersionsClientImpl(this);
         this.edgeActionExecutionFilters = new EdgeActionExecutionFiltersClientImpl(this);

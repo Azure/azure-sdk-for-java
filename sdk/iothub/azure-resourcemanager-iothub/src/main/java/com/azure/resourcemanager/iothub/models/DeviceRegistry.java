@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.iothub.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Represents properties related to the Azure Device Registry (ADR).
  */
-@Fluent
+@Immutable
 public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     /*
      * The identifier of the Azure Device Registry namespace
@@ -22,14 +22,29 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     private String namespaceResourceId;
 
     /*
+     * The UUID of the associated Azure Device Registry namespace.
+     */
+    private String namespaceUuid;
+
+    /*
+     * The host name for the data plane endpoint of the associated Azure Device Registry.
+     */
+    private String dataPlaneHostName;
+
+    /*
      * The identity used to manage the ADR namespace from the data plane.
      */
-    private String identityResourceId;
+    private DeviceRegistryIdentity identity;
+
+    /*
+     * The properties related to linking the IoT Hub with the Azure Device Registry.
+     */
+    private DeviceRegistryLinkingProperties linkingProperties;
 
     /**
      * Creates an instance of DeviceRegistry class.
      */
-    public DeviceRegistry() {
+    private DeviceRegistry() {
     }
 
     /**
@@ -42,34 +57,40 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     }
 
     /**
-     * Set the namespaceResourceId property: The identifier of the Azure Device Registry namespace.
+     * Get the namespaceUuid property: The UUID of the associated Azure Device Registry namespace.
      * 
-     * @param namespaceResourceId the namespaceResourceId value to set.
-     * @return the DeviceRegistry object itself.
+     * @return the namespaceUuid value.
      */
-    public DeviceRegistry withNamespaceResourceId(String namespaceResourceId) {
-        this.namespaceResourceId = namespaceResourceId;
-        return this;
+    public String namespaceUuid() {
+        return this.namespaceUuid;
     }
 
     /**
-     * Get the identityResourceId property: The identity used to manage the ADR namespace from the data plane.
+     * Get the dataPlaneHostName property: The host name for the data plane endpoint of the associated Azure Device
+     * Registry.
      * 
-     * @return the identityResourceId value.
+     * @return the dataPlaneHostName value.
      */
-    public String identityResourceId() {
-        return this.identityResourceId;
+    public String dataPlaneHostName() {
+        return this.dataPlaneHostName;
     }
 
     /**
-     * Set the identityResourceId property: The identity used to manage the ADR namespace from the data plane.
+     * Get the identity property: The identity used to manage the ADR namespace from the data plane.
      * 
-     * @param identityResourceId the identityResourceId value to set.
-     * @return the DeviceRegistry object itself.
+     * @return the identity value.
      */
-    public DeviceRegistry withIdentityResourceId(String identityResourceId) {
-        this.identityResourceId = identityResourceId;
-        return this;
+    public DeviceRegistryIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Get the linkingProperties property: The properties related to linking the IoT Hub with the Azure Device Registry.
+     * 
+     * @return the linkingProperties value.
+     */
+    public DeviceRegistryLinkingProperties linkingProperties() {
+        return this.linkingProperties;
     }
 
     /**
@@ -79,7 +100,9 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("namespaceResourceId", this.namespaceResourceId);
-        jsonWriter.writeStringField("identityResourceId", this.identityResourceId);
+        jsonWriter.writeStringField("namespaceUuid", this.namespaceUuid);
+        jsonWriter.writeStringField("dataPlaneHostName", this.dataPlaneHostName);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,8 +123,14 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
 
                 if ("namespaceResourceId".equals(fieldName)) {
                     deserializedDeviceRegistry.namespaceResourceId = reader.getString();
-                } else if ("identityResourceId".equals(fieldName)) {
-                    deserializedDeviceRegistry.identityResourceId = reader.getString();
+                } else if ("namespaceUuid".equals(fieldName)) {
+                    deserializedDeviceRegistry.namespaceUuid = reader.getString();
+                } else if ("dataPlaneHostName".equals(fieldName)) {
+                    deserializedDeviceRegistry.dataPlaneHostName = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDeviceRegistry.identity = DeviceRegistryIdentity.fromJson(reader);
+                } else if ("linkingProperties".equals(fieldName)) {
+                    deserializedDeviceRegistry.linkingProperties = DeviceRegistryLinkingProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

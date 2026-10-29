@@ -11,7 +11,7 @@ public final class RestoreProtectionItemResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreProtectionItemResponseInner model
-            = BinaryData.fromString("{\"taskId\":1979583980,\"jobIds\":[\"wab\",\"ets\",\"hszhedplvwiwu\",\"mwmbes\"]}")
+            = BinaryData.fromString("{\"taskId\":712184183,\"jobIds\":[\"hxsrzdzucersc\"]}")
                 .toObject(RestoreProtectionItemResponseInner.class);
     }
 }

@@ -102,9 +102,15 @@ public final class CommvaultPlanImpl implements CommvaultPlan, CommvaultPlan.Def
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
-        this.planName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "plans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "cloudAccountName");
+        this.planName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "planName");
     }
 
     public CommvaultPlan refresh() {

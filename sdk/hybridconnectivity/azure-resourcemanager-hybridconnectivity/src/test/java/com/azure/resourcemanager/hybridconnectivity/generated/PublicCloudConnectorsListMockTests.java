@@ -23,7 +23,7 @@ public final class PublicCloudConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"wiipfpub\",\"excludedAccounts\":[\"wwiftohqkvpuv\",\"sgplsakn\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"jphuopxodlqi\"},\"location\":\"torzih\",\"tags\":{\"yzrpzbchckqqzq\":\"sjswsrms\",\"ysuiizynkedya\":\"ox\"},\"id\":\"rwyhqmibzyhwitsm\",\"name\":\"pyy\",\"type\":\"pcdpumnz\"}]}";
+            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"khnzbonlw\",\"excludedAccounts\":[\"egokdwbwhkszzcmr\",\"exztvbtq\",\"sfraoyzko\"],\"isOrganizationalAccount\":false},\"gcpCloudProfile\":{\"projectProperties\":{\"projectNumber\":\"nguxawqaldsy\",\"projectId\":\"uximerqfobw\"},\"organizationProperties\":{\"organizationId\":\"nkbykutwpfhp\",\"managementProjectNumber\":\"gmhrskdsnfdsdoak\",\"managementProjectId\":\"tdlmkkzevd\",\"excludedProjectNumbers\":[\"wpusdsttwvogv\",\"bejdcn\",\"qqmoaku\",\"gm\"],\"excludedFolderIds\":[\"wr\"]}},\"hostType\":\"AWS\",\"provisioningState\":\"Failed\",\"connectorPrimaryIdentifier\":\"aenuuz\"},\"kind\":\"AWS\",\"location\":\"minrfdw\",\"tags\":{\"zbhd\":\"hhziuief\",\"equi\":\"smlmzqhoftrm\",\"iyylhalnswhccsp\":\"hxicslfaoqz\",\"scywuggwoluhc\":\"kaivwit\"},\"id\":\"bwemhairs\",\"name\":\"rgzdwmsweyp\",\"type\":\"w\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,12 +35,43 @@ public final class PublicCloudConnectorsListMockTests {
         PagedIterable<PublicCloudConnector> response
             = manager.publicCloudConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("torzih", response.iterator().next().location());
-        Assertions.assertEquals("sjswsrms", response.iterator().next().tags().get("yzrpzbchckqqzq"));
-        Assertions.assertEquals("wiipfpub", response.iterator().next().properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("wwiftohqkvpuv",
+        Assertions.assertEquals("minrfdw", response.iterator().next().location());
+        Assertions.assertEquals("hhziuief", response.iterator().next().tags().get("zbhd"));
+        Assertions.assertEquals("khnzbonlw", response.iterator().next().properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("egokdwbwhkszzcmr",
             response.iterator().next().properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertTrue(response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("nguxawqaldsy",
+            response.iterator().next().properties().gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("uximerqfobw",
+            response.iterator().next().properties().gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("nkbykutwpfhp",
+            response.iterator().next().properties().gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("gmhrskdsnfdsdoak",
+            response.iterator()
+                .next()
+                .properties()
+                .gcpCloudProfile()
+                .organizationProperties()
+                .managementProjectNumber());
+        Assertions.assertEquals("tdlmkkzevd",
+            response.iterator().next().properties().gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("wpusdsttwvogv",
+            response.iterator()
+                .next()
+                .properties()
+                .gcpCloudProfile()
+                .organizationProperties()
+                .excludedProjectNumbers()
+                .get(0));
+        Assertions.assertEquals("wr",
+            response.iterator()
+                .next()
+                .properties()
+                .gcpCloudProfile()
+                .organizationProperties()
+                .excludedFolderIds()
+                .get(0));
         Assertions.assertEquals(HostType.AWS, response.iterator().next().properties().hostType());
     }
 }

@@ -15,30 +15,30 @@ public final class SqlRoleDefinitionResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleDefinitionResource model = BinaryData.fromString(
-            "{\"roleName\":\"gn\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"fsmfcttuxuuyi\"],\"permissions\":[{\"id\":\"oiquvrehmrnjhvs\",\"dataActions\":[\"tczytqjtwh\",\"uunfprnjletlxsm\"],\"notDataActions\":[\"do\",\"ifamowazi\"]}]}")
+            "{\"roleName\":\"hplrvkmjcwmjvlg\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"kyylizr\",\"bjpsfxsfuztlvtm\",\"agb\",\"idqlvhu\"],\"permissions\":[{\"id\":\"ofizrvjfnmjmvlwy\",\"dataActions\":[\"blkujrllfojuidjp\",\"uyjucejikzo\"],\"notDataActions\":[\"vtzejetjklnti\",\"yjuzkdb\",\"zolxrzvhqjwtr\"]}]}")
             .toObject(SqlRoleDefinitionResource.class);
-        Assertions.assertEquals("gn", model.roleName());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.roleName());
         Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("fsmfcttuxuuyi", model.assignableScopes().get(0));
-        Assertions.assertEquals("oiquvrehmrnjhvs", model.permissions().get(0).id());
-        Assertions.assertEquals("tczytqjtwh", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("do", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("kyylizr", model.assignableScopes().get(0));
+        Assertions.assertEquals("ofizrvjfnmjmvlwy", model.permissions().get(0).id());
+        Assertions.assertEquals("blkujrllfojuidjp", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("vtzejetjklnti", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlRoleDefinitionResource model = new SqlRoleDefinitionResource().withRoleName("gn")
+        SqlRoleDefinitionResource model = new SqlRoleDefinitionResource().withRoleName("hplrvkmjcwmjvlg")
             .withType(RoleDefinitionType.BUILT_IN_ROLE)
-            .withAssignableScopes(Arrays.asList("fsmfcttuxuuyi"))
-            .withPermissions(Arrays.asList(new Permission().withId("oiquvrehmrnjhvs")
-                .withDataActions(Arrays.asList("tczytqjtwh", "uunfprnjletlxsm"))
-                .withNotDataActions(Arrays.asList("do", "ifamowazi"))));
+            .withAssignableScopes(Arrays.asList("kyylizr", "bjpsfxsfuztlvtm", "agb", "idqlvhu"))
+            .withPermissions(Arrays.asList(new Permission().withId("ofizrvjfnmjmvlwy")
+                .withDataActions(Arrays.asList("blkujrllfojuidjp", "uyjucejikzo"))
+                .withNotDataActions(Arrays.asList("vtzejetjklnti", "yjuzkdb", "zolxrzvhqjwtr"))));
         model = BinaryData.fromObject(model).toObject(SqlRoleDefinitionResource.class);
-        Assertions.assertEquals("gn", model.roleName());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.roleName());
         Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("fsmfcttuxuuyi", model.assignableScopes().get(0));
-        Assertions.assertEquals("oiquvrehmrnjhvs", model.permissions().get(0).id());
-        Assertions.assertEquals("tczytqjtwh", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("do", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("kyylizr", model.assignableScopes().get(0));
+        Assertions.assertEquals("ofizrvjfnmjmvlwy", model.permissions().get(0).id());
+        Assertions.assertEquals("blkujrllfojuidjp", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("vtzejetjklnti", model.permissions().get(0).notDataActions().get(0));
     }
 }

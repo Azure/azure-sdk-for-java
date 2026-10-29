@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class IssueAddOrUpdateAlertsSamples {
     /*
-     * x-ms-original-file: 2025-10-03/Issue_AddOrUpdateAlerts_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-03-preview/Issue_AddOrUpdateAlerts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Issue_AddOrUpdateAlerts_MaximumSet.

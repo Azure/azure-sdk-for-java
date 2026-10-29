@@ -104,10 +104,15 @@ public final class ConnectedEnvironmentStorageImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "resourceGroupName");
+        this.connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "connectedEnvironmentName");
+        this.storageName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "storageName");
     }
 
     public ConnectedEnvironmentStorage refresh() {

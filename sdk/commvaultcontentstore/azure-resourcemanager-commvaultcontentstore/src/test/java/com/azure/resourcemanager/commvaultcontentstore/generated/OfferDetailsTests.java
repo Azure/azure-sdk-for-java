@@ -12,30 +12,30 @@ public final class OfferDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferDetails model = BinaryData.fromString(
-            "{\"publisherId\":\"nbybkzgcwrwcl\",\"offerId\":\"xwrljdouskcqvkoc\",\"planId\":\"jdkwtnhxbnjb\",\"planName\":\"sqrglssainq\",\"termUnit\":\"wnzlljfmppeeb\",\"termId\":\"gxsabkyq\"}")
+            "{\"publisherId\":\"hxbnjbiksqrg\",\"offerId\":\"ssainqpjwnzll\",\"planId\":\"mppeebvmgxs\",\"planName\":\"kyqduujit\",\"termUnit\":\"czdzev\",\"termId\":\"hkr\"}")
             .toObject(OfferDetails.class);
-        Assertions.assertEquals("nbybkzgcwrwcl", model.publisherId());
-        Assertions.assertEquals("xwrljdouskcqvkoc", model.offerId());
-        Assertions.assertEquals("jdkwtnhxbnjb", model.planId());
-        Assertions.assertEquals("sqrglssainq", model.planName());
-        Assertions.assertEquals("wnzlljfmppeeb", model.termUnit());
-        Assertions.assertEquals("gxsabkyq", model.termId());
+        Assertions.assertEquals("hxbnjbiksqrg", model.publisherId());
+        Assertions.assertEquals("ssainqpjwnzll", model.offerId());
+        Assertions.assertEquals("mppeebvmgxs", model.planId());
+        Assertions.assertEquals("kyqduujit", model.planName());
+        Assertions.assertEquals("czdzev", model.termUnit());
+        Assertions.assertEquals("hkr", model.termId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfferDetails model = new OfferDetails().withPublisherId("nbybkzgcwrwcl")
-            .withOfferId("xwrljdouskcqvkoc")
-            .withPlanId("jdkwtnhxbnjb")
-            .withPlanName("sqrglssainq")
-            .withTermUnit("wnzlljfmppeeb")
-            .withTermId("gxsabkyq");
+        OfferDetails model = new OfferDetails().withPublisherId("hxbnjbiksqrg")
+            .withOfferId("ssainqpjwnzll")
+            .withPlanId("mppeebvmgxs")
+            .withPlanName("kyqduujit")
+            .withTermUnit("czdzev")
+            .withTermId("hkr");
         model = BinaryData.fromObject(model).toObject(OfferDetails.class);
-        Assertions.assertEquals("nbybkzgcwrwcl", model.publisherId());
-        Assertions.assertEquals("xwrljdouskcqvkoc", model.offerId());
-        Assertions.assertEquals("jdkwtnhxbnjb", model.planId());
-        Assertions.assertEquals("sqrglssainq", model.planName());
-        Assertions.assertEquals("wnzlljfmppeeb", model.termUnit());
-        Assertions.assertEquals("gxsabkyq", model.termId());
+        Assertions.assertEquals("hxbnjbiksqrg", model.publisherId());
+        Assertions.assertEquals("ssainqpjwnzll", model.offerId());
+        Assertions.assertEquals("mppeebvmgxs", model.planId());
+        Assertions.assertEquals("kyqduujit", model.planName());
+        Assertions.assertEquals("czdzev", model.termUnit());
+        Assertions.assertEquals("hkr", model.termId());
     }
 }

@@ -138,9 +138,12 @@ public final class ExascaleDbStorageVaultImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.exascaleDbStorageVaultName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "exascaleDbStorageVaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "resourceGroupName");
+        this.exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "exascaleDbStorageVaultName");
     }
 
     public ExascaleDbStorageVault refresh() {

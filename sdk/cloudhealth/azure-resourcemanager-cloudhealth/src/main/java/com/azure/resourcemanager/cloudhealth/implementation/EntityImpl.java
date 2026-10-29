@@ -111,9 +111,15 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     EntityImpl(EntityInner innerObject, com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.entityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "entities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
+        this.entityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
     }
 
     public Entity refresh() {
