@@ -55,17 +55,23 @@ public final class ComponentLinkedStorageAccountsOperationsImpl implements Compo
     }
 
     public ComponentLinkedStorageAccounts getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByName(id, "linkedStorageAccounts");
+        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "storageType");
         if (storageTypeLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.", id)));
@@ -75,17 +81,23 @@ public final class ComponentLinkedStorageAccountsOperationsImpl implements Compo
     }
 
     public Response<ComponentLinkedStorageAccounts> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByName(id, "linkedStorageAccounts");
+        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "storageType");
         if (storageTypeLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.", id)));
@@ -95,17 +107,23 @@ public final class ComponentLinkedStorageAccountsOperationsImpl implements Compo
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByName(id, "linkedStorageAccounts");
+        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "storageType");
         if (storageTypeLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.", id)));
@@ -115,17 +133,23 @@ public final class ComponentLinkedStorageAccountsOperationsImpl implements Compo
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByName(id, "linkedStorageAccounts");
+        String storageTypeLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "storageType");
         if (storageTypeLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.", id)));

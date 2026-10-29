@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.0 (2026-10-19)
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` to `2.8.0` and `azure-storage-blob` to `12.36.0`.
 
 ## 2.7.0 (2026-10-06)
 

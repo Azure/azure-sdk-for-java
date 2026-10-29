@@ -105,6 +105,24 @@ public final class BulkactionVMProperties implements JsonSerializable<Bulkaction
      */
     private List<BulkactionVMExtension> vmExtensions;
 
+    /*
+     * Specifies the priority for the virtual machines. Mirrors the priority property on
+     * Microsoft.Compute/virtualMachines.
+     */
+    private PriorityType priority;
+
+    /*
+     * Specifies the billing related details of the Azure Spot virtual machines. Mirrors the billingProfile property on
+     * Microsoft.Compute/virtualMachines. Only applies when priority is Spot.
+     */
+    private BillingProfile billingProfile;
+
+    /*
+     * Specifies the eviction policy for the Azure Spot virtual machines. Both Deallocate and Delete are supported.
+     * Mirrors the evictionPolicy property on Microsoft.Compute/virtualMachines. Only applies when priority is Spot.
+     */
+    private EvictionPolicy evictionPolicy;
+
     /**
      * Creates an instance of BulkactionVMProperties class.
      */
@@ -444,6 +462,74 @@ public final class BulkactionVMProperties implements JsonSerializable<Bulkaction
     }
 
     /**
+     * Get the priority property: Specifies the priority for the virtual machines. Mirrors the priority property on
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the priority value.
+     */
+    public PriorityType priority() {
+        return this.priority;
+    }
+
+    /**
+     * Set the priority property: Specifies the priority for the virtual machines. Mirrors the priority property on
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @param priority the priority value to set.
+     * @return the BulkactionVMProperties object itself.
+     */
+    public BulkactionVMProperties withPriority(PriorityType priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get the billingProfile property: Specifies the billing related details of the Azure Spot virtual machines.
+     * Mirrors the billingProfile property on Microsoft.Compute/virtualMachines. Only applies when priority is Spot.
+     * 
+     * @return the billingProfile value.
+     */
+    public BillingProfile billingProfile() {
+        return this.billingProfile;
+    }
+
+    /**
+     * Set the billingProfile property: Specifies the billing related details of the Azure Spot virtual machines.
+     * Mirrors the billingProfile property on Microsoft.Compute/virtualMachines. Only applies when priority is Spot.
+     * 
+     * @param billingProfile the billingProfile value to set.
+     * @return the BulkactionVMProperties object itself.
+     */
+    public BulkactionVMProperties withBillingProfile(BillingProfile billingProfile) {
+        this.billingProfile = billingProfile;
+        return this;
+    }
+
+    /**
+     * Get the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machines. Both
+     * Deallocate and Delete are supported. Mirrors the evictionPolicy property on Microsoft.Compute/virtualMachines.
+     * Only applies when priority is Spot.
+     * 
+     * @return the evictionPolicy value.
+     */
+    public EvictionPolicy evictionPolicy() {
+        return this.evictionPolicy;
+    }
+
+    /**
+     * Set the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machines. Both
+     * Deallocate and Delete are supported. Mirrors the evictionPolicy property on Microsoft.Compute/virtualMachines.
+     * Only applies when priority is Spot.
+     * 
+     * @param evictionPolicy the evictionPolicy value to set.
+     * @return the BulkactionVMProperties object itself.
+     */
+    public BulkactionVMProperties withEvictionPolicy(EvictionPolicy evictionPolicy) {
+        this.evictionPolicy = evictionPolicy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -464,6 +550,10 @@ public final class BulkactionVMProperties implements JsonSerializable<Bulkaction
         jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
         jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
         jsonWriter.writeArrayField("vmExtensions", this.vmExtensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
+        jsonWriter.writeJsonField("billingProfile", this.billingProfile);
+        jsonWriter.writeStringField("evictionPolicy",
+            this.evictionPolicy == null ? null : this.evictionPolicy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -515,6 +605,12 @@ public final class BulkactionVMProperties implements JsonSerializable<Bulkaction
                     List<BulkactionVMExtension> vmExtensions
                         = reader.readArray(reader1 -> BulkactionVMExtension.fromJson(reader1));
                     deserializedBulkactionVMProperties.vmExtensions = vmExtensions;
+                } else if ("priority".equals(fieldName)) {
+                    deserializedBulkactionVMProperties.priority = PriorityType.fromString(reader.getString());
+                } else if ("billingProfile".equals(fieldName)) {
+                    deserializedBulkactionVMProperties.billingProfile = BillingProfile.fromJson(reader);
+                } else if ("evictionPolicy".equals(fieldName)) {
+                    deserializedBulkactionVMProperties.evictionPolicy = EvictionPolicy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

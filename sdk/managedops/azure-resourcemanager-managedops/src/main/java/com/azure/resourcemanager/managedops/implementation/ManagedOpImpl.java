@@ -88,7 +88,9 @@ public final class ManagedOpImpl implements ManagedOp, ManagedOp.Definition, Man
     ManagedOpImpl(ManagedOpInner innerObject, com.azure.resourcemanager.managedops.ManagedOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.managedOpsName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedOps");
+        this.managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
     }
 
     public ManagedOp refresh() {

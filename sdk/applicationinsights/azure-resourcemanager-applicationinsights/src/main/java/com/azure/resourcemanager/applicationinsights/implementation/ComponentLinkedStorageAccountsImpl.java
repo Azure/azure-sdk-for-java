@@ -113,10 +113,15 @@ public final class ComponentLinkedStorageAccountsImpl implements ComponentLinked
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "components");
-        this.storageType = StorageType
-            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "resourceName");
+        this.storageType = StorageType.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}",
+            "storageType"));
     }
 
     public ComponentLinkedStorageAccounts refresh() {

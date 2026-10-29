@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsages.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -21,7 +21,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesClassicScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesClassicScope.json
      */
     /**
      * Sample code: Get Usages Classic Scope.
@@ -34,7 +34,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesDataZoneScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesDataZoneScope.json
      */
     /**
      * Sample code: Get Usages DataZone Scope.
@@ -47,7 +47,20 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesGlobalScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesWithResourceMetadata.json
+     */
+    /**
+     * Sample code: Get Usages With Resource Metadata.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getUsagesWithResourceMetadata(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.usages().list("WestUS", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesGlobalScope.json
      */
     /**
      * Sample code: Get Usages Global Scope.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NspOperationStatusGet.json
+     * x-ms-original-file: 2026-03-01/NspOperationStatusGet.json
      */
     /**
      * Sample code: NspOperationStatusGet.

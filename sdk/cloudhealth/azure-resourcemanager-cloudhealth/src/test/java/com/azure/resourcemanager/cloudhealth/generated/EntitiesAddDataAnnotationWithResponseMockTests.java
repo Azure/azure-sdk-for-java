@@ -24,7 +24,7 @@ public final class EntitiesAddDataAnnotationWithResponseMockTests {
     @Test
     public void testAddDataAnnotationWithResponse() throws Exception {
         String responseStr
-            = "{\"annotationId\":\"glgou\",\"createdAt\":\"2021-11-29T23:14:51Z\",\"annotationDetails\":{\"j\":\"jjyuojqtobax\",\"snkq\":\"ytunlbfjkwr\"},\"description\":\"syrq\"}";
+            = "{\"annotationId\":\"lkm\",\"createdAt\":\"2021-04-19T18:55:37Z\",\"annotationDetails\":{\"gwgcl\":\"yhlfb\"},\"description\":\"oebqinjipn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,16 @@ public final class EntitiesAddDataAnnotationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataAnnotation response = manager.entities()
-            .addDataAnnotationWithResponse("amktcqiosmgbzah", "xqdlyrtltlapr", "tz",
+            .addDataAnnotationWithResponse("zvuxm", "kjsvthnwpzteko", "mribiat",
                 new AddDataAnnotationRequest()
-                    .withAnnotationDetails(mapOf("ala", "tbhjmznnbsoqe", "tgfebwln", "vlagun", "av", "mhyreeudz"))
-                    .withDescription("dqmjxly"),
+                    .withAnnotationDetails(mapOf("cugswvxwlmzqw", "plucfotangcfhnyk", "cvclxynpdk", "vtxnjmxmcuqud",
+                        "neiknpg", "gfabuiyjibuzphdu", "btozipqwje", "xgjiuqh"))
+                    .withDescription("urrxxgewpktv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jjyuojqtobax", response.annotationDetails().get("j"));
-        Assertions.assertEquals("syrq", response.description());
+        Assertions.assertEquals("yhlfb", response.annotationDetails().get("gwgcl"));
+        Assertions.assertEquals("oebqinjipn", response.description());
     }
 
     // Use "Map.of" if available

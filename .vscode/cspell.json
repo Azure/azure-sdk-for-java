@@ -123,6 +123,7 @@
     "dinclude",
     "djacoco",
     "djava",
+    "djdk",
     "doesnt",
     "dremote",
     "drevapi",
@@ -268,6 +269,13 @@
     "xlsb"
   ],
   "overrides": [
+    {
+      "filename": ".github/skills/management-autopr-review/**",
+      "words": [
+        "autopr",
+        "vally"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [
