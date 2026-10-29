@@ -2503,9 +2503,6 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Create or replace a topic.
      *
-     * <p>When creating a topic, omit state or set it to Normal. Other states are only valid when updating an existing
-     * topic.</p>
-     *
      * Create or replace a topic with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -2573,9 +2570,6 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a topic.
-     *
-     * <p>When creating a topic, omit state or set it to Normal. Other states are only valid when updating an existing
-     * topic.</p>
      *
      * Create or replace a topic with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>

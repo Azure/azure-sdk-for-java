@@ -235,7 +235,8 @@ String conversationId = topic.getConversationId();
 ```
 
 When creating a topic, leave `state` unset (as above) or set it to
-`ChatTopicState.NORMAL`. Other states are only valid when updating an existing topic.
+`ChatTopicState.NORMAL`. Use `updateTopic` to change selected properties of an existing
+topic instead of replacing it with `createOrReplaceTopic`.
 
 Use the returned conversation ID when a Chat WebSocket client sends messages to
 the topic. This server-side library manages resources and persisted messages;

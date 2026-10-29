@@ -99,13 +99,6 @@ public final class WebPubSubChatCustomization extends Customization {
                 }
                 corrected = corrected.substring(0, requestStart) + request + corrected.substring(responseStart);
             }
-            if (method.getNameAsString().startsWith("createOrReplaceTopic")
-                && !corrected.contains("When creating a topic, omit state")) {
-                corrected = corrected.replace("Create or replace a topic.",
-                    "Create or replace a topic.\n     *\n"
-                        + "     * <p>When creating a topic, omit state or set it to Normal. "
-                        + "Other states are only valid when updating an existing topic.</p>");
-            }
             if (!original.equals(corrected)) {
                 source = source.replace(original, corrected);
             }
