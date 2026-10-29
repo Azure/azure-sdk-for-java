@@ -99,6 +99,13 @@ public final class WebPubSubChatCustomization extends Customization {
                 }
                 corrected = corrected.substring(0, requestStart) + request + corrected.substring(responseStart);
             }
+            if (method.getNameAsString().startsWith("createOrReplaceTopic")
+                && !corrected.contains("When creating a topic, omit state")) {
+                corrected = corrected.replace("Create or replace a topic.",
+                    "Create or replace a topic.\n     *\n"
+                        + "     * <p>When creating a topic, omit state. "
+                        + "Other states are only valid when replacing an existing topic.</p>");
+            }
             if (!original.equals(corrected)) {
                 source = source.replace(original, corrected);
             }
@@ -122,8 +129,6 @@ public final class WebPubSubChatCustomization extends Customization {
         }
         model.setJavadocComment("Message content containing exactly one of text or binary data.\n"
             + "Use {@link #fromText(String)} or {@link #fromBinary(byte[])} to create content.\n"
-            + "Text and binary are independent content types, not alternate encodings of the same value.\n"
-            + "Binary data is base64 encoded on the wire. No conversion between text and binary is performed.\n"
             + "The getter for the unselected representation returns {@code null}.");
         model.getFieldByName("updatedProperties").ifPresent(field -> field.remove());
         model.getMethodsByName("setText").forEach(method -> method.remove());

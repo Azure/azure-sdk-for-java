@@ -18,8 +18,6 @@ import java.util.Objects;
 /**
  * Message content containing exactly one of text or binary data.
  * Use {@link #fromText(String)} or {@link #fromBinary(byte[])} to create content.
- * Text and binary are independent content types, not alternate encodings of the same value.
- * Binary data is base64 encoded on the wire. No conversion between text and binary is performed.
  * The getter for the unselected representation returns {@code null}.
  */
 @Immutable

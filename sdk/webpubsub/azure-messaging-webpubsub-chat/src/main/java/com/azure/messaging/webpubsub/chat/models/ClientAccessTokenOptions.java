@@ -6,10 +6,7 @@ package com.azure.messaging.webpubsub.chat.models;
 import java.time.Duration;
 
 /**
- * Options for creating a client access token used to connect to Azure Web PubSub Chat.
- * The token can identify a user and has a configurable lifetime, which defaults to one hour.
- * Clients authenticated with an access key sign the token locally; clients authenticated with
- * Microsoft Entra ID request the token from the service.
+ * Options for the {@code getClientAccessToken} operation.
  */
 public final class ClientAccessTokenOptions {
     private Duration expiresAfter = Duration.ofHours(1);

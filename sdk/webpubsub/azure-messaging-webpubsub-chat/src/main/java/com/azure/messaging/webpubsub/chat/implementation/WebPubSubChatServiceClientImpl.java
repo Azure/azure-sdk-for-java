@@ -962,7 +962,6 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Query messages in a conversation from latest to earliest.
      *
-     * Query messages in a conversation from latest to earliest.
      * Message IDs are used as pagination cursors. Follow the response nextLink,
      * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
@@ -1015,7 +1014,6 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Query messages in a conversation from latest to earliest.
      *
-     * Query messages in a conversation from latest to earliest.
      * Message IDs are used as pagination cursors. Follow the response nextLink,
      * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
@@ -1085,7 +1083,6 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Query messages in a conversation from latest to earliest.
      *
-     * Query messages in a conversation from latest to earliest.
      * Message IDs are used as pagination cursors. Follow the response nextLink,
      * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
@@ -1135,7 +1132,6 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Query messages in a conversation from latest to earliest.
      *
-     * Query messages in a conversation from latest to earliest.
      * Message IDs are used as pagination cursors. Follow the response nextLink,
      * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
@@ -2503,6 +2499,8 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Create or replace a topic.
      *
+     * <p>When creating a topic, omit state. Other states are only valid when replacing an existing topic.</p>
+     *
      * Create or replace a topic with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -2570,6 +2568,8 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a topic.
+     *
+     * <p>When creating a topic, omit state. Other states are only valid when replacing an existing topic.</p>
      *
      * Create or replace a topic with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>
