@@ -129,8 +129,12 @@ public final class ProfileImpl implements Profile, Profile.Definition, Profile.U
     ProfileImpl(ProfileInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.profileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "NetworkExperimentProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}",
+            "resourceGroupName");
+        this.profileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}",
+            "profileName");
     }
 
     public Profile refresh() {

@@ -181,9 +181,12 @@ public final class WebApplicationFirewallPolicyImpl implements WebApplicationFir
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.policyName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "FrontDoorWebApplicationFirewallPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}",
+            "resourceGroupName");
+        this.policyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}",
+            "policyName");
     }
 
     public WebApplicationFirewallPolicy refresh() {

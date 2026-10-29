@@ -11,10 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionVersionsClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersions;
 import com.azure.resourcemanager.edgeactions.models.VersionCode;
 
@@ -69,23 +67,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionVersionImpl(inner1, this.manager()));
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body) {
-        EdgeActionVersionPropertiesInner inner
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body) {
+        EdgeActionVersionInner inner
             = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body);
         if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
+            return new EdgeActionVersionImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body, Context context) {
-        EdgeActionVersionPropertiesInner inner
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body, Context context) {
+        EdgeActionVersionInner inner
             = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body, context);
         if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
+            return new EdgeActionVersionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -120,17 +118,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public EdgeActionVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
+        String edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName");
         if (edgeActionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
         }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -139,17 +143,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public Response<EdgeActionVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
+        String edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName");
         if (edgeActionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
         }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -158,17 +168,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
+        String edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName");
         if (edgeActionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
         }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -177,17 +193,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
+        String edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName");
         if (edgeActionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
         }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));

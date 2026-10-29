@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceAnchorUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceAnchorUpdate model
-            = BinaryData.fromString("{\"tags\":{\"qeqala\":\"s\",\"tgfebwln\":\"vlagun\",\"av\":\"mhyreeudz\"}}")
-                .toObject(ResourceAnchorUpdate.class);
-        Assertions.assertEquals("s", model.tags().get("qeqala"));
+        ResourceAnchorUpdate model = BinaryData.fromString("{\"tags\":{\"pndfcpfnznt\":\"gnoxuztrksx\"}}")
+            .toObject(ResourceAnchorUpdate.class);
+        Assertions.assertEquals("gnoxuztrksx", model.tags().get("pndfcpfnznt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceAnchorUpdate model
-            = new ResourceAnchorUpdate().withTags(mapOf("qeqala", "s", "tgfebwln", "vlagun", "av", "mhyreeudz"));
+        ResourceAnchorUpdate model = new ResourceAnchorUpdate().withTags(mapOf("pndfcpfnznt", "gnoxuztrksx"));
         model = BinaryData.fromObject(model).toObject(ResourceAnchorUpdate.class);
-        Assertions.assertEquals("s", model.tags().get("qeqala"));
+        Assertions.assertEquals("gnoxuztrksx", model.tags().get("pndfcpfnznt"));
     }
 
     // Use "Map.of" if available

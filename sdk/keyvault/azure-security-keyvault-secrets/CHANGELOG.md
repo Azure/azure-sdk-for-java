@@ -1,6 +1,6 @@
 # Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.12.0 (2026-10-27)
+
+### Other Changes
+
+- Regenerated the library for stable Key Vault API version `2026-04-01`.
+
+## 4.11.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 
 ## 4.11.2 (2026-08-18)
 

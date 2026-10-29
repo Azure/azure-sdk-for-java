@@ -221,8 +221,12 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     FrontDoorImpl(FrontDoorInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.frontDoorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "frontDoors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}",
+            "resourceGroupName");
+        this.frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}",
+            "frontDoorName");
     }
 
     public FrontDoor refresh() {

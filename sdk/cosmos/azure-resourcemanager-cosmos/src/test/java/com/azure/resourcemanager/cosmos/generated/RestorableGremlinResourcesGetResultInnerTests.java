@@ -12,9 +12,9 @@ public final class RestorableGremlinResourcesGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinResourcesGetResultInner model = BinaryData.fromString(
-            "{\"id\":\"ufqizjvppw\",\"name\":\"a\",\"type\":\"yyjmjjxiz\",\"databaseName\":\"xhnzlslekcttgzkj\",\"graphNames\":[\"p\",\"wadeghzt\"]}")
+            "{\"id\":\"u\",\"name\":\"f\",\"type\":\"zufldifnivlutg\",\"databaseName\":\"aacxauhvc\",\"graphNames\":[\"hklsqx\",\"oiyygkts\"]}")
             .toObject(RestorableGremlinResourcesGetResultInner.class);
-        Assertions.assertEquals("xhnzlslekcttgzkj", model.databaseName());
-        Assertions.assertEquals("p", model.graphNames().get(0));
+        Assertions.assertEquals("aacxauhvc", model.databaseName());
+        Assertions.assertEquals("hklsqx", model.graphNames().get(0));
     }
 }

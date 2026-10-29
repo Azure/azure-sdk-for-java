@@ -64,6 +64,11 @@ function Find-GenerationInformation {
     Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
     return
   }
+  if ($LibraryFolder.Contains("azure-ai-vision-face")) {
+    # Skip azure-ai-vision-face for TypeSpec regeneration as it is has errors that need to be fixed.
+    Write-Host "Skipping TypeSpec regeneration for azure-ai-vision-face: $LibraryFolder"
+    return
+  }
 
   # Search for 'tsp-location.yaml' script in the specified service directory.
   Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
@@ -136,7 +141,7 @@ if ($LASTEXITCODE -ne 0) {
 $generateScript = {
   $separatorBar = "======================================"
   $directory = $_.LibraryFolder
-  
+
   if ($_.Type -eq 'TypeSpec') {
     Push-Location $directory
     try {
@@ -171,7 +176,7 @@ $generateScript = {
     }
 
     # prevent warning related to EOL differences which triggers an exception for some reason
-    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

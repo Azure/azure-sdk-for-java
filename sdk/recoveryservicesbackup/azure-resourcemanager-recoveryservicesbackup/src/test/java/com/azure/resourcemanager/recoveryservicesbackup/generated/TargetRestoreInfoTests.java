@@ -13,24 +13,24 @@ public final class TargetRestoreInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetRestoreInfo model = BinaryData.fromString(
-            "{\"overwriteOption\":\"Invalid\",\"containerId\":\"tf\",\"databaseName\":\"rqwexjkmfxapjwog\",\"targetDirectoryForFileRestore\":\"nobpudcdabtqwpw\"}")
+            "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"qroohtu\",\"databaseName\":\"maonurj\",\"targetDirectoryForFileRestore\":\"mghihp\"}")
             .toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("tf", model.containerId());
-        Assertions.assertEquals("rqwexjkmfxapjwog", model.databaseName());
-        Assertions.assertEquals("nobpudcdabtqwpw", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
+        Assertions.assertEquals("qroohtu", model.containerId());
+        Assertions.assertEquals("maonurj", model.databaseName());
+        Assertions.assertEquals("mghihp", model.targetDirectoryForFileRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.INVALID)
-            .withContainerId("tf")
-            .withDatabaseName("rqwexjkmfxapjwog")
-            .withTargetDirectoryForFileRestore("nobpudcdabtqwpw");
+        TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
+            .withContainerId("qroohtu")
+            .withDatabaseName("maonurj")
+            .withTargetDirectoryForFileRestore("mghihp");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("tf", model.containerId());
-        Assertions.assertEquals("rqwexjkmfxapjwog", model.databaseName());
-        Assertions.assertEquals("nobpudcdabtqwpw", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
+        Assertions.assertEquals("qroohtu", model.containerId());
+        Assertions.assertEquals("maonurj", model.databaseName());
+        Assertions.assertEquals("mghihp", model.targetDirectoryForFileRestore());
     }
 }

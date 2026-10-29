@@ -13,22 +13,22 @@ public final class FetchTieringCostSavingsInfoForPolicyRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchTieringCostSavingsInfoForPolicyRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FetchTieringCostSavingsInfoForPolicyRequest\",\"policyName\":\"fjqq\",\"sourceTierType\":\"HardenedRP\",\"targetTierType\":\"ArchivedRP\"}")
+            "{\"objectType\":\"FetchTieringCostSavingsInfoForPolicyRequest\",\"policyName\":\"hgjtnhtukfaci\",\"sourceTierType\":\"InstantRP\",\"targetTierType\":\"ArchivedRP\"}")
             .toObject(FetchTieringCostSavingsInfoForPolicyRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
-        Assertions.assertEquals("fjqq", model.policyName());
+        Assertions.assertEquals("hgjtnhtukfaci", model.policyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchTieringCostSavingsInfoForPolicyRequest model
-            = new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+            = new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.INSTANT_RP)
                 .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
-                .withPolicyName("fjqq");
+                .withPolicyName("hgjtnhtukfaci");
         model = BinaryData.fromObject(model).toObject(FetchTieringCostSavingsInfoForPolicyRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
-        Assertions.assertEquals("fjqq", model.policyName());
+        Assertions.assertEquals("hgjtnhtukfaci", model.policyName());
     }
 }

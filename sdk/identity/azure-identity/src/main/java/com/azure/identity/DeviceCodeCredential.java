@@ -14,6 +14,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -158,6 +159,7 @@ public class DeviceCodeCredential implements TokenCredential {
                     return token;
                 }
             } catch (Exception e) {
+                IdentityUtil.rethrowIfShutdownSignal(e);
             }
         }
         try {

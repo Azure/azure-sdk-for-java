@@ -107,9 +107,15 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     RulesEngineImpl(RulesEngineInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.frontDoorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "frontDoors");
-        this.rulesEngineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "rulesEngines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
+            "resourceGroupName");
+        this.frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
+            "frontDoorName");
+        this.rulesEngineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
+            "rulesEngineName");
     }
 
     public RulesEngine refresh() {

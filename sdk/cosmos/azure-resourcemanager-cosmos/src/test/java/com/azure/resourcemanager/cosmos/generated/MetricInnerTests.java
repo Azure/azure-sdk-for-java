@@ -11,7 +11,7 @@ public final class MetricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricInner model = BinaryData.fromString(
-            "{\"startTime\":\"2021-07-06T01:32:33Z\",\"endTime\":\"2021-06-02T05:04:16Z\",\"timeGrain\":\"bmrqyibahwfl\",\"unit\":\"Percent\",\"name\":{\"value\":\"mhrkwofyyvoqacp\",\"localizedValue\":\"xpbtgiwbwo\"},\"metricValues\":[{\"_count\":1338594793,\"average\":61.9866823175496,\"maximum\":49.6017449534356,\"minimum\":35.52594883946759,\"timestamp\":\"2021-03-19T14:05:07Z\",\"total\":2.4764070060804277},{\"_count\":1343129600,\"average\":12.424545451086889,\"maximum\":23.07563330276191,\"minimum\":47.42460299713477,\"timestamp\":\"2021-06-01T21:52:28Z\",\"total\":4.018076144198646}]}")
+            "{\"startTime\":\"2021-02-28T12:22:55Z\",\"endTime\":\"2021-08-01T10:38:27Z\",\"timeGrain\":\"mhhv\",\"unit\":\"Count\",\"name\":{\"value\":\"odkwobd\",\"localizedValue\":\"xtibqdxbxwakbog\"},\"metricValues\":[{\"_count\":1269136735,\"average\":13.895257666234183,\"maximum\":21.810188669422804,\"minimum\":94.81962104695374,\"timestamp\":\"2021-08-01T11:38:37Z\",\"total\":27.59383457209792},{\"_count\":1806634279,\"average\":98.58384394163143,\"maximum\":51.88689344448709,\"minimum\":42.35877941353421,\"timestamp\":\"2021-08-06T08:25:16Z\",\"total\":37.51089551988813},{\"_count\":2007013655,\"average\":46.69014915075782,\"maximum\":93.69577137935529,\"minimum\":53.90231701439472,\"timestamp\":\"2021-11-26T11:00:38Z\",\"total\":65.6134486697413}]}")
             .toObject(MetricInner.class);
     }
 }

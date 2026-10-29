@@ -140,16 +140,33 @@ Stream serialization is more verbose (lines of code vs annotations), so coverage
 
 ### RevApi Suppressions
 
-Removing Jackson annotations is a breaking change per RevApi. Add suppressions to `eng/code-quality-reports/src/main/resources/revapi/revapi.json`:
+Removing Jackson annotations is a breaking change per RevApi. Add the following
+extension configuration to the SDK-local `revapi-suppressions.json`, replacing the
+example package with the approved model package. This transform suppresses only
+Jackson annotation removals, not removals of unrelated annotations.
 
 ```json
-{
-  "regex": true,
-  "code": "java\\.annotation\\.removed",
-  "old": ".*? com\\.azure\\.myservice\\.models.*",
-  "justification": "Removing Jackson annotations in transition to azure-json stream-style."
-}
+[
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "id": "sdk-jackson-removal",
+    "configuration": {
+      "enabled": true,
+      "ignoredPackages": {
+        "com.azure.myservice.models": []
+      }
+    }
+  }
+]
 ```
+
+If the file already exists, append the extension to its top-level array.
+See [Adding a RevApi Suppression](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md#adding-a-revapi-suppression)
+for discovery and migration details.
+
+Recheck this exception against the latest GA baseline after releases. If removing
+the extension no longer produces Jackson-related RevApi violations, remove it while
+preserving other suppressions. Delete the suppression file if no configuration remains.
 
 ---
 

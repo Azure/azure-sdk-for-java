@@ -13,21 +13,21 @@ public final class ScheduledActionsRetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsRetryPolicy model = BinaryData
-            .fromString("{\"retryCount\":1059094634,\"retryWindowInMinutes\":425841292,\"onFailureAction\":\"Start\"}")
+            .fromString("{\"retryCount\":823284571,\"retryWindowInMinutes\":1233839644,\"onFailureAction\":\"Delete\"}")
             .toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(1059094634, model.retryCount());
-        Assertions.assertEquals(425841292, model.retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(823284571, model.retryCount());
+        Assertions.assertEquals(1233839644, model.retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(1059094634)
-            .withRetryWindowInMinutes(425841292)
-            .withOnFailureAction(ScheduledActionsResourceOperationType.START);
+        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(823284571)
+            .withRetryWindowInMinutes(1233839644)
+            .withOnFailureAction(ScheduledActionsResourceOperationType.DELETE);
         model = BinaryData.fromObject(model).toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(1059094634, model.retryCount());
-        Assertions.assertEquals(425841292, model.retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(823284571, model.retryCount());
+        Assertions.assertEquals(1233839644, model.retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE, model.onFailureAction());
     }
 }

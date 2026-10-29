@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class AIManagersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagers_Update.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagers_Update.json
      */
     /**
      * Sample code: Updates an AI Manager resource.

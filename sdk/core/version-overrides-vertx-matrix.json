@@ -19,7 +19,10 @@
       }
     },
     "VersionOverride": [
-      "vertx_5.0"
+      "vertx_4.5",
+      "vertx_5.0",
+      "vertx_5.1",
+      "vertx_5.2"
     ]
   }
 }

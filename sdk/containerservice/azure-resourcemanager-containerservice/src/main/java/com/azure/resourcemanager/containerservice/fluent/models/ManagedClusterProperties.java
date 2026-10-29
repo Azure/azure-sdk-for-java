@@ -18,6 +18,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolcha
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentSandboxProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
@@ -32,6 +33,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeProvi
 import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPodSnapshotProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
@@ -184,7 +186,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all
      * AKS-managed components, such as the node operating system, addons, and [managed containerized
      * components](https://aka.ms/aks/components/docs). See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more
-     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled.
+     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled. Although this
+     * property is available in a stable API version, cluster-wide FIPS remains a preview feature. Write requests whose
+     * resulting cluster state has this property set to true require the `Microsoft.ContainerService/EnableFIPSPreview`
+     * subscription feature registration.
      */
     private Boolean enableFips;
 
@@ -325,6 +330,16 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * AI toolchain operator settings that apply to the whole cluster.
      */
     private ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile;
+
+    /*
+     * Agent Sandbox settings that apply to the whole cluster.
+     */
+    private ManagedClusterAgentSandboxProfile agentSandboxProfile;
+
+    /*
+     * The Pod Snapshot Restore profile for the managed cluster.
+     */
+    private ManagedClusterPodSnapshotProfile podSnapshotProfile;
 
     /*
      * Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS. See
@@ -768,7 +783,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @return the enableFips value.
      */
@@ -781,7 +798,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterProperties object itself.
@@ -1318,6 +1337,46 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @return the agentSandboxProfile value.
+     */
+    public ManagedClusterAgentSandboxProfile agentSandboxProfile() {
+        return this.agentSandboxProfile;
+    }
+
+    /**
+     * Set the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @param agentSandboxProfile the agentSandboxProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withAgentSandboxProfile(ManagedClusterAgentSandboxProfile agentSandboxProfile) {
+        this.agentSandboxProfile = agentSandboxProfile;
+        return this;
+    }
+
+    /**
+     * Get the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @return the podSnapshotProfile value.
+     */
+    public ManagedClusterPodSnapshotProfile podSnapshotProfile() {
+        return this.podSnapshotProfile;
+    }
+
+    /**
+     * Set the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @param podSnapshotProfile the podSnapshotProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withPodSnapshotProfile(ManagedClusterPodSnapshotProfile podSnapshotProfile) {
+        this.podSnapshotProfile = podSnapshotProfile;
+        return this;
+    }
+
+    /**
      * Get the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
      * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
@@ -1547,6 +1606,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (aiToolchainOperatorProfile() != null) {
             aiToolchainOperatorProfile().validate();
         }
+        if (agentSandboxProfile() != null) {
+            agentSandboxProfile().validate();
+        }
+        if (podSnapshotProfile() != null) {
+            podSnapshotProfile().validate();
+        }
         if (schedulerProfile() != null) {
             schedulerProfile().validate();
         }
@@ -1617,6 +1682,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeProvisioningProfile", this.nodeProvisioningProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
         jsonWriter.writeJsonField("aiToolchainOperatorProfile", this.aiToolchainOperatorProfile);
+        jsonWriter.writeJsonField("agentSandboxProfile", this.agentSandboxProfile);
+        jsonWriter.writeJsonField("podSnapshotProfile", this.podSnapshotProfile);
         jsonWriter.writeJsonField("schedulerProfile", this.schedulerProfile);
         jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
         jsonWriter.writeJsonField("healthMonitorProfile", this.healthMonitorProfile);
@@ -1765,6 +1832,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("aiToolchainOperatorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.aiToolchainOperatorProfile
                         = ManagedClusterAIToolchainOperatorProfile.fromJson(reader);
+                } else if ("agentSandboxProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.agentSandboxProfile
+                        = ManagedClusterAgentSandboxProfile.fromJson(reader);
+                } else if ("podSnapshotProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.podSnapshotProfile
+                        = ManagedClusterPodSnapshotProfile.fromJson(reader);
                 } else if ("schedulerProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.schedulerProfile = SchedulerProfile.fromJson(reader);
                 } else if ("hostedSystemProfile".equals(fieldName)) {
