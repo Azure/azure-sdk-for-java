@@ -111,11 +111,21 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "organizationName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "projectName");
+        this.branchName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "branchName");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "endpointName");
     }
 
     public EndpointImpl withProperties(EndpointProperties properties) {

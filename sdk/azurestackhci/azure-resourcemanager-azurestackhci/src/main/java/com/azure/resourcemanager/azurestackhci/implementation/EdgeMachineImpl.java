@@ -133,8 +133,12 @@ public final class EdgeMachineImpl implements EdgeMachine, EdgeMachine.Definitio
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeMachines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}",
+            "resourceGroupName");
+        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}",
+            "edgeMachineName");
     }
 
     public EdgeMachine refresh() {

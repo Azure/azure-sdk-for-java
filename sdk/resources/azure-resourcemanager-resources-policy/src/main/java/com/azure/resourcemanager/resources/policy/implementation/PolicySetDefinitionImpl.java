@@ -151,8 +151,9 @@ public final class PolicySetDefinitionImpl
         com.azure.resourcemanager.resources.policy.PolicyManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.policySetDefinitionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policySetDefinitions");
+        this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}",
+            "policySetDefinitionName");
     }
 
     public PolicySetDefinition refresh() {

@@ -72,22 +72,30 @@ public final class EdgeMachineNetworkAdapterJobsImpl implements EdgeMachineNetwo
     }
 
     public EdgeMachineNetworkAdapterJob getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByName(id, "edgeMachines");
+        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "edgeMachineName");
         if (edgeMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
         }
-        String networkAdapterName = ResourceManagerUtils.getValueFromIdByName(id, "networkAdapters");
+        String networkAdapterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "networkAdapterName");
         if (networkAdapterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkAdapters'.", id)));
         }
-        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "jobName");
         if (jobName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -97,22 +105,30 @@ public final class EdgeMachineNetworkAdapterJobsImpl implements EdgeMachineNetwo
     }
 
     public Response<EdgeMachineNetworkAdapterJob> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByName(id, "edgeMachines");
+        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "edgeMachineName");
         if (edgeMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
         }
-        String networkAdapterName = ResourceManagerUtils.getValueFromIdByName(id, "networkAdapters");
+        String networkAdapterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "networkAdapterName");
         if (networkAdapterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkAdapters'.", id)));
         }
-        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "jobName");
         if (jobName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -121,22 +137,30 @@ public final class EdgeMachineNetworkAdapterJobsImpl implements EdgeMachineNetwo
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByName(id, "edgeMachines");
+        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "edgeMachineName");
         if (edgeMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
         }
-        String networkAdapterName = ResourceManagerUtils.getValueFromIdByName(id, "networkAdapters");
+        String networkAdapterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "networkAdapterName");
         if (networkAdapterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkAdapters'.", id)));
         }
-        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "jobName");
         if (jobName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -145,22 +169,30 @@ public final class EdgeMachineNetworkAdapterJobsImpl implements EdgeMachineNetwo
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByName(id, "edgeMachines");
+        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "edgeMachineName");
         if (edgeMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
         }
-        String networkAdapterName = ResourceManagerUtils.getValueFromIdByName(id, "networkAdapters");
+        String networkAdapterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "networkAdapterName");
         if (networkAdapterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkAdapters'.", id)));
         }
-        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/networkAdapters/{networkAdapterName}/jobs/{jobName}",
+            "jobName");
         if (jobName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
