@@ -152,9 +152,12 @@ public final class PolicySetDefinitionVersionImpl
         com.azure.resourcemanager.resources.policy.PolicyManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.policySetDefinitionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policySetDefinitions");
-        this.policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+        this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policySetDefinitionName");
+        this.policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion");
     }
 
     public PolicySetDefinitionVersion refresh() {
