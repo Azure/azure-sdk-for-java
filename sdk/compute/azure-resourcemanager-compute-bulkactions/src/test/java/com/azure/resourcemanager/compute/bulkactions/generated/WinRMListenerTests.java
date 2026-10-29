@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class WinRMListenerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WinRMListener model = BinaryData.fromString("{\"protocol\":\"Https\",\"certificateUrl\":\"nojvknmefqsg\"}")
+        WinRMListener model = BinaryData.fromString("{\"protocol\":\"Http\",\"certificateUrl\":\"qcgw\"}")
             .toObject(WinRMListener.class);
-        Assertions.assertEquals(ProtocolTypes.HTTPS, model.protocol());
-        Assertions.assertEquals("nojvknmefqsg", model.certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTP, model.protocol());
+        Assertions.assertEquals("qcgw", model.certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WinRMListener model = new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("nojvknmefqsg");
+        WinRMListener model = new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("qcgw");
         model = BinaryData.fromObject(model).toObject(WinRMListener.class);
-        Assertions.assertEquals(ProtocolTypes.HTTPS, model.protocol());
-        Assertions.assertEquals("nojvknmefqsg", model.certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTP, model.protocol());
+        Assertions.assertEquals("qcgw", model.certificateUrl());
     }
 }

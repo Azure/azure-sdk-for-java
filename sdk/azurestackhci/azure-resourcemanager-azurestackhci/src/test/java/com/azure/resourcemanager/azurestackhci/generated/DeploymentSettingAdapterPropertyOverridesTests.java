@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentSettingAdapterPropertyOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentSettingAdapterPropertyOverrides model = BinaryData.fromString(
-            "{\"jumboPacket\":\"lpcirelsf\",\"networkDirect\":\"enwabfatk\",\"networkDirectTechnology\":\"dxbjhwuaanozj\"}")
+        DeploymentSettingAdapterPropertyOverrides model = BinaryData
+            .fromString("{\"jumboPacket\":\"doaon\",\"networkDirect\":\"jcntuj\",\"networkDirectTechnology\":\"c\"}")
             .toObject(DeploymentSettingAdapterPropertyOverrides.class);
-        Assertions.assertEquals("lpcirelsf", model.jumboPacket());
-        Assertions.assertEquals("enwabfatk", model.networkDirect());
-        Assertions.assertEquals("dxbjhwuaanozj", model.networkDirectTechnology());
+        Assertions.assertEquals("doaon", model.jumboPacket());
+        Assertions.assertEquals("jcntuj", model.networkDirect());
+        Assertions.assertEquals("c", model.networkDirectTechnology());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentSettingAdapterPropertyOverrides model
-            = new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("lpcirelsf")
-                .withNetworkDirect("enwabfatk")
-                .withNetworkDirectTechnology("dxbjhwuaanozj");
+            = new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("doaon")
+                .withNetworkDirect("jcntuj")
+                .withNetworkDirectTechnology("c");
         model = BinaryData.fromObject(model).toObject(DeploymentSettingAdapterPropertyOverrides.class);
-        Assertions.assertEquals("lpcirelsf", model.jumboPacket());
-        Assertions.assertEquals("enwabfatk", model.networkDirect());
-        Assertions.assertEquals("dxbjhwuaanozj", model.networkDirectTechnology());
+        Assertions.assertEquals("doaon", model.jumboPacket());
+        Assertions.assertEquals("jcntuj", model.networkDirect());
+        Assertions.assertEquals("c", model.networkDirectTechnology());
     }
 }

@@ -127,7 +127,9 @@ public final class AssessmentResultImpl
         com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.assessmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assessments");
+        this.assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}",
+            "assessmentName");
     }
 
     public AssessmentResult refresh() {

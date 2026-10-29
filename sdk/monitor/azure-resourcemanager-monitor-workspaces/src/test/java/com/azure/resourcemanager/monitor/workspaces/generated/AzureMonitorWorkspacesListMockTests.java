@@ -24,7 +24,7 @@ public final class AzureMonitorWorkspacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountId\":\"cckwyfzqwhxxbu\",\"metrics\":{\"prometheusQueryEndpoint\":\"xzfe\",\"internalId\":\"tpp\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Canceled\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"jaltolmnc\",\"dataCollectionEndpointResourceId\":\"obqwcsdbnwdcfh\",\"dataCollectionRuleImmutableId\":\"qdpfuvglsbjjca\",\"ingestionEndpoints\":{\"metrics\":\"bvtvudutncormr\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"ofudflvkgju\",\"gdknnqv\",\"aznqntoru\",\"sgsahmkycgr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"etaebu\",\"name\":\"u\",\"type\":\"dmovsm\"},{\"properties\":{\"groupIds\":[\"ab\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"kif\",\"name\":\"vtpuqujmqlgk\",\"type\":\"btndo\"},{\"properties\":{\"groupIds\":[\"bjcntujitc\",\"ed\",\"twwaezkojvdcpzf\",\"qouicybxarzgsz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"iqopidoamciod\",\"name\":\"khazxkhnzbonlwn\",\"type\":\"oegokdwbwh\"},{\"properties\":{\"groupIds\":[\"cmrvexzt\",\"bt\",\"gsfraoyzkoow\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"ux\",\"name\":\"wqaldsyu\",\"type\":\"ximerqfobwyznk\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"wpfhpagmhrskd\",\"tenantId\":\"fdsd\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"bejdcn\":{\"principalId\":\"dlmkkzevdl\",\"clientId\":\"wpusdsttwvogv\"},\"aenuuz\":{\"principalId\":\"qmoa\",\"clientId\":\"fgmjzrwrdgrt\"}}},\"etag\":\"pbminr\",\"location\":\"woyuhhziuief\",\"tags\":{\"equi\":\"hdmsmlmzqhoftrm\",\"iyylhalnswhccsp\":\"hxicslfaoqz\",\"scywuggwoluhc\":\"kaivwit\",\"rgzdwmsweyp\":\"bwemhairs\"},\"id\":\"w\",\"name\":\"xggicccnxqhuexmk\",\"type\":\"tlstvlzywem\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountId\":\"zxiavrm\",\"metrics\":{\"prometheusQueryEndpoint\":\"nokixrjqcirgz\",\"internalId\":\"rlazszrnw\",\"enableAccessUsingResourcePermissions\":true},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"wp\",\"dataCollectionEndpointResourceId\":\"lwbtlhf\",\"dataCollectionRuleImmutableId\":\"jcdh\",\"ingestionEndpoints\":{\"metrics\":\"jvfbgofelja\"}},\"endpoints\":{\"query\":\"mqhldvrii\"},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"ghfkvtvsexs\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"uqhhahhxvrh\",\"name\":\"zkw\",\"type\":\"jgwwspughftq\"},{\"properties\":{\"groupIds\":[\"xujxuknd\",\"digrjguufzdmsyqt\",\"ihwhbotzingamvpp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"zudphqamvdkfw\",\"name\":\"nwcvtbvkayhmtnv\",\"type\":\"qiatkzwpcnp\"}],\"publicNetworkAccess\":\"Disabled\",\"actions\":{\"defaultActionGroups\":[{\"id\":\"gvvs\"},{\"id\":\"yajguqfhwygzlv\"},{\"id\":\"kfxu\"}]}},\"identity\":{\"principalId\":\"dwzrmuh\",\"tenantId\":\"fcqdpsq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rypqlmfeo\":{\"principalId\":\"vuoy\",\"clientId\":\"ccelve\"},\"pg\":{\"principalId\":\"rqwky\",\"clientId\":\"ob\"},\"fkbw\":{\"principalId\":\"dkow\",\"clientId\":\"bqpc\"}}},\"etag\":\"snjvcdwxlpqekftn\",\"location\":\"tjsyin\",\"tags\":{\"gikdgsz\":\"qatmtdhtmdvy\"},\"id\":\"w\",\"name\":\"birryuzhl\",\"type\":\"kj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,13 +36,13 @@ public final class AzureMonitorWorkspacesListMockTests {
         PagedIterable<AzureMonitorWorkspaceResource> response
             = manager.azureMonitorWorkspaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("woyuhhziuief", response.iterator().next().location());
-        Assertions.assertEquals("hdmsmlmzqhoftrm", response.iterator().next().tags().get("equi"));
-        Assertions
-            .assertFalse(response.iterator().next().properties().metrics().enableAccessUsingResourcePermissions());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+        Assertions.assertEquals("tjsyin", response.iterator().next().location());
+        Assertions.assertEquals("qatmtdhtmdvy", response.iterator().next().tags().get("gikdgsz"));
+        Assertions.assertTrue(response.iterator().next().properties().metrics().enableAccessUsingResourcePermissions());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("gvvs",
+            response.iterator().next().properties().actions().defaultActionGroups().get(0).id());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2026-10-09)
 
 - Azure Resource Manager Commvault Content Store client library for Java. This package contains Microsoft Azure SDK for Commvault Content Store Management SDK.  Package api-version 2026-09-30. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

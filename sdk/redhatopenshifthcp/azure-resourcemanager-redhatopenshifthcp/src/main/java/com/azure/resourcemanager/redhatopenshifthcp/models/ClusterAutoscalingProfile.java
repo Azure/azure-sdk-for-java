@@ -18,14 +18,15 @@ import java.io.IOException;
 @Fluent
 public final class ClusterAutoscalingProfile implements JsonSerializable<ClusterAutoscalingProfile> {
     /*
-     * maxNodesTotal is the maximum allowable number of nodes for the Autoscaler scale out to be operational.
-     * The autoscaler will not grow the cluster beyond this number. If omitted, the autoscaler will not have a maximum
-     * limit.
+     * maxNodesTotal is the maximum allowable number of nodes. The autoscaler will not grow the cluster beyond this
+     * number.
+     * If omitted, the autoscaler will not have a maximum limit.
      */
     private Integer maxNodesTotal;
 
     /*
-     * maxPodGracePeriod is the maximum seconds to wait for graceful pod termination before scaling down a NodePool.
+     * maxPodGracePeriodSeconds is the maximum amount of time in seconds to wait for graceful pod termination before
+     * scaling down a NodePool.
      * The default is 600 seconds.
      */
     private Integer maxPodGracePeriodSeconds;
@@ -52,10 +53,9 @@ public final class ClusterAutoscalingProfile implements JsonSerializable<Cluster
     }
 
     /**
-     * Get the maxNodesTotal property: maxNodesTotal is the maximum allowable number of nodes for the Autoscaler scale
-     * out to be operational.
-     * The autoscaler will not grow the cluster beyond this number. If omitted, the autoscaler will not have a maximum
-     * limit.
+     * Get the maxNodesTotal property: maxNodesTotal is the maximum allowable number of nodes. The autoscaler will not
+     * grow the cluster beyond this number.
+     * If omitted, the autoscaler will not have a maximum limit.
      * 
      * @return the maxNodesTotal value.
      */
@@ -64,10 +64,9 @@ public final class ClusterAutoscalingProfile implements JsonSerializable<Cluster
     }
 
     /**
-     * Set the maxNodesTotal property: maxNodesTotal is the maximum allowable number of nodes for the Autoscaler scale
-     * out to be operational.
-     * The autoscaler will not grow the cluster beyond this number. If omitted, the autoscaler will not have a maximum
-     * limit.
+     * Set the maxNodesTotal property: maxNodesTotal is the maximum allowable number of nodes. The autoscaler will not
+     * grow the cluster beyond this number.
+     * If omitted, the autoscaler will not have a maximum limit.
      * 
      * @param maxNodesTotal the maxNodesTotal value to set.
      * @return the ClusterAutoscalingProfile object itself.
@@ -78,8 +77,8 @@ public final class ClusterAutoscalingProfile implements JsonSerializable<Cluster
     }
 
     /**
-     * Get the maxPodGracePeriodSeconds property: maxPodGracePeriod is the maximum seconds to wait for graceful pod
-     * termination before scaling down a NodePool.
+     * Get the maxPodGracePeriodSeconds property: maxPodGracePeriodSeconds is the maximum amount of time in seconds to
+     * wait for graceful pod termination before scaling down a NodePool.
      * The default is 600 seconds.
      * 
      * @return the maxPodGracePeriodSeconds value.
@@ -89,8 +88,8 @@ public final class ClusterAutoscalingProfile implements JsonSerializable<Cluster
     }
 
     /**
-     * Set the maxPodGracePeriodSeconds property: maxPodGracePeriod is the maximum seconds to wait for graceful pod
-     * termination before scaling down a NodePool.
+     * Set the maxPodGracePeriodSeconds property: maxPodGracePeriodSeconds is the maximum amount of time in seconds to
+     * wait for graceful pod termination before scaling down a NodePool.
      * The default is 600 seconds.
      * 
      * @param maxPodGracePeriodSeconds the maxPodGracePeriodSeconds value to set.

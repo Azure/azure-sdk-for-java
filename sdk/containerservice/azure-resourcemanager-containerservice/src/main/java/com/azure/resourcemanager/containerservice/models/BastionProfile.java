@@ -43,6 +43,7 @@ public final class BastionProfile implements JsonSerializable<BastionProfile> {
     private Integer scaleUnits;
 
     /*
+     * 
      * The resource ID of the public IP address associated with the managed bastion.
      * 
      * When provided during creation, the managed bastion will reference this existing public IP address instead of
@@ -142,7 +143,8 @@ public final class BastionProfile implements JsonSerializable<BastionProfile> {
     }
 
     /**
-     * Get the publicIpAddressId property: The resource ID of the public IP address associated with the managed bastion.
+     * Get the publicIpAddressId property:
+     * The resource ID of the public IP address associated with the managed bastion.
      * 
      * When provided during creation, the managed bastion will reference this existing public IP address instead of
      * creating a new one.
@@ -160,7 +162,8 @@ public final class BastionProfile implements JsonSerializable<BastionProfile> {
     }
 
     /**
-     * Set the publicIpAddressId property: The resource ID of the public IP address associated with the managed bastion.
+     * Set the publicIpAddressId property:
+     * The resource ID of the public IP address associated with the managed bastion.
      * 
      * When provided during creation, the managed bastion will reference this existing public IP address instead of
      * creating a new one.

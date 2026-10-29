@@ -25,7 +25,7 @@ public final class IssuesAddOrUpdateAlertsWithResponseMockTests {
     @Test
     public void testAddOrUpdateAlertsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"ihhyuspskasd\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"mfwdgzxu\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-09-15T01:19:16Z\",\"lastModifiedAt\":\"2021-05-28T22:35:34Z\"},{\"id\":\"pamrsr\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"zvxurisjnhny\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-05-07T06:22:43Z\",\"lastModifiedAt\":\"2021-05-25T13:24:42Z\"},{\"id\":\"qjzgxmrhublw\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"esutrgjupauutpw\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-02-03T03:54:48Z\",\"lastModifiedAt\":\"2021-06-20T00:08:29Z\"},{\"id\":\"hej\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"w\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-03-21T20:16:43Z\",\"lastModifiedAt\":\"2021-01-13T04:39:37Z\"}]}";
+            = "{\"value\":[{\"id\":\"vizqzdwl\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"lyoupfgfbkju\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-04-30T06:19:59Z\",\"lastModifiedAt\":\"2021-08-20T21:43:14Z\"},{\"id\":\"gkfmins\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"wzf\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-27T16:45:57Z\",\"lastModifiedAt\":\"2020-12-29T13:16:58Z\"},{\"id\":\"t\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"lahb\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-04-27T23:48:58Z\",\"lastModifiedAt\":\"2021-11-02T05:48:24Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,13 @@ public final class IssuesAddOrUpdateAlertsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RelatedAlerts response = manager.issues()
-            .addOrUpdateAlertsWithResponse("cy", "wzdgirujbzbo", "vzzbtdcq",
+            .addOrUpdateAlertsWithResponse("gyavu", "pthjoxo", "smsks",
                 new RelatedAlertsInner()
-                    .withValue(Arrays.asList(new RelatedAlert().withId("niyujv").withRelevance(Relevance.NONE),
-                        new RelatedAlert().withId("fssnrbgyefrymsga").withRelevance(Relevance.IRRELEVANT),
-                        new RelatedAlert().withId("ymoxoftpipiwyczu").withRelevance(Relevance.IRRELEVANT))),
+                    .withValue(Arrays.asList(new RelatedAlert().withId("iml").withRelevance(Relevance.NONE))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ihhyuspskasd", response.value().get(0).id());
+        Assertions.assertEquals("vizqzdwl", response.value().get(0).id());
         Assertions.assertEquals(Relevance.NONE, response.value().get(0).relevance());
     }
 }

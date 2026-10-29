@@ -15,20 +15,20 @@ public final class WinRMConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WinRMConfiguration model = BinaryData.fromString(
-            "{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"cbpwxqpsrknft\"},{\"protocol\":\"Https\",\"certificateUrl\":\"iuhprwmdyvxqta\"},{\"protocol\":\"Https\",\"certificateUrl\":\"wroyqbexrmcq\"}]}")
+            "{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"gw\"},{\"protocol\":\"Https\",\"certificateUrl\":\"v\"},{\"protocol\":\"Https\",\"certificateUrl\":\"begibtnmxiebwwa\"}]}")
             .toObject(WinRMConfiguration.class);
         Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
-        Assertions.assertEquals("cbpwxqpsrknft", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals("gw", model.listeners().get(0).certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WinRMConfiguration model = new WinRMConfiguration().withListeners(
-            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("cbpwxqpsrknft"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("iuhprwmdyvxqta"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("wroyqbexrmcq")));
+        WinRMConfiguration model = new WinRMConfiguration()
+            .withListeners(Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("gw"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("v"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("begibtnmxiebwwa")));
         model = BinaryData.fromObject(model).toObject(WinRMConfiguration.class);
         Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
-        Assertions.assertEquals("cbpwxqpsrknft", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals("gw", model.listeners().get(0).certificateUrl());
     }
 }

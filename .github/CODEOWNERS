@@ -85,9 +85,6 @@
 # Client Libraries
 ####################
 
-# PRLabel: %AgriFood
-/sdk/agrifood/                                                     @Azure/azure-java-sdk
-
 # PRLabel: %AI
 /sdk/ai/                                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
@@ -183,9 +180,6 @@
 # AzureSdkOwners:                                                  @alzimmermsft @jonathangiles @vcolin7
 # ServiceLabel: %clientcore
 
-# PRLabel: %Cognitive - Anomaly Detector
-/sdk/anomalydetector/                                              @mengaims @Azure/azure-java-sdk
-
 # ServiceLabel: %Cognitive - Anomaly Detector
 # ServiceOwners:                                                   @bowgong @yingqunpku
 
@@ -230,9 +224,6 @@
 
 # PRLabel: %Communication - Call Automation
 /sdk/communication/azure-communication-callautomation/             @fhaghbin-msft @juntuchen-msft @minwoolee-msft @v-dharmarajv @Azure/azure-java-sdk
-
-# PRLabel: %Communication - Calling Server
-/sdk/communication/azure-communication-callingserver/              @minwoolee-msft @Azure/azure-java-sdk
 
 # PRLabel: %Communication - Chat
 /sdk/communication/azure-communication-chat/                       @ankitarorabit @Azure/azure-sdk-communication-code-reviewers @minnieliu @Azure/azure-java-sdk
@@ -369,9 +360,6 @@
 # ServiceLabel: %Load Testing
 # AzureSdkOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
 
-# PRLabel: %Models Repository
-/sdk/modelsrepository/                                             @abhipsaMisra @andyk-ms @brycewang-microsoft @digimaun @timtay-microsoft @Azure/azure-java-sdk
-
 # PRLabel: %Monitor
 /sdk/monitor/azure-monitor-ingestion*/                             @Azure/azure-sdk-write-monitor-data-plane @jairmyree @Azure/azure-java-sdk
 
@@ -453,15 +441,15 @@
 # ServiceOwners:                                                   @efrainretana @lc48t @mattgotteiner
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @Azure/azure-java-sdk
+/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @Azure/azure-java-sdk @pranz1996
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @j7nw4r @vinaysurya @Azure/azure-java-sdk
+/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @j7nw4r @vinaysurya @Azure/azure-java-sdk @pranz1996
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @pranz1996
 
-# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft @j7nw4r
+# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft @j7nw4r @pranz1996
 # ServiceLabel: %Service Bus %Track 1
 
 # PRLabel: %Speech Transcription

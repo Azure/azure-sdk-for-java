@@ -13,15 +13,15 @@ public final class WorkloadItemResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadItemResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"klvxwmyg\",\"tags\":{\"sze\":\"gpqch\",\"rxgibbd\":\"nnbj\",\"kokwbqplhlvnu\":\"xconfozauors\",\"phwzsoldweyuqdu\":\"epzl\"},\"eTag\":\"mnnrwr\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"rk\",\"workloadType\":\"lywjhh\",\"friendlyName\":\"nhxmsi\",\"protectionState\":\"Invalid\"},\"id\":\"iloxggdufiq\",\"name\":\"dieuzaofj\",\"type\":\"hvcyyysfg\"},{\"location\":\"tcubiipuipwoqonm\",\"tags\":{\"shqvcimpev\":\"ekni\",\"bywdxsmicc\":\"gmblrri\",\"zdvoqytibyowbb\":\"rwfscjfnynszquj\"},\"eTag\":\"yavutpthjoxois\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"sbpimlq\",\"workloadType\":\"jxkcgxxlxsff\",\"friendlyName\":\"vizqzdwl\",\"protectionState\":\"NotProtected\"},\"id\":\"oupfgfb\",\"name\":\"jub\",\"type\":\"yhgk\"}],\"nextLink\":\"in\"}")
+            "{\"value\":[{\"location\":\"fzsvtuikzh\",\"tags\":{\"nzrdpsovwxz\":\"glcfhmlrqryxyn\",\"hv\":\"ptgoeiybbabp\",\"igjkskyrio\":\"slkvntjl\",\"mifrygznmma\":\"vzidsxwaab\"},\"eTag\":\"izkzobgo\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"hsln\",\"workloadType\":\"xieixynllxec\",\"friendlyName\":\"rojphslhcawjutif\",\"protectionState\":\"Protected\"},\"id\":\"vigorqjbttzhragl\",\"name\":\"afhonqj\",\"type\":\"jeick\"},{\"location\":\"vcpopmxe\",\"tags\":{\"jedexxmlf\":\"clt\",\"uamwabzxrvxc\":\"kqscazuawxtzx\",\"sphaivmxyasflvg\":\"s\"},\"eTag\":\"zwywako\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"nsmjbl\",\"workloadType\":\"jhlnymzotqyryu\",\"friendlyName\":\"bmqqvxmvw\",\"protectionState\":\"ProtectionFailed\"},\"id\":\"yxonsupe\",\"name\":\"jlzqnhc\",\"type\":\"sqltnzo\"},{\"location\":\"gsxgnxfyqon\",\"tags\":{\"dofdbxiqx\":\"ox\",\"htmwwinh\":\"iiqbi\"},\"eTag\":\"f\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"fvwbcb\",\"workloadType\":\"mbnkb\",\"friendlyName\":\"qvxkd\",\"protectionState\":\"Protecting\"},\"id\":\"heb\",\"name\":\"tswbzuwfmd\",\"type\":\"ragegi\"},{\"location\":\"cjfelisdjubgg\",\"tags\":{\"cyrcmjdmspo\":\"gkxkbsazgakg\",\"rylniofrzg\":\"apvu\",\"bcuiiz\":\"zjedmstkvnlv\"},\"eTag\":\"twfans\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"dibmikostbzbkiwb\",\"workloadType\":\"n\",\"friendlyName\":\"phzfylsgcrp\",\"protectionState\":\"Protected\"},\"id\":\"nezzcezelfwyfwlw\",\"name\":\"jwetnpsihcla\",\"type\":\"zvaylptrsqqw\"}],\"nextLink\":\"cmwqkchcxwa\"}")
             .toObject(WorkloadItemResourceList.class);
-        Assertions.assertEquals("in", model.nextLink());
-        Assertions.assertEquals("klvxwmyg", model.value().get(0).location());
-        Assertions.assertEquals("gpqch", model.value().get(0).tags().get("sze"));
-        Assertions.assertEquals("mnnrwr", model.value().get(0).eTag());
-        Assertions.assertEquals("rk", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("lywjhh", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("nhxmsi", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("cmwqkchcxwa", model.nextLink());
+        Assertions.assertEquals("fzsvtuikzh", model.value().get(0).location());
+        Assertions.assertEquals("glcfhmlrqryxyn", model.value().get(0).tags().get("nzrdpsovwxz"));
+        Assertions.assertEquals("izkzobgo", model.value().get(0).eTag());
+        Assertions.assertEquals("hsln", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("xieixynllxec", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("rojphslhcawjutif", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.value().get(0).properties().protectionState());
     }
 }

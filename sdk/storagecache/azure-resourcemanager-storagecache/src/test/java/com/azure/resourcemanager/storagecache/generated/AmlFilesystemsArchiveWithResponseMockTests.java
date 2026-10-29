@@ -29,7 +29,7 @@ public final class AmlFilesystemsArchiveWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.amlFilesystems()
-            .archiveWithResponse("b", "yvudtjuewbci", new AmlFilesystemArchiveInfo().withFilesystemPath("uuwhcjyxcc"),
+            .archiveWithResponse("yqxtjjfzql", "hycav", new AmlFilesystemArchiveInfo().withFilesystemPath("ggxdb"),
                 com.azure.core.util.Context.NONE);
 
     }
