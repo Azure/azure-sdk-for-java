@@ -866,7 +866,9 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateMember(TypeDeclaration<?> type, String member, String description, Logger logger) {
-        String fieldName = toCamelCase(member);
+        String fieldName = type.getFields().stream()
+            .flatMap(field -> field.getVariables().stream())
+            .anyMatch(variable -> variable.getNameAsString().equals(member)) ? member : toCamelCase(member);
         boolean found = false;
 
         for (FieldDeclaration field : type.getFields()) {

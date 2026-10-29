@@ -18,6 +18,10 @@ import java.util.Map;
 /**
  * Settings for transcribing input audio, including the transcription model, Custom Speech deployments,
  * and phrase hints.
+ * When `model` is `azure-speech-streaming`, transcription is supported for cascaded text-model
+ * conversations only (not realtime speech-to-speech models), requires a nonempty `language` such as
+ * `en-US` (comma-separated locales are supported), and supports `custom_speech`, `phrase_list`, and
+ * `profanity_filter`.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -26,7 +30,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /*
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      */
     @Generated
     private String language;
@@ -62,6 +68,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
 
     /*
      * The transcription model identifier. Configure customer custom speech deployments in `custom_speech`.
+     * `azure-speech-streaming` is for cascaded text-model conversations only (not realtime speech-to-speech models),
+     * requires a nonempty `language` such as `en-US` (comma-separated locales are supported), and supports
+     * `custom_speech`, `phrase_list`, and `profanity_filter`.
      */
     @Generated
     private final VoiceAgentInputTranscriptionModel model;
@@ -91,7 +100,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Get the language property: The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      *
      * @return the language value.
      */
@@ -103,7 +114,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Set the language property: The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      *
      * @param language the language value to set.
      * @return the VoiceAgentInputTranscription object itself.
@@ -212,7 +225,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
 
     /**
      * Get the model property: The transcription model identifier. Configure customer custom speech deployments in
-     * `custom_speech`.
+     * `custom_speech`. `azure-speech-streaming` is for cascaded text-model conversations only (not realtime
+     * speech-to-speech models), requires a nonempty `language` such as `en-US` (comma-separated locales are supported),
+     * and supports `custom_speech`, `phrase_list`, and `profanity_filter`.
      *
      * @return the model value.
      */
@@ -361,7 +376,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
 
     /*
      * Controls how profanity is handled in input transcripts. Supported only with managed Azure Speech
-     * (`azure-speech`), including Custom Speech.
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
      * You cannot change the mode during a session.
      * Filtering affects transcript events and the text sent to cascaded models. It does not change input
@@ -374,7 +389,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Get the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
      * managed Azure Speech
-     * (`azure-speech`), including Custom Speech.
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
      * You cannot change the mode during a session.
      * Filtering affects transcript events and the text sent to cascaded models. It does not change input
@@ -391,7 +406,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Set the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
      * managed Azure Speech
-     * (`azure-speech`), including Custom Speech.
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
      * Set this property before the session starts. If omitted, the transcription provider's default applies.
      * You cannot change the mode during a session.
      * Filtering affects transcript events and the text sent to cascaded models. It does not change input
