@@ -1,15 +1,25 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for Vert.x 5.1.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.3.0 (2026-10-27)
+
+### Features Added
+
+- Added support for Vert.x 5.1.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
+
+### Bugs Fixed
+
+- Fixed HTTP/2 requests with an explicit `Host` header sending a conflicting URL-derived `:authority`. The override
+  now passes the `Host` value unchanged as `:authority` while the connection still uses the request URL.
 - Fixed streaming responses reading and buffering data without downstream demand. Cancelling response consumption
   now resets the HTTP exchange without closing unrelated HTTP/2 streams.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
@@ -27,6 +37,7 @@
 
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 - Upgraded `vertx-codegen` and `vertx-core` from `4.5.32` to `4.5.35`.
 
 ## 1.2.0 (2026-09-29)

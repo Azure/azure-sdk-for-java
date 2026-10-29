@@ -43,7 +43,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePr
  */
 public final class DpsCertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCertificateCreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/DPSCertificateCreateOrUpdate.json
      */
     /**
      * Sample code: DPSCreateOrUpdateCertificate.
@@ -70,7 +70,7 @@ public final class DpsCertificateCreateOrUpdateSamples {
  */
 public final class DpsCertificateDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSDeleteCertificate.json
+     * x-ms-original-file: 2026-11-01/DPSDeleteCertificate.json
      */
     /**
      * Sample code: DPSDeleteCertificate.
@@ -95,7 +95,7 @@ public final class DpsCertificateDeleteSamples {
  */
 public final class DpsCertificateGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGenerateVerificationCode.json
+     * x-ms-original-file: 2026-11-01/DPSGenerateVerificationCode.json
      */
     /**
      * Sample code: DPSGenerateVerificationCode.
@@ -120,7 +120,7 @@ public final class DpsCertificateGenerateVerificationCodeSamples {
  */
 public final class DpsCertificateGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetCertificate.json
+     * x-ms-original-file: 2026-11-01/DPSGetCertificate.json
      */
     /**
      * Sample code: DPSGetCertificate.
@@ -143,7 +143,7 @@ public final class DpsCertificateGetSamples {
  */
 public final class DpsCertificateListSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetCertificates.json
+     * x-ms-original-file: 2026-11-01/DPSGetCertificates.json
      */
     /**
      * Sample code: DPSGetCertificates.
@@ -167,7 +167,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationC
  */
 public final class DpsCertificateVerifyCertificateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSVerifyCertificate.json
+     * x-ms-original-file: 2026-11-01/DPSVerifyCertificate.json
      */
     /**
      * Sample code: DPSVerifyCertificate.
@@ -192,9 +192,9 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInpu
 /**
  * Samples for IotDpsResource CheckProvisioningServiceNameAvailability.
  */
-public final class IotDpsResourceCheckProvisioningServiceNameAvailabiSamples {
+public final class IotDpsResourceCheckProvisioningServiceNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCheckNameAvailability.json
+     * x-ms-original-file: 2026-11-01/DPSCheckNameAvailability.json
      */
     /**
      * Sample code: DPSCheckName.
@@ -230,7 +230,7 @@ import java.util.Map;
  */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthTrue.json
+     * x-ms-original-file: 2026-11-01/DPSCreate_DisableLocalAuthTrue.json
      */
     /**
      * Sample code: DPSCreate_DisableLocalAuthTrue.
@@ -251,7 +251,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSUpdate_DisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/DPSUpdate_DisableLocalAuth.json
      */
     /**
      * Sample code: DPSUpdate_DisableLocalAuth.
@@ -271,7 +271,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSUpdate.json
+     * x-ms-original-file: 2026-11-01/DPSUpdate.json
      */
     /**
      * Sample code: DPSUpdate.
@@ -295,7 +295,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate.json
+     * x-ms-original-file: 2026-11-01/DPSCreate.json
      */
     /**
      * Sample code: DPSCreate.
@@ -314,7 +314,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateWithIotHub.json
+     * x-ms-original-file: 2026-11-01/DPSCreateWithIotHub.json
      */
     /**
      * Sample code: DPSCreateWithIotHub.
@@ -346,7 +346,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthFalse.json
+     * x-ms-original-file: 2026-11-01/DPSCreate_DisableLocalAuthFalse.json
      */
     /**
      * Sample code: DPSCreate_DisableLocalAuthFalse.
@@ -367,7 +367,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateWithNamespace.json
+     * x-ms-original-file: 2026-11-01/DPSCreateWithNamespace.json
      */
     /**
      * Sample code: DPSCreateWithNamespace.
@@ -410,9 +410,9 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkSe
 /**
  * Samples for IotDpsResource CreateOrUpdatePrivateEndpointConnection.
  */
-public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectSamples {
+public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateOrUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-01/DPSCreateOrUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_CreateOrUpdate.
@@ -440,7 +440,7 @@ public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectSamples {
  */
 public final class IotDpsResourceDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSDelete.json
+     * x-ms-original-file: 2026-11-01/DPSDelete.json
      */
     /**
      * Sample code: DPSDelete.
@@ -462,7 +462,7 @@ public final class IotDpsResourceDeleteSamples {
  */
 public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-01/DPSDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
@@ -486,7 +486,7 @@ public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
  */
 public final class IotDpsResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGet_DisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/DPSGet_DisableLocalAuth.json
      */
     /**
      * Sample code: DPSGet_DisableLocalAuth.
@@ -501,7 +501,7 @@ public final class IotDpsResourceGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSGet.json
+     * x-ms-original-file: 2026-11-01/DPSGet.json
      */
     /**
      * Sample code: DPSGet.
@@ -509,6 +509,21 @@ public final class IotDpsResourceGetByResourceGroupSamples {
      * @param manager Entry point to IotDpsManager.
      */
     public static void dPSGet(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/DPSGet_UserAssignedNamespaceIdentity.json
+     */
+    /**
+     * Sample code: DPSGetWithUserAssignedNamespaceIdentity.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void dPSGetWithUserAssignedNamespaceIdentity(
+        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
             .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);
@@ -524,7 +539,7 @@ public final class IotDpsResourceGetByResourceGroupSamples {
  */
 public final class IotDpsResourceGetOperationResultSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetOperationResult.json
+     * x-ms-original-file: 2026-11-01/DPSGetOperationResult.json
      */
     /**
      * Sample code: DPSGetOperationResult.
@@ -548,7 +563,7 @@ public final class IotDpsResourceGetOperationResultSamples {
  */
 public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-01/DPSGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -572,7 +587,7 @@ public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
  */
 public final class IotDpsResourceGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetPrivateLinkResources.json
+     * x-ms-original-file: 2026-11-01/DPSGetPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -596,7 +611,7 @@ public final class IotDpsResourceGetPrivateLinkResourcesSamples {
  */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSListBySubscription.json
+     * x-ms-original-file: 2026-11-01/DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.
@@ -618,7 +633,7 @@ public final class IotDpsResourceListSamples {
  */
 public final class IotDpsResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSListByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/DPSListByResourceGroup.json
      */
     /**
      * Sample code: DPSListByResourceGroup.
@@ -640,7 +655,7 @@ public final class IotDpsResourceListByResourceGroupSamples {
  */
 public final class IotDpsResourceListKeysSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSListKeys.json
+     * x-ms-original-file: 2026-11-01/DPSListKeys.json
      */
     /**
      * Sample code: DPSListKeys.
@@ -662,7 +677,7 @@ public final class IotDpsResourceListKeysSamples {
  */
 public final class IotDpsResourceListKeysForKeyNameSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetKey.json
+     * x-ms-original-file: 2026-11-01/DPSGetKey.json
      */
     /**
      * Sample code: DPSGetKey.
@@ -685,7 +700,7 @@ public final class IotDpsResourceListKeysForKeyNameSamples {
  */
 public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-11-01/DPSListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
@@ -709,7 +724,7 @@ public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
  */
 public final class IotDpsResourceListPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSListPrivateLinkResources.json
+     * x-ms-original-file: 2026-11-01/DPSListPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -733,7 +748,7 @@ public final class IotDpsResourceListPrivateLinkResourcesSamples {
  */
 public final class IotDpsResourceListValidSkusSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetValidSku.json
+     * x-ms-original-file: 2026-11-01/DPSGetValidSku.json
      */
     /**
      * Sample code: DPSGetValidSku.
@@ -759,7 +774,7 @@ import java.util.Map;
  */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSPatch_DisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/DPSPatch_DisableLocalAuth.json
      */
     /**
      * Sample code: DPSPatch_DisableLocalAuth.
@@ -776,7 +791,7 @@ public final class IotDpsResourceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSPatch.json
+     * x-ms-original-file: 2026-11-01/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.
@@ -813,7 +828,7 @@ public final class IotDpsResourceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSOperations.json
+     * x-ms-original-file: 2026-11-01/DPSOperations.json
      */
     /**
      * Sample code: DPSOperations.
