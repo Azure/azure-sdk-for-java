@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Encapsulates information regarding snapshot recovery for SAP Hana.
@@ -25,6 +26,11 @@ public final class SnapshotRestoreParameters implements JsonSerializable<Snapsho
      * The logPointInTimeForDBRecovery property.
      */
     private String logPointInTimeForDBRecovery;
+
+    /*
+     * List of disk ARM IDs the customer should detach in case of filesystem clash.
+     */
+    private List<String> disksToDetachOnClash;
 
     /**
      * Creates an instance of SnapshotRestoreParameters class.
@@ -73,6 +79,28 @@ public final class SnapshotRestoreParameters implements JsonSerializable<Snapsho
     }
 
     /**
+     * Get the disksToDetachOnClash property: List of disk ARM IDs the customer should detach in case of filesystem
+     * clash.
+     * 
+     * @return the disksToDetachOnClash value.
+     */
+    public List<String> disksToDetachOnClash() {
+        return this.disksToDetachOnClash;
+    }
+
+    /**
+     * Set the disksToDetachOnClash property: List of disk ARM IDs the customer should detach in case of filesystem
+     * clash.
+     * 
+     * @param disksToDetachOnClash the disksToDetachOnClash value to set.
+     * @return the SnapshotRestoreParameters object itself.
+     */
+    public SnapshotRestoreParameters withDisksToDetachOnClash(List<String> disksToDetachOnClash) {
+        this.disksToDetachOnClash = disksToDetachOnClash;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +108,8 @@ public final class SnapshotRestoreParameters implements JsonSerializable<Snapsho
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("skipAttachAndMount", this.skipAttachAndMount);
         jsonWriter.writeStringField("logPointInTimeForDBRecovery", this.logPointInTimeForDBRecovery);
+        jsonWriter.writeArrayField("disksToDetachOnClash", this.disksToDetachOnClash,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +133,9 @@ public final class SnapshotRestoreParameters implements JsonSerializable<Snapsho
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("logPointInTimeForDBRecovery".equals(fieldName)) {
                     deserializedSnapshotRestoreParameters.logPointInTimeForDBRecovery = reader.getString();
+                } else if ("disksToDetachOnClash".equals(fieldName)) {
+                    List<String> disksToDetachOnClash = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSnapshotRestoreParameters.disksToDetachOnClash = disksToDetachOnClash;
                 } else {
                     reader.skipChildren();
                 }

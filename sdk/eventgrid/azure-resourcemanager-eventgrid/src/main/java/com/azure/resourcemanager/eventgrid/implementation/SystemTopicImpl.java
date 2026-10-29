@@ -152,8 +152,12 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
     SystemTopicImpl(SystemTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.systemTopicName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "systemTopics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}",
+            "resourceGroupName");
+        this.systemTopicName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}",
+            "systemTopicName");
     }
 
     public SystemTopic refresh() {

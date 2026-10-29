@@ -18,13 +18,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockedStatic;
 
 import javax.net.ssl.ExtendedSSLSession;
+import javax.net.ssl.HandshakeCompletedListener;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -33,10 +34,15 @@ import javax.net.ssl.SSLEngineResult;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLParameters;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSessionContext;
+import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.TrustManagerFactorySpi;
+import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
@@ -46,10 +52,16 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.security.AlgorithmConstraints;
+import java.security.AlgorithmParameters;
+import java.security.CryptoPrimitive;
+import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
-import java.security.NoSuchProviderException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -57,6 +69,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -70,12 +84,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
+@Isolated("Temporarily replaces JSSE security providers")
 public class KeyVaultTrustManagerTest {
     private static final String MATCHING_HOST = "service.example";
     private static final String DIFFERENT_HOST = "other.example";
@@ -238,9 +248,8 @@ public class KeyVaultTrustManagerTest {
     void rejectsMissingHandshakeSession(TrustSource source) throws Exception {
         X509ExtendedTrustManager manager = trustManager(source);
         X509Certificate[] chain = { leafCertificate, rootCertificate };
-        SSLEngine engine = mock(SSLEngine.class);
-        SSLSocket socket = mock(SSLSocket.class);
-        when(socket.isConnected()).thenReturn(true);
+        SSLEngine engine = new TestEngine(null, new SSLParameters());
+        SSLSocket socket = new TestSocket(null, new SSLParameters());
         assertThrows(CertificateException.class, () -> manager.checkServerTrusted(chain, "RSA", engine));
         assertThrows(CertificateException.class, () -> manager.checkClientTrusted(chain, "RSA", engine));
         assertThrows(CertificateException.class, () -> manager.checkServerTrusted(chain, "RSA", socket));
@@ -303,7 +312,23 @@ public class KeyVaultTrustManagerTest {
     @MethodSource("contextualChecks")
     void preservesAlgorithmConstraints(TrustSource source, boolean client, boolean engine) throws Exception {
         X509ExtendedTrustManager manager = trustManager(source);
-        AlgorithmConstraints rejectAllAlgorithms = mock(AlgorithmConstraints.class);
+        AlgorithmConstraints rejectAllAlgorithms = new AlgorithmConstraints() {
+            @Override
+            public boolean permits(Set<CryptoPrimitive> primitives, String algorithm, AlgorithmParameters parameters) {
+                return false;
+            }
+
+            @Override
+            public boolean permits(Set<CryptoPrimitive> primitives, Key key) {
+                return false;
+            }
+
+            @Override
+            public boolean permits(Set<CryptoPrimitive> primitives, String algorithm, Key key,
+                AlgorithmParameters parameters) {
+                return false;
+            }
+        };
         KeyStore trustStore = emptyKeyStore();
         trustStore.setCertificateEntry("trusted",
             source == TrustSource.CA
@@ -327,14 +352,13 @@ public class KeyVaultTrustManagerTest {
     @Test
     void rejectsProviderWithoutExtendedTrustManager() throws Exception {
         KeyStore trustStore = emptyKeyStore();
-        TrustManagerFactory factory = mock(TrustManagerFactory.class);
-        when(factory.getTrustManagers()).thenReturn(new TrustManager[] { mock(X509TrustManager.class) });
-        try (MockedStatic<TrustManagerFactory> factories = mockStatic(TrustManagerFactory.class)) {
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "SunJSSE")).thenReturn(factory);
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "IbmJSSE")).thenReturn(factory);
+        TrustManager[] managers = { new BasicTrustManager() };
+        try (ControlledProviders providers = new ControlledProviders(managers, managers, false)) {
             IllegalStateException failure
                 = assertThrows(IllegalStateException.class, () -> new KeyVaultTrustManager(trustStore));
             assertTrue(failure.getCause() instanceof CertificateException);
+            assertEquals(2, providers.initializations);
+            assertSame(trustStore, providers.initializedStore);
         }
     }
 
@@ -342,71 +366,59 @@ public class KeyVaultTrustManagerTest {
     void preservesValidationFailureWhenFallbackInitializationFails() throws Exception {
         KeyStore trustStore = emptyKeyStore();
         trustStore.setCertificateEntry("trusted", leafCertificate);
-        TrustManagerFactory factory = mock(TrustManagerFactory.class);
-        X509ExtendedTrustManager delegate = mock(X509ExtendedTrustManager.class);
-        when(factory.getTrustManagers()).thenReturn(new TrustManager[] { delegate });
         X509Certificate[] chain = { leafCertificate, rootCertificate };
         CertificateException original = new CertificateException("Initial validation failed");
-        doThrow(original).when(delegate).checkServerTrusted(chain, "RSA", (SSLEngine) null);
-        try (MockedStatic<TrustManagerFactory> factories = mockStatic(TrustManagerFactory.class)) {
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "SunJSSE"))
-                .thenReturn(factory)
-                .thenThrow(new NoSuchProviderException("SunJSSE unavailable"));
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "IbmJSSE"))
-                .thenThrow(new NoSuchProviderException("IbmJSSE unavailable"));
+        TestTrustManager delegate = new TestTrustManager(original);
+        try (ControlledProviders providers = new ControlledProviders(new TrustManager[] { delegate }, null, true)) {
             KeyVaultTrustManager manager = new KeyVaultTrustManager(trustStore);
             CertificateException failure = assertThrows(CertificateException.class,
                 () -> manager.checkServerTrusted(chain, "RSA", (SSLEngine) null));
             assertTrue(Arrays.asList(failure.getSuppressed()).contains(original));
+            assertEquals(1, providers.initializations);
+            assertSame(trustStore, providers.initializedStore);
         }
     }
 
     @Test
     void preservesOriginalFailureWhenFallbackCertificateIsAbsent() throws Exception {
         KeyStore trustStore = emptyKeyStore();
-        TrustManagerFactory factory = mock(TrustManagerFactory.class);
-        X509ExtendedTrustManager delegate = mock(X509ExtendedTrustManager.class);
-        when(factory.getTrustManagers()).thenReturn(new TrustManager[] { delegate });
         X509Certificate[] chain = { leafCertificate, rootCertificate };
         CertificateException original = new CertificateException("Initial validation failed");
-        doThrow(original).when(delegate).checkServerTrusted(chain, "RSA", (SSLEngine) null);
-        try (MockedStatic<TrustManagerFactory> factories = mockStatic(TrustManagerFactory.class)) {
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "SunJSSE")).thenReturn(factory);
+        TestTrustManager delegate = new TestTrustManager(original);
+        try (ControlledProviders providers = new ControlledProviders(new TrustManager[] { delegate }, null, false)) {
             KeyVaultTrustManager manager = new KeyVaultTrustManager(trustStore);
             assertSame(original, assertThrows(CertificateException.class,
                 () -> manager.checkServerTrusted(chain, "RSA", (SSLEngine) null)));
+            assertEquals(1, providers.initializations);
+            assertSame(trustStore, providers.initializedStore);
         }
     }
 
     @Test
     void preservesIbmProviderFallback() throws Exception {
         KeyStore trustStore = emptyKeyStore();
-        TrustManagerFactory factory = mock(TrustManagerFactory.class);
-        X509ExtendedTrustManager delegate = mock(X509ExtendedTrustManager.class);
-        when(factory.getTrustManagers()).thenReturn(new TrustManager[] { mock(X509TrustManager.class), delegate });
-        try (MockedStatic<TrustManagerFactory> factories = mockStatic(TrustManagerFactory.class)) {
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "SunJSSE"))
-                .thenThrow(new NoSuchProviderException("SunJSSE unavailable"));
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "IbmJSSE")).thenReturn(factory);
+        TestTrustManager delegate = new TestTrustManager(null);
+        try (ControlledProviders providers
+            = new ControlledProviders(null, new TrustManager[] { new BasicTrustManager(), delegate }, false)) {
             KeyVaultTrustManager manager = new KeyVaultTrustManager(trustStore);
             X509Certificate[] chain = { leafCertificate, rootCertificate };
             manager.checkClientTrusted(chain, "RSA", (SSLEngine) null);
-            verify(factory).init(trustStore);
-            verify(delegate).checkClientTrusted(chain, "RSA", (SSLEngine) null);
+            assertSame(trustStore, providers.initializedStore);
+            assertEquals(1, delegate.clientEngineChecks);
+            assertSame(chain, delegate.checkedChain);
+            assertEquals("RSA", delegate.checkedAuthType);
+            assertNull(delegate.checkedEngine);
         }
     }
 
     @Test
     void preservesSystemTrustForNullKeyStore() throws Exception {
-        KeyStore fallbackStore = emptyKeyStore();
-        TrustManagerFactory factory = mock(TrustManagerFactory.class);
-        when(factory.getTrustManagers()).thenReturn(new TrustManager[] { mock(X509ExtendedTrustManager.class) });
-        try (MockedStatic<KeyStore> stores = mockStatic(KeyStore.class);
-            MockedStatic<TrustManagerFactory> factories = mockStatic(TrustManagerFactory.class)) {
-            stores.when(() -> KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE)).thenReturn(fallbackStore);
-            factories.when(() -> TrustManagerFactory.getInstance("PKIX", "SunJSSE")).thenReturn(factory);
+        try (ControlledProviders providers
+            = new ControlledProviders(new TrustManager[] { new TestTrustManager(null) }, null, false)) {
+            Security.removeProvider(KeyVaultJcaProvider.PROVIDER_NAME);
             new KeyVaultTrustManager();
-            verify(factory).init((KeyStore) null);
+            assertEquals(1, providers.initializations);
+            assertNull(providers.initializedStore);
         }
     }
 
@@ -599,33 +611,564 @@ public class KeyVaultTrustManagerTest {
 
     private static void check(X509ExtendedTrustManager manager, boolean client, boolean engine, String hostname,
         String algorithm, AlgorithmConstraints constraints, X509Certificate[] chain) throws CertificateException {
-        ExtendedSSLSession session = mock(ExtendedSSLSession.class);
-        when(session.getPeerHost()).thenReturn(hostname);
-        when(session.getProtocol()).thenReturn("TLSv1.2");
-        when(session.getLocalSupportedSignatureAlgorithms()).thenReturn(new String[] { "SHA256withRSA" });
-        when(session.getRequestedServerNames()).thenReturn(Collections.emptyList());
+        ExtendedSSLSession session = new TestSession(hostname);
         SSLParameters parameters = new SSLParameters();
         parameters.setEndpointIdentificationAlgorithm(algorithm);
         parameters.setAlgorithmConstraints(constraints);
         if (engine) {
-            SSLEngine connection = mock(SSLEngine.class);
-            when(connection.getHandshakeSession()).thenReturn(session);
-            when(connection.getSSLParameters()).thenReturn(parameters);
+            SSLEngine connection = new TestEngine(session, parameters);
             if (client) {
                 manager.checkClientTrusted(chain, "RSA", connection);
             } else {
                 manager.checkServerTrusted(chain, "RSA", connection);
             }
         } else {
-            SSLSocket connection = mock(SSLSocket.class);
-            when(connection.isConnected()).thenReturn(true);
-            when(connection.getHandshakeSession()).thenReturn(session);
-            when(connection.getSSLParameters()).thenReturn(parameters);
+            SSLSocket connection = new TestSocket(session, parameters);
             if (client) {
                 manager.checkClientTrusted(chain, "RSA", connection);
             } else {
                 manager.checkServerTrusted(chain, "RSA", connection);
             }
+        }
+    }
+
+    private static final class ControlledProviders implements AutoCloseable {
+        private final Provider[] originalProviders = Security.getProviders();
+        private KeyStore initializedStore;
+        private int initializations;
+
+        private ControlledProviders(TrustManager[] sunManagers, TrustManager[] ibmManagers,
+            boolean failAfterFirstSunFactory) {
+            Security.removeProvider("SunJSSE");
+            Security.removeProvider("IbmJSSE");
+            if (sunManagers != null) {
+                Security.addProvider(provider("SunJSSE", sunManagers, failAfterFirstSunFactory));
+            }
+            if (ibmManagers != null) {
+                Security.addProvider(provider("IbmJSSE", ibmManagers, false));
+            }
+        }
+
+        @SuppressWarnings("deprecation")
+        private Provider provider(String name, TrustManager[] managers, boolean failAfterFirstFactory) {
+            return new Provider(name, 1.0, "Controlled test trust manager factory") {
+                private static final long serialVersionUID = 1L;
+                private int factories;
+
+                {
+                    putService(new Service(this, "TrustManagerFactory", "PKIX", TestFactory.class.getName(),
+                        Collections.emptyList(), Collections.emptyMap()) {
+                        @Override
+                        public Object newInstance(Object parameter) throws NoSuchAlgorithmException {
+                            if (failAfterFirstFactory && factories++ > 0) {
+                                throw new NoSuchAlgorithmException("Test trust manager factory unavailable");
+                            }
+                            return new TestFactory(managers, ControlledProviders.this);
+                        }
+                    });
+                }
+            };
+        }
+
+        @Override
+        public void close() {
+            Security.removeProvider("SunJSSE");
+            Security.removeProvider("IbmJSSE");
+            for (int index = 0; index < originalProviders.length; index++) {
+                Provider provider = originalProviders[index];
+                if (Security.getProvider(provider.getName()) != provider) {
+                    Security.removeProvider(provider.getName());
+                    Security.insertProviderAt(provider, index + 1);
+                }
+            }
+        }
+    }
+
+    private static final class TestFactory extends TrustManagerFactorySpi {
+        private final TrustManager[] managers;
+        private final ControlledProviders providers;
+
+        private TestFactory(TrustManager[] managers, ControlledProviders providers) {
+            this.managers = managers;
+            this.providers = providers;
+        }
+
+        @Override
+        protected void engineInit(KeyStore store) {
+            providers.initializedStore = store;
+            providers.initializations++;
+        }
+
+        @Override
+        protected void engineInit(ManagerFactoryParameters parameters) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        protected TrustManager[] engineGetTrustManagers() {
+            return managers.clone();
+        }
+    }
+
+    private static final class BasicTrustManager implements X509TrustManager {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) {
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    }
+
+    private static final class TestTrustManager extends X509ExtendedTrustManager {
+        private final CertificateException failure;
+        private int clientEngineChecks;
+        private X509Certificate[] checkedChain;
+        private String checkedAuthType;
+        private SSLEngine checkedEngine;
+
+        private TestTrustManager(CertificateException failure) {
+            this.failure = failure;
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) {
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) {
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {
+            clientEngineChecks++;
+            checkedChain = chain;
+            checkedAuthType = authType;
+            checkedEngine = engine;
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+            throws CertificateException {
+            if (failure != null) {
+                throw failure;
+            }
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    }
+
+    private static final class TestSession extends ExtendedSSLSession {
+        private final String hostname;
+        private final SSLSession delegate;
+
+        private TestSession(String hostname) {
+            this.hostname = hostname;
+            delegate = serverContext.createSSLEngine(hostname, 443).getSession();
+        }
+
+        @Override
+        public String[] getLocalSupportedSignatureAlgorithms() {
+            return new String[] { "SHA256withRSA" };
+        }
+
+        @Override
+        public String[] getPeerSupportedSignatureAlgorithms() {
+            return new String[] { "SHA256withRSA" };
+        }
+
+        @Override
+        public List<SNIServerName> getRequestedServerNames() {
+            return Collections.emptyList();
+        }
+
+        public List<byte[]> getStatusResponses() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public byte[] getId() {
+            return delegate.getId();
+        }
+
+        @Override
+        public SSLSessionContext getSessionContext() {
+            return delegate.getSessionContext();
+        }
+
+        @Override
+        public long getCreationTime() {
+            return delegate.getCreationTime();
+        }
+
+        @Override
+        public long getLastAccessedTime() {
+            return delegate.getLastAccessedTime();
+        }
+
+        @Override
+        public void invalidate() {
+            delegate.invalidate();
+        }
+
+        @Override
+        public boolean isValid() {
+            return delegate.isValid();
+        }
+
+        @Override
+        public void putValue(String name, Object value) {
+            delegate.putValue(name, value);
+        }
+
+        @Override
+        public Object getValue(String name) {
+            return delegate.getValue(name);
+        }
+
+        @Override
+        public void removeValue(String name) {
+            delegate.removeValue(name);
+        }
+
+        @Override
+        public String[] getValueNames() {
+            return delegate.getValueNames();
+        }
+
+        @Override
+        public Certificate[] getPeerCertificates() throws javax.net.ssl.SSLPeerUnverifiedException {
+            return delegate.getPeerCertificates();
+        }
+
+        @Override
+        public Certificate[] getLocalCertificates() {
+            return delegate.getLocalCertificates();
+        }
+
+        @Override
+        @SuppressWarnings({ "deprecation", "removal" })
+        public javax.security.cert.X509Certificate[] getPeerCertificateChain()
+            throws javax.net.ssl.SSLPeerUnverifiedException {
+            return delegate.getPeerCertificateChain();
+        }
+
+        @Override
+        public Principal getPeerPrincipal() throws javax.net.ssl.SSLPeerUnverifiedException {
+            return delegate.getPeerPrincipal();
+        }
+
+        @Override
+        public Principal getLocalPrincipal() {
+            return delegate.getLocalPrincipal();
+        }
+
+        @Override
+        public String getCipherSuite() {
+            return delegate.getCipherSuite();
+        }
+
+        @Override
+        public String getProtocol() {
+            return "TLSv1.2";
+        }
+
+        @Override
+        public String getPeerHost() {
+            return hostname;
+        }
+
+        @Override
+        public int getPeerPort() {
+            return 443;
+        }
+
+        @Override
+        public int getPacketBufferSize() {
+            return delegate.getPacketBufferSize();
+        }
+
+        @Override
+        public int getApplicationBufferSize() {
+            return delegate.getApplicationBufferSize();
+        }
+    }
+
+    private static final class TestEngine extends SSLEngine {
+        private final SSLEngine delegate = serverContext.createSSLEngine();
+        private final SSLSession session;
+
+        private TestEngine(SSLSession session, SSLParameters parameters) {
+            this.session = session;
+            delegate.setSSLParameters(parameters);
+        }
+
+        @Override
+        public SSLSession getHandshakeSession() {
+            return session;
+        }
+
+        @Override
+        public SSLParameters getSSLParameters() {
+            return delegate.getSSLParameters();
+        }
+
+        @Override
+        public SSLEngineResult wrap(ByteBuffer[] sources, int offset, int length, ByteBuffer destination)
+            throws SSLException {
+            return delegate.wrap(sources, offset, length, destination);
+        }
+
+        @Override
+        public SSLEngineResult unwrap(ByteBuffer source, ByteBuffer[] destinations, int offset, int length)
+            throws SSLException {
+            return delegate.unwrap(source, destinations, offset, length);
+        }
+
+        @Override
+        public Runnable getDelegatedTask() {
+            return delegate.getDelegatedTask();
+        }
+
+        @Override
+        public void closeInbound() throws SSLException {
+            delegate.closeInbound();
+        }
+
+        @Override
+        public boolean isInboundDone() {
+            return delegate.isInboundDone();
+        }
+
+        @Override
+        public void closeOutbound() {
+            delegate.closeOutbound();
+        }
+
+        @Override
+        public boolean isOutboundDone() {
+            return delegate.isOutboundDone();
+        }
+
+        @Override
+        public String[] getSupportedCipherSuites() {
+            return delegate.getSupportedCipherSuites();
+        }
+
+        @Override
+        public String[] getEnabledCipherSuites() {
+            return delegate.getEnabledCipherSuites();
+        }
+
+        @Override
+        public void setEnabledCipherSuites(String[] suites) {
+            delegate.setEnabledCipherSuites(suites);
+        }
+
+        @Override
+        public String[] getSupportedProtocols() {
+            return delegate.getSupportedProtocols();
+        }
+
+        @Override
+        public String[] getEnabledProtocols() {
+            return delegate.getEnabledProtocols();
+        }
+
+        @Override
+        public void setEnabledProtocols(String[] protocols) {
+            delegate.setEnabledProtocols(protocols);
+        }
+
+        @Override
+        public SSLSession getSession() {
+            return delegate.getSession();
+        }
+
+        @Override
+        public void beginHandshake() throws SSLException {
+            delegate.beginHandshake();
+        }
+
+        @Override
+        public SSLEngineResult.HandshakeStatus getHandshakeStatus() {
+            return delegate.getHandshakeStatus();
+        }
+
+        @Override
+        public void setUseClientMode(boolean mode) {
+            delegate.setUseClientMode(mode);
+        }
+
+        @Override
+        public boolean getUseClientMode() {
+            return delegate.getUseClientMode();
+        }
+
+        @Override
+        public void setNeedClientAuth(boolean need) {
+            delegate.setNeedClientAuth(need);
+        }
+
+        @Override
+        public boolean getNeedClientAuth() {
+            return delegate.getNeedClientAuth();
+        }
+
+        @Override
+        public void setWantClientAuth(boolean want) {
+            delegate.setWantClientAuth(want);
+        }
+
+        @Override
+        public boolean getWantClientAuth() {
+            return delegate.getWantClientAuth();
+        }
+
+        @Override
+        public void setEnableSessionCreation(boolean enabled) {
+            delegate.setEnableSessionCreation(enabled);
+        }
+
+        @Override
+        public boolean getEnableSessionCreation() {
+            return delegate.getEnableSessionCreation();
+        }
+    }
+
+    private static final class TestSocket extends SSLSocket {
+        private final SSLSession session;
+        private SSLParameters parameters;
+        private boolean clientMode;
+        private boolean sessionCreation;
+
+        private TestSocket(SSLSession session, SSLParameters parameters) {
+            this.session = session;
+            this.parameters = parameters;
+        }
+
+        @Override
+        public boolean isConnected() {
+            return true;
+        }
+
+        @Override
+        public SSLSession getHandshakeSession() {
+            return session;
+        }
+
+        @Override
+        public SSLSession getSession() {
+            return session;
+        }
+
+        @Override
+        public SSLParameters getSSLParameters() {
+            return parameters;
+        }
+
+        @Override
+        public void setSSLParameters(SSLParameters value) {
+            parameters = value;
+        }
+
+        @Override
+        public String[] getSupportedCipherSuites() {
+            return serverContext.getSupportedSSLParameters().getCipherSuites();
+        }
+
+        @Override
+        public String[] getEnabledCipherSuites() {
+            return parameters.getCipherSuites();
+        }
+
+        @Override
+        public void setEnabledCipherSuites(String[] suites) {
+            parameters.setCipherSuites(suites);
+        }
+
+        @Override
+        public String[] getSupportedProtocols() {
+            return serverContext.getSupportedSSLParameters().getProtocols();
+        }
+
+        @Override
+        public String[] getEnabledProtocols() {
+            return parameters.getProtocols();
+        }
+
+        @Override
+        public void setEnabledProtocols(String[] protocols) {
+            parameters.setProtocols(protocols);
+        }
+
+        @Override
+        public void addHandshakeCompletedListener(HandshakeCompletedListener listener) {
+        }
+
+        @Override
+        public void removeHandshakeCompletedListener(HandshakeCompletedListener listener) {
+        }
+
+        @Override
+        public void startHandshake() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setUseClientMode(boolean mode) {
+            clientMode = mode;
+        }
+
+        @Override
+        public boolean getUseClientMode() {
+            return clientMode;
+        }
+
+        @Override
+        public void setNeedClientAuth(boolean need) {
+            parameters.setNeedClientAuth(need);
+        }
+
+        @Override
+        public boolean getNeedClientAuth() {
+            return parameters.getNeedClientAuth();
+        }
+
+        @Override
+        public void setWantClientAuth(boolean want) {
+            parameters.setWantClientAuth(want);
+        }
+
+        @Override
+        public boolean getWantClientAuth() {
+            return parameters.getWantClientAuth();
+        }
+
+        @Override
+        public void setEnableSessionCreation(boolean enabled) {
+            sessionCreation = enabled;
+        }
+
+        @Override
+        public boolean getEnableSessionCreation() {
+            return sessionCreation;
         }
     }
 

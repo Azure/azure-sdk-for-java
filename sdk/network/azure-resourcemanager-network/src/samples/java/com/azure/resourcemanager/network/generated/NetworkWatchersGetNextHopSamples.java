@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.NextHopParameters;
  */
 public final class NetworkWatchersGetNextHopSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkWatcherNextHopGet.json
+     * x-ms-original-file: 2026-03-01/NetworkWatcherNextHopGet.json
      */
     /**
      * Sample code: Get next hop.

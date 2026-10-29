@@ -76,6 +76,8 @@ public class ValidateOperationRequest implements JsonSerializable<ValidateOperat
                     return ValidateRestoreOperationRequest.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("ValidateIaasVMRestoreOperationRequest".equals(discriminatorValue)) {
                     return ValidateIaasVMRestoreOperationRequest.fromJson(readerToUse.reset());
+                } else if ("ValidateAzureWorkloadRestoreOperationRequest".equals(discriminatorValue)) {
+                    return ValidateAzureWorkloadRestoreOperationRequest.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

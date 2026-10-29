@@ -139,9 +139,15 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
     ChannelImpl(ChannelInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.partnerNamespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "partnerNamespaces");
-        this.channelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "channels");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}",
+            "resourceGroupName");
+        this.partnerNamespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}",
+            "partnerNamespaceName");
+        this.channelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}",
+            "channelName");
     }
 
     public Channel refresh() {

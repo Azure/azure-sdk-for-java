@@ -12,12 +12,12 @@ public final class ManagedComputeDeploymentInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeDeploymentInfo model = BinaryData.fromString(
-            "{\"deploymentId\":\"gflwfgziiucijj\",\"projectId\":\"atlijjjr\",\"modelId\":\"am\",\"acceleratorCount\":2854978944712666849,\"instanceCount\":1253205768}")
+            "{\"deploymentId\":\"fowgwbtmkekx\",\"projectId\":\"zwaqxofqo\",\"modelId\":\"hiq\",\"acceleratorCount\":8686772661570892251,\"instanceCount\":543465427}")
             .toObject(ManagedComputeDeploymentInfo.class);
-        Assertions.assertEquals("gflwfgziiucijj", model.deploymentId());
-        Assertions.assertEquals("atlijjjr", model.projectId());
-        Assertions.assertEquals("am", model.modelId());
-        Assertions.assertEquals(2854978944712666849L, model.acceleratorCount());
-        Assertions.assertEquals(1253205768, model.instanceCount());
+        Assertions.assertEquals("fowgwbtmkekx", model.deploymentId());
+        Assertions.assertEquals("zwaqxofqo", model.projectId());
+        Assertions.assertEquals("hiq", model.modelId());
+        Assertions.assertEquals(8686772661570892251L, model.acceleratorCount());
+        Assertions.assertEquals(543465427, model.instanceCount());
     }
 }

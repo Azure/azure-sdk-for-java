@@ -15,20 +15,21 @@ public final class ElasticBackupVaultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupVaultInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\"},\"eTag\":\"eudzqavbpd\",\"location\":\"jxlyyzglgouwtlm\",\"tags\":{\"baxk\":\"uojqt\",\"lbfjkwr\":\"eytu\",\"hsyrqunj\":\"snkq\"},\"id\":\"hdenxaulk\",\"name\":\"akdkifmjnnawtqab\",\"type\":\"xuckpggqoweyir\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"azuawx\",\"location\":\"x\",\"tags\":{\"s\":\"mwabzxrvxc\",\"gzwywak\":\"sphaivmxyasflvg\",\"ljhlnymzotq\":\"ihknsmjbl\",\"mv\":\"ryuzcbmqqv\"},\"id\":\"fgtayxonsup\",\"name\":\"ujlzqnhcvsqltn\",\"type\":\"oibgsxg\"}")
             .toObject(ElasticBackupVaultInner.class);
-        Assertions.assertEquals("jxlyyzglgouwtlm", model.location());
-        Assertions.assertEquals("uojqt", model.tags().get("baxk"));
+        Assertions.assertEquals("x", model.location());
+        Assertions.assertEquals("mwabzxrvxc", model.tags().get("s"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticBackupVaultInner model = new ElasticBackupVaultInner().withLocation("jxlyyzglgouwtlm")
-            .withTags(mapOf("baxk", "uojqt", "lbfjkwr", "eytu", "hsyrqunj", "snkq"))
+        ElasticBackupVaultInner model = new ElasticBackupVaultInner().withLocation("x")
+            .withTags(
+                mapOf("s", "mwabzxrvxc", "gzwywak", "sphaivmxyasflvg", "ljhlnymzotq", "ihknsmjbl", "mv", "ryuzcbmqqv"))
             .withProperties(new ElasticBackupVaultProperties());
         model = BinaryData.fromObject(model).toObject(ElasticBackupVaultInner.class);
-        Assertions.assertEquals("jxlyyzglgouwtlm", model.location());
-        Assertions.assertEquals("uojqt", model.tags().get("baxk"));
+        Assertions.assertEquals("x", model.location());
+        Assertions.assertEquals("mwabzxrvxc", model.tags().get("s"));
     }
 
     // Use "Map.of" if available

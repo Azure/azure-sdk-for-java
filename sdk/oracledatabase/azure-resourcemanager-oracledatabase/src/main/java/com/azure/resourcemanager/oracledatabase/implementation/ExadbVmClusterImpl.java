@@ -138,8 +138,12 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.exadbVmClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "exadbVmClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "resourceGroupName");
+        this.exadbVmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "exadbVmClusterName");
     }
 
     public ExadbVmCluster refresh() {
