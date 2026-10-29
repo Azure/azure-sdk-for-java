@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azureserviceconnectioncontroller/ci.yml
+      - sdk/azureserviceconnectioncontroller/azure-resourcemanager-serviceconnectioncontroller/
+    exclude:
+      - sdk/azureserviceconnectioncontroller/pom.xml
+      - sdk/azureserviceconnectioncontroller/azure-resourcemanager-serviceconnectioncontroller/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azureserviceconnectioncontroller/ci.yml
+      - sdk/azureserviceconnectioncontroller/azure-resourcemanager-serviceconnectioncontroller/
+    exclude:
+      - sdk/azureserviceconnectioncontroller/pom.xml
+      - sdk/azureserviceconnectioncontroller/azure-resourcemanager-serviceconnectioncontroller/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerserviceconnectioncontroller
+    displayName: azure-resourcemanager-serviceconnectioncontroller
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: azureserviceconnectioncontroller
+    Artifacts:
+      - name: azure-resourcemanager-serviceconnectioncontroller
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerserviceconnectioncontroller
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerserviceconnectioncontroller }}
