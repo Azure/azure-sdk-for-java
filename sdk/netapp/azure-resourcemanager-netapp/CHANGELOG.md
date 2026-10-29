@@ -1,14 +1,460 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (2026-10-28)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-08-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ExternalSvmProperties` was added
 
-### Bugs Fixed
+* `models.ExternalClusterUpdate` was added
 
-### Other Changes
+* `models.ExternalCacheProperties` was added
+
+* `models.ElasticBackupProperties` was added
+
+* `models.ElasticBackupPolicyProperties` was added
+
+* `models.ElasticBackupPolicyUpdateProperties` was added
+
+* `models.ElasticSnapshot` was added
+
+* `models.ExternalCache` was added
+
+* `models.ElasticCapacityPools` was added
+
+* `models.ElasticKeyVaultProperties` was added
+
+* `models.ElasticVolumeUpdateProperties` was added
+
+* `models.ElasticBackup$Definition` was added
+
+* `models.ElasticSnapshotPolicyHourlySchedule` was added
+
+* `models.ElasticMountTargetProperties` was added
+
+* `models.EntraIdAkvConfigPatch` was added
+
+* `models.ElasticVolumeUpdate` was added
+
+* `models.ElasticVolume$UpdateStages` was added
+
+* `models.ElasticVolumeDataProtectionProperties` was added
+
+* `models.ExternalSvmTagsUpdate` was added
+
+* `models.ElasticSnapshotPolicyProperties` was added
+
+* `models.ElasticVolumeSnapshotProperties` was added
+
+* `models.ClusterPeerStatus` was added
+
+* `models.ElasticPoolEncryptionKeySource` was added
+
+* `models.ElasticServiceLevel` was added
+
+* `models.ElasticBackupPolicy` was added
+
+* `models.ExternalCacheConnection$Update` was added
+
+* `models.ElasticResourceAvailabilityStatus` was added
+
+* `models.ElasticCapacityPoolUpdateProperties` was added
+
+* `models.ElasticNfsv3Access` was added
+
+* `models.CheckElasticVolumeFilePathAvailabilityRequest` was added
+
+* `models.ElasticSmbEncryption` was added
+
+* `models.ElasticVolumeProperties` was added
+
+* `models.ElasticAccount$DefinitionStages` was added
+
+* `models.ElasticEncryption` was added
+
+* `models.ElasticBackupPolicy$Definition` was added
+
+* `models.ElasticVolumeRevert` was added
+
+* `models.ElasticBackupVaultUpdate` was added
+
+* `models.ExternalCacheConnections` was added
+
+* `models.SvmPeerStatus` was added
+
+* `models.ActiveDirectoryConfig$Definition` was added
+
+* `models.SnapshotUsage` was added
+
+* `models.ElasticSnapshotPolicyUpdateProperties` was added
+
+* `models.ActiveDirectoryConfig` was added
+
+* `models.VolumeSize` was added
+
+* `models.ElasticBackupPolicies` was added
+
+* `models.ElasticExportPolicyRule` was added
+
+* `models.OriginVolume` was added
+
+* `models.ActiveDirectoryConfig$DefinitionStages` was added
+
+* `models.ElasticAccountUpdate` was added
+
+* `models.ElasticCapacityPoolUpdate` was added
+
+* `models.ElasticSnapshot$UpdateStages` was added
+
+* `models.ActiveDirectoryConfigUpdateProperties` was added
+
+* `models.KeyVaultClusterPeerPassphrasePatchProperties` was added
+
+* `models.ExternalClusters` was added
+
+* `models.ExternalCacheConnection` was added
+
+* `models.ClusterPeerProperties` was added
+
+* `models.ElasticAccountProperties` was added
+
+* `models.ElasticSnapshotPolicyUpdate` was added
+
+* `models.ElasticSnapshots` was added
+
+* `models.KeyVaultClusterPeerPassphraseProperties` was added
+
+* `models.ElasticKeyVaultStatus` was added
+
+* `models.ExternalClusterProperties` was added
+
+* `models.ExternalSvms` was added
+
+* `models.ElasticEncryptionIdentity` was added
+
+* `models.ElasticSnapshotProperties` was added
+
+* `models.SvmPeers` was added
+
+* `models.ActiveDirectoryConfigs` was added
+
+* `models.ElasticBackup$UpdateStages` was added
+
+* `models.ActiveDirectoryConfig$Update` was added
+
+* `models.SecretPasswordIdentity` was added
+
+* `models.ExternalClusterUpdateProperties` was added
+
+* `models.ExternalCacheConnection$UpdateStages` was added
+
+* `models.ElasticAccount$UpdateStages` was added
+
+* `models.ExternalCacheConnection$Definition` was added
+
+* `models.ElasticBackupPolicy$Update` was added
+
+* `models.ElasticBackupVaults` was added
+
+* `models.ElasticCapacityPool` was added
+
+* `models.ElasticExportPolicy` was added
+
+* `models.ElasticSnapshotPolicyWeeklySchedule` was added
+
+* `models.SvmPeer` was added
+
+* `models.ElasticVolume$Definition` was added
+
+* `models.ExternalCacheConnectionProperties` was added
+
+* `models.ElasticRootAccess` was added
+
+* `models.ExternalCacheState` was added
+
+* `models.ElasticBackupVault$Update` was added
+
+* `models.ExternalCluster$UpdateStages` was added
+
+* `models.AsyncDirectoryDeleteStatus` was added
+
+* `models.ExternalCacheConnectionStatus` was added
+
+* `models.ExternalSvm$Update` was added
+
+* `models.ElasticBackups` was added
+
+* `models.ElasticSnapshotPolicy` was added
+
+* `models.CheckElasticResourceAvailabilityStatus` was added
+
+* `models.SecretPassword` was added
+
+* `models.ElasticBackup$Update` was added
+
+* `models.ElasticCapacityPool$Update` was added
+
+* `models.ElasticSnapshotPolicyDailySchedule` was added
+
+* `models.ElasticCapacityPool$UpdateStages` was added
+
+* `models.EntraIdAkvConfig` was added
+
+* `models.ExternalConnectionSetupState` was added
+
+* `models.ElasticAccount$Update` was added
+
+* `models.ExternalCacheConnectionTagsUpdate` was added
+
+* `models.ClusterPeer` was added
+
+* `models.ElasticSnapshotPolicy$Definition` was added
+
+* `models.ElasticSnapshot$Definition` was added
+
+* `models.ElasticBackupVaultProperties` was added
+
+* `models.ElasticBackupPolicy$DefinitionStages` was added
+
+* `models.ElasticNfsv4Access` was added
+
+* `models.ActiveDirectoryConfigProperties` was added
+
+* `models.ExternalSvm$UpdateStages` was added
+
+* `models.ElasticVolumeRestorationState` was added
+
+* `models.ElasticVolumePolicyEnforcement` was added
+
+* `models.SecretPasswordKeyVaultProperties` was added
+
+* `models.ElasticAccount$Definition` was added
+
+* `models.ElasticVolumes` was added
+
+* `models.EntraIdConfig` was added
+
+* `models.ElasticBackupVault$Definition` was added
+
+* `models.ElasticSnapshotPolicy$Update` was added
+
+* `models.ElasticBackup$DefinitionStages` was added
+
+* `models.AsyncDirectoryDelete` was added
+
+* `models.ElasticSnapshotPolicies` was added
+
+* `models.ExternalCacheConnection$DefinitionStages` was added
+
+* `models.ElasticAccount` was added
+
+* `models.ClusterPeers` was added
+
+* `models.SmbOplocks` was added
+
+* `models.EntraIdConfigPatch` was added
+
+* `models.ExternalCaches` was added
+
+* `models.ExternalCluster` was added
+
+* `models.CheckElasticResourceAvailabilityReason` was added
+
+* `models.ElasticCapacityPoolProperties` was added
+
+* `models.VolumePatchNamespaceProperties` was added
+
+* `models.VolumeNamespaceProperties` was added
+
+* `models.ActiveDirectoryConfigUpdate` was added
+
+* `models.ElasticVolume$DefinitionStages` was added
+
+* `models.ElasticAccountUpdateProperties` was added
+
+* `models.ExternalCluster$Update` was added
+
+* `models.ElasticCapacityPool$DefinitionStages` was added
+
+* `models.ElasticSmbProperties` was added
+
+* `models.ExternalSvm$DefinitionStages` was added
+
+* `models.LargeVolumeType` was added
+
+* `models.ExternalSvm$Definition` was added
+
+* `models.PolicyStatus` was added
+
+* `models.ElasticVolumeBackupProperties` was added
+
+* `models.ElasticBackup` was added
+
+* `models.ChangeZoneRequest` was added
+
+* `models.ElasticBackupVault$DefinitionStages` was added
+
+* `models.ExternalCluster$Definition` was added
+
+* `models.ElasticSnapshot$Update` was added
+
+* `models.CheckElasticResourceAvailabilityResponse` was added
+
+* `models.ElasticBackupVault` was added
+
+* `models.SetupInformation` was added
+
+* `models.ElasticUnixAccessRule` was added
+
+* `models.ActiveDirectoryConfig$UpdateStages` was added
+
+* `models.ElasticVolume` was added
+
+* `models.ElasticVolume$Update` was added
+
+* `models.ElasticBackupPolicyState` was added
+
+* `models.ElasticSnapshotPolicyMonthlySchedule` was added
+
+* `models.ElasticVolumeDataProtectionPatchProperties` was added
+
+* `models.ElasticAccounts` was added
+
+* `models.ElasticSmbPatchProperties` was added
+
+* `models.ElasticSnapshot$DefinitionStages` was added
+
+* `models.ElasticBackupVault$UpdateStages` was added
+
+* `models.ElasticBackupPolicyUpdate` was added
+
+* `models.SnapshotDirectoryVisibility` was added
+
+* `models.ElasticBackupPolicy$UpdateStages` was added
+
+* `models.ElasticEncryptionConfiguration` was added
+
+* `models.SvmPeerProperties` was added
+
+* `models.ExternalResourceNetworkInterfaces` was added
+
+* `models.SvmPeerType` was added
+
+* `models.ExternalSvm` was added
+
+* `models.DayOfWeek` was added
+
+* `models.ElasticCapacityPool$Definition` was added
+
+* `models.ElasticSnapshotPolicy$DefinitionStages` was added
+
+* `models.ExternalCluster$DefinitionStages` was added
+
+* `models.ElasticBackupType` was added
+
+* `models.ElasticProtocolType` was added
+
+* `models.ElasticSnapshotPolicy$UpdateStages` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withEntraIdConfig(models.EntraIdConfig)` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSmbOplocks(models.SmbOplocks)` was added
+* `withGeoNamespaceProperties(models.VolumePatchNamespaceProperties)` was added
+* `withAsyncDirectoryDelete(models.AsyncDirectoryDelete)` was added
+
+#### `models.SmbSettings` was modified
+
+* `smbOplocks()` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withGeoNamespaceProperties(models.VolumeNamespaceProperties)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withAsyncDirectoryDelete(models.AsyncDirectoryDelete)` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
+* `entraIdConfig()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `geoNamespaceProperties()` was added
+* `withGeoNamespaceProperties(models.VolumeNamespaceProperties)` was added
+* `language()` was added
+* `smbOplocks()` was added
+* `asyncDirectoryDelete()` was added
+* `ldapServerType()` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withAsyncDirectoryDelete(models.AsyncDirectoryDelete)` was added
+* `largeVolumeType()` was added
+
+#### `models.Volume` was modified
+
+* `largeVolumeType()` was added
+* `language()` was added
+* `smbOplocks()` was added
+* `asyncDirectoryDelete()` was added
+* `geoNamespaceProperties()` was added
+* `ldapServerType()` was added
+
+#### `models.VolumePatch` was modified
+
+* `smbOplocks()` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+* `geoNamespaceProperties()` was added
+* `withAsyncDirectoryDelete(models.AsyncDirectoryDelete)` was added
+* `asyncDirectoryDelete()` was added
+* `withGeoNamespaceProperties(models.VolumePatchNamespaceProperties)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `clusterPeers()` was added
+* `externalClusters()` was added
+* `elasticVolumes()` was added
+* `elasticCapacityPools()` was added
+* `elasticSnapshots()` was added
+* `externalSvms()` was added
+* `svmPeers()` was added
+* `elasticBackupPolicies()` was added
+* `elasticBackups()` was added
+* `elasticBackupVaults()` was added
+* `activeDirectoryConfigs()` was added
+* `elasticAccounts()` was added
+* `elasticSnapshotPolicies()` was added
+* `externalCaches()` was added
+* `externalCacheConnections()` was added
+
+#### `models.NetAppAccount` was modified
+
+* `entraIdConfig()` was added
+
+#### `models.CredentialsAkvDetails` was modified
+
+* `userAssignedIdentity()` was added
+* `withUserAssignedIdentity(java.lang.String)` was added
+
+#### `models.CertificateAkvDetails` was modified
+
+* `withUserAssignedIdentity(java.lang.String)` was added
+* `userAssignedIdentity()` was added
 
 ## 2.5.0 (2026-10-21)
 
