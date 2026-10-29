@@ -18,6 +18,7 @@
 ### Other Changes
 
 - Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
+- Clarified that managed identity ID options select a user-assigned identity, while omitting them selects the system-assigned identity.
 
 #### Dependency Updates
 
