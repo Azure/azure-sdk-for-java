@@ -113,8 +113,9 @@ public final class ConfigurationAssignmentImpl
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.configurationAssignmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationAssignments");
+        this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+            "configurationAssignmentName");
     }
 
     public ConfigurationAssignment refresh() {

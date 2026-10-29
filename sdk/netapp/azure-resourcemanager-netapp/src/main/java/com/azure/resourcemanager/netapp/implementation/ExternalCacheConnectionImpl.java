@@ -127,9 +127,12 @@ public final class ExternalCacheConnectionImpl
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.externalCacheConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalCacheConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "resourceGroupName");
+        this.externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "externalCacheConnectionName");
     }
 
     public ExternalCacheConnection refresh() {
