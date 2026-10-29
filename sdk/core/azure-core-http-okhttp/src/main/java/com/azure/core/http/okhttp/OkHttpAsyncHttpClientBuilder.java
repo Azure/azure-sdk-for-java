@@ -10,7 +10,6 @@ import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
@@ -21,11 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
@@ -112,9 +115,6 @@ import static com.azure.core.implementation.util.HttpUtils.getTimeout;
  * @see OkHttpAsyncHttpClient
  */
 public class OkHttpAsyncHttpClientBuilder {
-
-    private static final ClientLogger LOGGER = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
-
     private final okhttp3.OkHttpClient okHttpClient;
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
@@ -263,8 +263,9 @@ public class OkHttpAsyncHttpClientBuilder {
      * The call timeout spans the entire call: resolving DNS, connecting, writing the request body,
      * server processing, and reading the response body.
      * <p>
-     * Null or {@link Duration#ZERO} means no call timeout, otherwise values
-     * must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
+     * Null leaves the underlying client's call timeout unchanged. A duration less than or equal to zero disables the
+     * call timeout. Positive values less than one millisecond use one millisecond and must not exceed
+     * {@link Integer#MAX_VALUE} when converted to milliseconds.
      * <p>
      * By default, call timeout is not enabled.
      *
@@ -274,9 +275,6 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder callTimeout(Duration callTimeout) {
         // callTimeout can be null
-        if (callTimeout != null && callTimeout.isNegative()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'callTimeout' cannot be negative"));
-        }
         this.callTimeout = callTimeout;
         return this;
     }
@@ -322,8 +320,10 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
@@ -363,13 +363,17 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
-            .writeTimeout(getTimeout(writeTimeout, getDefaultWriteTimeout()))
-            .readTimeout(getTimeout(readTimeout, getDefaultReadTimeout()));
+        httpClientBuilder
+            .connectTimeout(getTimeout(connectionTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
+                DEFAULT_CONNECT_TIMEOUT))
+            .writeTimeout(
+                getTimeout(writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT))
+            .readTimeout(
+                getTimeout(readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
-            httpClientBuilder.callTimeout(callTimeout);
+            httpClientBuilder.callTimeout(getTimeout(callTimeout, Duration.ZERO));
         }
 
         // If set use the configured connection pool.
@@ -404,7 +408,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build(),
-            getTimeout(responseTimeout, getDefaultResponseTimeout()));
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), getTimeout(responseTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT));
     }
 }

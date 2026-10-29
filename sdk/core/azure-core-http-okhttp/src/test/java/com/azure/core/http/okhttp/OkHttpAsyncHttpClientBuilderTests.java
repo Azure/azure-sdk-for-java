@@ -25,6 +25,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -231,14 +232,47 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .verifyComplete();
     }
 
-    /**
-     * Tests building a client with negative callTimeout.
-     */
-    @Test
-    public void throwsWithNegativeCallTimeout() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new OkHttpAsyncHttpClientBuilder().callTimeout(Duration.ofSeconds(-1));
-        });
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0 })
+    public void nonpositiveCallTimeoutIsDisabled(long timeoutMillis) {
+        OkHttpAsyncHttpClient client
+            = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder().callTimeout(Duration.ofMillis(timeoutMillis))
+                .build();
+        assertEquals(0, client.httpClient.callTimeoutMillis());
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, value),
+            EMPTY_SOURCE).build();
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(configuration);
+        assertTimeouts((OkHttpAsyncHttpClient) builder.build(), Math.max(0, timeoutMillis));
+        assertTimeouts((OkHttpAsyncHttpClient) builder.connectionTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertTimeouts((OkHttpAsyncHttpClient) builder.connectionTimeout(Duration.ofNanos(-1))
+            .readTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ofNanos(-1))
+            .responseTimeout(Duration.ZERO)
+            .build(), 0);
+    }
+
+    private static void assertTimeouts(OkHttpAsyncHttpClient client, long expected)
+        throws ReflectiveOperationException {
+        assertEquals(expected, client.httpClient.connectTimeoutMillis());
+        assertEquals(expected, client.httpClient.readTimeoutMillis());
+        assertEquals(expected, client.httpClient.writeTimeoutMillis());
+        java.lang.reflect.Field responseTimeout = OkHttpAsyncHttpClient.class.getDeclaredField("responseTimeout");
+        responseTimeout.setAccessible(true);
+        assertEquals(Duration.ofMillis(expected), responseTimeout.get(client));
     }
 
     /**

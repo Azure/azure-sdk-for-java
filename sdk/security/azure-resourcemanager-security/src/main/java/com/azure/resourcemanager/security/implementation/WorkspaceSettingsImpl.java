@@ -61,7 +61,9 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     }
 
     public WorkspaceSetting getById(String id) {
-        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(id, "workspaceSettings");
+        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
         if (workspaceSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaceSettings'.", id)));
@@ -70,7 +72,9 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     }
 
     public Response<WorkspaceSetting> getByIdWithResponse(String id, Context context) {
-        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(id, "workspaceSettings");
+        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
         if (workspaceSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaceSettings'.", id)));
@@ -79,7 +83,9 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     }
 
     public void deleteById(String id) {
-        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(id, "workspaceSettings");
+        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
         if (workspaceSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaceSettings'.", id)));
@@ -88,7 +94,9 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(id, "workspaceSettings");
+        String workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
         if (workspaceSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaceSettings'.", id)));

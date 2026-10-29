@@ -101,8 +101,12 @@ public final class SharedLimitCapImpl implements SharedLimitCap, SharedLimitCap.
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sharedLimitCaps");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
+        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
     }
 
     public SharedLimitCap refresh() {

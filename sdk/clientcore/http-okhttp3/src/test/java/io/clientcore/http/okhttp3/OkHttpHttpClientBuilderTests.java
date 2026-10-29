@@ -28,7 +28,9 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -291,13 +293,12 @@ public class OkHttpHttpClientBuilderTests {
         }
     }
 
-    /**
-     * Tests building a client with negative callTimeout.
-     */
-    @Test
-    public void throwsWithNegativeCallTimeout() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new OkHttpHttpClientBuilder().callTimeout(Duration.ofSeconds(-1)));
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0 })
+    public void nonpositiveCallTimeoutIsDisabled(long timeoutMillis) {
+        OkHttpHttpClient client
+            = (OkHttpHttpClient) new OkHttpHttpClientBuilder().callTimeout(Duration.ofMillis(timeoutMillis)).build();
+        assertEquals(0, client.httpClient.callTimeoutMillis());
     }
 
     /**
@@ -313,6 +314,54 @@ public class OkHttpHttpClientBuilderTests {
             return chain.proceed(chain.request());
         };
         HttpClient client = new OkHttpHttpClientBuilder().addNetworkInterceptor(validatorInterceptor).build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "123000, 234000, 345000, 123000, 234000, 345000",
+        "0, 0, 0, 0, 0, 0",
+        "-1, -2, -3, 0, 0, 0",
+        "invalid, invalid, invalid, 10000, 60000, 60000" })
+    public void configuredTimeoutsAreUsed(String connect, String read, String write, int expectedConnect,
+        int expectedRead, int expectedWrite) {
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, connect)
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, read)
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, write));
+
+        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration), expectedConnect, expectedRead,
+            expectedWrite);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 60000 })
+    public void explicitTimeoutsOverrideConfiguration(long timeoutMillis) {
+        Configuration configuration = Configuration
+            .from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234000")
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345000"));
+
+        validateTimeouts(
+            new OkHttpHttpClientBuilder().configuration(configuration)
+                .connectionTimeout(Duration.ofMillis(timeoutMillis))
+                .readTimeout(Duration.ofMillis(timeoutMillis))
+                .writeTimeout(Duration.ofMillis(timeoutMillis)),
+            (int) Math.max(0, timeoutMillis), (int) Math.max(0, timeoutMillis), (int) Math.max(0, timeoutMillis));
+    }
+
+    private static void validateTimeouts(OkHttpHttpClientBuilder builder, int connect, int read, int write) {
+        HttpClient client = builder.addNetworkInterceptor(chain -> {
+            assertEquals(connect, chain.connectTimeoutMillis());
+            assertEquals(read, chain.readTimeoutMillis());
+            assertEquals(write, chain.writeTimeoutMillis());
+            assertEquals(0, chain.call().timeout().timeoutNanos());
+            return chain.proceed(chain.request());
+        }).build();
 
         try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {

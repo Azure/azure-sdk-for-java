@@ -14,25 +14,25 @@ public final class ElasticSnapshotPolicyWeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSnapshotPolicyWeeklySchedule model = BinaryData.fromString(
-            "{\"snapshotsToKeep\":1964877049,\"days\":[\"Saturday\",\"Thursday\",\"Saturday\"],\"hour\":2096051855,\"minute\":1486108612}")
+            "{\"snapshotsToKeep\":649222469,\"days\":[\"Friday\",\"Sunday\"],\"hour\":1164052621,\"minute\":1291609137}")
             .toObject(ElasticSnapshotPolicyWeeklySchedule.class);
-        Assertions.assertEquals(1964877049, model.snapshotsToKeep());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.days().get(0));
-        Assertions.assertEquals(2096051855, model.hour());
-        Assertions.assertEquals(1486108612, model.minute());
+        Assertions.assertEquals(649222469, model.snapshotsToKeep());
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.days().get(0));
+        Assertions.assertEquals(1164052621, model.hour());
+        Assertions.assertEquals(1291609137, model.minute());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSnapshotPolicyWeeklySchedule model
-            = new ElasticSnapshotPolicyWeeklySchedule().withSnapshotsToKeep(1964877049)
-                .withDays(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY))
-                .withHour(2096051855)
-                .withMinute(1486108612);
+            = new ElasticSnapshotPolicyWeeklySchedule().withSnapshotsToKeep(649222469)
+                .withDays(Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY))
+                .withHour(1164052621)
+                .withMinute(1291609137);
         model = BinaryData.fromObject(model).toObject(ElasticSnapshotPolicyWeeklySchedule.class);
-        Assertions.assertEquals(1964877049, model.snapshotsToKeep());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.days().get(0));
-        Assertions.assertEquals(2096051855, model.hour());
-        Assertions.assertEquals(1486108612, model.minute());
+        Assertions.assertEquals(649222469, model.snapshotsToKeep());
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.days().get(0));
+        Assertions.assertEquals(1164052621, model.hour());
+        Assertions.assertEquals(1291609137, model.minute());
     }
 }

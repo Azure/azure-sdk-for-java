@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -903,8 +904,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate
                 = certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue("931dd8219585752bc915684ca3967974c400de28"
-                .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
+            assertArrayEquals(ImportCertificateFixture.getThumbprint(),
+                importedCertificate.getProperties().getX509Thumbprint());
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
             // Load the CER part into X509Certificate object

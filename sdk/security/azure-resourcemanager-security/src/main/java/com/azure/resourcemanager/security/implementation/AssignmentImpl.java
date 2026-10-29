@@ -168,8 +168,12 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     AssignmentImpl(AssignmentInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.assignmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/assignments/{assignmentId}",
+            "resourceGroupName");
+        this.assignmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/assignments/{assignmentId}",
+            "assignmentId");
     }
 
     public Assignment refresh() {

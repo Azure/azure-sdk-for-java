@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class ContextCachesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Get.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Get.json
      */
     /**
      * Sample code: Get a Context Cache.
@@ -19,6 +19,6 @@ public final class ContextCachesGetByResourceGroupSamples {
     public static void getAContextCache(com.azure.resourcemanager.storage.StorageManager manager) {
         manager.serviceClient()
             .getContextCaches()
-            .getByResourceGroupWithResponse("testrg", "testaccount", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("testrg", "testcontextcache", com.azure.core.util.Context.NONE);
     }
 }

@@ -42,22 +42,11 @@ public final class ImplUtils {
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
-    private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_READ_TIMEOUT;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_HTTP_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_HTTP_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_HTTP_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_HTTP_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_READ_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-    }
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+    private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_HTTP_READ_TIMEOUT = Duration.ofSeconds(60);
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
@@ -105,6 +94,50 @@ public final class ImplUtils {
 
             return defaultTimeout;
         }
+    }
+
+    /**
+     * Resolves a timeout from the explicit value, the builder's configuration, the global configuration, and finally
+     * the default, in that order. Missing, empty, or invalid configuration values fall back to the next source.
+     *
+     * @param configuredTimeout The explicitly configured timeout, or null.
+     * @param configuration The builder's configuration, or null to use the global configuration.
+     * @param timeoutPropertyName The timeout configuration property name.
+     * @param defaultTimeout The fallback timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Configuration configuration,
+        String timeoutPropertyName, Duration defaultTimeout) {
+        if (configuredTimeout != null) {
+            return getTimeout(configuredTimeout, defaultTimeout);
+        }
+
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        Duration timeout = (configuration == null || configuration == globalConfiguration)
+            ? null
+            : getDefaultTimeoutFromEnvironment(configuration, timeoutPropertyName, null, LOGGER);
+
+        return timeout == null
+            ? getDefaultTimeoutFromEnvironment(globalConfiguration, timeoutPropertyName, defaultTimeout, LOGGER)
+            : timeout;
+    }
+
+    /**
+     * Normalizes a timeout, using the default for null, zero for nonpositive values, and at least one millisecond for
+     * positive values.
+     *
+     * @param configuredTimeout The configured timeout.
+     * @param defaultTimeout The default timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+        if (configuredTimeout.isNegative() || configuredTimeout.isZero()) {
+            return Duration.ZERO;
+        }
+        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0 ? MINIMUM_TIMEOUT : configuredTimeout;
     }
 
     /**
