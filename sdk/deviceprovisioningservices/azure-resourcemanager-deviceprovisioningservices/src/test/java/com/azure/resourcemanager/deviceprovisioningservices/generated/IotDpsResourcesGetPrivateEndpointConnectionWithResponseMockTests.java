@@ -22,7 +22,7 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithResponseMockTe
     @Test
     public void testGetPrivateEndpointConnectionWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"crsbfovasr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"v\",\"actionsRequired\":\"hsqfsubcgjbirxbp\"}},\"id\":\"srfbjfdtwss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"sfeaenwabfat\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ddxbjhwuaanoz\",\"actionsRequired\":\"sphyoulpjrvxa\"}},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,15 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.iotDpsResources()
-            .getPrivateEndpointConnectionWithResponse("obl", "tkblmpewww", "bkrvrnsvshqj",
+            .getPrivateEndpointConnectionWithResponse("foqreyfkzik", "jawneaiv", "wczelpci",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("v", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hsqfsubcgjbirxbp",
+        Assertions.assertEquals("ddxbjhwuaanoz",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("sphyoulpjrvxa",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

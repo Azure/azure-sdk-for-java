@@ -146,8 +146,12 @@ public final class SovereignViewResourceImpl
         com.azure.resourcemanager.sovereign.SovereignManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sovereignViewName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sovereignViews");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
+            "resourceGroupName");
+        this.sovereignViewName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
+            "sovereignViewName");
     }
 
     public SovereignViewResource refresh() {

@@ -1,10 +1,16 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2026-10-27)
 
 ### Bugs Fixed
 
@@ -17,8 +23,15 @@
 - Fixed per-call response timeout overrides incorrectly changing asynchronous response-body read timeouts.
 - Fixed response timeouts expiring during otherwise valid request-body uploads.
 - Fixed requests with `Expect: 100-continue` waiting indefinitely when a server sends neither an interim nor a final response. The configured response timeout now bounds the handshake wait independently of the upload.
+- Added GraalVM native-image metadata (`reflect-config.json`, `native-image.properties`) so `JdkHttpClientProvider` is discoverable via `ServiceLoader` and its `GlobalJdkAsyncHttpClient` holder initializes at run time under a native image, mirroring the existing support in `azure-core-http-netty`. Previously, an application built with this module as its `HttpClientProvider` under GraalVM native-image could fail at run time with an `IllegalStateException` indicating that the default HttpClient provider could not be found on the classpath.
 
 ### Other Changes
+
+- Documented the `jdk.httpclient.allowRestrictedHeaders` setting for explicit `Host` headers.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 
 ## 1.2.0 (2026-09-29)
 

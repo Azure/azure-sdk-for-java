@@ -123,6 +123,7 @@
     "dinclude",
     "djacoco",
     "djava",
+    "djdk",
     "doesnt",
     "dremote",
     "drevapi",

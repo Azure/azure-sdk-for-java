@@ -24,6 +24,8 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
+    - [Using a dedicated thread pool](#using-thread-pool)
+    - [Virtual-thread carrier starvation](#virtual-thread-carrier-starvation)
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
 
@@ -323,21 +325,13 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 ## Troubleshoot authentication timeout issues
 
 ### Using Thread pool
-The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
-arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
-a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
-common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
-strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
-this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
-allocation of threads from the common fork-join pool.
 
-To effectively address this deadlock situation, follow these steps:
+By default, Azure Identity runs MSAL authentication tasks on Azure Core's `SharedExecutorService`, not on the common
+fork-join pool. A bounded executor can run out of workers if application tasks occupy its threads while waiting for
+authentication work queued on the same executor.
 
-* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
-
-* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
-
-Here's a code sample below:
+To isolate authentication work, configure the credential with a dedicated executor. Keep this executor separate from
+application tasks that make blocking Azure SDK calls. The following example uses a cached platform-thread pool:
 
 ```java
 ExecutorService executorService = Executors.newCachedThreadPool();
@@ -350,13 +344,42 @@ try {
       .executorService(executorService)
       .build();
 
+    // Use the credential and finish all SDK requests before leaving this scope.
 } finally {
-   //Shutdown the thread pool once no longer needed.
+   // Shut down the executor only after all clients using the credential have stopped.
    executorService.shutdown();
 }
 ```
 
-You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
+The application owns this executor's lifecycle. Choose an executor with capacity and resource limits appropriate for
+your workload; a fixed number of threads is not sufficient for every concurrency pattern.
+
+### Virtual-thread carrier starvation
+
+On Java 21, blocking while holding a `synchronized` monitor can pin a virtual thread to its carrier thread. In affected
+Azure Core versions, synchronous paging holds such a monitor while retrieving a page, including while authentication
+waits for MSAL work on the shared virtual-thread executor. If all carriers are pinned, that work cannot run and
+authentication stops making progress. See [#46231](https://github.com/Azure/azure-sdk-for-java/issues/46231).
+
+For affected versions, temporarily disable virtual threads in the shared executor with either this environment variable:
+
+```text
+AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS=false
+```
+
+or this JVM option:
+
+```text
+-Dazure.sdk.shared.threadpool.usevirtualthreads=false
+```
+
+Set the option at process startup, before any Azure SDK code initializes `SharedExecutorService`. These settings are read
+once and affect all SDK libraries using that shared executor, not only Azure Identity. The names
+`AZURE_IDENTITY_USE_VIRTUAL_THREADS` and `azure.identity.use.virtual.threads` do not configure this executor.
+
+Alternatively, keep virtual threads enabled elsewhere and pass a dedicated platform-thread executor to the credential
+builder's `executorService(...)` method, as shown above. This is a workaround for affected versions, not a replacement for
+fixing the SDK-owned paging monitor.
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 
