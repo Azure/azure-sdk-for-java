@@ -606,7 +606,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                 } else if ("audio".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.audio = VoiceAgentAudioConfiguration.fromJson(reader);
                 } else if ("soundscape".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.soundscape = VoiceAgentSoundscapeConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.soundscape = VoiceAgentSoundscapeConfiguration.fromJson(reader);
                 } else if ("output_modalities".equals(fieldName)) {
                     List<VoiceOutputModality> outputModalities
                         = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
@@ -900,7 +900,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * soundscape mix.
      */
     @Generated
-    private VoiceAgentSoundscapeConfig soundscape;
+    private VoiceAgentSoundscapeConfiguration soundscape;
 
     /**
      * Get the soundscape property: Optional background ambience and event cues, stored with the agent version and
@@ -911,7 +911,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the soundscape value.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig getSoundscape() {
+    public VoiceAgentSoundscapeConfiguration getSoundscape() {
         return this.soundscape;
     }
 
@@ -925,7 +925,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the VoiceAgentDefinition object itself.
      */
     @Generated
-    public VoiceAgentDefinition setSoundscape(VoiceAgentSoundscapeConfig soundscape) {
+    public VoiceAgentDefinition setSoundscape(VoiceAgentSoundscapeConfiguration soundscape) {
         this.soundscape = soundscape;
         return this;
     }

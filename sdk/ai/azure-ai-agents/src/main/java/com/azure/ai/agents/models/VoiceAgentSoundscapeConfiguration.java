@@ -18,43 +18,43 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceAgentSoundscapeConfig> {
+public final class VoiceAgentSoundscapeConfiguration implements JsonSerializable<VoiceAgentSoundscapeConfiguration> {
 
     /*
      * Continuous background ambience that continues during caller and agent speech.
      */
     @Generated
-    private VoiceAgentSoundscapeTrackConfig background;
+    private VoiceAgentSoundscapeTrackConfiguration background;
 
     /*
      * A loop played while a non-call-control tool is pending and the agent is silent, after the configured delay.
      */
     @Generated
-    private VoiceAgentSoundscapeWorkingTrackConfig working;
+    private VoiceAgentSoundscapeWorkingTrackConfiguration working;
 
     /*
      * An interruptible cue played before the first agent speech.
      */
     @Generated
-    private VoiceAgentSoundscapeTrackConfig opening;
+    private VoiceAgentSoundscapeTrackConfiguration opening;
 
     /*
      * A one-shot cue played after queued agent speech drains and before a committed call transfer.
      */
     @Generated
-    private VoiceAgentSoundscapeTrackConfig transfer;
+    private VoiceAgentSoundscapeTrackConfiguration transfer;
 
     /*
      * A one-shot cue played after queued agent speech drains and before a committed session end.
      */
     @Generated
-    private VoiceAgentSoundscapeTrackConfig closing;
+    private VoiceAgentSoundscapeTrackConfiguration closing;
 
     /**
-     * Creates an instance of VoiceAgentSoundscapeConfig class.
+     * Creates an instance of VoiceAgentSoundscapeConfiguration class.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig() {
+    public VoiceAgentSoundscapeConfiguration() {
     }
 
     /**
@@ -63,7 +63,7 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * @return the background value.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig getBackground() {
+    public VoiceAgentSoundscapeTrackConfiguration getBackground() {
         return this.background;
     }
 
@@ -71,10 +71,10 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * Set the background property: Continuous background ambience that continues during caller and agent speech.
      *
      * @param background the background value to set.
-     * @return the VoiceAgentSoundscapeConfig object itself.
+     * @return the VoiceAgentSoundscapeConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig setBackground(VoiceAgentSoundscapeTrackConfig background) {
+    public VoiceAgentSoundscapeConfiguration setBackground(VoiceAgentSoundscapeTrackConfiguration background) {
         this.background = background;
         return this;
     }
@@ -86,7 +86,7 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * @return the working value.
      */
     @Generated
-    public VoiceAgentSoundscapeWorkingTrackConfig getWorking() {
+    public VoiceAgentSoundscapeWorkingTrackConfiguration getWorking() {
         return this.working;
     }
 
@@ -95,10 +95,10 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * the configured delay.
      *
      * @param working the working value to set.
-     * @return the VoiceAgentSoundscapeConfig object itself.
+     * @return the VoiceAgentSoundscapeConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig setWorking(VoiceAgentSoundscapeWorkingTrackConfig working) {
+    public VoiceAgentSoundscapeConfiguration setWorking(VoiceAgentSoundscapeWorkingTrackConfiguration working) {
         this.working = working;
         return this;
     }
@@ -109,7 +109,7 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * @return the opening value.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig getOpening() {
+    public VoiceAgentSoundscapeTrackConfiguration getOpening() {
         return this.opening;
     }
 
@@ -117,10 +117,10 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * Set the opening property: An interruptible cue played before the first agent speech.
      *
      * @param opening the opening value to set.
-     * @return the VoiceAgentSoundscapeConfig object itself.
+     * @return the VoiceAgentSoundscapeConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig setOpening(VoiceAgentSoundscapeTrackConfig opening) {
+    public VoiceAgentSoundscapeConfiguration setOpening(VoiceAgentSoundscapeTrackConfiguration opening) {
         this.opening = opening;
         return this;
     }
@@ -132,7 +132,7 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * @return the transfer value.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig getTransfer() {
+    public VoiceAgentSoundscapeTrackConfiguration getTransfer() {
         return this.transfer;
     }
 
@@ -141,10 +141,10 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * transfer.
      *
      * @param transfer the transfer value to set.
-     * @return the VoiceAgentSoundscapeConfig object itself.
+     * @return the VoiceAgentSoundscapeConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig setTransfer(VoiceAgentSoundscapeTrackConfig transfer) {
+    public VoiceAgentSoundscapeConfiguration setTransfer(VoiceAgentSoundscapeTrackConfiguration transfer) {
         this.transfer = transfer;
         return this;
     }
@@ -156,7 +156,7 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * @return the closing value.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig getClosing() {
+    public VoiceAgentSoundscapeTrackConfiguration getClosing() {
         return this.closing;
     }
 
@@ -165,10 +165,10 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
      * end.
      *
      * @param closing the closing value to set.
-     * @return the VoiceAgentSoundscapeConfig object itself.
+     * @return the VoiceAgentSoundscapeConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeConfig setClosing(VoiceAgentSoundscapeTrackConfig closing) {
+    public VoiceAgentSoundscapeConfiguration setClosing(VoiceAgentSoundscapeTrackConfiguration closing) {
         this.closing = closing;
         return this;
     }
@@ -189,37 +189,41 @@ public final class VoiceAgentSoundscapeConfig implements JsonSerializable<VoiceA
     }
 
     /**
-     * Reads an instance of VoiceAgentSoundscapeConfig from the JsonReader.
+     * Reads an instance of VoiceAgentSoundscapeConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentSoundscapeConfig if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeConfig.
+     * @return An instance of VoiceAgentSoundscapeConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeConfiguration.
      */
     @Generated
-    public static VoiceAgentSoundscapeConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSoundscapeConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VoiceAgentSoundscapeConfig deserializedVoiceAgentSoundscapeConfig = new VoiceAgentSoundscapeConfig();
+            VoiceAgentSoundscapeConfiguration deserializedVoiceAgentSoundscapeConfiguration
+                = new VoiceAgentSoundscapeConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("background".equals(fieldName)) {
-                    deserializedVoiceAgentSoundscapeConfig.background
-                        = VoiceAgentSoundscapeTrackConfig.fromJson(reader);
+                    deserializedVoiceAgentSoundscapeConfiguration.background
+                        = VoiceAgentSoundscapeTrackConfiguration.fromJson(reader);
                 } else if ("working".equals(fieldName)) {
-                    deserializedVoiceAgentSoundscapeConfig.working
-                        = VoiceAgentSoundscapeWorkingTrackConfig.fromJson(reader);
+                    deserializedVoiceAgentSoundscapeConfiguration.working
+                        = VoiceAgentSoundscapeWorkingTrackConfiguration.fromJson(reader);
                 } else if ("opening".equals(fieldName)) {
-                    deserializedVoiceAgentSoundscapeConfig.opening = VoiceAgentSoundscapeTrackConfig.fromJson(reader);
+                    deserializedVoiceAgentSoundscapeConfiguration.opening
+                        = VoiceAgentSoundscapeTrackConfiguration.fromJson(reader);
                 } else if ("transfer".equals(fieldName)) {
-                    deserializedVoiceAgentSoundscapeConfig.transfer = VoiceAgentSoundscapeTrackConfig.fromJson(reader);
+                    deserializedVoiceAgentSoundscapeConfiguration.transfer
+                        = VoiceAgentSoundscapeTrackConfiguration.fromJson(reader);
                 } else if ("closing".equals(fieldName)) {
-                    deserializedVoiceAgentSoundscapeConfig.closing = VoiceAgentSoundscapeTrackConfig.fromJson(reader);
+                    deserializedVoiceAgentSoundscapeConfiguration.closing
+                        = VoiceAgentSoundscapeTrackConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedVoiceAgentSoundscapeConfig;
+            return deserializedVoiceAgentSoundscapeConfiguration;
         });
     }
 }

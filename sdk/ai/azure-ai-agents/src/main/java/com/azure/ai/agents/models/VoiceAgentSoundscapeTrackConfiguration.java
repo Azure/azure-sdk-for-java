@@ -17,13 +17,14 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSoundscapeTrackConfig implements JsonSerializable<VoiceAgentSoundscapeTrackConfig> {
+public final class VoiceAgentSoundscapeTrackConfiguration
+    implements JsonSerializable<VoiceAgentSoundscapeTrackConfiguration> {
 
     /*
      * The required audio source for this track.
      */
     @Generated
-    private final VoiceAgentSoundscapeSourceConfig source;
+    private final VoiceAgentSoundscapeSourceConfiguration source;
 
     /*
      * Linear playback gain from 0 to 1, independent of agent speech volume. If omitted, the service defaults to 1. A
@@ -33,12 +34,12 @@ public final class VoiceAgentSoundscapeTrackConfig implements JsonSerializable<V
     private Double gain;
 
     /**
-     * Creates an instance of VoiceAgentSoundscapeTrackConfig class.
+     * Creates an instance of VoiceAgentSoundscapeTrackConfiguration class.
      *
      * @param source the source value to set.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig(VoiceAgentSoundscapeSourceConfig source) {
+    public VoiceAgentSoundscapeTrackConfiguration(VoiceAgentSoundscapeSourceConfiguration source) {
         this.source = source;
     }
 
@@ -48,7 +49,7 @@ public final class VoiceAgentSoundscapeTrackConfig implements JsonSerializable<V
      * @return the source value.
      */
     @Generated
-    public VoiceAgentSoundscapeSourceConfig getSource() {
+    public VoiceAgentSoundscapeSourceConfiguration getSource() {
         return this.source;
     }
 
@@ -68,10 +69,10 @@ public final class VoiceAgentSoundscapeTrackConfig implements JsonSerializable<V
      * service defaults to 1. A value of 0 mutes this track.
      *
      * @param gain the gain value to set.
-     * @return the VoiceAgentSoundscapeTrackConfig object itself.
+     * @return the VoiceAgentSoundscapeTrackConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeTrackConfig setGain(Double gain) {
+    public VoiceAgentSoundscapeTrackConfiguration setGain(Double gain) {
         this.gain = gain;
         return this;
     }
@@ -89,34 +90,34 @@ public final class VoiceAgentSoundscapeTrackConfig implements JsonSerializable<V
     }
 
     /**
-     * Reads an instance of VoiceAgentSoundscapeTrackConfig from the JsonReader.
+     * Reads an instance of VoiceAgentSoundscapeTrackConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentSoundscapeTrackConfig if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentSoundscapeTrackConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeTrackConfig.
+     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeTrackConfiguration.
      */
     @Generated
-    public static VoiceAgentSoundscapeTrackConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSoundscapeTrackConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VoiceAgentSoundscapeSourceConfig source = null;
+            VoiceAgentSoundscapeSourceConfiguration source = null;
             Double gain = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("source".equals(fieldName)) {
-                    source = VoiceAgentSoundscapeSourceConfig.fromJson(reader);
+                    source = VoiceAgentSoundscapeSourceConfiguration.fromJson(reader);
                 } else if ("gain".equals(fieldName)) {
                     gain = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentSoundscapeTrackConfig deserializedVoiceAgentSoundscapeTrackConfig
-                = new VoiceAgentSoundscapeTrackConfig(source);
-            deserializedVoiceAgentSoundscapeTrackConfig.gain = gain;
-            return deserializedVoiceAgentSoundscapeTrackConfig;
+            VoiceAgentSoundscapeTrackConfiguration deserializedVoiceAgentSoundscapeTrackConfiguration
+                = new VoiceAgentSoundscapeTrackConfiguration(source);
+            deserializedVoiceAgentSoundscapeTrackConfiguration.gain = gain;
+            return deserializedVoiceAgentSoundscapeTrackConfiguration;
         });
     }
 }

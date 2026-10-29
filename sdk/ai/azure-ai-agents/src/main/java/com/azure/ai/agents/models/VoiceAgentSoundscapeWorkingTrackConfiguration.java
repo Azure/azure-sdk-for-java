@@ -18,14 +18,14 @@ import java.time.Duration;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSoundscapeWorkingTrackConfig
-    implements JsonSerializable<VoiceAgentSoundscapeWorkingTrackConfig> {
+public final class VoiceAgentSoundscapeWorkingTrackConfiguration
+    implements JsonSerializable<VoiceAgentSoundscapeWorkingTrackConfiguration> {
 
     /*
      * The required audio source for this track.
      */
     @Generated
-    private final VoiceAgentSoundscapeSourceConfig source;
+    private final VoiceAgentSoundscapeSourceConfiguration source;
 
     /*
      * Linear playback gain from 0 to 1, independent of agent speech volume. If omitted, the service defaults to 1. A
@@ -39,15 +39,15 @@ public final class VoiceAgentSoundscapeWorkingTrackConfig
      * milliseconds. This delays only working audio, not tool execution, and is valid only on the working track.
      */
     @Generated
-    private Long delayMs;
+    private Long delay;
 
     /**
-     * Creates an instance of VoiceAgentSoundscapeWorkingTrackConfig class.
+     * Creates an instance of VoiceAgentSoundscapeWorkingTrackConfiguration class.
      *
      * @param source the source value to set.
      */
     @Generated
-    public VoiceAgentSoundscapeWorkingTrackConfig(VoiceAgentSoundscapeSourceConfig source) {
+    public VoiceAgentSoundscapeWorkingTrackConfiguration(VoiceAgentSoundscapeSourceConfiguration source) {
         this.source = source;
     }
 
@@ -57,7 +57,7 @@ public final class VoiceAgentSoundscapeWorkingTrackConfig
      * @return the source value.
      */
     @Generated
-    public VoiceAgentSoundscapeSourceConfig getSource() {
+    public VoiceAgentSoundscapeSourceConfiguration getSource() {
         return this.source;
     }
 
@@ -77,43 +77,43 @@ public final class VoiceAgentSoundscapeWorkingTrackConfig
      * service defaults to 1. A value of 0 mutes this track.
      *
      * @param gain the gain value to set.
-     * @return the VoiceAgentSoundscapeWorkingTrackConfig object itself.
+     * @return the VoiceAgentSoundscapeWorkingTrackConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeWorkingTrackConfig setGain(Double gain) {
+    public VoiceAgentSoundscapeWorkingTrackConfiguration setGain(Double gain) {
         this.gain = gain;
         return this;
     }
 
     /**
-     * Get the delayMs property: The delay in milliseconds before working audio starts, from 0 to 10000. If omitted, the
+     * Get the delay property: The delay in milliseconds before working audio starts, from 0 to 10000. If omitted, the
      * service defaults to 1000 milliseconds. This delays only working audio, not tool execution, and is valid only on
      * the working track.
      *
-     * @return the delayMs value.
+     * @return the delay value.
      */
     @Generated
-    public Duration getDelayMs() {
-        if (this.delayMs == null) {
+    public Duration getDelay() {
+        if (this.delay == null) {
             return null;
         }
-        return Duration.ofMillis(this.delayMs);
+        return Duration.ofMillis(this.delay);
     }
 
     /**
-     * Set the delayMs property: The delay in milliseconds before working audio starts, from 0 to 10000. If omitted, the
+     * Set the delay property: The delay in milliseconds before working audio starts, from 0 to 10000. If omitted, the
      * service defaults to 1000 milliseconds. This delays only working audio, not tool execution, and is valid only on
      * the working track.
      *
-     * @param delayMs the delayMs value to set.
-     * @return the VoiceAgentSoundscapeWorkingTrackConfig object itself.
+     * @param delay the delay value to set.
+     * @return the VoiceAgentSoundscapeWorkingTrackConfiguration object itself.
      */
     @Generated
-    public VoiceAgentSoundscapeWorkingTrackConfig setDelayMs(Duration delayMs) {
-        if (delayMs == null) {
-            this.delayMs = null;
+    public VoiceAgentSoundscapeWorkingTrackConfiguration setDelay(Duration delay) {
+        if (delay == null) {
+            this.delay = null;
         } else {
-            this.delayMs = delayMs.toMillis();
+            this.delay = delay.toMillis();
         }
         return this;
     }
@@ -127,43 +127,43 @@ public final class VoiceAgentSoundscapeWorkingTrackConfig
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeNumberField("gain", this.gain);
-        jsonWriter.writeNumberField("delay_ms", this.delayMs);
+        jsonWriter.writeNumberField("delay_ms", this.delay);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of VoiceAgentSoundscapeWorkingTrackConfig from the JsonReader.
+     * Reads an instance of VoiceAgentSoundscapeWorkingTrackConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentSoundscapeWorkingTrackConfig if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentSoundscapeWorkingTrackConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeWorkingTrackConfig.
+     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeWorkingTrackConfiguration.
      */
     @Generated
-    public static VoiceAgentSoundscapeWorkingTrackConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSoundscapeWorkingTrackConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VoiceAgentSoundscapeSourceConfig source = null;
+            VoiceAgentSoundscapeSourceConfiguration source = null;
             Double gain = null;
-            Long delayMs = null;
+            Long delay = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("source".equals(fieldName)) {
-                    source = VoiceAgentSoundscapeSourceConfig.fromJson(reader);
+                    source = VoiceAgentSoundscapeSourceConfiguration.fromJson(reader);
                 } else if ("gain".equals(fieldName)) {
                     gain = reader.getNullable(JsonReader::getDouble);
                 } else if ("delay_ms".equals(fieldName)) {
-                    delayMs = reader.getNullable(JsonReader::getLong);
+                    delay = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentSoundscapeWorkingTrackConfig deserializedVoiceAgentSoundscapeWorkingTrackConfig
-                = new VoiceAgentSoundscapeWorkingTrackConfig(source);
-            deserializedVoiceAgentSoundscapeWorkingTrackConfig.gain = gain;
-            deserializedVoiceAgentSoundscapeWorkingTrackConfig.delayMs = delayMs;
-            return deserializedVoiceAgentSoundscapeWorkingTrackConfig;
+            VoiceAgentSoundscapeWorkingTrackConfiguration deserializedVoiceAgentSoundscapeWorkingTrackConfiguration
+                = new VoiceAgentSoundscapeWorkingTrackConfiguration(source);
+            deserializedVoiceAgentSoundscapeWorkingTrackConfiguration.gain = gain;
+            deserializedVoiceAgentSoundscapeWorkingTrackConfiguration.delay = delay;
+            return deserializedVoiceAgentSoundscapeWorkingTrackConfiguration;
         });
     }
 }

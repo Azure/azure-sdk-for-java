@@ -18,7 +18,8 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSoundscapeSourceConfig implements JsonSerializable<VoiceAgentSoundscapeSourceConfig> {
+public final class VoiceAgentSoundscapeSourceConfiguration
+    implements JsonSerializable<VoiceAgentSoundscapeSourceConfiguration> {
 
     /*
      * The audio source type. Always `built_in`.
@@ -33,12 +34,12 @@ public final class VoiceAgentSoundscapeSourceConfig implements JsonSerializable<
     private final VoiceAgentSoundscapeSound name;
 
     /**
-     * Creates an instance of VoiceAgentSoundscapeSourceConfig class.
+     * Creates an instance of VoiceAgentSoundscapeSourceConfiguration class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public VoiceAgentSoundscapeSourceConfig(VoiceAgentSoundscapeSound name) {
+    public VoiceAgentSoundscapeSourceConfiguration(VoiceAgentSoundscapeSound name) {
         this.name = name;
     }
 
@@ -75,16 +76,16 @@ public final class VoiceAgentSoundscapeSourceConfig implements JsonSerializable<
     }
 
     /**
-     * Reads an instance of VoiceAgentSoundscapeSourceConfig from the JsonReader.
+     * Reads an instance of VoiceAgentSoundscapeSourceConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentSoundscapeSourceConfig if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentSoundscapeSourceConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeSourceConfig.
+     * @throws IOException If an error occurs while reading the VoiceAgentSoundscapeSourceConfiguration.
      */
     @Generated
-    public static VoiceAgentSoundscapeSourceConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSoundscapeSourceConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VoiceAgentSoundscapeSound name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -96,7 +97,7 @@ public final class VoiceAgentSoundscapeSourceConfig implements JsonSerializable<
                     reader.skipChildren();
                 }
             }
-            return new VoiceAgentSoundscapeSourceConfig(name);
+            return new VoiceAgentSoundscapeSourceConfiguration(name);
         });
     }
 }

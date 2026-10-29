@@ -92,5 +92,6 @@ public final class AgentEndpointProtocol extends ExpandableStringEnum<AgentEndpo
      * remains outside this protocol.
      */
     @Generated
+    @Beta(warningText = "Preview API.")
     public static final AgentEndpointProtocol VOICE_CONVERSATION_ENGINE = fromString("voice_conversation_engine");
 }
