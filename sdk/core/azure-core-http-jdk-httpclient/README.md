@@ -48,12 +48,34 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-jdk-httpclient</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+
+### Request host overrides
+
+The request URL determines the connection destination. By default, the SDK filters out the restricted `Host` header
+and logs a warning. To allow an explicit `Host` header, start the application JVM with:
+
+```text
+java -Djdk.httpclient.allowRestrictedHeaders=host -jar application.jar
+```
+
+If `jdk.httpclient.allowRestrictedHeaders` already lists other headers, add `host` to that comma-separated list.
+The JDK caches this setting, so it must be configured before the JDK HTTP client is initialized.
+
+The default SDK configuration reads this system property. If you supply a custom `Configuration` to
+`JdkHttpClientBuilder.configuration(...)`, include the same setting there so the SDK's header filter also permits `Host`.
+`Configuration.NONE` does not read system properties. Setting the property only in the builder's configuration does not
+enable the native JDK override.
+Requests without an explicit `Host` header continue to use the URL's authority.
+
+This setting affects all JDK HTTP clients in the JVM. The JDK documents it as a testing-oriented option; consult the
+[JDK HTTP client properties](https://docs.oracle.com/en/java/javase/25/docs/api/java.net.http/module-summary.html#jdk.httpclient.allowRestrictedHeaders)
+for its restrictions.
 
 ## Examples
 

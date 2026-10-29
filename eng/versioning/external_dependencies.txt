@@ -71,6 +71,7 @@ org.apache.arrow:arrow-format;19.0.0
 org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
 org.apache.commons:commons-lang3;3.18.0
+org.apache.groovy:groovy;5.1.2
 org.apache.httpcomponents:httpclient;4.5.14
 org.apache.httpcomponents.client5:httpclient5;5.4.3
 org.apache.logging.log4j:log4j-api;2.26.0
@@ -157,7 +158,7 @@ com.beust:jcommander;1.82
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.github.javaparser:javaparser-core;3.28.2
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;9.37.3
+com.nimbusds:nimbus-jose-jwt;9.37.4
 com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.12.0
 commons-io:commons-io;2.17.0
