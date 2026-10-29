@@ -58,13 +58,17 @@ add the direct dependency to your project as follows.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
   </dependency>
 </dependencies>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+
+An explicit request `Host` header overrides the HTTP authority without changing the connection destination specified
+by the request URL. With HTTP/1.1 it is sent as `Host`; with HTTP/2 its value is passed unchanged as `:authority`
+instead of sending a conflicting `Host` header. Requests without an explicit `Host` continue to use the URL's authority.
 
 ## Examples
 

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSPatch_DisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/DPSPatch_DisableLocalAuth.json
      */
     /**
      * Sample code: DPSPatch_DisableLocalAuth.
@@ -30,7 +30,7 @@ public final class IotDpsResourceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31/DPSPatch.json
+     * x-ms-original-file: 2026-11-01/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.
