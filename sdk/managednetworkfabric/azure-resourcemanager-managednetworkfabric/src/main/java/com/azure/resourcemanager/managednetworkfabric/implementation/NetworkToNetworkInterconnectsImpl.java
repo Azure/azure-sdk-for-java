@@ -152,18 +152,23 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public NetworkToNetworkInterconnect getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkFabricName");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
         }
-        String networkToNetworkInterconnectName
-            = ResourceManagerUtils.getValueFromIdByName(id, "networkToNetworkInterconnects");
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkToNetworkInterconnectName");
         if (networkToNetworkInterconnectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
@@ -174,18 +179,23 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public Response<NetworkToNetworkInterconnect> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkFabricName");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
         }
-        String networkToNetworkInterconnectName
-            = ResourceManagerUtils.getValueFromIdByName(id, "networkToNetworkInterconnects");
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkToNetworkInterconnectName");
         if (networkToNetworkInterconnectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
@@ -194,18 +204,23 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkFabricName");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
         }
-        String networkToNetworkInterconnectName
-            = ResourceManagerUtils.getValueFromIdByName(id, "networkToNetworkInterconnects");
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkToNetworkInterconnectName");
         if (networkToNetworkInterconnectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
@@ -214,18 +229,23 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkFabricName");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
         }
-        String networkToNetworkInterconnectName
-            = ResourceManagerUtils.getValueFromIdByName(id, "networkToNetworkInterconnects");
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkToNetworkInterconnectName");
         if (networkToNetworkInterconnectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));

@@ -142,11 +142,21 @@ public final class ProtectedItemResourceImpl
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupFabrics");
-        this.containerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectionContainers");
-        this.protectedItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectedItems");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "vaultName");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "resourceGroupName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "fabricName");
+        this.containerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "containerName");
+        this.protectedItemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "protectedItemName");
     }
 
     public ProtectedItemResource refresh() {

@@ -141,9 +141,12 @@ public final class GoldenGateConnectionImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.goldenGateConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "goldenGateConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
+            "resourceGroupName");
+        this.goldenGateConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
+            "goldenGateConnectionName");
     }
 
     public GoldenGateConnection refresh() {

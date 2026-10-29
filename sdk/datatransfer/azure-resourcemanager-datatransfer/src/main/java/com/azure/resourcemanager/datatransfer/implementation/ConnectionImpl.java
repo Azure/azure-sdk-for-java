@@ -131,8 +131,12 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
         com.azure.resourcemanager.datatransfer.DataTransferManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
+            "resourceGroupName");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
+            "connectionName");
     }
 
     public Connection refresh() {

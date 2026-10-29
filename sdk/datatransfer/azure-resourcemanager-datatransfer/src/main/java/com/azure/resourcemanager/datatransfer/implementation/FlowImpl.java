@@ -150,9 +150,15 @@ public final class FlowImpl implements Flow, Flow.Definition, Flow.Update {
     FlowImpl(FlowInner innerObject, com.azure.resourcemanager.datatransfer.DataTransferManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
-        this.flowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flows");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
+            "resourceGroupName");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
+            "connectionName");
+        this.flowName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
+            "flowName");
     }
 
     public Flow refresh() {
