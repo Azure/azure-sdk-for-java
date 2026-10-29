@@ -113,10 +113,15 @@ public final class ProfileProbingGatewayImpl
         com.azure.resourcemanager.privatetrafficmanager.PrivateTrafficManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateTrafficManagerProfiles");
-        this.profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "probingGateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "resourceGroupName");
+        this.privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "privateTrafficManagerProfileName");
+        this.profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "profileProbingGatewayName");
     }
 
     public ProfileProbingGateway refresh() {

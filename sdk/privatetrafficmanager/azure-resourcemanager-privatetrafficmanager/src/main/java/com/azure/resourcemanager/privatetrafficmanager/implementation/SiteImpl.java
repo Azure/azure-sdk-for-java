@@ -106,9 +106,15 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         com.azure.resourcemanager.privatetrafficmanager.PrivateTrafficManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.topologyMapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "topologyMaps");
-        this.siteName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sites");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/topologyMaps/{topologyMapName}/sites/{siteName}",
+            "resourceGroupName");
+        this.topologyMapName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/topologyMaps/{topologyMapName}/sites/{siteName}",
+            "topologyMapName");
+        this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/topologyMaps/{topologyMapName}/sites/{siteName}",
+            "siteName");
     }
 
     public Site refresh() {

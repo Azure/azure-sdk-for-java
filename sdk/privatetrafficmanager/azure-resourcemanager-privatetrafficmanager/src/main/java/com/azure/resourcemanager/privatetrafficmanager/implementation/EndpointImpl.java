@@ -110,10 +110,15 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
         com.azure.resourcemanager.privatetrafficmanager.PrivateTrafficManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateTrafficManagerProfiles");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "resourceGroupName");
+        this.privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "privateTrafficManagerProfileName");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "endpointName");
     }
 
     public Endpoint refresh() {

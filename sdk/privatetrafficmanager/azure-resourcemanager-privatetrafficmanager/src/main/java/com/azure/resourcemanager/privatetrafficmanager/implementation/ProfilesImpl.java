@@ -81,13 +81,16 @@ public final class ProfilesImpl implements Profiles {
     }
 
     public PrivateTrafficManagerProfile getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
@@ -97,13 +100,16 @@ public final class ProfilesImpl implements Profiles {
     }
 
     public Response<PrivateTrafficManagerProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
@@ -112,13 +118,16 @@ public final class ProfilesImpl implements Profiles {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
@@ -127,13 +136,16 @@ public final class ProfilesImpl implements Profiles {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));

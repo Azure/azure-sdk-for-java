@@ -72,18 +72,23 @@ public final class ProfileProbingGatewaysImpl implements ProfileProbingGateways 
     }
 
     public ProfileProbingGateway getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "probingGateways");
+        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "profileProbingGatewayName");
         if (profileProbingGatewayName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'probingGateways'.", id)));
@@ -95,18 +100,23 @@ public final class ProfileProbingGatewaysImpl implements ProfileProbingGateways 
     }
 
     public Response<ProfileProbingGateway> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "probingGateways");
+        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "profileProbingGatewayName");
         if (profileProbingGatewayName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'probingGateways'.", id)));
@@ -116,18 +126,23 @@ public final class ProfileProbingGatewaysImpl implements ProfileProbingGateways 
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "probingGateways");
+        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "profileProbingGatewayName");
         if (profileProbingGatewayName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'probingGateways'.", id)));
@@ -136,18 +151,23 @@ public final class ProfileProbingGatewaysImpl implements ProfileProbingGateways 
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "probingGateways");
+        String profileProbingGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/probingGateways/{profileProbingGatewayName}",
+            "profileProbingGatewayName");
         if (profileProbingGatewayName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'probingGateways'.", id)));

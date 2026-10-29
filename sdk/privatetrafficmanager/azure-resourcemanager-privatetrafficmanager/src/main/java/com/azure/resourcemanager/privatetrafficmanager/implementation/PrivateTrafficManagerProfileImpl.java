@@ -129,9 +129,12 @@ public final class PrivateTrafficManagerProfileImpl implements PrivateTrafficMan
         com.azure.resourcemanager.privatetrafficmanager.PrivateTrafficManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateTrafficManagerProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "resourceGroupName");
+        this.privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}",
+            "privateTrafficManagerProfileName");
     }
 
     public PrivateTrafficManagerProfile refresh() {

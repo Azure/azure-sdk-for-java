@@ -68,18 +68,23 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public Endpoint getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -89,18 +94,23 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public Response<Endpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -109,18 +119,23 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -129,18 +144,23 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateTrafficManagerProfileName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateTrafficManagerProfiles");
+        String privateTrafficManagerProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "privateTrafficManagerProfileName");
         if (privateTrafficManagerProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'privateTrafficManagerProfiles'.", id)));
         }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateTrafficManagerProfiles/{privateTrafficManagerProfileName}/endpoints/{endpointName}",
+            "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));

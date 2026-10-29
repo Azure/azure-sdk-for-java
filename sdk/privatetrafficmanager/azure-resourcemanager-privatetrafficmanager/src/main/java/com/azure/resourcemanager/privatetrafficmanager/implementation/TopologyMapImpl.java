@@ -128,8 +128,12 @@ public final class TopologyMapImpl implements TopologyMap, TopologyMap.Definitio
         com.azure.resourcemanager.privatetrafficmanager.PrivateTrafficManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.topologyMapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "topologyMaps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/topologyMaps/{topologyMapName}",
+            "resourceGroupName");
+        this.topologyMapName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/topologyMaps/{topologyMapName}",
+            "topologyMapName");
     }
 
     public TopologyMap refresh() {

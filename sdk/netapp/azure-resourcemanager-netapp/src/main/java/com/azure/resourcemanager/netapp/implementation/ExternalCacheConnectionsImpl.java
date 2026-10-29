@@ -75,12 +75,16 @@ public final class ExternalCacheConnectionsImpl implements ExternalCacheConnecti
     }
 
     public ExternalCacheConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "externalCacheConnections");
+        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "externalCacheConnectionName");
         if (externalCacheConnectionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'externalCacheConnections'.", id)));
@@ -90,12 +94,16 @@ public final class ExternalCacheConnectionsImpl implements ExternalCacheConnecti
     }
 
     public Response<ExternalCacheConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "externalCacheConnections");
+        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "externalCacheConnectionName");
         if (externalCacheConnectionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'externalCacheConnections'.", id)));
@@ -104,12 +112,16 @@ public final class ExternalCacheConnectionsImpl implements ExternalCacheConnecti
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "externalCacheConnections");
+        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "externalCacheConnectionName");
         if (externalCacheConnectionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'externalCacheConnections'.", id)));
@@ -118,12 +130,16 @@ public final class ExternalCacheConnectionsImpl implements ExternalCacheConnecti
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "externalCacheConnections");
+        String externalCacheConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalCacheConnections/{externalCacheConnectionName}",
+            "externalCacheConnectionName");
         if (externalCacheConnectionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'externalCacheConnections'.", id)));
