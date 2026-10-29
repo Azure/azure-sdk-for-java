@@ -23,6 +23,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
 - [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
+- [Troubleshoot GitHubActionsCredential authentication issues](#troubleshoot-githubactionscredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
     - [Using a dedicated thread pool](#using-thread-pool)
     - [Virtual-thread carrier starvation](#virtual-thread-carrier-starvation)
@@ -314,6 +315,26 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 |No value for environment variable `SYSTEM_OIDCREQUESTURI` needed by AzurePipelinesCredential. This should be set by Azure Pipelines. AuthenticationException: AzurePipelinesCredential authentication unavailable.|This code is not running inside of the Azure Pipelines environment. You may be running this code locally or on some other environment.|This credential is only designed to run inside the Azure Pipelines environment for the federated identity to work.|
 |AADSTS700016: Application with identifier 'clientId' was not found in the directory 'Microsoft'. This can happen if the application has not been installed by the administrator of the tenant or consented to by any user in the tenant. You may have sent your authentication request to the wrong tenant.|The `<clientId>` provided is invalid|Verify the client ID argument is valid. If the service connection's federated identity was registered via a user-assigned managed identity, the client ID of the managed identity should be provided. If the service connection's federated identity is registered via an app registration, the Application (client) ID from your app registration should be provided.|
 
+
+## Troubleshoot `GitHubActionsCredential` authentication issues
+
+`GitHubActionsCredential` is a standalone credential for GitHub Actions OIDC federation. It is not part of
+`DefaultAzureCredential`. Missing configuration fails during `GitHubActionsCredentialBuilder.build()`, so
+constructing an unconfigured credential does not defer failure to a manually composed credential chain.
+
+| Error | Cause | Mitigation |
+| --- | --- | --- |
+| `CredentialUnavailableException` naming `AZURE_CLIENT_ID` or `AZURE_TENANT_ID` | The Azure application IDs are missing. | Set the environment variables or call `clientId` and `tenantId` on the builder. |
+| `CredentialUnavailableException` naming `ACTIONS_ID_TOKEN_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` | The process is outside an OIDC-enabled workflow step. | Grant the job `permissions: id-token: write` and run the SDK in that GitHub Actions step. Do not supply the runner token manually. |
+| Invalid runner request URL | The configured URL is not an absolute HTTPS URL, or contains user information or a fragment. | Use the URL supplied by the GitHub Actions runner. |
+| Unsupported authority host | There is no supported audience mapping for the authority. | Use one of the [documented cloud authorities](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticate-github-actions-workflows). Custom audiences and authorities are not supported. |
+| GitHub OIDC HTTP 401/403 | GitHub rejected the runner request. | Check the job's OIDC permissions and ensure the request variables belong to the current workflow step. |
+| Invalid GitHub assertion response | The response is not HTTP 200 with a nonempty string `value`. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. Do not log the response body; it can contain an assertion. |
+| Entra reports no matching federated identity record | The presented issuer, subject, or audience does not match the app's federation configuration. | Match the actual claims for the repository/ref, including immutable subject IDs when applicable, and the audience derived from the authority host. |
+
+See [GitHub's Azure OIDC setup guide](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure)
+for federation prerequisites. Never include the runner bearer token, OIDC assertion, access token, or raw token
+response in diagnostic logs.
 
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`

@@ -204,6 +204,7 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 | Credential                              | Usage                                                             | Example                     | Reference                                  |
 |-----------------------------------------|-------------------------------------------------------------------|-----------------------------|--------------------------------------------|
 | [AzurePipelinesCredential][cred_apc]    | Authenticates with a service connection in Azure Pipelines.       |                             | [Manage service connections][cred_apc_ref] |
+| [GitHubActionsCredential](#authenticate-github-actions-workflows) | Authenticates a GitHub Actions workflow using OIDC federation | [example](#authenticate-github-actions-workflows) | [Configure federation with Azure][github_oidc] |
 | [ClientAssertionCredential][cred_cac]   | Authenticates a service principal using a signed client assertion |                             |                                            |
 | [ClientCertificateCredential][cred_ccc] | Authenticates a service principal using a certificate             | [example][cred_ccc_example] | [Service principal authentication][sp]     |
 | [ClientSecretCredential][cred_csc]      | Authenticates a service principal using a secret                  | [example][cred_csc_example] | [Service principal authentication][sp]     |
@@ -228,6 +229,78 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|||
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
+
+## Authenticate GitHub Actions workflows
+
+`GitHubActionsCredential` exchanges a GitHub Actions OIDC token for a Microsoft Entra access token.
+Configure a federated identity credential on your Entra application that trusts the workflow's issuer,
+subject, and audience. Follow [GitHub's Azure OIDC setup guide][github_oidc], then set these workflow permissions
+and environment variables:
+
+```yaml
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+  AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+```
+
+GitHub provides `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN` to the workflow step.
+Do not configure those values as repository secrets or print them. No client secret, certificate, or
+`azure/login` step is required for this credential.
+
+```java readme-sample-github-actions-credential
+TokenCredential gitHubCredential = new GitHubActionsCredentialBuilder().build();
+```
+
+You can override the Azure IDs without changing the runner-provided OIDC configuration:
+
+```java readme-sample-github-actions-credential-explicit
+TokenCredential explicitCredential = new GitHubActionsCredentialBuilder()
+    .tenantId("<tenant-id>")
+    .clientId("<client-id>")
+    .build();
+```
+
+The effective authority is the builder's `authorityHost`, followed by `AZURE_AUTHORITY_HOST`, then Azure Public.
+The credential derives the assertion audience from that authority. Configure the same audience in the federated
+identity credential:
+
+| Authority host | Audience |
+| --- | --- |
+| `https://login.microsoftonline.com/` | `api://AzureADTokenExchange` |
+| `https://login.chinacloudapi.cn/` | `api://AzureADTokenExchangeChina` |
+| `https://login.microsoftonline.us/` | `api://AzureADTokenExchangeUSGov` |
+| `https://login.sovcloud-identity.fr/` | `api://AzureADTokenExchangeFrance` |
+| `https://login.sovcloud-identity.de/` | `api://AzureADTokenExchangeGermany` |
+| `https://login.sovcloud-identity.sg/` | `api://AzureADTokenExchangeGovSG` |
+
+Unsupported authorities fail rather than defaulting to the public-cloud audience. Missing configuration fails
+during `build()`, before a token request is attempted. This standalone credential is not part of
+`DefaultAzureCredential`.
+
+### Run the opt-in end-to-end test
+
+The [Identity GitHub Actions credential workflow][github_oidc_workflow] builds and tests both Identity packages
+against GitHub's OIDC provider and Entra. It runs on pushes to `vcolin7-github-actions-credential` and also
+supports manual dispatch.
+
+1. Configure a test application's federated identity credential with the actual GitHub issuer and subject for
+   the repository and ref you will run, and the public-cloud audience `api://AzureADTokenExchange`.
+   Subject formats can include immutable owner/repository IDs; do not assume the legacy subject format.
+2. Set repository variables `AZURE_IDENTITY_GITHUB_ACTIONS_TENANT_ID` and
+   `AZURE_IDENTITY_GITHUB_ACTIONS_CLIENT_ID` to the test application's tenant and client IDs.
+3. Push the workflow and SDK changes to `vcolin7-github-actions-credential` in your fork to run the tests.
+   For manual runs, the workflow must first be present on the repository's default branch. Then select
+   **Actions**, **Identity GitHub Actions credential**, **Run workflow**, and a ref trusted by the federated
+   identity credential.
+
+The live tests request a public-cloud ARM token without calling Azure resources or logging token values.
+They are skipped in ordinary local and CI runs. The dedicated workflow enables them with
+`RUN_GITHUB_ACTIONS_CREDENTIAL_LIVE_TESTS=true`, `AZURE_TEST_MODE=LIVE`, and the GitHub Actions environment.
+No federation resources or repository settings are created by the workflow.
 
 ## Environment variables
 
@@ -344,6 +417,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
+[github_oidc]: https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure
+[github_oidc_workflow]: https://github.com/Azure/azure-sdk-for-java/blob/main/.github/workflows/identity-github-actions-credential.yml
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets

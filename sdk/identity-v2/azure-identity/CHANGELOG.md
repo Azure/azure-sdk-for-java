@@ -4,12 +4,14 @@
 
 ### Features Added
 
+- Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authentication using GitHub Actions OIDC federation.
 - Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed client-credentials authentication to acquire a new token when handling a Continuous Access Evaluation (CAE) claims challenge.
 - Fixed `DefaultAzureCredential` failing after a credential successfully acquired a token.
 - Aligned user-assigned managed identity validation for Azure Service Fabric with `azure-identity`.
 
