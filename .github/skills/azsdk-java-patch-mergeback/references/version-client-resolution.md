@@ -12,32 +12,53 @@ for the authoritative explanation. Key points:
 - **`current-version`** — the in-development version of the library on `main`.
   This must **not** change during a merge-back.
 
+Patch changelog and merge-back scripts parse this file through
+`eng/scripts/Convert-VersionClientToJson.ps1`. The generated JSON is temporary
+and must not be committed. It is keyed by artifact coordinate:
+
+```json
+{
+  "com.azure:azure-example": {
+    "dependency": "1.0.0",
+    "current": "1.1.0-beta.1"
+  }
+}
+```
+
+Two-column external and unreleased entries have a `null` `current` value.
+`version_client.txt` remains the canonical file and the merge-back writes its
+updated dependency versions back to that file.
+
 ## Resolution algorithm
 
 Compare the file on `main` against the file on `RELEASE_BRANCH`, line by line
 (match by `groupId:artifactId`):
 
-1. If the release branch line has a **different `dependency-version`** than
-   `main`, take the release branch `dependency-version`.
-2. **Always keep the `current-version` from `main`**, regardless of what the
+1. Read the released patch version from the artifact's entry in
+   `patch-changelog.md`. During preparation this is also the release branch's
+   `current-version`.
+2. If that patch version is newer than `main`'s **`dependency-version`**, use
+   the patch version. If `main` already has an equal or newer dependency
+   version, keep the value from `main`.
+3. **Always keep the `current-version` from `main`**, regardless of what the
    release branch shows (patches revert `current-version` to the stable value).
-3. Leave every other line exactly as it is on `main`.
+4. Leave every other line exactly as it is on `main`.
 
-Resulting line = `groupId:artifactId;<release-branch dependency-version>;<main current-version>`.
+Resulting line = `groupId:artifactId;<newer of patch version or main dependency-version>;<main current-version>`.
 
 ## Guardrails
 
 - **Do not reset beta versions to `beta.1`.** If a `current-version` on `main`
   is e.g. `1.2.0-beta.4`, it stays `1.2.0-beta.4`.
-- Only touch SDK library lines whose `dependency-version` actually changed on
-  the release branch. Do not modify parent/BOM lines or unrelated libraries.
+- Only touch SDK library lines listed in `patch-changelog.md`. Do not modify
+  parent/BOM lines or unrelated libraries.
 - Never alter `current-version` values — a changed `current-version` is the most
   common merge-back bug and surfaces later as a pom.xml mismatch.
 
 ## Example
 
 - `main`:           `com.azure:azure-storage-blob;12.33.2;12.34.0-beta.1`
-- `RELEASE_BRANCH`: `com.azure:azure-storage-blob;12.33.3;12.33.3`
+- `RELEASE_BRANCH`: `com.azure:azure-storage-blob;12.33.2;12.33.3`
 - **Result:**       `com.azure:azure-storage-blob;12.33.3;12.34.0-beta.1`
 
 Here the dependency-version moves `12.33.2` → `12.33.3` (the patch), while the

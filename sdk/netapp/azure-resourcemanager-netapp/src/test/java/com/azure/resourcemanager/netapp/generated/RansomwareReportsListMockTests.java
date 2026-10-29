@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-09-30T11:14:47Z\",\"state\":\"Active\",\"severity\":\"Moderate\",\"clearedCount\":896412004,\"reportedCount\":834436934,\"suspects\":[{\"extension\":\"bxubmdna\",\"resolution\":\"FalsePositive\",\"fileCount\":1699844776,\"suspectFiles\":[{}]},{\"extension\":\"jelaqacigele\",\"resolution\":\"PotentialThreat\",\"fileCount\":883742006,\"suspectFiles\":[{},{}]},{\"extension\":\"z\",\"resolution\":\"FalsePositive\",\"fileCount\":1120950278,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"nrlkwzdqy\",\"resolution\":\"PotentialThreat\",\"fileCount\":1893687260,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"ptsoqfyiase\"},\"id\":\"hkrttzrazis\",\"name\":\"ykiue\",\"type\":\"vanbwzohmnrxxbs\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-06-26T08:15:23Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":1524104857,\"reportedCount\":949610294,\"suspects\":[{\"extension\":\"eoijyzcqypzqzufg\",\"resolution\":\"FalsePositive\",\"fileCount\":2031045833,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"wtfxpt\",\"resolution\":\"FalsePositive\",\"fileCount\":2019215220,\"suspectFiles\":[{}]},{\"extension\":\"cf\",\"resolution\":\"PotentialThreat\",\"fileCount\":1215741540,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"ocuullojkpoyhgww\"},\"id\":\"uxdbdljzgdyrcvuq\",\"name\":\"sgzlrqhb\",\"type\":\"nq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("ueayfbpcmsplb", "rrueqthwmg", "mbscbbx", "gdhxi", com.azure.core.util.Context.NONE);
+            .list("wtzvpakloz", "xbzrpejplssanb", "ttkgsux", "nrswgkpjhboyik", com.azure.core.util.Context.NONE);
 
     }
 }
