@@ -146,9 +146,15 @@ public final class TaskImpl implements Task, Task.Definition, Task.Update {
         com.azure.resourcemanager.containerregistry.tasks.ContainerRegistryTasksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.registryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registries");
-        this.taskName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tasks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "resourceGroupName");
+        this.registryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "registryName");
+        this.taskName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "taskName");
     }
 
     public Task refresh() {
