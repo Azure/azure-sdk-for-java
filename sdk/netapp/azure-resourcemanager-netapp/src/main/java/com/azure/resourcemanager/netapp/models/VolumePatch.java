@@ -156,9 +156,11 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -168,9 +170,11 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
@@ -303,6 +307,29 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withIsDefaultQuotaEnabled(isDefaultQuotaEnabled);
+        return this;
+    }
+
+    /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.innerProperties() == null ? null : this.innerProperties().asyncDirectoryDelete();
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withAsyncDirectoryDelete(asyncDirectoryDelete);
         return this;
     }
 
@@ -571,6 +598,54 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withSmbNonBrowsable(smbNonBrowsable);
+        return this;
+    }
+
+    /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbOplocks();
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSmbOplocks(SmbOplocks smbOplocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSmbOplocks(smbOplocks);
+        return this;
+    }
+
+    /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumePatchNamespaceProperties geoNamespaceProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoNamespaceProperties();
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withGeoNamespaceProperties(geoNamespaceProperties);
         return this;
     }
 

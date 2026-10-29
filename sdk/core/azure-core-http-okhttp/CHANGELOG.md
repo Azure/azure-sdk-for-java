@@ -1,10 +1,16 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.14.0 (2026-10-27)
 
 ### Bugs Fixed
 
@@ -15,6 +21,10 @@
 - Fixed response timeouts remaining active while reading the response body after an `Expect: 100-continue` handshake.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 
 ## 1.13.8 (2026-09-29)
 
