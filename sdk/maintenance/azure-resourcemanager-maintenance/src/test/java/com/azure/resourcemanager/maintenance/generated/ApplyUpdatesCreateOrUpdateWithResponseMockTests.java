@@ -22,7 +22,7 @@ public final class ApplyUpdatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"status\":\"NoUpdatesPending\",\"resourceId\":\"ynl\",\"lastUpdateTime\":\"2021-02-28T17:47:31Z\"},\"id\":\"op\",\"name\":\"odlqiyntor\",\"type\":\"ihleos\"}";
+            = "{\"properties\":{\"status\":\"NoUpdatesPending\",\"resourceId\":\"mtdaa\",\"lastUpdateTime\":\"2021-01-22T00:43:20Z\"},\"id\":\"wvgpiohg\",\"name\":\"xrtfudxep\",\"type\":\"gyqagvrvmnpkuk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class ApplyUpdatesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplyUpdate response = manager.applyUpdates()
-            .createOrUpdateWithResponse("e", "iipfpubj", "bwwift", "hqkvpuvksgplsak", com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("ivgvvcna", "rhyrnxxmueed", "drd", "stkwqqtch",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(UpdateStatus.NO_UPDATES_PENDING, response.status());
-        Assertions.assertEquals("ynl", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T17:47:31Z"), response.lastUpdateTime());
+        Assertions.assertEquals("mtdaa", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T00:43:20Z"), response.lastUpdateTime());
     }
 }

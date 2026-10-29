@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.commvaultcontentstore.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.StorageInner;
@@ -102,9 +103,15 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
-        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
+        this.storageName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
     }
 
     public Storage refresh() {
@@ -121,6 +128,28 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
             .getWithResponse(resourceGroupName, cloudAccountName, storageName, context)
             .getValue();
         return this;
+    }
+
+    public Response<Storage> enableComplianceLockWithResponse(Context context) {
+        return serviceManager.storages()
+            .enableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+    }
+
+    public Storage enableComplianceLock() {
+        return serviceManager.storages().enableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+    }
+
+    public Response<Storage> disableComplianceLockWithResponse(Context context) {
+        return serviceManager.storages()
+            .disableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+    }
+
+    public Storage disableComplianceLock() {
+        return serviceManager.storages().disableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+    }
+
+    public Response<Storage> refreshWithResponse(Context context) {
+        return serviceManager.storages().refreshWithResponse(resourceGroupName, cloudAccountName, storageName, context);
     }
 
     public StorageImpl withProperties(StorageProperties properties) {

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.network.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkApplianceInner;
 
@@ -12,7 +13,28 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkApplianceIn
  */
 public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkAppliances_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate_WithCapacityProvider.json
+     */
+    /**
+     * Sample code: Create virtual network appliance with capacity provider.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        createVirtualNetworkApplianceWithCapacityProvider(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getVirtualNetworkAppliances()
+            .createOrUpdate("rg1", "test-vna", new VirtualNetworkApplianceInner().withLocation("eastus")
+                .withBandwidthInGbps(100.0D)
+                .withCapacityProvider(new SubResource().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkAppliances/test-vna2"))
+                .withSubnet(new SubnetInner().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate.json
      */
     /**
      * Sample code: Create virtual network appliance.

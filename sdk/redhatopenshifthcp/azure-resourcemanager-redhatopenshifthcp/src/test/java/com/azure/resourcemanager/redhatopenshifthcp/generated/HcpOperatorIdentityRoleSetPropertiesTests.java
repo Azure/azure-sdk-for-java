@@ -13,17 +13,17 @@ public final class HcpOperatorIdentityRoleSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOperatorIdentityRoleSetProperties model = BinaryData.fromString(
-            "{\"controlPlaneOperators\":[{\"name\":\"oygmift\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"d\",\"resourceId\":\"dslgnayqigynduh\"},{\"name\":\"vhqlkthumaqo\",\"resourceId\":\"bgycduiertgccym\"}]}],\"dataPlaneOperators\":[{\"name\":\"olpsslqlf\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"n\",\"resourceId\":\"bglzpswi\"},{\"name\":\"d\",\"resourceId\":\"cwyhzdxssa\"},{\"name\":\"bzmnvdfznud\",\"resourceId\":\"od\"}]},{\"name\":\"xzb\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"lylpstdb\",\"resourceId\":\"hxsrzdzucersc\"},{\"name\":\"ntnev\",\"resourceId\":\"iwjmygtdssls\"},{\"name\":\"tmweriofzpyq\",\"resourceId\":\"emwabnet\"}]}]}")
+            "{\"controlPlaneOperators\":[{\"name\":\"rtuzqogs\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"evfdnwnwm\",\"resourceId\":\"wzsyyceuzs\"},{\"name\":\"i\",\"resourceId\":\"judpfrxt\"}]},{\"name\":\"thzvaytdwkqbrqu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"xhexiilivpdti\",\"resourceId\":\"r\"},{\"name\":\"tdqoaxoruzfgsq\",\"resourceId\":\"yfxrx\"},{\"name\":\"l\",\"resourceId\":\"ptramxj\"}]}],\"dataPlaneOperators\":[{\"name\":\"wlwnwxuqlcv\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"patdooaojkniodko\",\"resourceId\":\"ebwnujhe\"},{\"name\":\"msbvdkcrodtjinf\",\"resourceId\":\"jlfltkacjvefkdlf\"},{\"name\":\"akggkfpag\",\"resourceId\":\"owpulpq\"},{\"name\":\"lyls\",\"resourceId\":\"xkqjnsjervt\"}]}]}")
             .toObject(HcpOperatorIdentityRoleSetProperties.class);
-        Assertions.assertEquals("oygmift", model.controlPlaneOperators().get(0).name());
+        Assertions.assertEquals("rtuzqogs", model.controlPlaneOperators().get(0).name());
         Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
             model.controlPlaneOperators().get(0).required());
-        Assertions.assertEquals("d", model.controlPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("dslgnayqigynduh",
+        Assertions.assertEquals("evfdnwnwm", model.controlPlaneOperators().get(0).roleDefinitions().get(0).name());
+        Assertions.assertEquals("wzsyyceuzs",
             model.controlPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
-        Assertions.assertEquals("olpsslqlf", model.dataPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT, model.dataPlaneOperators().get(0).required());
-        Assertions.assertEquals("n", model.dataPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("bglzpswi", model.dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
+        Assertions.assertEquals("wlwnwxuqlcv", model.dataPlaneOperators().get(0).name());
+        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS, model.dataPlaneOperators().get(0).required());
+        Assertions.assertEquals("patdooaojkniodko", model.dataPlaneOperators().get(0).roleDefinitions().get(0).name());
+        Assertions.assertEquals("ebwnujhe", model.dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
     }
 }

@@ -33,6 +33,11 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
     private List<String> supportedAzureRegions;
 
     /*
+     * The supported host types for the current solution type.
+     */
+    private List<HostType> hostTypes;
+
+    /*
      * Array of solution settings and its description.
      */
     private List<SolutionTypeSettingsProperties> solutionSettings;
@@ -71,6 +76,15 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
     }
 
     /**
+     * Get the hostTypes property: The supported host types for the current solution type.
+     * 
+     * @return the hostTypes value.
+     */
+    public List<HostType> hostTypes() {
+        return this.hostTypes;
+    }
+
+    /**
      * Get the solutionSettings property: Array of solution settings and its description.
      * 
      * @return the solutionSettings value.
@@ -89,6 +103,8 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("supportedAzureRegions", this.supportedAzureRegions,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hostTypes", this.hostTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("solutionSettings", this.solutionSettings,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -116,6 +132,9 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
                 } else if ("supportedAzureRegions".equals(fieldName)) {
                     List<String> supportedAzureRegions = reader.readArray(reader1 -> reader1.getString());
                     deserializedSolutionTypeProperties.supportedAzureRegions = supportedAzureRegions;
+                } else if ("hostTypes".equals(fieldName)) {
+                    List<HostType> hostTypes = reader.readArray(reader1 -> HostType.fromString(reader1.getString()));
+                    deserializedSolutionTypeProperties.hostTypes = hostTypes;
                 } else if ("solutionSettings".equals(fieldName)) {
                     List<SolutionTypeSettingsProperties> solutionSettings
                         = reader.readArray(reader1 -> SolutionTypeSettingsProperties.fromJson(reader1));

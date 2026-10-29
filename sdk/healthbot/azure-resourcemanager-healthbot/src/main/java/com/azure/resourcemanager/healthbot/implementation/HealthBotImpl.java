@@ -136,8 +136,12 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     HealthBotImpl(HealthBotInner innerObject, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.botName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthBots");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}",
+            "resourceGroupName");
+        this.botName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}",
+            "botName");
     }
 
     public HealthBot refresh() {

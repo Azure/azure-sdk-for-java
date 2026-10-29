@@ -78,9 +78,7 @@ public class DeliveryRuleAction implements JsonSerializable<DeliveryRuleAction> 
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AfdUrlSigning".equals(discriminatorValue)) {
-                    return AfdUrlSigningAction.fromJson(readerToUse.reset());
-                } else if ("UrlRedirect".equals(discriminatorValue)) {
+                if ("UrlRedirect".equals(discriminatorValue)) {
                     return UrlRedirectAction.fromJson(readerToUse.reset());
                 } else if ("UrlSigning".equals(discriminatorValue)) {
                     return UrlSigningAction.fromJson(readerToUse.reset());

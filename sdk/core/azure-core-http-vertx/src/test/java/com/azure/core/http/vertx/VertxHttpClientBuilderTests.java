@@ -18,6 +18,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.net.ConnectException;
@@ -67,7 +68,8 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(60000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(60000, httpClient.buildOptions.getWriteIdleTimeout());
+        // SDK write timeouts are enforced per request rather than for the lifetime of the connection.
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -86,7 +88,41 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(30000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(40000, httpClient.buildOptions.getWriteIdleTimeout());
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, value),
+            EMPTY_SOURCE).build();
+        VertxHttpClientBuilder builder = new VertxHttpClientBuilder().configuration(configuration);
+        assertTimeouts((VertxHttpClient) builder.build(), Math.max(0, timeoutMillis));
+        assertTimeouts((VertxHttpClient) builder.connectTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertTimeouts((VertxHttpClient) builder.connectTimeout(Duration.ofNanos(-1))
+            .readTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ofNanos(-1))
+            .responseTimeout(Duration.ZERO)
+            .build(), 0);
+    }
+
+    private static void assertTimeouts(VertxHttpClient client, long expected) throws ReflectiveOperationException {
+        assertEquals(expected, client.buildOptions.getConnectTimeout());
+        assertEquals(expected, client.buildOptions.getReadIdleTimeout());
+        for (String name : new String[] { "writeTimeout", "responseTimeout" }) {
+            java.lang.reflect.Field field = VertxHttpClient.class.getDeclaredField(name);
+            field.setAccessible(true);
+            assertEquals(Duration.ofMillis(expected), field.get(client));
+        }
     }
 
     @ParameterizedTest
@@ -131,11 +167,10 @@ public class VertxHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
-                    "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
-                .put("java.net.useSystemProxies", "true")).build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+            .put("java.net.useSystemProxies", "true")).build();
 
         HttpClient httpClient = new VertxHttpClientBuilder().configuration(configuration).build();
 
