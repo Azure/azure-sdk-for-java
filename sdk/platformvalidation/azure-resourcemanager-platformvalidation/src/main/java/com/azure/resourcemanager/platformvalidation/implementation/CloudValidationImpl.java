@@ -128,8 +128,12 @@ public final class CloudValidationImpl implements CloudValidation, CloudValidati
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudValidations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}",
+            "resourceGroupName");
+        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}",
+            "cloudValidationName");
     }
 
     public CloudValidation refresh() {
