@@ -243,8 +243,8 @@ public class ReactorConnectionCacheTest {
                 .verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
-            // Mark the current connection for force-invalidation.
-            connectionCache.invalidateConnection();
+            // Mark the connection used by the failed operation.
+            connectionCache.invalidateConnection(c[0].getId());
 
             // Next subscription must close the marked connection and serve a brand-new one.
             StepVerifier.create(connectionMono, 0)
@@ -302,6 +302,9 @@ public class ReactorConnectionCacheTest {
                 })
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);
+
+            // A delayed error from the old connection must not evict its replacement.
+            connectionCache.invalidateConnection(c[0].getId());
 
             // The marker has been consumed; another get() must serve the same (cached) replacement
             // connection without creating a third one.

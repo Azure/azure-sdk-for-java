@@ -882,25 +882,28 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         });
 
-        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
-        final Mono<Void> sendMessage = getSendLink("send-batch").flatMap(link -> {
-            operationLink.set(link);
-            if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                final TransactionalState deliveryState = new TransactionalState();
-                deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
-                return messages.size() == 1
-                    ? link.send(messages.get(0), deliveryState)
-                    : link.send(messages, deliveryState);
-            } else {
-                return messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages);
-            }
-        });
+        final Mono<Void> withRetry = Mono.defer(() -> {
+            final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+            final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+            final Mono<Void> sendMessage = getSendLink("send-batch", operationConnection).flatMap(link -> {
+                operationLink.set(link);
+                if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                    final TransactionalState deliveryState = new TransactionalState();
+                    deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
+                    return messages.size() == 1
+                        ? link.send(messages.get(0), deliveryState)
+                        : link.send(messages, deliveryState);
+                } else {
+                    return messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages);
+                }
+            });
 
-        final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
-        final Mono<Void> withRetry = RetryUtil.withRetry(
-            sendMessage.onErrorResume(
-                e -> recoverBeforeRetry(e, "sendBatch", operationLink).then(Mono.error(RecoveryUtils.asRetriable(e)))),
-            retryOptions, timeoutMessage).onErrorMap(this::mapError);
+            final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
+            return RetryUtil.withRetry(sendMessage.onErrorMap(RecoveryUtils::unwrapRetryExhaustion)
+                .onErrorResume(e -> recoverBeforeRetry(e, "sendBatch", operationLink, operationConnection)
+                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
+                retryOptions, timeoutMessage);
+        }).onErrorMap(this::mapError);
         // The single-message send path (sendMessageInternal) starts the "ServiceBus.send" span itself on the
         // subscribing thread, so it sends this batch with instrument=false to avoid a duplicate span.
         if (!instrument) {
@@ -957,14 +960,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
-    private Mono<AmqpSendLink> getSendLink(String callSite) {
-        final Mono<AmqpSendLink> getSendLink = connectionProcessor.flatMap(connection -> {
-            if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
-                return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions, entityName,
-                    identifier);
-            } else {
-                return connection.createSendLink(entityName, entityName, retryOptions, null, identifier);
-            }
+    private Mono<AmqpSendLink> getSendLink(String callSite,
+        AtomicReference<ServiceBusAmqpConnection> operationConnection) {
+        final Mono<AmqpSendLink> getSendLink = Mono.defer(() -> {
+            operationConnection.set(null);
+            return connectionProcessor.flatMap(connection -> {
+                operationConnection.set(connection);
+                if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
+                        entityName, identifier);
+                } else {
+                    return connection.createSendLink(entityName, entityName, retryOptions, null, identifier);
+                }
+            });
         })
             .doOnNext(link -> linkName.compareAndSet(null, link.getLinkName()))
             .onErrorMap(RequestResponseChannelClosedException.class, e -> {
@@ -995,13 +1003,18 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return a Mono emitting (link, size) on success, retried with recovery on transient failures.
      */
     private Mono<Tuple2<AmqpSendLink, Integer>> getSendLinkAndSizeWithRetry(String callSite) {
-        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
-        return RetryUtil.withRetry(
-            getSendLink(callSite).doOnNext(operationLink::set)
-                .flatMap(link -> link.getLinkSize().map(size -> Tuples.of(link, size)))
-                .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndSize-" + callSite, operationLink)
-                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
-            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+        return Mono.defer(() -> {
+            final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+            final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+            return RetryUtil
+                .withRetry(
+                    getSendLink(callSite, operationConnection).doOnNext(operationLink::set)
+                        .flatMap(link -> link.getLinkSize().map(size -> Tuples.of(link, size)))
+                        .onErrorMap(RecoveryUtils::unwrapRetryExhaustion)
+                        .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndSize-" + callSite, operationLink,
+                            operationConnection).then(Mono.error(RecoveryUtils.asRetriable(e)))),
+                    retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+        });
     }
 
     /**
@@ -1017,13 +1030,17 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return a Mono emitting (link, batchSize) on success, retried with recovery on transient failures.
      */
     private Mono<Tuple2<AmqpSendLink, Integer>> getSendLinkAndMaxBatchSizeWithRetry(String callSite) {
-        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
-        return RetryUtil.withRetry(
-            getSendLink(callSite).doOnNext(operationLink::set)
-                .flatMap(link -> link.getMaxBatchSize().map(size -> Tuples.of(link, size)))
-                .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndMaxBatchSize-" + callSite, operationLink)
-                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
-            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+        return Mono.defer(() -> {
+            final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+            final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+            return RetryUtil.withRetry(
+                getSendLink(callSite, operationConnection).doOnNext(operationLink::set)
+                    .flatMap(link -> link.getMaxBatchSize().map(size -> Tuples.of(link, size)))
+                    .onErrorMap(RecoveryUtils::unwrapRetryExhaustion)
+                    .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndMaxBatchSize-" + callSite, operationLink,
+                        operationConnection).then(Mono.error(RecoveryUtils.asRetriable(e)))),
+                retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+        });
     }
 
     private Throwable mapError(Throwable throwable) {
@@ -1035,13 +1052,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     /**
      * Performs reactive tiered recovery based on the classified error. For LINK recovery, closes the
-     * send link so the next retry creates a fresh one. For CONNECTION recovery, closes the link and
-     * invalidates the connection so the cache creates everything fresh.
+     * send link so the next retry creates a fresh one. For CONNECTION recovery, invalidates the
+     * operation's connection before awaiting link closure so a stalled close cannot prevent eviction.
      *
      * <p>Called from {@code onErrorResume} at each send call site so that recovery completes before
      * the error is re-emitted and the standard retry logic re-subscribes.</p>
      */
-    private Mono<Void> recoverBeforeRetry(Throwable error, String callSite, AtomicReference<AmqpSendLink> linkRef) {
+    private Mono<Void> recoverBeforeRetry(Throwable error, String callSite, AtomicReference<AmqpSendLink> linkRef,
+        AtomicReference<ServiceBusAmqpConnection> connectionRef) {
         final RecoveryKind kind = RecoveryKind.classify(error);
         if (kind != RecoveryKind.LINK && kind != RecoveryKind.CONNECTION) {
             return Mono.empty();
@@ -1075,7 +1093,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         // For CONNECTION errors, invalidate the cached connection so the next get() closes it
         // and creates a fresh one. Matches Go SDK's Namespace.Recover().
         if (kind == RecoveryKind.CONNECTION) {
-            recovery = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
+            final ServiceBusAmqpConnection failedConnection = connectionRef.getAndSet(null);
+            if (failedConnection != null) {
+                recovery = Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection(failedConnection))
+                    .then(recovery);
+            }
         }
 
         return recovery;

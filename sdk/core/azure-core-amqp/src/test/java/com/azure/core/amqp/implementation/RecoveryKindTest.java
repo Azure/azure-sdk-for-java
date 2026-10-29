@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.OperationCancelledException;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeoutException;
@@ -176,6 +177,20 @@ class RecoveryKindTest {
     void operationCancelledReturnsLink() {
         final AmqpException error = new AmqpException(true, AmqpErrorCondition.OPERATION_CANCELLED, "cancelled", null);
         assertEquals(RecoveryKind.LINK, RecoveryKind.classify(error));
+    }
+
+    @Test
+    void abortedSendWithoutErrorConditionReturnsLink() {
+        assertEquals(RecoveryKind.LINK, RecoveryKind.classify(new OperationCancelledException("Released", null)));
+        assertEquals(RecoveryKind.LINK, RecoveryKind.classify(
+            new OperationCancelledException("Delivery advance failed", new IllegalStateException("advance"), null)));
+    }
+
+    @Test
+    void lockedNamedSessionReturnsFatal() {
+        final AmqpException error = new AmqpException(false, AmqpErrorCondition.SESSION_CANNOT_BE_LOCKED,
+            "The requested session is already locked.", null);
+        assertEquals(RecoveryKind.FATAL, RecoveryKind.classify(error));
     }
 
     @Test

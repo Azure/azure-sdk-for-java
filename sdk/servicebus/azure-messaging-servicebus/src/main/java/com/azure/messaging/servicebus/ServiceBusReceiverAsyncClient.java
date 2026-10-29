@@ -1714,9 +1714,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
         //
-        final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
-            return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
-                entityType, identifier);
+        final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+        final Mono<ServiceBusReceiveLink> receiveLinkMono = Mono.defer(() -> {
+            operationConnection.set(null);
+            return connectionProcessor.flatMap(connection -> {
+                operationConnection.set(connection);
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
+                    entityType, identifier);
+            });
         }).doOnNext(next -> {
             LOGGER.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
@@ -1748,26 +1753,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
                     // For both LINK and CONNECTION recovery, the session hosting the failed link may
                     // be stale. Ask the connection to remove it so the next retry creates a fresh
-                    // session + link. CONNECTION recovery additionally invalidates the cached
-                    // connection below so the next retry rebuilds connection, session, and link.
-                    Mono<Void> recovery = connectionProcessor.flatMap(connection -> {
-                        final boolean removed = connection.removeSession(entityPath);
+                    // session + link. CONNECTION recovery first invalidates that connection so the
+                    // next retry rebuilds connection, session, and link.
+                    final ServiceBusAmqpConnection failedConnection = operationConnection.getAndSet(null);
+                    Mono<Void> recovery = Mono.<Void>fromRunnable(() -> {
+                        if (failedConnection == null) {
+                            return;
+                        }
+                        if (recoveryKind == RecoveryKind.CONNECTION) {
+                            connectionCacheWrapper.invalidateConnection(failedConnection);
+                        }
+                        final boolean removed = failedConnection.removeSession(entityPath);
                         LOGGER.atVerbose()
                             .addKeyValue(LINK_NAME_KEY, linkName)
                             .addKeyValue("sessionRemoved", removed)
                             .log("Stale session removal during {} recovery.", recoveryKind);
-                        return Mono.<Void>empty();
                     }).onErrorResume(error -> {
                         LOGGER.atWarning()
                             .addKeyValue(LINK_NAME_KEY, linkName)
-                            .log("Error obtaining connection during {} recovery.", recoveryKind, error);
+                            .log("Error removing stale session during {} recovery.", recoveryKind, error);
                         return Mono.empty();
                     });
 
-                    if (recoveryKind == RecoveryKind.CONNECTION) {
-                        recovery
-                            = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
-                    }
                     // Use the shared retry-filter wrapper so non-AMQP errors classified as
                     // LINK/CONNECTION (e.g., IllegalStateException) are wrapped as transient
                     // AmqpException and accepted by RetryUtil.createRetry. Centralising this

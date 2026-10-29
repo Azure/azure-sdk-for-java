@@ -216,6 +216,23 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     }
 
     /**
+     * Marks the failed connection for invalidation only if it is still cached.
+     * A delayed failure must not invalidate a healthy replacement connection.
+     *
+     * @param connectionId The identifier of the connection used by the failed operation.
+     */
+    public void invalidateConnection(String connectionId) {
+        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
+        synchronized (lock) {
+            final T connection = currentConnection;
+            if (connection != null && connectionId.equals(connection.getId()) && !connection.isDisposed()) {
+                withConnectionId(logger, connectionId).log("Marking failed connection for force-invalidation.");
+                forceInvalidateConnectionId.set(connectionId);
+            }
+        }
+    }
+
+    /**
      * Terminate so that consumers will no longer be able to request connection. If there is a current (cached)
      * connection then it will be closed.
      */

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.RecoveryKind;
+import reactor.core.Exceptions;
 
 import java.util.concurrent.TimeoutException;
 
@@ -15,6 +16,13 @@ import java.util.concurrent.TimeoutException;
 final class RecoveryUtils {
 
     private RecoveryUtils() {
+    }
+
+    static Throwable unwrapRetryExhaustion(Throwable error) {
+        while (Exceptions.isRetryExhausted(error) && error.getCause() != null) {
+            error = error.getCause();
+        }
+        return error;
     }
 
     /**

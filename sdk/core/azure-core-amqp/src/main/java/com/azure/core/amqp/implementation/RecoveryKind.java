@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.OperationCancelledException;
 
 import java.util.Locale;
 import java.util.concurrent.TimeoutException;
@@ -65,6 +66,10 @@ public enum RecoveryKind {
             return NONE;
         }
 
+        if (error instanceof OperationCancelledException) {
+            return LINK;
+        }
+
         if (error instanceof AmqpException) {
             final AmqpException amqpError = (AmqpException) error;
             final AmqpErrorCondition condition = amqpError.getErrorCondition();
@@ -104,6 +109,7 @@ public enum RecoveryKind {
                     case ILLEGAL_STATE:
                     case MESSAGE_LOCK_LOST:
                     case STORE_LOCK_LOST_ERROR:
+                    case SESSION_CANNOT_BE_LOCKED:
                         return FATAL;
 
                     // Server-busy, timeouts, and resource-limit errors — retry on same link.
@@ -118,7 +124,6 @@ public enum RecoveryKind {
                     // Session lock loss means the session link is invalid and
                     // a fresh link must be acquired for a new session.
                     case SESSION_LOCK_LOST:
-                    case SESSION_CANNOT_BE_LOCKED:
                     case SESSION_NOT_FOUND:
                     case MESSAGE_NOT_FOUND:
                         return LINK;
