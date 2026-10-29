@@ -14,12 +14,12 @@ public final class ScheduledActionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourceInner model = BinaryData.fromString(
-            "{\"name\":\"zvhxnk\",\"id\":\"mtk\",\"type\":\"otppnv\",\"resourceId\":\"xz\",\"notificationSettings\":[{\"destination\":\"hfrbbc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"tltdhlfkqojpy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"dcnifmz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
+            "{\"name\":\"nraauzz\",\"id\":\"tj\",\"type\":\"ysdzhez\",\"resourceId\":\"wva\",\"notificationSettings\":[{\"destination\":\"uvvfonkp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"kvylauyavl\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"sttijfybvp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
             .toObject(ScheduledActionResourceInner.class);
-        Assertions.assertEquals("xz", model.resourceId());
-        Assertions.assertEquals("hfrbbc", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("wva", model.resourceId());
+        Assertions.assertEquals("uvvfonkp", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
-        Assertions.assertFalse(model.notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.notificationSettings().get(0).disabled());
     }
 }

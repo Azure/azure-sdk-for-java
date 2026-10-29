@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-30/PatchExtension.json
+     * x-ms-original-file: 2026-10-01/PatchExtension.json
      */
     /**
      * Sample code: Update Arc Extension.

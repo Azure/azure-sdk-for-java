@@ -25,8 +25,8 @@ public interface OccurrencesClient {
      * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,8 +42,8 @@ public interface OccurrencesClient {
      * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,11 +54,11 @@ public interface OccurrencesClient {
     OccurrenceInner get(String resourceGroupName, String scheduledActionName, String occurrenceId);
 
     /**
-     * Lists occurrences for the specified scheduled action.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,11 +68,11 @@ public interface OccurrencesClient {
     PagedIterable<OccurrenceInner> listByScheduledAction(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Lists occurrences for the specified scheduled action.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,13 +87,13 @@ public interface OccurrencesClient {
      * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of resources included in a scheduled action occurrence as paginated response with
+     * @return paged list of resources included in a recurring bulk action occurrence as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -104,14 +104,14 @@ public interface OccurrencesClient {
      * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of resources included in a scheduled action occurrence as paginated response with
+     * @return paged list of resources included in a recurring bulk action occurrence as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -122,15 +122,16 @@ public interface OccurrencesClient {
      * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
+     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancel(
@@ -140,8 +141,8 @@ public interface OccurrencesClient {
      * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
@@ -149,7 +150,8 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
+     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancel(
@@ -160,15 +162,15 @@ public interface OccurrencesClient {
      * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner cancel(String resourceGroupName, String scheduledActionName, String occurrenceId,
@@ -178,8 +180,8 @@ public interface OccurrencesClient {
      * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
@@ -187,7 +189,7 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner cancel(String resourceGroupName, String scheduledActionName, String occurrenceId,
@@ -197,15 +199,16 @@ public interface OccurrencesClient {
      * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
      * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
+     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
@@ -215,8 +218,8 @@ public interface OccurrencesClient {
      * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
      * resources are delayed.
@@ -224,7 +227,8 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
+     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginDelay(
@@ -234,15 +238,15 @@ public interface OccurrencesClient {
      * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
      * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner delay(String resourceGroupName, String scheduledActionName, String occurrenceId,
@@ -252,8 +256,8 @@ public interface OccurrencesClient {
      * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param occurrenceId The occurrence ID in UUID format.
      * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
      * resources are delayed.
@@ -261,7 +265,7 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner delay(String resourceGroupName, String scheduledActionName, String occurrenceId,

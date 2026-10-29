@@ -53,7 +53,8 @@ public final class QuotaTiersImpl implements QuotaTiers {
     }
 
     public QuotaTier getById(String id) {
-        String defaultParameter = ResourceManagerUtils.getValueFromIdByName(id, "quotaTiers");
+        String defaultParameter = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}", "default");
         if (defaultParameter == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTiers'.", id)));
@@ -62,7 +63,8 @@ public final class QuotaTiersImpl implements QuotaTiers {
     }
 
     public Response<QuotaTier> getByIdWithResponse(String id, Context context) {
-        String defaultParameter = ResourceManagerUtils.getValueFromIdByName(id, "quotaTiers");
+        String defaultParameter = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}", "default");
         if (defaultParameter == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTiers'.", id)));

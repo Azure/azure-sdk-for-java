@@ -27,7 +27,7 @@ public final class CachesDebugInfoMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.caches().debugInfo("xeznoi", "brnjwmw", com.azure.core.util.Context.NONE);
+        manager.caches().debugInfo("bth", "stgktst", com.azure.core.util.Context.NONE);
 
     }
 }

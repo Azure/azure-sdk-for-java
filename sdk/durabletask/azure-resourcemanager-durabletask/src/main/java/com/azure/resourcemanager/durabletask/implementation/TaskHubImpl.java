@@ -100,9 +100,15 @@ public final class TaskHubImpl implements TaskHub, TaskHub.Definition, TaskHub.U
     TaskHubImpl(TaskHubInner innerObject, com.azure.resourcemanager.durabletask.DurableTaskManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schedulerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedulers");
-        this.taskHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "taskHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}",
+            "resourceGroupName");
+        this.schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}",
+            "schedulerName");
+        this.taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}",
+            "taskHubName");
     }
 
     public TaskHub refresh() {
