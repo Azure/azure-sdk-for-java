@@ -126,8 +126,12 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceAnchors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceGroupName");
+        this.resourceAnchorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceAnchorName");
     }
 
     public ResourceAnchor refresh() {

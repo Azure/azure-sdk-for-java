@@ -142,11 +142,15 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
         com.azure.resourcemanager.connectedcache.ConnectedCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.customerResourceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "enterpriseMccCustomers");
-        this.cacheNodeResourceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "enterpriseMccCacheNodes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
+        this.customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
+        this.cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
     }
 
     public EnterpriseMccCacheNodeResource refresh() {
