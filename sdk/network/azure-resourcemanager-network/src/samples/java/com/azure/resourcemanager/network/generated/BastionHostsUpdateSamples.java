@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class BastionHostsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPatch.json
+     * x-ms-original-file: 2026-03-01/BastionHostPatch.json
      */
     /**
      * Sample code: Patch Bastion Host.

@@ -136,9 +136,15 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
         com.azure.resourcemanager.compute.workloadmanager.ComputeWorkloadManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadSpaces");
-        this.capabilityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capabilities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "resourceGroupName");
+        this.spaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "spaceName");
+        this.capabilityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "capabilityName");
     }
 
     public Capability refresh() {

@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Request body for delaying a scheduled action occurrence.
+ * Request body for delaying a recurring bulk action occurrence.
  */
 @Fluent
 public final class DelayRequest implements JsonSerializable<DelayRequest> {

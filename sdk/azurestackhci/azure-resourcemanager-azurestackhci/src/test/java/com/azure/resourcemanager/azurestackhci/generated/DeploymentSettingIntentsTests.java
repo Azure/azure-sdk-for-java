@@ -16,55 +16,55 @@ public final class DeploymentSettingIntentsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingIntents model = BinaryData.fromString(
-            "{\"name\":\"kotl\",\"trafficType\":[\"yhgsy\"],\"adapter\":[\"gjltdtbnnhado\",\"crkvcikhnv\",\"amqgxqquezikyw\",\"gxk\"],\"overrideVirtualSwitchConfiguration\":false,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"melwuipiccjz\",\"loadBalancingAlgorithm\":\"ivgvvcna\"},\"overrideQosPolicy\":false,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"nxxmueedndrdv\",\"priorityValue8021Action_SMB\":\"kwqqtchealmf\",\"bandwidthPercentage_SMB\":\"d\"},\"overrideAdapterProperty\":false,\"adapterPropertyOverrides\":{\"jumboPacket\":\"v\",\"networkDirect\":\"gpiohgwxrtfudxe\",\"networkDirectTechnology\":\"gyqagvrvmnpkuk\"}}")
+            "{\"name\":\"yq\",\"trafficType\":[\"feqztppriol\",\"or\",\"altol\"],\"adapter\":[\"wsobqwcsdbn\",\"dcfhucqdpf\",\"vglsbjjca\"],\"overrideVirtualSwitchConfiguration\":false,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"t\",\"loadBalancingAlgorithm\":\"dut\"},\"overrideQosPolicy\":true,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"r\",\"priorityValue8021Action_SMB\":\"qtvcofudflvkgj\",\"bandwidthPercentage_SMB\":\"gdknnqv\"},\"overrideAdapterProperty\":false,\"adapterPropertyOverrides\":{\"jumboPacket\":\"n\",\"networkDirect\":\"rudsg\",\"networkDirectTechnology\":\"hmk\"}}")
             .toObject(DeploymentSettingIntents.class);
-        Assertions.assertEquals("kotl", model.name());
-        Assertions.assertEquals("yhgsy", model.trafficType().get(0));
-        Assertions.assertEquals("gjltdtbnnhado", model.adapter().get(0));
+        Assertions.assertEquals("yq", model.name());
+        Assertions.assertEquals("feqztppriol", model.trafficType().get(0));
+        Assertions.assertEquals("wsobqwcsdbn", model.adapter().get(0));
         Assertions.assertFalse(model.overrideVirtualSwitchConfiguration());
-        Assertions.assertEquals("melwuipiccjz", model.virtualSwitchConfigurationOverrides().enableIov());
-        Assertions.assertEquals("ivgvvcna", model.virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
-        Assertions.assertFalse(model.overrideQosPolicy());
-        Assertions.assertEquals("nxxmueedndrdv", model.qosPolicyOverrides().priorityValue8021ActionCluster());
-        Assertions.assertEquals("kwqqtchealmf", model.qosPolicyOverrides().priorityValue8021ActionSmb());
-        Assertions.assertEquals("d", model.qosPolicyOverrides().bandwidthPercentageSmb());
+        Assertions.assertEquals("t", model.virtualSwitchConfigurationOverrides().enableIov());
+        Assertions.assertEquals("dut", model.virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
+        Assertions.assertTrue(model.overrideQosPolicy());
+        Assertions.assertEquals("r", model.qosPolicyOverrides().priorityValue8021ActionCluster());
+        Assertions.assertEquals("qtvcofudflvkgj", model.qosPolicyOverrides().priorityValue8021ActionSmb());
+        Assertions.assertEquals("gdknnqv", model.qosPolicyOverrides().bandwidthPercentageSmb());
         Assertions.assertFalse(model.overrideAdapterProperty());
-        Assertions.assertEquals("v", model.adapterPropertyOverrides().jumboPacket());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.adapterPropertyOverrides().networkDirect());
-        Assertions.assertEquals("gyqagvrvmnpkuk", model.adapterPropertyOverrides().networkDirectTechnology());
+        Assertions.assertEquals("n", model.adapterPropertyOverrides().jumboPacket());
+        Assertions.assertEquals("rudsg", model.adapterPropertyOverrides().networkDirect());
+        Assertions.assertEquals("hmk", model.adapterPropertyOverrides().networkDirectTechnology());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentSettingIntents model = new DeploymentSettingIntents().withName("kotl")
-            .withTrafficType(Arrays.asList("yhgsy"))
-            .withAdapter(Arrays.asList("gjltdtbnnhado", "crkvcikhnv", "amqgxqquezikyw", "gxk"))
+        DeploymentSettingIntents model = new DeploymentSettingIntents().withName("yq")
+            .withTrafficType(Arrays.asList("feqztppriol", "or", "altol"))
+            .withAdapter(Arrays.asList("wsobqwcsdbn", "dcfhucqdpf", "vglsbjjca"))
             .withOverrideVirtualSwitchConfiguration(false)
             .withVirtualSwitchConfigurationOverrides(
-                new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("melwuipiccjz")
-                    .withLoadBalancingAlgorithm("ivgvvcna"))
-            .withOverrideQosPolicy(false)
-            .withQosPolicyOverrides(new QosPolicyOverrides().withPriorityValue8021ActionCluster("nxxmueedndrdv")
-                .withPriorityValue8021ActionSmb("kwqqtchealmf")
-                .withBandwidthPercentageSmb("d"))
+                new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("t")
+                    .withLoadBalancingAlgorithm("dut"))
+            .withOverrideQosPolicy(true)
+            .withQosPolicyOverrides(new QosPolicyOverrides().withPriorityValue8021ActionCluster("r")
+                .withPriorityValue8021ActionSmb("qtvcofudflvkgj")
+                .withBandwidthPercentageSmb("gdknnqv"))
             .withOverrideAdapterProperty(false)
-            .withAdapterPropertyOverrides(new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("v")
-                .withNetworkDirect("gpiohgwxrtfudxe")
-                .withNetworkDirectTechnology("gyqagvrvmnpkuk"));
+            .withAdapterPropertyOverrides(new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("n")
+                .withNetworkDirect("rudsg")
+                .withNetworkDirectTechnology("hmk"));
         model = BinaryData.fromObject(model).toObject(DeploymentSettingIntents.class);
-        Assertions.assertEquals("kotl", model.name());
-        Assertions.assertEquals("yhgsy", model.trafficType().get(0));
-        Assertions.assertEquals("gjltdtbnnhado", model.adapter().get(0));
+        Assertions.assertEquals("yq", model.name());
+        Assertions.assertEquals("feqztppriol", model.trafficType().get(0));
+        Assertions.assertEquals("wsobqwcsdbn", model.adapter().get(0));
         Assertions.assertFalse(model.overrideVirtualSwitchConfiguration());
-        Assertions.assertEquals("melwuipiccjz", model.virtualSwitchConfigurationOverrides().enableIov());
-        Assertions.assertEquals("ivgvvcna", model.virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
-        Assertions.assertFalse(model.overrideQosPolicy());
-        Assertions.assertEquals("nxxmueedndrdv", model.qosPolicyOverrides().priorityValue8021ActionCluster());
-        Assertions.assertEquals("kwqqtchealmf", model.qosPolicyOverrides().priorityValue8021ActionSmb());
-        Assertions.assertEquals("d", model.qosPolicyOverrides().bandwidthPercentageSmb());
+        Assertions.assertEquals("t", model.virtualSwitchConfigurationOverrides().enableIov());
+        Assertions.assertEquals("dut", model.virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
+        Assertions.assertTrue(model.overrideQosPolicy());
+        Assertions.assertEquals("r", model.qosPolicyOverrides().priorityValue8021ActionCluster());
+        Assertions.assertEquals("qtvcofudflvkgj", model.qosPolicyOverrides().priorityValue8021ActionSmb());
+        Assertions.assertEquals("gdknnqv", model.qosPolicyOverrides().bandwidthPercentageSmb());
         Assertions.assertFalse(model.overrideAdapterProperty());
-        Assertions.assertEquals("v", model.adapterPropertyOverrides().jumboPacket());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.adapterPropertyOverrides().networkDirect());
-        Assertions.assertEquals("gyqagvrvmnpkuk", model.adapterPropertyOverrides().networkDirectTechnology());
+        Assertions.assertEquals("n", model.adapterPropertyOverrides().jumboPacket());
+        Assertions.assertEquals("rudsg", model.adapterPropertyOverrides().networkDirect());
+        Assertions.assertEquals("hmk", model.adapterPropertyOverrides().networkDirectTechnology());
     }
 }

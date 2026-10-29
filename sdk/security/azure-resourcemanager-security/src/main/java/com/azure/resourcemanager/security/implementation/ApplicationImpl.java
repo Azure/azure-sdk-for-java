@@ -109,7 +109,9 @@ public final class ApplicationImpl implements Application, Application.Definitio
     ApplicationImpl(ApplicationInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.applicationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
+        this.applicationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId");
     }
 
     public Application refresh() {

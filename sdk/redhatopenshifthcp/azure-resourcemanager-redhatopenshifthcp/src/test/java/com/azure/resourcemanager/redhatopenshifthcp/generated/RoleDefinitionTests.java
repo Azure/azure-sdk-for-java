@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoleDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleDefinition model = BinaryData.fromString("{\"name\":\"tibqdxbxwakb\",\"resourceId\":\"gqxndlkzgxhuripl\"}")
-            .toObject(RoleDefinition.class);
-        Assertions.assertEquals("tibqdxbxwakb", model.name());
-        Assertions.assertEquals("gqxndlkzgxhuripl", model.resourceId());
+        RoleDefinition model
+            = BinaryData.fromString("{\"name\":\"feqztppriol\",\"resourceId\":\"or\"}").toObject(RoleDefinition.class);
+        Assertions.assertEquals("feqztppriol", model.name());
+        Assertions.assertEquals("or", model.resourceId());
     }
 }

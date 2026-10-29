@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Current status for a targeted resource in a scheduled action occurrence.
+ * Current status for a targeted resource in a recurring bulk action occurrence.
  */
 @Immutable
 public final class ResourceStatus implements JsonSerializable<ResourceStatus> {

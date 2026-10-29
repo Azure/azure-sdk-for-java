@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Caches_Update_ldap_only.json
+     * x-ms-original-file: 2026-08-01/Caches_Update_ldap_only.json
      */
     /**
      * Sample code: Caches_Update_ldap_only.
@@ -86,7 +86,7 @@ public final class CachesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/Caches_Update.json
+     * x-ms-original-file: 2026-08-01/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.

@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DataSharesCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageDataShareCRUD/StorageDataShares_Create.json
+     * x-ms-original-file: 2026-09-01/StorageDataShareCRUD/StorageDataShares_Create.json
      */
     /**
      * Sample code: CreateDataShare.
