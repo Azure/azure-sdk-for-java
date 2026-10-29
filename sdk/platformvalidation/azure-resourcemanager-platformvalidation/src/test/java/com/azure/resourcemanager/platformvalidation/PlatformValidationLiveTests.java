@@ -31,6 +31,7 @@ import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPl
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdate;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -75,7 +76,12 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
             testEnvironment(CONFIG.get("PLATFORMVALIDATION_ARM_ENDPOINT")));
         TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         HttpLogOptions logging = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        resources = ResourceManager.configure()
+            .withLogOptions(logging)
+            .authenticate(credential, profile)
+            .withSubscription(subscription);
         client = PlatformValidationManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resources))
             .withLogOptions(logging)
             .withDefaultPollInterval(Duration.ofSeconds(5))
             .withPolicy((context, next) -> next.process().map(response -> {
@@ -90,10 +96,6 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
             }))
             .authenticate(credential, profile)
             .serviceClient();
-        resources = ResourceManager.configure()
-            .withLogOptions(logging)
-            .authenticate(credential, profile)
-            .withSubscription(subscription);
         Assertions.assertTrue(resources.resourceGroups().contain(group), "Provide a dedicated test resource group.");
     }
 

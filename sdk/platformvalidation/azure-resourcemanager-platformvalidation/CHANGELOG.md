@@ -10,6 +10,7 @@
 
 ### Other Changes
 
+- Added the SDK provider-registration policy to the live-test client.
 - Added an optional regional ARM endpoint override for live tests, preserving public-cloud authentication.
 - Bounded live-test cleanup retries for transient parent-deletion conflicts after child removal.
 

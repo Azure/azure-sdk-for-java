@@ -144,6 +144,12 @@ Before queuing a run, configure the intended subscription and identity through t
 pipeline's service connection and subscription configuration. Overriding only
 `AZURE_SUBSCRIPTION_ID` does not move pipeline-provisioned resources to that subscription.
 The Bicep template grants Contributor only on the supplied parent resource group.
+The live-test client uses the SDK's `ProviderRegistrationPolicy` to register the resource
+provider when ARM returns `MissingSubscriptionRegistration`. This requires the test
+identity to have subscription-level provider registration permission; otherwise, arrange
+registration separately. The policy does not handle `SubscriptionNotRegistered` or
+`LocationNotAvailableForResourceType`; verify registration and regional availability
+separately if those errors persist.
 The service owns managed-group provisioning; the test identity does not create sibling
 managed groups or assign service roles.
 Supply the approved image through a secret environment variable, never through checked-in YAML.
