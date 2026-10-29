@@ -16,7 +16,7 @@ import java.io.IOException;
  * A managed runtime and agent loop used to execute a prompt agent.
  */
 @Immutable
-@Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+@Beta(warningText = "Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview")
 public class AgentHarness implements JsonSerializable<AgentHarness> {
 
     /*
@@ -29,7 +29,7 @@ public class AgentHarness implements JsonSerializable<AgentHarness> {
      * Creates an instance of AgentHarness class.
      */
     @Generated
-    public AgentHarness() {
+    protected AgentHarness() {
     }
 
     /**
@@ -79,7 +79,9 @@ public class AgentHarness implements JsonSerializable<AgentHarness> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("github_copilot_preview".equals(discriminatorValue)) {
+                if ("microsoft_copilot_preview".equals(discriminatorValue)) {
+                    return MicrosoftCopilotHarness.fromJson(readerToUse.reset());
+                } else if ("github_copilot_preview".equals(discriminatorValue)) {
                     return GitHubCopilotHarness.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

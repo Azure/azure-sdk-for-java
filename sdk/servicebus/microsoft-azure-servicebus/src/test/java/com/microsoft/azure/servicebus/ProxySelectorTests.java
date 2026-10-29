@@ -6,9 +6,9 @@ package com.microsoft.azure.servicebus;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.TransportType;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ProxySelectorTests extends TestBase {
-    @Ignore
+    @Disabled
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws Exception {
         // set up proxy selector with a bad address in order to check that the connectFailed() method is invoked
@@ -51,7 +51,7 @@ public class ProxySelectorTests extends TestBase {
         try {
             QueueClient sendClient = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
         } catch (ServiceBusException ex) {
-            Assert.assertEquals(
+            Assertions.assertEquals(
                 "Error{condition=amqp:connection:framing-error, description='connection aborted', info=null}",
                 ex.getLocalizedMessage());
         }

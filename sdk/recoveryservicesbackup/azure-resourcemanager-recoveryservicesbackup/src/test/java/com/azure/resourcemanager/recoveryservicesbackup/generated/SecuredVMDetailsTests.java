@@ -15,30 +15,30 @@ public final class SecuredVMDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuredVMDetails model = BinaryData.fromString(
-            "{\"securedVMOsDiskEncryptionSetId\":\"nh\",\"dataDiskEncryptionSettings\":{\"perDiskEncryptionSetIds\":[{\"lun\":1417564823,\"diskEncryptionSetId\":\"zoibgsxg\"}],\"dataDiskEncryptionSetId\":\"fyq\",\"dataDiskEncryptionIdentity\":\"mpqoxw\"}}")
+            "{\"securedVMOsDiskEncryptionSetId\":\"ryrando\",\"dataDiskEncryptionSettings\":{\"perDiskEncryptionSetIds\":[{\"lun\":45721178,\"diskEncryptionSetId\":\"ormkfqlwxldyk\"}],\"dataDiskEncryptionSetId\":\"sy\",\"dataDiskEncryptionIdentity\":\"olnjpnnbmjksibj\"}}")
             .toObject(SecuredVMDetails.class);
-        Assertions.assertEquals("nh", model.securedVmosDiskEncryptionSetId());
-        Assertions.assertEquals(1417564823, model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).lun());
-        Assertions.assertEquals("zoibgsxg",
+        Assertions.assertEquals("ryrando", model.securedVmosDiskEncryptionSetId());
+        Assertions.assertEquals(45721178, model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).lun());
+        Assertions.assertEquals("ormkfqlwxldyk",
             model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("fyq", model.dataDiskEncryptionSettings().dataDiskEncryptionSetId());
-        Assertions.assertEquals("mpqoxw", model.dataDiskEncryptionSettings().dataDiskEncryptionIdentity());
+        Assertions.assertEquals("sy", model.dataDiskEncryptionSettings().dataDiskEncryptionSetId());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.dataDiskEncryptionSettings().dataDiskEncryptionIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuredVMDetails model = new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId("nh")
+        SecuredVMDetails model = new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId("ryrando")
             .withDataDiskEncryptionSettings(new DataDiskEncryptionSettings()
-                .withPerDiskEncryptionSetIds(
-                    Arrays.asList(new PerDiskEncryptionSetId().withLun(1417564823).withDiskEncryptionSetId("zoibgsxg")))
-                .withDataDiskEncryptionSetId("fyq")
-                .withDataDiskEncryptionIdentity("mpqoxw"));
+                .withPerDiskEncryptionSetIds(Arrays
+                    .asList(new PerDiskEncryptionSetId().withLun(45721178).withDiskEncryptionSetId("ormkfqlwxldyk")))
+                .withDataDiskEncryptionSetId("sy")
+                .withDataDiskEncryptionIdentity("olnjpnnbmjksibj"));
         model = BinaryData.fromObject(model).toObject(SecuredVMDetails.class);
-        Assertions.assertEquals("nh", model.securedVmosDiskEncryptionSetId());
-        Assertions.assertEquals(1417564823, model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).lun());
-        Assertions.assertEquals("zoibgsxg",
+        Assertions.assertEquals("ryrando", model.securedVmosDiskEncryptionSetId());
+        Assertions.assertEquals(45721178, model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).lun());
+        Assertions.assertEquals("ormkfqlwxldyk",
             model.dataDiskEncryptionSettings().perDiskEncryptionSetIds().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("fyq", model.dataDiskEncryptionSettings().dataDiskEncryptionSetId());
-        Assertions.assertEquals("mpqoxw", model.dataDiskEncryptionSettings().dataDiskEncryptionIdentity());
+        Assertions.assertEquals("sy", model.dataDiskEncryptionSettings().dataDiskEncryptionSetId());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.dataDiskEncryptionSettings().dataDiskEncryptionIdentity());
     }
 }

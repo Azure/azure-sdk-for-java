@@ -135,9 +135,12 @@ public final class SolutionDeploymentImpl
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.solutionDeploymentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "solutionDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
+            "resourceGroupName");
+        this.solutionDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
+            "solutionDeploymentName");
     }
 
     public SolutionDeployment refresh() {

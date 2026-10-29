@@ -10,6 +10,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import com.azure.core.validation.http.LocalTestServer;
 import com.azure.core.validation.http.models.TestConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
@@ -19,9 +20,16 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
+import java.net.Authenticator;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,14 +39,18 @@ import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.PROXY_PASSWORD;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.PROXY_USERNAME;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -93,6 +105,49 @@ public class JdkHttpClientBuilderTests {
         assertDoesNotThrow(() -> new JdkHttpClientBuilder(null));
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = { 0, -1 })
+    public void disabledConnectionTimeoutDoesNotThrow(long timeoutMillis) {
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        assertNotNull(assertDoesNotThrow(() -> new JdkHttpClientBuilder(nativeBuilder).configuration(Configuration.NONE)
+            .connectionTimeout(Duration.ofMillis(timeoutMillis))
+            .build()));
+        assertFalse(nativeBuilder.build().connectTimeout().isPresent());
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, value),
+            EMPTY_SOURCE).build();
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder(nativeBuilder).configuration(configuration);
+        assertTimeouts((JdkHttpClient) builder.build(), Math.max(0, timeoutMillis));
+        assertEquals(Duration.ofMillis(Math.max(0, timeoutMillis)),
+            nativeBuilder.build().connectTimeout().orElse(Duration.ZERO));
+
+        assertTimeouts((JdkHttpClient) builder.connectionTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertEquals(Duration.ofMillis(456000), nativeBuilder.build().connectTimeout().get());
+    }
+
+    private static void assertTimeouts(JdkHttpClient client, long expected) throws ReflectiveOperationException {
+        for (String name : new String[] { "readTimeout", "writeTimeout", "responseTimeout" }) {
+            java.lang.reflect.Field field = JdkHttpClient.class.getDeclaredField(name);
+            field.setAccessible(true);
+            assertEquals(expected == 0 && !"readTimeout".equals(name) ? null : Duration.ofMillis(expected),
+                field.get(client));
+        }
+    }
+
     /**
      * Tests building a client with a given {@code Executor}.
      */
@@ -141,17 +196,90 @@ public class JdkHttpClientBuilderTests {
         // Url of the service behind proxy
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-            .expectNextCount(1)
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("proxyAuthenticationRequests")
+    public void proxyCredentialsAreScopedToProxy(InetSocketAddress proxyAddress, String requestingHost,
+        int requestingPort, Authenticator.RequestorType requestorType, boolean authenticate) throws Exception {
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        new JdkHttpClientBuilder(nativeBuilder).configuration(Configuration.NONE)
+            .proxy(
+                new ProxyOptions(ProxyOptions.Type.HTTP, proxyAddress).setCredentials(PROXY_USERNAME, PROXY_PASSWORD))
+            .build();
+        Authenticator authenticator = nativeBuilder.build().authenticator().get();
+        PasswordAuthentication authentication
+            = authenticator.requestPasswordAuthenticationInstance(requestingHost, proxyAddress.getAddress(),
+                requestingPort, "http", "test", "Basic", URI.create("http://service.example/").toURL(), requestorType);
+
+        if (authenticate) {
+            assertNotNull(authentication);
+            assertEquals(PROXY_USERNAME, authentication.getUserName());
+            assertArrayEquals(PROXY_PASSWORD.toCharArray(), authentication.getPassword());
+        } else {
+            assertNull(authentication);
+        }
+    }
+
+    private static Stream<Arguments> proxyAuthenticationRequests() throws Exception {
+        byte[] loopback = { 127, 0, 0, 1 };
+        return Stream
+            .of(InetSocketAddress.createUnresolved("proxy.example", 8888),
+                new InetSocketAddress(InetAddress.getByAddress("proxy.example", loopback), 8888),
+                new InetSocketAddress(InetAddress.getByAddress(loopback), 8888))
+            .flatMap(address -> {
+                String host = address.getHostString();
+                return Stream.of(Arguments.of(address, host, 8888, Authenticator.RequestorType.PROXY, true),
+                    Arguments.of(address, host.toUpperCase(java.util.Locale.ROOT), 8888,
+                        Authenticator.RequestorType.PROXY, true),
+                    Arguments.of(address, host, 8889, Authenticator.RequestorType.PROXY, false),
+                    Arguments.of(address, host, -1, Authenticator.RequestorType.PROXY, false),
+                    Arguments.of(address, "other.example", 8888, Authenticator.RequestorType.PROXY, false),
+                    Arguments.of(address, null, 8888, Authenticator.RequestorType.PROXY, false),
+                    Arguments.of(address, host, 8888, Authenticator.RequestorType.SERVER, false));
+            });
+    }
+
+    @Test
+    public void serverChallengeCannotUseProxyCredentials() {
+        AtomicInteger requests = new AtomicInteger();
+        AtomicReference<String> authorization = new AtomicReference<>();
+        LocalTestServer origin = new LocalTestServer((request, response, body) -> {
+            requests.incrementAndGet();
+            String header = request.getHeader("Authorization");
+            if (header != null) {
+                authorization.set(header);
+            }
+            response.setStatus(header == null ? 401 : 200);
+            response.setHeader("WWW-Authenticate", "Basic realm=\"origin\"");
+            response.setContentLength(0);
+            response.flushBuffer();
+        });
+        try {
+            origin.start();
+            ProxyOptions proxy
+                = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT))
+                    .setCredentials(PROXY_USERNAME, PROXY_PASSWORD)
+                    .setNonProxyHosts("localhost");
+            HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE).proxy(proxy).build();
+            StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, origin.getHttpUri() + "/")))
+                .expectError(IOException.class)
+                .verify(Duration.ofSeconds(10));
+            assertEquals(1, requests.get());
+            assertNull(authorization.get());
+        } finally {
+            origin.stop();
+        }
     }
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
-                    "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
-                .put("java.net.useSystemProxies", "true")).build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+            .put("java.net.useSystemProxies", "true")).build();
 
         configurationProxyTest(configuration);
     }
@@ -193,6 +321,7 @@ public class JdkHttpClientBuilderTests {
 
         final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, "localhost")).build();
 
         arguments.add(Arguments.of(envConfiguration));

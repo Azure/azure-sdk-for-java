@@ -114,10 +114,15 @@ public final class ConfigTemplateMetadataImpl
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configTemplates");
-        this.configTemplateMetadataName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configTemplateMetadatas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
+            "resourceGroupName");
+        this.configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
+            "configTemplateName");
+        this.configTemplateMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
+            "configTemplateMetadataName");
     }
 
     public ConfigTemplateMetadata refresh() {

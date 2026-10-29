@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class AutoImportJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/autoImportJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/autoImportJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: autoImportJobs_CreateOrUpdate.

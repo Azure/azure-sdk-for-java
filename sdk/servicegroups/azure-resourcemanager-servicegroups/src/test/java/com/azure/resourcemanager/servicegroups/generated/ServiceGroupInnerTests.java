@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicegroups.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import com.azure.resourcemanager.servicegroups.models.ParentServiceGroupProperties;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,27 +17,29 @@ public final class ServiceGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"NotStarted\",\"displayName\":\"uv\",\"parent\":{\"resourceId\":\"pybczmehmtzopb\"}},\"kind\":\"h\",\"tags\":{\"hphoycm\":\"idgsybbe\",\"htbmuf\":\"xaobhdxbmtqioqjz\",\"rxybqsoq\":\"ownoizhw\",\"pdznrbtcqqjnqgl\":\"jgkdmbpazlobcu\"},\"id\":\"gnufoooj\",\"name\":\"wifsq\",\"type\":\"saagdf\"}")
+            "{\"properties\":{\"provisioningState\":\"NotStarted\",\"displayName\":\"uv\",\"attributes\":{\"criticality\":1513244275},\"parent\":{\"resourceId\":\"czmehmtzopbsp\"}},\"kind\":\"upi\",\"tags\":{\"ycm\":\"ybbejhph\",\"htbmuf\":\"xaobhdxbmtqioqjz\",\"rxybqsoq\":\"ownoizhw\"},\"id\":\"gkdmb\",\"name\":\"azlobcufpdznrbt\",\"type\":\"qqjnqgl\"}")
             .toObject(ServiceGroupInner.class);
         Assertions.assertEquals("uv", model.properties().displayName());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().parent().resourceId());
-        Assertions.assertEquals("h", model.kind());
-        Assertions.assertEquals("idgsybbe", model.tags().get("hphoycm"));
+        Assertions.assertEquals(1513244275, model.properties().attributes().criticality());
+        Assertions.assertEquals("czmehmtzopbsp", model.properties().parent().resourceId());
+        Assertions.assertEquals("upi", model.kind());
+        Assertions.assertEquals("ybbejhph", model.tags().get("ycm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceGroupInner model = new ServiceGroupInner()
             .withProperties(new ServiceGroupProperties().withDisplayName("uv")
-                .withParent(new ParentServiceGroupProperties().withResourceId("pybczmehmtzopb")))
-            .withKind("h")
-            .withTags(mapOf("hphoycm", "idgsybbe", "htbmuf", "xaobhdxbmtqioqjz", "rxybqsoq", "ownoizhw",
-                "pdznrbtcqqjnqgl", "jgkdmbpazlobcu"));
+                .withAttributes(new ServiceGroupAttributes().withCriticality(1513244275))
+                .withParent(new ParentServiceGroupProperties().withResourceId("czmehmtzopbsp")))
+            .withKind("upi")
+            .withTags(mapOf("ycm", "ybbejhph", "htbmuf", "xaobhdxbmtqioqjz", "rxybqsoq", "ownoizhw"));
         model = BinaryData.fromObject(model).toObject(ServiceGroupInner.class);
         Assertions.assertEquals("uv", model.properties().displayName());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().parent().resourceId());
-        Assertions.assertEquals("h", model.kind());
-        Assertions.assertEquals("idgsybbe", model.tags().get("hphoycm"));
+        Assertions.assertEquals(1513244275, model.properties().attributes().criticality());
+        Assertions.assertEquals("czmehmtzopbsp", model.properties().parent().resourceId());
+        Assertions.assertEquals("upi", model.kind());
+        Assertions.assertEquals("ybbejhph", model.tags().get("ycm"));
     }
 
     // Use "Map.of" if available

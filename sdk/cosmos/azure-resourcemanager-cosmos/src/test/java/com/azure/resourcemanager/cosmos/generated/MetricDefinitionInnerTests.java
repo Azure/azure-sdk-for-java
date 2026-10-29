@@ -11,7 +11,7 @@ public final class MetricDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricDefinitionInner model = BinaryData.fromString(
-            "{\"metricAvailabilities\":[{\"timeGrain\":\"kallatmel\",\"retention\":\"ipicc\"}],\"primaryAggregationType\":\"Average\",\"unit\":\"Seconds\",\"resourceUri\":\"gvvcnayrhyr\",\"name\":{\"value\":\"mueedndrdvstk\",\"localizedValue\":\"qtc\"}}")
+            "{\"metricAvailabilities\":[{\"timeGrain\":\"dyh\",\"retention\":\"kkpwdreqnovvq\"},{\"timeGrain\":\"vljxywsu\",\"retention\":\"yrs\"}],\"primaryAggregationType\":\"Average\",\"unit\":\"Milliseconds\",\"resourceUri\":\"adgvraeaene\",\"name\":{\"value\":\"arrwlquu\",\"localizedValue\":\"fqka\"}}")
             .toObject(MetricDefinitionInner.class);
     }
 }

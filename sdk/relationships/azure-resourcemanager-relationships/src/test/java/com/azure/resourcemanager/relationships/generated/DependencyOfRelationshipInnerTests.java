@@ -13,18 +13,18 @@ public final class DependencyOfRelationshipInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DependencyOfRelationshipInner model = BinaryData.fromString(
-            "{\"properties\":{\"sourceId\":\"ijbpzvgnwzsymgl\",\"targetId\":\"uf\",\"targetTenant\":\"zk\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"bihanuf\"},\"metadata\":{\"sourceType\":\"fcbjysagithxqha\",\"targetType\":\"ifpikxwczby\"},\"provisioningState\":\"Updating\"},\"id\":\"q\",\"name\":\"uhivyqniw\",\"type\":\"ybrk\"}")
+            "{\"properties\":{\"sourceId\":\"jbpzvgnwzsymg\",\"targetId\":\"zufcyzkohdbi\",\"targetTenant\":\"nufhf\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"s\"},\"metadata\":{\"sourceType\":\"ithxqhabifpi\",\"targetType\":\"xwczbyscnp\"},\"provisioningState\":\"Updating\"},\"id\":\"ivyqniwbybrkxvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"}")
             .toObject(DependencyOfRelationshipInner.class);
-        Assertions.assertEquals("uf", model.properties().targetId());
-        Assertions.assertEquals("zk", model.properties().targetTenant());
+        Assertions.assertEquals("zufcyzkohdbi", model.properties().targetId());
+        Assertions.assertEquals("nufhf", model.properties().targetTenant());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DependencyOfRelationshipInner model = new DependencyOfRelationshipInner()
-            .withProperties(new DependencyOfRelationshipProperties().withTargetId("uf").withTargetTenant("zk"));
+        DependencyOfRelationshipInner model = new DependencyOfRelationshipInner().withProperties(
+            new DependencyOfRelationshipProperties().withTargetId("zufcyzkohdbi").withTargetTenant("nufhf"));
         model = BinaryData.fromObject(model).toObject(DependencyOfRelationshipInner.class);
-        Assertions.assertEquals("uf", model.properties().targetId());
-        Assertions.assertEquals("zk", model.properties().targetTenant());
+        Assertions.assertEquals("zufcyzkohdbi", model.properties().targetId());
+        Assertions.assertEquals("nufhf", model.properties().targetTenant());
     }
 }

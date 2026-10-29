@@ -33,7 +33,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.AzureAuthorityHosts;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -134,7 +133,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             DocumentModelDetails createdModel = syncPoller1.getFinalResult();
 
             StepVerifier.create(client.deleteDocumentModelWithResponse(createdModel.getModelId()))
-                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
@@ -482,7 +481,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             StepVerifier.create(client.getDocumentModelWithResponse(createdModel.getModelId()))
                 .assertNext(documentModelResponse -> {
-                    assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                    assertEquals(200, documentModelResponse.getStatusCode());
                     validateDocumentModelData(documentModelResponse.getValue());
                 });
             // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.17.0 (2026-10-27)
+
+### Features Added
+- Added opt-in observation of the `Expect: 100-continue` handshake. When a caller places an `AtomicBoolean` in the
+  request `Context` under the key `azure-http-client-expect-continue-received`, the client sets it to `true` if the
+  service answers with an interim `100 Continue` response. This does not change how or when the request body is sent.
+
+### Bugs Fixed
+
+- Fixed asynchronous response downloads blocking Netty event-loop threads while waiting for destination writes.
+  Response bytes are copied to heap buffers so pending writes remain safe after Netty releases its network buffers.
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+- Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+- Migrated Netty dependencies from `4.1.138.Final` to `4.2.19.Final`.
+- Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
+
+## 1.16.8 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.81.Final` to `2.0.84.Final`.
 
 ## 1.16.7 (2026-08-27)
 
@@ -809,4 +844,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/src/samples/java/com/azure/core/http/netty)
-

@@ -23,6 +23,11 @@ public final class ManagedAgentDeployment extends AgentDeploymentProperties {
      */
     private AgentDeploymentType deploymentType = AgentDeploymentType.MANAGED;
 
+    /*
+     * Gets or sets the provisioning state of the agent deployment.
+     */
+    private AgentDeploymentProvisioningState provisioningState;
+
     /**
      * Creates an instance of ManagedAgentDeployment class.
      */
@@ -37,6 +42,16 @@ public final class ManagedAgentDeployment extends AgentDeploymentProperties {
     @Override
     public AgentDeploymentType deploymentType() {
         return this.deploymentType;
+    }
+
+    /**
+     * Get the provisioningState property: Gets or sets the provisioning state of the agent deployment.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AgentDeploymentProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -155,8 +170,8 @@ public final class ManagedAgentDeployment extends AgentDeploymentProperties {
                         = reader.readArray(reader1 -> VersionedAgentReference.fromJson(reader1));
                     deserializedManagedAgentDeployment.withAgents(agents);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedManagedAgentDeployment
-                        .withProvisioningState(AgentDeploymentProvisioningState.fromString(reader.getString()));
+                    deserializedManagedAgentDeployment.provisioningState
+                        = AgentDeploymentProvisioningState.fromString(reader.getString());
                 } else if ("deploymentType".equals(fieldName)) {
                     deserializedManagedAgentDeployment.deploymentType
                         = AgentDeploymentType.fromString(reader.getString());

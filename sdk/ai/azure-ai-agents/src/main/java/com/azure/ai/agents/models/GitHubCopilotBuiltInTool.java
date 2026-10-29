@@ -5,18 +5,19 @@
 package com.azure.ai.agents.models;
 
 /**
- * A customer-configurable GitHub Copilot built-in tool.
+ * The legacy GitHub Copilot built-in tool names retained for compatibility. Use `MicrosoftCopilotBuiltInTool` for new
+ * integrations.
  */
 public enum GitHubCopilotBuiltInTool {
     /**
      * Read and search files in the harness workspace.
      */
-    FILESYSTEM_READ("filesystem_read"),
+    FILE_SYSTEM_READ("filesystem_read"),
 
     /**
      * Create and modify files in the harness workspace.
      */
-    FILESYSTEM_WRITE("filesystem_write"),
+    FILE_SYSTEM_WRITE("filesystem_write"),
 
     /**
      * Execute operating-system commands.

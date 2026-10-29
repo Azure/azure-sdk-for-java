@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_DeleteForResource.

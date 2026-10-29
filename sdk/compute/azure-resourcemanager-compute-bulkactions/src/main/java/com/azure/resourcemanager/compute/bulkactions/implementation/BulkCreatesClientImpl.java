@@ -36,9 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreatesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateListResult;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateOperationStatusListResult;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1005,15 +1005,15 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperation>>
+    private Mono<PagedResponse<ResourceOperationInner>>
         virtualMachinesGetOperationStatusSinglePageAsync(String resourceGroupName, String location, String name) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatus(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, accept,
                 context))
-            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1030,7 +1030,7 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceOperation> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
+    private PagedFlux<ResourceOperationInner> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
         String location, String name) {
         return new PagedFlux<>(
             () -> virtualMachinesGetOperationStatusSinglePageAsync(resourceGroupName, location, name),
@@ -1049,7 +1049,7 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * @return the operation status for virtual machines in a BulkCreate operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name) {
         final String accept = "application/json";
         Response<BulkCreateOperationStatusListResult> res
@@ -1072,7 +1072,7 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * @return the operation status for virtual machines in a BulkCreate operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name, Context context) {
         final String accept = "application/json";
         Response<BulkCreateOperationStatusListResult> res
@@ -1095,8 +1095,8 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
-        String name) {
+    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
+        String location, String name) {
         return new PagedIterable<>(() -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name),
             nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink));
     }
@@ -1115,8 +1115,8 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
-        String name, Context context) {
+    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
+        String location, String name, Context context) {
         return new PagedIterable<>(
             () -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, context),
             nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink, context));
@@ -1351,14 +1351,14 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperation>>
+    private Mono<PagedResponse<ResourceOperationInner>>
         virtualMachinesGetOperationStatusNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatusNext(nextLink, this.client.getEndpoint(),
                 accept, context))
-            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1372,7 +1372,7 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * @return the operation status for virtual machines in a BulkCreate operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<BulkCreateOperationStatusListResult> res = service.virtualMachinesGetOperationStatusNextSync(nextLink,
             this.client.getEndpoint(), accept, Context.NONE);
@@ -1391,7 +1391,7 @@ public final class BulkCreatesClientImpl implements BulkCreatesClient {
      * @return the operation status for virtual machines in a BulkCreate operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
         Response<BulkCreateOperationStatusListResult> res

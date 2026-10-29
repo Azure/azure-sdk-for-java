@@ -57,12 +57,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final String id;
 
     /*
-     * The object type. Always `telephony.call_job`.
-     */
-    @Generated
-    private final String object = "telephony.call_job";
-
-    /*
      * The name of the voice agent used at execution time.
      */
     @Generated
@@ -84,7 +78,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
      * The frozen provider-attempt retry policy.
      */
     @Generated
-    private final TelephonyOutboundRetryPolicyResponse retryPolicy;
+    private final TelephonyOutboundRetryPolicy retryPolicy;
 
     /*
      * The number of provider attempts created so far.
@@ -178,16 +172,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     }
 
     /**
-     * Get the object property: The object type. Always `telephony.call_job`.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public String getObject() {
-        return this.object;
-    }
-
-    /**
      * Get the agentName property: The name of the voice agent used at execution time.
      *
      * @return the agentName value.
@@ -223,7 +207,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
      * @return the retryPolicy value.
      */
     @Generated
-    public TelephonyOutboundRetryPolicyResponse getRetryPolicy() {
+    public TelephonyOutboundRetryPolicy getRetryPolicy() {
         return this.retryPolicy;
     }
 
@@ -303,7 +287,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.objectType);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("retry_policy", this.retryPolicy);
@@ -345,7 +329,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
             String id = null;
             String agentName = null;
             TelephonyCallJobStatus status = null;
-            TelephonyOutboundRetryPolicyResponse retryPolicy = null;
+            TelephonyOutboundRetryPolicy retryPolicy = null;
             int attemptCount = 0;
             long revision = 0L;
             OffsetDateTime createdAt = null;
@@ -372,7 +356,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
                 } else if ("status".equals(fieldName)) {
                     status = TelephonyCallJobStatus.fromString(reader.getString());
                 } else if ("retry_policy".equals(fieldName)) {
-                    retryPolicy = TelephonyOutboundRetryPolicyResponse.fromJson(reader);
+                    retryPolicy = TelephonyOutboundRetryPolicy.fromJson(reader);
                 } else if ("attempt_count".equals(fieldName)) {
                     attemptCount = reader.getInt();
                 } else if ("revision".equals(fieldName)) {
@@ -412,19 +396,44 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
 
     /*
      * The Foundry connection name in the current project used to originate the call. Its category selects Twilio or
-     * Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     * Azure Communication Services / Teams Phone extensibility. No inbound telephony binding is required.
      */
     @Generated
     private final String connectionName;
 
     /*
      * The caller identity used to originate the call. For a Twilio connection, provide an authorized E.164 phone
-     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * number. For an Azure Communication Services / Teams Phone extensibility connection, provide the Teams Resource
      * Account object ID. The identity type is inferred from the connection category; originating does not change
      * inbound routing.
      */
     @Generated
     private final String source;
+
+    /**
+     * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
+     * Its category selects Twilio or Azure Communication Services / Teams Phone extensibility. No inbound telephony
+     * binding is required.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
+     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone extensibility connection,
+     * provide the Teams Resource Account object ID. The identity type is inferred from the connection category;
+     * originating does not change inbound routing.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
+    }
 
     /**
      * Creates an instance of TelephonyCallJob class.
@@ -443,8 +452,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
      */
     @Generated
     private TelephonyCallJob(TelephonyOutboundDestination destination, String connectionName, String source, String id,
-        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicyResponse retryPolicy,
-        int attemptCount, long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicy retryPolicy, int attemptCount,
+        long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.destination = destination;
         this.connectionName = connectionName;
         this.source = source;
@@ -466,28 +475,19 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         }
     }
 
-    /**
-     * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
-     * Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony binding
-     * is required.
-     *
-     * @return the connectionName value.
+    /*
+     * The object type. Always `telephony.call_job`.
      */
     @Generated
-    public String getConnectionName() {
-        return this.connectionName;
-    }
+    private final String objectType = "telephony.call_job";
 
     /**
-     * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
-     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
-     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
-     * does not change inbound routing.
+     * Get the objectType property: The object type. Always `telephony.call_job`.
      *
-     * @return the source value.
+     * @return the objectType value.
      */
     @Generated
-    public String getSource() {
-        return this.source;
+    public String getObjectType() {
+        return this.objectType;
     }
 }

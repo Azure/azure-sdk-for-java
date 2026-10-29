@@ -23,13 +23,6 @@ public final class VoiceAgentEndOfUtteranceDetectionModel
         = fromString("semantic_detection_v1");
 
     /**
-     * The English-optimized semantic detection model.
-     */
-    @Generated
-    public static final VoiceAgentEndOfUtteranceDetectionModel SEMANTIC_DETECTION_V1_EN
-        = fromString("semantic_detection_v1_en");
-
-    /**
      * The multilingual semantic detection model.
      */
     @Generated
@@ -73,4 +66,11 @@ public final class VoiceAgentEndOfUtteranceDetectionModel
     public static Collection<VoiceAgentEndOfUtteranceDetectionModel> values() {
         return values(VoiceAgentEndOfUtteranceDetectionModel.class);
     }
+
+    /**
+     * The English-optimized semantic detection model.
+     */
+    @Generated
+    public static final VoiceAgentEndOfUtteranceDetectionModel SEMANTIC_DETECTION_V1_ENGLISH
+        = fromString("semantic_detection_v1_en");
 }

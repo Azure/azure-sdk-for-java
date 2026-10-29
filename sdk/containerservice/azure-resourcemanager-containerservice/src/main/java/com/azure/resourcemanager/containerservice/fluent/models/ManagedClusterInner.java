@@ -20,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolcha
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentSandboxProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeProvi
 import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPodSnapshotProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
@@ -726,7 +728,9 @@ public final class ManagedClusterInner extends Resource {
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @return the enableFips value.
      */
@@ -739,7 +743,9 @@ public final class ManagedClusterInner extends Resource {
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterInner object itself.
@@ -1346,6 +1352,52 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withAiToolchainOperatorProfile(aiToolchainOperatorProfile);
+        return this;
+    }
+
+    /**
+     * Get the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @return the agentSandboxProfile value.
+     */
+    public ManagedClusterAgentSandboxProfile agentSandboxProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentSandboxProfile();
+    }
+
+    /**
+     * Set the agentSandboxProfile property: Agent Sandbox settings that apply to the whole cluster.
+     * 
+     * @param agentSandboxProfile the agentSandboxProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withAgentSandboxProfile(ManagedClusterAgentSandboxProfile agentSandboxProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withAgentSandboxProfile(agentSandboxProfile);
+        return this;
+    }
+
+    /**
+     * Get the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @return the podSnapshotProfile value.
+     */
+    public ManagedClusterPodSnapshotProfile podSnapshotProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().podSnapshotProfile();
+    }
+
+    /**
+     * Set the podSnapshotProfile property: The Pod Snapshot Restore profile for the managed cluster.
+     * 
+     * @param podSnapshotProfile the podSnapshotProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withPodSnapshotProfile(ManagedClusterPodSnapshotProfile podSnapshotProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withPodSnapshotProfile(podSnapshotProfile);
         return this;
     }
 

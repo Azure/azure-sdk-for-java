@@ -100,7 +100,7 @@ public final class TwilioTelephonyBindingListItem extends TelephonyBindingListIt
             String connectionName = null;
             TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
-            String etag = null;
+            String eTag = null;
             String label = null;
             String phoneNumber = null;
             TelephonyProvider provider = TelephonyProvider.TWILIO;
@@ -116,7 +116,7 @@ public final class TwilioTelephonyBindingListItem extends TelephonyBindingListIt
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
+                    eTag = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else if ("phone_number".equals(fieldName)) {
@@ -129,7 +129,7 @@ public final class TwilioTelephonyBindingListItem extends TelephonyBindingListIt
             }
             TwilioTelephonyBindingListItem deserializedTwilioTelephonyBindingListItem
                 = new TwilioTelephonyBindingListItem(id, connectionName, status, incomingCallUrl, phoneNumber);
-            deserializedTwilioTelephonyBindingListItem.setEtag(etag);
+            deserializedTwilioTelephonyBindingListItem.setETag(eTag);
             deserializedTwilioTelephonyBindingListItem.setLabel(label);
             deserializedTwilioTelephonyBindingListItem.provider = provider;
             return deserializedTwilioTelephonyBindingListItem;

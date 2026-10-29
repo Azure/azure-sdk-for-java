@@ -29,7 +29,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
      * Creates an instance of VoiceAgentTool class.
      */
     @Generated
-    public VoiceAgentTool() {
+    protected VoiceAgentTool() {
     }
 
     /**
@@ -79,10 +79,10 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("function".equals(discriminatorValue)) {
-                    return VoiceAgentFunctionTool.fromJson(readerToUse.reset());
-                } else if ("mcp".equals(discriminatorValue)) {
+                if ("mcp".equals(discriminatorValue)) {
                     return VoiceAgentMcpTool.fromJson(readerToUse.reset());
+                } else if ("function".equals(discriminatorValue)) {
+                    return VoiceAgentFunctionTool.fromJson(readerToUse.reset());
                 } else if ("system".equals(discriminatorValue)) {
                     return VoiceAgentSystemTool.fromJson(readerToUse.reset());
                 } else if ("toolbox".equals(discriminatorValue)) {

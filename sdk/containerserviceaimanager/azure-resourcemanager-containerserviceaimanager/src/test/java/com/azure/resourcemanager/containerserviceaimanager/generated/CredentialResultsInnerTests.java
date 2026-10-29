@@ -11,7 +11,6 @@ public final class CredentialResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialResultsInner model
-            = BinaryData.fromString("{\"kubeconfigs\":[{\"name\":\"vdfgiotk\"},{\"name\":\"tqxln\"}]}")
-                .toObject(CredentialResultsInner.class);
+            = BinaryData.fromString("{\"kubeconfigs\":[{\"name\":\"ewmdw\"}]}").toObject(CredentialResultsInner.class);
     }
 }

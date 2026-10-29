@@ -23,7 +23,7 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
     @Test
     public void testFindWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"rqunjq\",\"endTime\":\"denxau\",\"objectType\":\"pakdkifmjnnawt\"}],\"objectType\":\"bpxuckpggqoweyi\"},\"id\":\"hlisngw\",\"name\":\"qqmpizruwnpqx\",\"type\":\"iwfcngjsa\"}";
+            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"iibakcl\",\"endTime\":\"c\",\"objectType\":\"rnxousxauzlwvsg\"},{\"startTime\":\"wohqfzizvu\",\"endTime\":\"mmkjsvthnwpztek\",\"objectType\":\"mribiat\"},{\"startTime\":\"gplucfotangcfhny\",\"endTime\":\"zcugswvxwlmzqw\",\"objectType\":\"tx\"}],\"objectType\":\"mxmcuqudtcvclxy\"},\"id\":\"dkvgfabuiyjibuzp\",\"name\":\"ugneikn\",\"type\":\"oxgjiuqhibt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureBackupFindRestorableTimeRangesResponseResource response = manager.restorableTimeRanges()
-            .findWithResponse("pdqmjxlyyzglgouw", "lmjjyuo", "qtobaxkjeyt",
+            .findWithResponse("zqkzszuwi", "tglxx", "ljfp",
                 new AzureBackupFindRestorableTimeRangesRequest()
-                    .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)
-                    .withStartTime("bfjkw")
-                    .withEndTime("snkq"),
+                    .withSourceDataStoreType(RestoreSourceDataStoreType.ARCHIVE_STORE)
+                    .withStartTime("crmnzhrgmqgjs")
+                    .withEndTime("pqcbfrmbodthsq"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rqunjq", response.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("denxau", response.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("pakdkifmjnnawt", response.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("bpxuckpggqoweyi", response.properties().objectType());
+        Assertions.assertEquals("iibakcl", response.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("c", response.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("rnxousxauzlwvsg", response.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("mxmcuqudtcvclxy", response.properties().objectType());
     }
 }
