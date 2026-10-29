@@ -353,6 +353,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      *
      * @return an instance of WebPubSubChatServiceAsyncClient.
      */
+    @Generated
     public WebPubSubChatServiceAsyncClient buildAsyncClient() {
         return new WebPubSubChatServiceAsyncClient(buildInnerClient(), keyCredential);
     }
@@ -362,6 +363,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      *
      * @return an instance of WebPubSubChatServiceClient.
      */
+    @Generated
     public WebPubSubChatServiceClient buildClient() {
         return new WebPubSubChatServiceClient(buildInnerClient(), keyCredential);
     }

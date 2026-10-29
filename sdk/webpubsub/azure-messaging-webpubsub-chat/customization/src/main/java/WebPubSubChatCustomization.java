@@ -30,6 +30,14 @@ public final class WebPubSubChatCustomization extends Customization {
                     .noneMatch(type -> type.getNameAsString().equals("ConnectionStringTrait"))) {
                     builder.addImplementedType("ConnectionStringTrait<WebPubSubChatServiceClientBuilder>");
                 }
+                for (String methodName : new String[] { "buildClient", "buildAsyncClient" }) {
+                    MethodDeclaration method = builder.getMethodsByName(methodName)
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("Missing builder method: " + methodName));
+                    method.setBody(StaticJavaParser.parseBlock(
+                        "{ return new " + method.getTypeAsString() + "(buildInnerClient(), keyCredential); }"));
+                }
             });
         });
 
