@@ -81,6 +81,7 @@ public final class ClientTelemetryMetrics {
     private static final Tag QUERYPLAN_TAG = Tag.of(
         TagName.RequestOperationType.toString(),
         ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
+    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -800,10 +801,14 @@ public final class ClientTelemetryMetrics {
                 effectiveTags.add(QUERYPLAN_TAG);
             }
             if (metricTagNames.contains(TagName.RequestStatusCode)) {
-                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(),"NONE"));
+                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(), "NONE"));
             }
             if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
-                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(),"NONE"));
+                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(), "NONE"));
+            }
+            if (metricTagNames.contains(TagName.ServiceEndpoint)) {
+                // Plan-context metrics are not tied to an individual HTTP attempt.
+                effectiveTags.add(UNKNOWN_SERVICE_ENDPOINT_TAG);
             }
 
             return Tags.of(effectiveTags);
@@ -1173,6 +1178,7 @@ public final class ClientTelemetryMetrics {
             EnumSet<TagName> metricTagNamesForGateway = metricTagNames.clone();
             metricTagNamesForGateway.remove(TagName.RegionName);
             metricTagNamesForGateway.remove(TagName.ServiceAddress);
+            // Add the captured ServiceEndpoint tag below instead of rebuilding it in createRequestTags.
             metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
             metricTagNamesForGateway.remove(TagName.PartitionId);
             metricTagNamesForGateway.remove(TagName.ReplicaId);
@@ -1190,6 +1196,10 @@ public final class ClientTelemetryMetrics {
                         null,
                         null)
                 );
+                if (this.metricTagNames.contains(TagName.ServiceEndpoint)) {
+                    Tag endpointTag = gatewayStats.getServiceEndpointMetricTag();
+                    requestTags = requestTags.and(endpointTag != null ? endpointTag : UNKNOWN_SERVICE_ENDPOINT_TAG);
+                }
 
                 recordRequestPayloadSizes(
                     ctx,
@@ -1215,7 +1225,9 @@ public final class ClientTelemetryMetrics {
                 CosmosMeterOptions ruOptions = clientAccessor().getMeterOptions(
                     client,
                     CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
-                if (ruOptions.isEnabled() &&
+                boolean isDocumentQueryPlan = gatewayStats.getResourceType() == ResourceType.Document
+                    && gatewayStats.getOperationType() == OperationType.QueryPlan;
+                if (!isDocumentQueryPlan && ruOptions.isEnabled() &&
                     (!ruOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     double requestCharge = gatewayStats.getRequestCharge();
                     DistributionSummary requestChargeMeter = DistributionSummary

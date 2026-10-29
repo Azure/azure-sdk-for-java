@@ -23,7 +23,7 @@ public final class QuotaTiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"currentTierName\":\"kdwjyjiznioro\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-03-06T04:45:53Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"pmcreihu\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-01-16T20:00:11Z\",\"upgradeUnavailabilityReason\":\"hminuwqxungrobgw\"}},\"id\":\"sxjwdy\",\"name\":\"wxm\",\"type\":\"zjow\"}]}";
+            = "{\"value\":[{\"properties\":{\"currentTierName\":\"clclf\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-01-02T16:25:48Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"mwrv\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-03-21T14:22:59Z\",\"upgradeUnavailabilityReason\":\"lx\"}},\"id\":\"b\",\"name\":\"sewfzvv\",\"type\":\"aysqwh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Paged collection of ScheduledActionResource items.
+ * A paged list of compute resources associated with a recurring bulk action.
  */
 @Immutable
 public final class ResourceListResponse implements JsonSerializable<ResourceListResponse> {
     /*
-     * The ScheduledActionResource items on this page
+     * The compute resources associated with the recurring bulk action.
      */
     private List<ScheduledActionResourceInner> value;
 
@@ -35,7 +35,7 @@ public final class ResourceListResponse implements JsonSerializable<ResourceList
     }
 
     /**
-     * Get the value property: The ScheduledActionResource items on this page.
+     * Get the value property: The compute resources associated with the recurring bulk action.
      * 
      * @return the value value.
      */

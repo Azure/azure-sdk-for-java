@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReimageSafe
  */
 public final class BareMetalMachinesReimageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Reimage.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Reimage.json
      */
     /**
      * Sample code: Reimage bare metal machine.

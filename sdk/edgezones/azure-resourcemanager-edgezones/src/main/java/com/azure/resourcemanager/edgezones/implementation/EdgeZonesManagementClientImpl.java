@@ -172,7 +172,7 @@ public final class EdgeZonesManagementClientImpl implements EdgeZonesManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-04-01-preview";
+        this.apiVersion = "2026-10-01";
         this.operations = new OperationsClientImpl(this);
         this.extendedZones = new ExtendedZonesClientImpl(this);
     }

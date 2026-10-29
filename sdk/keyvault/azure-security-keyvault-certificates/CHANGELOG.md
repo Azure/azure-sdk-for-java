@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.2 (Unreleased)
+## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.10.0 (2026-10-27)
+
+### Features Added
+
+* `models.PlatformManaged` was added
+
+#### `models.CertificatePolicy` was modified
+
+* `getPlatformManaged()` was added
+* `setPlatformManaged(models.PlatformManaged)` was added
+* `forPlatformManaged(models.PlatformManaged)` was added
+
+#### `CertificateServiceVersion` was modified
+
+* `V2026_04_01` was added and is the default service version.
+
+## 4.9.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 4.9.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 
 ## 4.9.1 (2026-07-01)
 

@@ -12,8 +12,8 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"zjd\",\"requiredMembers\":[\"jb\",\"xjeaoqaqbzgyh\",\"w\",\"v\"],\"requiredZoneNames\":[\"bwbqamt\",\"uliyslpkcv\",\"w\"],\"displayName\":\"uxx\"},\"id\":\"myw\",\"name\":\"ormcqmic\",\"type\":\"ijqpkzfbojxjmcs\"},{\"properties\":{\"groupId\":\"wixvcpwnkwywzw\",\"requiredMembers\":[\"lickduoi\",\"tamtyv\",\"kn\"],\"requiredZoneNames\":[\"zawnvsbcfhzag\",\"nvhycvdimwrz\",\"e\",\"zgyufutrwp\"],\"displayName\":\"ryekzkd\"},\"id\":\"eotta\",\"name\":\"jyosxwwh\",\"type\":\"h\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"lslrcigtzjc\",\"requiredMembers\":[\"qlapsnsso\",\"yxpavidnie\"],\"requiredZoneNames\":[\"fcvvy\",\"zslp\",\"xgcbdsvalpnpt\",\"trkxgpazwu\"],\"displayName\":\"yqvnjobfe\"},\"id\":\"ldiuhzzgqlm\",\"name\":\"aewzgiudjp\",\"type\":\"pqht\"},{\"properties\":{\"groupId\":\"nmhkrezsd\",\"requiredMembers\":[\"heqdgcru\"],\"requiredZoneNames\":[\"inymmqgwokmikp\",\"zfbmjxuv\",\"ipfdvhaxdvwzaehp\",\"hthdklmvetatlakf\"],\"displayName\":\"ixwgiksbbvtooxrp\"},\"id\":\"wp\",\"name\":\"chgjtnhtukfacih\",\"type\":\"bfntumeezbxvq\"},{\"properties\":{\"groupId\":\"uvwc\",\"requiredMembers\":[\"gomtm\",\"zwxuqgovsx\"],\"requiredZoneNames\":[\"zt\",\"fmkk\"],\"displayName\":\"gfredmlscg\"},\"id\":\"lccnaovjowaz\",\"name\":\"p\",\"type\":\"bacom\"},{\"properties\":{\"groupId\":\"t\",\"requiredMembers\":[\"sxnsrqorcge\",\"mv\",\"ebx\"],\"requiredZoneNames\":[\"qu\",\"xcxxqndcqjkedw\",\"urcgojmrvvxwj\",\"ngz\"],\"displayName\":\"hqqrsilcch\"},\"id\":\"xxkan\",\"name\":\"bvriaqgvtojrulfu\",\"type\":\"tejrthc\"}]}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("bwbqamt", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("fcvvy", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

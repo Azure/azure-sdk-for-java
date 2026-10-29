@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Pool model = BinaryData.fromString(
-            "{\"name\":\"zvqqugdrftbcvexr\",\"vmPriority\":\"LowPriority\",\"instanceType\":\"quowtljvfwhrea\",\"nodeCount\":851669196}")
+        Pool model = BinaryData
+            .fromString("{\"name\":\"n\",\"vmPriority\":\"Spot\",\"instanceType\":\"ff\",\"nodeCount\":39369666}")
             .toObject(Pool.class);
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.name());
-        Assertions.assertEquals(VmPriority.LOW_PRIORITY, model.vmPriority());
-        Assertions.assertEquals("quowtljvfwhrea", model.instanceType());
-        Assertions.assertEquals(851669196, model.nodeCount());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
+        Assertions.assertEquals("ff", model.instanceType());
+        Assertions.assertEquals(39369666, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pool model = new Pool().withName("zvqqugdrftbcvexr")
-            .withVmPriority(VmPriority.LOW_PRIORITY)
-            .withInstanceType("quowtljvfwhrea")
-            .withNodeCount(851669196);
+        Pool model
+            = new Pool().withName("n").withVmPriority(VmPriority.SPOT).withInstanceType("ff").withNodeCount(39369666);
         model = BinaryData.fromObject(model).toObject(Pool.class);
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.name());
-        Assertions.assertEquals(VmPriority.LOW_PRIORITY, model.vmPriority());
-        Assertions.assertEquals("quowtljvfwhrea", model.instanceType());
-        Assertions.assertEquals(851669196, model.nodeCount());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
+        Assertions.assertEquals("ff", model.instanceType());
+        Assertions.assertEquals(39369666, model.nodeCount());
     }
 }

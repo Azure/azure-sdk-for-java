@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +12,12 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,19 +56,6 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetRefreshInterval() {
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval");
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms");
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        assertEquals(keystore.getRefreshInterval(), 0);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "2000");
-        keystore = new KeyVaultKeyStore();
-        assertEquals(keystore.getRefreshInterval(), 2000);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
-        assertEquals(keystore.getRefreshInterval(), 1000);
-    }
-
-    @Test
     public void testEngineGetCertificateAlias() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         X509Certificate certificate;
@@ -102,55 +88,56 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetKeyVaultCertificateAliasFilterPatternsWhenNotConfigured() {
-        assertTrue(new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns().isEmpty());
+    public void testEngineLoadParameterOverridesSystemProperties() {
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN, "/ambient/well-known");
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, "/ambient/custom");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE,
+            "false");
+
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertPathWellKnown("/explicit/well-known")
+                .setCertPathCustom("/explicit/custom")
+                .setRefreshCertificatesWhenHaveUnTrustCertificate(true);
+
+        keyStore.engineLoad(parameter);
+
+        assertEquals("/explicit/well-known", keyStore.certPathWellKnown);
+        assertEquals("/explicit/custom", keyStore.certPathCustom);
+        assertTrue(keyStore.refreshCertificatesWhenHaveUnTrustCertificate);
     }
 
     @Test
-    public void testGetKeyVaultCertificateAliasFilterPatternsFromBaseProperty() {
-        System.setProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY, " ^prod-.* ");
+    public void testEngineLoadPassesExplicitParameterToKeyVaultClient() throws ReflectiveOperationException {
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "https://ambient.vault.azure.net");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter("https://explicit.vault.azure.net");
+        parameter.disableAiaDownload();
 
-        assertEquals(Collections.singleton("^prod-.*"),
-            new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
-    }
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        keyStore.engineLoad(parameter);
 
-    @Test
-    public void testGetKeyVaultCertificateAliasFilterPatternsFromSuffixedProperties() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
-        System.setProperty(base, "myalias");
-        System.setProperty(base + ".1", "^prod-.*");
-        System.setProperty(base + ".prod", "^prod-a.*");
-        System.setProperty(base + ".PROD", "^prod-b.*");
-        System.setProperty(base + ".exclude-old", "!.*-old$");
-        System.setProperty(base + ".blank", "   ");
+        Field certificatesField = KeyVaultKeyStore.class.getDeclaredField("keyVaultCertificates");
+        certificatesField.setAccessible(true);
+        KeyVaultCertificates certificates = (KeyVaultCertificates) certificatesField.get(keyStore);
+        Field clientField = KeyVaultCertificates.class.getDeclaredField("keyVaultClient");
+        clientField.setAccessible(true);
+        KeyVaultClient client = (KeyVaultClient) clientField.get(certificates);
+        Field uriField = KeyVaultClient.class.getDeclaredField("keyVaultUri");
+        uriField.setAccessible(true);
+        Field disableAiaField = KeyVaultClient.class.getDeclaredField("disableAiaDownload");
+        disableAiaField.setAccessible(true);
 
-        Set<String> expected
-            = new HashSet<>(Arrays.asList("myalias", "^prod-.*", "^prod-a.*", "^prod-b.*", "!.*-old$"));
-
-        assertEquals(expected, new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
-    }
-
-    @Test
-    public void testGetKeyVaultCertificateAliasFilterPatternsKeepsCommas() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
-        System.setProperty(base + ".1", "^cert-\\d{1,5}$");
-        System.setProperty(base + ".2", "![a-z]{2,}");
-
-        Set<String> expected = new HashSet<>(Arrays.asList("^cert-\\d{1,5}$", "![a-z]{2,}"));
-
-        assertEquals(expected, new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
+        assertEquals("https://explicit.vault.azure.net/", uriField.get(client));
+        assertTrue((Boolean) disableAiaField.get(client));
     }
 
     @BeforeEach
     @AfterEach
     public void clearCertificateAliasFilterPatternProperties() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
-        System.clearProperty(base);
-        System.getProperties()
-            .stringPropertyNames()
-            .stream()
-            .filter(name -> name.startsWith(base + "."))
-            .forEach(System::clearProperty);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE);
     }
 
 }

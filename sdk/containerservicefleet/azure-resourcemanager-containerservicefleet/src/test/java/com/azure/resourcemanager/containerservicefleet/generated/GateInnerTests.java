@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.GateInner;
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import com.azure.resourcemanager.containerservicefleet.models.Timing;
@@ -15,12 +16,15 @@ public final class GateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"abphlw\",\"gateType\":\"Approval\",\"target\":{\"id\":\"lfktsths\",\"updateRunProperties\":{\"name\":\"ocmnyyazttbtwwrq\",\"stage\":\"edckzywbiexzfey\",\"group\":\"axibxujw\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"almuzyoxaepdkzja\",\"id\":\"ux\",\"name\":\"hdwbavxbniwdjs\",\"type\":\"zt\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"bdagxt\",\"gateType\":\"Approval\",\"scheduledStartProperties\":{\"startDay\":\"Wednesday\",\"startTime\":\"xbxwa\",\"utcOffset\":\"bogqxndlkzgxhu\",\"absoluteStartTime\":\"2021-03-23T13:44:10Z\"},\"target\":{\"id\":\"lbpodxunk\",\"updateRunProperties\":{\"name\":\"bxmubyynt\",\"stage\":\"rbqtkoie\",\"group\":\"eotg\",\"timing\":\"After\"}},\"state\":\"Completed\"},\"eTag\":\"tmuwlauwzi\",\"id\":\"bm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"}")
             .toObject(GateInner.class);
-        Assertions.assertEquals("abphlw", model.displayName());
+        Assertions.assertEquals("bdagxt", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.gateType());
-        Assertions.assertEquals("lfktsths", model.target().id());
-        Assertions.assertEquals(Timing.BEFORE, model.target().updateRunProperties().timing());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.scheduledStartProperties().startDay());
+        Assertions.assertEquals("xbxwa", model.scheduledStartProperties().startTime());
+        Assertions.assertEquals("bogqxndlkzgxhu", model.scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("lbpodxunk", model.target().id());
+        Assertions.assertEquals(Timing.AFTER, model.target().updateRunProperties().timing());
         Assertions.assertEquals(GateState.COMPLETED, model.state());
     }
 }

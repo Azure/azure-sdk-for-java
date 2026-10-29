@@ -26,7 +26,7 @@ public final class ProtectionIntentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"ffzt\",\"itemId\":\"lscvqsyeiihf\",\"policyId\":\"kouihyeseuugcig\",\"protectionState\":\"ProtectionFailed\"},\"tags\":{\"jnfveg\":\"mgbvmtdwrqbe\"},\"location\":\"btvkbi\",\"eTag\":\"nhtfgfi\",\"id\":\"dyhi\",\"name\":\"paczmuh\",\"type\":\"cakznhokhoitwhrj\"}";
+            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"ytgrhzbqfd\",\"itemId\":\"aw\",\"policyId\":\"tvcshtkutzcttb\",\"protectionState\":\"NotProtected\"},\"tags\":{\"mmtzjgc\":\"d\",\"tbwjjirmuydgftt\":\"jf\"},\"location\":\"ofgeoagf\",\"eTag\":\"ftnxodwxmdajwiy\",\"id\":\"gsevmdm\",\"name\":\"enlrstgf\",\"type\":\"zljdnci\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,26 +36,26 @@ public final class ProtectionIntentsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionIntentResource response = manager.protectionIntents()
-            .define("foygizmshxxba")
-            .withExistingBackupFabric("wsszvlc", "lisolntfxxc", "qmipfj")
-            .withRegion("twtkvih")
-            .withTags(mapOf("wbwmbnlslcefiq", "mtfshksnyzmspa"))
-            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                .withSourceResourceId("lnvgskjtoxjdz")
-                .withItemId("jznvhxqqmq")
-                .withPolicyId("aydhf")
-                .withProtectionState(ProtectionStatus.PROTECTED))
-            .withEtag("fliwoynguuzhwvl")
+            .define("juxkqll")
+            .withExistingBackupFabric("cuxd", "zcqipsdudgcozzo", "ehxlantolamlb")
+            .withRegion("ytijcxfnond")
+            .withTags(mapOf("huioaeoc", "fgslglhpryjfz", "kbdgddkrh", "ajtfey", "tjwwg", "ccxbeuuqutkz"))
+            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                .withSourceResourceId("wdtgckzdqiqdl")
+                .withItemId("trkwxo")
+                .withPolicyId("wxsuy")
+                .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+            .withEtag("jdydhq")
             .create();
 
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, response.properties().backupManagementType());
-        Assertions.assertEquals("ffzt", response.properties().sourceResourceId());
-        Assertions.assertEquals("lscvqsyeiihf", response.properties().itemId());
-        Assertions.assertEquals("kouihyeseuugcig", response.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, response.properties().protectionState());
-        Assertions.assertEquals("mgbvmtdwrqbe", response.tags().get("jnfveg"));
-        Assertions.assertEquals("btvkbi", response.location());
-        Assertions.assertEquals("nhtfgfi", response.etag());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, response.properties().backupManagementType());
+        Assertions.assertEquals("ytgrhzbqfd", response.properties().sourceResourceId());
+        Assertions.assertEquals("aw", response.properties().itemId());
+        Assertions.assertEquals("tvcshtkutzcttb", response.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, response.properties().protectionState());
+        Assertions.assertEquals("d", response.tags().get("mmtzjgc"));
+        Assertions.assertEquals("ofgeoagf", response.location());
+        Assertions.assertEquals("ftnxodwxmdajwiy", response.etag());
     }
 
     // Use "Map.of" if available

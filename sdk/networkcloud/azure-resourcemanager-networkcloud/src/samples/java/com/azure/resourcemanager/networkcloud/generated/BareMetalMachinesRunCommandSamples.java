@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunCommandSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunCommand.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunCommand.json
      */
     /**
      * Sample code: Run command on bare metal machine.

@@ -21,7 +21,7 @@ public final class DependencyOfRelationshipsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"ciqihnhung\",\"targetId\":\"wjzrnfygxgisp\",\"targetTenant\":\"vtz\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"fublj\"},\"metadata\":{\"sourceType\":\"fxqeof\",\"targetType\":\"aeqjhqjbasvms\"},\"provisioningState\":\"Succeeded\"},\"id\":\"lngsntnbybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}";
+            = "{\"properties\":{\"sourceId\":\"z\",\"targetId\":\"yvvtpgvdfgio\",\"targetTenant\":\"ftutqxlngxlefgu\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"rxdq\"},\"metadata\":{\"sourceType\":\"dt\",\"targetType\":\"hzrvqd\"},\"provisioningState\":\"Updating\"},\"id\":\"jybige\",\"name\":\"oqfbowskanyk\",\"type\":\"zlcuiywgqywgndrv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class DependencyOfRelationshipsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DependencyOfRelationship response = manager.dependencyOfRelationships()
-            .getWithResponse("heognarxzxtheo", "usivye", com.azure.core.util.Context.NONE)
+            .getWithResponse("khixuigdtopbo", "joghmewuama", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wjzrnfygxgisp", response.properties().targetId());
-        Assertions.assertEquals("vtz", response.properties().targetTenant());
+        Assertions.assertEquals("yvvtpgvdfgio", response.properties().targetId());
+        Assertions.assertEquals("ftutqxlngxlefgu", response.properties().targetTenant());
     }
 }

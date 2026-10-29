@@ -56,6 +56,11 @@ public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
      */
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
 
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of AzureDataLakeGen2Datastore class.
      */
@@ -216,6 +221,16 @@ public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
     }
 
     /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     *
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -300,7 +315,7 @@ public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureDataLakeGen2Datastore.withTags(tags);
                 } else if ("isDefault".equals(fieldName)) {
-                    deserializedAzureDataLakeGen2Datastore.withIsDefault(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureDataLakeGen2Datastore.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("accountName".equals(fieldName)) {
                     deserializedAzureDataLakeGen2Datastore.accountName = reader.getString();
                 } else if ("filesystem".equals(fieldName)) {

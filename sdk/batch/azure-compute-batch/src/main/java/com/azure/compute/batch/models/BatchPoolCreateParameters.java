@@ -56,7 +56,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no
      * effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If
      * you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API
-     * directly, the HTTP status code is 400 (Bad Request).
+     * directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration resizeTimeout;
@@ -99,7 +99,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default
      * value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a
      * value less than 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
@@ -268,7 +268,8 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * Get the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
      * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error;
-     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @return the resizeTimeout value.
      */
@@ -281,7 +282,8 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * Set the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
      * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error;
-     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -407,6 +409,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes
      * and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch
      * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time duration is specified in ISO 8601 format.
      *
      * @return the autoScaleEvaluationInterval value.
      */
@@ -420,6 +423,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes
      * and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch
      * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time duration is specified in ISO 8601 format.
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
      * @return the BatchPoolCreateParameters object itself.

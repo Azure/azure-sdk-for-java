@@ -29,6 +29,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicenetworking.fluent.AssociationsInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.FrontendsInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.OperationsClient;
+import com.azure.resourcemanager.servicenetworking.fluent.PrivateEndpointConnectionsInterfacesClient;
+import com.azure.resourcemanager.servicenetworking.fluent.PrivateLinkResourcesInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.SecurityPoliciesInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerManagementClient;
@@ -187,6 +189,34 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
     }
 
     /**
+     * The PrivateEndpointConnectionsInterfacesClient object to access its operations.
+     */
+    private final PrivateEndpointConnectionsInterfacesClient privateEndpointConnectionsInterfaces;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsInterfacesClient object.
+     */
+    public PrivateEndpointConnectionsInterfacesClient getPrivateEndpointConnectionsInterfaces() {
+        return this.privateEndpointConnectionsInterfaces;
+    }
+
+    /**
+     * The PrivateLinkResourcesInterfacesClient object to access its operations.
+     */
+    private final PrivateLinkResourcesInterfacesClient privateLinkResourcesInterfaces;
+
+    /**
+     * Gets the PrivateLinkResourcesInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesInterfacesClient object.
+     */
+    public PrivateLinkResourcesInterfacesClient getPrivateLinkResourcesInterfaces() {
+        return this.privateLinkResourcesInterfaces;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -217,11 +247,13 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01-preview";
+        this.apiVersion = "2026-03-01";
         this.associationsInterfaces = new AssociationsInterfacesClientImpl(this);
         this.frontendsInterfaces = new FrontendsInterfacesClientImpl(this);
         this.securityPoliciesInterfaces = new SecurityPoliciesInterfacesClientImpl(this);
         this.trafficControllerInterfaces = new TrafficControllerInterfacesClientImpl(this);
+        this.privateEndpointConnectionsInterfaces = new PrivateEndpointConnectionsInterfacesClientImpl(this);
+        this.privateLinkResourcesInterfaces = new PrivateLinkResourcesInterfacesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 

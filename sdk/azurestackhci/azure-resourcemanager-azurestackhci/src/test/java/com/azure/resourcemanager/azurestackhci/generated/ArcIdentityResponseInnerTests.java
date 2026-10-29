@@ -11,7 +11,7 @@ public final class ArcIdentityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcIdentityResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"arcApplicationClientId\":\"bzqqedqytbciq\",\"arcApplicationTenantId\":\"uflmm\",\"arcServicePrincipalObjectId\":\"zsm\",\"arcApplicationObjectId\":\"mglougpbkw\"}}")
+            "{\"properties\":{\"arcApplicationClientId\":\"qvuhrhcffcyddglm\",\"arcApplicationTenantId\":\"hjq\",\"arcServicePrincipalObjectId\":\"pyeicxm\",\"arcApplicationObjectId\":\"iwqvhkh\"}}")
             .toObject(ArcIdentityResponseInner.class);
     }
 }

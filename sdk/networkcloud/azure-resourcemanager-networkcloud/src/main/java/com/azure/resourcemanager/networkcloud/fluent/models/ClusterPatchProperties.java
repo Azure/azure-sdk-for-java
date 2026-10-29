@@ -10,14 +10,14 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
-import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchivePatch;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyPatch;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.RackDefinition;
-import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.RackDefinitionPatch;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
-import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
-import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformationPatch;
+import com.azure.resourcemanager.networkcloud.models.ValidationThresholdPatch;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +31,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
      * rack in a multi-rack cluster.
      */
-    private RackDefinition aggregatorOrSingleRackDefinition;
+    private RackDefinitionPatch aggregatorOrSingleRackDefinition;
 
     /*
      * The settings for the log analytics workspace used for output of logs from this cluster.
@@ -47,7 +47,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the
      * cluster during Arc Appliance installation.
      */
-    private ServicePrincipalInformation clusterServicePrincipal;
+    private ServicePrincipalInformationPatch clusterServicePrincipal;
 
     /*
      * The settings for commands run in this cluster, such as bare metal machine run read only commands and data
@@ -59,23 +59,23 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * The validation threshold indicating the allowable failures of compute machines during environment validation and
      * deployment.
      */
-    private ValidationThreshold computeDeploymentThreshold;
+    private ValidationThresholdPatch computeDeploymentThreshold;
 
     /*
      * The list of rack definitions for the compute racks in a multi-rack cluster, or an empty list in a single-rack
      * cluster.
      */
-    private List<RackDefinition> computeRackDefinitions;
+    private List<RackDefinitionPatch> computeRackDefinitions;
 
     /*
      * The settings for cluster runtime protection.
      */
-    private RuntimeProtectionConfiguration runtimeProtectionConfiguration;
+    private RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration;
 
     /*
      * The configuration for use of a key vault to store secrets for later retrieval by the operator.
      */
-    private ClusterSecretArchive secretArchive;
+    private ClusterSecretArchivePatch secretArchive;
 
     /*
      * The settings for the secret archive used to hold credentials for the cluster.
@@ -85,7 +85,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     /*
      * The strategy for updating the cluster.
      */
-    private ClusterUpdateStrategy updateStrategy;
+    private ClusterUpdateStrategyPatch updateStrategy;
 
     /*
      * The settings for how security vulnerability scanning is applied to the cluster.
@@ -104,7 +104,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the aggregatorOrSingleRackDefinition value.
      */
-    public RackDefinition aggregatorOrSingleRackDefinition() {
+    public RackDefinitionPatch aggregatorOrSingleRackDefinition() {
         return this.aggregatorOrSingleRackDefinition;
     }
 
@@ -116,7 +116,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @return the ClusterPatchProperties object itself.
      */
     public ClusterPatchProperties
-        withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition) {
+        withAggregatorOrSingleRackDefinition(RackDefinitionPatch aggregatorOrSingleRackDefinition) {
         this.aggregatorOrSingleRackDefinition = aggregatorOrSingleRackDefinition;
         return this;
     }
@@ -171,7 +171,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the clusterServicePrincipal value.
      */
-    public ServicePrincipalInformation clusterServicePrincipal() {
+    public ServicePrincipalInformationPatch clusterServicePrincipal() {
         return this.clusterServicePrincipal;
     }
 
@@ -182,7 +182,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchProperties object itself.
      */
-    public ClusterPatchProperties withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal) {
+    public ClusterPatchProperties
+        withClusterServicePrincipal(ServicePrincipalInformationPatch clusterServicePrincipal) {
         this.clusterServicePrincipal = clusterServicePrincipal;
         return this;
     }
@@ -215,7 +216,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the computeDeploymentThreshold value.
      */
-    public ValidationThreshold computeDeploymentThreshold() {
+    public ValidationThresholdPatch computeDeploymentThreshold() {
         return this.computeDeploymentThreshold;
     }
 
@@ -226,7 +227,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @param computeDeploymentThreshold the computeDeploymentThreshold value to set.
      * @return the ClusterPatchProperties object itself.
      */
-    public ClusterPatchProperties withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold) {
+    public ClusterPatchProperties withComputeDeploymentThreshold(ValidationThresholdPatch computeDeploymentThreshold) {
         this.computeDeploymentThreshold = computeDeploymentThreshold;
         return this;
     }
@@ -237,7 +238,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the computeRackDefinitions value.
      */
-    public List<RackDefinition> computeRackDefinitions() {
+    public List<RackDefinitionPatch> computeRackDefinitions() {
         return this.computeRackDefinitions;
     }
 
@@ -248,7 +249,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @param computeRackDefinitions the computeRackDefinitions value to set.
      * @return the ClusterPatchProperties object itself.
      */
-    public ClusterPatchProperties withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions) {
+    public ClusterPatchProperties withComputeRackDefinitions(List<RackDefinitionPatch> computeRackDefinitions) {
         this.computeRackDefinitions = computeRackDefinitions;
         return this;
     }
@@ -258,7 +259,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the runtimeProtectionConfiguration value.
      */
-    public RuntimeProtectionConfiguration runtimeProtectionConfiguration() {
+    public RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration() {
         return this.runtimeProtectionConfiguration;
     }
 
@@ -269,7 +270,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @return the ClusterPatchProperties object itself.
      */
     public ClusterPatchProperties
-        withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration) {
+        withRuntimeProtectionConfiguration(RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration) {
         this.runtimeProtectionConfiguration = runtimeProtectionConfiguration;
         return this;
     }
@@ -280,7 +281,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the secretArchive value.
      */
-    public ClusterSecretArchive secretArchive() {
+    public ClusterSecretArchivePatch secretArchive() {
         return this.secretArchive;
     }
 
@@ -291,7 +292,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @param secretArchive the secretArchive value to set.
      * @return the ClusterPatchProperties object itself.
      */
-    public ClusterPatchProperties withSecretArchive(ClusterSecretArchive secretArchive) {
+    public ClusterPatchProperties withSecretArchive(ClusterSecretArchivePatch secretArchive) {
         this.secretArchive = secretArchive;
         return this;
     }
@@ -323,7 +324,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * 
      * @return the updateStrategy value.
      */
-    public ClusterUpdateStrategy updateStrategy() {
+    public ClusterUpdateStrategyPatch updateStrategy() {
         return this.updateStrategy;
     }
 
@@ -333,7 +334,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
      * @param updateStrategy the updateStrategy value to set.
      * @return the ClusterPatchProperties object itself.
      */
-    public ClusterPatchProperties withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
+    public ClusterPatchProperties withUpdateStrategy(ClusterUpdateStrategyPatch updateStrategy) {
         this.updateStrategy = updateStrategy;
         return this;
     }
@@ -400,7 +401,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
 
                 if ("aggregatorOrSingleRackDefinition".equals(fieldName)) {
                     deserializedClusterPatchProperties.aggregatorOrSingleRackDefinition
-                        = RackDefinition.fromJson(reader);
+                        = RackDefinitionPatch.fromJson(reader);
                 } else if ("analyticsOutputSettings".equals(fieldName)) {
                     deserializedClusterPatchProperties.analyticsOutputSettings
                         = AnalyticsOutputSettings.fromJson(reader);
@@ -408,25 +409,25 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
                     deserializedClusterPatchProperties.clusterLocation = reader.getString();
                 } else if ("clusterServicePrincipal".equals(fieldName)) {
                     deserializedClusterPatchProperties.clusterServicePrincipal
-                        = ServicePrincipalInformation.fromJson(reader);
+                        = ServicePrincipalInformationPatch.fromJson(reader);
                 } else if ("commandOutputSettings".equals(fieldName)) {
                     deserializedClusterPatchProperties.commandOutputSettings = CommandOutputSettings.fromJson(reader);
                 } else if ("computeDeploymentThreshold".equals(fieldName)) {
                     deserializedClusterPatchProperties.computeDeploymentThreshold
-                        = ValidationThreshold.fromJson(reader);
+                        = ValidationThresholdPatch.fromJson(reader);
                 } else if ("computeRackDefinitions".equals(fieldName)) {
-                    List<RackDefinition> computeRackDefinitions
-                        = reader.readArray(reader1 -> RackDefinition.fromJson(reader1));
+                    List<RackDefinitionPatch> computeRackDefinitions
+                        = reader.readArray(reader1 -> RackDefinitionPatch.fromJson(reader1));
                     deserializedClusterPatchProperties.computeRackDefinitions = computeRackDefinitions;
                 } else if ("runtimeProtectionConfiguration".equals(fieldName)) {
                     deserializedClusterPatchProperties.runtimeProtectionConfiguration
-                        = RuntimeProtectionConfiguration.fromJson(reader);
+                        = RuntimeProtectionConfigurationPatch.fromJson(reader);
                 } else if ("secretArchive".equals(fieldName)) {
-                    deserializedClusterPatchProperties.secretArchive = ClusterSecretArchive.fromJson(reader);
+                    deserializedClusterPatchProperties.secretArchive = ClusterSecretArchivePatch.fromJson(reader);
                 } else if ("secretArchiveSettings".equals(fieldName)) {
                     deserializedClusterPatchProperties.secretArchiveSettings = SecretArchiveSettings.fromJson(reader);
                 } else if ("updateStrategy".equals(fieldName)) {
-                    deserializedClusterPatchProperties.updateStrategy = ClusterUpdateStrategy.fromJson(reader);
+                    deserializedClusterPatchProperties.updateStrategy = ClusterUpdateStrategyPatch.fromJson(reader);
                 } else if ("vulnerabilityScanningSettings".equals(fieldName)) {
                     deserializedClusterPatchProperties.vulnerabilityScanningSettings
                         = VulnerabilityScanningSettingsPatch.fromJson(reader);

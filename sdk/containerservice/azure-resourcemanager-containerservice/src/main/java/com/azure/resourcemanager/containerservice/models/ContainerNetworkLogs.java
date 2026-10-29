@@ -8,10 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is controlled by the CRD
- * found in the following links. No network logs are ingested by default. More information on container network logs can
- * be found at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network log can be
- * found at https://aka.ms/acns/howtoenablecnl. If not specified, the default is Disabled.
+ * Allowed values for container network logs ingestion with Azure Monitor. When `Enabled`, the specific log types
+ * ingested are controlled by the associated CRD; defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc and
+ * https://aka.ms/acns/howtoenablecnl for details.
  */
 public final class ContainerNetworkLogs extends ExpandableStringEnum<ContainerNetworkLogs> {
     /**

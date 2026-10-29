@@ -18,6 +18,12 @@ import java.util.List;
 @Fluent
 public final class ManagedClusterNatGatewayProfile implements JsonSerializable<ManagedClusterNatGatewayProfile> {
     /*
+     * The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the region, otherwise
+     * 'Standard'.
+     */
+    private ManagedClusterNATGatewaySku sku;
+
+    /*
      * Profile of the managed outbound IP resources of the cluster NAT gateway.
      */
     private ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile;
@@ -47,6 +53,28 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
      * Creates an instance of ManagedClusterNatGatewayProfile class.
      */
     public ManagedClusterNatGatewayProfile() {
+    }
+
+    /**
+     * Get the sku property: The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the
+     * region, otherwise 'Standard'.
+     * 
+     * @return the sku value.
+     */
+    public ManagedClusterNATGatewaySku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the
+     * region, otherwise 'Standard'.
+     * 
+     * @param sku the sku value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile withSku(ManagedClusterNATGatewaySku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -172,6 +200,7 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
         jsonWriter.writeJsonField("managedOutboundIPProfile", this.managedOutboundIpProfile);
         jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
         jsonWriter.writeJsonField("outboundIPs", this.outboundIps);
@@ -195,7 +224,10 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("managedOutboundIPProfile".equals(fieldName)) {
+                if ("sku".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.sku
+                        = ManagedClusterNATGatewaySku.fromString(reader.getString());
+                } else if ("managedOutboundIPProfile".equals(fieldName)) {
                     deserializedManagedClusterNatGatewayProfile.managedOutboundIpProfile
                         = ManagedClusterManagedOutboundIpProfile.fromJson(reader);
                 } else if ("effectiveOutboundIPs".equals(fieldName)) {

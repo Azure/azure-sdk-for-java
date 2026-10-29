@@ -41,6 +41,11 @@ public final class OneLakeDatastore extends DatastoreProperties {
      */
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
 
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of OneLakeDatastore class.
      */
@@ -141,6 +146,16 @@ public final class OneLakeDatastore extends DatastoreProperties {
     }
 
     /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     *
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -222,7 +237,7 @@ public final class OneLakeDatastore extends DatastoreProperties {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedOneLakeDatastore.withTags(tags);
                 } else if ("isDefault".equals(fieldName)) {
-                    deserializedOneLakeDatastore.withIsDefault(reader.getNullable(JsonReader::getBoolean));
+                    deserializedOneLakeDatastore.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("artifact".equals(fieldName)) {
                     deserializedOneLakeDatastore.artifact = OneLakeArtifact.fromJson(reader);
                 } else if ("oneLakeWorkspaceName".equals(fieldName)) {

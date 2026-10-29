@@ -13,11 +13,11 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"pndzaapmudqmeq\",\"value\":[{\"properties\":{\"name\":\"bu\",\"isMultiLevelFilter\":true,\"source\":\"Prompt\"},\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}]}")
+            "{\"nextLink\":\"hkpigqfusuckzmkw\",\"value\":[{\"properties\":{\"name\":\"xaxmq\",\"isMultiLevelFilter\":true,\"source\":\"PostToolCall\"},\"id\":\"jnhgwydyyn\",\"name\":\"svkhgbv\",\"type\":\"ta\"},{\"properties\":{\"name\":\"fdlpukhpyr\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"},\"id\":\"pe\",\"name\":\"gkhnmgbrouxddbh\",\"type\":\"hpfpazjzoywjxhp\"},{\"properties\":{\"name\":\"ontacnpq\",\"isMultiLevelFilter\":true,\"source\":\"PostToolCall\"},\"id\":\"evrh\",\"name\":\"ljyoogwx\",\"type\":\"nsduugwbsre\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pndzaapmudqmeq", model.nextLink());
-        Assertions.assertEquals("bu", model.value().get(0).properties().name());
+        Assertions.assertEquals("hkpigqfusuckzmkw", model.nextLink());
+        Assertions.assertEquals("xaxmq", model.value().get(0).properties().name());
         Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.value().get(0).properties().source());
     }
 }

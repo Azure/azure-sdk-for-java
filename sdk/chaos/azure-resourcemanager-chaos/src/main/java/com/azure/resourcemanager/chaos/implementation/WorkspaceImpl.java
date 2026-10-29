@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.Workspace;
+import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
 import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceProperties;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
@@ -131,8 +132,12 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     WorkspaceImpl(WorkspaceInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
     }
 
     public Workspace refresh() {
@@ -151,12 +156,20 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    public WorkspaceEvaluation refreshRecommendations() {
-        return serviceManager.workspaces().refreshRecommendations(resourceGroupName, workspaceName);
+    public WorkspaceDiscovery discover() {
+        return serviceManager.workspaces().discover(resourceGroupName, workspaceName);
     }
 
-    public WorkspaceEvaluation refreshRecommendations(Context context) {
-        return serviceManager.workspaces().refreshRecommendations(resourceGroupName, workspaceName, context);
+    public WorkspaceDiscovery discover(Context context) {
+        return serviceManager.workspaces().discover(resourceGroupName, workspaceName, context);
+    }
+
+    public WorkspaceEvaluation evaluate() {
+        return serviceManager.workspaces().evaluate(resourceGroupName, workspaceName);
+    }
+
+    public WorkspaceEvaluation evaluate(Context context) {
+        return serviceManager.workspaces().evaluate(resourceGroupName, workspaceName, context);
     }
 
     public WorkspaceImpl withRegion(Region location) {

@@ -21,6 +21,7 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -506,8 +507,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /*
      * Determines if the request or response body should be logged.
      *
-     * <p>The request or response body is logged if the Content-Type is not "application/octet-stream" and the body
-     * isn't empty and is less than 16KB in size.</p>
+     * <p>The request or response body is logged if the Content-Type is neither "application/octet-stream" nor
+     * "text/event-stream" and the body isn't empty and is less than 16KB in size.</p>
      *
      * @param contentTypeHeader Content-Type header value.
      *
@@ -518,6 +519,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static boolean shouldBodyBeLogged(String contentTypeHeader, Long contentLength) {
         return contentLength != null
             && !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
+            && !HttpUtils.isTextEventStreamContentType(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
     }

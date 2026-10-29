@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
 
@@ -41,8 +40,22 @@ public final class CertificateUtil {
     static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
-    public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
-        IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+    /**
+     * Loads certificates from a Key Vault secret bundle value.
+     *
+     * @param string The secret bundle value.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @return The loaded certificate chain.
+     * @throws CertificateException If a certificate cannot be parsed.
+     * @throws IOException If the secret bundle cannot be read.
+     * @throws KeyStoreException If the PKCS12 key store cannot be loaded.
+     * @throws NoSuchAlgorithmException If a required algorithm is unavailable.
+     * @throws NoSuchProviderException If a required provider is unavailable.
+     * @throws PKCSException If the PKCS data cannot be parsed.
+     */
+    public static Certificate[] loadCertificatesFromSecretBundleValue(String string, boolean disableAiaDownload)
+        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException,
+        PKCSException {
         Certificate[] certificates;
         if (string.contains(BEGIN_CERTIFICATE)) {
             certificates = loadCertificatesFromSecretBundleValuePem(string);
@@ -59,7 +72,7 @@ public final class CertificateUtil {
         if (AiaCertificateChainUtil.shouldCompleteChainViaAia(certificates)) {
             LOGGER.log(FINE, "Certificate chain requires AIA completion; ordered chain contains {0} certificate(s).",
                 certificates.length);
-            certificates = AiaCertificateChainUtil.completeChainViaAia(certificates);
+            certificates = AiaCertificateChainUtil.completeChainViaAia(certificates, disableAiaDownload);
         } else {
             LOGGER.log(FINE,
                 "Certificate chain does not require AIA completion; ordered chain contains {0} " + "certificate(s).",
@@ -141,11 +154,7 @@ public final class CertificateUtil {
 
     public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
-        return factory.generateCertificates(inputStream)
-            .stream()
-            .map(o -> (Certificate) o)
-            .collect(Collectors.toList())
-            .toArray(new Certificate[0]);
+        return factory.generateCertificates(inputStream).toArray(new Certificate[0]);
     }
 
     public static String getCertificateNameFromCertificateItemId(String id) {

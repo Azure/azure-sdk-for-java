@@ -67,6 +67,11 @@ public final class SweepJob extends JobBaseProperties {
      */
     private TrialComponent trial;
 
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
     /**
      * Creates an instance of SweepJob class.
      */
@@ -268,6 +273,16 @@ public final class SweepJob extends JobBaseProperties {
     }
 
     /**
+     * Get the status property: Status of the job.
+     *
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -438,7 +453,7 @@ public final class SweepJob extends JobBaseProperties {
                     Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
                     deserializedSweepJob.withServices(services);
                 } else if ("status".equals(fieldName)) {
-                    deserializedSweepJob.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedSweepJob.status = JobStatus.fromString(reader.getString());
                 } else if ("objective".equals(fieldName)) {
                     deserializedSweepJob.objective = Objective.fromJson(reader);
                 } else if ("samplingAlgorithm".equals(fieldName)) {

@@ -167,8 +167,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileAsyncClient#String -->
      *
-     * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
-     * pass in the url encoded version of the path name.
+     * @param fileName A {@code String} representing the name of the file. Pass the name unencoded; the client
+     * percent-encodes it when building the request URL.
      * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this
      * file system.
      */
@@ -197,8 +197,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String -->
      *
-     * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
-     * characters, pass in the url encoded version of the path name.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
      * in this file system.
      */
@@ -1220,8 +1220,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -1243,8 +1243,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
@@ -1282,8 +1282,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
@@ -1347,8 +1347,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
@@ -1378,8 +1378,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -1418,8 +1418,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
      * {@link DataLakeDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
@@ -1459,8 +1459,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectory#String -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1486,8 +1486,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing status code and HTTP headers
@@ -1524,8 +1524,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return a reactive response signaling completion. {@code true} indicates that the specified directory was
      * successfully deleted, {@code false} indicates that the specified directory did not exist.
      */
@@ -1560,8 +1560,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathDeleteOptions}
      * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the file was
      * successfully deleted. If status code is 404, the file does not exist.

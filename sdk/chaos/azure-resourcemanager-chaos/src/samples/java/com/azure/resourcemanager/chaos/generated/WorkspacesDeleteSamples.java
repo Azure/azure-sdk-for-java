@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Delete.json
      */
     /**
      * Sample code: Delete a Workspace in a resource group.

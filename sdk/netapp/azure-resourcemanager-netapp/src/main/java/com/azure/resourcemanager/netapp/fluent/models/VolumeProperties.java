@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
@@ -27,7 +28,9 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.VolumeLanguage;
+import com.azure.resourcemanager.netapp.models.VolumeNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -70,7 +73,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol
+     * Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes,
+     * specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3
      */
     private List<String> protocolTypes;
 
@@ -191,6 +196,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean smbContinuouslyAvailable;
 
     /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    private SmbOplocks smbOplocks;
+
+    /*
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
      * manual qosType volume
      */
@@ -289,6 +299,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean isDefaultQuotaEnabled;
 
     /*
+     * Async Directory Delete configuration for the volume.
+     */
+    private AsyncDirectoryDelete asyncDirectoryDelete;
+
+    /*
      * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
      */
     private Long defaultUserQuotaInKiBs;
@@ -385,6 +400,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Specifies whether the volume operates in Breakthrough Mode.
      */
     private BreakthroughMode breakthroughMode;
+
+    /*
+     * Geographic namespace properties for this volume.
+     */
+    private VolumeNamespaceProperties geoNamespaceProperties;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -492,7 +512,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -501,7 +523,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeProperties object itself.
@@ -909,6 +933,28 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
+        return this;
+    }
+
+    /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -1227,6 +1273,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.asyncDirectoryDelete;
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        this.asyncDirectoryDelete = asyncDirectoryDelete;
+        return this;
+    }
+
+    /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
      * 
@@ -1529,6 +1595,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumeNamespaceProperties geoNamespaceProperties() {
+        return this.geoNamespaceProperties;
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties) {
+        this.geoNamespaceProperties = geoNamespaceProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1551,8 +1637,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         if (dataProtection() != null) {
             dataProtection().validate();
         }
+        if (asyncDirectoryDelete() != null) {
+            asyncDirectoryDelete().validate();
+        }
         if (placementRules() != null) {
             placementRules().forEach(e -> e.validate());
+        }
+        if (geoNamespaceProperties() != null) {
+            geoNamespaceProperties().validate();
         }
     }
 
@@ -1591,6 +1683,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
         jsonWriter.writeBooleanField("smbContinuouslyAvailable", this.smbContinuouslyAvailable);
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
         jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
         jsonWriter.writeStringField("encryptionKeySource",
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
@@ -1607,6 +1700,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
         jsonWriter.writeStringField("avsDataStore", this.avsDataStore == null ? null : this.avsDataStore.toString());
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
+        jsonWriter.writeJsonField("asyncDirectoryDelete", this.asyncDirectoryDelete);
         jsonWriter.writeNumberField("defaultUserQuotaInKiBs", this.defaultUserQuotaInKiBs);
         jsonWriter.writeNumberField("defaultGroupQuotaInKiBs", this.defaultGroupQuotaInKiBs);
         jsonWriter.writeStringField("capacityPoolResourceId", this.capacityPoolResourceId);
@@ -1622,6 +1716,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         jsonWriter.writeStringField("breakthroughMode",
             this.breakthroughMode == null ? null : this.breakthroughMode.toString());
+        jsonWriter.writeJsonField("geoNamespaceProperties", this.geoNamespaceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -1704,6 +1799,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
                 } else if ("smbContinuouslyAvailable".equals(fieldName)) {
                     deserializedVolumeProperties.smbContinuouslyAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedVolumeProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
                 } else if ("throughputMibps".equals(fieldName)) {
                     deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("actualThroughputMibps".equals(fieldName)) {
@@ -1740,6 +1837,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.dataStoreResourceId = dataStoreResourceId;
                 } else if ("isDefaultQuotaEnabled".equals(fieldName)) {
                     deserializedVolumeProperties.isDefaultQuotaEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("asyncDirectoryDelete".equals(fieldName)) {
+                    deserializedVolumeProperties.asyncDirectoryDelete = AsyncDirectoryDelete.fromJson(reader);
                 } else if ("defaultUserQuotaInKiBs".equals(fieldName)) {
                     deserializedVolumeProperties.defaultUserQuotaInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("defaultGroupQuotaInKiBs".equals(fieldName)) {
@@ -1778,6 +1877,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
                 } else if ("breakthroughMode".equals(fieldName)) {
                     deserializedVolumeProperties.breakthroughMode = BreakthroughMode.fromString(reader.getString());
+                } else if ("geoNamespaceProperties".equals(fieldName)) {
+                    deserializedVolumeProperties.geoNamespaceProperties = VolumeNamespaceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

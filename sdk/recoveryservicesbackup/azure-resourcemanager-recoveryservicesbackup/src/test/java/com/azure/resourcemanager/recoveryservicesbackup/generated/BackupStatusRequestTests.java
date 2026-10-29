@@ -13,22 +13,21 @@ public final class BackupStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupStatusRequest model = BinaryData
-            .fromString(
-                "{\"resourceType\":\"SAPHanaDatabase\",\"resourceId\":\"zbamwine\",\"poLogicalName\":\"vfkakpold\"}")
+            .fromString("{\"resourceType\":\"SAPAseDatabase\",\"resourceId\":\"snxawqyt\",\"poLogicalName\":\"hd\"}")
             .toObject(BackupStatusRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
-        Assertions.assertEquals("zbamwine", model.resourceId());
-        Assertions.assertEquals("vfkakpold", model.poLogicalName());
+        Assertions.assertEquals(DataSourceType.SAPASE_DATABASE, model.resourceType());
+        Assertions.assertEquals("snxawqyt", model.resourceId());
+        Assertions.assertEquals("hd", model.poLogicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.SAPHANA_DATABASE)
-            .withResourceId("zbamwine")
-            .withPoLogicalName("vfkakpold");
+        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.SAPASE_DATABASE)
+            .withResourceId("snxawqyt")
+            .withPoLogicalName("hd");
         model = BinaryData.fromObject(model).toObject(BackupStatusRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
-        Assertions.assertEquals("zbamwine", model.resourceId());
-        Assertions.assertEquals("vfkakpold", model.poLogicalName());
+        Assertions.assertEquals(DataSourceType.SAPASE_DATABASE, model.resourceType());
+        Assertions.assertEquals("snxawqyt", model.resourceId());
+        Assertions.assertEquals("hd", model.poLogicalName());
     }
 }

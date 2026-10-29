@@ -12,8 +12,8 @@ public final class AvsVmVolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsVmVolumeInner model = BinaryData.fromString(
-            "{\"properties\":{\"storagePoolInternalId\":\"uenvrkp\",\"storagePoolResourceId\":\"uaibrebqaaysj\",\"volumeInternalId\":\"xqtnq\",\"displayName\":\"ezl\",\"space\":{\"totalUsed\":6879851489693220346,\"unique\":3644100748262359557,\"snapshots\":3086933290402300840,\"shared\":8477209307411238262},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"m\"},\"createdTimestamp\":\"d\",\"provisionedSize\":4417313243230783512,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"yeozphvwauyqncy\",\"diskName\":\"upkvipmdsc\",\"folder\":\"xqupevzhf\",\"avsVmInternalId\":\"totxhojujb\",\"avsVmResourceId\":\"pelmcuvhixbjxyf\",\"avsVmName\":\"n\",\"avsStorageContainerResourceId\":\"lrcoolsttpki\"},\"provisioningState\":\"Failed\"},\"id\":\"nujrywvtyl\",\"name\":\"fpncurdo\",\"type\":\"wiithtywub\"}")
+            "{\"properties\":{\"storagePoolInternalId\":\"cwxqu\",\"storagePoolResourceId\":\"vzhfstotxhoj\",\"volumeInternalId\":\"bypel\",\"displayName\":\"uvhixbjxyfwn\",\"space\":{\"totalUsed\":671123196620591834,\"unique\":3135284928958606229,\"snapshots\":6221565179371079410,\"shared\":8274971032821131751},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"iwkkbn\"},\"createdTimestamp\":\"rywvtylbfpn\",\"provisionedSize\":1272014300253373331,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"iithtywu\",\"diskName\":\"xcbihw\",\"folder\":\"knfd\",\"avsVmInternalId\":\"twjchrdg\",\"avsVmResourceId\":\"ihxumwctondzj\",\"avsVmName\":\"uu\",\"avsStorageContainerResourceId\":\"fdlwg\"},\"provisioningState\":\"Succeeded\"},\"id\":\"bwtovvtgseinqf\",\"name\":\"ufxqknpirgnepttw\",\"type\":\"msniffc\"}")
             .toObject(AvsVmVolumeInner.class);
-        Assertions.assertTrue(model.properties().softDeletion().destroyed());
+        Assertions.assertFalse(model.properties().softDeletion().destroyed());
     }
 }

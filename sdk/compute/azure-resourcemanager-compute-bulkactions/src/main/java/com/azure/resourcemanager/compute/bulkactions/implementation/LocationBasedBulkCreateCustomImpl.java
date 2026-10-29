@@ -4,13 +4,17 @@
 
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +48,14 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ExtendedLocation extendedLocation() {
+        return this.innerModel().extendedLocation();
+    }
+
+    public Placement placement() {
+        return this.innerModel().placement();
     }
 
     public Map<String, String> tags() {
@@ -134,9 +146,15 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bulkCreateCustom");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "name");
     }
 
     public LocationBasedBulkCreateCustom refresh() {
@@ -163,6 +181,15 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
         serviceManager.bulkCreateCustoms().cancel(resourceGroupName, location, name, context);
     }
 
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus() {
+        return serviceManager.bulkCreateCustoms().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+    }
+
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(Context context) {
+        return serviceManager.bulkCreateCustoms()
+            .virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
+    }
+
     public LocationBasedBulkCreateCustomImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
         return this;
@@ -175,6 +202,16 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
 
     public LocationBasedBulkCreateCustomImpl withZones(List<String> zones) {
         this.innerModel().withZones(zones);
+        return this;
+    }
+
+    public LocationBasedBulkCreateCustomImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
+        return this;
+    }
+
+    public LocationBasedBulkCreateCustomImpl withPlacement(Placement placement) {
+        this.innerModel().withPlacement(placement);
         return this;
     }
 

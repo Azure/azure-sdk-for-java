@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StartMajorVersionUpgradePrecheckRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"11\"}")
+        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"17\"}")
             .toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals(PostgresMajorVersion.ONE_ONE, model.targetVersion());
+        Assertions.assertEquals(PostgresMajorVersion.ONE_SEVEN, model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StartMajorVersionUpgradePrecheckRequest model
-            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_ONE);
+            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_SEVEN);
         model = BinaryData.fromObject(model).toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals(PostgresMajorVersion.ONE_ONE, model.targetVersion());
+        Assertions.assertEquals(PostgresMajorVersion.ONE_SEVEN, model.targetVersion());
     }
 }

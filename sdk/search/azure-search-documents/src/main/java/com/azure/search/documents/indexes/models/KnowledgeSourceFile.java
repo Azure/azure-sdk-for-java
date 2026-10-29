@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Metadata for a file uploaded to a File knowledge source.
@@ -161,11 +162,86 @@ public final class KnowledgeSourceFile implements JsonSerializable<KnowledgeSour
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("errorMessage".equals(fieldName)) {
                     deserializedKnowledgeSourceFile.errorMessage = reader.getString();
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedKnowledgeSourceFile.prefix = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKnowledgeSourceFile.metadata = metadata;
+                } else if ("parsingMode".equals(fieldName)) {
+                    deserializedKnowledgeSourceFile.parsingMode = BlobIndexerParsingMode.fromString(reader.getString());
+                } else if ("extractionMode".equals(fieldName)) {
+                    deserializedKnowledgeSourceFile.extractionMode
+                        = FileKnowledgeSourceExtractionMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKnowledgeSourceFile;
         });
+    }
+
+    /*
+     * The prefix (directory-like path) derived from the full file name.
+     */
+    @Generated
+    private String prefix;
+
+    /*
+     * Custom key/value metadata stored with the file. Returned but not searchable or filterable.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /*
+     * The parsing mode applied to the file (auto-detected from the file).
+     */
+    @Generated
+    private BlobIndexerParsingMode parsingMode;
+
+    /*
+     * The extraction mode applied to the file.
+     */
+    @Generated
+    private FileKnowledgeSourceExtractionMode extractionMode;
+
+    /**
+     * Get the prefix property: The prefix (directory-like path) derived from the full file name.
+     *
+     * @return the prefix value.
+     */
+    @Generated
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    /**
+     * Get the metadata property: Custom key/value metadata stored with the file. Returned but not searchable or
+     * filterable.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Get the parsingMode property: The parsing mode applied to the file (auto-detected from the file).
+     *
+     * @return the parsingMode value.
+     */
+    @Generated
+    public BlobIndexerParsingMode getParsingMode() {
+        return this.parsingMode;
+    }
+
+    /**
+     * Get the extractionMode property: The extraction mode applied to the file.
+     *
+     * @return the extractionMode value.
+     */
+    @Generated
+    public FileKnowledgeSourceExtractionMode getExtractionMode() {
+        return this.extractionMode;
     }
 }

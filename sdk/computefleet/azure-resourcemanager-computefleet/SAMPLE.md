@@ -130,9 +130,6 @@ import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.ZoneAllocationPolicy;
-import com.azure.resourcemanager.computefleet.models.ZoneDistributionStrategy;
-import com.azure.resourcemanager.computefleet.models.ZonePreference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,7 +139,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate_MaximumSet_Gen.
@@ -637,11 +634,7 @@ public final class FleetsCreateOrUpdateSamples {
                         .withAdditionalVirtualMachineCapabilities(
                             new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true)))
                 .withMode(FleetMode.LAUNCH)
-                .withCapacityType(CapacityType.VM)
-                .withZoneAllocationPolicy(
-                    new ZoneAllocationPolicy().withDistributionStrategy(ZoneDistributionStrategy.PRIORITIZED)
-                        .withZonePreferences(Arrays.asList(new ZonePreference().withZone("1").withRank(0),
-                            new ZonePreference().withZone("2").withRank(1)))))
+                .withCapacityType(CapacityType.VM))
             .withZones(Arrays.asList("1", "2"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf()))
@@ -675,7 +668,7 @@ public final class FleetsCreateOrUpdateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Delete_MaximumSet_Gen.
@@ -696,7 +689,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Get_MaximumSet_Gen.
@@ -717,7 +710,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListBySubscription_MaximumSet_Gen.
@@ -739,7 +732,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListByResourceGroup_MaximumSet_Gen.
@@ -761,7 +754,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.
@@ -783,7 +776,7 @@ public final class FleetsListVirtualMachineScaleSetsSamples {
  */
 public final class FleetsListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_ListVirtualMachines_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachines_MaximumSet_Gen.
@@ -915,8 +908,6 @@ import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.ZoneAllocationPolicy;
-import com.azure.resourcemanager.computefleet.models.ZoneDistributionStrategy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -926,7 +917,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Fleets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Update_MaximumSet_Gen.
@@ -1428,9 +1419,7 @@ public final class FleetsUpdateSamples {
                         .withAdditionalVirtualMachineCapabilities(
                             new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true)))
                 .withMode(FleetMode.MANAGED)
-                .withCapacityType(CapacityType.VM)
-                .withZoneAllocationPolicy(new ZoneAllocationPolicy()
-                    .withDistributionStrategy(ZoneDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)))
+                .withCapacityType(CapacityType.VM))
             .apply();
     }
 
@@ -1456,7 +1445,7 @@ public final class FleetsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -1468,7 +1457,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

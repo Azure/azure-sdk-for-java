@@ -13,11 +13,11 @@ import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.LinkedList;
@@ -36,21 +36,21 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     PartitionReceiver testReceiver = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         TestBase.pushEventsToPartition(ehClient, PARTITION_ID, EVENT_COUNT).get();
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
         }
     }
 
-    @Test()
+    @Test
     public void testSetPrefetchCountToLargeValue() throws EventHubException {
         ReceiverOptions options = new ReceiverOptions();
         options.setPrefetchCount(2000);
@@ -67,10 +67,10 @@ public class SetPrefetchCountTest extends ApiTestBase {
             }
         }
 
-        Assert.assertTrue(eventsReceived >= EVENT_COUNT);
+        Assertions.assertTrue(eventsReceived >= EVENT_COUNT);
     }
 
-    @Test()
+    @Test
     public void testSetPrefetchCountToSmallValue() throws EventHubException {
         ReceiverOptions options = new ReceiverOptions();
         options.setPrefetchCount(11);
@@ -87,10 +87,10 @@ public class SetPrefetchCountTest extends ApiTestBase {
             }
         }
 
-        Assert.assertTrue(eventsReceived >= EVENT_COUNT);
+        Assertions.assertTrue(eventsReceived >= EVENT_COUNT);
     }
 
-    @After
+    @AfterEach
     public void testCleanup() throws EventHubException {
 
         if (testReceiver != null) {

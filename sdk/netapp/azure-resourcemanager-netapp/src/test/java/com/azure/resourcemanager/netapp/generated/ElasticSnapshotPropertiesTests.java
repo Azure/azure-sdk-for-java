@@ -11,7 +11,7 @@ public final class ElasticSnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSnapshotProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Creating\"}").toObject(ElasticSnapshotProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Accepted\"}").toObject(ElasticSnapshotProperties.class);
     }
 
     @org.junit.jupiter.api.Test

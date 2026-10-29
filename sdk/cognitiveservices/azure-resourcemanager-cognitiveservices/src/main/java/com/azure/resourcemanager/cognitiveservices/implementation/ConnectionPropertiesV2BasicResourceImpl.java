@@ -53,33 +53,28 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
 
     private String accountName;
 
-    private String projectName;
-
     private String connectionName;
 
     private ConnectionUpdateContent updateConnection;
 
-    public ConnectionPropertiesV2BasicResourceImpl withExistingProject(String resourceGroupName, String accountName,
-        String projectName) {
+    public ConnectionPropertiesV2BasicResourceImpl withExistingAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
-        this.projectName = projectName;
         return this;
     }
 
     public ConnectionPropertiesV2BasicResource create() {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .createWithResponse(resourceGroupName, accountName, projectName, connectionName, this.innerModel(),
-                Context.NONE)
+            .getAccountConnections()
+            .createWithResponse(resourceGroupName, accountName, connectionName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public ConnectionPropertiesV2BasicResource create(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .createWithResponse(resourceGroupName, accountName, projectName, connectionName, this.innerModel(), context)
+            .getAccountConnections()
+            .createWithResponse(resourceGroupName, accountName, connectionName, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -98,17 +93,16 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
 
     public ConnectionPropertiesV2BasicResource apply() {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .updateWithResponse(resourceGroupName, accountName, projectName, connectionName, updateConnection,
-                Context.NONE)
+            .getAccountConnections()
+            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, Context.NONE)
             .getValue();
         return this;
     }
 
     public ConnectionPropertiesV2BasicResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .updateWithResponse(resourceGroupName, accountName, projectName, connectionName, updateConnection, context)
+            .getAccountConnections()
+            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, context)
             .getValue();
         return this;
     }
@@ -117,24 +111,29 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
+            "accountName");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
+            "connectionName");
     }
 
     public ConnectionPropertiesV2BasicResource refresh() {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .getWithResponse(resourceGroupName, accountName, projectName, connectionName, Context.NONE)
+            .getAccountConnections()
+            .getWithResponse(resourceGroupName, accountName, connectionName, Context.NONE)
             .getValue();
         return this;
     }
 
     public ConnectionPropertiesV2BasicResource refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getProjectConnections()
-            .getWithResponse(resourceGroupName, accountName, projectName, connectionName, context)
+            .getAccountConnections()
+            .getWithResponse(resourceGroupName, accountName, connectionName, context)
             .getValue();
         return this;
     }

@@ -38,7 +38,7 @@ Please refer to the [Endpoint][sdk_readme_endpoint] and [Access Key][sdk_readme_
 - [Deserialize Events from Json String][DeserializeEvents]
 - [Deserialize Events with System Event Data][DeserializeSystemEvent]
 
-### Generate Sas Tokken
+### Generate Sas Token
 - [Generate Sas Token][GenerateSasToken]
 
 ## Troubleshooting

@@ -17,7 +17,8 @@ public final class EntityGetTests extends DataMapClientTestBase {
     @Disabled
     public void testEntityGetTests() {
         // method invocation
-        AtlasEntityWithExtInfo response = entityClient.get("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", true, null);
+        AtlasEntityWithExtInfo response
+            = entityClient.get("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", true, (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

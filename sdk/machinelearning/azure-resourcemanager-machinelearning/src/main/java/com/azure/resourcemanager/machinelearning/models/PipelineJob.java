@@ -46,6 +46,11 @@ public final class PipelineJob extends JobBaseProperties {
      */
     private String sourceJobId;
 
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
     /**
      * Creates an instance of PipelineJob class.
      */
@@ -160,6 +165,16 @@ public final class PipelineJob extends JobBaseProperties {
     public PipelineJob withSourceJobId(String sourceJobId) {
         this.sourceJobId = sourceJobId;
         return this;
+    }
+
+    /**
+     * Get the status property: Status of the job.
+     *
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
     }
 
     /**
@@ -330,7 +345,7 @@ public final class PipelineJob extends JobBaseProperties {
                     Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
                     deserializedPipelineJob.withServices(services);
                 } else if ("status".equals(fieldName)) {
-                    deserializedPipelineJob.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedPipelineJob.status = JobStatus.fromString(reader.getString());
                 } else if ("jobType".equals(fieldName)) {
                     deserializedPipelineJob.jobType = JobType.fromString(reader.getString());
                 } else if ("inputs".equals(fieldName)) {

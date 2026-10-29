@@ -41,6 +41,11 @@ public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
      */
     private String storeName;
 
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of AzureDataLakeGen1Datastore class.
      */
@@ -141,6 +146,16 @@ public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
     }
 
     /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     *
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -222,7 +237,7 @@ public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureDataLakeGen1Datastore.withTags(tags);
                 } else if ("isDefault".equals(fieldName)) {
-                    deserializedAzureDataLakeGen1Datastore.withIsDefault(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureDataLakeGen1Datastore.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("storeName".equals(fieldName)) {
                     deserializedAzureDataLakeGen1Datastore.storeName = reader.getString();
                 } else if ("datastoreType".equals(fieldName)) {

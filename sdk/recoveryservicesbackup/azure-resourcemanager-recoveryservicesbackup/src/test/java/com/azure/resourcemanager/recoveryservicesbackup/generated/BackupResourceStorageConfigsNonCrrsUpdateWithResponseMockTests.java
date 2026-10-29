@@ -29,7 +29,7 @@ public final class BackupResourceStorageConfigsNonCrrsUpdateWithResponseMockTest
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageModelType\":\"ReadAccessGeoZoneRedundant\",\"storageType\":\"GeoRedundant\",\"storageTypeState\":\"Locked\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Enabled\",\"xcoolState\":\"Disabled\"},\"tags\":{\"oywsxvjabjqqaxu\":\"n\"},\"location\":\"y\",\"eTag\":\"nudn\",\"id\":\"abhjx\",\"name\":\"xqweu\",\"type\":\"pmpvks\"}";
+            = "{\"properties\":{\"storageModelType\":\"ZoneRedundant\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Enabled\",\"xcoolState\":\"Disabled\"},\"tags\":{\"wjgquxweyslandkd\":\"efgvqcp\",\"nquoxsotireimse\":\"djhunhghcgawnr\",\"tcyilbvz\":\"bfsx\",\"bjvbzinzab\":\"mxcjzlquzexokjx\"},\"location\":\"vogljsvlpg\",\"eTag\":\"nwcehaqidoyzl\",\"id\":\"iomqoqpepiaea\",\"name\":\"fsergdtpeqnacy\",\"type\":\"eqwbpqqncjubkhj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,30 +39,29 @@ public final class BackupResourceStorageConfigsNonCrrsUpdateWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
-            .updateWithResponse("kbudbtwaokb", "vlyttaaknwfrke",
+            .updateWithResponse("xjxjoe", "lqxr",
                 new BackupResourceConfigResourceInner()
-                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.GEO_REDUNDANT)
+                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.LOCALLY_REDUNDANT)
                         .withStorageType(StorageType.LOCALLY_REDUNDANT)
-                        .withStorageTypeState(StorageTypeState.INVALID)
+                        .withStorageTypeState(StorageTypeState.UNLOCKED)
                         .withCrossRegionRestoreFlag(true)
-                        .withDedupState(DedupState.ENABLED)
-                        .withXcoolState(XcoolState.ENABLED))
-                    .withTags(mapOf("ctnanqimwbzxp", "ksc", "nlaimouxwksqmudm", "cldpkawn", "qsj", "coibicziuswswjrk",
-                        "yrfwbivq", "btqqvyfs"))
-                    .withLocation("gfuyzwv")
-                    .withEtag("limbyqecroodlik"),
+                        .withDedupState(DedupState.DISABLED)
+                        .withXcoolState(XcoolState.DISABLED))
+                    .withTags(mapOf("cdgzseznux", "tzamicbig"))
+                    .withLocation("uairaabmdlqjb")
+                    .withEtag("pfixlhupmo"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.GEO_REDUNDANT, response.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, response.properties().storageTypeState());
+        Assertions.assertEquals(StorageType.ZONE_REDUNDANT, response.properties().storageModelType());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, response.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, response.properties().storageTypeState());
         Assertions.assertFalse(response.properties().crossRegionRestoreFlag());
         Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
         Assertions.assertEquals(XcoolState.DISABLED, response.properties().xcoolState());
-        Assertions.assertEquals("n", response.tags().get("oywsxvjabjqqaxu"));
-        Assertions.assertEquals("y", response.location());
-        Assertions.assertEquals("nudn", response.etag());
+        Assertions.assertEquals("efgvqcp", response.tags().get("wjgquxweyslandkd"));
+        Assertions.assertEquals("vogljsvlpg", response.location());
+        Assertions.assertEquals("nwcehaqidoyzl", response.etag());
     }
 
     // Use "Map.of" if available

@@ -21,6 +21,11 @@ public final class ManagedOnlineDeployment extends OnlineDeploymentProperties {
      */
     private EndpointComputeType endpointComputeType = EndpointComputeType.MANAGED;
 
+    /*
+     * Provisioning state for the endpoint deployment.
+     */
+    private DeploymentProvisioningState provisioningState;
+
     /**
      * Creates an instance of ManagedOnlineDeployment class.
      */
@@ -35,6 +40,16 @@ public final class ManagedOnlineDeployment extends OnlineDeploymentProperties {
     @Override
     public EndpointComputeType endpointComputeType() {
         return this.endpointComputeType;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state for the endpoint deployment.
+     *
+     * @return the provisioningState value.
+     */
+    @Override
+    public DeploymentProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -255,8 +270,8 @@ public final class ManagedOnlineDeployment extends OnlineDeploymentProperties {
                 } else if ("modelMountPath".equals(fieldName)) {
                     deserializedManagedOnlineDeployment.withModelMountPath(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedManagedOnlineDeployment
-                        .withProvisioningState(DeploymentProvisioningState.fromString(reader.getString()));
+                    deserializedManagedOnlineDeployment.provisioningState
+                        = DeploymentProvisioningState.fromString(reader.getString());
                 } else if ("readinessProbe".equals(fieldName)) {
                     deserializedManagedOnlineDeployment.withReadinessProbe(ProbeSettings.fromJson(reader));
                 } else if ("requestSettings".equals(fieldName)) {

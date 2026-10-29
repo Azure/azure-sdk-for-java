@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
@@ -29,9 +31,6 @@ import java.util.regex.PatternSyntaxException;
  * Caches certificate material loaded from Azure Key Vault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
-    private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
-        = "azure.keyvault.jca.certificate-alias-filter-pattern";
-
     /**
      * Stores the list of aliases.
      */
@@ -104,42 +103,37 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private KeyVaultClient keyVaultClient;
 
-    private final long refreshInterval;
+    private long certificatesRefreshIntervalInMs;
 
-    private final List<Pattern> includeAliasPatterns;
+    private List<Pattern> includeAliasPatterns;
 
-    private final List<Pattern> excludeAliasPatterns;
+    private List<Pattern> excludeAliasPatterns;
 
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
-        this(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification, Collections.emptySet());
+    /**
+     * Creates a Key Vault certificate cache using the specified configuration.
+     *
+     * @param parameter The Key Vault load-store configuration.
+     */
+    public KeyVaultCertificates(KeyVaultLoadStoreParameter parameter) {
+        this(Objects.requireNonNull(parameter, "'parameter' cannot be null."),
+            parameter.getUri() == null ? null : new KeyVaultClient(parameter));
     }
 
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
-        Set<String> certificateFilterPatterns) {
-
-        this.refreshInterval = refreshInterval;
-        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
-
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification);
-    }
-
-    public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
-        this(refreshInterval, keyVaultClient, Collections.emptySet());
-    }
-
-    public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient,
-        Set<String> certificateFilterPatterns) {
-        this.refreshInterval = refreshInterval;
+    KeyVaultCertificates(KeyVaultLoadStoreParameter parameter, KeyVaultClient keyVaultClient) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        updateCertificateConfiguration(parameter);
         setKeyVaultClient(keyVaultClient);
-        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
+    }
+
+    private void updateCertificateConfiguration(KeyVaultLoadStoreParameter parameter) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(parameter.getCertificateAliasFilterPatterns());
+        List<Pattern> updatedIncludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
+        List<Pattern> updatedExcludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
+
+        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshInterval().toMillis();
+        includeAliasPatterns = updatedIncludeAliasPatterns;
+        excludeAliasPatterns = updatedExcludeAliasPatterns;
     }
 
     private Set<String> normalizeFilterPatterns(Set<String> filterPatterns) {
@@ -175,9 +169,12 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             return Pattern.compile(regexPattern);
         } catch (PatternSyntaxException exception) {
-            throw new IllegalArgumentException("Invalid certificate alias filter regex pattern: " + regexPattern
-                + ". If configured via system property, check '" + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + "' and '"
-                + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".<suffix>'.", exception);
+            throw new IllegalArgumentException(
+                "Invalid certificate alias filter regex pattern: " + regexPattern
+                    + ". If configured via system property, check '"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + "' and '"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + ".<suffix>'.",
+                exception);
         }
     }
 
@@ -204,26 +201,16 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     /**
-     * Update KeyVaultClient.
+     * Updates the Key Vault client and its certificate cache configuration.
      *
-     * @param keyVaultUri Key Vault URI.
-     * @param tenantId Tenant ID.
-     * @param clientId Client ID.
-     * @param clientSecret Client secret.
-     * @param managedIdentity Managed identity.
-     * @param accessToken Access token.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     * @param parameter The Key Vault load-store configuration.
      */
-    public synchronized void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
+    public synchronized void updateKeyVaultClient(KeyVaultLoadStoreParameter parameter) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        KeyVaultClient updatedKeyVaultClient = parameter.getUri() == null ? null : new KeyVaultClient(parameter);
 
-        if (keyVaultUri != null) {
-            setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification));
-        } else {
-            setKeyVaultClient(null);
-        }
-
+        updateCertificateConfiguration(parameter);
+        setKeyVaultClient(updatedKeyVaultClient);
         clearCachedState();
     }
 
@@ -261,7 +248,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
             return true;
         }
 
-        return refreshInterval > 0 && lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
+        return certificatesRefreshIntervalInMs > 0
+            && lastRefreshTime.getTime() + certificatesRefreshIntervalInMs < new Date().getTime();
     }
 
     /**
@@ -634,20 +622,18 @@ public final class KeyVaultCertificates implements AzureCertificates {
             aliasesSnapshot = new ArrayList<>(aliases);
         }
 
-        aliasesSnapshot.forEach(this::loadCertificateIfNeeded);
-
-        Map<String, Certificate> certificatesSnapshot;
-        synchronized (this) {
-            certificatesSnapshot = new HashMap<>(certificates);
+        for (String alias : aliasesSnapshot) {
+            loadCertificateIfNeeded(alias);
+            Certificate loadedCertificate;
+            synchronized (this) {
+                loadedCertificate = certificates.get(alias);
+            }
+            if (certificate.equals(loadedCertificate)) {
+                return alias;
+            }
         }
 
-        return certificatesSnapshot.entrySet()
-            .stream()
-            .filter(entry -> certificate.equals(entry.getValue()))
-            .findFirst()
-            .map(Map.Entry::getKey)
-            .orElse(null);
-
+        return null;
     }
 
     /**
