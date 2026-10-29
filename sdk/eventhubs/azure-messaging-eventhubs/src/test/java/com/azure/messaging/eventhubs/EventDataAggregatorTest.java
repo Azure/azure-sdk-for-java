@@ -8,6 +8,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
+import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
+import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 import reactor.util.context.Context;
@@ -23,13 +26,20 @@ import reactor.util.context.Context;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.LongConsumer;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -205,6 +215,232 @@ public class EventDataAggregatorTest {
     }
 
     /**
+     * The max-wait timer is measured from the first event in a batch, so events that keep arriving faster than the
+     * max wait time must not postpone publishing a partially full batch.
+     */
+    @Test
+    public void pushesBatchAfterMaxTimeWhileEventsKeepArriving() throws InterruptedException {
+        // Arrange
+        final Duration waitTime = Duration.ofMillis(1000);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        final EventData[] events = new EventData[6];
+        for (int i = 0; i < events.length; i++) {
+            events[i] = new EventData("event-" + i);
+        }
+        setupBatchMock(batch, new ArrayList<>(), events);
+        setupBatchMock(batch2, new ArrayList<>(), events);
+        setupBatchMock(batch3, new ArrayList<>(), events);
+
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            switch (supplierCalls.getAndIncrement()) {
+                case 0:
+                    return batch;
+
+                case 1:
+                    return batch2;
+
+                default:
+                    return batch3;
+            }
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        final Disposable subscription = aggregator.subscribe(published::add);
+
+        try {
+            // Act: an event every 300 ms for 1.5 seconds, never leaving a gap of maxWaitTime.
+            for (EventData event : events) {
+                publisher.next(event);
+                TimeUnit.MILLISECONDS.sleep(300);
+            }
+
+            // Assert: the first batch was published about maxWaitTime after its first event, even though events
+            // kept arriving. Restarting the timer on every event would publish nothing until 1 second after the
+            // last event.
+            assertFalse(published.isEmpty(), "Partial batch was not published after maxWaitTime.");
+            assertSame(batch, published.get(0));
+        } finally {
+            subscription.dispose();
+        }
+    }
+
+    /**
+     * Starting a batch cancels the running max-wait interval. That must not interrupt a timer-triggered publish that is
+     * in progress, otherwise creating the next batch fails and a send can close the connection's IO pipe.
+     */
+    @Test
+    public void newEventDoesNotInterruptTimerPublish() throws InterruptedException {
+        // Arrange
+        final Duration waitTime = Duration.ofMillis(250);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        setupBatchMock(batch, new ArrayList<>(), event1);
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch2, batchEvents, event2);
+        setupBatchMock(batch3, new ArrayList<>(), event1, event2, event3);
+
+        final CountDownLatch event2Emitted = new CountDownLatch(1);
+        final CountDownLatch timerPublishDone = new CountDownLatch(1);
+        final AtomicBoolean tickWaitedForLock = new AtomicBoolean();
+        final AtomicBoolean interrupted = new AtomicBoolean();
+        final AtomicInteger supplierCalls = new AtomicInteger();
+
+        // event2 starts a new batch. Holds the aggregator lock (tryAdd is called under it) until the still running
+        // interval's tick is waiting for it, so the tick is in progress when event2 restarts the interval.
+        Mockito.doAnswer(invocation -> {
+            tickWaitedForLock.set(awaitTimerTickBlockedOnLock());
+            batchEvents.add(event2);
+            return true;
+        }).when(batch2).tryAdd(event2);
+
+        final Supplier<EventDataBatch> supplier = () -> {
+            final int call = supplierCalls.getAndIncrement();
+            if (call == 0) {
+                return batch;
+            } else if (call == 1) {
+                return batch2;
+            }
+            // Called by the timer tick after it published batch2. Wait until event2 restarted (cancelled) the
+            // interval, which is when an interrupt would arrive.
+            try {
+                if (!event2Emitted.await(10, TimeUnit.SECONDS)) {
+                    LOGGER.log(LogLevel.WARNING, () -> "event2 was not emitted in time.");
+                }
+                if (Thread.currentThread().isInterrupted()) {
+                    interrupted.set(true);
+                }
+            } catch (InterruptedException e) {
+                interrupted.set(true);
+            } finally {
+                timerPublishDone.countDown();
+            }
+            return batch3;
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        final Disposable subscription = aggregator.subscribe(published::add);
+
+        try {
+            // Act
+            publisher.next(event1);
+            final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+            while (published.isEmpty() && System.nanoTime() < deadline) {
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            assertEquals(Collections.singletonList(batch), published, "Timer did not publish the first batch.");
+
+            publisher.next(event2);
+            event2Emitted.countDown();
+
+            // Assert
+            assertTrue(timerPublishDone.await(10, TimeUnit.SECONDS), "Timer did not publish the batch.");
+            assertTrue(tickWaitedForLock.get(), "Timer tick did not wait for the aggregator lock.");
+            assertFalse(interrupted.get(), "Timer-triggered publish was interrupted by a new event.");
+            assertEquals(Arrays.asList(batch, batch2), published);
+            assertEquals(Collections.singletonList(event2), batchEvents);
+        } finally {
+            subscription.dispose();
+        }
+    }
+
+    /**
+     * A timer tick blocks while the next batch is created, and the producer delivers created batches on
+     * {@link Schedulers#boundedElastic()}. Ticks must therefore not depend on that scheduler: when all its threads
+     * are busy, ticks queued on it could wait forever for their own batches.
+     */
+    @Test
+    public void timerPublishesWhileBoundedElasticIsSaturated() throws InterruptedException {
+        // Arrange
+        final Duration waitTime = Duration.ofMillis(100);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+        setupBatchMock(batch, new ArrayList<>(), event1);
+
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> supplierCalls.getAndIncrement() == 0 ? batch : batch2;
+
+        final int threads = Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
+        final CountDownLatch blockersStarted = new CountDownLatch(threads);
+        final CountDownLatch releaseBlockers = new CountDownLatch(1);
+        final List<Disposable> blockers = new ArrayList<>();
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        Disposable subscription = null;
+
+        try {
+            for (int i = 0; i < threads; i++) {
+                blockers.add(Schedulers.boundedElastic().schedule(() -> {
+                    blockersStarted.countDown();
+                    try {
+                        releaseBlockers.await();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }));
+            }
+            // If not all started, other work already occupies threads; the scheduler is saturated either way.
+            if (!blockersStarted.await(10, TimeUnit.SECONDS)) {
+                LOGGER.log(LogLevel.WARNING, () -> "Not all blockers started; boundedElastic is busy.");
+            }
+
+            final TestPublisher<EventData> publisher = TestPublisher.createCold();
+            final EventDataAggregator aggregator
+                = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+            subscription = aggregator.subscribe(published::add);
+
+            // Act
+            publisher.next(event1);
+
+            // Assert
+            final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+            while (published.isEmpty() && System.nanoTime() < deadline) {
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            assertEquals(Collections.singletonList(batch), published,
+                "Timer did not publish while boundedElastic was saturated.");
+        } finally {
+            releaseBlockers.countDown();
+            blockers.forEach(Disposable::dispose);
+            if (subscription != null) {
+                subscription.dispose();
+            }
+        }
+    }
+
+    /**
+     * Called while holding the aggregator lock. Waits until a timer tick is blocked on that lock.
+     *
+     * @return {@code true} if a timer tick is waiting for the lock; {@code false} if none did in time.
+     */
+    private static boolean awaitTimerTickBlockedOnLock() throws InterruptedException {
+        final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+        while (System.nanoTime() < deadline) {
+            for (Map.Entry<Thread, StackTraceElement[]> entry : Thread.getAllStackTraces().entrySet()) {
+                if (entry.getKey().getState() != Thread.State.BLOCKED) {
+                    continue;
+                }
+                for (StackTraceElement frame : entry.getValue()) {
+                    if (frame.getClassName().endsWith("EventDataAggregator$EventDataAggregatorMain")
+                        && "publishDownstream".equals(frame.getMethodName())) {
+                        return true;
+                    }
+                }
+            }
+            TimeUnit.MILLISECONDS.sleep(5);
+        }
+        return false;
+    }
+
+    /**
      * Tests that it pushes partial batches downstream when flush signal arrives.
      */
     @Test
@@ -242,24 +478,39 @@ public class EventDataAggregatorTest {
     }
 
     /**
-     * Verifies that an error is propagated when it is too large for the link.
+     * Verifies that an event too large for the link is reported through the send-failed handler and does not
+     * terminate the aggregator, so later events are still published.
      */
     @Test
-    public void errorsOnEventThatDoesNotFit() {
+    public void reportsEventThatDoesNotFitAndContinues() {
         // Arrange
         final List<EventData> batchEvents = new ArrayList<>();
-        setupBatchMock(batch, batchEvents);
+        when(batch.tryAdd(any(EventData.class))).thenAnswer(invocation -> {
+            final EventData arg = invocation.getArgument(0);
+            if (arg == event3) {
+                // A real EventDataBatch throws when a single event exceeds the maximum message size.
+                throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, "too large", null);
+            }
+            if (arg == event2) {
+                batchEvents.add(arg);
+                return true;
+            }
+            return false;
+        });
+        when(batch.getEvents()).thenAnswer(invocation -> batchEvents);
+        when(batch.getCount()).thenAnswer(invocation -> batchEvents.size());
 
-        final Duration waitTime = Duration.ofSeconds(30);
+        final List<SendBatchFailedContext> failures = new ArrayList<>();
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
-        options.setMaxWaitTime(waitTime);
+        options.setMaxWaitTime(Duration.ofSeconds(30));
+        options.setSendFailedContext(failures::add);
 
         final AtomicBoolean first = new AtomicBoolean();
         final Supplier<EventDataBatch> supplier = () -> {
             if (first.compareAndSet(false, true)) {
                 return batch;
             } else {
-                throw new IllegalArgumentException("Did not expect another batch call.");
+                return batch2;
             }
         };
 
@@ -267,12 +518,129 @@ public class EventDataAggregatorTest {
         final EventDataAggregator aggregator
             = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
-        StepVerifier.create(aggregator).then(() -> {
-            publisher.next(event1);
-        }).consumeErrorWith(error -> {
-            assertTrue(error instanceof AmqpException);
-            assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, ((AmqpException) error).getErrorCondition());
-        }).verify(Duration.ofSeconds(20));
+        // Act & Assert
+        StepVerifier.create(aggregator)
+            .then(() -> publisher.next(event1, event3, event2))
+            .then(publisher::complete)
+            .expectNext(batch)
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+
+        assertEquals(Collections.singletonList(event2), batchEvents);
+        assertEquals(2, failures.size());
+        assertFailedContext(failures.get(0), event1, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+        assertFailedContext(failures.get(1), event3, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+    }
+
+    /**
+     * Verifies that repeated failures to create a new batch do not terminate the aggregator, that the event which
+     * could not be added is reported through the send-failed handler, and that an already published batch is never
+     * reused.
+     */
+    @Test
+    public void batchCreationFailuresDoNotTerminate() {
+        // Arrange
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1);
+
+        final List<EventData> batchEvents2 = new ArrayList<>();
+        setupBatchMock(batch2, batchEvents2, event3);
+
+        final List<SendBatchFailedContext> failures = new ArrayList<>();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(30));
+        options.setSendFailedContext(failures::add);
+
+        final UncheckedExecutionException creationError
+            = new UncheckedExecutionException(new ExecutionException(new IllegalStateException("link closed")));
+        final AtomicInteger calls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            final int current = calls.getAndIncrement();
+            switch (current) {
+                case 0:
+                    return batch;
+
+                case 1:
+                case 2:
+                    throw creationError;
+
+                case 3:
+                    return batch2;
+
+                default:
+                    throw new RuntimeException("batchCreationFailuresDoNotTerminate: unexpected call " + current);
+            }
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+
+        // Act & Assert
+        StepVerifier.create(aggregator)
+            .then(() -> publisher.next(event1, event2, event3))
+            .expectNext(batch)
+            .then(publisher::complete)
+            .expectNext(batch2)
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+
+        assertEquals(Collections.singletonList(event1), batchEvents);
+        assertEquals(Collections.singletonList(event3), batchEvents2);
+        assertEquals(1, failures.size());
+        assertEquals(Collections.singletonList(event2), toList(failures.get(0).getEvents()));
+        assertEquals(PARTITION_ID, failures.get(0).getPartitionId());
+        assertSame(creationError, failures.get(0).getThrowable());
+    }
+
+    /**
+     * Verifies that a flush completes (an empty batch is pushed downstream) even when a new batch could not be
+     * created.
+     */
+    @Test
+    public void flushCompletesWhenBatchCreationFails() {
+        // Arrange
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1);
+
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(30));
+        options.setSendFailedContext(context -> {
+        });
+
+        final AtomicBoolean first = new AtomicBoolean();
+        final Supplier<EventDataBatch> supplier = () -> {
+            if (first.compareAndSet(false, true)) {
+                return batch;
+            }
+            throw new UncheckedExecutionException(new ExecutionException(new IllegalStateException("link closed")));
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+
+        // Act & Assert
+        StepVerifier.create(aggregator)
+            .then(() -> publisher.next(event1, event2, new FlushSignal(new NoopMonoSink())))
+            .expectNext(batch)
+            .expectNext(EventDataBatch.EMPTY)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    private static void assertFailedContext(SendBatchFailedContext context, EventData expectedEvent,
+        AmqpErrorCondition expectedCondition) {
+        assertEquals(Collections.singletonList(expectedEvent), toList(context.getEvents()));
+        assertEquals(PARTITION_ID, context.getPartitionId());
+        assertTrue(context.getThrowable() instanceof AmqpException);
+        assertEquals(expectedCondition, ((AmqpException) context.getThrowable()).getErrorCondition());
+    }
+
+    private static List<EventData> toList(Iterable<EventData> events) {
+        final List<EventData> list = new ArrayList<>();
+        events.forEach(list::add);
+        return list;
     }
 
     /**

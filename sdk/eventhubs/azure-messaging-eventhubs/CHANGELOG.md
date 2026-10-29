@@ -13,6 +13,18 @@
   caused checkpoint stores that read `offsetString` (such as `BlobCheckpointStore`) to persist a `null` offset, breaking
   partition switch-over and consumer-group lag monitoring.
   ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+- Fixed `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` permanently stopping publishing to a
+  partition, after which every `enqueueEvent` call for that partition failed with "Unable to buffer message for
+  partition". A partition's publisher no longer terminates when:
+  - creating a new batch fails twice (the creation error was never reset),
+  - an event is too large to fit in an empty batch (it is now reported through `onSendBatchFailed`),
+  - the `onSendBatchSucceeded` or `onSendBatchFailed` handler throws.
+- Fixed a published batch being sent again when creating the next batch failed.
+- Fixed the max-wait timer interrupting a timer-triggered publish that was in progress, which failed the creation of
+  the next batch or reset the connection ("IO Sink was interrupted before reactor closed").
+- Fixed `maxWaitTime` of the buffered producer clients being restarted by every enqueued event. While events kept
+  arriving faster than `maxWaitTime`, a partially full batch was only published once it was full, which could take
+  tens of seconds or more. `maxWaitTime` is now measured from the first event added to a batch.
 
 ### Other Changes
 
