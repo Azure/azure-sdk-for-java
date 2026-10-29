@@ -108,9 +108,15 @@ public final class EndpointRegistrationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.resourceType = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
+            "providerNamespace");
+        this.resourceType = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
+            "resourceType");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
+            "endpointName");
     }
 
     public EndpointRegistration refresh() {

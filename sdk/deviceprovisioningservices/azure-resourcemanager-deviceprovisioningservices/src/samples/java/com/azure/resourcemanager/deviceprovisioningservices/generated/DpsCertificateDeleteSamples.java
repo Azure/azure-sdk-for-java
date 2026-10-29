@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class DpsCertificateDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSDeleteCertificate.json
+     * x-ms-original-file: 2026-11-01/DPSDeleteCertificate.json
      */
     /**
      * Sample code: DPSDeleteCertificate.

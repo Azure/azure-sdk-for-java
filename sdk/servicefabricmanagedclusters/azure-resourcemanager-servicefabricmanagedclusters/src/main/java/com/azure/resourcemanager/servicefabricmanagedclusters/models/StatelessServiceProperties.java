@@ -44,6 +44,11 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     private Integer minInstancePercentage;
 
+    /*
+     * The current deployment or provisioning state, which only appears in the response
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of StatelessServiceProperties class.
      */
@@ -134,6 +139,17 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     public StatelessServiceProperties withMinInstancePercentage(Integer minInstancePercentage) {
         this.minInstancePercentage = minInstancePercentage;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -296,7 +312,7 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
                     List<ScalingPolicy> scalingPolicies = reader.readArray(reader1 -> ScalingPolicy.fromJson(reader1));
                     deserializedStatelessServiceProperties.withScalingPolicies(scalingPolicies);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatelessServiceProperties.withProvisioningState(reader.getString());
+                    deserializedStatelessServiceProperties.provisioningState = reader.getString();
                 } else if ("servicePackageActivationMode".equals(fieldName)) {
                     deserializedStatelessServiceProperties
                         .withServicePackageActivationMode(ServicePackageActivationMode.fromString(reader.getString()));
