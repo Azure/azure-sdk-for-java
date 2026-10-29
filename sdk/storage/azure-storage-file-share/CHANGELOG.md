@@ -1,6 +1,6 @@
 # Release History
 
-## 12.32.1 (2026-10-28)
+## 12.32.1 (2026-10-29)
 
 ### Bugs Fixed
 - Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using

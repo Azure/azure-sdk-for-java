@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.1 (2026-10-28)
+## 12.29.1 (2026-10-29)
 
 ### Bugs Fixed
 - Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from

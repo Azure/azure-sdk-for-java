@@ -1,6 +1,6 @@
 # Release History
 
-## 12.35.1 (2026-10-28)
+## 12.35.1 (2026-10-29)
 
 ### Bugs Fixed
 - Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
