@@ -10,6 +10,11 @@
 
 - Fixed `OnBehalfOfCredential` token cache lookup to remain bound to the configured user assertion, preventing a cached token acquired for one user from being returned for another user with matching scopes. ([#50618](https://github.com/Azure/azure-sdk-for-java/pull/50618))
 
+### Other Changes
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
 ---
 
 The updates below only denote differences between this release and previous 1.19.0 beta releases, not the 1.18.x stable implementation.
