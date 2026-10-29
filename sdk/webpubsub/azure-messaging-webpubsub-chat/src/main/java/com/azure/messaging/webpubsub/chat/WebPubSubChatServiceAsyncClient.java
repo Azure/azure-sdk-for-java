@@ -31,7 +31,7 @@ import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
 import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatUser;
 import com.azure.messaging.webpubsub.chat.models.ChatUserRoom;
-import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.chat.models.ClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
@@ -87,6 +87,10 @@ public final class WebPubSubChatServiceAsyncClient {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -209,7 +213,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
-     * @param resource The resource instance.
+     * @param message The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -220,8 +224,8 @@ public final class WebPubSubChatServiceAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponse(String conversationId, String messageId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.updateMessageWithResponseAsync(conversationId, messageId, resource, requestOptions);
+        BinaryData message, RequestOptions requestOptions) {
+        return this.serviceClient.updateMessageWithResponseAsync(conversationId, messageId, message, requestOptions);
     }
 
     /**
@@ -337,7 +341,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
-     * @param resource The resource instance.
+     * @param role The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -350,9 +354,9 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceRoleWithResponse(String roleName, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceRoleWithResponse(String roleName, BinaryData role,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceRoleWithResponseAsync(roleName, resource, requestOptions);
+        return this.serviceClient.createOrReplaceRoleWithResponseAsync(roleName, role, requestOptions);
     }
 
     /**
@@ -427,7 +431,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      *
      * @param roomId Room identifier.
-     * @param resource The resource instance.
+     * @param room The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -437,9 +441,9 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceRoomWithResponse(String roomId, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceRoomWithResponse(String roomId, BinaryData room,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceRoomWithResponseAsync(roomId, resource, requestOptions);
+        return this.serviceClient.createOrReplaceRoomWithResponseAsync(roomId, room, requestOptions);
     }
 
     /**
@@ -577,7 +581,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
-     * @param resource The resource instance.
+     * @param member The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -588,8 +592,8 @@ public final class WebPubSubChatServiceAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceRoomMemberWithResponse(String roomId, String userId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceRoomMemberWithResponseAsync(roomId, userId, resource, requestOptions);
+        BinaryData member, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceRoomMemberWithResponseAsync(roomId, userId, member, requestOptions);
     }
 
     /**
@@ -702,7 +706,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      *
      * @param userId User identifier.
-     * @param resource The resource instance.
+     * @param user The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -713,9 +717,9 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceUserWithResponse(String userId, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceUserWithResponse(String userId, BinaryData user,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceUserWithResponseAsync(userId, resource, requestOptions);
+        return this.serviceClient.createOrReplaceUserWithResponseAsync(userId, user, requestOptions);
     }
 
     /**
@@ -769,6 +773,10 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Query messages in a conversation from latest to earliest.
      *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
+     *
      * @param conversationId Conversation identifier.
      * @param latestMessageId Latest message ID (exclusive) for pagination.
      * @param earliestMessageId Earliest message ID (exclusive) for pagination.
@@ -816,6 +824,10 @@ public final class WebPubSubChatServiceAsyncClient {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      *
      * @param conversationId Conversation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -909,7 +921,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
-     * @param resource The resource instance.
+     * @param message The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -921,7 +933,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatMessage> updateMessage(String conversationId, String messageId, ChatMessage resource,
+    public Mono<ChatMessage> updateMessage(String conversationId, String messageId, ChatMessage message,
         MatchConditions matchConditions) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -933,12 +945,12 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(message, true);
+        BinaryData messageInBinaryData = BinaryData.fromObject(message);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(resource, false);
-        return updateMessageWithResponse(conversationId, messageId, resourceInBinaryData, requestOptions)
+        messageInBinaryData.getLength();
+        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(message, false);
+        return updateMessageWithResponse(conversationId, messageId, messageInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatMessage.class));
     }
@@ -948,7 +960,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
-     * @param resource The resource instance.
+     * @param message The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -959,15 +971,15 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatMessage> updateMessage(String conversationId, String messageId, ChatMessage resource) {
+    public Mono<ChatMessage> updateMessage(String conversationId, String messageId, ChatMessage message) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(message, true);
+        BinaryData messageInBinaryData = BinaryData.fromObject(message);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(resource, false);
-        return updateMessageWithResponse(conversationId, messageId, resourceInBinaryData, requestOptions)
+        messageInBinaryData.getLength();
+        JsonMergePatchHelper.getChatMessageAccessor().prepareModelForJsonMergePatch(message, false);
+        return updateMessageWithResponse(conversationId, messageId, messageInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatMessage.class));
     }
@@ -1076,7 +1088,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Create or replace a role.
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
-     * @param resource The resource instance.
+     * @param role The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1091,7 +1103,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRole> createOrReplaceRole(String roleName, ChatRole resource, MatchConditions matchConditions) {
+    public Mono<ChatRole> createOrReplaceRole(String roleName, ChatRole role, MatchConditions matchConditions) {
         // Generated convenience method for createOrReplaceRoleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
@@ -1102,7 +1114,7 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return createOrReplaceRoleWithResponse(roleName, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoleWithResponse(roleName, BinaryData.fromObject(role), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRole.class));
     }
@@ -1111,7 +1123,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Create or replace a role.
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
-     * @param resource The resource instance.
+     * @param role The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1125,10 +1137,10 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRole> createOrReplaceRole(String roleName, ChatRole resource) {
+    public Mono<ChatRole> createOrReplaceRole(String roleName, ChatRole role) {
         // Generated convenience method for createOrReplaceRoleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceRoleWithResponse(roleName, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoleWithResponse(roleName, BinaryData.fromObject(role), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRole.class));
     }
@@ -1188,7 +1200,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Create or replace a room with a client-specified ID.
      *
      * @param roomId Room identifier.
-     * @param resource The resource instance.
+     * @param room The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1200,7 +1212,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRoom> createOrReplaceRoom(String roomId, ChatRoom resource, MatchConditions matchConditions) {
+    public Mono<ChatRoom> createOrReplaceRoom(String roomId, ChatRoom room, MatchConditions matchConditions) {
         // Generated convenience method for createOrReplaceRoomWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
@@ -1211,7 +1223,7 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return createOrReplaceRoomWithResponse(roomId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoomWithResponse(roomId, BinaryData.fromObject(room), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRoom.class));
     }
@@ -1222,7 +1234,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Create or replace a room with a client-specified ID.
      *
      * @param roomId Room identifier.
-     * @param resource The resource instance.
+     * @param room The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1233,10 +1245,10 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRoom> createOrReplaceRoom(String roomId, ChatRoom resource) {
+    public Mono<ChatRoom> createOrReplaceRoom(String roomId, ChatRoom room) {
         // Generated convenience method for createOrReplaceRoomWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceRoomWithResponse(roomId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoomWithResponse(roomId, BinaryData.fromObject(room), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRoom.class));
     }
@@ -1398,7 +1410,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
-     * @param resource The resource instance.
+     * @param member The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1410,7 +1422,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRoomMember> createOrReplaceRoomMember(String roomId, String userId, ChatRoomMember resource,
+    public Mono<ChatRoomMember> createOrReplaceRoomMember(String roomId, String userId, ChatRoomMember member,
         MatchConditions matchConditions) {
         // Generated convenience method for createOrReplaceRoomMemberWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1422,7 +1434,7 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return createOrReplaceRoomMemberWithResponse(roomId, userId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoomMemberWithResponse(roomId, userId, BinaryData.fromObject(member), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRoomMember.class));
     }
@@ -1432,7 +1444,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
-     * @param resource The resource instance.
+     * @param member The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1443,10 +1455,10 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatRoomMember> createOrReplaceRoomMember(String roomId, String userId, ChatRoomMember resource) {
+    public Mono<ChatRoomMember> createOrReplaceRoomMember(String roomId, String userId, ChatRoomMember member) {
         // Generated convenience method for createOrReplaceRoomMemberWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceRoomMemberWithResponse(roomId, userId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceRoomMemberWithResponse(roomId, userId, BinaryData.fromObject(member), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatRoomMember.class));
     }
@@ -1535,7 +1547,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * `kind` discriminator.
      *
      * @param userId User identifier.
-     * @param resource The resource instance.
+     * @param user The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1547,7 +1559,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatUser> createOrReplaceUser(String userId, ChatUser resource, MatchConditions matchConditions) {
+    public Mono<ChatUser> createOrReplaceUser(String userId, ChatUser user, MatchConditions matchConditions) {
         // Generated convenience method for createOrReplaceUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
@@ -1558,7 +1570,7 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return createOrReplaceUserWithResponse(userId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceUserWithResponse(userId, BinaryData.fromObject(user), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatUser.class));
     }
@@ -1570,7 +1582,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * `kind` discriminator.
      *
      * @param userId User identifier.
-     * @param resource The resource instance.
+     * @param user The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1581,10 +1593,10 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatUser> createOrReplaceUser(String userId, ChatUser resource) {
+    public Mono<ChatUser> createOrReplaceUser(String userId, ChatUser user) {
         // Generated convenience method for createOrReplaceUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceUserWithResponse(userId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceUserWithResponse(userId, BinaryData.fromObject(user), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatUser.class));
     }
@@ -1643,11 +1655,15 @@ public final class WebPubSubChatServiceAsyncClient {
 
     /**
      * Creates a client access token for connecting to Azure Web PubSub Chat.
+     * Clients authenticated with an access key sign the token locally; clients authenticated with
+     * Microsoft Entra ID request the token from the service.
      *
      * @param options Options for creating the client access token.
      * @return A publisher containing the client access token.
+     * @throws NullPointerException if options or its token lifetime is null.
+     * @throws IllegalArgumentException if the token lifetime is outside the supported range.
      */
-    public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
+    public Mono<WebPubSubClientAccessToken> getClientAccessToken(ClientAccessTokenOptions options) {
         return WebPubSubClientAccessTokenFactory.createAsync(serviceClient, keyCredential, options);
     }
 
@@ -1780,7 +1796,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1790,9 +1806,9 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceTopicWithResponse(String roomId, String topicId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceTopicWithResponseAsync(roomId, topicId, resource, requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceTopicWithResponse(String roomId, String topicId, BinaryData topic,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceTopicWithResponseAsync(roomId, topicId, topic, requestOptions);
     }
 
     /**
@@ -1877,7 +1893,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1887,9 +1903,9 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateTopicWithResponse(String roomId, String topicId, BinaryData resource,
+    public Mono<Response<BinaryData>> updateTopicWithResponse(String roomId, String topicId, BinaryData topic,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateTopicWithResponseAsync(roomId, topicId, resource, requestOptions);
+        return this.serviceClient.updateTopicWithResponseAsync(roomId, topicId, topic, requestOptions);
     }
 
     /**
@@ -2164,7 +2180,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2176,7 +2192,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic resource,
+    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic topic,
         MatchConditions matchConditions) {
         // Generated convenience method for createOrReplaceTopicWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2188,7 +2204,7 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(topic), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
     }
@@ -2203,7 +2219,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2214,10 +2230,10 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic resource) {
+    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic topic) {
         // Generated convenience method for createOrReplaceTopicWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(topic), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
     }
@@ -2249,7 +2265,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param matchConditions Specifies HTTP options for conditional requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2261,7 +2277,7 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic resource,
+    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic topic,
         MatchConditions matchConditions) {
         // Generated convenience method for updateTopicWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2273,12 +2289,12 @@ public final class WebPubSubChatServiceAsyncClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(topic, true);
+        BinaryData topicInBinaryData = BinaryData.fromObject(topic);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
-        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+        topicInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(topic, false);
+        return updateTopicWithResponse(roomId, topicId, topicInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
     }
 
@@ -2287,7 +2303,7 @@ public final class WebPubSubChatServiceAsyncClient {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2298,15 +2314,15 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic resource) {
+    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic topic) {
         // Generated convenience method for updateTopicWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(topic, true);
+        BinaryData topicInBinaryData = BinaryData.fromObject(topic);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
-        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+        topicInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(topic, false);
+        return updateTopicWithResponse(roomId, topicId, topicInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
     }
 

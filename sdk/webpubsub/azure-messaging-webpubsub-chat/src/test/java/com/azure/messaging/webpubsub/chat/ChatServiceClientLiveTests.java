@@ -19,7 +19,7 @@ import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatTopicState;
 import com.azure.messaging.webpubsub.chat.models.ChatUser;
 import com.azure.messaging.webpubsub.chat.models.ChatUserRoom;
-import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.chat.models.ClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.HumanChatUser;
 import com.azure.messaging.webpubsub.chat.models.MessageContent;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
@@ -327,7 +327,7 @@ public class ChatServiceClientLiveTests extends ChatServiceClientTestBase {
             ChatConversation conversation = execute(() -> client.getConversation(createdRoom.getDefaultConversation()),
                 () -> asyncClient.getConversation(createdRoom.getDefaultConversation()));
             assertEquals(createdRoom.getDefaultConversation(), conversation.getId());
-            assertEquals(roomId, conversation.getParentRoom());
+            assertEquals(roomId, conversation.getRoomId());
             assertFalse(execute(() -> client.listMessages(conversation.getId()).stream().findAny().isPresent(),
                 () -> asyncClient.listMessages(conversation.getId()).hasElements()));
             assertFalse(execute(() -> client.listRoomMembers(roomId).stream().findAny().isPresent(),
@@ -399,8 +399,8 @@ public class ChatServiceClientLiveTests extends ChatServiceClientTestBase {
                     new ChatRoomMember(BuiltInChatRoles.ROOM_MEMBER)));
 
             WebPubSubClientAccessToken accessToken
-                = execute(() -> entraClient.getClientAccessToken(new GetClientAccessTokenOptions().setUserId(userId)),
-                    () -> entraAsyncClient.getClientAccessToken(new GetClientAccessTokenOptions().setUserId(userId)));
+                = execute(() -> entraClient.getClientAccessToken(new ClientAccessTokenOptions().setUserId(userId)),
+                    () -> entraAsyncClient.getClientAccessToken(new ClientAccessTokenOptions().setUserId(userId)));
             assertNotNull(accessToken.getToken());
             assertNotNull(accessToken.getUrl());
 

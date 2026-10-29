@@ -137,9 +137,13 @@ renamed, archived, and soft deleted independently of the room's default conversa
 
 ```java readme-sample-getChatClientAccessToken
 WebPubSubClientAccessToken accessToken = client.getClientAccessToken(
-    new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
+    new ClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
 String clientConnectionUrl = accessToken.getUrl();
 ```
+
+`ClientAccessTokenOptions` specifies the user ID and token lifetime (one hour by default).
+With an access key or connection string, the SDK signs the token locally. With Microsoft Entra ID,
+the SDK requests the token from the service.
 
 The returned URL contains an access token. Send it only to the intended client, and do not log or persist it in production.
 

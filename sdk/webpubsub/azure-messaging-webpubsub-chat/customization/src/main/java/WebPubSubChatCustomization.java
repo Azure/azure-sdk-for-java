@@ -129,6 +129,8 @@ public final class WebPubSubChatCustomization extends Customization {
         }
         model.setJavadocComment("Message content containing exactly one of text or binary data.\n"
             + "Use {@link #fromText(String)} or {@link #fromBinary(byte[])} to create content.\n"
+            + "Text and binary are independent content types, not alternate encodings of the same value.\n"
+            + "Binary data is base64 encoded on the wire. No conversion between text and binary is performed.\n"
             + "The getter for the unselected representation returns {@code null}.");
         model.getFieldByName("updatedProperties").ifPresent(field -> field.remove());
         model.getMethodsByName("setText").forEach(method -> method.remove());

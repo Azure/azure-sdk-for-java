@@ -12,6 +12,8 @@
 ### Breaking Changes
 
 - Replaced the public `MessageContent` constructor and `setText`/`setBinary` methods with `MessageContent.fromText` and `MessageContent.fromBinary`. Each instance contains exactly one non-null representation; empty text and binary payloads remain supported.
+- Renamed `GetClientAccessTokenOptions` to `ClientAccessTokenOptions`.
+- Renamed `ChatConversation.getParentRoom()` to `getRoomId()`. The JSON property remains `parentRoom`.
 
 ### Bugs Fixed
 
@@ -20,6 +22,8 @@
 
 ### Other Changes
 
+- Renamed request body parameters from `resource` to `role`, `room`, `member`, `user`, `topic`, or `message` to match their operations.
+- Clarified message-ID-based descending pagination, text versus binary message content, and client access token generation.
 - Verified all existing and new operations end to end with `2026-08-01-preview` in Central US EUAP; removed the temporary server routing workaround and restored the complete live/playback suite.
 - Enabled all typed asynchronous page-size regression cases and removed the temporary protocol paging workaround from tests and samples.
 

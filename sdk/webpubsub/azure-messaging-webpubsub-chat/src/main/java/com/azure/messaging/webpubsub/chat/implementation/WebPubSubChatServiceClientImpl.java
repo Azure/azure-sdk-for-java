@@ -259,7 +259,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("conversationId") String conversationId, @PathParam("messageId") String messageId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData message, RequestOptions requestOptions,
             Context context);
 
         @Patch("/api/hubs/{hub}/chat/conversations/{conversationId}/messages/{messageId}")
@@ -272,7 +272,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("conversationId") String conversationId, @PathParam("messageId") String messageId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData message, RequestOptions requestOptions,
             Context context);
 
         @Get("/api/hubs/{hub}/chat/roles")
@@ -326,7 +326,7 @@ public final class WebPubSubChatServiceClientImpl {
         Mono<Response<BinaryData>> createOrReplaceRole(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roleName") String roleName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData role,
             RequestOptions requestOptions, Context context);
 
         @Put("/api/hubs/{hub}/chat/roles/{roleName}")
@@ -338,7 +338,7 @@ public final class WebPubSubChatServiceClientImpl {
         Response<BinaryData> createOrReplaceRoleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roleName") String roleName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData role,
             RequestOptions requestOptions, Context context);
 
         @Delete("/api/hubs/{hub}/chat/roles/{roleName}")
@@ -390,7 +390,7 @@ public final class WebPubSubChatServiceClientImpl {
         Mono<Response<BinaryData>> createOrReplaceRoom(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData room,
             RequestOptions requestOptions, Context context);
 
         @Put("/api/hubs/{hub}/chat/rooms/{roomId}")
@@ -402,7 +402,7 @@ public final class WebPubSubChatServiceClientImpl {
         Response<BinaryData> createOrReplaceRoomSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData room,
             RequestOptions requestOptions, Context context);
 
         @Get("/api/hubs/{hub}/chat/rooms/{roomId}")
@@ -479,7 +479,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("topicId") String topicId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData topic, RequestOptions requestOptions, Context context);
 
         @Put("/api/hubs/{hub}/chat/rooms/{roomId}/topics/{topicId}")
         @ExpectedResponses({ 200, 201 })
@@ -491,7 +491,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("topicId") String topicId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData topic, RequestOptions requestOptions, Context context);
 
         @Get("/api/hubs/{hub}/chat/rooms/{roomId}/topics/{topicId}")
         @ExpectedResponses({ 200 })
@@ -525,7 +525,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("topicId") String topicId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData topic, RequestOptions requestOptions,
             Context context);
 
         @Patch("/api/hubs/{hub}/chat/rooms/{roomId}/topics/{topicId}")
@@ -538,7 +538,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("topicId") String topicId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData topic, RequestOptions requestOptions,
             Context context);
 
         @Delete("/api/hubs/{hub}/chat/rooms/{roomId}/topics/{topicId}")
@@ -595,7 +595,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("userId") String userId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData member, RequestOptions requestOptions, Context context);
 
         @Put("/api/hubs/{hub}/chat/rooms/{roomId}/members/{userId}")
         @ExpectedResponses({ 200, 201 })
@@ -607,7 +607,7 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("roomId") String roomId, @PathParam("userId") String userId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData member, RequestOptions requestOptions, Context context);
 
         @Delete("/api/hubs/{hub}/chat/rooms/{roomId}/members/{userId}")
         @ExpectedResponses({ 204 })
@@ -682,7 +682,7 @@ public final class WebPubSubChatServiceClientImpl {
         Mono<Response<BinaryData>> createOrReplaceUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData user,
             RequestOptions requestOptions, Context context);
 
         @Put("/api/hubs/{hub}/chat/users/{userId}")
@@ -694,7 +694,7 @@ public final class WebPubSubChatServiceClientImpl {
         Response<BinaryData> createOrReplaceUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData user,
             RequestOptions requestOptions, Context context);
 
         @Delete("/api/hubs/{hub}/chat/users/{userId}")
@@ -961,6 +961,10 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1010,6 +1014,10 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1076,6 +1084,10 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1122,6 +1134,10 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query messages in a conversation from latest to earliest.
+     *
+     * Query messages in a conversation from latest to earliest.
+     * Message IDs are used as pagination cursors. Follow the response nextLink,
+     * which contains the message ID cursor, to retrieve the next page.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1296,7 +1312,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
-     * @param resource The resource instance.
+     * @param message The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1306,12 +1322,12 @@ public final class WebPubSubChatServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String conversationId, String messageId,
-        BinaryData resource, RequestOptions requestOptions) {
+        BinaryData message, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateMessage(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), conversationId, messageId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), conversationId, messageId, contentType, accept, message, requestOptions, context));
     }
 
     /**
@@ -1366,7 +1382,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
-     * @param resource The resource instance.
+     * @param message The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1375,12 +1391,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateMessageWithResponse(String conversationId, String messageId, BinaryData resource,
+    public Response<BinaryData> updateMessageWithResponse(String conversationId, String messageId, BinaryData message,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.updateMessageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getHub(),
-            conversationId, messageId, contentType, accept, resource, requestOptions, Context.NONE);
+            conversationId, messageId, contentType, accept, message, requestOptions, Context.NONE);
     }
 
     /**
@@ -1693,7 +1709,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
-     * @param resource The resource instance.
+     * @param role The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1705,13 +1721,13 @@ public final class WebPubSubChatServiceClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceRoleWithResponseAsync(String roleName, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceRoleWithResponseAsync(String roleName, BinaryData role,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrReplaceRole(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), roleName, contentType, accept, resource, requestOptions, context));
+                this.getHub(), roleName, contentType, accept, role, requestOptions, context));
     }
 
     /**
@@ -1760,7 +1776,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
-     * @param resource The resource instance.
+     * @param role The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1771,12 +1787,12 @@ public final class WebPubSubChatServiceClientImpl {
      * A role must contain either user permissions or room permissions, but not both along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceRoleWithResponse(String roleName, BinaryData resource,
+    public Response<BinaryData> createOrReplaceRoleWithResponse(String roleName, BinaryData role,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceRoleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getHub(),
-            roleName, contentType, accept, resource, requestOptions, Context.NONE);
+            roleName, contentType, accept, role, requestOptions, Context.NONE);
     }
 
     /**
@@ -2076,7 +2092,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param roomId Room identifier.
-     * @param resource The resource instance.
+     * @param room The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2085,13 +2101,13 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat room along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceRoomWithResponseAsync(String roomId, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceRoomWithResponseAsync(String roomId, BinaryData room,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrReplaceRoom(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), roomId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), roomId, contentType, accept, room, requestOptions, context));
     }
 
     /**
@@ -2139,7 +2155,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param roomId Room identifier.
-     * @param resource The resource instance.
+     * @param room The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2148,12 +2164,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat room along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceRoomWithResponse(String roomId, BinaryData resource,
+    public Response<BinaryData> createOrReplaceRoomWithResponse(String roomId, BinaryData room,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceRoomSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getHub(),
-            roomId, contentType, accept, resource, requestOptions, Context.NONE);
+            roomId, contentType, accept, room, requestOptions, Context.NONE);
     }
 
     /**
@@ -2537,7 +2553,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2547,12 +2563,12 @@ public final class WebPubSubChatServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceTopicWithResponseAsync(String roomId, String topicId,
-        BinaryData resource, RequestOptions requestOptions) {
+        BinaryData topic, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrReplaceTopic(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), roomId, topicId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), roomId, topicId, contentType, accept, topic, requestOptions, context));
     }
 
     /**
@@ -2608,7 +2624,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2617,12 +2633,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat topic in a room along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceTopicWithResponse(String roomId, String topicId, BinaryData resource,
+    public Response<BinaryData> createOrReplaceTopicWithResponse(String roomId, String topicId, BinaryData topic,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceTopicSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            this.getHub(), roomId, topicId, contentType, accept, resource, requestOptions, Context.NONE);
+            this.getHub(), roomId, topicId, contentType, accept, topic, requestOptions, Context.NONE);
     }
 
     /**
@@ -2742,7 +2758,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2751,13 +2767,13 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat topic in a room along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateTopicWithResponseAsync(String roomId, String topicId, BinaryData resource,
+    public Mono<Response<BinaryData>> updateTopicWithResponseAsync(String roomId, String topicId, BinaryData topic,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTopic(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), roomId, topicId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), roomId, topicId, contentType, accept, topic, requestOptions, context));
     }
 
     /**
@@ -2808,7 +2824,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param topicId Topic identifier unique within the room.
-     * @param resource The resource instance.
+     * @param topic The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2817,12 +2833,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a chat topic in a room along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateTopicWithResponse(String roomId, String topicId, BinaryData resource,
+    public Response<BinaryData> updateTopicWithResponse(String roomId, String topicId, BinaryData topic,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.updateTopicSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getHub(), roomId,
-            topicId, contentType, accept, resource, requestOptions, Context.NONE);
+            topicId, contentType, accept, topic, requestOptions, Context.NONE);
     }
 
     /**
@@ -3123,7 +3139,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
-     * @param resource The resource instance.
+     * @param member The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3133,12 +3149,12 @@ public final class WebPubSubChatServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceRoomMemberWithResponseAsync(String roomId, String userId,
-        BinaryData resource, RequestOptions requestOptions) {
+        BinaryData member, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrReplaceRoomMember(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), roomId, userId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), roomId, userId, contentType, accept, member, requestOptions, context));
     }
 
     /**
@@ -3184,7 +3200,7 @@ public final class WebPubSubChatServiceClientImpl {
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
-     * @param resource The resource instance.
+     * @param member The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3193,12 +3209,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a room member along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceRoomMemberWithResponse(String roomId, String userId, BinaryData resource,
+    public Response<BinaryData> createOrReplaceRoomMemberWithResponse(String roomId, String userId, BinaryData member,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceRoomMemberSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            this.getHub(), roomId, userId, contentType, accept, resource, requestOptions, Context.NONE);
+            this.getHub(), roomId, userId, contentType, accept, member, requestOptions, Context.NONE);
     }
 
     /**
@@ -3573,7 +3589,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param userId User identifier.
-     * @param resource The resource instance.
+     * @param user The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3583,13 +3599,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceUserWithResponseAsync(String userId, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrReplaceUserWithResponseAsync(String userId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrReplaceUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                this.getHub(), userId, contentType, accept, resource, requestOptions, context));
+                this.getHub(), userId, contentType, accept, user, requestOptions, context));
     }
 
     /**
@@ -3639,7 +3655,7 @@ public final class WebPubSubChatServiceClientImpl {
      * </table>
      *
      * @param userId User identifier.
-     * @param resource The resource instance.
+     * @param user The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3648,12 +3664,12 @@ public final class WebPubSubChatServiceClientImpl {
      * @return represents a user profile in the chat system along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceUserWithResponse(String userId, BinaryData resource,
+    public Response<BinaryData> createOrReplaceUserWithResponse(String userId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getHub(),
-            userId, contentType, accept, resource, requestOptions, Context.NONE);
+            userId, contentType, accept, user, requestOptions, Context.NONE);
     }
 
     /**

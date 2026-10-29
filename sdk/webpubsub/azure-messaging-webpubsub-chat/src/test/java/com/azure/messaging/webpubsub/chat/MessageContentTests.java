@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -153,6 +154,34 @@ public class MessageContentTests {
         assertEquals("{\"content\":{\"binary\":\"AQID\"}}", sentRequest.get().getBodyAsBinaryData().toString());
         assertEquals("application/merge-patch+json",
             sentRequest.get().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void updatesUsePathMessageIdNotReadOnlyModelId(boolean async) {
+        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
+        String response = "{\"id\":\"2\",\"content\":{\"text\":\"updated\"}}";
+        WebPubSubChatServiceClientBuilder builder
+            = new WebPubSubChatServiceClientBuilder().endpoint("https://example.webpubsub.azure.com")
+                .hub("chat")
+                .credential(new MockTokenCredential())
+                .httpClient(request -> {
+                    sentRequest.set(request);
+                    return Mono.just(new MockHttpResponse(request, 200,
+                        new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                        response.getBytes(StandardCharsets.UTF_8)));
+                });
+        ChatMessage message = BinaryData.fromString("{\"id\":\"1\",\"content\":{\"text\":\"original\"}}")
+            .toObject(ChatMessage.class)
+            .setContent(MessageContent.fromText("updated"));
+        ChatMessage result = async
+            ? builder.buildAsyncClient().updateMessage("c.room.default", "2", message).block()
+            : builder.buildClient().updateMessage("c.room.default", "2", message);
+
+        assertEquals("2", result.getId());
+        assertEquals("/api/hubs/chat/chat/conversations/c.room.default/messages/2",
+            sentRequest.get().getUrl().getPath());
+        assertEquals("{\"content\":{\"text\":\"updated\"}}", sentRequest.get().getBodyAsBinaryData().toString());
     }
 
     private static MessageContent deserialize(String json) throws IOException {

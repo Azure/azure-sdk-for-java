@@ -13,7 +13,7 @@ import com.azure.messaging.webpubsub.chat.models.ChatRoom;
 import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
 import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatTopicState;
-import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.chat.models.ClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.HumanChatUser;
 import com.azure.messaging.webpubsub.chat.models.MessageContent;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
@@ -71,7 +71,7 @@ public final class WebPubSubChatSamples {
 
         // BEGIN: readme-sample-getChatClientAccessToken
         WebPubSubClientAccessToken accessToken = client.getClientAccessToken(
-            new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
+            new ClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
         String clientConnectionUrl = accessToken.getUrl();
         // END: readme-sample-getChatClientAccessToken
     }
