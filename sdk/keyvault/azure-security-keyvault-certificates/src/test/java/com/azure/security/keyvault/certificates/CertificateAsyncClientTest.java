@@ -492,7 +492,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner((certName) -> {
             PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
-                = certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                = certificateAsyncClient.beginCreateCertificate(certName, TestUtils.setupCancellationPolicy())
                     .setPollInterval(Duration.ofMillis(250));
 
             StepVerifier
@@ -506,7 +506,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certPoller.last())
                 .assertNext(asyncPollResponse -> assertEquals("cancelled",
                     asyncPollResponse.getStatus().toString().toLowerCase(Locale.ROOT)))
-                .verifyComplete();
+                .expectComplete()
+                .verify(Duration.ofSeconds(60));
         });
     }
 
