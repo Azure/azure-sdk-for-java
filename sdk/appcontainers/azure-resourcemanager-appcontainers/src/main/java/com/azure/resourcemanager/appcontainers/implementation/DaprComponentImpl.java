@@ -161,10 +161,15 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.componentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "daprComponents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "resourceGroupName");
+        this.connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "connectedEnvironmentName");
+        this.componentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "componentName");
     }
 
     public DaprComponent refresh() {

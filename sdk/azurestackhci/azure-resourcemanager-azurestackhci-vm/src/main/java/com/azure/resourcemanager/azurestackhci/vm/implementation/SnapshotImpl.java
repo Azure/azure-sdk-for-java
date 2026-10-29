@@ -131,8 +131,12 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition, Snapsh
         com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.snapshotName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "snapshots");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/snapshots/{snapshotName}",
+            "resourceGroupName");
+        this.snapshotName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/snapshots/{snapshotName}",
+            "snapshotName");
     }
 
     public Snapshot refresh() {

@@ -131,8 +131,12 @@ public final class LoadBalancerImpl implements LoadBalancer, LoadBalancer.Defini
         com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.loadBalancerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "loadBalancers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/loadBalancers/{loadBalancerName}",
+            "resourceGroupName");
+        this.loadBalancerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/loadBalancers/{loadBalancerName}",
+            "loadBalancerName");
     }
 
     public LoadBalancer refresh() {

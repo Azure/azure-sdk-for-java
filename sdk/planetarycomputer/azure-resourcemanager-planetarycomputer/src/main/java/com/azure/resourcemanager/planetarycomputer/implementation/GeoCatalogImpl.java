@@ -132,8 +132,12 @@ public final class GeoCatalogImpl implements GeoCatalog, GeoCatalog.Definition, 
         com.azure.resourcemanager.planetarycomputer.PlanetaryComputerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "geoCatalogs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "resourceGroupName");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "catalogName");
     }
 
     public GeoCatalog refresh() {

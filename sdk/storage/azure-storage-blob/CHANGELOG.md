@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the block size.
+
 ### Other Changes
 
 ## 12.36.0 (2026-10-07)

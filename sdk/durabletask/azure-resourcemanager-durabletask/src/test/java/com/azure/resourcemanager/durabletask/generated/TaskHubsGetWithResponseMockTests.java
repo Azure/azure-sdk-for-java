@@ -13,6 +13,7 @@ import com.azure.resourcemanager.durabletask.DurableTaskManager;
 import com.azure.resourcemanager.durabletask.models.TaskHub;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public final class TaskHubsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"ncw\"},\"id\":\"hxg\",\"name\":\"trmgucnapkte\",\"type\":\"ellwptfdy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"wrck\",\"capabilities\":[\"lyhpluodpvruud\"]},\"id\":\"zibt\",\"name\":\"ostgkts\",\"type\":\"vdxec\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,9 @@ public final class TaskHubsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TaskHub response = manager.taskHubs()
-            .getWithResponse("dtpnapnyiropuhp", "gvpgy", "gqgitxmedjvcsl", com.azure.core.util.Context.NONE)
+            .getWithResponse("ydbsd", "hmkxmaehvbb", "uripltfnhtba", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("lyhpluodpvruud", response.properties().capabilities().get(0));
     }
 }

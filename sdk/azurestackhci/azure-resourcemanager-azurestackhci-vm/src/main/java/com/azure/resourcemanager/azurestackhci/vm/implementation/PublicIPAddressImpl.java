@@ -131,8 +131,12 @@ public final class PublicIPAddressImpl implements PublicIPAddress, PublicIPAddre
         com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publicIPAddressName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publicIPAddresses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
+            "resourceGroupName");
+        this.publicIPAddressName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
+            "publicIPAddressName");
     }
 
     public PublicIPAddress refresh() {
