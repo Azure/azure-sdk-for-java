@@ -5,14 +5,18 @@ package com.azure.resourcemanager.platformvalidation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,6 +26,7 @@ import com.azure.resourcemanager.platformvalidation.fluent.models.CloudValidatio
 import com.azure.resourcemanager.platformvalidation.fluent.models.ExecutionPlanRunInner;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationExecutionPlanInner;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestRunInner;
+import com.azure.resourcemanager.platformvalidation.implementation.PlatformValidationManagementClientBuilder;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationProperties;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdate;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdateProperties;
@@ -32,7 +37,11 @@ import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPl
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
+import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -43,60 +52,119 @@ import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@LiveOnly
-public class PlatformValidationLiveTests extends TestProxyTestBase {
+public class PlatformValidationLiveTests extends ResourceManagerTestProxyTestBase {
     private static final Duration OPERATION_TIMEOUT = Duration.ofMinutes(10);
     private static final String BOOT_TEST = "compute-vmimagevalidation-vm-boot-test";
     private static final String TEST_ID = "/providers/Microsoft.PlatformValidation/validationTests/" + BOOT_TEST;
     private static final Configuration CONFIG = Configuration.getGlobalConfiguration();
+    static final String PLAYBACK_IMAGE = "https://example.invalid/image.vhd";
+    static final String IMAGE_URL_REGEX = "https://[^\\s\"\\\\<>]+";
+    static final String SIGNED_URL_REGEX = "https://[^\\s\"\\\\<>]+\\?[^\\s\"\\\\<>]+";
+    private static final String SUBSCRIPTION_REGEX = "(?i)(?<=/subscriptions/)[^/\"\\\\?\\s]+";
+    private final ProviderRegistrationPolicy registrationPolicy = new ProviderRegistrationPolicy();
     private final AtomicReference<String[]> operationTarget = new AtomicReference<>();
     private PlatformValidationManagementClient client;
     private ResourceManager resources;
     private String group;
     private String location;
     private String subscription;
+    private boolean createManagedGroup;
+
+    public PlatformValidationLiveTests() {
+        addSanitizers(
+            // Signed URLs can also appear in service errors and execution results, outside the embedded plan JSON.
+            new TestProxySanitizer(proxyRegex(SIGNED_URL_REGEX), PLAYBACK_IMAGE, TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer("$..planConfigurationJson", proxyRegex(IMAGE_URL_REGEX), PLAYBACK_IMAGE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..planConfigurationSnapshot", proxyRegex(IMAGE_URL_REGEX), PLAYBACK_IMAGE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..inputsJson", proxyRegex(IMAGE_URL_REGEX), PLAYBACK_IMAGE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}", REDACTED_VALUE,
+                TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer(proxyRegex(SUBSCRIPTION_REGEX), "00000000-0000-0000-0000-000000000000",
+                TestProxySanitizerType.URL),
+            new TestProxySanitizer(proxyRegex(SUBSCRIPTION_REGEX), "00000000-0000-0000-0000-000000000000",
+                TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer("x-ms-operation-identifier", null, REDACTED_VALUE, TestProxySanitizerType.HEADER),
+            new TestProxySanitizer("$..tenantId", null, "00000000-0000-0000-0000-000000000000",
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..principalId", null, "00000000-0000-0000-0000-000000000000",
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..createdBy", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..lastModifiedBy", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+        for (String header : Arrays.asList("Azure-AsyncOperation", "Operation-Location", "Location")) {
+            addSanitizers(new TestProxySanitizer(header, proxyRegex(SUBSCRIPTION_REGEX),
+                "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.HEADER));
+        }
+    }
+
+    static String proxyRegex(String regex) {
+        // This framework version interpolates regex strings directly into the proxy's JSON request.
+        return regex.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
 
     @Override
-    protected void beforeTest() {
-        subscription = required("AZURE_SUBSCRIPTION_ID");
-        group = required("AZURE_RESOURCE_GROUP_NAME");
-        location = CONFIG.get("PLATFORMVALIDATION_LOCATION", "southcentralusstg");
-        AzureProfile profile = new AzureProfile(required("AZURE_TENANT_ID"), subscription,
-            testEnvironment(CONFIG.get("PLATFORMVALIDATION_ARM_ENDPOINT")));
-        TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
-        HttpLogOptions logging = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
-        resources = ResourceManager.configure()
-            .withLogOptions(logging)
-            .authenticate(credential, profile)
-            .withSubscription(subscription);
-        client = PlatformValidationManager.configure()
-            .withPolicy(new ProviderRegistrationPolicy(resources))
-            .withLogOptions(logging)
-            .withDefaultPollInterval(Duration.ofSeconds(5))
-            .withPolicy((context, next) -> next.process().map(response -> {
-                if (context.getHttpRequest().getHttpMethod() == HttpMethod.PATCH) {
-                    String target = response.getHeaderValue("Azure-AsyncOperation");
-                    if (target == null) {
-                        target = response.getHeaderValue("Operation-Location");
-                    }
-                    operationTarget.set(operationStatusTarget(target));
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        List<HttpPipelinePolicy> testPolicies = new ArrayList<>(policies);
+        // The framework's default body logger would expose the image SAS before recording sanitization.
+        testPolicies.removeIf(HttpDebugLoggingPolicy.class::isInstance);
+        testPolicies.add(registrationPolicy);
+        testPolicies.add((context, next) -> next.process().map(response -> {
+            if (context.getHttpRequest().getHttpMethod() == HttpMethod.PATCH) {
+                String target = response.getHeaderValue("Azure-AsyncOperation");
+                if (target == null) {
+                    target = response.getHeaderValue("Operation-Location");
                 }
-                return response;
-            }))
-            .authenticate(credential, profile)
-            .serviceClient();
+                operationTarget.set(operationStatusTarget(target));
+            }
+            return response;
+        }));
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null,
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE), null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), testPolicies, httpClient);
+    }
+
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        AzureProfile serviceProfile = isPlaybackMode()
+            ? profile
+            : new AzureProfile(profile.getTenantId(), profile.getSubscriptionId(),
+                testEnvironment(CONFIG.get("PLATFORMVALIDATION_ARM_ENDPOINT")));
+        subscription = serviceProfile.getSubscriptionId();
+        group
+            = testResourceNamer.recordValueFromConfig(isPlaybackMode() ? null : required("AZURE_RESOURCE_GROUP_NAME"));
+        location
+            = testResourceNamer.recordValueFromConfig(CONFIG.get("PLATFORMVALIDATION_LOCATION", "southcentralusstg"));
+        createManagedGroup = Boolean.parseBoolean(
+            testResourceNamer.recordValueFromConfig(CONFIG.get("PLATFORMVALIDATION_CREATE_MANAGED_GROUP", "false")));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        resources = ResourceManager.authenticate(httpPipeline, serviceProfile).withSubscription(subscription);
+        registrationPolicy.setProviders(resources.providers());
+        client = new PlatformValidationManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(serviceProfile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(subscription)
+            .defaultPollInterval(isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(5))
+            .buildClient();
         Assertions.assertTrue(resources.resourceGroups().contain(group), "Provide a dedicated test resource group.");
+    }
+
+    @Override
+    protected void cleanUpResources() {
+        // Scenarios delete only their own children on success and retain failure evidence, never the supplied group.
     }
 
     @Test
@@ -146,10 +214,12 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
 
     @Test
     public void bootExecutionLifecycle() {
-        Assumptions.assumeTrue(CONFIG.get("PLATFORMVALIDATION_RUN_EXECUTION", false),
+        Assumptions.assumeTrue(isPlaybackMode() || CONFIG.get("PLATFORMVALIDATION_RUN_EXECUTION", false),
             "Boot execution requires explicit opt-in and an approved image fixture.");
-        String source = required("PLATFORMVALIDATION_SOURCE_VHD_URI");
-        validateImageSource(source, OffsetDateTime.now());
+        String source = isPlaybackMode() ? PLAYBACK_IMAGE : required("PLATFORMVALIDATION_SOURCE_VHD_URI");
+        if (!isPlaybackMode()) {
+            validateImageSource(source, OffsetDateTime.now());
+        }
         safeServiceCall(() -> exerciseExecution(source, true));
     }
 
@@ -213,7 +283,7 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         String description = "Java SDK execution " + runName;
         String configuration = planConfiguration(planName, source);
         createCloudValidation(cv);
-        if (CONFIG.get("PLATFORMVALIDATION_CREATE_MANAGED_GROUP", false)) {
+        if (createManagedGroup) {
             Assertions.assertFalse(resources.resourceGroups().contain(cv + "-mrg"),
                 "Refusing to adopt a managed resource group created by another owner.");
             resources.resourceGroups().define(cv + "-mrg").withRegion(location).withTags(tags(cv, "manual")).create();
@@ -311,8 +381,7 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         Assertions.assertFalse(
             client.getValidationExecutionPlans().listByResourceGroup(group, name).iterator().hasNext(),
             "Plans remain; refusing parent deletion.");
-        if (CONFIG.get("PLATFORMVALIDATION_CREATE_MANAGED_GROUP", false)
-            && resources.resourceGroups().contain(name + "-mrg")) {
+        if (createManagedGroup && resources.resourceGroups().contain(name + "-mrg")) {
             Assertions.assertEquals(name, resources.resourceGroups().getByName(name + "-mrg").tags().get("sdk-test"));
             Assertions.assertFalse(resources.genericResources().listByResourceGroup(name + "-mrg").iterator().hasNext(),
                 "Managed group is not empty; retaining it.");
@@ -481,8 +550,8 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         return new AzureEnvironment(endpoints);
     }
 
-    private static String name(String prefix) {
-        return prefix + UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+    private String name(String prefix) {
+        return generateRandomResourceName(prefix, prefix.length() + 16);
     }
 
     private static Map<String, String> tags(String owner, String phase) {
@@ -498,7 +567,10 @@ public class PlatformValidationLiveTests extends TestProxyTestBase {
         return value;
     }
 
-    private static String sourceImage() {
+    private String sourceImage() {
+        if (isPlaybackMode()) {
+            return PLAYBACK_IMAGE;
+        }
         String source = CONFIG.get("PLATFORMVALIDATION_SOURCE_VHD_URI");
         Assumptions.assumeTrue(source != null && !source.isEmpty(), "An approved image fixture is required.");
         validateImageSource(source, OffsetDateTime.now());

@@ -10,6 +10,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -136,6 +139,55 @@ public class PlatformValidationLiveTestHelpersTests {
         Assertions.assertTrue(json.contains("compute-vmimagevalidation-vm-boot-test"));
         Assertions.assertTrue(json.contains("sourceVhdUri"));
         Assertions.assertTrue(json.contains("\\\"b\\\""));
+    }
+
+    @Test
+    public void recordingSanitizesImageInsideEmbeddedPlanJson() {
+        String source = "https://private.example.invalid/image.vhd?se=2026-12-01T00%3A00%3A00Z&sig=not-a-secret";
+        String configuration = PlatformValidationLiveTests.planConfiguration("jplan123", source);
+        String body = BinaryData.fromObject(java.util.Collections.singletonMap("planConfigurationJson", configuration))
+            .toString();
+        String sanitized
+            = body.replaceAll(PlatformValidationLiveTests.SIGNED_URL_REGEX, PlatformValidationLiveTests.PLAYBACK_IMAGE);
+        Map<?, ?> document = BinaryData.fromString(sanitized).toObject(Map.class);
+        Assertions.assertEquals(
+            PlatformValidationLiveTests.planConfiguration("jplan123", PlatformValidationLiveTests.PLAYBACK_IMAGE),
+            document.get("planConfigurationJson"));
+        Assertions.assertFalse(sanitized.contains("private.example.invalid"));
+        Assertions.assertFalse(sanitized.contains("sig="));
+    }
+
+    @Test
+    public void recordingSanitizesSignedResultLinksWithoutChangingResourceIds() {
+        String body = "{\"id\":\"/subscriptions/example/resourceGroups/group\","
+            + "\"link\":\"https://private.example.invalid/result?sig=not-a-secret\"}";
+        String sanitized
+            = body.replaceAll(PlatformValidationLiveTests.SIGNED_URL_REGEX, PlatformValidationLiveTests.PLAYBACK_IMAGE);
+        Map<?, ?> document = BinaryData.fromString(sanitized).toObject(Map.class);
+        Assertions.assertEquals("/subscriptions/example/resourceGroups/group", document.get("id"));
+        Assertions.assertEquals(PlatformValidationLiveTests.PLAYBACK_IMAGE, document.get("link"));
+    }
+
+    @Test
+    public void recordingNormalizesUnsignedImageForPlayback() {
+        String configuration
+            = PlatformValidationLiveTests.planConfiguration("jplan123", "https://private.example.invalid/image.vhd");
+        Assertions.assertEquals(
+            PlatformValidationLiveTests.planConfiguration("jplan123", PlatformValidationLiveTests.PLAYBACK_IMAGE),
+            configuration.replaceAll(PlatformValidationLiveTests.IMAGE_URL_REGEX,
+                PlatformValidationLiveTests.PLAYBACK_IMAGE));
+    }
+
+    @Test
+    public void proxySanitizerRequestPreservesRegexEscapes() throws java.net.MalformedURLException {
+        HttpRequest request = TestProxyUtils.createAddSanitizersRequest(
+            java.util.Collections.singletonList(new TestProxySanitizer(
+                PlatformValidationLiveTests.proxyRegex(PlatformValidationLiveTests.SIGNED_URL_REGEX),
+                PlatformValidationLiveTests.PLAYBACK_IMAGE, TestProxySanitizerType.BODY_REGEX)),
+            new java.net.URL("http://localhost:5000"));
+        java.util.List<?> sanitizers = request.getBodyAsBinaryData().toObject(java.util.List.class);
+        Map<?, ?> body = (Map<?, ?>) ((Map<?, ?>) sanitizers.get(0)).get("Body");
+        Assertions.assertEquals(PlatformValidationLiveTests.SIGNED_URL_REGEX, body.get("regex"));
     }
 
     private static HttpResponseException responseError(int status) {
