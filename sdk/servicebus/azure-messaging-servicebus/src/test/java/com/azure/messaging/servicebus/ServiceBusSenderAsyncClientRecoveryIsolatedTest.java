@@ -31,7 +31,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -717,6 +720,47 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                 Assertions.assertNotNull(replacement);
                 Assertions.assertNotSame(first, replacement);
             } finally {
+                cache.dispose();
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void delayedReceiveLinkFailureDoesNotRemoveReplacementSession(boolean crossEntityTransactions) {
+        try (MockEndpoint endpoint = createMockEndpoint(2, new int[] { 0, 0 })) {
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> Mockito.spy(endpoint.arrange(crossEntityTransactions)));
+            final ServiceBusReactorAmqpConnection connection = cache.get().block(Duration.ofSeconds(5));
+            final AmqpSession failedSession = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+            final AtomicReference<AmqpSession> replacement = new AtomicReference<>();
+            final Sinks.One<Void> failureHandled = Sinks.one();
+            Mockito.doAnswer(invocation -> {
+                Assertions.assertTrue(connection.removeSession(QUEUE_NAME));
+                replacement.set(connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5)));
+                Assertions.assertNotSame(failedSession, replacement.get());
+                return Mono.error(RETRIABLE_LINK_ERROR)
+                    .doAfterTerminate(() -> failureHandled.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST));
+            })
+                .doReturn(Mono.error(NON_RETRIABLE_ERROR_1))
+                .when(connection)
+                .createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
+                    any(MessagingEntityType.class), anyString());
+            final ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(FQDN, QUEUE_NAME,
+                MessagingEntityType.QUEUE,
+                ReceiverOptions.createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, null, false),
+                new ConnectionCacheWrapper(cache), Duration.ofSeconds(10),
+                new ServiceBusReceiverInstrumentation(null, null, FQDN, QUEUE_NAME, null, ReceiverKind.ASYNC_RECEIVER),
+                messageSerializer, onClientClosed, CLIENT_IDENTIFIER);
+            try {
+                StepVerifier.create(client.receiveMessages()).then(() -> {
+                    failureHandled.asMono().block(Duration.ofSeconds(5));
+                    Assertions.assertNotNull(replacement.get());
+                    Assertions.assertFalse(replacement.get().isDisposed());
+                }).thenCancel().verify(Duration.ofSeconds(5));
+                Assertions.assertSame(connection, cache.get().block(Duration.ofSeconds(5)));
+            } finally {
+                client.close();
                 cache.dispose();
             }
         }

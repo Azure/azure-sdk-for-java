@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.Connection;
 import reactor.core.Disposable;
@@ -119,6 +120,18 @@ final class ReactorSessionCache {
         return removed != null;
     }
 
+    boolean evict(String name, AmqpSession expectedSession) {
+        if (name == null || expectedSession == null) {
+            return false;
+        }
+        final Entry entry = entries.get(name);
+        if (entry == null || entry.getSession() != expectedSession || !entries.remove(name, entry)) {
+            return false;
+        }
+        entry.dispose();
+        return true;
+    }
+
     /**
      * Signal that the owner ({@link ReactorConnection}) of the cache is disposed of.
      */
@@ -193,7 +206,7 @@ final class ReactorSessionCache {
         } else {
             logger.atInfo().addKeyValue(SESSION_NAME_KEY, name).addKeyValue(SESSION_ID_KEY, id).log(message);
         }
-        evict(name);
+        evict(name, session);
     }
 
     /**

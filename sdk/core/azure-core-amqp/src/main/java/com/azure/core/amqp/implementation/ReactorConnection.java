@@ -362,7 +362,7 @@ public class ReactorConnection implements AmqpConnection {
                     logger.atInfo()
                         .addKeyValue(SESSION_NAME_KEY, sessionName)
                         .log("Error occurred. Removing and disposing session", error);
-                    removeSession(key);
+                    removeSession(key, amqpSession);
                 }, () -> {
                     // If we were already disposing of the connection, the session would be removed.
                     if (isDisposed.get()) {
@@ -372,7 +372,7 @@ public class ReactorConnection implements AmqpConnection {
                     logger.atVerbose()
                         .addKeyValue(SESSION_NAME_KEY, sessionName)
                         .log("Complete. Removing and disposing session.");
-                    removeSession(key);
+                    removeSession(key, amqpSession);
                 });
 
                 return new SessionSubscription(amqpSession, subscription);
@@ -396,8 +396,7 @@ public class ReactorConnection implements AmqpConnection {
 
                     final AmqpException amqpException = (AmqpException) error;
                     if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
-                        final SessionSubscription removed = sessionMap.remove(sessionName);
-                        removed.dispose();
+                        removeSession(sessionName, sessionSubscription.getSession());
                     }
                 });
 
@@ -441,6 +440,28 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         return removed != null;
+    }
+
+    /**
+     * Removes a session only if it is still the cached instance.
+     *
+     * @param sessionName The name used to cache the session.
+     * @param expectedSession The session owned by the failed operation.
+     * @return Whether the expected session was removed.
+     */
+    protected boolean removeSession(String sessionName, AmqpSession expectedSession) {
+        if (sessionName == null || expectedSession == null) {
+            return false;
+        }
+        if (useSessionChannelCache) {
+            return sessionCache.evict(sessionName, expectedSession);
+        }
+        final SessionSubscription entry = sessionMap.get(sessionName);
+        if (entry == null || entry.getSession() != expectedSession || !sessionMap.remove(sessionName, entry)) {
+            return false;
+        }
+        entry.dispose();
+        return true;
     }
 
     @Override

@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -407,6 +408,35 @@ class ReactorConnectionTest {
             .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
+    }
+
+    @Test
+    void removeSessionOnlyRemovesExpectedInstance() {
+        final Session secondSession = mock(Session.class);
+        final Event secondEvent = mock(Event.class);
+        when(connectionProtonJ.session()).thenReturn(session).thenReturn(secondSession);
+        when(session.attachments()).thenReturn(record);
+        when(secondSession.attachments()).thenReturn(mock(Record.class));
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        when(secondSession.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        when(secondEvent.getSession()).thenReturn(secondSession);
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        connectionHandler.onConnectionRemoteOpen(connectionEvent);
+        sessionHandler.onSessionRemoteOpen(sessionEvent);
+        final AmqpSession first = connection.createSession(SESSION_NAME).block(VERIFY_TIMEOUT);
+        assertNotNull(first);
+        assertFalse(connection.removeSession(SESSION_NAME, mock(AmqpSession.class)));
+        assertSame(first, connection.createSession(SESSION_NAME).block(VERIFY_TIMEOUT));
+        assertTrue(connection.removeSession(SESSION_NAME, first));
+        sessionHandler2.onSessionRemoteOpen(secondEvent);
+        final AmqpSession replacement = connection.createSession(SESSION_NAME).block(VERIFY_TIMEOUT);
+        assertNotNull(replacement);
+        Assertions.assertNotSame(first, replacement);
+        assertFalse(connection.removeSession(SESSION_NAME, first));
+        assertFalse(replacement.isDisposed());
+        assertSame(replacement, connection.createSession(SESSION_NAME).block(VERIFY_TIMEOUT));
+        assertTrue(connection.removeSession(SESSION_NAME, replacement));
+        assertFalse(connection.removeSession(SESSION_NAME, replacement));
     }
 
     /**

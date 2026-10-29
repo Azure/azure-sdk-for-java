@@ -1751,10 +1751,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         .addKeyValue("recoveryKind", recoveryKind)
                         .log("Receive link creation failed, performing {} recovery.", recoveryKind, e);
 
-                    // For both LINK and CONNECTION recovery, the session hosting the failed link may
-                    // be stale. Ask the connection to remove it so the next retry creates a fresh
-                    // session + link. CONNECTION recovery first invalidates that connection so the
-                    // next retry rebuilds connection, session, and link.
+                    // The receive-link factory evicts only the session that hosted the failed link.
+                    // CONNECTION recovery also invalidates the connection used by this attempt.
                     final ServiceBusAmqpConnection failedConnection = operationConnection.getAndSet(null);
                     Mono<Void> recovery = Mono.<Void>fromRunnable(() -> {
                         if (failedConnection == null) {
@@ -1763,15 +1761,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         if (recoveryKind == RecoveryKind.CONNECTION) {
                             connectionCacheWrapper.invalidateConnection(failedConnection);
                         }
-                        final boolean removed = failedConnection.removeSession(entityPath);
-                        LOGGER.atVerbose()
-                            .addKeyValue(LINK_NAME_KEY, linkName)
-                            .addKeyValue("sessionRemoved", removed)
-                            .log("Stale session removal during {} recovery.", recoveryKind);
                     }).onErrorResume(error -> {
                         LOGGER.atWarning()
                             .addKeyValue(LINK_NAME_KEY, linkName)
-                            .log("Error removing stale session during {} recovery.", recoveryKind, error);
+                            .log("Error invalidating connection during {} recovery.", recoveryKind, error);
                         return Mono.empty();
                     });
 

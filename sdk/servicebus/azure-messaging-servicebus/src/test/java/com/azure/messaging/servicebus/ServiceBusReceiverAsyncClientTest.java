@@ -1711,7 +1711,7 @@ class ServiceBusReceiverAsyncClientTest {
             StepVerifier.create(client.receiveMessages())
                 .expectError(ServiceBusException.class)
                 .verify(DEFAULT_TIMEOUT);
-            verify(connection).removeSession(ENTITY_PATH);
+            verify(connection, never()).removeSession(anyString());
             verify(replacement, never()).removeSession(anyString());
             verify(wrapper).invalidateConnection(connection);
             verify(wrapper, never()).invalidateConnection(replacement);
