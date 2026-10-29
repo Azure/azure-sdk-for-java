@@ -107,9 +107,15 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
         com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/connections/{connectionName}",
+            "resourceGroupName");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/connections/{connectionName}",
+            "storageMoverName");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/connections/{connectionName}",
+            "connectionName");
     }
 
     public Connection refresh() {

@@ -13,17 +13,16 @@ public final class VirtualMachineNetworkInterfaceDnsSettingsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineNetworkInterfaceDnsSettingsConfiguration model
-            = BinaryData.fromString("{\"dnsServers\":[\"fpubjibwwi\",\"tohqkvpuvksgp\",\"saknynfsyn\"]}")
+            = BinaryData.fromString("{\"dnsServers\":[\"queziky\"]}")
                 .toObject(VirtualMachineNetworkInterfaceDnsSettingsConfiguration.class);
-        Assertions.assertEquals("fpubjibwwi", model.dnsServers().get(0));
+        Assertions.assertEquals("queziky", model.dnsServers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineNetworkInterfaceDnsSettingsConfiguration model
-            = new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
-                .withDnsServers(Arrays.asList("fpubjibwwi", "tohqkvpuvksgp", "saknynfsyn"));
+            = new VirtualMachineNetworkInterfaceDnsSettingsConfiguration().withDnsServers(Arrays.asList("queziky"));
         model = BinaryData.fromObject(model).toObject(VirtualMachineNetworkInterfaceDnsSettingsConfiguration.class);
-        Assertions.assertEquals("fpubjibwwi", model.dnsServers().get(0));
+        Assertions.assertEquals("queziky", model.dnsServers().get(0));
     }
 }

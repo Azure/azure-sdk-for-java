@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.durabletask.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.durabletask.fluent.models.SchedulerInner;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
@@ -47,6 +49,10 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
 
     public SchedulerProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -126,8 +132,12 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     SchedulerImpl(SchedulerInner innerObject, com.azure.resourcemanager.durabletask.DurableTaskManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schedulerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedulers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}",
+            "resourceGroupName");
+        this.schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}",
+            "schedulerName");
     }
 
     public Scheduler refresh() {
@@ -144,6 +154,14 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
             .getByResourceGroupWithResponse(resourceGroupName, schedulerName, context)
             .getValue();
         return this;
+    }
+
+    public Response<Void> restartWithResponse(Context context) {
+        return serviceManager.schedulers().restartWithResponse(resourceGroupName, schedulerName, context);
+    }
+
+    public void restart() {
+        serviceManager.schedulers().restart(resourceGroupName, schedulerName);
     }
 
     public SchedulerImpl withRegion(Region location) {
@@ -169,6 +187,16 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     public SchedulerImpl withProperties(SchedulerProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public SchedulerImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public SchedulerImpl withProperties(SchedulerPropertiesUpdate properties) {

@@ -182,19 +182,10 @@ public class RealtimeOpenAIDedupSerializationTests {
 
     @Test
     public void testStatusAndUsageAcrossVoiceResponseModels() throws IOException {
-        VoiceResponseBase responseBase;
-        VoiceAgentRealtimeResponseBase realtimeResponseBase;
         VoiceAgentRealtimeResponse realtimeResponse;
         VoiceResponse response;
         VoiceConversation conversation;
 
-        try (JsonReader reader = JsonProviders.createReader(RESPONSE_FIELDS_JSON)) {
-            responseBase = VoiceResponseBase.fromJson(reader);
-        }
-        try (
-            JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"," + RESPONSE_FIELDS_JSON.substring(1))) {
-            realtimeResponseBase = VoiceAgentRealtimeResponseBase.fromJson(reader);
-        }
         try (
             JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"," + RESPONSE_FIELDS_JSON.substring(1))) {
             realtimeResponse = VoiceAgentRealtimeResponse.fromJson(reader);
@@ -208,14 +199,10 @@ public class RealtimeOpenAIDedupSerializationTests {
             conversation = VoiceConversation.fromJson(reader);
         }
 
-        assertResponseFields(responseBase.getStatusDetails(), responseBase.getUsage());
-        assertResponseFields(realtimeResponseBase.getStatusDetails(), realtimeResponseBase.getUsage());
         assertResponseFields(realtimeResponse.getStatusDetails(), realtimeResponse.getUsage());
         assertResponseFields(response.getStatusDetails(), response.getUsage());
         assertUsage(conversation.getUsage());
 
-        assertStable(responseBase, VoiceResponseBase::fromJson);
-        assertStable(realtimeResponseBase, VoiceAgentRealtimeResponseBase::fromJson);
         assertStable(realtimeResponse, VoiceAgentRealtimeResponse::fromJson);
         assertStable(response, VoiceResponse::fromJson);
         assertStable(conversation, VoiceConversation::fromJson);
@@ -223,9 +210,9 @@ public class RealtimeOpenAIDedupSerializationTests {
 
     @Test
     public void testAbsentStatusAndUsageRemainAbsent() throws IOException {
-        VoiceAgentRealtimeResponseBase response;
+        VoiceAgentRealtimeResponse response;
         try (JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"}")) {
-            response = VoiceAgentRealtimeResponseBase.fromJson(reader);
+            response = VoiceAgentRealtimeResponse.fromJson(reader);
         }
 
         assertNull(response.getStatusDetails());

@@ -139,10 +139,18 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
-        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "clusterName");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "applicationName");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "serviceName");
     }
 
     public ServiceResource refresh() {

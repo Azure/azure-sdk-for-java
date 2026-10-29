@@ -128,9 +128,15 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dotNetComponents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "resourceGroupName");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "environmentName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "name");
     }
 
     public DotNetComponent refresh() {

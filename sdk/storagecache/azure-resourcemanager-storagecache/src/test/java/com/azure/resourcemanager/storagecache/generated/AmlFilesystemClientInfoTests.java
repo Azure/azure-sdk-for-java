@@ -11,7 +11,7 @@ public final class AmlFilesystemClientInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemClientInfo model = BinaryData.fromString(
-            "{\"mgsAddress\":\"gjb\",\"mountCommand\":\"xb\",\"lustreVersion\":\"bsrfbj\",\"containerStorageInterface\":{\"persistentVolumeClaim\":\"w\",\"persistentVolume\":\"otftpvjzbexilz\",\"storageClass\":\"fqqnvwpmqtaruo\"}}")
+            "{\"mgsAddress\":\"qolbgyc\",\"mountCommand\":\"iertgccymvaolp\",\"lustreVersion\":\"lqlfm\",\"containerStorageInterface\":{\"persistentVolumeClaim\":\"bbglzpswiydmc\",\"persistentVolume\":\"hzdxssadbzm\",\"storageClass\":\"dfznudaodv\"}}")
             .toObject(AmlFilesystemClientInfo.class);
     }
 }

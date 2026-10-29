@@ -61,6 +61,13 @@ public interface StorageCacheManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the RebalanceJobsClient object to access its operations.
+     * 
+     * @return the RebalanceJobsClient object.
+     */
+    RebalanceJobsClient getRebalanceJobs();
+
+    /**
      * Gets the CachesClient object to access its operations.
      * 
      * @return the CachesClient object.

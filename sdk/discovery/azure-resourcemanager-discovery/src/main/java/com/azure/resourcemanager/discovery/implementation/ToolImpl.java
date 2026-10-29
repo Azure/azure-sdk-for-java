@@ -120,8 +120,12 @@ public final class ToolImpl implements Tool, Tool.Definition, Tool.Update {
     ToolImpl(ToolInner innerObject, com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.toolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/tools/{toolName}",
+            "resourceGroupName");
+        this.toolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/tools/{toolName}",
+            "toolName");
     }
 
     public Tool refresh() {
