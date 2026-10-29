@@ -56,6 +56,11 @@ public final class AzureFileDatastore extends DatastoreProperties {
      */
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
 
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of AzureFileDatastore class.
      */
@@ -216,6 +221,16 @@ public final class AzureFileDatastore extends DatastoreProperties {
     }
 
     /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     *
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -300,7 +315,7 @@ public final class AzureFileDatastore extends DatastoreProperties {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureFileDatastore.withTags(tags);
                 } else if ("isDefault".equals(fieldName)) {
-                    deserializedAzureFileDatastore.withIsDefault(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureFileDatastore.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("accountName".equals(fieldName)) {
                     deserializedAzureFileDatastore.accountName = reader.getString();
                 } else if ("fileShareName".equals(fieldName)) {

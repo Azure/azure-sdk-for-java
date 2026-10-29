@@ -56,6 +56,11 @@ public final class AzureBlobDatastore extends DatastoreProperties {
      */
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
 
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of AzureBlobDatastore class.
      */
@@ -216,6 +221,16 @@ public final class AzureBlobDatastore extends DatastoreProperties {
     }
 
     /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     *
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -300,7 +315,7 @@ public final class AzureBlobDatastore extends DatastoreProperties {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureBlobDatastore.withTags(tags);
                 } else if ("isDefault".equals(fieldName)) {
-                    deserializedAzureBlobDatastore.withIsDefault(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureBlobDatastore.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("datastoreType".equals(fieldName)) {
                     deserializedAzureBlobDatastore.datastoreType = DatastoreType.fromString(reader.getString());
                 } else if ("resourceGroup".equals(fieldName)) {

@@ -92,6 +92,11 @@ public final class SparkJob extends JobBaseProperties {
      */
     private SparkResourceConfiguration resources;
 
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
     /**
      * Creates an instance of SparkJob class.
      */
@@ -389,6 +394,16 @@ public final class SparkJob extends JobBaseProperties {
     }
 
     /**
+     * Get the status property: Status of the job.
+     *
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -565,7 +580,7 @@ public final class SparkJob extends JobBaseProperties {
                     Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
                     deserializedSparkJob.withServices(services);
                 } else if ("status".equals(fieldName)) {
-                    deserializedSparkJob.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedSparkJob.status = JobStatus.fromString(reader.getString());
                 } else if ("codeId".equals(fieldName)) {
                     deserializedSparkJob.codeId = reader.getString();
                 } else if ("entry".equals(fieldName)) {

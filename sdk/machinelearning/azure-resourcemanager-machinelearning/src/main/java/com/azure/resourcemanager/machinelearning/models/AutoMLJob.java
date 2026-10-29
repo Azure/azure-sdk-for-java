@@ -55,6 +55,11 @@ public final class AutoMLJob extends JobBaseProperties {
      */
     private AutoMLVertical taskDetails;
 
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
     /**
      * Creates an instance of AutoMLJob class.
      */
@@ -193,6 +198,16 @@ public final class AutoMLJob extends JobBaseProperties {
     public AutoMLJob withTaskDetails(AutoMLVertical taskDetails) {
         this.taskDetails = taskDetails;
         return this;
+    }
+
+    /**
+     * Get the status property: Status of the job.
+     *
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
     }
 
     /**
@@ -364,7 +379,7 @@ public final class AutoMLJob extends JobBaseProperties {
                     Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
                     deserializedAutoMLJob.withServices(services);
                 } else if ("status".equals(fieldName)) {
-                    deserializedAutoMLJob.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedAutoMLJob.status = JobStatus.fromString(reader.getString());
                 } else if ("taskDetails".equals(fieldName)) {
                     deserializedAutoMLJob.taskDetails = AutoMLVertical.fromJson(reader);
                 } else if ("jobType".equals(fieldName)) {

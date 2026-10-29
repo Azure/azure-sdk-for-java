@@ -26,6 +26,11 @@ public final class KubernetesOnlineDeployment extends OnlineDeploymentProperties
      */
     private ContainerResourceRequirements containerResourceRequirements;
 
+    /*
+     * Provisioning state for the endpoint deployment.
+     */
+    private DeploymentProvisioningState provisioningState;
+
     /**
      * Creates an instance of KubernetesOnlineDeployment class.
      */
@@ -61,6 +66,16 @@ public final class KubernetesOnlineDeployment extends OnlineDeploymentProperties
         withContainerResourceRequirements(ContainerResourceRequirements containerResourceRequirements) {
         this.containerResourceRequirements = containerResourceRequirements;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state for the endpoint deployment.
+     *
+     * @return the provisioningState value.
+     */
+    @Override
+    public DeploymentProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -282,8 +297,8 @@ public final class KubernetesOnlineDeployment extends OnlineDeploymentProperties
                 } else if ("modelMountPath".equals(fieldName)) {
                     deserializedKubernetesOnlineDeployment.withModelMountPath(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedKubernetesOnlineDeployment
-                        .withProvisioningState(DeploymentProvisioningState.fromString(reader.getString()));
+                    deserializedKubernetesOnlineDeployment.provisioningState
+                        = DeploymentProvisioningState.fromString(reader.getString());
                 } else if ("readinessProbe".equals(fieldName)) {
                     deserializedKubernetesOnlineDeployment.withReadinessProbe(ProbeSettings.fromJson(reader));
                 } else if ("requestSettings".equals(fieldName)) {

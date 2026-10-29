@@ -76,6 +76,11 @@ public final class CommandJob extends JobBaseProperties {
      */
     private JobResourceConfiguration resources;
 
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
     /**
      * Creates an instance of CommandJob class.
      */
@@ -304,6 +309,16 @@ public final class CommandJob extends JobBaseProperties {
     }
 
     /**
+     * Get the status property: Status of the job.
+     *
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -476,7 +491,7 @@ public final class CommandJob extends JobBaseProperties {
                     Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
                     deserializedCommandJob.withServices(services);
                 } else if ("status".equals(fieldName)) {
-                    deserializedCommandJob.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedCommandJob.status = JobStatus.fromString(reader.getString());
                 } else if ("command".equals(fieldName)) {
                     deserializedCommandJob.command = reader.getString();
                 } else if ("environmentId".equals(fieldName)) {
