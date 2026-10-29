@@ -21,7 +21,7 @@ public final class SnapshotPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":989850966,\"minute\":764559146,\"usedBytes\":3106144557754641608},\"dailySchedule\":{\"snapshotsToKeep\":1809831138,\"hour\":600524229,\"minute\":898887355,\"usedBytes\":856204828754570877},\"weeklySchedule\":{\"snapshotsToKeep\":1281785865,\"day\":\"kadppyibngq\",\"hour\":26947233,\"minute\":79055053,\"usedBytes\":1875475596417761370},\"monthlySchedule\":{\"snapshotsToKeep\":1165370308,\"daysOfMonth\":\"luvvad\",\"hour\":584085416,\"minute\":303655572,\"usedBytes\":6174165917369038352},\"enabled\":true,\"provisioningState\":\"wuowhlxlnwy\"},\"etag\":\"ouvblgmo\",\"location\":\"kltrfow\",\"tags\":{\"dhftukvhdxlwy\":\"rfmvlihcvjdrqcrj\",\"njyixh\":\"jbfqzdk\",\"valqjrhuzgfxo\":\"fratqxmbjroumzz\"},\"id\":\"jtpusllywpvtiotz\",\"name\":\"pdbollg\",\"type\":\"yfqiuasig\"}";
+            = "{\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":1735235828,\"minute\":563018487,\"usedBytes\":3930750995945071444},\"dailySchedule\":{\"snapshotsToKeep\":521840124,\"hour\":1608981359,\"minute\":1937177976,\"usedBytes\":7755780612802608186},\"weeklySchedule\":{\"snapshotsToKeep\":848675168,\"day\":\"xmfqryarvsxzqbg\",\"hour\":298554964,\"minute\":2109063393,\"usedBytes\":8936125037200675281},\"monthlySchedule\":{\"snapshotsToKeep\":1994794374,\"daysOfMonth\":\"dubtlmj\",\"hour\":891755269,\"minute\":1893533667,\"usedBytes\":6746506762194731200},\"enabled\":true,\"provisioningState\":\"kmfd\"},\"etag\":\"yxgbkkqvjcteoedl\",\"location\":\"lskkzpxvj\",\"tags\":{\"xzfsnggytexvzilm\":\"pvocojhpcna\",\"kwwwnckn\":\"iv\",\"weucyrth\":\"zdajlskzptjxu\"},\"id\":\"qlehmcgcjeinu\",\"name\":\"hokamvfej\",\"type\":\"qnttmbq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,28 +31,28 @@ public final class SnapshotPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SnapshotPolicy response = manager.snapshotPolicies()
-            .getWithResponse("klixqcahyhxaly", "xawoijpodtblxp", "kwjdjodqhy", com.azure.core.util.Context.NONE)
+            .getWithResponse("zrvtx", "cmufunlcpxxv", "ryeyngjgv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kltrfow", response.location());
-        Assertions.assertEquals("rfmvlihcvjdrqcrj", response.tags().get("dhftukvhdxlwy"));
-        Assertions.assertEquals(989850966, response.hourlySchedule().snapshotsToKeep());
-        Assertions.assertEquals(764559146, response.hourlySchedule().minute());
-        Assertions.assertEquals(3106144557754641608L, response.hourlySchedule().usedBytes());
-        Assertions.assertEquals(1809831138, response.dailySchedule().snapshotsToKeep());
-        Assertions.assertEquals(600524229, response.dailySchedule().hour());
-        Assertions.assertEquals(898887355, response.dailySchedule().minute());
-        Assertions.assertEquals(856204828754570877L, response.dailySchedule().usedBytes());
-        Assertions.assertEquals(1281785865, response.weeklySchedule().snapshotsToKeep());
-        Assertions.assertEquals("kadppyibngq", response.weeklySchedule().day());
-        Assertions.assertEquals(26947233, response.weeklySchedule().hour());
-        Assertions.assertEquals(79055053, response.weeklySchedule().minute());
-        Assertions.assertEquals(1875475596417761370L, response.weeklySchedule().usedBytes());
-        Assertions.assertEquals(1165370308, response.monthlySchedule().snapshotsToKeep());
-        Assertions.assertEquals("luvvad", response.monthlySchedule().daysOfMonth());
-        Assertions.assertEquals(584085416, response.monthlySchedule().hour());
-        Assertions.assertEquals(303655572, response.monthlySchedule().minute());
-        Assertions.assertEquals(6174165917369038352L, response.monthlySchedule().usedBytes());
+        Assertions.assertEquals("lskkzpxvj", response.location());
+        Assertions.assertEquals("pvocojhpcna", response.tags().get("xzfsnggytexvzilm"));
+        Assertions.assertEquals(1735235828, response.hourlySchedule().snapshotsToKeep());
+        Assertions.assertEquals(563018487, response.hourlySchedule().minute());
+        Assertions.assertEquals(3930750995945071444L, response.hourlySchedule().usedBytes());
+        Assertions.assertEquals(521840124, response.dailySchedule().snapshotsToKeep());
+        Assertions.assertEquals(1608981359, response.dailySchedule().hour());
+        Assertions.assertEquals(1937177976, response.dailySchedule().minute());
+        Assertions.assertEquals(7755780612802608186L, response.dailySchedule().usedBytes());
+        Assertions.assertEquals(848675168, response.weeklySchedule().snapshotsToKeep());
+        Assertions.assertEquals("xmfqryarvsxzqbg", response.weeklySchedule().day());
+        Assertions.assertEquals(298554964, response.weeklySchedule().hour());
+        Assertions.assertEquals(2109063393, response.weeklySchedule().minute());
+        Assertions.assertEquals(8936125037200675281L, response.weeklySchedule().usedBytes());
+        Assertions.assertEquals(1994794374, response.monthlySchedule().snapshotsToKeep());
+        Assertions.assertEquals("dubtlmj", response.monthlySchedule().daysOfMonth());
+        Assertions.assertEquals(891755269, response.monthlySchedule().hour());
+        Assertions.assertEquals(1893533667, response.monthlySchedule().minute());
+        Assertions.assertEquals(6746506762194731200L, response.monthlySchedule().usedBytes());
         Assertions.assertTrue(response.enabled());
     }
 }

@@ -44,7 +44,7 @@ public interface Cache {
     Map<String, String> tags();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the location property: Region name string.
      * 
      * @return the location value.
      */
@@ -263,7 +263,7 @@ public interface Cache {
             /**
              * Specifies the region for the resource.
              * 
-             * @param location The geo-location where the resource lives.
+             * @param location Region name string.
              * @return the next definition stage.
              */
             WithCreate withRegion(Region location);
@@ -271,7 +271,7 @@ public interface Cache {
             /**
              * Specifies the region for the resource.
              * 
-             * @param location The geo-location where the resource lives.
+             * @param location Region name string.
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);

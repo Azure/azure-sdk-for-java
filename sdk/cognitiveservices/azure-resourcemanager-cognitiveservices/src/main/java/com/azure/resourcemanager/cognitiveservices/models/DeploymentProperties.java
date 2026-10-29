@@ -115,6 +115,12 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      */
     private DeploymentRouting routing;
 
+    /*
+     * The full resource IDs of cost controls directly attached to this deployment.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     */
+    private List<String> costControlIds;
+
     /**
      * Creates an instance of DeploymentProperties class.
      */
@@ -451,6 +457,28 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
+     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this deployment.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @return the costControlIds value.
+     */
+    public List<String> costControlIds() {
+        return this.costControlIds;
+    }
+
+    /**
+     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this deployment.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @param costControlIds the costControlIds value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withCostControlIds(List<String> costControlIds) {
+        this.costControlIds = costControlIds;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -471,6 +499,8 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         jsonWriter.writeStringField("deploymentState",
             this.deploymentState == null ? null : this.deploymentState.toString());
         jsonWriter.writeJsonField("routing", this.routing);
+        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -531,6 +561,9 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                     deserializedDeploymentProperties.deploymentState = DeploymentState.fromString(reader.getString());
                 } else if ("routing".equals(fieldName)) {
                     deserializedDeploymentProperties.routing = DeploymentRouting.fromJson(reader);
+                } else if ("costControlIds".equals(fieldName)) {
+                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDeploymentProperties.costControlIds = costControlIds;
                 } else {
                     reader.skipChildren();
                 }

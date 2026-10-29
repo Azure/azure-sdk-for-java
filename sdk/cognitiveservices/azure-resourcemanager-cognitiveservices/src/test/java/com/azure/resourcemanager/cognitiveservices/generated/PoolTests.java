@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Pool model = BinaryData.fromString(
-            "{\"name\":\"l\",\"vmPriority\":\"Regular\",\"instanceType\":\"qkfrbzgowoxqmj\",\"nodeCount\":642254793}")
+        Pool model = BinaryData
+            .fromString("{\"name\":\"n\",\"vmPriority\":\"Spot\",\"instanceType\":\"ff\",\"nodeCount\":39369666}")
             .toObject(Pool.class);
-        Assertions.assertEquals("l", model.name());
-        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
-        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
-        Assertions.assertEquals(642254793, model.nodeCount());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
+        Assertions.assertEquals("ff", model.instanceType());
+        Assertions.assertEquals(39369666, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pool model = new Pool().withName("l")
-            .withVmPriority(VmPriority.REGULAR)
-            .withInstanceType("qkfrbzgowoxqmj")
-            .withNodeCount(642254793);
+        Pool model
+            = new Pool().withName("n").withVmPriority(VmPriority.SPOT).withInstanceType("ff").withNodeCount(39369666);
         model = BinaryData.fromObject(model).toObject(Pool.class);
-        Assertions.assertEquals("l", model.name());
-        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
-        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
-        Assertions.assertEquals(642254793, model.nodeCount());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
+        Assertions.assertEquals("ff", model.instanceType());
+        Assertions.assertEquals(39369666, model.nodeCount());
     }
 }

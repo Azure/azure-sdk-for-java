@@ -24,6 +24,25 @@ public final class BulkCreateCustomOverride implements JsonSerializable<BulkCrea
     private String virtualMachineName;
 
     /*
+     * The availability zone this VM is created in. Overrides the operation-level zones for this VM only. A null value
+     * does not override, so the VM is placed using the operation-level zones; an empty value does override and deploys
+     * this VM as a regional (non-zonal) VM.
+     */
+    private String zone;
+
+    /*
+     * The extended location this VM is created in. Overrides the operation-level extendedLocation for this VM only;
+     * when omitted the VM inherits the operation-level extendedLocation.
+     */
+    private ExtendedLocation extendedLocation;
+
+    /*
+     * The placement constraints applied to this VM. Overrides the operation-level placement for this VM only; when
+     * omitted the VM inherits the operation-level placement.
+     */
+    private Placement placement;
+
+    /*
      * VM profile, the same shape as operation-level ComputeProfile.virtualMachineProfile. Overrides the operation-level
      * VM profile.
      */
@@ -75,6 +94,74 @@ public final class BulkCreateCustomOverride implements JsonSerializable<BulkCrea
      */
     public BulkCreateCustomOverride withVirtualMachineName(String virtualMachineName) {
         this.virtualMachineName = virtualMachineName;
+        return this;
+    }
+
+    /**
+     * Get the zone property: The availability zone this VM is created in. Overrides the operation-level zones for this
+     * VM only. A null value does not override, so the VM is placed using the operation-level zones; an empty value does
+     * override and deploys this VM as a regional (non-zonal) VM.
+     * 
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
+    }
+
+    /**
+     * Set the zone property: The availability zone this VM is created in. Overrides the operation-level zones for this
+     * VM only. A null value does not override, so the VM is placed using the operation-level zones; an empty value does
+     * override and deploys this VM as a regional (non-zonal) VM.
+     * 
+     * @param zone the zone value to set.
+     * @return the BulkCreateCustomOverride object itself.
+     */
+    public BulkCreateCustomOverride withZone(String zone) {
+        this.zone = zone;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location this VM is created in. Overrides the operation-level
+     * extendedLocation for this VM only; when omitted the VM inherits the operation-level extendedLocation.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location this VM is created in. Overrides the operation-level
+     * extendedLocation for this VM only; when omitted the VM inherits the operation-level extendedLocation.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the BulkCreateCustomOverride object itself.
+     */
+    public BulkCreateCustomOverride withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the placement property: The placement constraints applied to this VM. Overrides the operation-level placement
+     * for this VM only; when omitted the VM inherits the operation-level placement.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: The placement constraints applied to this VM. Overrides the operation-level placement
+     * for this VM only; when omitted the VM inherits the operation-level placement.
+     * 
+     * @param placement the placement value to set.
+     * @return the BulkCreateCustomOverride object itself.
+     */
+    public BulkCreateCustomOverride withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -189,6 +276,9 @@ public final class BulkCreateCustomOverride implements JsonSerializable<BulkCrea
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("virtualMachineName", this.virtualMachineName);
+        jsonWriter.writeStringField("zone", this.zone);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("placement", this.placement);
         jsonWriter.writeJsonField("virtualMachineProfile", this.virtualMachineProfile);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
@@ -214,6 +304,12 @@ public final class BulkCreateCustomOverride implements JsonSerializable<BulkCrea
 
                 if ("virtualMachineName".equals(fieldName)) {
                     deserializedBulkCreateCustomOverride.virtualMachineName = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedBulkCreateCustomOverride.zone = reader.getString();
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedBulkCreateCustomOverride.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("placement".equals(fieldName)) {
+                    deserializedBulkCreateCustomOverride.placement = Placement.fromJson(reader);
                 } else if ("virtualMachineProfile".equals(fieldName)) {
                     deserializedBulkCreateCustomOverride.virtualMachineProfile
                         = BulkactionVMProperties.fromJson(reader);

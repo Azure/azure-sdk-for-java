@@ -15,36 +15,36 @@ public final class NodePoolPlatformProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodePoolPlatformProfile model = BinaryData.fromString(
-            "{\"subnetId\":\"hy\",\"vmSize\":\"ltrpmopj\",\"enableEncryptionAtHost\":false,\"osDisk\":{\"sizeGiB\":61877127,\"diskStorageAccountType\":\"Premium_LRS\",\"encryptionSetId\":\"hfuiuaodsfc\",\"diskType\":\"Managed\"},\"availabilityZone\":\"odpuozmyzydag\"}")
+            "{\"subnetId\":\"noae\",\"vmSize\":\"pfhyhl\",\"enableEncryptionAtHost\":false,\"osDisk\":{\"sizeGiB\":2119975108,\"diskStorageAccountType\":\"Premium_LRS\",\"encryptionSetId\":\"matuok\",\"diskType\":\"Managed\"},\"availabilityZone\":\"iuaod\"}")
             .toObject(NodePoolPlatformProfile.class);
-        Assertions.assertEquals("hy", model.subnetId());
-        Assertions.assertEquals("ltrpmopj", model.vmSize());
+        Assertions.assertEquals("noae", model.subnetId());
+        Assertions.assertEquals("pfhyhl", model.vmSize());
         Assertions.assertFalse(model.enableEncryptionAtHost());
-        Assertions.assertEquals(61877127, model.osDisk().sizeGiB());
+        Assertions.assertEquals(2119975108, model.osDisk().sizeGiB());
         Assertions.assertEquals(DiskStorageAccountType.PREMIUM_LRS, model.osDisk().diskStorageAccountType());
-        Assertions.assertEquals("hfuiuaodsfc", model.osDisk().encryptionSetId());
+        Assertions.assertEquals("matuok", model.osDisk().encryptionSetId());
         Assertions.assertEquals(OsDiskType.MANAGED, model.osDisk().diskType());
-        Assertions.assertEquals("odpuozmyzydag", model.availabilityZone());
+        Assertions.assertEquals("iuaod", model.availabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodePoolPlatformProfile model = new NodePoolPlatformProfile().withSubnetId("hy")
-            .withVmSize("ltrpmopj")
+        NodePoolPlatformProfile model = new NodePoolPlatformProfile().withSubnetId("noae")
+            .withVmSize("pfhyhl")
             .withEnableEncryptionAtHost(false)
-            .withOsDisk(new OsDiskProfile().withSizeGiB(61877127)
+            .withOsDisk(new OsDiskProfile().withSizeGiB(2119975108)
                 .withDiskStorageAccountType(DiskStorageAccountType.PREMIUM_LRS)
-                .withEncryptionSetId("hfuiuaodsfc")
+                .withEncryptionSetId("matuok")
                 .withDiskType(OsDiskType.MANAGED))
-            .withAvailabilityZone("odpuozmyzydag");
+            .withAvailabilityZone("iuaod");
         model = BinaryData.fromObject(model).toObject(NodePoolPlatformProfile.class);
-        Assertions.assertEquals("hy", model.subnetId());
-        Assertions.assertEquals("ltrpmopj", model.vmSize());
+        Assertions.assertEquals("noae", model.subnetId());
+        Assertions.assertEquals("pfhyhl", model.vmSize());
         Assertions.assertFalse(model.enableEncryptionAtHost());
-        Assertions.assertEquals(61877127, model.osDisk().sizeGiB());
+        Assertions.assertEquals(2119975108, model.osDisk().sizeGiB());
         Assertions.assertEquals(DiskStorageAccountType.PREMIUM_LRS, model.osDisk().diskStorageAccountType());
-        Assertions.assertEquals("hfuiuaodsfc", model.osDisk().encryptionSetId());
+        Assertions.assertEquals("matuok", model.osDisk().encryptionSetId());
         Assertions.assertEquals(OsDiskType.MANAGED, model.osDisk().diskType());
-        Assertions.assertEquals("odpuozmyzydag", model.availabilityZone());
+        Assertions.assertEquals("iuaod", model.availabilityZone());
     }
 }

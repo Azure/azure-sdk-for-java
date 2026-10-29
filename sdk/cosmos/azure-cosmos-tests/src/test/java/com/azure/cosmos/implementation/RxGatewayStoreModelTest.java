@@ -13,6 +13,9 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMetricTagName;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -35,6 +38,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,6 +85,87 @@ public class RxGatewayStoreModelTest {
             {ConsistencyLevel.SESSION, ConsistencyLevel.SESSION, OperationType.Query, ResourceType.Document, false, SessionTokenType.SDK},
             {ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, OperationType.ExecuteJavaScript, ResourceType.StoredProcedure, false, SessionTokenType.SDK}
         };
+    }
+
+    @DataProvider(name = "gatewayResponseStatuses")
+    public Object[][] gatewayResponseStatuses() {
+        return new Object[][] {{200, true}, {503, true}, {200, false}, {503, false}};
+    }
+
+    @Test(groups = "unit", dataProvider = "gatewayResponseStatuses")
+    public void gatewayDiagnosticsCaptureAttemptRequestUri(int statusCode, boolean endpointTagEnabled) throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override public int statusCode() { return statusCode; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return Mono.just(Unpooled.EMPTY_BUFFER); }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+            @Override public void close() {}
+        };
+        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doAnswer(invocation -> {
+            HttpRequest request = invocation.getArgument(0);
+            sentRequest.set(request);
+            httpResponse.withRequest(request);
+            return Mono.just(httpResponse);
+        }).when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader configurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION).when(configurationReader).getDefaultConsistencyLevel();
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig().metricsOptions(
+            new CosmosMicrometerMetricsOptions()
+                .configureDefaultTagNames(
+                    endpointTagEnabled ? CosmosMetricTagName.SERVICE_ENDPOINT : CosmosMetricTagName.DEFAULT)
+                .setEnabled(true));
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext, Mockito.mock(ISessionContainer.class), ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default, new UserAgentContainer(), Mockito.mock(GlobalEndpointManager.class),
+            httpClient, null, null, telemetryConfig);
+        storeModel.setGatewayServiceConfigurationReader(configurationReader);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext, OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        request.setResponseTimeout(Duration.ofMillis(TIMEOUT));
+        request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/colls/col/docs/docId");
+        AtomicReference<CosmosException> exception = new AtomicReference<>();
+        Mono<RxDocumentServiceResponse> result = storeModel.performRequestInternal(request, requestUri);
+        if (statusCode == 200) {
+            StepVerifier.create(result).expectNextCount(1).verifyComplete();
+        } else {
+            StepVerifier.create(result)
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(CosmosException.class);
+                    exception.set((CosmosException) error);
+                    assertThat(exception.get().getStatusCode()).isEqualTo(statusCode);
+                })
+                .verify(Duration.ofMillis(TIMEOUT));
+        }
+
+        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
+            .getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatistics(request.requestContext.cosmosDiagnostics)
+            .iterator().next();
+        assertThat(statistics.getGatewayStatisticsList()).hasSize(1);
+        ClientSideRequestStatistics.GatewayStatistics gatewayStatistics = statistics.getGatewayStatisticsList().get(0);
+        assertThat(gatewayStatistics.getRequestUri()).isEqualTo(sentRequest.get().uri());
+        assertThat(gatewayStatistics.getEndpoint()).isEqualTo(sentRequest.get().uri().toString());
+        if (endpointTagEnabled) {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag())
+                .isSameAs(storeModel.getServiceEndpointMetricTag(sentRequest.get().uri()));
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag().getValue())
+                .isEqualTo("account.documents.azure.com_10250");
+        } else {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag()).isNull();
+        }
+        if (statusCode == 200) {
+            assertThat(gatewayStatistics.getRequestUri()).isSameAs(sentRequest.get().uri());
+        } else {
+            assertThat(gatewayStatistics.getRequestUri()).isSameAs(ImplementationBridgeHelpers.CosmosExceptionHelper
+                .getCosmosExceptionAccessor().getRequestUri(exception.get()).getURI());
+        }
     }
 
     @Test(groups = "unit")
