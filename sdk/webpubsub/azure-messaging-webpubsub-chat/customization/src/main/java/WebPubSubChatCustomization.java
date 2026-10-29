@@ -73,8 +73,12 @@ public final class WebPubSubChatCustomization extends Customization {
             String responseHeading = "<p><strong>Response Body Schema</strong></p>";
             int responseStart = corrected.indexOf(responseHeading);
             if (responseStart >= 0) {
+                // Topic state is required on read even though it isn't accepted on create.
                 corrected = corrected.substring(0, responseStart)
-                    + corrected.substring(responseStart).replace("(Optional, Required on create)", "(Required)");
+                    + corrected.substring(responseStart)
+                        .replace("(Optional, Required on create)", "(Required)")
+                        .replace("state: String(Normal/Archived/SoftDeleted) (Optional)",
+                            "state: String(Normal/Archived/SoftDeleted) (Required)");
             }
             int requestStart = corrected.indexOf("<p><strong>Request Body Schema</strong></p>");
             if (requestStart >= 0) {

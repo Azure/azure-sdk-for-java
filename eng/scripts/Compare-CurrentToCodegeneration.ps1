@@ -186,7 +186,6 @@ $generateScript = {
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)
       Write-Host "$separatorBar`nThe following TypeSpec files in directoy $directory are out of date`n$status`n$separatorBar"
-      Write-Host ((& git -c core.safecrlf=false diff --ignore-space-at-eol -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**") | Out-String)
       throw
     } else {
       Write-Host "$separatorBar`nSuccessfully ran TypeSpec update in directory with no diff $directory`n$separatorBar"
