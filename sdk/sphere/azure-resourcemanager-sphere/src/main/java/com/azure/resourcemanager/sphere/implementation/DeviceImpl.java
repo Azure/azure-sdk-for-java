@@ -118,11 +118,21 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     DeviceImpl(DeviceInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
-        this.deviceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deviceGroups");
-        this.deviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
+            "resourceGroupName");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
+            "catalogName");
+        this.productName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
+            "productName");
+        this.deviceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
+            "deviceGroupName");
+        this.deviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
+            "deviceName");
     }
 
     public Device refresh() {

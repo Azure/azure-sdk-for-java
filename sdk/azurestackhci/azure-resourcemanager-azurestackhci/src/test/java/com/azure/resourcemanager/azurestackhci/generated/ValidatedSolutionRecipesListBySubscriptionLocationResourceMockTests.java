@@ -22,7 +22,7 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"ozvbwfc\",\"version\":\"jhbp\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"hscmyhrhjvszfqbo\"},{\"capabilityName\":\"ndwpppqw\"}],\"nodeCapabilities\":[{\"capabilityName\":\"oevzzufytdxmly\"},{\"capabilityName\":\"zlyvapbkrbuog\"}]},\"components\":[{\"name\":\"dltlcu\",\"type\":\"aizijvaylzeohlp\",\"requiredVersion\":\"tqkrvmhvbvvcpwtq\",\"installOrder\":5396436300631814121,\"tags\":[\"hmz\",\"dffetevr\"],\"payloads\":[{\"identifier\":\"k\",\"hash\":\"wacycsyotctkhf\",\"fileName\":\"fsatvcsx\",\"url\":\"mhnmizhvprhqqw\"},{\"identifier\":\"ublehhkplobz\",\"hash\":\"ottaksadz\",\"fileName\":\"ghmmtbtdvucfvvra\",\"url\":\"beurdeewl\"},{\"identifier\":\"uxpcbwkdwj\",\"hash\":\"jiznioroofmftas\",\"fileName\":\"mcreihu\",\"url\":\"trnighm\"},{\"identifier\":\"nuwqxungro\",\"hash\":\"gwfmsxjwdylwxm\",\"fileName\":\"zjow\",\"url\":\"ugeerclbltbhpwac\"}],\"metadata\":{}}]},\"signature\":\"urjwmvwryvdifkii\"},\"id\":\"pruccwme\",\"name\":\"btxsytrtexeg\",\"type\":\"mrqjywi\"}]}";
+            = "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"zzioxbgomvuepr\",\"version\":\"m\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"nw\"},{\"capabilityName\":\"gzuoxixtxxx\"},{\"capabilityName\":\"jsehbknnrnk\"},{\"capabilityName\":\"jfawpcbsogz\"}],\"nodeCapabilities\":[{\"capabilityName\":\"czbnivcohsxvppkj\"},{\"capabilityName\":\"alkd\"},{\"capabilityName\":\"ewhotvbmyzuqfdq\"}]},\"components\":[{\"name\":\"trjtoqs\",\"type\":\"hhqngjndkv\",\"requiredVersion\":\"xlffqgdodnkqyip\",\"installOrder\":5332318125075051856,\"tags\":[\"dazmdzesimeft\",\"drfzjlflzagvdava\",\"xiefcorzbidaeb\"],\"payloads\":[{\"identifier\":\"icew\",\"hash\":\"fajw\",\"fileName\":\"ylciobb\",\"url\":\"wwsr\"},{\"identifier\":\"eqx\",\"hash\":\"ecuuuex\",\"fileName\":\"mnteevfg\",\"url\":\"xfezraqsddko\"}],\"metadata\":{}},{\"name\":\"gxqfkyr\",\"type\":\"gmzzeglwdzfs\",\"requiredVersion\":\"fegaok\",\"installOrder\":1200072992435902439,\"tags\":[\"ra\"],\"payloads\":[{\"identifier\":\"uklx\",\"hash\":\"el\",\"fileName\":\"zpyqbwhuecx\",\"url\":\"gsingmhpavsfg\"},{\"identifier\":\"rvqrwwbdrwroqk\",\"hash\":\"jnzpqhqqsa\",\"fileName\":\"kyu\",\"url\":\"fameaasjqenhekza\"}],\"metadata\":{}},{\"name\":\"geytlplslfc\",\"type\":\"e\",\"requiredVersion\":\"suowtolkyqf\",\"installOrder\":3981822910933013593,\"tags\":[\"hnxzmfvmw\",\"nrtc\",\"rawwhyxf\"],\"payloads\":[{\"identifier\":\"bydmvwnbun\",\"hash\":\"odtevzshqykebmps\",\"fileName\":\"aezc\",\"url\":\"dkckr\"}],\"metadata\":{}}]},\"signature\":\"qdmhcejstfs\"},\"id\":\"cjakgkqwx\",\"name\":\"dsoqzhxwdjoxwkb\",\"type\":\"hsobvcnsbioez\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidatedSolutionRecipe> response = manager.validatedSolutionRecipes()
-            .listBySubscriptionLocationResource("dczvothmkh", com.azure.core.util.Context.NONE);
+            .listBySubscriptionLocationResource("phwfnugsl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ozvbwfc",
+        Assertions.assertEquals("zzioxbgomvuepr",
             response.iterator().next().properties().recipeContent().info().solutionType());
-        Assertions.assertEquals("jhbp", response.iterator().next().properties().recipeContent().info().version());
-        Assertions.assertEquals("hscmyhrhjvszfqbo",
+        Assertions.assertEquals("m", response.iterator().next().properties().recipeContent().info().version());
+        Assertions.assertEquals("nw",
             response.iterator()
                 .next()
                 .properties()
@@ -46,7 +46,7 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 .clusterCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("oevzzufytdxmly",
+        Assertions.assertEquals("czbnivcohsxvppkj",
             response.iterator()
                 .next()
                 .properties()
@@ -55,24 +55,24 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 .nodeCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("dltlcu",
+        Assertions.assertEquals("trjtoqs",
             response.iterator().next().properties().recipeContent().components().get(0).name());
-        Assertions.assertEquals("aizijvaylzeohlp",
+        Assertions.assertEquals("hhqngjndkv",
             response.iterator().next().properties().recipeContent().components().get(0).type());
-        Assertions.assertEquals("tqkrvmhvbvvcpwtq",
+        Assertions.assertEquals("xlffqgdodnkqyip",
             response.iterator().next().properties().recipeContent().components().get(0).requiredVersion());
-        Assertions.assertEquals(5396436300631814121L,
+        Assertions.assertEquals(5332318125075051856L,
             response.iterator().next().properties().recipeContent().components().get(0).installOrder());
-        Assertions.assertEquals("hmz",
+        Assertions.assertEquals("dazmdzesimeft",
             response.iterator().next().properties().recipeContent().components().get(0).tags().get(0));
-        Assertions.assertEquals("k",
+        Assertions.assertEquals("icew",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).identifier());
-        Assertions.assertEquals("wacycsyotctkhf",
+        Assertions.assertEquals("fajw",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).hash());
-        Assertions.assertEquals("fsatvcsx",
+        Assertions.assertEquals("ylciobb",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).fileName());
-        Assertions.assertEquals("mhnmizhvprhqqw",
+        Assertions.assertEquals("wwsr",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).url());
-        Assertions.assertEquals("urjwmvwryvdifkii", response.iterator().next().properties().signature());
+        Assertions.assertEquals("qdmhcejstfs", response.iterator().next().properties().signature());
     }
 }

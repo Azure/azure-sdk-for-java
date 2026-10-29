@@ -37,12 +37,41 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
-        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
+        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.agents.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
@@ -93,11 +122,18 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
-    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
-        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
-            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
-                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
-                .removeModifier(Modifier.Keyword.PUBLIC));
+    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
+            .filter(clazz -> "VoiceAgentFunctionToolType1".equals(clazz.getClassName()))
+            .findFirst()
+            .orElse(null);
+        if (enumCustomization == null) {
+            logger.info("VoiceAgentFunctionToolType1 is not generated; no enum visibility change is needed.");
+            return;
+        }
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
+            .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
     /**
@@ -228,8 +264,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
             "Tool-selection behavior for the session.", toolChoice, false, false, logger);
 
-        // The response base models are immutable outputs. Their typed getters read through the overridable raw accessor
-        // so the generated subclasses that shadow the field share the same typed API.
+        // Retain base-model wrappers for older snapshots and expose them directly on the flattened response models.
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -237,7 +272,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -245,7 +280,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",

@@ -5,7 +5,7 @@ class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
 field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;VOICE
-class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview;
+class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview;
 field;com.azure.ai.agents.models.AgentKind;Preview API.;VOICE
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.AudioTranscription;Preview API. VoiceAgents=V1Preview;
@@ -20,10 +20,10 @@ class;com.azure.ai.agents.models.BingCustomSearchToolParameters;Preview API. pre
 class;com.azure.ai.agents.models.BrowserAutomationPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
-field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
+field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview;draft
-class;com.azure.ai.agents.models.CreateTeamsPhoneExtensionTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.CreateTeamsPhoneExtensibilityTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTelephonyCallJobInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
@@ -61,6 +61,11 @@ class;com.azure.ai.agents.models.MemoryStoreSearchResponse;Preview API. MemorySt
 class;com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreUpdateResponse;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreUpdateStatus;Preview API. MemoryStores=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotBuiltInTool;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotHarness;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotToolsetConfiguration;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotToolsetDefaultConfiguration;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotToolsetPreview;Preview API. MicrosoftCopilot=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftFabricPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ModelRouterAttempt;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.ModelRouterAttemptError;Preview API. ModelRouterControls=V1Preview;
@@ -70,7 +75,7 @@ class;com.azure.ai.agents.models.ModelRouterMode;Preview API. ModelRouterControl
 class;com.azure.ai.agents.models.ModelRouterResponseHeaderValue;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.ModelSelectionDetails;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.ProceduralMemoryItem;Preview API. MemoryStores=V1Preview;
-field;com.azure.ai.agents.models.PromptAgentDefinition;Preview API. GitHubCopilot=V1Preview;harness
+field;com.azure.ai.agents.models.PromptAgentDefinition;Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview;harness
 field;com.azure.ai.agents.models.PromptAgentDefinition;Preview API. Skills=V1Preview;skills
 class;com.azure.ai.agents.models.PstnTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeAudioFormat;Preview API. VoiceAgents=V1Preview;
@@ -190,8 +195,8 @@ class;com.azure.ai.agents.models.SharepointGroundingToolParameters;Preview API. 
 class;com.azure.ai.agents.models.SharepointPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.SipTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.SkillReference;Preview API. Skills=V1Preview;
-class;com.azure.ai.agents.models.TeamsPhoneExtensionTelephonyBinding;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.TeamsPhoneExtensionTelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TeamsPhoneExtensibilityTelephonyBinding;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TeamsPhoneExtensibilityTelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TeamsTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TelephonyBinding;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
@@ -278,7 +283,6 @@ class;com.azure.ai.agents.models.VoiceAgentMcpTool;Preview API. VoiceAgents=V1Pr
 class;com.azure.ai.agents.models.VoiceAgentNoiseReduction;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReductionType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRealtimeResponse;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentRealtimeResponseBase;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDeltaEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDoneEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationVisemeDeltaEvent;Preview API. VoiceAgents=V1Preview;
@@ -344,8 +348,7 @@ class;com.azure.ai.agents.models.VoiceRecordingChannelLayout;Preview API. VoiceA
 class;com.azure.ai.agents.models.VoiceResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceResponseAudio;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceResponseAudioOutput;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceResponseBase;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceResponseBaseObject;Preview API.;
+class;com.azure.ai.agents.models.VoiceResponseObjectType;Preview API.;
 class;com.azure.ai.agents.models.VoiceType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.WebIqPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.WebIqPreviewToolboxTool;Preview API. preview_tool;

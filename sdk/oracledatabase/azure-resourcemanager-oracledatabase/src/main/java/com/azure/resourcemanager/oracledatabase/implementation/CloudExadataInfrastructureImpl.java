@@ -140,9 +140,12 @@ public final class CloudExadataInfrastructureImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudexadatainfrastructurename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudExadataInfrastructures");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
+            "resourceGroupName");
+        this.cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
+            "cloudexadatainfrastructurename");
     }
 
     public CloudExadataInfrastructure refresh() {

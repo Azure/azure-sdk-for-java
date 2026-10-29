@@ -222,6 +222,19 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     private List<AgentHostingConfiguration> agentHostingConfigurations;
 
+    /*
+     * The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     */
+    private List<String> costControlIds;
+
+    /*
+     * The account-level connections used to publish cost control telemetry and events. Application Insights is optional
+     * for attachment, accounting, and enforcement and can be configured later. Event Grid must be configured before
+     * attaching a cost control with an alert threshold.
+     */
+    private CostControlConnections costControlConnections;
+
     /**
      * Creates an instance of AccountProperties class.
      */
@@ -868,6 +881,52 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @return the costControlIds value.
+     */
+    public List<String> costControlIds() {
+        return this.costControlIds;
+    }
+
+    /**
+     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this account.
+     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * 
+     * @param costControlIds the costControlIds value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withCostControlIds(List<String> costControlIds) {
+        this.costControlIds = costControlIds;
+        return this;
+    }
+
+    /**
+     * Get the costControlConnections property: The account-level connections used to publish cost control telemetry and
+     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
+     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * 
+     * @return the costControlConnections value.
+     */
+    public CostControlConnections costControlConnections() {
+        return this.costControlConnections;
+    }
+
+    /**
+     * Set the costControlConnections property: The account-level connections used to publish cost control telemetry and
+     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
+     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * 
+     * @param costControlConnections the costControlConnections value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withCostControlConnections(CostControlConnections costControlConnections) {
+        this.costControlConnections = costControlConnections;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -903,6 +962,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("capabilitySettings", this.capabilitySettings);
         jsonWriter.writeArrayField("agentHostingConfigurations", this.agentHostingConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("costControlConnections", this.costControlConnections);
         return jsonWriter.writeEndObject();
     }
 
@@ -1016,6 +1078,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<AgentHostingConfiguration> agentHostingConfigurations
                         = reader.readArray(reader1 -> AgentHostingConfiguration.fromJson(reader1));
                     deserializedAccountProperties.agentHostingConfigurations = agentHostingConfigurations;
+                } else if ("costControlIds".equals(fieldName)) {
+                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccountProperties.costControlIds = costControlIds;
+                } else if ("costControlConnections".equals(fieldName)) {
+                    deserializedAccountProperties.costControlConnections = CostControlConnections.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

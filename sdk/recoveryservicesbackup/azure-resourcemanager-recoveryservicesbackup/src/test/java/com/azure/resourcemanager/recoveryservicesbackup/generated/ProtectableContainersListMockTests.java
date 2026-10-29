@@ -23,7 +23,7 @@ public final class ProtectableContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"xopgehpadkmd\",\"tags\":{\"sirncclabvoy\":\"szxvctkbbxuhar\",\"ghdsaidjanormov\":\"gsuxxczbmyqj\",\"hdeeljslkyozdsfz\":\"xxurntujmoilunwe\",\"htslejtvxj\":\"uegrh\"},\"eTag\":\"vgjbfio\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"jod\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"qqw\",\"containerId\":\"q\"},\"id\":\"oxsazuxejgwe\",\"name\":\"ywnfyszzaczs\",\"type\":\"nqbdnddbboz\"}]}";
+            = "{\"value\":[{\"location\":\"xgdebxl\",\"tags\":{\"irhpfabenq\":\"no\",\"mgewayxf\":\"am\"},\"eTag\":\"bcpjstbhem\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"csqsnxfbx\",\"backupManagementType\":\"AzureSql\",\"healthStatus\":\"pdr\",\"containerId\":\"yvbsuadu\"},\"id\":\"odkaxpfobkzhm\",\"name\":\"jdqltdeluqro\",\"type\":\"adhfztlray\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ProtectableContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectableContainerResource> response = manager.protectableContainers()
-            .list("otnplfacqocc", "rqxw", "tjtdrhutfd", "a", com.azure.core.util.Context.NONE);
+            .list("dqumqvfm", "caddtgc", "xegtvgwyur", "elfnzzryiz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xopgehpadkmd", response.iterator().next().location());
-        Assertions.assertEquals("szxvctkbbxuhar", response.iterator().next().tags().get("sirncclabvoy"));
-        Assertions.assertEquals("vgjbfio", response.iterator().next().eTag());
-        Assertions.assertEquals("jod", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER,
+        Assertions.assertEquals("xgdebxl", response.iterator().next().location());
+        Assertions.assertEquals("no", response.iterator().next().tags().get("irhpfabenq"));
+        Assertions.assertEquals("bcpjstbhem", response.iterator().next().eTag());
+        Assertions.assertEquals("csqsnxfbx", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("qqw", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("q", response.iterator().next().properties().containerId());
+        Assertions.assertEquals("pdr", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("yvbsuadu", response.iterator().next().properties().containerId());
     }
 }

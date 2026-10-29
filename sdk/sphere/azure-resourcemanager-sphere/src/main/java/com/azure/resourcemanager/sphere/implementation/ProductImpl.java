@@ -109,9 +109,15 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     ProductImpl(ProductInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}",
+            "resourceGroupName");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}",
+            "catalogName");
+        this.productName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}",
+            "productName");
     }
 
     public Product refresh() {

@@ -61,7 +61,9 @@ public final class WorkloadImpactsImpl implements WorkloadImpacts {
     }
 
     public WorkloadImpact getById(String id) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
+        String workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}",
+            "workloadImpactName");
         if (workloadImpactName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
@@ -70,7 +72,9 @@ public final class WorkloadImpactsImpl implements WorkloadImpacts {
     }
 
     public Response<WorkloadImpact> getByIdWithResponse(String id, Context context) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
+        String workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}",
+            "workloadImpactName");
         if (workloadImpactName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
@@ -79,7 +83,9 @@ public final class WorkloadImpactsImpl implements WorkloadImpacts {
     }
 
     public void deleteById(String id) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
+        String workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}",
+            "workloadImpactName");
         if (workloadImpactName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
@@ -88,7 +94,9 @@ public final class WorkloadImpactsImpl implements WorkloadImpacts {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
+        String workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}",
+            "workloadImpactName");
         if (workloadImpactName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));

@@ -136,8 +136,12 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     CatalogImpl(CatalogInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}",
+            "resourceGroupName");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}",
+            "catalogName");
     }
 
     public Catalog refresh() {
