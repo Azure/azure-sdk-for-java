@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed challenge-based authentication to correctly parse the tenant ID from DSTSv2 authority URIs.
+
 ### Other Changes
 
 ## 4.8.3 (2026-10-06)
