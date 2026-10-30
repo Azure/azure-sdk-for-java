@@ -12,22 +12,22 @@ public final class RegistryEndpointUserAssignedManagedIdentitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryEndpointUserAssignedManagedIdentitySettings model = BinaryData
-            .fromString("{\"clientId\":\"gsfraoyzkoow\",\"scope\":\"mnguxawqaldsyu\",\"tenantId\":\"ximerqfobwyznk\"}")
+            .fromString("{\"clientId\":\"alnswhccsphk\",\"scope\":\"vwitqscyw\",\"tenantId\":\"ggwoluhczb\"}")
             .toObject(RegistryEndpointUserAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("gsfraoyzkoow", model.clientId());
-        Assertions.assertEquals("mnguxawqaldsyu", model.scope());
-        Assertions.assertEquals("ximerqfobwyznk", model.tenantId());
+        Assertions.assertEquals("alnswhccsphk", model.clientId());
+        Assertions.assertEquals("vwitqscyw", model.scope());
+        Assertions.assertEquals("ggwoluhczb", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointUserAssignedManagedIdentitySettings model
-            = new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("gsfraoyzkoow")
-                .withScope("mnguxawqaldsyu")
-                .withTenantId("ximerqfobwyznk");
+            = new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("alnswhccsphk")
+                .withScope("vwitqscyw")
+                .withTenantId("ggwoluhczb");
         model = BinaryData.fromObject(model).toObject(RegistryEndpointUserAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("gsfraoyzkoow", model.clientId());
-        Assertions.assertEquals("mnguxawqaldsyu", model.scope());
-        Assertions.assertEquals("ximerqfobwyznk", model.tenantId());
+        Assertions.assertEquals("alnswhccsphk", model.clientId());
+        Assertions.assertEquals("vwitqscyw", model.scope());
+        Assertions.assertEquals("ggwoluhczb", model.tenantId());
     }
 }

@@ -8,6 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNode;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSerializationFormat;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,22 +17,32 @@ public final class DataflowGraphDestinationNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNode model = BinaryData.fromString(
-            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"psbzkfzbeyvpn\",\"dataDestination\":\"icvi\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]},\"name\":\"jjxd\"}")
+            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"vtvudutncormr\",\"dataDestination\":\"xqtvcofu\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}],\"outputSchemaSettings\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"jub\"}},\"name\":\"dknnqvsazn\"}")
             .toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("jjxd", model.name());
-        Assertions.assertEquals("psbzkfzbeyvpn", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("icvi", model.destinationSettings().dataDestination());
+        Assertions.assertEquals("dknnqvsazn", model.name());
+        Assertions.assertEquals("vtvudutncormr", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("xqtvcofu", model.destinationSettings().dataDestination());
+        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
+            model.destinationSettings().outputSchemaSettings().serializationFormat());
+        Assertions.assertEquals("jub", model.destinationSettings().outputSchemaSettings().schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("jjxd")
-            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("psbzkfzbeyvpn")
-                .withDataDestination("icvi")
-                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction())));
+        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("dknnqvsazn")
+            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("vtvudutncormr")
+                .withDataDestination("xqtvcofu")
+                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
+                    new DataflowGraphDestinationHeaderAction()))
+                .withOutputSchemaSettings(new DataflowGraphDestinationSchemaSettings()
+                    .withSerializationFormat(DataflowGraphDestinationSchemaSerializationFormat.DELTA)
+                    .withSchemaRef("jub")));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("jjxd", model.name());
-        Assertions.assertEquals("psbzkfzbeyvpn", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("icvi", model.destinationSettings().dataDestination());
+        Assertions.assertEquals("dknnqvsazn", model.name());
+        Assertions.assertEquals("vtvudutncormr", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("xqtvcofu", model.destinationSettings().dataDestination());
+        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
+            model.destinationSettings().outputSchemaSettings().serializationFormat());
+        Assertions.assertEquals("jub", model.destinationSettings().outputSchemaSettings().schemaRef());
     }
 }

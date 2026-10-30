@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeClaimResourceRequirementsClaimsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeClaimResourceRequirementsClaims model = BinaryData.fromString("{\"name\":\"xlefgugnxkrx\"}")
-            .toObject(VolumeClaimResourceRequirementsClaims.class);
-        Assertions.assertEquals("xlefgugnxkrx", model.name());
+        VolumeClaimResourceRequirementsClaims model
+            = BinaryData.fromString("{\"name\":\"exhd\"}").toObject(VolumeClaimResourceRequirementsClaims.class);
+        Assertions.assertEquals("exhd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeClaimResourceRequirementsClaims model
-            = new VolumeClaimResourceRequirementsClaims().withName("xlefgugnxkrx");
+        VolumeClaimResourceRequirementsClaims model = new VolumeClaimResourceRequirementsClaims().withName("exhd");
         model = BinaryData.fromObject(model).toObject(VolumeClaimResourceRequirementsClaims.class);
-        Assertions.assertEquals("xlefgugnxkrx", model.name());
+        Assertions.assertEquals("exhd", model.name());
     }
 }
