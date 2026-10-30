@@ -140,15 +140,19 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                     logger.info("Channel is now active.");
                 }
             }, error -> {
-                setAndClearChannel();
-                onError(error);
+                if (setAndClearChannel(amqpChannel)) {
+                    onError(error);
+                } else {
+                    logger.verbose("Ignoring error from a replaced channel.", error);
+                }
             }, () -> {
                 if (isDisposed()) {
                     logger.info("Channel is disposed.");
                 } else {
-                    logger.info("Channel is closed. Requesting upstream.");
-                    setAndClearChannel();
-                    requestUpstream();
+                    if (setAndClearChannel(amqpChannel)) {
+                        logger.info("Channel is closed. Requesting upstream.");
+                        requestUpstream();
+                    }
                 }
             });
         }
@@ -345,6 +349,36 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         close(oldChannel);
+    }
+
+    /**
+     * Force-closes the current cached channel so that the next subscriber receives a fresh one.
+     * This is used for connection-level recovery when the current connection is stale
+     * but the processor has not detected it (e.g., heartbeats echoed by intermediate infrastructure).
+     */
+    public void forceCloseChannel() {
+        setAndClearChannel();
+    }
+
+    /**
+     * Closes the failed channel only if it is still the current channel.
+     *
+     * @param failedChannel The channel used by the failed operation.
+     */
+    public void forceCloseChannel(T failedChannel) {
+        Objects.requireNonNull(failedChannel, "'failedChannel' cannot be null.");
+        setAndClearChannel(failedChannel);
+    }
+
+    private boolean setAndClearChannel(T failedChannel) {
+        synchronized (lock) {
+            if (currentChannel != failedChannel) {
+                return false;
+            }
+            currentChannel = null;
+        }
+        close(failedChannel);
+        return true;
     }
 
     /**

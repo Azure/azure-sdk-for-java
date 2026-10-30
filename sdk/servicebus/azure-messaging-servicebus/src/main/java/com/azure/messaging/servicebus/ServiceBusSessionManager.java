@@ -8,11 +8,13 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -36,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -71,6 +74,9 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
     private final Duration sessionIdleTimeout;
+    // Backoff between retries for link/connection-level failures, which can fail fast and would otherwise
+    // spin in a tight, CPU-burning loop. Honors the configured AmqpRetryOptions delay.
+    private final Duration retryBackoff;
 
     /**
      * SessionId to receiver mapping.
@@ -116,6 +122,13 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
         this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
             ? receiverOptions.getSessionIdleTimeout()
             : connectionCacheWrapper.getRetryOptions().getTryTimeout();
+        // Link/connection-level acquire failures can fail fast (e.g. the broker repeatedly detaches the
+        // link quickly), so space those retries by the configured retry delay rather than retrying with a
+        // zero delay, which spins the retry loop. Falls back to 100ms when no usable delay is configured.
+        final Duration configuredDelay = connectionCacheWrapper.getRetryOptions().getDelay();
+        this.retryBackoff = (configuredDelay == null || configuredDelay.isZero() || configuredDelay.isNegative())
+            ? Duration.ofMillis(100)
+            : configuredDelay;
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
@@ -242,15 +255,20 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
     /**
      * Creates an session receive link.
      *
+     * @param operationConnection captures the connection used by the current acquisition attempt.
      * @return A Mono that completes with an session receive link.
      */
-    private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
+    private Mono<ServiceBusReceiveLink>
+        createSessionReceiveLink(AtomicReference<ServiceBusAmqpConnection> operationConnection) {
         final String sessionId = receiverOptions.getSessionId();
 
-        final String linkName = (sessionId != null) ? sessionId : StringUtil.getRandomString("session-");
-        return connectionCacheWrapper.getConnection().flatMap(connection -> {
-            return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
-                entityType, identifier, sessionId);
+        return Mono.defer(() -> {
+            final String linkName = (sessionId != null) ? sessionId : StringUtil.getRandomString("session-");
+            operationConnection.set(null);
+            return connectionCacheWrapper.getConnection().doOnNext(operationConnection::set).flatMap(connection -> {
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
+                    entityType, identifier, sessionId);
+            });
         });
     }
 
@@ -264,56 +282,80 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
         if (this.receiveLink != null) {
             return Mono.just(this.receiveLink);
         }
-        return Mono.defer(() -> createSessionReceiveLink().flatMap(link -> link.getEndpointStates()
-            .filter(e -> e == AmqpEndpointState.ACTIVE)
-            .next()
-            // The reason for using 'switchIfEmpty' operator -
-            //
-            // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
-            // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
-            // such publisher completion to transient (i.e., retriable) AmqpException to enable retry.
-            //
-            // A detach without an error-condition can happen when Service upgrades. Also, while the service often
-            // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
-            // when a free or new session is unavailable, detach can happen without the error-condition.
-            //
-            .switchIfEmpty(
-                Mono.error(() -> new AmqpException(true, "Session receive link completed without being active", null)))
-            .timeout(operationTimeout)
-            .then(Mono.just(link)))).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
-                final Throwable failure = signal.failure();
-                LOGGER.atInfo()
+        return Mono.defer(() -> {
+            final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+            return createSessionReceiveLink(operationConnection).flatMap(link -> link.getEndpointStates()
+                .filter(e -> e == AmqpEndpointState.ACTIVE)
+                .next()
+                // The reason for using 'switchIfEmpty' operator -
+                //
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
+                // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable retry.
+                //
+                // A detach without an error-condition can happen when Service upgrades. Also, while the service often
+                // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
+                // when a free or new session is unavailable, detach can happen without the error-condition.
+                //
+                .switchIfEmpty(Mono
+                    .error(() -> new AmqpException(true, "Session receive link completed without being active", null)))
+                .doOnCancel(() -> link.closeAsync().subscribe(unused -> {
+                }, error -> LOGGER.atWarning()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue("attempt", signal.totalRetriesInARow())
-                    .log("Error occurred while getting unnamed session.", failure);
+                    .log("Error closing abandoned session receive link.", error)))
+                .timeout(operationTimeout)
+                .then(Mono.just(link))).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
+                    final Throwable failure = signal.failure();
+                    final RecoveryKind kind = RecoveryKind.classify(failure);
+                    LOGGER.atInfo()
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue("attempt", signal.totalRetriesInARow())
+                        .addKeyValue("recoveryKind", kind)
+                        .log("Error occurred while getting unnamed session.", failure);
 
-                if (isDisposed.get()) {
-                    return Mono.<Long>error(
-                        new AmqpException(false, "SessionManager is already disposed.", failure, getErrorContext()));
-                } else if (failure instanceof TimeoutException) {
-                    return Mono.delay(Duration.ZERO);
-                } else if (failure instanceof AmqpException
-                    && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
-                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
-                    //
-                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
-                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
-                    //
-                    return Mono.delay(Duration.ZERO);
-                } else {
-                    final long id = System.nanoTime();
-                    LOGGER.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire new session.", failure);
-                    // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
-                    // non-blocking, if we use the session processor to recover the error, it requires a blocking
-                    // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
-                    return Mono.<Long>error(failure)
-                        .publishOn(Schedulers.boundedElastic())
-                        .doOnError(e -> LOGGER.atInfo()
-                            .addKeyValue(TRACKING_ID_KEY, id)
-                            .log("Emitting the error signal received for session acquire attempt.", e));
-                }
-            })));
+                    if (isDisposed.get()) {
+                        return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
+                            getErrorContext()));
+                    }
+
+                    if (kind == RecoveryKind.CONNECTION) {
+                        LOGGER.atWarning()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Connection-level error in session manager, forcing connection recovery.", failure);
+                        final ServiceBusAmqpConnection failedConnection = operationConnection.getAndSet(null);
+                        if (failedConnection != null) {
+                            connectionCacheWrapper.invalidateConnection(failedConnection);
+                        }
+                    }
+
+                    // Mono.delay(Duration.ZERO) instead of Mono.empty() — the delay schedules the retry on the
+                    // 'parallel' Scheduler, freeing the QPid (proton) thread for other IO. Using Mono.empty() would
+                    // block the QPid thread and slow down / block message pumping in other sessions.
+                    if (failure instanceof TimeoutException) {
+                        return Mono.delay(Duration.ZERO);
+                    } else if (failure instanceof AmqpException
+                        && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
+                        // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                        // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
+                        return Mono.delay(Duration.ZERO);
+                    } else if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
+                        // Link or connection-level error — retry to acquire a fresh link (or connection) after a
+                        // bounded backoff, so a link that repeatedly detaches quickly does not spin the retry loop.
+                        return Mono.delay(retryBackoff);
+                    } else {
+                        final long id = System.nanoTime();
+                        LOGGER.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire new session.", failure);
+                        // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
+                        // non-blocking, if we use the session processor to recover the error, it requires a blocking
+                        // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
+                        return Mono.<Long>error(failure)
+                            .publishOn(Schedulers.boundedElastic())
+                            .doOnError(e -> LOGGER.atInfo()
+                                .addKeyValue(TRACKING_ID_KEY, id)
+                                .log("Emitting the error signal received for session acquire attempt.", e));
+                    }
+                })));
+        });
     }
 
     /**

@@ -210,6 +210,50 @@ public final class ReactorSessionCacheTest {
             .verifyComplete();
     }
 
+    @Test
+    void shouldEvictOnlyExpectedSession() {
+        final ReactorSessionCache cache = createSessionCache();
+        final Connection connection = mock(Connection.class);
+        final String name = "session-0";
+        final ReactorSession first = session(name, endpointStatesSink(), null);
+        final ReactorSession replacement = session(name, endpointStatesSink(), null);
+        final HashMap<String, Deque<ReactorSession>> lookup = new HashMap<>();
+        lookup.put(name, sessions(first, replacement));
+        final CacheLoader loader = new CacheLoader(lookup);
+        Assertions.assertSame(first, cache.getOrLoad(Mono.just(connection), name, loader).block());
+        Assertions.assertFalse(cache.evict(name, replacement));
+        Assertions.assertTrue(cache.evict(name, first));
+        Assertions.assertSame(replacement, cache.getOrLoad(Mono.just(connection), name, loader).block());
+        Assertions.assertFalse(cache.evict(name, first));
+        Assertions.assertSame(replacement, cache.getOrLoad(Mono.just(connection), name, loader).block());
+        Mockito.verify(replacement, Mockito.never()).closeAsync(anyString(), any(), eq(true));
+        Assertions.assertTrue(cache.evict(name, replacement));
+        Assertions.assertFalse(cache.evict(name, replacement));
+    }
+
+    @Test
+    void delayedOpenFailureDoesNotEvictReplacementSession() {
+        final ReactorSessionCache cache = createSessionCache();
+        final Connection connection = mock(Connection.class);
+        final String name = "session-0";
+        final ReactorSession first = session(name, endpointStatesSink(), null);
+        final ReactorSession replacement = session(name, endpointStatesSink(), null);
+        final Sinks.One<ReactorSession> opening = Sinks.one();
+        when(first.open()).thenReturn(opening.asMono());
+        final HashMap<String, Deque<ReactorSession>> lookup = new HashMap<>();
+        lookup.put(name, sessions(first, replacement));
+        final CacheLoader loader = new CacheLoader(lookup);
+        final RuntimeException failure = new RuntimeException("delayed open failure");
+        StepVerifier.create(cache.getOrLoad(Mono.just(connection), name, loader)).then(() -> {
+            Assertions.assertTrue(cache.evict(name));
+            Assertions.assertSame(replacement, cache.getOrLoad(Mono.just(connection), name, loader).block());
+            opening.emitError(failure, Sinks.EmitFailureHandler.FAIL_FAST);
+        }).verifyErrorMatches(error -> error == failure);
+        Assertions.assertSame(replacement, cache.getOrLoad(Mono.just(connection), name, loader).block());
+        Mockito.verify(replacement, Mockito.never()).closeAsync(anyString(), any(), eq(true));
+        Assertions.assertTrue(cache.evict(name, replacement));
+    }
+
     private ReactorSessionCache createSessionCache() {
         return new ReactorSessionCache(CONNECTION_ID, NAMESPACE, handlerProvider, reactorProvider, OPEN_TIMEOUT,
             logger);

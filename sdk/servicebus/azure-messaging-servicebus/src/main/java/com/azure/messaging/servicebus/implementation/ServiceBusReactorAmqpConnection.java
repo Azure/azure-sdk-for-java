@@ -17,6 +17,7 @@ import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RetryUtil;
@@ -205,14 +206,21 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
-                receiveMode, clientIdentifier);
+            return session
+                .createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
+                    receiveMode, clientIdentifier)
+                .doOnError(error -> removeFailedSession(session, error));
         });
     }
 
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
+    }
+
+    @Override
+    public boolean removeSession(String sessionName) {
+        return super.removeSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
     }
 
     /**
@@ -237,9 +245,26 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
-                receiveMode, clientIdentifier, sessionId);
+            return session
+                .createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
+                    receiveMode, clientIdentifier, sessionId)
+                .doOnError(error -> removeFailedSession(session, error));
         });
+    }
+
+    private void removeFailedSession(ServiceBusSession session, Throwable error) {
+        final RecoveryKind recoveryKind = RecoveryKind.classify(error);
+        if (recoveryKind != RecoveryKind.LINK && recoveryKind != RecoveryKind.CONNECTION) {
+            return;
+        }
+        try {
+            final boolean removed = removeSession(session.getSessionName(), session);
+            LOGGER.atVerbose()
+                .addKeyValue("sessionRemoved", removed)
+                .log("Stale session removal during {} recovery.", recoveryKind);
+        } catch (RuntimeException cleanupError) {
+            LOGGER.atWarning().log("Error removing stale session during {} recovery.", recoveryKind, cleanupError);
+        }
     }
 
     @Override

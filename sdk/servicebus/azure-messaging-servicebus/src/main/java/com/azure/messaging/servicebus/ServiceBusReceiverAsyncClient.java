@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
@@ -1713,9 +1714,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
         //
-        final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
-            return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
-                entityType, identifier);
+        final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+        final Mono<ServiceBusReceiveLink> receiveLinkMono = Mono.defer(() -> {
+            operationConnection.set(null);
+            return connectionProcessor.flatMap(connection -> {
+                operationConnection.set(connection);
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(), null,
+                    entityType, identifier);
+            });
         }).doOnNext(next -> {
             LOGGER.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
@@ -1736,14 +1742,40 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         //
         final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono
             = RetryUtil.withRetry(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
-                // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
-                // can produce a new connection if downstream request. In this context, treat
-                // RequestResponseChannelClosedException error from the following two sources as retry-able so that
-                // retry can obtain a new connection -
-                // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
-                // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
-                //
                 return new AmqpException(true, e.getMessage(), e, null);
+            }).onErrorResume(e -> {
+                final RecoveryKind recoveryKind = RecoveryKind.classify(e);
+                if (recoveryKind == RecoveryKind.LINK || recoveryKind == RecoveryKind.CONNECTION) {
+                    LOGGER.atWarning()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue("recoveryKind", recoveryKind)
+                        .log("Receive link creation failed, performing {} recovery.", recoveryKind, e);
+
+                    // The receive-link factory evicts only the session that hosted the failed link.
+                    // CONNECTION recovery also invalidates the connection used by this attempt.
+                    final ServiceBusAmqpConnection failedConnection = operationConnection.getAndSet(null);
+                    Mono<Void> recovery = Mono.<Void>fromRunnable(() -> {
+                        if (failedConnection == null) {
+                            return;
+                        }
+                        if (recoveryKind == RecoveryKind.CONNECTION) {
+                            connectionCacheWrapper.invalidateConnection(failedConnection);
+                        }
+                    }).onErrorResume(error -> {
+                        LOGGER.atWarning()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .log("Error invalidating connection during {} recovery.", recoveryKind, error);
+                        return Mono.empty();
+                    });
+
+                    // Use the shared retry-filter wrapper so non-AMQP errors classified as
+                    // LINK/CONNECTION (e.g., IllegalStateException) are wrapped as transient
+                    // AmqpException and accepted by RetryUtil.createRetry. Centralising this
+                    // logic in RecoveryUtils keeps the sender and receiver paths consistent.
+                    final Throwable retriable = RecoveryUtils.asRetriable(e);
+                    return recovery.then(Mono.error(retriable));
+                }
+                return Mono.error(RecoveryUtils.asRetriable(e));
             }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below

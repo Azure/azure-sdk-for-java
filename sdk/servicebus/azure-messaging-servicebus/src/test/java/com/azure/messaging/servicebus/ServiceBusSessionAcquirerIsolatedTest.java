@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -161,6 +162,32 @@ public class ServiceBusSessionAcquirerIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldBackOffBetweenConnectionRecoveryAttempts() {
+        final AmqpException connectionError
+            = new AmqpException(true, AmqpErrorCondition.CONNECTION_FORCED, "connection forced", null);
+        final RuntimeException terminal = new RuntimeException("stop after two failures");
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.error(connectionError));
+        links.add(Mono.error(connectionError));
+        links.add(Mono.error(terminal));
+        final OnCreateSessionLink onCreate = new OnCreateSessionLink(links);
+        final ConnectionCacheWrapper wrapper = createMockConnectionWrapper(onCreate);
+        final ServiceBusSessionAcquirer acquirer = createSessionAcquirer(wrapper, false);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(acquirer::acquire)
+                .thenAwait(RETRY_BACKOFF.dividedBy(2))
+                .then(() -> Assertions.assertEquals(2, onCreate.pending()))
+                .thenAwait(RETRY_BACKOFF)
+                .then(() -> Assertions.assertEquals(1, onCreate.pending()))
+                .thenAwait(RETRY_BACKOFF)
+                .verifyErrorSatisfies(error -> Assertions.assertSame(terminal, error));
+        }
+        Mockito.verify(wrapper, Mockito.times(2)).invalidateConnection(any(ServiceBusAmqpConnection.class));
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     public void shouldRetryOnBrokerTimeoutErrorIfRetryEnabled() {
         final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(2);
         sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));
@@ -211,10 +238,58 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         return cacheWrapper;
     }
 
+    @Test
+    public void shouldPropagateLockedNamedSessionWithoutRetry() {
+        final AmqpException locked = new AmqpException(false, AmqpErrorCondition.SESSION_CANNOT_BE_LOCKED,
+            "The requested session is already locked.", new AmqpErrorContext(ENTITY_PATH));
+        final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>();
+        sessionLinks.add(Mono.error(locked));
+        sessionLinks.add(Mono.error(new IllegalStateException("Unexpected second acquisition")));
+        final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
+        final ServiceBusSessionAcquirer acquirer
+            = createSessionAcquirer(createMockConnectionWrapper(onCreateSessionLink), false);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> acquirer.acquire("locked-session"))
+                .thenAwait(RETRY_BACKOFF.plusSeconds(1))
+                .verifyErrorSatisfies(error -> Assertions.assertSame(locked, error));
+        }
+        Assertions.assertEquals(1, onCreateSessionLink.pending());
+    }
+
     private ServiceBusSessionAcquirer createSessionAcquirer(ConnectionCacheWrapper cacheWrapper,
         boolean isTimeoutRetryDisabled) {
         return new ServiceBusSessionAcquirer(LOGGER, IDENTIFIER, ENTITY_PATH, ENTITY_TYPE, RECEIVE_MODE, TRY_TIMEOUT,
             isTimeoutRetryDisabled, cacheWrapper);
+    }
+
+    @Test
+    public void connectionRecoveryTargetsTheFailedAcquisition() {
+        final ServiceBusAmqpConnection failed = mock(ServiceBusAmqpConnection.class);
+        final ServiceBusAmqpConnection replacement = mock(ServiceBusAmqpConnection.class);
+        final AtomicReference<ServiceBusAmqpConnection> current = new AtomicReference<>(failed);
+        final ConnectionCacheWrapper wrapper = mock(ConnectionCacheWrapper.class);
+        when(wrapper.isV2()).thenReturn(true);
+        when(wrapper.getConnection()).thenReturn(Mono.fromSupplier(current::get));
+        when(wrapper.getRetryOptions()).thenReturn(new AmqpRetryOptions().setDelay(RETRY_BACKOFF));
+        final AmqpException connectionError
+            = new AmqpException(true, AmqpErrorCondition.CONNECTION_FORCED, "connection forced", null);
+        final IllegalStateException terminal = new IllegalStateException("stop after replacement");
+        when(failed.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
+            any(MessagingEntityType.class), anyString(), any())).thenAnswer(invocation -> {
+                current.set(replacement);
+                return Mono.error(connectionError);
+            });
+        when(replacement.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
+            any(MessagingEntityType.class), anyString(), any())).thenReturn(Mono.error(terminal));
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> createSessionAcquirer(wrapper, false).acquire("session"))
+                .thenAwait(AWAIT_DURATION)
+                .verifyErrorSatisfies(error -> Assertions.assertSame(terminal, error));
+        }
+        Mockito.verify(wrapper).invalidateConnection(failed);
+        Mockito.verify(wrapper, Mockito.never()).invalidateConnection(replacement);
     }
 
     private static final class OnCreateSessionLink implements Answer<Mono<ServiceBusReceiveLink>> {

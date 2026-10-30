@@ -6,12 +6,15 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -20,6 +23,7 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
@@ -27,7 +31,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -40,6 +47,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -67,6 +77,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -654,8 +665,225 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         return MockEndpoint.create(connectionId, QUEUE_NAME, RETRY_OPTIONS, sessionsCnt, linksPerSession);
     }
 
+    @Test
+    void resourceLimitFromExceptionUtilRetriesWithoutClosingResources() {
+        final Exception error
+            = ExceptionUtil.toException(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition(),
+                "resource limit", new AmqpErrorContext(FQDN));
+        Assertions.assertFalse(((AmqpException) error).isTransient());
+        final AmqpException retriable = (AmqpException) RecoveryUtils.asRetriable(error);
+        Assertions.assertTrue(retriable.isTransient());
+        Assertions.assertEquals(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED, retriable.getErrorCondition());
+        Assertions.assertSame(((AmqpException) error).getContext(), retriable.getContext());
+        Assertions.assertSame(error, retriable.getCause());
+        try (MockEndpoint endpoint = createMockEndpoint(1, new int[] { 1 })) {
+            final AmqpSendLink link = endpoint.getAmqpSendLink(0, 0);
+            when(link.send(any(Message.class))).thenReturn(Mono.error(error)).thenReturn(Mono.empty());
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(singleConnectionSupplier(endpoint));
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                verify(link, times(2)).send(any(Message.class));
+                verify(link, Mockito.never()).closeAsync();
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = AmqpErrorCondition.class,
+        names = { "NOT_FOUND", "UNAUTHORIZED_ACCESS", "MESSAGE_LOCK_LOST", "SESSION_CANNOT_BE_LOCKED" })
+    void nonRetriableErrorsStayNonRetriable(AmqpErrorCondition condition) {
+        final AmqpException error = new AmqpException(false, condition, "terminal", null);
+        Assertions.assertSame(error, RecoveryUtils.asRetriable(error));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void sessionRemovalUsesTheSameKeyAsCreation(boolean crossEntityTransactions) {
+        try (MockEndpoint endpoint = createMockEndpoint(2, new int[] { 0, 0 })) {
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> endpoint.arrange(crossEntityTransactions));
+            try {
+                final ServiceBusReactorAmqpConnection connection = cache.get().block(Duration.ofSeconds(5));
+                final AmqpSession first = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+                Assertions.assertNotNull(first);
+                Assertions.assertTrue(connection.removeSession(QUEUE_NAME));
+                final AmqpSession replacement = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+                Assertions.assertNotNull(replacement);
+                Assertions.assertNotSame(first, replacement);
+            } finally {
+                cache.dispose();
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void delayedReceiveLinkFailureDoesNotRemoveReplacementSession(boolean crossEntityTransactions) {
+        try (MockEndpoint endpoint = createMockEndpoint(2, new int[] { 0, 0 })) {
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> Mockito.spy(endpoint.arrange(crossEntityTransactions)));
+            final ServiceBusReactorAmqpConnection connection = cache.get().block(Duration.ofSeconds(5));
+            final AmqpSession failedSession = connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5));
+            final AtomicReference<AmqpSession> replacement = new AtomicReference<>();
+            final Sinks.One<Void> failureHandled = Sinks.one();
+            Mockito.doAnswer(invocation -> {
+                Assertions.assertTrue(connection.removeSession(QUEUE_NAME));
+                replacement.set(connection.createSession(QUEUE_NAME).block(Duration.ofSeconds(5)));
+                Assertions.assertNotSame(failedSession, replacement.get());
+                return Mono.error(RETRIABLE_LINK_ERROR)
+                    .doAfterTerminate(() -> failureHandled.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST));
+            })
+                .doReturn(Mono.error(NON_RETRIABLE_ERROR_1))
+                .when(connection)
+                .createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
+                    any(MessagingEntityType.class), anyString());
+            final ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(FQDN, QUEUE_NAME,
+                MessagingEntityType.QUEUE,
+                ReceiverOptions.createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, null, false),
+                new ConnectionCacheWrapper(cache), Duration.ofSeconds(10),
+                new ServiceBusReceiverInstrumentation(null, null, FQDN, QUEUE_NAME, null, ReceiverKind.ASYNC_RECEIVER),
+                messageSerializer, onClientClosed, CLIENT_IDENTIFIER);
+            try {
+                StepVerifier.create(client.receiveMessages()).then(() -> {
+                    failureHandled.asMono().block(Duration.ofSeconds(5));
+                    Assertions.assertNotNull(replacement.get());
+                    Assertions.assertFalse(replacement.get().isDisposed());
+                }).thenCancel().verify(Duration.ofSeconds(5));
+                Assertions.assertSame(connection, cache.get().block(Duration.ofSeconds(5)));
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
+    @Test
+    void shouldRecoverAfterNegotiationRetriesAreExhausted() {
+        try (MockEndpoint endpoint = createMockEndpoint(1, new int[] { 2 })) {
+            final AmqpSendLink failed = endpoint.getAmqpSendLink(0, 0);
+            final AmqpRetryOptions negotiationOptions = new AmqpRetryOptions(RETRY_OPTIONS).setMaxRetries(0);
+            when(failed.closeAsync()).thenAnswer(invocation -> {
+                endpoint.emitCurrentSendLinkError(RETRIABLE_LINK_ERROR);
+                return Mono.empty();
+            });
+            when(endpoint.getAmqpSendLink(0, 1).send(any(Message.class))).thenReturn(Mono.empty());
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache = createConnectionCache(() -> {
+                final ServiceBusReactorAmqpConnection result = endpoint.arrange();
+                when(failed.getLinkSize()).thenReturn(
+                    RetryUtil.withRetry(Mono.<Integer>error(RETRIABLE_LINK_ERROR), negotiationOptions, "negotiation"));
+                return result;
+            });
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
+    @Test
+    void shouldInvalidateConnectionBeforeNonCompletingLinkClose() {
+        final List<SessionLinkCount> counts = new ArrayList<>();
+        counts.add(new SessionLinkCount(1, new int[] { 1 }));
+        counts.add(new SessionLinkCount(1, new int[] { 1 }));
+        try (MockEndpoints endpoints = createMockEndpoints(counts)) {
+            final AtomicInteger supplied = new AtomicInteger();
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> endpoints.get(supplied.getAndIncrement()).arrange());
+            final AmqpSendLink failed = endpoints.get(0).getAmqpSendLink(0, 0);
+            when(failed.send(any(Message.class))).thenReturn(Mono.error(RETRIABLE_CONNECTION_ERROR));
+            when(failed.closeAsync()).thenReturn(Mono.never());
+            when(endpoints.get(1).getAmqpSendLink(0, 0).send(any(Message.class))).thenReturn(Mono.empty());
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                Assertions.assertEquals(2, supplied.get());
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
+    @Test
+    void delayedConnectionErrorMustNotInvalidateReplacement() {
+        final List<SessionLinkCount> counts = new ArrayList<>();
+        counts.add(new SessionLinkCount(1, new int[] { 1 }));
+        counts.add(new SessionLinkCount(1, new int[] { 1 }));
+        try (MockEndpoints endpoints = createMockEndpoints(counts)) {
+            final AtomicInteger supplied = new AtomicInteger();
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(() -> endpoints.get(supplied.getAndIncrement()).arrange());
+            final AmqpSendLink failed = endpoints.get(0).getAmqpSendLink(0, 0);
+            when(failed.send(any(Message.class))).thenAnswer(invocation -> {
+                endpoints.get(0).emitConnectionError(RETRIABLE_CONNECTION_ERROR);
+                return cache.get().then(Mono.error(RETRIABLE_CONNECTION_ERROR));
+            });
+            when(failed.closeAsync()).thenReturn(Mono.empty());
+            when(endpoints.get(1).getAmqpSendLink(0, 0).send(any(Message.class))).thenReturn(Mono.empty());
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                Assertions.assertEquals(2, supplied.get());
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
+    }
+
     private MockEndpoints createMockEndpoints(List<SessionLinkCount> sessionLinkCountList) {
         return MockEndpoints.create(QUEUE_NAME, RETRY_OPTIONS, sessionLinkCountList);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void abortedSendRecoversItsLink(boolean withCause) {
+        try (MockEndpoint endpoint = createMockEndpoint(1, new int[] { 2 })) {
+            final OperationCancelledException aborted = withCause
+                ? new OperationCancelledException("Delivery advance failed", new IllegalStateException("advance"), null)
+                : new OperationCancelledException("Released", null);
+            final AmqpSendLink failed = endpoint.getAmqpSendLink(0, 0);
+            when(failed.send(any(Message.class))).thenReturn(Mono.error(aborted));
+            when(failed.closeAsync()).thenAnswer(invocation -> {
+                endpoint.emitCurrentSendLinkCompletion();
+                return Mono.empty();
+            });
+            when(endpoint.getAmqpSendLink(0, 1).send(any(Message.class))).thenReturn(Mono.empty());
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache
+                = createConnectionCache(singleConnectionSupplier(endpoint));
+            final ServiceBusSenderAsyncClient client = createSenderAsyncClient(cache, false);
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(() -> client.sendMessage(createMessageToSend()))
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                verify(failed).closeAsync();
+            } finally {
+                client.close();
+                cache.dispose();
+            }
+        }
     }
 
     private Supplier<ServiceBusReactorAmqpConnection> singleConnectionSupplier(MockEndpoint endpoint) {
@@ -849,6 +1077,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
 
         ServiceBusReactorAmqpConnection arrange() {
+            return arrange(false);
+        }
+
+        ServiceBusReactorAmqpConnection arrange(boolean crossEntityTransactions) {
             if (arranged.getAndSet(true)) {
                 throw new RuntimeException("Only one connection can be obtained from a MockEndpoint instance.");
             }
@@ -889,7 +1121,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             // New tests only for ReactorConnectionCache introduced in v2.
             final boolean isV2 = true;
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, reactorProvider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, isV2, false);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, crossEntityTransactions, isV2,
+                false);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {

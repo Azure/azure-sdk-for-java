@@ -9,8 +9,10 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
@@ -26,6 +28,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
@@ -150,52 +153,80 @@ final class ServiceBusSessionAcquirer {
      * is already disposed or {@link TimeoutException} if session acquire timeouts and {@code timeoutRetryDisabled} set to true.
      */
     private Mono<Session> acquireIntern(String sessionId) {
-        if (timeoutRetryDisabled) {
-            return acquireSession(sessionId).timeout(clientSideTimeout,
-                Mono.error(() -> new TimeoutException("Timed out waiting to acquire a session; the broker did not "
-                    + "respond within " + clientSideTimeout + " (client-side guard).")))
-                .onErrorResume(t -> {
-                    if (isBrokerTimeoutError(t)) {
-                        // map the broker timeout to application-friendly TimeoutException.
-                        final Throwable e = new TimeoutException("com.microsoft:timeout").initCause(t);
-                        return publishError(sessionId, e, false);
-                    }
-                    if (t instanceof TimeoutException) {
-                        // Client-side guard fired because the broker never responded (a hung acquire).
-                        // Treat it like the broker timeout: a retriable "no session acquired in time".
-                        return publishError(sessionId, t, false);
-                    }
-                    return publishError(sessionId, t, true);
-                });
-        } else {
-            return acquireSession(sessionId).timeout(tryTimeout)
-                .retryWhen(Retry.from(signals -> signals.flatMap(signal -> {
-                    final Throwable t = signal.failure();
-                    if (isTimeoutError(t)) {
-                        logger.atVerbose()
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                            .addKeyValue("attempt", signal.totalRetriesInARow())
-                            .log("Timeout while acquiring session '{}'.", sessionName(sessionId), t);
-                        // Retry session acquire after a bounded backoff. Mono.delay hops to
-                        // Schedulers.parallel(), freeing the QPid thread; the non-zero backoff prevents a
-                        // tight CPU-burning loop when acquire attempts fail fast.
-                        return Mono.delay(retryBackoff);
-                    }
-                    return publishError(sessionId, t, true);
-                })));
-        }
+        return Mono.defer(() -> {
+            final AtomicReference<ServiceBusAmqpConnection> operationConnection = new AtomicReference<>();
+            if (timeoutRetryDisabled) {
+                return acquireSession(sessionId, operationConnection)
+                    .timeout(clientSideTimeout,
+                        Mono.error(
+                            () -> new TimeoutException("Timed out waiting to acquire a session; the broker did not "
+                                + "respond within " + clientSideTimeout + " (client-side guard).")))
+                    .onErrorResume(t -> {
+                        if (isBrokerTimeoutError(t)) {
+                            // map the broker timeout to application-friendly TimeoutException.
+                            final Throwable e = new TimeoutException("com.microsoft:timeout").initCause(t);
+                            return publishError(sessionId, e, false);
+                        }
+                        if (t instanceof TimeoutException) {
+                            // Client-side guard fired because the broker never responded (a hung acquire).
+                            // Treat it like the broker timeout: a retriable "no session acquired in time".
+                            return publishError(sessionId, t, false);
+                        }
+                        return publishError(sessionId, t, true);
+                    });
+            } else {
+                return acquireSession(sessionId, operationConnection).timeout(tryTimeout)
+                    .retryWhen(Retry.from(signals -> signals.flatMap(signal -> {
+                        final Throwable t = signal.failure();
+                        final RecoveryKind kind = RecoveryKind.classify(t);
+                        if (kind == RecoveryKind.CONNECTION) {
+                            logger.atWarning()
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .log("Connection-level error acquiring session, forcing connection recovery.", t);
+                            final ServiceBusAmqpConnection failedConnection = operationConnection.getAndSet(null);
+                            if (failedConnection != null) {
+                                connectionCacheWrapper.invalidateConnection(failedConnection);
+                            }
+                            return Mono.delay(retryBackoff);
+                        }
+                        if (isTimeoutError(t)) {
+                            logger.atVerbose()
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .addKeyValue("attempt", signal.totalRetriesInARow())
+                                .log("Timeout while acquiring session '{}'.", sessionName(sessionId), t);
+                            // Retry session acquire after a bounded backoff. Mono.delay hops to
+                            // Schedulers.parallel(), freeing the QPid thread; the non-zero backoff prevents a
+                            // tight CPU-burning loop when acquire attempts fail fast.
+                            return Mono.delay(retryBackoff);
+                        }
+                        if (kind == RecoveryKind.LINK) {
+                            logger.atWarning()
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .log("Link-level error acquiring session, retrying.", t);
+                            // Retry link-level failures after the same bounded backoff so repeated fast
+                            // link detaches do not spin in a tight CPU-burning loop.
+                            return Mono.delay(retryBackoff);
+                        }
+                        return publishError(sessionId, t, true);
+                    })));
+            }
+        });
     }
 
     /**
      * Tries to acquire a session from the broker by opening an AMQP receive link.
      *
      * @param sessionId the unique id of the session to acquire, a value {@code null} means acquire any free session.
+     * @param operationConnection captures the connection used by the current acquisition attempt.
      *
      * @return the acquired session.
      */
-    private Mono<Session> acquireSession(String sessionId) {
+    private Mono<Session> acquireSession(String sessionId,
+        AtomicReference<ServiceBusAmqpConnection> operationConnection) {
         return Mono.defer(() -> {
+            operationConnection.set(null);
             final Mono<ServiceBusReceiveLink> createLink = connectionCacheWrapper.getConnection()
+                .doOnNext(operationConnection::set)
                 .flatMap(connection -> connection.createReceiveLink(linkName(sessionId), entityPath, receiveMode, null,
                     entityType, identifier, sessionId));
             return createLink.flatMap(link -> {
