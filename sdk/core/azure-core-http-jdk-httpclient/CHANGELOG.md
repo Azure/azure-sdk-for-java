@@ -4,9 +4,15 @@
 
 ### Features Added
 
+- Added `maximumHttpVersion` to enable HTTP/2 with HTTP/1.1 fallback. Clients created without a supplied JDK builder
+  still default to HTTP/1.1.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- HTTP clients created with a supplied JDK builder now honor its explicit HTTP version instead of silently
+  defaulting to HTTP/1.1.
 
 ### Other Changes
 
