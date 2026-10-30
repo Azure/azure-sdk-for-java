@@ -26,6 +26,13 @@ public final class AutoscaleSettingResourcePatch implements JsonSerializable<Aut
     private Map<String, String> tags;
 
     /*
+     * The managed service identities assigned to this resource. Only user-assigned identities are supported;
+     * 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one user-assigned managed identity may
+     * be assigned to an autoscale setting. To remove the assigned identity, send 'type' as 'None'.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The autoscale setting properties of the update operation.
      */
     private AutoscaleSetting innerProperties;
@@ -53,6 +60,32 @@ public final class AutoscaleSettingResourcePatch implements JsonSerializable<Aut
      */
     public AutoscaleSettingResourcePatch withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource. Only user-assigned
+     * identities are supported; 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one
+     * user-assigned managed identity may be assigned to an autoscale setting. To remove the assigned identity, send
+     * 'type' as 'None'.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource. Only user-assigned
+     * identities are supported; 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one
+     * user-assigned managed identity may be assigned to an autoscale setting. To remove the assigned identity, send
+     * 'type' as 'None'.
+     * 
+     * @param identity the identity value to set.
+     * @return the AutoscaleSettingResourcePatch object itself.
+     */
+    public AutoscaleSettingResourcePatch withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -241,6 +274,9 @@ public final class AutoscaleSettingResourcePatch implements JsonSerializable<Aut
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -253,6 +289,7 @@ public final class AutoscaleSettingResourcePatch implements JsonSerializable<Aut
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -276,6 +313,8 @@ public final class AutoscaleSettingResourcePatch implements JsonSerializable<Aut
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAutoscaleSettingResourcePatch.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAutoscaleSettingResourcePatch.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedAutoscaleSettingResourcePatch.innerProperties = AutoscaleSetting.fromJson(reader);
                 } else {

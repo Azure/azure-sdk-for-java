@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class AutoscaleSettingsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2022-10-01/listAutoscaleSetting.json
+     * x-ms-original-file: 2025-09-01-preview/listAutoscaleSetting.json
      */
     /**
      * Sample code: List autoscale settings.
