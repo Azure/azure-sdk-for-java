@@ -5,7 +5,6 @@ package com.azure.communication.identity.models;
 
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.communication.identity.CommunicationIdentityClient;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,21 +21,18 @@ import java.io.IOException;
 public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTokenForTeamsUserOptions> {
 
     /*
-     * Azure AD access token of a Teams User.
+     * Azure AD access token of a Teams User to acquire a new Communication Identity access token.
      */
-    @Generated
     private String teamsUserAadToken;
 
     /*
-     * Client ID of an Azure AD application.
+     * Client ID of an Azure AD application to be verified against the appid claim in the Azure AD access token.
      */
-    @Generated
     private String clientId;
 
     /*
-     * Object ID of an Azure AD user (Teams User).
+     * Object ID of an Azure AD user (Teams User) to be verified against the oid claim in the Azure AD access token.
      */
-    @Generated
     private String userObjectId;
 
     /**
@@ -48,7 +44,6 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
      * @param userObjectId Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure
      * AD access token.
      */
-    @Generated
     public GetTokenForTeamsUserOptions(String teamsUserAadToken, String clientId, String userObjectId) {
         this.teamsUserAadToken = teamsUserAadToken;
         this.clientId = clientId;
@@ -56,39 +51,32 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
     }
 
     /**
-     * Get the teamsUserAadToken property: Azure AD access token of a Teams User.
+     * Gets the Azure AD access token of a Teams User.
      *
-     * @return the teamsUserAadToken value.
+     * @return the Azure AD access token of a Teams User.
      */
-    @Generated
     public String getTeamsUserAadToken() {
         return this.teamsUserAadToken;
     }
 
     /**
-     * Get the clientId property: Client ID of an Azure AD application.
+     * Gets the Client ID of an Azure AD application.
      *
-     * @return the clientId value.
+     * @return the Client ID of an Azure AD application.
      */
-    @Generated
     public String getClientId() {
         return this.clientId;
     }
 
     /**
-     * Get the userObjectId property: Object ID of an Azure AD user (Teams User).
+     * Gets the Object ID of an Azure AD user (Teams User).
      *
-     * @return the userObjectId value.
+     * @return the Object ID of an Azure AD user (Teams User).
      */
-    @Generated
     public String getUserObjectId() {
         return this.userObjectId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -99,38 +87,33 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
     }
 
     /**
-     * Reads an instance of GetTokenForTeamsUserOptions from the JsonReader.
+     * Reads an instance of TeamsUserExchangeTokenRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GetTokenForTeamsUserOptions if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of TeamsUserExchangeTokenRequest if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GetTokenForTeamsUserOptions.
+     * @throws IOException If an error occurs while reading the TeamsUserExchangeTokenRequest.
      */
-    @Generated
     public static GetTokenForTeamsUserOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GetTokenForTeamsUserOptions deserializedGetTokenForTeamsUserOptions = new GetTokenForTeamsUserOptions();
+            String teamsUserAadToken = null;
+            String clientId = null;
+            String userObjectId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("token".equals(fieldName)) {
-                    deserializedGetTokenForTeamsUserOptions.teamsUserAadToken = reader.getString();
+                    teamsUserAadToken = reader.getString();
                 } else if ("appId".equals(fieldName)) {
-                    deserializedGetTokenForTeamsUserOptions.clientId = reader.getString();
+                    clientId = reader.getString();
                 } else if ("userId".equals(fieldName)) {
-                    deserializedGetTokenForTeamsUserOptions.userObjectId = reader.getString();
+                    userObjectId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedGetTokenForTeamsUserOptions;
+            return new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
         });
-    }
-
-    /**
-     * Private constructor for deserialization
-     */
-    private GetTokenForTeamsUserOptions() {
     }
 }
