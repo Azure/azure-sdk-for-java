@@ -10,16 +10,11 @@ import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -34,7 +29,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.util.internal.SystemPropertyUtil;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
@@ -81,7 +76,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
 
-            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), new WebSocketClientCompressionHandler(0),
+            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), WebSocketClientCompressionHandler.INSTANCE,
                 handler);
         }
     }
@@ -101,23 +96,6 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     }
 
     void connect() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
-        boolean connected = false;
-        try {
-            connectInternal();
-            connected = true;
-        } finally {
-            if (!connected) {
-                if (ch != null) {
-                    ch.close();
-                }
-                if (group != null) {
-                    group.shutdownGracefully();
-                }
-            }
-        }
-    }
-
-    private void connectInternal() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
         URI uri = new URI(path);
         String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
         final String host = uri.getHost() == null ? "127.0.0.1" : uri.getHost();
@@ -141,77 +119,51 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         final boolean ssl = "wss".equalsIgnoreCase(scheme);
         final SslContext sslCtx;
         if (ssl) {
-            sslCtx = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
+            sslCtx = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
         } else {
             sslCtx = null;
         }
 
-        group = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
+        group = new NioEventLoopGroup();
 
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
             new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
-        handshaker.setForceCloseTimeoutMillis(10_000);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 
         Bootstrap b = new Bootstrap();
         b.group(group)
             .channel(NioSocketChannel.class)
-            .option(ChannelOption.ALLOCATOR,
-                // If io.netty.allocator.type was configured, respect the configuration. Otherwise, fallback to the
-                // default setting from Netty 4.1 which was the pooled allocator. In the future, this should be
-                // validated for if this should use the new Netty 4.2 default which is an adaptive allocator.
-                SystemPropertyUtil.contains("io.netty.allocator.type")
-                    ? ByteBufAllocator.DEFAULT
-                    : PooledByteBufAllocator.DEFAULT)
             .handler(new WebSocketChannelHandler(host, port, sslCtx, clientHandler));
 
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();
 
         ch = b.connect(uri.getHost(), port).sync().channel();
-        ch.closeFuture().addListener(future -> group.shutdownGracefully());
         // callback for openHandler
         clientHandler.handshakeFuture().addListener(future -> {
-            try {
-                if (future.isSuccess()) {
-                    openHandler.accept(this);
-                }
-                handshakeCallbackFuture.complete(null);
-            } catch (Throwable e) {
-                handshakeCallbackFuture.completeExceptionally(e);
+            if (future.isSuccess()) {
+                openHandler.accept(this);
             }
+            handshakeCallbackFuture.complete(null);
         }).sync();
 
         // callback for closeHandler, on channel close
         ch.closeFuture().addListener(future -> {
             if (clientHandler != null) {
+                if (future.isSuccess()) {
+                    // the CloseWebSocketFrame from server
+                    CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
+                    if (closeFrame == null) {
+                        closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
+                    }
+                    closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
+                    closeFrame.release();   // release after use
+                }
+
                 // closeCallbackFuture exists if close is initiated from client
                 CompletableFuture<Void> closeCallbackFuture = clientHandler.getClientCloseCallbackFuture();
-                try {
-                    if (future.isSuccess()) {
-                        // the CloseWebSocketFrame from server
-                        CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
-                        if (closeFrame == null) {
-                            closeHandler.accept(new CloseReason(WebSocketCloseStatus.ABNORMAL_CLOSURE.code(),
-                                "Connection closed without receiving a CloseWebSocketFrame."));
-                        } else {
-                            try {
-                                closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
-                            } finally {
-                                closeFrame.release();
-                            }
-                        }
-                    }
-
-                    if (closeCallbackFuture != null) {
-                        closeCallbackFuture.complete(null);
-                    }
-                } catch (Throwable e) {
-                    if (closeCallbackFuture != null) {
-                        closeCallbackFuture.completeExceptionally(e);
-                    } else {
-                        loggerReference.get().atWarning().log("Failed to handle closed WebSocket session.", e);
-                    }
+                if (closeCallbackFuture != null) {
+                    closeCallbackFuture.complete(null);
                 }
             }
         });
@@ -239,10 +191,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     public void sendTextAsync(String text, Consumer<SendResult> handler) {
         if (ch != null && ch.isOpen()) {
             TextWebSocketFrame frame = new TextWebSocketFrame(text);
-            loggerReference.get()
-                .atVerbose()
-                .addKeyValue("payloadLength", frame.content().readableBytes())
-                .log("Send TextWebSocketFrame");
+            loggerReference.get().atVerbose().addKeyValue("text", frame.text()).log("Send TextWebSocketFrame");
             ch.writeAndFlush(frame).addListener(future -> {
                 if (future.isSuccess()) {
                     handler.accept(new SendResult());
@@ -264,11 +213,9 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     ch.closeFuture().sync();
                 }
 
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
-            } finally {
                 group.shutdownGracefully();
+            } catch (InterruptedException e) {
+                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
             }
         }
     }
@@ -289,22 +236,19 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                         .addKeyValue("statusCode", closeFrame.statusCode())
                         .addKeyValue("reasonText", closeFrame.reasonText())
                         .log("Send CloseWebSocketFrame");
-                    handshaker.close(ch, closeFrame).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-                    // The handshaker forces the transport closed if the peer does not respond in time.
+                    ch.writeAndFlush(closeFrame);
+                    // server will reply a CloseWebSocketFrame and close TCP connection, wait for it
                     ch.closeFuture().sync();
                 }
+
+                group.shutdownGracefully();
 
                 // make sure closeHandler callback is completed before returns
                 if (closeCallbackFuture != null) {
                     closeCallbackFuture.get();
                 }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            } catch (InterruptedException | ExecutionException e) {
                 throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
-            } catch (ExecutionException e) {
-                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
-            } finally {
-                group.shutdownGracefully();
             }
         }
     }

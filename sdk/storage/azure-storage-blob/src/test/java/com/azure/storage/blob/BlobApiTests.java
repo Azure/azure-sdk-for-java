@@ -3251,7 +3251,6 @@ public class BlobApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void uploadStreamAccessTierSmart() {
         bc = cc.getBlobClient(generateBlobName());
         InputStream data = new ByteArrayInputStream(getRandomByteArray(Constants.KB));

@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class HookType extends ExpandableStringEnum<HookType> {
     /**
      * Static value Webhook for HookType.
      */
-    @Generated
     public static final HookType WEBHOOK = fromString("Webhook");
 
     /**
      * Static value Email for HookType.
      */
-    @Generated
     public static final HookType EMAIL = fromString("Email");
 
     /**
@@ -29,7 +26,6 @@ public final class HookType extends ExpandableStringEnum<HookType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public HookType() {
     }
@@ -40,7 +36,6 @@ public final class HookType extends ExpandableStringEnum<HookType> {
      * @param name a name to look for.
      * @return the corresponding HookType.
      */
-    @Generated
     public static HookType fromString(String name) {
         return fromString(name, HookType.class);
     }
@@ -50,7 +45,6 @@ public final class HookType extends ExpandableStringEnum<HookType> {
      * 
      * @return known HookType values.
      */
-    @Generated
     public static Collection<HookType> values() {
         return values(HookType.class);
     }

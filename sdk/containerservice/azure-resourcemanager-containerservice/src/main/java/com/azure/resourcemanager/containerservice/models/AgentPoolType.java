@@ -27,11 +27,6 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
     public static final AgentPoolType VIRTUAL_MACHINES = fromString("VirtualMachines");
 
     /**
-     * Create an Agent Pool for BYO machines running the FlexNode agent.
-     */
-    public static final AgentPoolType FLEX_NODES = fromString("FlexNodes");
-
-    /**
      * Creates a new instance of AgentPoolType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

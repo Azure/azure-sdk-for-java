@@ -26,7 +26,7 @@ public final class KnowledgeRetrievalMinimalReasoningEffort extends KnowledgeRet
      * Creates an instance of KnowledgeRetrievalMinimalReasoningEffort class.
      */
     @Generated
-    public KnowledgeRetrievalMinimalReasoningEffort() {
+    private KnowledgeRetrievalMinimalReasoningEffort() {
     }
 
     /**

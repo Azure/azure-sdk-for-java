@@ -1,14 +1,15 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.33.0 (2026-10-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
 
 ## 12.32.0 (2026-10-07)
 
@@ -27,15 +28,6 @@
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-storage-blob` from `12.35.1` to version `12.36.0`.
-
-## 12.31.3 (2026-10-06)
-
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
-- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
-- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 
 ## 12.31.2 (2026-09-15)
 

@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
-import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import java.io.IOException;
 
 /**
@@ -162,14 +161,7 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("includeReferences", this.includeReferences);
         jsonWriter.writeBooleanField("includeReferenceSourceData", this.includeReferenceSourceData);
-        jsonWriter.writeBooleanField("alwaysQuerySource", this.alwaysQuerySource);
-        jsonWriter.writeBooleanField("neverQuerySource", this.neverQuerySource);
-        jsonWriter.writeBooleanField("failOnError", this.failOnError);
         jsonWriter.writeNumberField("rerankerThreshold", this.rerankerThreshold);
-        jsonWriter.writeStringField("resultsProcessing",
-            this.resultsProcessing == null ? null : this.resultsProcessing.toString());
-        jsonWriter.writeNumberField("maxOutputDocuments", this.maxOutputDocuments);
-        jsonWriter.writeBooleanField("enableImageServing", this.enableImageServing);
         return jsonWriter.writeEndObject();
     }
 
@@ -204,26 +196,10 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     return SearchIndexKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("indexedSharePoint".equals(discriminatorValue)) {
-                    return IndexedSharePointKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("indexedOneLake".equals(discriminatorValue)) {
                     return IndexedOneLakeKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return WebKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("remoteSharePoint".equals(discriminatorValue)) {
-                    return RemoteSharePointKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("workIQ".equals(discriminatorValue)) {
-                    return WorkIQKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("fabricDataAgent".equals(discriminatorValue)) {
-                    return FabricDataAgentKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("fabricOntology".equals(discriminatorValue)) {
-                    return FabricOntologyKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("mcpServer".equals(discriminatorValue)) {
-                    return McpServerKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("file".equals(discriminatorValue)) {
-                    return FileKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("indexedSql".equals(discriminatorValue)) {
-                    return IndexedSqlKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -238,13 +214,7 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             KnowledgeSourceKind kind = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
-            Boolean neverQuerySource = null;
-            Boolean failOnError = null;
             Float rerankerThreshold = null;
-            KnowledgeSourceResultsProcessing resultsProcessing = null;
-            Integer maxOutputDocuments = null;
-            Boolean enableImageServing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -256,20 +226,8 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
-                } else if ("neverQuerySource".equals(fieldName)) {
-                    neverQuerySource = reader.getNullable(JsonReader::getBoolean);
-                } else if ("failOnError".equals(fieldName)) {
-                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
-                } else if ("resultsProcessing".equals(fieldName)) {
-                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
-                } else if ("maxOutputDocuments".equals(fieldName)) {
-                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
-                } else if ("enableImageServing".equals(fieldName)) {
-                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -278,199 +236,8 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             deserializedKnowledgeSourceParams.kind = kind;
             deserializedKnowledgeSourceParams.includeReferences = includeReferences;
             deserializedKnowledgeSourceParams.includeReferenceSourceData = includeReferenceSourceData;
-            deserializedKnowledgeSourceParams.alwaysQuerySource = alwaysQuerySource;
-            deserializedKnowledgeSourceParams.neverQuerySource = neverQuerySource;
-            deserializedKnowledgeSourceParams.failOnError = failOnError;
             deserializedKnowledgeSourceParams.rerankerThreshold = rerankerThreshold;
-            deserializedKnowledgeSourceParams.resultsProcessing = resultsProcessing;
-            deserializedKnowledgeSourceParams.maxOutputDocuments = maxOutputDocuments;
-            deserializedKnowledgeSourceParams.enableImageServing = enableImageServing;
             return deserializedKnowledgeSourceParams;
         });
-    }
-
-    /*
-     * Indicates that this knowledge source should bypass source selection and always be queried at retrieval time.
-     */
-    @Generated
-    private Boolean alwaysQuerySource;
-
-    /*
-     * Indicates that the entire retrieval request should fail if retrieval from this knowledge source encounters an
-     * error. Defaults to false.
-     */
-    @Generated
-    private Boolean failOnError;
-
-    /*
-     * Limits the maximum number of documents returned from this knowledge source.
-     */
-    @Generated
-    private Integer maxOutputDocuments;
-
-    /*
-     * Indicates whether image serving should be enabled for this knowledge source at retrieval time. When true, images
-     * extracted during ingestion are delivered to downstream models.
-     */
-    @Generated
-    private Boolean enableImageServing;
-
-    /**
-     * Get the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     *
-     * @return the alwaysQuerySource value.
-     */
-    @Generated
-    public Boolean isAlwaysQuerySource() {
-        return this.alwaysQuerySource;
-    }
-
-    /**
-     * Set the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     *
-     * @param alwaysQuerySource the alwaysQuerySource value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        this.alwaysQuerySource = alwaysQuerySource;
-        return this;
-    }
-
-    /**
-     * Get the failOnError property: Indicates that the entire retrieval request should fail if retrieval from this
-     * knowledge source encounters an error. Defaults to false.
-     *
-     * @return the failOnError value.
-     */
-    @Generated
-    public Boolean isFailOnError() {
-        return this.failOnError;
-    }
-
-    /**
-     * Set the failOnError property: Indicates that the entire retrieval request should fail if retrieval from this
-     * knowledge source encounters an error. Defaults to false.
-     *
-     * @param failOnError the failOnError value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setFailOnError(Boolean failOnError) {
-        this.failOnError = failOnError;
-        return this;
-    }
-
-    /**
-     * Get the maxOutputDocuments property: Limits the maximum number of documents returned from this knowledge source.
-     *
-     * @return the maxOutputDocuments value.
-     */
-    @Generated
-    public Integer getMaxOutputDocuments() {
-        return this.maxOutputDocuments;
-    }
-
-    /**
-     * Set the maxOutputDocuments property: Limits the maximum number of documents returned from this knowledge source.
-     *
-     * @param maxOutputDocuments the maxOutputDocuments value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
-        this.maxOutputDocuments = maxOutputDocuments;
-        return this;
-    }
-
-    /**
-     * Get the enableImageServing property: Indicates whether image serving should be enabled for this knowledge source
-     * at retrieval time. When true, images extracted during ingestion are delivered to downstream models.
-     *
-     * @return the enableImageServing value.
-     */
-    @Generated
-    public Boolean isEnableImageServing() {
-        return this.enableImageServing;
-    }
-
-    /**
-     * Set the enableImageServing property: Indicates whether image serving should be enabled for this knowledge source
-     * at retrieval time. When true, images extracted during ingestion are delivered to downstream models.
-     *
-     * @param enableImageServing the enableImageServing value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
-        this.enableImageServing = enableImageServing;
-        return this;
-    }
-
-    /*
-     * Indicates that this knowledge source should be excluded from the request's candidate set and never queried at
-     * retrieval time. The exclusion is request-local and does not modify knowledge base membership. Cannot be combined
-     * with alwaysQuerySource on the same knowledge source.
-     */
-    @Generated
-    private Boolean neverQuerySource;
-
-    /*
-     * Overrides the knowledge source's stored resultsProcessing for this retrieve call only. When omitted, the stored
-     * knowledge source value applies.
-     */
-    @Generated
-    private KnowledgeSourceResultsProcessing resultsProcessing;
-
-    /**
-     * Get the neverQuerySource property: Indicates that this knowledge source should be excluded from the request's
-     * candidate set and never queried at retrieval time. The exclusion is request-local and does not modify knowledge
-     * base membership. Cannot be combined with alwaysQuerySource on the same knowledge source.
-     *
-     * @return the neverQuerySource value.
-     */
-    @Generated
-    public Boolean isNeverQuerySource() {
-        return this.neverQuerySource;
-    }
-
-    /**
-     * Set the neverQuerySource property: Indicates that this knowledge source should be excluded from the request's
-     * candidate set and never queried at retrieval time. The exclusion is request-local and does not modify knowledge
-     * base membership. Cannot be combined with alwaysQuerySource on the same knowledge source.
-     *
-     * @param neverQuerySource the neverQuerySource value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setNeverQuerySource(Boolean neverQuerySource) {
-        this.neverQuerySource = neverQuerySource;
-        return this;
-    }
-
-    /**
-     * Get the resultsProcessing property: Overrides the knowledge source's stored resultsProcessing for this retrieve
-     * call only. When omitted, the stored knowledge source value applies.
-     *
-     * @return the resultsProcessing value.
-     */
-    @Generated
-    public KnowledgeSourceResultsProcessing getResultsProcessing() {
-        return this.resultsProcessing;
-    }
-
-    /**
-     * Set the resultsProcessing property: Overrides the knowledge source's stored resultsProcessing for this retrieve
-     * call only. When omitted, the stored knowledge source value applies.
-     *
-     * @param resultsProcessing the resultsProcessing value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
-        this.resultsProcessing = resultsProcessing;
-        return this;
     }
 }

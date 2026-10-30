@@ -151,35 +151,6 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the maintenanceWindowId property: The fully qualified resource ID of the maintenance window that this
-     * maintenance configuration is linked to. When set, the schedule is derived read-only from the linked maintenance
-     * window — maintenanceWindow becomes a computed field. When absent (the default), the schedule is defined inline
-     * via the maintenanceWindow property. The caller must have read access to the target maintenance window.
-     * 
-     * @return the maintenanceWindowId value.
-     */
-    public String maintenanceWindowId() {
-        return this.innerProperties() == null ? null : this.innerProperties().maintenanceWindowId();
-    }
-
-    /**
-     * Set the maintenanceWindowId property: The fully qualified resource ID of the maintenance window that this
-     * maintenance configuration is linked to. When set, the schedule is derived read-only from the linked maintenance
-     * window — maintenanceWindow becomes a computed field. When absent (the default), the schedule is defined inline
-     * via the maintenanceWindow property. The caller must have read access to the target maintenance window.
-     * 
-     * @param maintenanceWindowId the maintenanceWindowId value to set.
-     * @return the MaintenanceConfigurationInner object itself.
-     */
-    public MaintenanceConfigurationInner withMaintenanceWindowId(String maintenanceWindowId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MaintenanceConfigurationProperties();
-        }
-        this.innerProperties().withMaintenanceWindowId(maintenanceWindowId);
-        return this;
-    }
-
-    /**
      * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
      * 
      * @return the maintenanceWindow value.

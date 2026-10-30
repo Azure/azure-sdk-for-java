@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,19 +18,16 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.CUSTOM_SINGLE_LABEL_CLASSIFICATION;
 
     /*
      * Supported parameters for a Custom Single Classification task.
      */
-    @Generated
     private CustomSingleLabelClassificationTaskParameters parameters;
 
     /**
      * Creates an instance of CustomSingleLabelClassificationLROTask class.
      */
-    @Generated
     public CustomSingleLabelClassificationLROTask() {
     }
 
@@ -40,7 +36,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -51,7 +46,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
      * 
      * @return the parameters value.
      */
-    @Generated
     public CustomSingleLabelClassificationTaskParameters getParameters() {
         return this.parameters;
     }
@@ -62,7 +56,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
      * @param parameters the parameters value to set.
      * @return the CustomSingleLabelClassificationLROTask object itself.
      */
-    @Generated
     public CustomSingleLabelClassificationLROTask
         setParameters(CustomSingleLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
@@ -72,7 +65,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomSingleLabelClassificationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -82,7 +74,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomSingleLabelClassificationLROTask.
      */
-    @Generated
     public static CustomSingleLabelClassificationLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomSingleLabelClassificationLROTask deserializedCustomSingleLabelClassificationLROTask

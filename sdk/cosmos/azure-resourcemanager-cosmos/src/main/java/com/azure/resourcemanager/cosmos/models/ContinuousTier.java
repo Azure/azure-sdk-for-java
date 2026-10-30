@@ -22,11 +22,6 @@ public final class ContinuousTier extends ExpandableStringEnum<ContinuousTier> {
     public static final ContinuousTier CONTINUOUS30DAYS = fromString("Continuous30Days");
 
     /**
-     * Continuous 35 Days backup tier.
-     */
-    public static final ContinuousTier CONTINUOUS35DAYS = fromString("Continuous35Days");
-
-    /**
      * Creates a new instance of ContinuousTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

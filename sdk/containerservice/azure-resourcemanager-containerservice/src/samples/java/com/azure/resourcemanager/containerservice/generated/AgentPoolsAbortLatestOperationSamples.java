@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsAbortLatestOperationSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/AgentPoolsAbortOperation.json
+     * x-ms-original-file: 2026-08-01/AgentPoolsAbortOperation.json
      */
     /**
      * Sample code: Abort operation on agent pool.

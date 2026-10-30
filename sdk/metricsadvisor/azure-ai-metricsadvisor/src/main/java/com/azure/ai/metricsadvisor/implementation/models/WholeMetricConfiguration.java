@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,31 +21,26 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * 
      * should be specified when combining multiple detection conditions
      */
-    @Generated
     private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
      */
-    @Generated
     private SmartDetectionCondition smartDetectionCondition;
 
     /*
      * The hardThresholdCondition property.
      */
-    @Generated
     private HardThresholdCondition hardThresholdCondition;
 
     /*
      * The changeThresholdCondition property.
      */
-    @Generated
     private ChangeThresholdCondition changeThresholdCondition;
 
     /**
      * Creates an instance of WholeMetricConfiguration class.
      */
-    @Generated
     public WholeMetricConfiguration() {
     }
 
@@ -57,7 +51,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * 
      * @return the conditionOperator value.
      */
-    @Generated
     public AnomalyDetectionConfigurationLogicType getConditionOperator() {
         return this.conditionOperator;
     }
@@ -70,7 +63,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * @param conditionOperator the conditionOperator value to set.
      * @return the WholeMetricConfiguration object itself.
      */
-    @Generated
     public WholeMetricConfiguration setConditionOperator(AnomalyDetectionConfigurationLogicType conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
@@ -81,7 +73,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * 
      * @return the smartDetectionCondition value.
      */
-    @Generated
     public SmartDetectionCondition getSmartDetectionCondition() {
         return this.smartDetectionCondition;
     }
@@ -92,7 +83,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * @param smartDetectionCondition the smartDetectionCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
-    @Generated
     public WholeMetricConfiguration setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
@@ -103,7 +93,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * 
      * @return the hardThresholdCondition value.
      */
-    @Generated
     public HardThresholdCondition getHardThresholdCondition() {
         return this.hardThresholdCondition;
     }
@@ -114,7 +103,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * @param hardThresholdCondition the hardThresholdCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
-    @Generated
     public WholeMetricConfiguration setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
@@ -125,7 +113,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * 
      * @return the changeThresholdCondition value.
      */
-    @Generated
     public ChangeThresholdCondition getChangeThresholdCondition() {
         return this.changeThresholdCondition;
     }
@@ -136,16 +123,11 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * @param changeThresholdCondition the changeThresholdCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
-    @Generated
     public WholeMetricConfiguration setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -165,7 +147,6 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WholeMetricConfiguration.
      */
-    @Generated
     public static WholeMetricConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WholeMetricConfiguration deserializedWholeMetricConfiguration = new WholeMetricConfiguration();

@@ -15,11 +15,11 @@ import java.util.List;
  * @deprecated A request to send an image notification.
  */
 @Fluent
-@Deprecated
+@Deprecated()
 public final class MediaNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a message type.
+     * The type discriminator describing a notification type.
      */
     @Generated
     private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
@@ -50,7 +50,7 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the kind property: The type discriminator describing a message type.
+     * Get the kind property: The type discriminator describing a notification type.
      *
      * @return the kind value.
      */

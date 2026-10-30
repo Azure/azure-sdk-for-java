@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-attestation</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
+  <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
 
   <name>Microsoft Azure SDK for Attestation</name>
   <description>This package contains Microsoft Azure SDK for the Microsoft Azure Attestation service.</description>
@@ -37,7 +37,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.security.attestation/com.azure.security.attestation=ALL-UNNAMED
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=ALL-UNNAMED
-      --add-reads com.azure.security.attestation=org.bouncycastle.provider
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>

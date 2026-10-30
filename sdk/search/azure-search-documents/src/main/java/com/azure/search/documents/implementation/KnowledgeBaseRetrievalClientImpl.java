@@ -189,85 +189,30 @@ public final class KnowledgeBaseRetrievalClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
-
-        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> retrieveStream(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
-
-        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> retrieveStreamSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
     }
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     maxOutputDocuments: Integer (Optional)
      *     maxOutputSizeInTokens: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
-     *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
-     *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -291,10 +236,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
-     *             startedAt: OffsetDateTime (Optional)
-     *             completedAt: OffsetDateTime (Optional)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
      *                 code: String (Optional)
@@ -312,12 +255,11 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                     }
      *                 ]
      *             }
-     *             warning: String (Optional)
      *         }
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -326,14 +268,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
-     *     responseSensitivityLabelInfo (Optional): {
-     *         displayName: String (Optional)
-     *         sensitivityLabelId: String (Optional)
-     *         toolTip: String (Optional)
-     *         priority: Integer (Optional)
-     *         color: String (Optional)
-     *         isEncrypted: Boolean (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -359,59 +293,26 @@ public final class KnowledgeBaseRetrievalClientImpl {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     maxOutputDocuments: Integer (Optional)
      *     maxOutputSizeInTokens: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
-     *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
-     *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -435,10 +336,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
-     *             startedAt: OffsetDateTime (Optional)
-     *             completedAt: OffsetDateTime (Optional)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
      *                 code: String (Optional)
@@ -456,12 +355,11 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                     }
      *                 ]
      *             }
-     *             warning: String (Optional)
      *         }
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -470,14 +368,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
-     *     responseSensitivityLabelInfo (Optional): {
-     *         displayName: String (Optional)
-     *         sensitivityLabelId: String (Optional)
-     *         toolTip: String (Optional)
-     *         priority: Integer (Optional)
-     *         color: String (Optional)
-     *         isEncrypted: Boolean (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -495,192 +385,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent
-     * events.
-     * 
-     * Process the response incrementally using server-sent event framing. Each event contains an
-     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
-     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
-     * clients may expose the raw response without typed event parsing. Do not deserialize the
-     * complete response body as a single JSON document.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     intents (Optional): [
-     *          (Optional){
-     *             type: String(semantic) (Required)
-     *         }
-     *     ]
-     *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     maxOutputDocuments: Integer (Optional)
-     *     maxOutputSizeInTokens: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
-     *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     knowledgeSourceParams (Optional): [
-     *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
-     *             knowledgeSourceName: String (Required)
-     *             includeReferences: Boolean (Optional)
-     *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
-     *             failOnError: Boolean (Optional)
-     *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
-     *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * @param retrievalRequest The retrieval request to process.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retrieveStreamWithResponseAsync(BinaryData retrievalRequest,
-        RequestOptions requestOptions) {
-        final String accept = "text/event-stream";
-        final String contentType = "application/json";
-        return FluxUtil
-            .withContext(context -> service.retrieveStream(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, context));
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent
-     * events.
-     * 
-     * Process the response incrementally using server-sent event framing. Each event contains an
-     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
-     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
-     * clients may expose the raw response without typed event parsing. Do not deserialize the
-     * complete response body as a single JSON document.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     intents (Optional): [
-     *          (Optional){
-     *             type: String(semantic) (Required)
-     *         }
-     *     ]
-     *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     maxOutputDocuments: Integer (Optional)
-     *     maxOutputSizeInTokens: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
-     *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     knowledgeSourceParams (Optional): [
-     *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
-     *             knowledgeSourceName: String (Required)
-     *             includeReferences: Boolean (Optional)
-     *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
-     *             failOnError: Boolean (Optional)
-     *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
-     *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * @param retrievalRequest The retrieval request to process.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> retrieveStreamWithResponse(BinaryData retrievalRequest, RequestOptions requestOptions) {
-        final String accept = "text/event-stream";
-        final String contentType = "application/json";
-        return service.retrieveStreamSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, Context.NONE);
     }
 }

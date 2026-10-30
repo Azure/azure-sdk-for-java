@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,66 +21,55 @@ public final class Platform implements JsonSerializable<Platform> {
     /*
      * Specifies the CPU architecture, for example amd64 or ppc64le.
      */
-    @Generated
     private String architecture;
 
     /*
      * The os field specifies the operating system, for example linux or windows.
      */
-    @Generated
     private String os;
 
     /*
      * The optional os.version field specifies the operating system version, for example 10.0.10586.
      */
-    @Generated
     private String osVersion;
 
     /*
      * The optional os.features field specifies an array of strings, each listing a required OS feature (for example on
      * Windows win32k
      */
-    @Generated
     private List<String> osFeatures;
 
     /*
-     * The optional variant field specifies a variant of the CPU, for example armv6l to specify a particular CPU variant
-     * of the ARM CPU.
+     * The optional variant field specifies a variant of the CPU, for example armv6l to specify a particular CPU
+     * variant of the ARM CPU.
      */
-    @Generated
     private String variant;
 
     /*
      * The optional features field specifies an array of strings, each listing a required CPU feature (for example sse4
      * or aes
      */
-    @Generated
     private List<String> features;
 
-    /**
-     * Creates an instance of Platform class.
-     */
-    @Generated
+    /** Creates an instance of Platform class. */
     public Platform() {
     }
 
     /**
      * Get the architecture property: Specifies the CPU architecture, for example amd64 or ppc64le.
-     * 
+     *
      * @return the architecture value.
      */
-    @Generated
     public String getArchitecture() {
         return this.architecture;
     }
 
     /**
      * Set the architecture property: Specifies the CPU architecture, for example amd64 or ppc64le.
-     * 
+     *
      * @param architecture the architecture value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setArchitecture(String architecture) {
         this.architecture = architecture;
         return this;
@@ -89,21 +77,19 @@ public final class Platform implements JsonSerializable<Platform> {
 
     /**
      * Get the os property: The os field specifies the operating system, for example linux or windows.
-     * 
+     *
      * @return the os value.
      */
-    @Generated
     public String getOs() {
         return this.os;
     }
 
     /**
      * Set the os property: The os field specifies the operating system, for example linux or windows.
-     * 
+     *
      * @param os the os value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setOs(String os) {
         this.os = os;
         return this;
@@ -112,10 +98,9 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Get the osVersion property: The optional os.version field specifies the operating system version, for example
      * 10.0.10586.
-     * 
+     *
      * @return the osVersion value.
      */
-    @Generated
     public String getOsVersion() {
         return this.osVersion;
     }
@@ -123,11 +108,10 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Set the osVersion property: The optional os.version field specifies the operating system version, for example
      * 10.0.10586.
-     * 
+     *
      * @param osVersion the osVersion value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setOsVersion(String osVersion) {
         this.osVersion = osVersion;
         return this;
@@ -136,10 +120,9 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Get the osFeatures property: The optional os.features field specifies an array of strings, each listing a
      * required OS feature (for example on Windows win32k.
-     * 
+     *
      * @return the osFeatures value.
      */
-    @Generated
     public List<String> getOsFeatures() {
         return this.osFeatures;
     }
@@ -147,11 +130,10 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Set the osFeatures property: The optional os.features field specifies an array of strings, each listing a
      * required OS feature (for example on Windows win32k.
-     * 
+     *
      * @param osFeatures the osFeatures value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setOsFeatures(List<String> osFeatures) {
         this.osFeatures = osFeatures;
         return this;
@@ -160,10 +142,9 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Get the variant property: The optional variant field specifies a variant of the CPU, for example armv6l to
      * specify a particular CPU variant of the ARM CPU.
-     * 
+     *
      * @return the variant value.
      */
-    @Generated
     public String getVariant() {
         return this.variant;
     }
@@ -171,11 +152,10 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Set the variant property: The optional variant field specifies a variant of the CPU, for example armv6l to
      * specify a particular CPU variant of the ARM CPU.
-     * 
+     *
      * @param variant the variant value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setVariant(String variant) {
         this.variant = variant;
         return this;
@@ -184,10 +164,9 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Get the features property: The optional features field specifies an array of strings, each listing a required CPU
      * feature (for example sse4 or aes.
-     * 
+     *
      * @return the features value.
      */
-    @Generated
     public List<String> getFeatures() {
         return this.features;
     }
@@ -195,20 +174,15 @@ public final class Platform implements JsonSerializable<Platform> {
     /**
      * Set the features property: The optional features field specifies an array of strings, each listing a required CPU
      * feature (for example sse4 or aes.
-     * 
+     *
      * @param features the features value to set.
      * @return the Platform object itself.
      */
-    @Generated
     public Platform setFeatures(List<String> features) {
         this.features = features;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -223,13 +197,12 @@ public final class Platform implements JsonSerializable<Platform> {
 
     /**
      * Reads an instance of Platform from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Platform if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the Platform.
      */
-    @Generated
     public static Platform fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Platform deserializedPlatform = new Platform();

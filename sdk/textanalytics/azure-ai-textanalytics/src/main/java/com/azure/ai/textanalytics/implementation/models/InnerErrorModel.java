@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,37 +21,31 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
     /*
      * One of a server-defined set of error codes.
      */
-    @Generated
     private InnerErrorCode code;
 
     /*
      * Error message.
      */
-    @Generated
     private String message;
 
     /*
      * Error details.
      */
-    @Generated
     private Map<String, String> details;
 
     /*
      * Error target.
      */
-    @Generated
     private String target;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
-    @Generated
     private InnerErrorModel innererror;
 
     /**
      * Creates an instance of InnerErrorModel class.
      */
-    @Generated
     public InnerErrorModel() {
     }
 
@@ -61,7 +54,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * 
      * @return the code value.
      */
-    @Generated
     public InnerErrorCode getCode() {
         return this.code;
     }
@@ -72,7 +64,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @param code the code value to set.
      * @return the InnerErrorModel object itself.
      */
-    @Generated
     public InnerErrorModel setCode(InnerErrorCode code) {
         this.code = code;
         return this;
@@ -83,7 +74,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -94,7 +84,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @param message the message value to set.
      * @return the InnerErrorModel object itself.
      */
-    @Generated
     public InnerErrorModel setMessage(String message) {
         this.message = message;
         return this;
@@ -105,7 +94,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * 
      * @return the details value.
      */
-    @Generated
     public Map<String, String> getDetails() {
         return this.details;
     }
@@ -116,7 +104,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @param details the details value to set.
      * @return the InnerErrorModel object itself.
      */
-    @Generated
     public InnerErrorModel setDetails(Map<String, String> details) {
         this.details = details;
         return this;
@@ -127,7 +114,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * 
      * @return the target value.
      */
-    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -138,7 +124,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @param target the target value to set.
      * @return the InnerErrorModel object itself.
      */
-    @Generated
     public InnerErrorModel setTarget(String target) {
         this.target = target;
         return this;
@@ -150,7 +135,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * 
      * @return the innererror value.
      */
-    @Generated
     public InnerErrorModel getInnererror() {
         return this.innererror;
     }
@@ -162,7 +146,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @param innererror the innererror value to set.
      * @return the InnerErrorModel object itself.
      */
-    @Generated
     public InnerErrorModel setInnererror(InnerErrorModel innererror) {
         this.innererror = innererror;
         return this;
@@ -171,7 +154,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -192,7 +174,6 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InnerErrorModel.
      */
-    @Generated
     public static InnerErrorModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InnerErrorModel deserializedInnerErrorModel = new InnerErrorModel();

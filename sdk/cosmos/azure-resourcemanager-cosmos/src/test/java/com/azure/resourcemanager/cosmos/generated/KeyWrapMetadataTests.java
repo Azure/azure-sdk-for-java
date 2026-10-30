@@ -12,24 +12,24 @@ public final class KeyWrapMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyWrapMetadata model = BinaryData.fromString(
-            "{\"name\":\"qxtjjfzqlqhyca\",\"type\":\"dggxdbeesmi\",\"value\":\"nlrariaawiuagy\",\"algorithm\":\"qfby\"}")
+            "{\"name\":\"tpkiwkkbnujry\",\"type\":\"tylbfpncurdoiw\",\"value\":\"thtywub\",\"algorithm\":\"bihwqknfdnt\"}")
             .toObject(KeyWrapMetadata.class);
-        Assertions.assertEquals("qxtjjfzqlqhyca", model.name());
-        Assertions.assertEquals("dggxdbeesmi", model.type());
-        Assertions.assertEquals("nlrariaawiuagy", model.value());
-        Assertions.assertEquals("qfby", model.algorithm());
+        Assertions.assertEquals("tpkiwkkbnujry", model.name());
+        Assertions.assertEquals("tylbfpncurdoiw", model.type());
+        Assertions.assertEquals("thtywub", model.value());
+        Assertions.assertEquals("bihwqknfdnt", model.algorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyWrapMetadata model = new KeyWrapMetadata().withName("qxtjjfzqlqhyca")
-            .withType("dggxdbeesmi")
-            .withValue("nlrariaawiuagy")
-            .withAlgorithm("qfby");
+        KeyWrapMetadata model = new KeyWrapMetadata().withName("tpkiwkkbnujry")
+            .withType("tylbfpncurdoiw")
+            .withValue("thtywub")
+            .withAlgorithm("bihwqknfdnt");
         model = BinaryData.fromObject(model).toObject(KeyWrapMetadata.class);
-        Assertions.assertEquals("qxtjjfzqlqhyca", model.name());
-        Assertions.assertEquals("dggxdbeesmi", model.type());
-        Assertions.assertEquals("nlrariaawiuagy", model.value());
-        Assertions.assertEquals("qfby", model.algorithm());
+        Assertions.assertEquals("tpkiwkkbnujry", model.name());
+        Assertions.assertEquals("tylbfpncurdoiw", model.type());
+        Assertions.assertEquals("thtywub", model.value());
+        Assertions.assertEquals("bihwqknfdnt", model.algorithm());
     }
 }

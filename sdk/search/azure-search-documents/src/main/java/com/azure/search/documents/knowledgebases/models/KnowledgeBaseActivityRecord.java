@@ -5,14 +5,11 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Base type for activity records. Tracks execution details, timing, and errors for knowledge base operations.
@@ -131,13 +128,8 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", this.id);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("startedAt",
-            this.startedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedAt));
-        jsonWriter.writeStringField("completedAt",
-            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeNumberField("elapsedMs", this.elapsedMs);
         jsonWriter.writeJsonField("error", this.error);
-        jsonWriter.writeStringField("warning", this.warning);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,35 +160,7 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("searchIndex".equals(discriminatorValue)) {
-                    return KnowledgeBaseSearchIndexActivityRecord.fromJson(readerToUse.reset());
-                } else if ("azureBlob".equals(discriminatorValue)) {
-                    return KnowledgeBaseAzureBlobActivityRecord.fromJson(readerToUse.reset());
-                } else if ("indexedSharePoint".equals(discriminatorValue)) {
-                    return KnowledgeBaseIndexedSharePointActivityRecord.fromJson(readerToUse.reset());
-                } else if ("indexedOneLake".equals(discriminatorValue)) {
-                    return KnowledgeBaseIndexedOneLakeActivityRecord.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return KnowledgeBaseWebActivityRecord.fromJson(readerToUse.reset());
-                } else if ("remoteSharePoint".equals(discriminatorValue)) {
-                    return KnowledgeBaseRemoteSharePointActivityRecord.fromJson(readerToUse.reset());
-                } else if ("workIQ".equals(discriminatorValue)) {
-                    return KnowledgeBaseWorkIQActivityRecord.fromJson(readerToUse.reset());
-                } else if ("fabricDataAgent".equals(discriminatorValue)) {
-                    return KnowledgeBaseFabricDataAgentActivityRecord.fromJson(readerToUse.reset());
-                } else if ("fabricOntology".equals(discriminatorValue)) {
-                    return KnowledgeBaseFabricOntologyActivityRecord.fromJson(readerToUse.reset());
-                } else if ("mcpServer".equals(discriminatorValue)) {
-                    return KnowledgeBaseMcpServerActivityRecord.fromJson(readerToUse.reset());
-                } else if ("file".equals(discriminatorValue)) {
-                    return KnowledgeBaseFileActivityRecord.fromJson(readerToUse.reset());
-                } else if ("indexedSql".equals(discriminatorValue)) {
-                    return KnowledgeBaseIndexedSqlActivityRecord.fromJson(readerToUse.reset());
-                } else if ("modelQueryPlanning".equals(discriminatorValue)) {
-                    return KnowledgeBaseModelQueryPlanningActivityRecord.fromJson(readerToUse.reset());
-                } else if ("modelAnswerSynthesis".equals(discriminatorValue)) {
-                    return KnowledgeBaseModelAnswerSynthesisActivityRecord.fromJson(readerToUse.reset());
-                } else if ("modelWebSummarization".equals(discriminatorValue)) {
+                if ("modelWebSummarization".equals(discriminatorValue)) {
                     return KnowledgeBaseModelWebSummarizationActivityRecord.fromJson(readerToUse.reset());
                 } else if ("agenticReasoning".equals(discriminatorValue)) {
                     return KnowledgeBaseAgenticReasoningActivityRecord.fromJson(readerToUse.reset());
@@ -212,11 +176,8 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
         return jsonReader.readObject(reader -> {
             int id = 0;
             KnowledgeBaseActivityRecordType type = null;
-            OffsetDateTime startedAt = null;
-            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
-            String warning = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -224,117 +185,19 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     id = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
-                } else if ("startedAt".equals(fieldName)) {
-                    startedAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("completedAt".equals(fieldName)) {
-                    completedAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
                     error = KnowledgeBaseErrorDetail.fromJson(reader);
-                } else if ("warning".equals(fieldName)) {
-                    warning = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseActivityRecord deserializedKnowledgeBaseActivityRecord = new KnowledgeBaseActivityRecord(id);
             deserializedKnowledgeBaseActivityRecord.type = type;
-            deserializedKnowledgeBaseActivityRecord.startedAt = startedAt;
-            deserializedKnowledgeBaseActivityRecord.completedAt = completedAt;
             deserializedKnowledgeBaseActivityRecord.elapsedMs = elapsedMs;
             deserializedKnowledgeBaseActivityRecord.error = error;
-            deserializedKnowledgeBaseActivityRecord.warning = warning;
             return deserializedKnowledgeBaseActivityRecord;
         });
-    }
-
-    /*
-     * A warning message surfacing potential configuration issues observed during the activity, such as documents
-     * dropped due to score thresholding, token limit truncation, or timeout conditions.
-     */
-    @Generated
-    private String warning;
-
-    /**
-     * Get the warning property: A warning message surfacing potential configuration issues observed during the
-     * activity, such as documents dropped due to score thresholding, token limit truncation, or timeout conditions.
-     *
-     * @return the warning value.
-     */
-    @Generated
-    public String getWarning() {
-        return this.warning;
-    }
-
-    /**
-     * Set the warning property: A warning message surfacing potential configuration issues observed during the
-     * activity, such as documents dropped due to score thresholding, token limit truncation, or timeout conditions.
-     *
-     * @param warning the warning value to set.
-     * @return the KnowledgeBaseActivityRecord object itself.
-     */
-    @Generated
-    KnowledgeBaseActivityRecord setWarning(String warning) {
-        this.warning = warning;
-        return this;
-    }
-
-    /*
-     * The time at which the activity started.
-     */
-    @Generated
-    private OffsetDateTime startedAt;
-
-    /*
-     * The time at which the activity completed.
-     */
-    @Generated
-    private OffsetDateTime completedAt;
-
-    /**
-     * Get the startedAt property: The time at which the activity started.
-     *
-     * @return the startedAt value.
-     */
-    @Generated
-    public OffsetDateTime getStartedAt() {
-        return this.startedAt;
-    }
-
-    /**
-     * Set the startedAt property: The time at which the activity started.
-     *
-     * @param startedAt the startedAt value to set.
-     * @return the KnowledgeBaseActivityRecord object itself.
-     */
-    @Generated
-    KnowledgeBaseActivityRecord setStartedAt(OffsetDateTime startedAt) {
-        this.startedAt = startedAt;
-        return this;
-    }
-
-    /**
-     * Get the completedAt property: The time at which the activity completed.
-     *
-     * @return the completedAt value.
-     */
-    @Generated
-    public OffsetDateTime getCompletedAt() {
-        return this.completedAt;
-    }
-
-    /**
-     * Set the completedAt property: The time at which the activity completed.
-     *
-     * @param completedAt the completedAt value to set.
-     * @return the KnowledgeBaseActivityRecord object itself.
-     */
-    @Generated
-    KnowledgeBaseActivityRecord setCompletedAt(OffsetDateTime completedAt) {
-        this.completedAt = completedAt;
-        return this;
     }
 }

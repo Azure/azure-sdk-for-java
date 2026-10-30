@@ -28,7 +28,7 @@ public class KnowledgeBaseMessageContent implements JsonSerializable<KnowledgeBa
      * Creates an instance of KnowledgeBaseMessageContent class.
      */
     @Generated
-    public KnowledgeBaseMessageContent() {
+    protected KnowledgeBaseMessageContent() {
     }
 
     /**

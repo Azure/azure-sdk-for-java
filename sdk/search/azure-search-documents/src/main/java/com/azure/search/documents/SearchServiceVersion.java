@@ -29,11 +29,7 @@ public enum SearchServiceVersion implements ServiceVersion {
     /**
      * Enum value 2026-04-01.
      */
-    V2026_04_01("2026-04-01"),
-    /**
-     * Enum value 2026-08-01-preview.
-     */
-    V2026_08_01_PREVIEW("2026-08-01-preview");
+    V2026_04_01("2026-04-01");
 
     private final String version;
 
@@ -55,6 +51,6 @@ public enum SearchServiceVersion implements ServiceVersion {
      * @return The latest {@link SearchServiceVersion}.
      */
     public static SearchServiceVersion getLatest() {
-        return V2026_08_01_PREVIEW;
+        return V2026_04_01;
     }
 }

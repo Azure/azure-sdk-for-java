@@ -6,7 +6,6 @@ package com.azure.security.confidentialledger;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
@@ -15,11 +14,11 @@ public class GetLedgerIdentitySample {
     public static void main(String[] args) {
         ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient =
                 new ConfidentialLedgerCertificateClientBuilder()
-                        .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
+                        .credential(new DefaultAzureCredentialBuilder().build())
                         .certificateEndpoint("identity.accledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        String ledgerId = "java-sdk-live-tests-ledger";
+        String ledgerId = "your_ledger_name";
         Response<BinaryData> response =
                 confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerId, requestOptions);
     }

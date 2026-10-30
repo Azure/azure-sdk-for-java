@@ -189,9 +189,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeNumberField("percentComplete", this.percentComplete);
-        if (this.properties != null) {
-            jsonWriter.writeUntypedField("properties", this.properties);
-        }
+        jsonWriter.writeUntypedField("properties", this.properties);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }

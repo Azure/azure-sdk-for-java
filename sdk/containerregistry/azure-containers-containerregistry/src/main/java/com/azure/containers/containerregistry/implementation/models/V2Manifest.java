@@ -6,60 +6,49 @@ package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Returns the requested Docker V2 Manifest file.
- */
+/** Returns the requested Docker V2 Manifest file. */
 @Fluent
 public final class V2Manifest extends Manifest {
     /*
      * Media type for this Manifest
      */
-    @Generated
     private String mediaType;
 
     /*
      * V2 image config descriptor
      */
-    @Generated
     private OciDescriptor config;
 
     /*
      * List of V2 image layer information
      */
-    @Generated
     private List<OciDescriptor> layers;
 
-    /**
-     * Creates an instance of V2Manifest class.
-     */
-    @Generated
+    /** Creates an instance of V2Manifest class. */
     public V2Manifest() {
     }
 
     /**
      * Get the mediaType property: Media type for this Manifest.
-     * 
+     *
      * @return the mediaType value.
      */
-    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
 
     /**
      * Set the mediaType property: Media type for this Manifest.
-     * 
+     *
      * @param mediaType the mediaType value to set.
      * @return the V2Manifest object itself.
      */
-    @Generated
     public V2Manifest setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -67,21 +56,19 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Get the config property: V2 image config descriptor.
-     * 
+     *
      * @return the config value.
      */
-    @Generated
     public OciDescriptor getConfig() {
         return this.config;
     }
 
     /**
      * Set the config property: V2 image config descriptor.
-     * 
+     *
      * @param config the config value to set.
      * @return the V2Manifest object itself.
      */
-    @Generated
     public V2Manifest setConfig(OciDescriptor config) {
         this.config = config;
         return this;
@@ -89,40 +76,31 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Get the layers property: List of V2 image layer information.
-     * 
+     *
      * @return the layers value.
      */
-    @Generated
     public List<OciDescriptor> getLayers() {
         return this.layers;
     }
 
     /**
      * Set the layers property: List of V2 image layer information.
-     * 
+     *
      * @param layers the layers value to set.
      * @return the V2Manifest object itself.
      */
-    @Generated
     public V2Manifest setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
+    /** {@inheritDoc} */
     @Override
     public V2Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,13 +113,12 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Reads an instance of V2Manifest from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of V2Manifest if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the V2Manifest.
      */
-    @Generated
     public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             V2Manifest deserializedV2Manifest = new V2Manifest();

@@ -130,16 +130,14 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     public void testRemoveBlockItemsFromTextBlocklistTests() {
         // method invocation
         System.out.println("debug blocklistItemId: " + blocklistItemId);
-        RequestOptions requestOptions = new RequestOptions().addHeader("Accept", "application/json");
-        blocklistClient.removeBlocklistItemsWithResponse(blocklistName,
-            BinaryData.fromObject(new RemoveTextBlocklistItemsOptions(Arrays.asList(blocklistItemId))), requestOptions);
+        blocklistClient.removeBlocklistItems(blocklistName,
+            new RemoveTextBlocklistItemsOptions(Arrays.asList(blocklistItemId)));
     }
 
     @Test
     @Order(8)
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
-        RequestOptions requestOptions = new RequestOptions().addHeader("Accept", "application/json");
-        blocklistClient.deleteTextBlocklistWithResponse(blocklistName, requestOptions);
+        blocklistClient.deleteTextBlocklist(blocklistName);
     }
 }

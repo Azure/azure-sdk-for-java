@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,14 +18,13 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    @Generated
-    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.fromString("AnalyzeTextLROTask");
+    private AnalyzeTextLROTaskKind kind;
 
     /**
      * Creates an instance of AnalyzeTextLROTask class.
      */
-    @Generated
     public AnalyzeTextLROTask() {
+        this.kind = AnalyzeTextLROTaskKind.fromString("AnalyzeTextLROTask");
     }
 
     /**
@@ -34,7 +32,6 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
      * 
      * @return the kind value.
      */
-    @Generated
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
     }
@@ -42,7 +39,6 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AnalyzeTextLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -52,7 +48,6 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,7 +64,6 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextLROTask.
      */
-    @Generated
     public static AnalyzeTextLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -115,7 +109,6 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
         });
     }
 
-    @Generated
     static AnalyzeTextLROTask fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextLROTask deserializedAnalyzeTextLROTask = new AnalyzeTextLROTask();

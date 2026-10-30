@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,37 +19,31 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
     /*
      * The connection string of this InfluxDB
      */
-    @Generated
     private String connectionString;
 
     /*
      * A database name
      */
-    @Generated
     private String database;
 
     /*
      * The user name of the account that can access this database
      */
-    @Generated
     private String userName;
 
     /*
      * The password of the account that can access this database
      */
-    @Generated
     private String password;
 
     /*
      * The script to query this database
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of InfluxDBParameterPatch class.
      */
-    @Generated
     public InfluxDBParameterPatch() {
     }
 
@@ -59,7 +52,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -70,7 +62,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * @param connectionString the connectionString value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
-    @Generated
     public InfluxDBParameterPatch setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -81,7 +72,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * 
      * @return the database value.
      */
-    @Generated
     public String getDatabase() {
         return this.database;
     }
@@ -92,7 +82,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * @param database the database value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
-    @Generated
     public InfluxDBParameterPatch setDatabase(String database) {
         this.database = database;
         return this;
@@ -103,7 +92,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * 
      * @return the userName value.
      */
-    @Generated
     public String getUserName() {
         return this.userName;
     }
@@ -114,7 +102,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * @param userName the userName value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
-    @Generated
     public InfluxDBParameterPatch setUserName(String userName) {
         this.userName = userName;
         return this;
@@ -125,7 +112,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * 
      * @return the password value.
      */
-    @Generated
     public String getPassword() {
         return this.password;
     }
@@ -136,7 +122,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * @param password the password value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
-    @Generated
     public InfluxDBParameterPatch setPassword(String password) {
         this.password = password;
         return this;
@@ -147,7 +132,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -158,16 +142,11 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * @param query the query value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
-    @Generated
     public InfluxDBParameterPatch setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,7 +166,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the InfluxDBParameterPatch.
      */
-    @Generated
     public static InfluxDBParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InfluxDBParameterPatch deserializedInfluxDBParameterPatch = new InfluxDBParameterPatch();

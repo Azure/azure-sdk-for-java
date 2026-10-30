@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,49 +14,41 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
     /**
      * Static value NotStarted for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType NOT_STARTED = fromString("NotStarted");
 
     /**
      * Static value Scheduled for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType SCHEDULED = fromString("Scheduled");
 
     /**
      * Static value Running for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType RUNNING = fromString("Running");
 
     /**
      * Static value Succeeded for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType FAILED = fromString("Failed");
 
     /**
      * Static value NoData for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType NO_DATA = fromString("NoData");
 
     /**
      * Static value Error for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType ERROR = fromString("Error");
 
     /**
      * Static value Paused for IngestionStatusType.
      */
-    @Generated
     public static final IngestionStatusType PAUSED = fromString("Paused");
 
     /**
@@ -65,7 +56,6 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public IngestionStatusType() {
     }
@@ -76,7 +66,6 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
      * @param name a name to look for.
      * @return the corresponding IngestionStatusType.
      */
-    @Generated
     public static IngestionStatusType fromString(String name) {
         return fromString(name, IngestionStatusType.class);
     }
@@ -86,7 +75,6 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
      * 
      * @return known IngestionStatusType values.
      */
-    @Generated
     public static Collection<IngestionStatusType> values() {
         return values(IngestionStatusType.class);
     }

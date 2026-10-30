@@ -105,12 +105,6 @@ public final class CommunicationIdentityClientBuilder implements
     private CommunicationIdentityServiceVersion serviceVersion;
 
     /**
-     * Creates a new instance of {@link CommunicationIdentityClientBuilder}.
-     */
-    public CommunicationIdentityClientBuilder() {
-    }
-
-    /**
      * Set endpoint of the service
      *
      * @param endpoint url of the service

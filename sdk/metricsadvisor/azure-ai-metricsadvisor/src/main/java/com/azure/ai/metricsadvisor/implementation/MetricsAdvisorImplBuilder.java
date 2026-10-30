@@ -10,6 +10,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -29,7 +30,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -65,6 +65,22 @@ public final class MetricsAdvisorImplBuilder implements HttpTrait<MetricsAdvisor
     }
 
     /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public MetricsAdvisorImplBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
      * The HTTP client used to send the request.
      */
     @Generated
@@ -77,25 +93,6 @@ public final class MetricsAdvisorImplBuilder implements HttpTrait<MetricsAdvisor
     @Override
     public MetricsAdvisorImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
-        return this;
-    }
-
-    /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public MetricsAdvisorImplBuilder pipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-        this.pipeline = pipeline;
         return this;
     }
 
@@ -233,19 +230,11 @@ public final class MetricsAdvisorImplBuilder implements HttpTrait<MetricsAdvisor
      */
     @Generated
     public MetricsAdvisorImpl buildClient() {
-        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MetricsAdvisorImpl client = new MetricsAdvisorImpl(localPipeline, localSerializerAdapter, this.endpoint);
         return client;
-    }
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -261,8 +250,10 @@ public final class MetricsAdvisorImplBuilder implements HttpTrait<MetricsAdvisor
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
-        if (headers != null) {
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -282,6 +273,4 @@ public final class MetricsAdvisorImplBuilder implements HttpTrait<MetricsAdvisor
             .build();
         return httpPipeline;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MetricsAdvisorImplBuilder.class);
 }

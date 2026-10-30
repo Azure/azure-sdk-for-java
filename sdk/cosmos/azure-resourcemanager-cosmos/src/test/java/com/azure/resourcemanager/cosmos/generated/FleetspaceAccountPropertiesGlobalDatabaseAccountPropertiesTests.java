@@ -12,19 +12,19 @@ public final class FleetspaceAccountPropertiesGlobalDatabaseAccountPropertiesTes
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspaceAccountPropertiesGlobalDatabaseAccountProperties model
-            = BinaryData.fromString("{\"resourceId\":\"mvj\",\"armLocation\":\"r\"}")
+            = BinaryData.fromString("{\"resourceId\":\"yddeeqz\",\"armLocation\":\"abm\"}")
                 .toObject(FleetspaceAccountPropertiesGlobalDatabaseAccountProperties.class);
-        Assertions.assertEquals("mvj", model.resourceId());
-        Assertions.assertEquals("r", model.armLocation());
+        Assertions.assertEquals("yddeeqz", model.resourceId());
+        Assertions.assertEquals("abm", model.armLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetspaceAccountPropertiesGlobalDatabaseAccountProperties model
-            = new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("mvj")
-                .withArmLocation("r");
+            = new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("yddeeqz")
+                .withArmLocation("abm");
         model = BinaryData.fromObject(model).toObject(FleetspaceAccountPropertiesGlobalDatabaseAccountProperties.class);
-        Assertions.assertEquals("mvj", model.resourceId());
-        Assertions.assertEquals("r", model.armLocation());
+        Assertions.assertEquals("yddeeqz", model.resourceId());
+        Assertions.assertEquals("abm", model.armLocation());
     }
 }

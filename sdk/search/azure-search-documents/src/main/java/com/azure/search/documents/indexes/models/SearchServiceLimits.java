@@ -139,7 +139,6 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
             this.maxComplexObjectsInCollectionsPerDocument);
         jsonWriter.writeNumberField("maxStoragePerIndex", this.maxStoragePerIndexInBytes);
         jsonWriter.writeNumberField("maxCumulativeIndexerRuntimeSeconds", this.maxCumulativeIndexerRuntimeSeconds);
-        jsonWriter.writeNumberField("maxVectorIndexSizePerIndexInBytes", this.maxVectorIndexSizePerIndexInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,31 +173,11 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                 } else if ("maxCumulativeIndexerRuntimeSeconds".equals(fieldName)) {
                     deserializedSearchServiceLimits.maxCumulativeIndexerRuntimeSeconds
                         = reader.getNullable(JsonReader::getLong);
-                } else if ("maxVectorIndexSizePerIndexInBytes".equals(fieldName)) {
-                    deserializedSearchServiceLimits.maxVectorIndexSizePerIndexInBytes
-                        = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedSearchServiceLimits;
         });
-    }
-
-    /*
-     * The maximum vector index size (vector memory quota) allowed per index in bytes.
-     */
-    @Generated
-    private Long maxVectorIndexSizePerIndexInBytes;
-
-    /**
-     * Get the maxVectorIndexSizePerIndexInBytes property: The maximum vector index size (vector memory quota) allowed
-     * per index in bytes.
-     *
-     * @return the maxVectorIndexSizePerIndexInBytes value.
-     */
-    @Generated
-    public Long getMaxVectorIndexSizePerIndexInBytes() {
-        return this.maxVectorIndexSizePerIndexInBytes;
     }
 }

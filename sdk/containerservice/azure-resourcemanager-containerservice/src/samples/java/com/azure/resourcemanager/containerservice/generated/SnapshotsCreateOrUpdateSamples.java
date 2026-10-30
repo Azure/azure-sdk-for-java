@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/SnapshotsCreate.json
+     * x-ms-original-file: 2026-08-01/SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.

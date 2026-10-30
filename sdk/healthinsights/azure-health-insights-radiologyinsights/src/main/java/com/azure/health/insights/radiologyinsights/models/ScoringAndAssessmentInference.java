@@ -37,7 +37,7 @@ public final class ScoringAndAssessmentInference extends RadiologyInsightsInfere
     private final String categoryDescription;
 
     /*
-     * The value. If the value is a range, use field rangeValue.
+     * The value. If the value is a range, use field valueRange.
      */
     @Generated
     private String singleValue;
@@ -92,7 +92,7 @@ public final class ScoringAndAssessmentInference extends RadiologyInsightsInfere
     }
 
     /**
-     * Get the singleValue property: The value. If the value is a range, use field rangeValue.
+     * Get the singleValue property: The value. If the value is a range, use field valueRange.
      *
      * @return the singleValue value.
      */

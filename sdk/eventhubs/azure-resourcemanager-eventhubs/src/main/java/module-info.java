@@ -13,6 +13,5 @@ module com.azure.resourcemanager.eventhubs {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.eventhubs.fluent.models to com.azure.core;
-    opens com.azure.resourcemanager.eventhubs.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.eventhubs.models to com.azure.core;
 }

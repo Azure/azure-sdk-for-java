@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,19 +18,16 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
     /*
      * Enumeration of supported Text Analysis task results.
      */
-    @Generated
     private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.KEY_PHRASE_EXTRACTION_RESULTS;
 
     /*
      * The results property.
      */
-    @Generated
     private KeyPhraseResult results;
 
     /**
      * Creates an instance of KeyPhraseTaskResult class.
      */
-    @Generated
     public KeyPhraseTaskResult() {
     }
 
@@ -40,7 +36,6 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextTaskResultsKind getKind() {
         return this.kind;
@@ -51,7 +46,6 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the results value.
      */
-    @Generated
     public KeyPhraseResult getResults() {
         return this.results;
     }
@@ -62,7 +56,6 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
      * @param results the results value to set.
      * @return the KeyPhraseTaskResult object itself.
      */
-    @Generated
     public KeyPhraseTaskResult setResults(KeyPhraseResult results) {
         this.results = results;
         return this;
@@ -71,7 +64,6 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,7 +81,6 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhraseTaskResult.
      */
-    @Generated
     public static KeyPhraseTaskResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyPhraseTaskResult deserializedKeyPhraseTaskResult = new KeyPhraseTaskResult();

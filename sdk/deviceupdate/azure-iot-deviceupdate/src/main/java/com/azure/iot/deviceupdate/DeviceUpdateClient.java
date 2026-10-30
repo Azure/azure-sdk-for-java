@@ -606,14 +606,6 @@ public final class DeviceUpdateClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>Retry-After</td><td>String</td><td>Number of seconds to wait before checking the operation status
-     * again.</td></tr>
-     * </table>
      *
      * @param operationId Operation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

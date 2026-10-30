@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
     /*
      * dimension name
      */
-    @Generated
     private String dimensionName;
 
     /*
      * dimension value to be filtered
      */
-    @Generated
     private String dimensionValueFilter;
 
     /**
      * Creates an instance of MetricDimensionQueryOptions class.
      */
-    @Generated
     public MetricDimensionQueryOptions() {
     }
 
@@ -41,7 +37,6 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
      * 
      * @return the dimensionName value.
      */
-    @Generated
     public String getDimensionName() {
         return this.dimensionName;
     }
@@ -52,7 +47,6 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
      * @param dimensionName the dimensionName value to set.
      * @return the MetricDimensionQueryOptions object itself.
      */
-    @Generated
     public MetricDimensionQueryOptions setDimensionName(String dimensionName) {
         this.dimensionName = dimensionName;
         return this;
@@ -63,7 +57,6 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
      * 
      * @return the dimensionValueFilter value.
      */
-    @Generated
     public String getDimensionValueFilter() {
         return this.dimensionValueFilter;
     }
@@ -74,16 +67,11 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
      * @param dimensionValueFilter the dimensionValueFilter value to set.
      * @return the MetricDimensionQueryOptions object itself.
      */
-    @Generated
     public MetricDimensionQueryOptions setDimensionValueFilter(String dimensionValueFilter) {
         this.dimensionValueFilter = dimensionValueFilter;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +89,6 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricDimensionQueryOptions.
      */
-    @Generated
     public static MetricDimensionQueryOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricDimensionQueryOptions deserializedMetricDimensionQueryOptions = new MetricDimensionQueryOptions();

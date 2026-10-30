@@ -31,6 +31,7 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -219,7 +220,7 @@ public final class TestUtils {
         if (contents != null) {
             body = new Data(new Binary(contents));
         } else {
-            body = new Data((Binary) null);
+            body = new Data(Binary.create((ReadableBuffer) null));
         }
 
         message.setBody(body);

@@ -1,14 +1,14 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.6.0 (2026-10-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
 
 ## 1.5.8 (2026-10-06)
 
@@ -19,6 +19,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 
+
 ## 1.5.7 (2026-08-18)
 
 ### Other Changes
@@ -27,6 +28,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 
 ## 1.5.6 (2026-07-01)
 
@@ -47,6 +49,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
+
 ## 1.5.4 (2026-01-29)
 
 ### Other Changes
@@ -55,6 +58,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
 
 ## 1.5.3 (2025-10-27)
 
@@ -65,6 +69,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 
+
 ## 1.5.2 (2025-09-25)
 
 ### Other Changes
@@ -74,6 +79,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
+
 ## 1.5.1 (2025-08-21)
 
 ### Other Changes
@@ -82,6 +88,7 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 
 ## 1.5.0 (2025-07-07)
 
@@ -106,6 +113,7 @@
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 
+
 ## 1.4.0 (2025-02-24)
 
 ### Features Added
@@ -128,6 +136,7 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 
+
 ## 1.3.2 (2024-10-25)
 
 ### Other Changes
@@ -137,6 +146,7 @@
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
 
+
 ## 1.3.1 (2024-09-27)
 
 ### Other Changes
@@ -145,6 +155,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
 
 ## 1.3.0 (2024-08-06)
 
@@ -167,6 +178,7 @@
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
+
 ## 1.2.17 (2024-07-26)
 
 ### Other Changes
@@ -175,6 +187,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+
 
 ## 1.2.16 (2024-06-27)
 
@@ -185,6 +198,7 @@
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 
+
 ## 1.2.15 (2024-05-28)
 
 ### Other Changes
@@ -194,6 +208,7 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
+
 ## 1.2.14 (2024-04-23)
 
 ### Other Changes
@@ -202,6 +217,7 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
 
 ## 1.2.13 (2024-03-20)
 
@@ -213,6 +229,7 @@
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `nimbus-jose-jwt` from `9.31` to version `9.37.3`.
 
+
 ## 1.2.12 (2024-02-20)
 
 ### Other Changes
@@ -221,6 +238,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
 
 ## 1.2.11 (2023-12-04)
 
@@ -231,6 +249,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
+
 ## 1.2.10 (2023-11-20)
 
 ### Other Changes
@@ -239,6 +258,7 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
 
 ## 1.2.9 (2023-10-20)
 
@@ -249,6 +269,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 
+
 ## 1.2.8 (2023-09-22)
 
 ### Other Changes
@@ -257,6 +278,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
 
 ## 1.2.7 (2023-08-18)
 
@@ -267,6 +289,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 
+
 ## 1.2.6 (2023-07-25)
 
 ### Other Changes
@@ -275,6 +298,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
 
 ## 1.2.5 (2023-06-20)
 
@@ -285,6 +309,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 
+
 ## 1.2.4 (2023-05-23)
 
 ### Other Changes
@@ -293,6 +318,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.2.3 (2023-04-21)
 
@@ -304,6 +330,7 @@
 - Upgraded `nimbus-jose-jwt` from `9.22` to version `9.31`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 
+
 ## 1.2.2 (2023-03-16)
 
 ### Other Changes
@@ -313,6 +340,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.2.1 (2023-02-16)
 
 ### Other Changes
@@ -321,6 +349,7 @@
 
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
 
 ## 1.2.0 (2023-01-11)
 
@@ -333,7 +362,7 @@
 
 - Added method `removeConnectionFromAllGroupsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to remove the connection from all the groups it is in.
 - Added a `webpubsub.group` option in `GetClientAccessTokenOptions`, to enable connections join initial groups once it is connected.
-- Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections receiving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
+- Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections recieving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
 
 ### Other Changes
 

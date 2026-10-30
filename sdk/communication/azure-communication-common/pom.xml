@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+  <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
 
   <name>Microsoft Azure common library for communication service client</name>
   <description>
@@ -41,7 +41,9 @@
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -78,6 +80,12 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.8.7</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

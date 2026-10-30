@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +20,26 @@ public final class AzureApplicationInsightsParameterPatch
     /*
      * The Azure cloud that this Azure Application Insights in
      */
-    @Generated
     private String azureCloud;
 
     /*
      * The application id of this Azure Application Insights
      */
-    @Generated
     private String applicationId;
 
     /*
      * The API Key that can access this Azure Application Insights
      */
-    @Generated
     private String apiKey;
 
     /*
      * The statement to query this Azure Application Insights
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of AzureApplicationInsightsParameterPatch class.
      */
-    @Generated
     public AzureApplicationInsightsParameterPatch() {
     }
 
@@ -54,7 +48,6 @@ public final class AzureApplicationInsightsParameterPatch
      * 
      * @return the azureCloud value.
      */
-    @Generated
     public String getAzureCloud() {
         return this.azureCloud;
     }
@@ -65,7 +58,6 @@ public final class AzureApplicationInsightsParameterPatch
      * @param azureCloud the azureCloud value to set.
      * @return the AzureApplicationInsightsParameterPatch object itself.
      */
-    @Generated
     public AzureApplicationInsightsParameterPatch setAzureCloud(String azureCloud) {
         this.azureCloud = azureCloud;
         return this;
@@ -76,7 +68,6 @@ public final class AzureApplicationInsightsParameterPatch
      * 
      * @return the applicationId value.
      */
-    @Generated
     public String getApplicationId() {
         return this.applicationId;
     }
@@ -87,7 +78,6 @@ public final class AzureApplicationInsightsParameterPatch
      * @param applicationId the applicationId value to set.
      * @return the AzureApplicationInsightsParameterPatch object itself.
      */
-    @Generated
     public AzureApplicationInsightsParameterPatch setApplicationId(String applicationId) {
         this.applicationId = applicationId;
         return this;
@@ -98,7 +88,6 @@ public final class AzureApplicationInsightsParameterPatch
      * 
      * @return the apiKey value.
      */
-    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -109,7 +98,6 @@ public final class AzureApplicationInsightsParameterPatch
      * @param apiKey the apiKey value to set.
      * @return the AzureApplicationInsightsParameterPatch object itself.
      */
-    @Generated
     public AzureApplicationInsightsParameterPatch setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -120,7 +108,6 @@ public final class AzureApplicationInsightsParameterPatch
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -131,16 +118,11 @@ public final class AzureApplicationInsightsParameterPatch
      * @param query the query value to set.
      * @return the AzureApplicationInsightsParameterPatch object itself.
      */
-    @Generated
     public AzureApplicationInsightsParameterPatch setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,7 +141,6 @@ public final class AzureApplicationInsightsParameterPatch
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureApplicationInsightsParameterPatch.
      */
-    @Generated
     public static AzureApplicationInsightsParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureApplicationInsightsParameterPatch deserializedAzureApplicationInsightsParameterPatch

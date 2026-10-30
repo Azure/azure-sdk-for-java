@@ -10,6 +10,7 @@ package com.azure.ai.contentsafety;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -36,8 +37,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyClientBuilder
             = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
-                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             contentSafetyClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -49,8 +49,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyClientAADBuilder
             = new ContentSafetyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             contentSafetyClientAADBuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -63,8 +62,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyAsyncClientBuilder
             = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
-                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             contentSafetyAsyncClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -75,8 +73,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
 
         BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder().credential(new KeyCredential(key))
             .endpoint(endpoint)
-            .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             blocklistClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -88,14 +85,13 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         BlocklistClientBuilder blocklistAsyncClientBuilder
             = new BlocklistClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
-                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             blocklistAsyncClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             blocklistAsyncClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        blocklistAsyncClient = blocklistAsyncClientBuilder.buildAsyncClient();
+        blocklistAsyncClient = blocklistClientBuilder.buildAsyncClient();
     }
 }

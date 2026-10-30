@@ -4,7 +4,6 @@
 
 package com.azure.data.tables.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
     /**
      * Static value return-no-content for ResponseFormat.
      */
-    @Generated
     public static final ResponseFormat RETURN_NO_CONTENT = fromString("return-no-content");
 
     /**
      * Static value return-content for ResponseFormat.
      */
-    @Generated
     public static final ResponseFormat RETURN_CONTENT = fromString("return-content");
 
     /**
@@ -29,7 +26,6 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ResponseFormat() {
     }
@@ -40,7 +36,6 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * @param name a name to look for.
      * @return the corresponding ResponseFormat.
      */
-    @Generated
     public static ResponseFormat fromString(String name) {
         return fromString(name, ResponseFormat.class);
     }
@@ -50,7 +45,6 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * 
      * @return known ResponseFormat values.
      */
-    @Generated
     public static Collection<ResponseFormat> values() {
         return values(ResponseFormat.class);
     }

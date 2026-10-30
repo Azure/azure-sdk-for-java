@@ -5,8 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,19 +20,16 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
-    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.PII_ENTITY_RECOGNITION_LRORESULTS;
 
     /*
      * The results property.
      */
-    @Generated
     private PiiResult results;
 
     /**
      * Creates an instance of PiiEntityRecognitionLROResult class.
      */
-    @Generated
     public PiiEntityRecognitionLROResult() {
     }
 
@@ -43,7 +38,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -54,7 +48,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
      * 
      * @return the results value.
      */
-    @Generated
     public PiiResult getResults() {
         return this.results;
     }
@@ -65,7 +58,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
      * @param results the results value to set.
      * @return the PiiEntityRecognitionLROResult object itself.
      */
-    @Generated
     public PiiEntityRecognitionLROResult setResults(PiiResult results) {
         this.results = results;
         return this;
@@ -74,7 +66,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntityRecognitionLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -84,7 +75,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntityRecognitionLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -94,7 +84,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntityRecognitionLROResult setStatus(State status) {
         super.setStatus(status);
@@ -104,7 +93,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,7 +116,6 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiEntityRecognitionLROResult.
      */
-    @Generated
     public static PiiEntityRecognitionLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PiiEntityRecognitionLROResult deserializedPiiEntityRecognitionLROResult
@@ -138,8 +125,8 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedPiiEntityRecognitionLROResult.setLastUpdateDateTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedPiiEntityRecognitionLROResult.setLastUpdateDateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedPiiEntityRecognitionLROResult.setStatus(State.fromString(reader.getString()));
                 } else if ("taskName".equals(fieldName)) {

@@ -9,7 +9,6 @@ module com.azure.messaging.webpubsub.client {
     requires io.netty.transport;
     requires io.netty.handler;
     requires io.netty.codec;
-    requires io.netty.codec.compression;
     requires io.netty.codec.http;
 
     exports com.azure.messaging.webpubsub.client;

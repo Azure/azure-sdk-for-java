@@ -12,10 +12,10 @@ public final class SqlRoleAssignmentGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleAssignmentGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"roleDefinitionId\":\"xhnpo\",\"scope\":\"qwcabvnui\",\"principalId\":\"ey\"},\"id\":\"wlpaugmrmfjlrxwt\",\"name\":\"aukhfkvcisiz\",\"type\":\"oaedsxjwuivedwcg\"}")
+            "{\"properties\":{\"roleDefinitionId\":\"jvzuy\",\"scope\":\"rmlmuowo\",\"principalId\":\"au\"},\"id\":\"opionszon\",\"name\":\"pngajin\",\"type\":\"ixjawrtm\"}")
             .toObject(SqlRoleAssignmentGetResultsInner.class);
-        Assertions.assertEquals("xhnpo", model.roleDefinitionId());
-        Assertions.assertEquals("qwcabvnui", model.scope());
-        Assertions.assertEquals("ey", model.principalId());
+        Assertions.assertEquals("jvzuy", model.roleDefinitionId());
+        Assertions.assertEquals("rmlmuowo", model.scope());
+        Assertions.assertEquals("au", model.principalId());
     }
 }

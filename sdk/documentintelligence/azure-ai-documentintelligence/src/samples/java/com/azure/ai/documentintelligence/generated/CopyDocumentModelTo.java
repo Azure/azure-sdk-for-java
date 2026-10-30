@@ -20,13 +20,13 @@ public class CopyDocumentModelTo {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.copy-model-to.copy-document-model-to
+        // BEGIN:com.azure.ai.documentintelligence.generated.copymodelto.copydocumentmodelto
         SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> response
             = documentIntelligenceAdministrationClient.beginCopyModelTo("sourceModel", new ModelCopyAuthorization(
                 "/subscriptions/targetSub/resourceGroups/targetRG/providers/Microsoft.CognitiveServices/accounts/targetService",
                 "targetResourceRegion", "targetModel",
                 "https://targetEndpoint.cognitiveservices.azure.com/documentintelligence/documentModels/targetModel",
                 "fakeTokenPlaceholder", OffsetDateTime.parse("2021-09-23T09:12:54.552Z")));
-        // END:com.azure.ai.documentintelligence.generated.copy-model-to.copy-document-model-to
+        // END:com.azure.ai.documentintelligence.generated.copymodelto.copydocumentmodelto
     }
 }
