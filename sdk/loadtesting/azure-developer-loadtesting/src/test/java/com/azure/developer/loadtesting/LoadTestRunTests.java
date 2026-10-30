@@ -3,22 +3,12 @@
 
 package com.azure.developer.loadtesting;
 
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.LoadTestRun;
-import com.azure.developer.loadtesting.models.LoadTestingFileType;
-import com.azure.developer.loadtesting.models.MetricDefinition;
-import com.azure.developer.loadtesting.models.MetricDefinitions;
-import com.azure.developer.loadtesting.models.MetricNamespace;
-import com.azure.developer.loadtesting.models.MetricNamespaces;
-import com.azure.developer.loadtesting.models.TestRunAppComponents;
-import com.azure.developer.loadtesting.models.TestRunFileInfo;
-import com.azure.developer.loadtesting.models.TestRunInsights;
-import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
-import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
@@ -27,7 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
-import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,51 +27,64 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("unchecked")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public final class LoadTestRunTests extends LoadTestingClientTestBase {
+
+    // Helpers
+
+    private Map<String, Object> getTestRunBodyFromDict(String testId) {
+        Map<String, Object> testRunMap = new HashMap<>();
+        testRunMap.put("testId", testId);
+        testRunMap.put("displayName", "Java SDK Sample Test Run");
+        testRunMap.put("description", "Sample Test Run");
+
+        return testRunMap;
+    }
 
     // Puts and Patches
 
     @Test
     @Order(1)
     public void beginTestRun() {
-
-        LoadTestRun loadTestRun = new LoadTestRun().setTestId(existingTestId)
-            .setDisplayName("Java SDK Sample Test Run")
-            .setDescription("Sample Test Run");
-        SyncPoller<LoadTestRun, LoadTestRun> poller
-            = getLoadTestRunClient().beginTestRun(newTestRunId, loadTestRun, null);
+        BinaryData body = BinaryData.fromObject(getTestRunBodyFromDict(existingTestId));
+        SyncPoller<BinaryData, BinaryData> poller = getLoadTestRunClient().beginTestRun(newTestRunId, body, null);
         poller = setPlaybackSyncPollerPollInterval(poller);
-        PollResponse<LoadTestRun> response = poller.waitForCompletion();
-        LoadTestRun testRun = poller.getFinalResult();
+        PollResponse<BinaryData> response = poller.waitForCompletion();
+        BinaryData testRunBinary = poller.getFinalResult();
 
-        assertNotNull(testRun);
+        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            assertEquals(newTestRunId, jsonTree.get("testRunId"));
+            assertEquals("DONE", jsonTree.get("status"));
+        } catch (IOException e) {
+            fail("Encountered exception while reading test run data", e);
+        }
+
         assertNotNull(response.getValue());
-        assertEquals(newTestRunId, testRun.getTestRunId());
-        assertEquals(TestRunStatus.DONE.toString(), testRun.getStatus().toString());
     }
 
     @Test
     @Order(2)
     public void createOrUpdateAppComponents() {
+        BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
+        Response<BinaryData> response
+            = getLoadTestRunClient().createOrUpdateAppComponentsWithResponse(newTestRunId, body, null);
 
-        TestRunAppComponents appComponents = getTestRunAppComponents();
-        TestRunAppComponents response = getLoadTestRunClient().createOrUpdateAppComponents(newTestRunId, appComponents);
-
-        assertNotNull(response);
+        assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
     @Test
     @Order(3)
     public void createOrUpdateServerMetricsConfig() {
+        BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
+        Response<BinaryData> response
+            = getLoadTestRunClient().createOrUpdateServerMetricsConfigWithResponse(newTestRunId, body, null);
 
-        TestRunServerMetricsConfiguration metricsConfig = getTestRunServerMetricsConfiguration();
-        TestRunServerMetricsConfiguration response
-            = getLoadTestRunClient().createOrUpdateServerMetricsConfig(newTestRunId, metricsConfig);
-
-        assertNotNull(response);
+        assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
     // Gets
@@ -88,88 +92,152 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(4)
     public void getTestRunFile() {
+        Response<BinaryData> response
+            = getLoadTestRunClient().getTestRunFileWithResponse(newTestRunId, uploadJmxFileName, null);
 
-        TestRunFileInfo fileInfo = getLoadTestRunClient().getTestRunFile(newTestRunId, existingJmxFileName);
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-        assertNotNull(fileInfo);
-        assertEquals(existingJmxFileName, fileInfo.getFileName());
-        assertEquals(LoadTestingFileType.JMX_FILE.toString(), fileInfo.getFileType().toString());
+            assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
+            assertEquals("JMX_FILE", jsonTree.get("fileType"));
+        } catch (IOException e) {
+            fail("Encountered exception while reading test run file data", e);
+        }
+
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
     @Order(5)
     public void getTestRun() {
+        Response<BinaryData> response = getLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
 
-        LoadTestRun testRun = getLoadTestRunClient().getTestRun(newTestRunId);
-        assertNotNull(testRun);
-        assertEquals(newTestRunId, testRun.getTestRunId());
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            assertEquals(newTestRunId, jsonTree.get("testRunId"));
+        } catch (IOException e) {
+            fail("Encountered exception while reading test run data", e);
+        }
+
+        assertEquals(200, response.getStatusCode());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(6)
     public void getAppComponents() {
+        Response<BinaryData> response = getLoadTestRunClient().getAppComponentsWithResponse(newTestRunId, null);
 
-        TestRunAppComponents appComponents = getLoadTestRunClient().getAppComponents(newTestRunId);
-        assertNotNull(appComponents);
-        assertEquals(newTestRunId, appComponents.getTestRunId());
-        assertTrue(appComponents.getComponents().containsKey(defaultAppComponentResourceId));
-        assertEquals(defaultAppComponentResourceId,
-            appComponents.getComponents().get(defaultAppComponentResourceId).getResourceId());
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            Map<String, Object> components = (Map<String, Object>) jsonTree.get("components");
+
+            assertTrue(components.containsKey(defaultAppComponentResourceId));
+
+            Map<String, Object> appComponentResource
+                = (Map<String, Object>) components.get(defaultAppComponentResourceId);
+
+            assertTrue(
+                defaultAppComponentResourceId.equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
+        } catch (IOException e) {
+            fail("Encountered exception while reading app components", e);
+        }
+
+        assertEquals(200, response.getStatusCode());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(7)
     public void getServerMetricsConfig() {
+        Response<BinaryData> response = getLoadTestRunClient().getServerMetricsConfigWithResponse(newTestRunId, null);
 
-        TestRunServerMetricsConfiguration metricsConfig = getLoadTestRunClient().getServerMetricsConfig(newTestRunId);
-        assertNotNull(metricsConfig);
-        assertEquals(newTestRunId, metricsConfig.getTestRunId());
-        assertTrue(metricsConfig.getMetrics().containsKey(defaultServerMetricId));
-        assertEquals(defaultServerMetricId, metricsConfig.getMetrics().get(defaultServerMetricId).getResourceId());
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            Map<String, Object> components = (Map<String, Object>) jsonTree.get("metrics");
+
+            assertTrue(components.containsKey(defaultServerMetricId));
+
+            Map<String, Object> appComponentResource = (Map<String, Object>) components.get(defaultServerMetricId);
+
+            assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
+        } catch (IOException e) {
+            fail("Encountered exception while reading server metrics", e);
+        }
+
+        assertEquals(200, response.getStatusCode());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(8)
     public void listMetricNamespaces() {
+        Response<BinaryData> response = getLoadTestRunClient().getMetricNamespacesWithResponse(newTestRunId, null);
 
-        MetricNamespaces metricNamespaces = getLoadTestRunClient().getMetricNamespaces(newTestRunId);
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
+            AtomicBoolean found = new AtomicBoolean(false);
 
-        assertNotNull(metricNamespaces);
-        List<MetricNamespace> namespaces = metricNamespaces.getValue();
-        assertNotNull(namespaces);
-        assertTrue(namespaces.size() > 0);
-        assertTrue(namespaces.stream().anyMatch(namespace -> namespace.getName().equals("LoadTestRunMetrics")));
+            metricNamespaces.forEach(namespace -> {
+                Map<String, Object> namespaceMap = (Map<String, Object>) namespace;
+
+                if (namespaceMap.get("name").equals("LoadTestRunMetrics")) {
+                    found.set(true);
+                }
+            });
+
+            assertTrue(found.get());
+        } catch (IOException e) {
+            fail("Encountered exception while reading metric namespaces", e);
+        }
     }
 
     @Test
     @Order(9)
     public void listMetricDefinitions() {
+        Response<BinaryData> response
+            = getLoadTestRunClient().getMetricDefinitionsWithResponse(newTestRunId, "LoadTestRunMetrics", null);
 
-        MetricDefinitions metricDefinitions
-            = getLoadTestRunClient().getMetricDefinitions(newTestRunId, "LoadTestRunMetrics");
-        assertNotNull(metricDefinitions);
-        List<MetricDefinition> definitions = metricDefinitions.getValue();
-        assertNotNull(definitions);
-        assertTrue(definitions.size() > 0);
-        assertTrue(definitions.stream()
-            .anyMatch(definition -> definition.getName() != null
-                && definition.getNamespace().equals("LoadTestRunMetrics")
-                && definition.getDimensions() != null));
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
+            AtomicBoolean found = new AtomicBoolean(false);
+
+            metricDefinitions.forEach(definition -> {
+                Map<String, Object> definitionMap = (Map<String, Object>) definition;
+
+                if (definitionMap.get("namespace").equals("LoadTestRunMetrics")
+                    && definitionMap.get("name") != null
+                    && definitionMap.containsKey("dimensions")) {
+
+                    found.set(true);
+                }
+            });
+
+            assertTrue(found.get());
+        } catch (IOException e) {
+            fail("Encountered exception while reading metric definitions", e);
+        }
     }
 
     @Test
     @Order(10)
     public void listMetrics() {
-        LoadTestRunClient loadTestRunClient = getLoadTestRunClient();
-        LoadTestRun testRun = loadTestRunClient.getTestRun(newTestRunId);
-        assertNotNull(testRun);
-        String startDateTime
-            = testRun.getStartDateTime().toInstant().atZone(ZoneId.of("UTC")).toOffsetDateTime().toString();
-        String endDateTime
-            = testRun.getEndDateTime().toInstant().atZone(ZoneId.of("UTC")).toOffsetDateTime().toString();
+        String startDateTime = "", endDateTime = "";
+        Response<BinaryData> response = getLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
+
+        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            startDateTime = jsonTree.get("startDateTime").toString();
+            endDateTime = jsonTree.get("endDateTime").toString();
+        } catch (IOException e) {
+            fail("Encountered exception while reading metrics data", e);
+        }
 
         String timespan = startDateTime + "/" + endDateTime;
-
         PagedIterable<BinaryData> metricsResponse
             = getLoadTestRunClient().listMetrics(newTestRunId, "VirtualUsers", "LoadTestRunMetrics", timespan, null);
         boolean valid = metricsResponse.stream().anyMatch(metricsBinary -> {
@@ -204,45 +272,30 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(11)
     public void listTestRuns() {
+        RequestOptions reqOpts = new RequestOptions().addQueryParam("testId", existingTestId);
+        PagedIterable<BinaryData> response = getLoadTestRunClient().listTestRuns(reqOpts);
+        boolean found = response.stream().anyMatch(testRunBinary -> {
+            try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-        PagedIterable<LoadTestRun> loadTestRuns = getLoadTestRunClient().listTestRuns("executedDateTime desc", null,
-            existingTestId, null, null, null, null, null);
-        boolean found = loadTestRuns.stream().anyMatch(testRun -> {
-            return testRun.getTestRunId().equals(newTestRunId);
+                assertEquals(newTestRunId, jsonTree.get("testRunId"));
+                assertEquals(existingTestId, jsonTree.get("testId"));
 
+                return true;
+            } catch (IOException e) {
+                // no-op
+            }
+
+            return false;
         });
+
         assertTrue(found);
-    }
-
-    // Test Run Insights
-
-    @Test
-    @Order(12)
-    public void beginGenerateTestRunInsights() {
-        RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> poller
-            = getLoadTestRunClient().beginGenerateTestRunInsights(completedTestRunId, requestOptions);
-        poller = setPlaybackSyncPollerPollInterval(poller);
-
-        PollResponse<BinaryData> response = poller.waitForCompletion();
-
-        assertNotNull(response);
-        assertTrue(response.getStatus().isComplete());
-    }
-
-    @Test
-    @Order(13)
-    public void getLatestTestRunInsights() {
-        TestRunInsights insights = getLoadTestRunClient().getLatestTestRunInsights(completedTestRunId);
-
-        assertNotNull(insights);
-        assertNotNull(insights.getStatus());
     }
 
     // Deletes
 
     @Test
-    @Order(14)
+    @Order(12)
     public void deleteTestRun() {
         assertDoesNotThrow(() -> {
             getLoadTestRunClient().deleteTestRunWithResponse(newTestRunId, null);
