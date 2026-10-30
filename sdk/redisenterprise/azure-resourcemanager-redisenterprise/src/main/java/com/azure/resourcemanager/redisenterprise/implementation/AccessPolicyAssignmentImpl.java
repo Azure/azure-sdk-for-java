@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.AccessPolicyAssignmentInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPropertiesUser;
-import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentProvisioningError;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 
 public final class AccessPolicyAssignmentImpl
@@ -40,14 +39,6 @@ public final class AccessPolicyAssignmentImpl
 
     public String accessPolicyName() {
         return this.innerModel().accessPolicyName();
-    }
-
-    public String accessString() {
-        return this.innerModel().accessString();
-    }
-
-    public AccessPolicyAssignmentProvisioningError provisioningError() {
-        return this.innerModel().provisioningError();
     }
 
     public AccessPolicyAssignmentPropertiesUser user() {
@@ -161,11 +152,6 @@ public final class AccessPolicyAssignmentImpl
 
     public AccessPolicyAssignmentImpl withAccessPolicyName(String accessPolicyName) {
         this.innerModel().withAccessPolicyName(accessPolicyName);
-        return this;
-    }
-
-    public AccessPolicyAssignmentImpl withAccessString(String accessString) {
-        this.innerModel().withAccessString(accessString);
         return this;
     }
 

@@ -21,7 +21,7 @@ public final class MigrationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"wbme\",\"provisioningState\":\"ReadyForDnsSwitch\",\"statusDetails\":\"yvjusrtslhsp\",\"creationTime\":\"2021-01-25T12:50:37Z\",\"lastModifiedTime\":\"2021-05-16T22:51Z\"},\"id\":\"ofmxagkvtmelmqkr\",\"name\":\"ahvljuaha\",\"type\":\"uhcdhm\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"lhspkdee\",\"provisioningState\":\"CancellationFailed\",\"statusDetails\":\"mx\",\"creationTime\":\"2021-03-01T08:49:54Z\",\"lastModifiedTime\":\"2020-12-25T09:40:11Z\",\"rollbackEligibleUntil\":\"2021-03-08T06:06:30Z\"},\"id\":\"mqkrhahvljuahaqu\",\"name\":\"c\",\"type\":\"hmdua\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class MigrationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Migration> response
-            = manager.migrations().list("uzbpzkafku", "b", com.azure.core.util.Context.NONE);
+        PagedIterable<Migration> response = manager.migrations().list("hhseyv", "us", com.azure.core.util.Context.NONE);
 
     }
 }

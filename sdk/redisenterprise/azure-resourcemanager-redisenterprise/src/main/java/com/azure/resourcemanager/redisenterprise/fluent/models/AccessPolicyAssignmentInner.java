@@ -11,7 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPropertiesUser;
-import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentProvisioningError;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import java.io.IOException;
 
@@ -109,8 +108,8 @@ public final class AccessPolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the accessPolicyName property: **Deprecated.** This property always returns "default". Use `accessString` to
-     * configure custom Redis ACL permissions instead.
+     * Get the accessPolicyName property: Name of access policy under specific access policy assignment. Only "default"
+     * policy is supported for now.
      * 
      * @return the accessPolicyName value.
      */
@@ -119,8 +118,8 @@ public final class AccessPolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the accessPolicyName property: **Deprecated.** This property always returns "default". Use `accessString` to
-     * configure custom Redis ACL permissions instead.
+     * Set the accessPolicyName property: Name of access policy under specific access policy assignment. Only "default"
+     * policy is supported for now.
      * 
      * @param accessPolicyName the accessPolicyName value to set.
      * @return the AccessPolicyAssignmentInner object itself.
@@ -131,41 +130,6 @@ public final class AccessPolicyAssignmentInner extends ProxyResource {
         }
         this.innerProperties().withAccessPolicyName(accessPolicyName);
         return this;
-    }
-
-    /**
-     * Get the accessString property: The Redis ACL permissions string applied to this assignment, for example
-     * `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
-     * 
-     * @return the accessString value.
-     */
-    public String accessString() {
-        return this.innerProperties() == null ? null : this.innerProperties().accessString();
-    }
-
-    /**
-     * Set the accessString property: The Redis ACL permissions string applied to this assignment, for example
-     * `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
-     * 
-     * @param accessString the accessString value to set.
-     * @return the AccessPolicyAssignmentInner object itself.
-     */
-    public AccessPolicyAssignmentInner withAccessString(String accessString) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccessPolicyAssignmentProperties();
-        }
-        this.innerProperties().withAccessString(accessString);
-        return this;
-    }
-
-    /**
-     * Get the provisioningError property: Provisioning error details when the access string failed to apply (e.g.,
-     * invalid ACL syntax). Null when provisioning succeeded.
-     * 
-     * @return the provisioningError value.
-     */
-    public AccessPolicyAssignmentProvisioningError provisioningError() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningError();
     }
 
     /**
