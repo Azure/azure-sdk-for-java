@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-10-22)
+## 2.1.0-beta.1 (2026-10-30)
 
 - Azure Resource Manager Managed Network Fabric client library for Java. This package contains Microsoft Azure SDK for Managed Network Fabric Management SDK. Self service experience for Azure Network Fabric API. Package api-version 2026-01-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -25,14 +25,14 @@
 
 #### `models.NetworkFabrics` was modified
 
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)`
 * `refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties)`
-* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)`
 
 #### `models.AccessControlList` was modified
 
-* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
 * `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
 
 #### `models.NetworkTapRule` was modified
 
@@ -46,8 +46,8 @@
 
 #### `models.RoutePolicies` was modified
 
-* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.L2IsolationDomain` was modified
 
@@ -197,8 +197,8 @@
 
 #### `models.NetworkBootstrapDevicePatch` was modified
 
-* `controlPlaneAcls()` was added
 * `withControlPlaneAcls(java.util.List)` was added
+* `controlPlaneAcls()` was added
 
 #### `models.NetworkFabricController$Definition` was modified
 
@@ -210,8 +210,8 @@
 
 #### `models.NetworkFabric$Definition` was modified
 
-* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
 * `withUpgradeProfile(java.util.List)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
 
 #### `models.NetworkFabrics` was modified
 
@@ -241,28 +241,28 @@
 
 #### `models.NetworkFabricPatch` was modified
 
-* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
-* `withUpgradeProfile(java.util.List)` was added
 * `secretArchiveSettings()` was added
 * `upgradeProfile()` was added
+* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
+* `withUpgradeProfile(java.util.List)` was added
 
 #### `models.NetworkFabric` was modified
 
 * `upgradeProfile()` was added
 * `refreshConfiguration(models.RefreshConfigurationRequestProperties,com.azure.core.util.Context)` was added
+* `networkBootstrapDeviceId()` was added
 * `operationalState()` was added
 * `secretArchiveSettings()` was added
-* `networkBootstrapDeviceId()` was added
 
 #### `models.NetworkFabric$Update` was modified
 
-* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
 * `withUpgradeProfileForUpdate(java.util.List)` was added
+* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
 
 #### `models.NetworkBootstrapDevice` was modified
 
-* `secretRotationStatus()` was added
 * `controlPlaneAcls()` was added
+* `secretRotationStatus()` was added
 * `operationalState()` was added
 
 #### `models.NeighborGroup` was modified
