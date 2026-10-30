@@ -22,7 +22,7 @@ public final class FileShareSnapshotsListByFileShareMockTests {
     @Test
     public void testListByFileShare() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"snapshotTime\":\"nzbtbhj\",\"initiatorId\":\"lkfg\",\"metadata\":{\"ikdowwquuvx\":\"neuelfphsdyhtoz\"}},\"id\":\"clvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"}]}";
+            = "{\"value\":[{\"properties\":{\"snapshotTime\":\"weriofzpyqsem\",\"initiatorId\":\"bnetshh\",\"metadata\":{\"besldnkwwtppjflc\":\"edplvwiwubmw\"}},\"id\":\"gaokonzmnsikv\",\"name\":\"kqze\",\"type\":\"qkdltfz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class FileShareSnapshotsListByFileShareMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FileShareSnapshot> response = manager.fileShareSnapshots()
-            .listByFileShare("lauwzizxbmpgcjef", "zmuvpbttdumorppx", com.azure.core.util.Context.NONE);
+            .listByFileShare("zucerscdntnev", "iwjmygtdssls", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lkfg", response.iterator().next().properties().initiatorId());
-        Assertions.assertEquals("neuelfphsdyhtoz",
-            response.iterator().next().properties().metadata().get("ikdowwquuvx"));
+        Assertions.assertEquals("bnetshh", response.iterator().next().properties().initiatorId());
+        Assertions.assertEquals("edplvwiwubmw",
+            response.iterator().next().properties().metadata().get("besldnkwwtppjflc"));
     }
 }

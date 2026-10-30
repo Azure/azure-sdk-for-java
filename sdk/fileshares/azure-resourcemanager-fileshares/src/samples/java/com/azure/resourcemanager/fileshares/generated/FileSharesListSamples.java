@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fileshares.generated;
  */
 public final class FileSharesListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListBySubscription_MinimumSet.
@@ -22,7 +22,7 @@ public final class FileSharesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListBySubscription_MaximumSet.

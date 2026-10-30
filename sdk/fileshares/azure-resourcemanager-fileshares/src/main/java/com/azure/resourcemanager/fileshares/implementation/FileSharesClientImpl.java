@@ -37,9 +37,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.fileshares.fluent.FileSharesClient;
 import com.azure.resourcemanager.fileshares.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareInner;
+import com.azure.resourcemanager.fileshares.fluent.models.RedundancyConversionStatusResponseInner;
 import com.azure.resourcemanager.fileshares.implementation.models.FileShareListResult;
 import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdate;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -199,6 +201,46 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @PathParam("location") String location, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CheckNameAvailabilityRequest body,
             Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/startRedundancyConversion")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> startRedundancyConversion(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") StartRedundancyConversionRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/startRedundancyConversion")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> startRedundancyConversionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") StartRedundancyConversionRequest body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/getRedundancyConversionStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RedundancyConversionStatusResponseInner>> getRedundancyConversionStatus(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/getRedundancyConversionStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RedundancyConversionStatusResponseInner> getRedundancyConversionStatusSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1098,6 +1140,166 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public CheckNameAvailabilityResponseInner checkNameAvailability(String location,
         CheckNameAvailabilityRequest body) {
         return checkNameAvailabilityWithResponse(location, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> startRedundancyConversionWithResponseAsync(String resourceGroupName,
+        String resourceName, StartRedundancyConversionRequest body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.startRedundancyConversion(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> startRedundancyConversionAsync(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body) {
+        return startRedundancyConversionWithResponseAsync(resourceGroupName, resourceName, body)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startRedundancyConversionWithResponse(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body, Context context) {
+        final String contentType = "application/json";
+        return service.startRedundancyConversionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, body, context);
+    }
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startRedundancyConversion(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body) {
+        startRedundancyConversionWithResponse(resourceGroupName, resourceName, body, Context.NONE);
+    }
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RedundancyConversionStatusResponseInner>>
+        getRedundancyConversionStatusWithResponseAsync(String resourceGroupName, String resourceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.getRedundancyConversionStatus(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RedundancyConversionStatusResponseInner> getRedundancyConversionStatusAsync(String resourceGroupName,
+        String resourceName) {
+        return getRedundancyConversionStatusWithResponseAsync(resourceGroupName, resourceName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RedundancyConversionStatusResponseInner>
+        getRedundancyConversionStatusWithResponse(String resourceGroupName, String resourceName, Context context) {
+        final String accept = "application/json";
+        return service.getRedundancyConversionStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+    }
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedundancyConversionStatusResponseInner getRedundancyConversionStatus(String resourceGroupName,
+        String resourceName) {
+        return getRedundancyConversionStatusWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**

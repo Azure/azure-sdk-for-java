@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fileshares.generated;
  */
 public final class FileShareSnapshotsDeleteFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_Delete_MaximumSet.

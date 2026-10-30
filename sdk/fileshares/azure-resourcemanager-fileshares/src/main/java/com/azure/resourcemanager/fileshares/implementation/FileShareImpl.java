@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fileshares.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -12,6 +13,9 @@ import com.azure.resourcemanager.fileshares.models.FileShare;
 import com.azure.resourcemanager.fileshares.models.FileShareProperties;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdate;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdateProperties;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.fileshares.models.RedundancyConversionStatusResponse;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionRequest;
 import java.util.Collections;
 import java.util.Map;
 
@@ -47,6 +51,10 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
 
     public FileShareProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -150,6 +158,25 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
         return this;
     }
 
+    public Response<Void> startRedundancyConversionWithResponse(StartRedundancyConversionRequest body,
+        Context context) {
+        return serviceManager.fileShares()
+            .startRedundancyConversionWithResponse(resourceGroupName, resourceName, body, context);
+    }
+
+    public void startRedundancyConversion(StartRedundancyConversionRequest body) {
+        serviceManager.fileShares().startRedundancyConversion(resourceGroupName, resourceName, body);
+    }
+
+    public Response<RedundancyConversionStatusResponse> getRedundancyConversionStatusWithResponse(Context context) {
+        return serviceManager.fileShares()
+            .getRedundancyConversionStatusWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public RedundancyConversionStatusResponse getRedundancyConversionStatus() {
+        return serviceManager.fileShares().getRedundancyConversionStatus(resourceGroupName, resourceName);
+    }
+
     public FileShareImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -173,6 +200,16 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
     public FileShareImpl withProperties(FileShareProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public FileShareImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public FileShareImpl withProperties(FileShareUpdateProperties properties) {

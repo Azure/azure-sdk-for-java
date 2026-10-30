@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareLimitsResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareProvisioningRecommendationResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareUsageDataResponseInner;
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
 
 /**
@@ -46,6 +47,7 @@ public interface InformationalOperationsClient {
      * Get file shares limits.
      * 
      * @param location The name of the Azure region.
+     * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +55,8 @@ public interface InformationalOperationsClient {
      * @return file shares limits along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileShareLimitsResponseInner> getLimitsWithResponse(String location, Context context);
+    Response<FileShareLimitsResponseInner> getLimitsWithResponse(String location, FileShareLimitsRequest body,
+        Context context);
 
     /**
      * Get file shares limits.

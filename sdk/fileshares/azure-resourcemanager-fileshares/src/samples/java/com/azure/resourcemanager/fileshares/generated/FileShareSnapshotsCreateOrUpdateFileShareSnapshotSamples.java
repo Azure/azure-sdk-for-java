@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FileShareSnapshotsCreateOrUpdateFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_CreateOrUpdate_MaximumSet.

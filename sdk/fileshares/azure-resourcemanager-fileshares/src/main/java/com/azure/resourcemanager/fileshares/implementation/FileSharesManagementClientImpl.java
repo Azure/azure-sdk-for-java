@@ -232,7 +232,7 @@ public final class FileSharesManagementClientImpl implements FileSharesManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01";
+        this.apiVersion = "2026-09-01";
         this.fileShares = new FileSharesClientImpl(this);
         this.fileShareSnapshots = new FileShareSnapshotsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
