@@ -12,22 +12,22 @@ public final class SqlRoleAssignmentCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleAssignmentCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"roleDefinitionId\":\"splzga\",\"scope\":\"cshhv\",\"principalId\":\"wgnxkympqanxrj\"}}")
+            "{\"properties\":{\"roleDefinitionId\":\"txrdcqtjvi\",\"scope\":\"tgepuslvyjtcvuwk\",\"principalId\":\"iziesfuughtuq\"}}")
             .toObject(SqlRoleAssignmentCreateUpdateParameters.class);
-        Assertions.assertEquals("splzga", model.roleDefinitionId());
-        Assertions.assertEquals("cshhv", model.scope());
-        Assertions.assertEquals("wgnxkympqanxrj", model.principalId());
+        Assertions.assertEquals("txrdcqtjvi", model.roleDefinitionId());
+        Assertions.assertEquals("tgepuslvyjtcvuwk", model.scope());
+        Assertions.assertEquals("iziesfuughtuq", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlRoleAssignmentCreateUpdateParameters model
-            = new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId("splzga")
-                .withScope("cshhv")
-                .withPrincipalId("wgnxkympqanxrj");
+            = new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId("txrdcqtjvi")
+                .withScope("tgepuslvyjtcvuwk")
+                .withPrincipalId("iziesfuughtuq");
         model = BinaryData.fromObject(model).toObject(SqlRoleAssignmentCreateUpdateParameters.class);
-        Assertions.assertEquals("splzga", model.roleDefinitionId());
-        Assertions.assertEquals("cshhv", model.scope());
-        Assertions.assertEquals("wgnxkympqanxrj", model.principalId());
+        Assertions.assertEquals("txrdcqtjvi", model.roleDefinitionId());
+        Assertions.assertEquals("tgepuslvyjtcvuwk", model.scope());
+        Assertions.assertEquals("iziesfuughtuq", model.principalId());
     }
 }

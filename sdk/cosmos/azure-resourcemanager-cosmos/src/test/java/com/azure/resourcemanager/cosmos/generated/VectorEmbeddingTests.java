@@ -13,26 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VectorEmbeddingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VectorEmbedding model = BinaryData
-            .fromString(
-                "{\"path\":\"l\",\"dataType\":\"int8\",\"distanceFunction\":\"euclidean\",\"dimensions\":2077442108}")
+        VectorEmbedding model = BinaryData.fromString(
+            "{\"path\":\"jlyjtlvofq\",\"dataType\":\"int8\",\"distanceFunction\":\"cosine\",\"dimensions\":1407902982}")
             .toObject(VectorEmbedding.class);
-        Assertions.assertEquals("l", model.path());
+        Assertions.assertEquals("jlyjtlvofq", model.path());
         Assertions.assertEquals(VectorDataType.INT8, model.dataType());
-        Assertions.assertEquals(DistanceFunction.EUCLIDEAN, model.distanceFunction());
-        Assertions.assertEquals(2077442108, model.dimensions());
+        Assertions.assertEquals(DistanceFunction.COSINE, model.distanceFunction());
+        Assertions.assertEquals(1407902982, model.dimensions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VectorEmbedding model = new VectorEmbedding().withPath("l")
+        VectorEmbedding model = new VectorEmbedding().withPath("jlyjtlvofq")
             .withDataType(VectorDataType.INT8)
-            .withDistanceFunction(DistanceFunction.EUCLIDEAN)
-            .withDimensions(2077442108);
+            .withDistanceFunction(DistanceFunction.COSINE)
+            .withDimensions(1407902982);
         model = BinaryData.fromObject(model).toObject(VectorEmbedding.class);
-        Assertions.assertEquals("l", model.path());
+        Assertions.assertEquals("jlyjtlvofq", model.path());
         Assertions.assertEquals(VectorDataType.INT8, model.dataType());
-        Assertions.assertEquals(DistanceFunction.EUCLIDEAN, model.distanceFunction());
-        Assertions.assertEquals(2077442108, model.dimensions());
+        Assertions.assertEquals(DistanceFunction.COSINE, model.distanceFunction());
+        Assertions.assertEquals(1407902982, model.dimensions());
     }
 }

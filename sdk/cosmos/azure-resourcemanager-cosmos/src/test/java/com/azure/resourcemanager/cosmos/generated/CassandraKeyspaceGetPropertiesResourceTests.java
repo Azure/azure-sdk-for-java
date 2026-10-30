@@ -12,8 +12,8 @@ public final class CassandraKeyspaceGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceGetPropertiesResource model = BinaryData
-            .fromString("{\"_rid\":\"gn\",\"_ts\":89.98291,\"_etag\":\"eewoiymrvzb\",\"id\":\"uyrsrziuctix\"}")
+            .fromString("{\"_rid\":\"fngq\",\"_ts\":56.76762,\"_etag\":\"dftujwjjufwbeqr\",\"id\":\"uorhtssruqnmdvh\"}")
             .toObject(CassandraKeyspaceGetPropertiesResource.class);
-        Assertions.assertEquals("uyrsrziuctix", model.id());
+        Assertions.assertEquals("uorhtssruqnmdvh", model.id());
     }
 }

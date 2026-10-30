@@ -13,19 +13,19 @@ public final class FleetspaceAccountResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspaceAccountResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"InternallyReady\",\"globalDatabaseAccountProperties\":{\"resourceId\":\"iz\",\"armLocation\":\"jrahgdstu\"}},\"id\":\"ggxzsshxl\",\"name\":\"qmsckwhfm\",\"type\":\"oii\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"globalDatabaseAccountProperties\":{\"resourceId\":\"ixlxic\",\"armLocation\":\"pthdcfmf\"}},\"id\":\"fasfod\",\"name\":\"opalvngtwyu\",\"type\":\"kwgqrn\"}")
             .toObject(FleetspaceAccountResourceInner.class);
-        Assertions.assertEquals("iz", model.globalDatabaseAccountProperties().resourceId());
-        Assertions.assertEquals("jrahgdstu", model.globalDatabaseAccountProperties().armLocation());
+        Assertions.assertEquals("ixlxic", model.globalDatabaseAccountProperties().resourceId());
+        Assertions.assertEquals("pthdcfmf", model.globalDatabaseAccountProperties().armLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetspaceAccountResourceInner model = new FleetspaceAccountResourceInner().withGlobalDatabaseAccountProperties(
-            new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("iz")
-                .withArmLocation("jrahgdstu"));
+            new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("ixlxic")
+                .withArmLocation("pthdcfmf"));
         model = BinaryData.fromObject(model).toObject(FleetspaceAccountResourceInner.class);
-        Assertions.assertEquals("iz", model.globalDatabaseAccountProperties().resourceId());
-        Assertions.assertEquals("jrahgdstu", model.globalDatabaseAccountProperties().armLocation());
+        Assertions.assertEquals("ixlxic", model.globalDatabaseAccountProperties().resourceId());
+        Assertions.assertEquals("pthdcfmf", model.globalDatabaseAccountProperties().armLocation());
     }
 }

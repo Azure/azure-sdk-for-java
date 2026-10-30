@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.MetricName;
 public final class MetricNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricName model = BinaryData.fromString("{\"value\":\"l\",\"localizedValue\":\"muwlauwzizxbm\"}")
+        MetricName model = BinaryData.fromString("{\"value\":\"byuqerpqlp\",\"localizedValue\":\"cciuqgbdbutau\"}")
             .toObject(MetricName.class);
     }
 }

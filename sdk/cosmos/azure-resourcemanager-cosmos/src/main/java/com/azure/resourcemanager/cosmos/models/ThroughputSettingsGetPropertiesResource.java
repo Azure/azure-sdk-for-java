@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The ThroughputSettingsGetPropertiesResource model.
@@ -137,9 +136,6 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
         if (autoscaleSettings() != null) {
             autoscaleSettings().validate();
         }
-        if (throughputBuckets() != null) {
-            throughputBuckets().forEach(e -> e.validate());
-        }
     }
 
     /**
@@ -150,8 +146,6 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("throughput", throughput());
         jsonWriter.writeJsonField("autoscaleSettings", autoscaleSettings());
-        jsonWriter.writeArrayField("throughputBuckets", throughputBuckets(),
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -186,10 +180,6 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
                 } else if ("softAllowedMaximumThroughput".equals(fieldName)) {
                     deserializedThroughputSettingsGetPropertiesResource.softAllowedMaximumThroughput
                         = reader.getString();
-                } else if ("throughputBuckets".equals(fieldName)) {
-                    List<ThroughputBucketResource> throughputBuckets
-                        = reader.readArray(reader1 -> ThroughputBucketResource.fromJson(reader1));
-                    deserializedThroughputSettingsGetPropertiesResource.withThroughputBuckets(throughputBuckets);
                 } else if ("_rid".equals(fieldName)) {
                     deserializedThroughputSettingsGetPropertiesResource.rid = reader.getString();
                 } else if ("_ts".equals(fieldName)) {
