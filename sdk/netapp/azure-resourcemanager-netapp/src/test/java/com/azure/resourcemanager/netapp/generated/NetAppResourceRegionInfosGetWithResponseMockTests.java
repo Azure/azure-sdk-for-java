@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"hlkks\",\"isAvailable\":false},{\"availabilityZone\":\"vyfijdkzuqnw\",\"isAvailable\":true},{\"availabilityZone\":\"uqoly\",\"isAvailable\":false}]},\"id\":\"qwqul\",\"name\":\"utrjbhxyk\",\"type\":\"hyqezvqq\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"kaxpfobkzhmh\",\"isAvailable\":false},{\"availabilityZone\":\"tdeluqrojadhfzt\",\"isAvailable\":true},{\"availabilityZone\":\"srkgz\",\"isAvailable\":true},{\"availabilityZone\":\"dbkuwpzqxlcwe\",\"isAvailable\":false}]},\"id\":\"cjvxfaqufqizjv\",\"name\":\"pwooajeyyj\",\"type\":\"jjx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionInfoResource response
-            = manager.netAppResourceRegionInfos().getWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+            = manager.netAppResourceRegionInfos().getWithResponse("su", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            response.storageToNetworkProximity());
-        Assertions.assertEquals("hlkks", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2, response.storageToNetworkProximity());
+        Assertions.assertEquals("kaxpfobkzhmh", response.availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertFalse(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }
