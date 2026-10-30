@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BareMetalMachinesUncordonSamples {
     /*
-     * x-ms-original-file: 2026-07-01/BareMetalMachines_Uncordon.json
+     * x-ms-original-file: 2026-08-01-preview/BareMetalMachines_Uncordon.json
      */
     /**
      * Sample code: Uncordon bare metal machine.

@@ -14,17 +14,15 @@ public final class TrunkedNetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrunkedNetworkPatchParameters model
-            = BinaryData.fromString("{\"tags\":{\"lwntsjgqrs\":\"fcsserxhtvsox\",\"ruuuybnch\":\"y\"}}")
-                .toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("fcsserxhtvsox", model.tags().get("lwntsjgqrs"));
+            = BinaryData.fromString("{\"tags\":{\"uwc\":\"ds\"}}").toObject(TrunkedNetworkPatchParameters.class);
+        Assertions.assertEquals("ds", model.tags().get("uwc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkPatchParameters model
-            = new TrunkedNetworkPatchParameters().withTags(mapOf("lwntsjgqrs", "fcsserxhtvsox", "ruuuybnch", "y"));
+        TrunkedNetworkPatchParameters model = new TrunkedNetworkPatchParameters().withTags(mapOf("uwc", "ds"));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("fcsserxhtvsox", model.tags().get("lwntsjgqrs"));
+        Assertions.assertEquals("ds", model.tags().get("uwc"));
     }
 
     // Use "Map.of" if available

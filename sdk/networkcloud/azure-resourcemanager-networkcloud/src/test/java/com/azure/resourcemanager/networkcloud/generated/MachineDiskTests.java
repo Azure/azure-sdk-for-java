@@ -11,7 +11,7 @@ public final class MachineDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineDisk model
-            = BinaryData.fromString("{\"capacityGB\":363191384797208698,\"connection\":\"RAID\",\"type\":\"SSD\"}")
+            = BinaryData.fromString("{\"capacityGB\":9153274604646364736,\"connection\":\"SATA\",\"type\":\"SSD\"}")
                 .toObject(MachineDisk.class);
     }
 }
