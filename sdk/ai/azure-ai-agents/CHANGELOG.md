@@ -87,6 +87,8 @@
 
 ### Other Changes
 
+- Extracted shared protocol-neutral WebSocket transports for Live and Realtime, keeping independent blocking
+  and asynchronous implementations and protocol-specific event decoding in the respective clients.
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
 
 ## 2.9.0 (2026-10-30)
@@ -175,8 +177,6 @@
 
 ### Other Changes
 
-- Extracted shared protocol-neutral WebSocket transports for Live and Realtime, keeping independent blocking
-  and asynchronous implementations and protocol-specific event decoding in the respective clients.
 - Regenerated from the updated Foundry TypeSpec specification.
 - Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
   (four hours); the default remains 900 seconds.
