@@ -15,6 +15,7 @@
 
 * Updated Netty to `4.2.19.Final`, Reactor Netty to `1.3.7`, and Reactor Core to `3.8.7`. Migrated direct TCP event loops to the Netty 4.2 I/O handler API while preserving pooled buffers and explicit TLS validation settings.
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
+* Change Feed Processor lease writes no longer request the document in the response, reducing response bandwidth and client response-processing overhead without changing RU charges. The new lease ETag is taken from the response headers, and the lease container's client no longer needs `contentResponseOnWriteEnabled(true)`. - See [PR 50697](https://github.com/Azure/azure-sdk-for-java/pull/50697)
 
 ### 4.83.0 (2026-09-22)
 
