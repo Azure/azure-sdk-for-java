@@ -57,6 +57,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -317,6 +318,10 @@ public final class EncryptedBlobClientBuilder implements TokenCredentialTrait<En
                         + " configured for encryption/decryption in a way that might conflict with the passed key "
                         + "information. Please ensure that the passed pipeline is not already configured for "
                         + "encryption/decryption"));
+                }
+                if (currPolicy instanceof DataLocalityPolicy) {
+                    // Layout ranges use ciphertext offsets and cannot route encrypted clients' plaintext ranges.
+                    continue;
                 }
                 policies.add(currPolicy);
             }

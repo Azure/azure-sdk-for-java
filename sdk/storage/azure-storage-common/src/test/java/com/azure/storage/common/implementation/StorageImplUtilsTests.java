@@ -3,20 +3,31 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.storage.common.policy.DataLocalityPolicy;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
+import reactor.core.publisher.Mono;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StorageImplUtilsTests {
 
@@ -44,6 +55,105 @@ public class StorageImplUtilsTests {
         assertEquals(firstPass, StorageImplUtils.toETagHeaderValue(firstPass));
     }
 
+    @Test
+    void addDataLocalityEndpointReturnsContextUnchangedWhenEndpointIsNull() {
+        Context context = Context.NONE;
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, null);
+
+        assertSame(context, result);
+        assertFalse(Context.NONE.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
+    }
+
+    @Test
+    void addDataLocalityEndpointReturnsContextUnchangedWhenEndpointIsEmpty() {
+        Context context = new Context("key", "value");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, URI.create(""));
+
+        assertSame(context, result);
+    }
+
+    @Test
+    void addDataLocalityEndpointUsesContextNoneWhenContextIsNull() {
+        Context result = StorageImplUtils.addDataLocalityEndpoint(null, URI.create("//layout.example.net:8443"));
+
+        assertNotNull(result);
+        assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
+        assertEquals("layout.example.net:8443", result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    @Test
+    void addDataLocalityEndpointPreservesExistingContextData() {
+        Context context = new Context("existingKey", "existingValue");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, URI.create("https://layout.example.net"));
+
+        assertTrue(result.getData("existingKey").isPresent());
+        assertEquals("existingValue", result.getData("existingKey").get());
+        assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
+        assertEquals("layout.example.net", result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataLocalityEndpointUris")
+    void addDataLocalityEndpointUsesRawAuthority(URI endpoint, String expectedAuthority) {
+        Context result = StorageImplUtils.addDataLocalityEndpoint(Context.NONE, endpoint);
+
+        assertEquals(expectedAuthority, result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    private static Stream<Arguments> dataLocalityEndpointUris() {
+        return Stream.of(Arguments.of(URI.create("https://layout.example.net:8443/"), "layout.example.net:8443"),
+            Arguments.of(URI.create("//layout.example.net:8443"), "layout.example.net:8443"),
+            Arguments.of(URI.create("https://[::1]:8443/"), "[::1]:8443"),
+            Arguments.of(URI.create("//[::1]:8443"), "[::1]:8443"));
+    }
+
+    @Test
+    void pipelineSupportsDataLocalityReturnsTrueWhenPolicyIsPresent() {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .policies(new DataLocalityPolicy())
+                .build();
+
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(pipeline));
+    }
+
+    @Test
+    void pipelineSupportsDataLocalityReturnsFalseWhenPolicyIsMissing() {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200))).build();
+
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(pipeline));
+    }
+
+    @Test
+    void pipelineSupportsDataLocalityReturnsFalseWhenPipelineIsNull() {
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("serviceEndpointValues")
+    void isServiceEndpointDetectsServiceSubdomain(String host, String serviceSubDomain, boolean expected) {
+        if (expected) {
+            assertTrue(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        } else {
+            assertFalse(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("serviceEndpointConversions")
+    void endpointToDesiredEndpointConvertsServiceSubdomain(String endpoint, String desiredEndpoint,
+        String currentEndpoint, String expected) {
+        assertEquals(expected, StorageImplUtils.endpointToDesiredEndpoint(endpoint, desiredEndpoint, currentEndpoint));
+    }
+
+    @ParameterizedTest
+    @MethodSource("knownServiceAccountNames")
+    void getAccountNameFromKnownServiceHostRecognizesSupportedServices(String host, String expected) {
+        assertEquals(expected, StorageImplUtils.getAccountNameFromKnownServiceHost(host,
+            Constants.UrlConstants.BLOB_URI_SUBDOMAIN, Constants.UrlConstants.DFS_URI_SUBDOMAIN));
+    }
+
     private static Stream<Arguments> exceptionCallables() {
         Callable<Object> timeoutCallable = () -> {
             throw new TimeoutException();
@@ -65,6 +175,30 @@ public class StorageImplUtilsTests {
             Arguments.of(runtimeCallable, RuntimeException.class),
             Arguments.of(executionCallable, ExecutionException.class),
             Arguments.of(interruptedCallable, InterruptedException.class));
+    }
+
+    private static Stream<Arguments> serviceEndpointValues() {
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "blob", true),
+            Arguments.of("account.dfs.core.windows.net", "dfs", true),
+            Arguments.of("custom.example.com", "blob", false), Arguments.of("account.blob.example.com", "dfs", false),
+            Arguments.of(null, "blob", false), Arguments.of("account.blob.core.windows.net", null, false));
+    }
+
+    private static Stream<Arguments> serviceEndpointConversions() {
+        return Stream.of(
+            Arguments.of("https://account.dfs.core.windows.net", "blob", "dfs",
+                "https://account.blob.core.windows.net"),
+            Arguments.of("https://dfsaccount.dfs.core.windows.net", "blob", "dfs",
+                "https://dfsaccount.blob.core.windows.net"),
+            Arguments.of("https://account.blob.core.windows.net", "blob", "dfs",
+                "https://account.blob.core.windows.net"),
+            Arguments.of("https://custom.example.com", "blob", "dfs", "https://custom.example.com"));
+    }
+
+    private static Stream<Arguments> knownServiceAccountNames() {
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "account"),
+            Arguments.of("account-secondary.dfs.core.windows.net", "account"), Arguments.of("custom.example.com", null),
+            Arguments.of(null, null));
     }
 
     private static Stream<Arguments> etagValues() {

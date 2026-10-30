@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
@@ -18,6 +20,7 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareServiceProperties;
@@ -47,11 +50,18 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
+    private static final HttpHeaderName X_MS_FILE_ENABLE_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-enable-change-feed");
+    private static final HttpHeaderName X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS
+        = HttpHeaderName.fromString("x-ms-file-change-feed-retention-in-days");
+    private static final HttpHeaderName X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-blob-container-for-xfiles-change-feed");
 
     static String getRandomString(int size) {
         byte[] array = new byte[size];
@@ -70,6 +80,52 @@ public class FileShareTestHelper {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    static Stream<Arguments> createShareChangeFeedSupplier() {
+        return Stream.of(Arguments.of(true, 7), Arguments.of(true, null), Arguments.of(false, null),
+            Arguments.of(null, null));
+    }
+
+    static Stream<Arguments> setPropertiesShareChangeFeedSupplier() {
+        return Stream.of(Arguments.of(true, 14), Arguments.of(true, null), Arguments.of(false, null),
+            Arguments.of(null, 14), Arguments.of(null, null));
+    }
+
+    static void assertShareChangeFeedRequestHeaders(Response<?> response, Boolean enabled, Integer retentionInDays) {
+        HttpHeaders headers = response.getRequest().getHeaders();
+        assertEquals(enabled == null ? null : enabled.toString(), headers.getValue(X_MS_FILE_ENABLE_CHANGE_FEED));
+        assertEquals(retentionInDays == null ? null : retentionInDays.toString(),
+            headers.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS));
+    }
+
+    static void assertShareChangeFeedProperties(Response<ShareProperties> response, Boolean enabled,
+        Integer retentionInDays) {
+        assertEquals(200, response.getStatusCode());
+        HttpHeaders headers = response.getHeaders();
+        ShareProperties properties = response.getValue();
+        String enabledHeader = headers.getValue(X_MS_FILE_ENABLE_CHANGE_FEED);
+        String retentionHeader = headers.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS);
+        String containerHeader = headers.getValue(X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED);
+
+        // Omitted options may be defaulted by the service; their raw headers must still map to the public properties.
+        assertEquals(enabledHeader == null ? null : Boolean.valueOf(enabledHeader), properties.isChangeFeedEnabled());
+        assertEquals(retentionHeader == null ? null : Integer.valueOf(retentionHeader),
+            properties.getChangeFeedRetentionInDays());
+        assertEquals(containerHeader, properties.getChangeFeedBlobContainerName());
+        if (enabled != null) {
+            assertNotNull(enabledHeader);
+            assertEquals(enabled, Boolean.valueOf(enabledHeader));
+            assertEquals(enabled, properties.isChangeFeedEnabled());
+        }
+        if (retentionInDays != null) {
+            assertEquals(retentionInDays.toString(), retentionHeader);
+            assertEquals(retentionInDays, properties.getChangeFeedRetentionInDays());
+        }
+        if (Boolean.TRUE.equals(enabled)) {
+            assertNotNull(containerHeader);
+            assertFalse(containerHeader.isEmpty());
+        }
     }
 
     /**

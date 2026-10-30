@@ -188,6 +188,12 @@ public final class FilesGetPropertiesHeaders {
     private String xMsFileId;
 
     /*
+     * The x-ms-file-name property.
+     */
+    @Generated
+    private String xMsFileName;
+
+    /*
      * The x-ms-file-parent-id property.
      */
     @Generated
@@ -274,6 +280,8 @@ public final class FilesGetPropertiesHeaders {
         = HttpHeaderName.fromString("x-ms-file-permission-key");
 
     private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
+
+    private static final HttpHeaderName X_MS_FILE_NAME = HttpHeaderName.fromString("x-ms-file-name");
 
     private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
 
@@ -376,6 +384,7 @@ public final class FilesGetPropertiesHeaders {
         }
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
+        this.xMsFileName = rawHeaders.getValue(X_MS_FILE_NAME);
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
@@ -1033,6 +1042,28 @@ public final class FilesGetPropertiesHeaders {
     @Generated
     public FilesGetPropertiesHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileName property: The x-ms-file-name property.
+     * 
+     * @return the xMsFileName value.
+     */
+    @Generated
+    public String getXMsFileName() {
+        return this.xMsFileName;
+    }
+
+    /**
+     * Set the xMsFileName property: The x-ms-file-name property.
+     * 
+     * @param xMsFileName the xMsFileName value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public FilesGetPropertiesHeaders setXMsFileName(String xMsFileName) {
+        this.xMsFileName = xMsFileName;
         return this;
     }
 
