@@ -161,7 +161,8 @@ public final class LogsIngestionClientImpl {
         Mono<Response<Void>> upload(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("ruleId") String ruleId,
             @PathParam("stream") String streamName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({ 204 })
@@ -171,8 +172,8 @@ public final class LogsIngestionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> uploadSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("ruleId") String ruleId, @PathParam("stream") String streamName,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -211,8 +212,9 @@ public final class LogsIngestionClientImpl {
     public Mono<Response<Void>> uploadWithResponseAsync(String ruleId, String streamName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.upload(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            ruleId, streamName, contentType, body, requestOptions, context));
+            ruleId, streamName, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -251,7 +253,8 @@ public final class LogsIngestionClientImpl {
     public Response<Void> uploadWithResponse(String ruleId, String streamName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.uploadSync(this.getEndpoint(), this.getServiceVersion().getVersion(), ruleId, streamName,
-            contentType, body, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 }
