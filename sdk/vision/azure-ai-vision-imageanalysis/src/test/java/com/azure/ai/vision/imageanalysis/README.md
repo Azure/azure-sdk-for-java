@@ -9,6 +9,10 @@ See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vi
 ### Setup
 
 1. Clone or download the azure-sdk-for-java repository.
+1. Open a command prompt window in the root folder of your clone, and run:
+   ```bash
+   mvn install -f eng\code-quality-reports\pom.xml
+   ```
 
 ### Set environment variables
 
@@ -20,7 +24,7 @@ Configure the test proxy to run live service tests without recordings:
 ```
 set AZURE_TEST_MODE=LIVE
 ```
-Other supported values for this environment variable are `RECORD` and `PLAYBACK`.
+Other supported values for this enviroment variable are `RECORD` and `PLAYBACK`.
 
 ### Run tests
 
