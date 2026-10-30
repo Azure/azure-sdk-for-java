@@ -5,7 +5,7 @@ parameters:
 
 steps:
   - ${{if eq(parameters.ShouldPublish, 'true')}}:
-    - task: EsrpRelease@11
+    - task: EsrpRelease@14
       displayName: 'Publish to ESRP'
       inputs:
         ConnectedServiceName: Azure SDK PME Managed Identity
@@ -20,4 +20,4 @@ steps:
         Owners: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         Approvers: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
-        MainPublisher: 'ESRPRELPACMANTEST'
+        MainPublisher: 'ESRPRELPACMAN'
