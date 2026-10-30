@@ -15,6 +15,7 @@ import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 import com.azure.resourcemanager.loganalytics.models.Schema;
 import com.azure.resourcemanager.loganalytics.models.SearchResults;
 import com.azure.resourcemanager.loganalytics.models.TablePlanEnum;
+import com.azure.resourcemanager.loganalytics.models.TableProtectionLevelEnum;
 import java.io.IOException;
 
 /**
@@ -58,6 +59,11 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
      * Instruct the system how to handle and charge the logs ingested to this table.
      */
     private TablePlanEnum plan;
+
+    /*
+     * The protection level of the table. Determines the default data access isolation behavior.
+     */
+    private TableProtectionLevelEnum protectionLevel;
 
     /*
      * The timestamp that table plan was last modified (UTC).
@@ -217,6 +223,28 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
     }
 
     /**
+     * Get the protectionLevel property: The protection level of the table. Determines the default data access isolation
+     * behavior.
+     * 
+     * @return the protectionLevel value.
+     */
+    public TableProtectionLevelEnum protectionLevel() {
+        return this.protectionLevel;
+    }
+
+    /**
+     * Set the protectionLevel property: The protection level of the table. Determines the default data access isolation
+     * behavior.
+     * 
+     * @param protectionLevel the protectionLevel value to set.
+     * @return the TableProperties object itself.
+     */
+    public TableProperties withProtectionLevel(TableProtectionLevelEnum protectionLevel) {
+        this.protectionLevel = protectionLevel;
+        return this;
+    }
+
+    /**
      * Get the lastPlanModifiedDate property: The timestamp that table plan was last modified (UTC).
      * 
      * @return the lastPlanModifiedDate value.
@@ -287,6 +315,8 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
         jsonWriter.writeJsonField("searchResults", this.searchResults);
         jsonWriter.writeJsonField("restoredLogs", this.restoredLogs);
         jsonWriter.writeStringField("plan", this.plan == null ? null : this.plan.toString());
+        jsonWriter.writeStringField("protectionLevel",
+            this.protectionLevel == null ? null : this.protectionLevel.toString());
         jsonWriter.writeJsonField("schema", this.schema);
         return jsonWriter.writeEndObject();
     }
@@ -320,6 +350,9 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
                     deserializedTableProperties.resultStatistics = ResultStatistics.fromJson(reader);
                 } else if ("plan".equals(fieldName)) {
                     deserializedTableProperties.plan = TablePlanEnum.fromString(reader.getString());
+                } else if ("protectionLevel".equals(fieldName)) {
+                    deserializedTableProperties.protectionLevel
+                        = TableProtectionLevelEnum.fromString(reader.getString());
                 } else if ("lastPlanModifiedDate".equals(fieldName)) {
                     deserializedTableProperties.lastPlanModifiedDate = reader.getString();
                 } else if ("schema".equals(fieldName)) {

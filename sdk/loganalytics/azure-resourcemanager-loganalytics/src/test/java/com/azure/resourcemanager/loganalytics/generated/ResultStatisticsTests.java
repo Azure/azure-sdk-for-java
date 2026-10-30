@@ -12,7 +12,7 @@ public final class ResultStatisticsTests {
     public void testDeserialize() throws Exception {
         ResultStatistics model = BinaryData
             .fromString(
-                "{\"progress\":19.014139860609415,\"ingestedRecords\":1763691901,\"scannedGb\":25.84225084007603}")
+                "{\"progress\":13.595698149098478,\"ingestedRecords\":1435042085,\"scannedGb\":19.161809832340616}")
             .toObject(ResultStatistics.class);
     }
 }

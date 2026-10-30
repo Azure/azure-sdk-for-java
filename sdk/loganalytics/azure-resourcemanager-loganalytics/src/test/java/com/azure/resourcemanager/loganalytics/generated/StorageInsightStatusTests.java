@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageInsightStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageInsightStatus model = BinaryData.fromString("{\"state\":\"OK\",\"description\":\"xgjiuqh\"}")
+        StorageInsightStatus model = BinaryData.fromString("{\"state\":\"OK\",\"description\":\"gnljhnmgixhcm\"}")
             .toObject(StorageInsightStatus.class);
         Assertions.assertEquals(StorageInsightState.OK, model.state());
-        Assertions.assertEquals("xgjiuqh", model.description());
+        Assertions.assertEquals("gnljhnmgixhcm", model.description());
     }
 }

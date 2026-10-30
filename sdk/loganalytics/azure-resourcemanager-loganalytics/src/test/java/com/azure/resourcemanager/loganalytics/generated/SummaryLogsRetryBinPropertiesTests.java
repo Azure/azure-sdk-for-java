@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SummaryLogsRetryBinPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SummaryLogsRetryBinProperties model = BinaryData.fromString("{\"retryBinStartTime\":\"2021-09-07T11:30:25Z\"}")
+        SummaryLogsRetryBinProperties model = BinaryData.fromString("{\"retryBinStartTime\":\"2021-10-13T23:34:18Z\"}")
             .toObject(SummaryLogsRetryBinProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T11:30:25Z"), model.retryBinStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T23:34:18Z"), model.retryBinStartTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SummaryLogsRetryBinProperties model
-            = new SummaryLogsRetryBinProperties().withRetryBinStartTime(OffsetDateTime.parse("2021-09-07T11:30:25Z"));
+            = new SummaryLogsRetryBinProperties().withRetryBinStartTime(OffsetDateTime.parse("2021-10-13T23:34:18Z"));
         model = BinaryData.fromObject(model).toObject(SummaryLogsRetryBinProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T11:30:25Z"), model.retryBinStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T23:34:18Z"), model.retryBinStartTime());
     }
 }
