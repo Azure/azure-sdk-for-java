@@ -20,7 +20,7 @@ public final class IotHubResourcesGetStatsWithResponseMockTests {
     @Test
     public void testGetStatsWithResponse() throws Exception {
         String responseStr
-            = "{\"totalDeviceCount\":2623062511310512908,\"enabledDeviceCount\":3559673454895327460,\"disabledDeviceCount\":1446220970457190394}";
+            = "{\"totalDeviceCount\":6676778811742741962,\"enabledDeviceCount\":2392132997122108619,\"disabledDeviceCount\":7780888687647281738}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IotHubResourcesGetStatsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegistryStatistics response = manager.iotHubResources()
-            .getStatsWithResponse("yybyc", "unvjsrtkfawnopq", com.azure.core.util.Context.NONE)
+            .getStatsWithResponse("pvuzlmv", "elfk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

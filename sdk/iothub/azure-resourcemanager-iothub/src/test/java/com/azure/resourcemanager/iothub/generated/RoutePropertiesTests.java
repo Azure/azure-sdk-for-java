@@ -14,30 +14,27 @@ public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteProperties model = BinaryData.fromString(
-            "{\"name\":\"wiyighxpkdw\",\"source\":\"DigitalTwinChangeEvents\",\"condition\":\"iuebbaumny\",\"dataSchema\":\"ped\",\"endpointNames\":[\"jn\",\"bckhsmtxpsi\",\"btfhvpesaps\",\"rdqmhjjdhtldwkyz\"],\"isEnabled\":false}")
+            "{\"name\":\"uujqgidokgjljyo\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"cltbgsncghkjesz\",\"endpointNames\":[\"bijhtxfvgxbf\",\"mxnehmp\",\"ec\"],\"isEnabled\":true}")
             .toObject(RouteProperties.class);
-        Assertions.assertEquals("wiyighxpkdw", model.name());
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.source());
-        Assertions.assertEquals("iuebbaumny", model.condition());
-        Assertions.assertEquals("ped", model.dataSchema());
-        Assertions.assertEquals("jn", model.endpointNames().get(0));
-        Assertions.assertFalse(model.isEnabled());
+        Assertions.assertEquals("uujqgidokgjljyo", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
+        Assertions.assertEquals("cltbgsncghkjesz", model.condition());
+        Assertions.assertEquals("bijhtxfvgxbf", model.endpointNames().get(0));
+        Assertions.assertTrue(model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteProperties model = new RouteProperties().withName("wiyighxpkdw")
-            .withSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
-            .withCondition("iuebbaumny")
-            .withDataSchema("ped")
-            .withEndpointNames(Arrays.asList("jn", "bckhsmtxpsi", "btfhvpesaps", "rdqmhjjdhtldwkyz"))
-            .withIsEnabled(false);
+        RouteProperties model = new RouteProperties().withName("uujqgidokgjljyo")
+            .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+            .withCondition("cltbgsncghkjesz")
+            .withEndpointNames(Arrays.asList("bijhtxfvgxbf", "mxnehmp", "ec"))
+            .withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
-        Assertions.assertEquals("wiyighxpkdw", model.name());
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.source());
-        Assertions.assertEquals("iuebbaumny", model.condition());
-        Assertions.assertEquals("ped", model.dataSchema());
-        Assertions.assertEquals("jn", model.endpointNames().get(0));
-        Assertions.assertFalse(model.isEnabled());
+        Assertions.assertEquals("uujqgidokgjljyo", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
+        Assertions.assertEquals("cltbgsncghkjesz", model.condition());
+        Assertions.assertEquals("bijhtxfvgxbf", model.endpointNames().get(0));
+        Assertions.assertTrue(model.isEnabled());
     }
 }
