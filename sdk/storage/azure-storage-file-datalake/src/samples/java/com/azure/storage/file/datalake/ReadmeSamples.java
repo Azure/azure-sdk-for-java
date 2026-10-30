@@ -181,5 +181,14 @@ public class ReadmeSamples {
         // END: readme-sample-authWithIdentity
     }
 
-}
+    public void getDataLakeServiceClientWithCustomEndpoints() {
+        // BEGIN: readme-sample-getDataLakeServiceClientWithCustomEndpoints
+        DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
+            .endpoint("https://dfs-proxy.example.com")
+            .blobEndpoint("https://blob-proxy.example.com")
+            .sasToken("<your-sasToken>")
+            .buildClient();
+        // END: readme-sample-getDataLakeServiceClientWithCustomEndpoints
+    }
 
+}
