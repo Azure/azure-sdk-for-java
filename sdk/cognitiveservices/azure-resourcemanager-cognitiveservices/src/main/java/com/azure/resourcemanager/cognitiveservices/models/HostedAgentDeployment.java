@@ -32,6 +32,11 @@ public final class HostedAgentDeployment extends AgentDeploymentProperties {
      */
     private Integer maxReplicas;
 
+    /*
+     * Gets or sets the provisioning state of the agent deployment.
+     */
+    private AgentDeploymentProvisioningState provisioningState;
+
     /**
      * Creates an instance of HostedAgentDeployment class.
      */
@@ -86,6 +91,16 @@ public final class HostedAgentDeployment extends AgentDeploymentProperties {
     public HostedAgentDeployment withMaxReplicas(Integer maxReplicas) {
         this.maxReplicas = maxReplicas;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Gets or sets the provisioning state of the agent deployment.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AgentDeploymentProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -206,8 +221,8 @@ public final class HostedAgentDeployment extends AgentDeploymentProperties {
                         = reader.readArray(reader1 -> VersionedAgentReference.fromJson(reader1));
                     deserializedHostedAgentDeployment.withAgents(agents);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedHostedAgentDeployment
-                        .withProvisioningState(AgentDeploymentProvisioningState.fromString(reader.getString()));
+                    deserializedHostedAgentDeployment.provisioningState
+                        = AgentDeploymentProvisioningState.fromString(reader.getString());
                 } else if ("deploymentType".equals(fieldName)) {
                     deserializedHostedAgentDeployment.deploymentType
                         = AgentDeploymentType.fromString(reader.getString());

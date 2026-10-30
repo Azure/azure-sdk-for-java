@@ -17,10 +17,10 @@ public final class ResourcePatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourcePatchRequest model = BinaryData.fromString(
-            "{\"resources\":[{\"resourceId\":\"mgixhcmavmqfou\",\"notificationSettings\":[{\"destination\":\"hcgyyprotwyp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"resourceId\":\"xhugcm\",\"notificationSettings\":[{\"destination\":\"vlgo\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}")
+            "{\"resources\":[{\"resourceId\":\"uagydwqfbylyrf\",\"notificationSettings\":[{\"destination\":\"gtcojocqwo\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"resourceId\":\"vusfzld\",\"notificationSettings\":[{\"destination\":\"uxylfsbtkadpy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"tgkbugrjqctojc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"ieypef\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"hcuplc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"resourceId\":\"hihihlhzdsqtzbsr\",\"notificationSettings\":[{\"destination\":\"wcjhfgmv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"resourceId\":\"xmwoteyowcluqo\",\"notificationSettings\":[{\"destination\":\"qvgqouw\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"j\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}")
             .toObject(ResourcePatchRequest.class);
-        Assertions.assertEquals("mgixhcmavmqfou", model.resources().get(0).resourceId());
-        Assertions.assertEquals("hcgyyprotwyp", model.resources().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("uagydwqfbylyrf", model.resources().get(0).resourceId());
+        Assertions.assertEquals("gtcojocqwo", model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
         Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());
@@ -29,19 +29,47 @@ public final class ResourcePatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourcePatchRequest model = new ResourcePatchRequest().withResources(Arrays.asList(
-            new ScheduledActionResourceInput().withResourceId("mgixhcmavmqfou")
-                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("hcgyyprotwyp")
+            new ScheduledActionResourceInput().withResourceId("uagydwqfbylyrf")
+                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("gtcojocqwo")
                     .withType(NotificationType.EMAIL)
                     .withLanguage(Language.EN_US)
                     .withDisabled(true))),
-            new ScheduledActionResourceInput().withResourceId("xhugcm")
-                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("vlgo")
+            new ScheduledActionResourceInput().withResourceId("vusfzld")
+                .withNotificationSettings(Arrays.asList(
+                    new NotificationProperties().withDestination("uxylfsbtkadpy")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(true),
+                    new NotificationProperties().withDestination("tgkbugrjqctojc")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(true),
+                    new NotificationProperties().withDestination("ieypef")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(false),
+                    new NotificationProperties().withDestination("hcuplc")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(true))),
+            new ScheduledActionResourceInput().withResourceId("hihihlhzdsqtzbsr")
+                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("wcjhfgmv")
                     .withType(NotificationType.EMAIL)
                     .withLanguage(Language.EN_US)
-                    .withDisabled(false)))));
+                    .withDisabled(true))),
+            new ScheduledActionResourceInput().withResourceId("xmwoteyowcluqo")
+                .withNotificationSettings(Arrays.asList(
+                    new NotificationProperties().withDestination("qvgqouw")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(false),
+                    new NotificationProperties().withDestination("j")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(false)))));
         model = BinaryData.fromObject(model).toObject(ResourcePatchRequest.class);
-        Assertions.assertEquals("mgixhcmavmqfou", model.resources().get(0).resourceId());
-        Assertions.assertEquals("hcgyyprotwyp", model.resources().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("uagydwqfbylyrf", model.resources().get(0).resourceId());
+        Assertions.assertEquals("gtcojocqwo", model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
         Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());

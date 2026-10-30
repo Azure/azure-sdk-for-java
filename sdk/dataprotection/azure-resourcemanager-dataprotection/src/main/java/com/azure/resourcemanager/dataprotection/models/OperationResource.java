@@ -22,7 +22,7 @@ public interface OperationResource {
     /**
      * Gets the error property: Required if status == failed or status == canceled. This is the OData v4 error format,
      * used by the RPC and will go into the v2.2 Azure REST API guidelines.
-     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the `Error Response` section.
      * 
      * @return the error value.
      */
@@ -36,7 +36,7 @@ public interface OperationResource {
     String id();
 
     /**
-     * Gets the name property: It must match the last segment of the "id" field, and will typically be a GUID / system
+     * Gets the name property: It must match the last segment of the `id` field, and will typically be a GUID / system
      * generated value.
      * 
      * @return the name value.

@@ -12,16 +12,22 @@ import com.azure.core.http.HttpHeaders;
  * Class representing the properties of a file on a Compute Node or Task in Azure Batch.
  * The properties are extracted from the HTTP response headers received from a Batch service request.
  */
-public class BatchFileProperties {
+public final class BatchFileProperties {
     private final HttpHeaders headers;
 
-    /**
-     * Constructs a BatchFileProperties object from HTTP response headers.
-     *
-     * @param headers The HttpHeaders object containing the headers from which to extract file properties.
-     */
-    public BatchFileProperties(HttpHeaders headers) {
+    private BatchFileProperties(HttpHeaders headers) {
         this.headers = headers;
+    }
+
+    /**
+     * Creates a {@link BatchFileProperties} instance from the HTTP response headers returned by a Batch service
+     * request.
+     *
+     * @param headers The {@link HttpHeaders} containing the headers from which to extract file properties.
+     * @return A new {@link BatchFileProperties} instance populated from the provided headers.
+     */
+    public static BatchFileProperties fromHeaders(HttpHeaders headers) {
+        return new BatchFileProperties(headers);
     }
 
     /**
@@ -39,7 +45,7 @@ public class BatchFileProperties {
      *
      * @return True if the file object represents a directory, false otherwise.
      */
-    public boolean isOcpBatchFileIsDirectory() {
+    public boolean isDirectory() {
         String headerValue = headers.getValue(HttpHeaderName.fromString("ocp-batch-file-isdirectory"));
         return Boolean.parseBoolean(headerValue);
     }

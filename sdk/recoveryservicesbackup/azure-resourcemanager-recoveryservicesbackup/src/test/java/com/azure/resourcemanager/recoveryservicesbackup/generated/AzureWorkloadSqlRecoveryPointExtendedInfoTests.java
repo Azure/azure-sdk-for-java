@@ -14,11 +14,54 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlRecoveryPointExtendedInfo model = BinaryData.fromString(
-            "{\"dataDirectoryTimeInUTC\":\"2021-06-25T06:45:10Z\",\"dataDirectoryPaths\":[{\"type\":\"Data\",\"path\":\"fzeeyebizik\",\"logicalName\":\"uhqlbjbsybbqwrvt\"},{\"type\":\"Log\",\"path\":\"fp\",\"logicalName\":\"mpipaslthaqfxs\"},{\"type\":\"Log\",\"path\":\"twbdsrezpdrhn\",\"logicalName\":\"yowqkdwytisibir\"}]}")
+            "{\"dataDirectoryTimeInUTC\":\"2021-08-09T02:09:02Z\",\"dataDirectoryPaths\":[{\"type\":\"Log\",\"path\":\"skh\",\"logicalName\":\"ygo\"},{\"type\":\"Log\",\"path\":\"qfqjbvleorfm\",\"logicalName\":\"iqtqzfavyvnq\"},{\"type\":\"Invalid\",\"path\":\"ryeu\",\"logicalName\":\"jkqa\"}],\"includedDatabases\":[{\"datasourceId\":\"slesjcbhernnt\",\"datasourceName\":\"w\"},{\"datasourceId\":\"cv\",\"datasourceName\":\"uwrbehwagoh\"},{\"datasourceId\":\"f\",\"datasourceName\":\"mrqemvvhmx\"},{\"datasourceId\":\"rjfut\",\"datasourceName\":\"oe\"}],\"snapshotRecoveryPointInfo\":{\"snapshotResourceGroup\":\"ewzcjznmwcp\",\"sourceFilesystemInfo\":[{\"volumeGuid\":\"adraufactkahzo\",\"fileSystemType\":\"jjziuxxpsh\",\"label\":\"e\",\"accessPaths\":[\"fgslqubkwdl\"],\"isOnStorageSpace\":false,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"utujba\",\"storagePoolFriendlyName\":\"juohminyflnorw\",\"virtualDiskUniqueId\":\"uvwpklvxwmyg\",\"virtualDiskFriendlyName\":\"pgpqchiszepnnb\"},\"diskInfoList\":[{\"diskNumber\":1933702310,\"diskUniqueId\":\"bbdaxco\",\"diskGuid\":\"ozauorsukokwb\",\"diskLocation\":\"lhlv\",\"sizeInBytes\":5310678963156682213,\"friendlyName\":\"zlrphwzs\",\"lun\":450434086,\"managedDiskId\":\"eyuqdunvmnnrwr\"},{\"diskNumber\":736945785,\"diskUniqueId\":\"ktalywjhhgdnhxms\",\"diskGuid\":\"fomiloxgg\",\"diskLocation\":\"fi\",\"sizeInBytes\":573812384778003954,\"friendlyName\":\"uzaofjchvcyyy\",\"lun\":1812829551,\"managedDiskId\":\"otcubi\"}]},{\"volumeGuid\":\"uipwoqonmacje\",\"fileSystemType\":\"izsh\",\"label\":\"cimpevfg\",\"accessPaths\":[\"rrilbywdxsmic\"],\"isOnStorageSpace\":true,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"scjfnyns\",\"storagePoolFriendlyName\":\"ujiz\",\"virtualDiskUniqueId\":\"oqytibyowbblgy\",\"virtualDiskFriendlyName\":\"utp\"},\"diskInfoList\":[{\"diskNumber\":542259929,\"diskUniqueId\":\"ismsksbpimlqolj\",\"diskGuid\":\"cgxxlxs\",\"diskLocation\":\"gcvizqzdwlvwlyou\",\"sizeInBytes\":1599606688317806600,\"friendlyName\":\"k\",\"lun\":1622283745,\"managedDiskId\":\"yhgk\"},{\"diskNumber\":370188648,\"diskUniqueId\":\"sgow\",\"diskGuid\":\"ttsttktlahbqact\",\"diskLocation\":\"gzukxitmm\",\"sizeInBytes\":5954431271796698360,\"friendlyName\":\"q\",\"lun\":2013453223,\"managedDiskId\":\"xrxc\"}]},{\"volumeGuid\":\"uisavokq\",\"fileSystemType\":\"fvazivjlfrqttba\",\"label\":\"katnwxyi\",\"accessPaths\":[\"dkqqfkuvscxkd\"],\"isOnStorageSpace\":false,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"vibrxkpmloazuruo\",\"storagePoolFriendlyName\":\"goorbteo\",\"virtualDiskUniqueId\":\"fhjxakvvjgs\",\"virtualDiskFriendlyName\":\"r\"},\"diskInfoList\":[{\"diskNumber\":482425656,\"diskUniqueId\":\"wt\",\"diskGuid\":\"kxn\",\"diskLocation\":\"dabg\",\"sizeInBytes\":475774977196617352,\"friendlyName\":\"juewbcihxuuwhcjy\",\"lun\":2135180508,\"managedDiskId\":\"bvpa\"},{\"diskNumber\":1452415640,\"diskUniqueId\":\"udzpxgwjplmagstc\",\"diskGuid\":\"hpfkyrkdbdgi\",\"diskLocation\":\"sjkmnwqj\",\"sizeInBytes\":5642781519400902015,\"friendlyName\":\"yhddvia\",\"lun\":1955095413,\"managedDiskId\":\"n\"},{\"diskNumber\":1471640459,\"diskUniqueId\":\"pmvmemfnczdwvv\",\"diskGuid\":\"lxlllchpo\",\"diskLocation\":\"zevwrdnhfukuv\",\"sizeInBytes\":1878561844275820156,\"friendlyName\":\"smystuluqypfc\",\"lun\":291266426,\"managedDiskId\":\"chpqbmfpjba\"},{\"diskNumber\":2011821000,\"diskUniqueId\":\"fcxsspuunnoxy\",\"diskGuid\":\"xgqddrih\",\"diskLocation\":\"hoqca\",\"sizeInBytes\":9039296662708326096,\"friendlyName\":\"omdjvlpjxxkzbrm\",\"lun\":1001888045,\"managedDiskId\":\"vsiykzkdncjdxon\"}]},{\"volumeGuid\":\"oggculapz\",\"fileSystemType\":\"rpgogtqxep\",\"label\":\"lbfu\",\"accessPaths\":[\"yjt\"],\"isOnStorageSpace\":false,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"zhvfcibyfmowuxr\",\"storagePoolFriendlyName\":\"pvdwxf\",\"virtualDiskUniqueId\":\"iivwzjbhyzsxjrka\",\"virtualDiskFriendlyName\":\"trnegvmnvuqeqvld\"},\"diskInfoList\":[{\"diskNumber\":608775789,\"diskUniqueId\":\"bkkd\",\"diskGuid\":\"lves\",\"diskLocation\":\"jlxr\",\"sizeInBytes\":6506157078923372574,\"friendlyName\":\"apeewchpxlkt\",\"lun\":1620250081,\"managedDiskId\":\"iycslevuf\"},{\"diskNumber\":1863886155,\"diskUniqueId\":\"ktyhjt\",\"diskGuid\":\"dcgzul\",\"diskLocation\":\"mrqzzrrjvpgl\",\"sizeInBytes\":7516675391759114962,\"friendlyName\":\"rvqeevtoepryutn\",\"lun\":2045022432,\"managedDiskId\":\"zdmovzv\"},{\"diskNumber\":216394015,\"diskUniqueId\":\"wzqa\",\"diskGuid\":\"lgzurig\",\"diskLocation\":\"ecxn\",\"sizeInBytes\":6914590541087686517,\"friendlyName\":\"kpvzmlq\",\"lun\":412723764,\"managedDiskId\":\"gxobfirclnp\"},{\"diskNumber\":816651113,\"diskUniqueId\":\"yzriykhy\",\"diskGuid\":\"fvjlboxqvkjlmx\",\"diskLocation\":\"mdy\",\"sizeInBytes\":8975628624340233031,\"friendlyName\":\"igu\",\"lun\":1829917026,\"managedDiskId\":\"aauzzptjazysd\"}]}]}}")
             .toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T06:45:10Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("fzeeyebizik", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("uhqlbjbsybbqwrvt", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T02:09:02Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("skh", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("ygo", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals("slesjcbhernnt", model.includedDatabases().get(0).datasourceId());
+        Assertions.assertEquals("w", model.includedDatabases().get(0).datasourceName());
+        Assertions.assertEquals("ewzcjznmwcp", model.snapshotRecoveryPointInfo().snapshotResourceGroup());
+        Assertions.assertEquals("adraufactkahzo",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).volumeGuid());
+        Assertions.assertEquals("jjziuxxpsh",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).fileSystemType());
+        Assertions.assertEquals("e", model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).label());
+        Assertions.assertEquals("fgslqubkwdl",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).accessPaths().get(0));
+        Assertions.assertFalse(model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).isOnStorageSpace());
+        Assertions.assertEquals("utujba",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).storageSpaceInfo().storagePoolUniqueId());
+        Assertions.assertEquals("juohminyflnorw",
+            model.snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .storagePoolFriendlyName());
+        Assertions.assertEquals("uvwpklvxwmyg",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).storageSpaceInfo().virtualDiskUniqueId());
+        Assertions.assertEquals("pgpqchiszepnnb",
+            model.snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .virtualDiskFriendlyName());
+        Assertions.assertEquals(1933702310,
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).diskNumber());
+        Assertions.assertEquals("bbdaxco",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).diskUniqueId());
+        Assertions.assertEquals("ozauorsukokwb",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).diskGuid());
+        Assertions.assertEquals("lhlv",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).diskLocation());
+        Assertions.assertEquals(5310678963156682213L,
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).sizeInBytes());
+        Assertions.assertEquals("zlrphwzs",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).friendlyName());
+        Assertions.assertEquals(450434086,
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).lun());
+        Assertions.assertEquals("eyuqdunvmnnrwr",
+            model.snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).diskInfoList().get(0).managedDiskId());
     }
 }

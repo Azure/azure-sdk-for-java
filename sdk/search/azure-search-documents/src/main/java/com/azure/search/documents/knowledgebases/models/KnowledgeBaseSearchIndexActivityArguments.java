@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
+import com.azure.search.documents.models.QueryType;
 import java.io.IOException;
 import java.util.List;
 
@@ -120,6 +121,7 @@ public final class KnowledgeBaseSearchIndexActivityArguments
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("semanticConfigurationName", this.semanticConfigurationName);
+        jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -154,11 +156,31 @@ public final class KnowledgeBaseSearchIndexActivityArguments
                 } else if ("semanticConfigurationName".equals(fieldName)) {
                     deserializedKnowledgeBaseSearchIndexActivityArguments.semanticConfigurationName
                         = reader.getString();
+                } else if ("queryType".equals(fieldName)) {
+                    deserializedKnowledgeBaseSearchIndexActivityArguments.queryType
+                        = QueryType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKnowledgeBaseSearchIndexActivityArguments;
         });
+    }
+
+    /*
+     * The query syntax used to execute the search. Query hints can cause semantic queries to use full query syntax.
+     */
+    @Generated
+    private QueryType queryType;
+
+    /**
+     * Get the queryType property: The query syntax used to execute the search. Query hints can cause semantic queries
+     * to use full query syntax.
+     *
+     * @return the queryType value.
+     */
+    @Generated
+    public QueryType getQueryType() {
+        return this.queryType;
     }
 }

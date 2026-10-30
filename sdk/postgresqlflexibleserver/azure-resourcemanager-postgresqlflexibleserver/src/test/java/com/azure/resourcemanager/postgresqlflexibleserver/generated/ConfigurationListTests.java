@@ -12,10 +12,10 @@ public final class ConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"iiswacffgdkzze\",\"description\":\"fvhqc\",\"defaultValue\":\"ilvpnppfuflrwd\",\"dataType\":\"Numeric\",\"allowedValues\":\"xyjrxsagafcnih\",\"source\":\"qapnedgfbcv\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"qdcvdrhvoo\",\"documentationLink\":\"otbobzdopcj\"},\"id\":\"nhdldwmgxcx\",\"name\":\"slpmutwuo\",\"type\":\"grpkhjwniyqs\"},{\"properties\":{\"value\":\"cpdggkzzlvmbmp\",\"description\":\"modfvuefywsbpfvm\",\"defaultValue\":\"hrfou\",\"dataType\":\"Numeric\",\"allowedValues\":\"akcp\",\"source\":\"yzvqt\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"zksmondj\",\"documentationLink\":\"uxvypomgkopkwh\"},\"id\":\"v\",\"name\":\"ajqgxy\",\"type\":\"mocmbqfqvmk\"},{\"properties\":{\"value\":\"zapvhelx\",\"description\":\"glyatddckcbcuej\",\"defaultValue\":\"xgc\",\"dataType\":\"Integer\",\"allowedValues\":\"rhos\",\"source\":\"dqrhzoymib\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"wfluszdt\",\"documentationLink\":\"rkwofyyvoqa\"},\"id\":\"iexpbtgiwbwo\",\"name\":\"nwashrtd\",\"type\":\"kcnqxwbpo\"}],\"nextLink\":\"lpiujwaa\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"osggbhc\",\"description\":\"fwdsj\",\"defaultValue\":\"aljutiiswac\",\"dataType\":\"Numeric\",\"allowedValues\":\"k\",\"source\":\"ewkfvhqcrai\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"flrwd\",\"documentationLink\":\"dlxyjrxs\"},\"id\":\"afcnih\",\"name\":\"wqapnedgfbcvk\",\"type\":\"vq\"},{\"properties\":{\"value\":\"eqdcv\",\"description\":\"hvoodsotbobzd\",\"defaultValue\":\"cjwvn\",\"dataType\":\"Enumeration\",\"allowedValues\":\"wmgxcxrsl\",\"source\":\"utwu\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"wniyqsluicpd\",\"documentationLink\":\"kzzlvmbmpaxmodf\"},\"id\":\"efyw\",\"name\":\"bpfvm\",\"type\":\"yhrfouyftaakcpw\"}],\"nextLink\":\"zvqtmnubexkp\"}")
             .toObject(ConfigurationList.class);
-        Assertions.assertEquals("iiswacffgdkzze", model.value().get(0).value());
-        Assertions.assertEquals("qapnedgfbcv", model.value().get(0).source());
-        Assertions.assertEquals("lpiujwaa", model.nextLink());
+        Assertions.assertEquals("osggbhc", model.value().get(0).value());
+        Assertions.assertEquals("ewkfvhqcrai", model.value().get(0).source());
+        Assertions.assertEquals("zvqtmnubexkp", model.nextLink());
     }
 }

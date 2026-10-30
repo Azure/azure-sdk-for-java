@@ -20,7 +20,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"t\",\"name\":\"vzbglbyvi\",\"type\":\"tctbrxkjzwrgxffm\"}";
+            = "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"ebqinjipnw\",\"name\":\"fujqlafcba\",\"type\":\"hpzpo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureBackupRecoveryPointResource response = manager.recoveryPoints()
-            .getWithResponse("fcngjsa", "sii", "tmkzjvkviirhgfgr", "sdp", com.azure.core.util.Context.NONE)
+            .getWithResponse("ipq", "jedmurrxxgewp", "tvqylkmqpzoyhlfb", "gwgcl", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

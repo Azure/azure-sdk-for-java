@@ -12,11 +12,11 @@ public final class AzureStorageJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"pcbbnzqcykna\",\"status\":\"ofyuicd\"},{\"taskId\":\"bd\",\"status\":\"wwgbdv\"},{\"taskId\":\"idmhmwf\",\"status\":\"lfmu\"},{\"taskId\":\"pckc\",\"status\":\"rv\"}],\"propertyBag\":{\"aimmoiroqb\":\"oxoyyukp\",\"yyrmfsvbp\":\"shbraga\"},\"dynamicErrorMessage\":\"bopfppdbwnup\"}")
+            "{\"tasksList\":[{\"taskId\":\"vbqsdt\",\"status\":\"bctvivuzqym\"}],\"propertyBag\":{\"zvbrzcdbanfzndsc\":\"wogtgitsq\"},\"dynamicErrorMessage\":\"xeatkd\"}")
             .toObject(AzureStorageJobExtendedInfo.class);
-        Assertions.assertEquals("pcbbnzqcykna", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("ofyuicd", model.tasksList().get(0).status());
-        Assertions.assertEquals("oxoyyukp", model.propertyBag().get("aimmoiroqb"));
-        Assertions.assertEquals("bopfppdbwnup", model.dynamicErrorMessage());
+        Assertions.assertEquals("vbqsdt", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("bctvivuzqym", model.tasksList().get(0).status());
+        Assertions.assertEquals("wogtgitsq", model.propertyBag().get("zvbrzcdbanfzndsc"));
+        Assertions.assertEquals("xeatkd", model.dynamicErrorMessage());
     }
 }

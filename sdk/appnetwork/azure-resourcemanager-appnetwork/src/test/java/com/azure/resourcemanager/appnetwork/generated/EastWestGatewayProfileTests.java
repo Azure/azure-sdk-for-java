@@ -13,14 +13,14 @@ public final class EastWestGatewayProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EastWestGatewayProfile model
-            = BinaryData.fromString("{\"visibility\":\"Internal\"}").toObject(EastWestGatewayProfile.class);
-        Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL, model.visibility());
+            = BinaryData.fromString("{\"visibility\":\"External\"}").toObject(EastWestGatewayProfile.class);
+        Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL, model.visibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EastWestGatewayProfile model = new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL);
+        EastWestGatewayProfile model = new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.EXTERNAL);
         model = BinaryData.fromObject(model).toObject(EastWestGatewayProfile.class);
-        Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL, model.visibility());
+        Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL, model.visibility());
     }
 }

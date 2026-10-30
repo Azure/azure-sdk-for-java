@@ -10,6 +10,8 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
+    <module>azure-iot-deviceregistry-softwareupdate</module>
+    <module>azure-iot-deviceregistry-softwareupdate/customization</module>
     <module>azure-resourcemanager-deviceregistry</module>
   </modules>
 </project>

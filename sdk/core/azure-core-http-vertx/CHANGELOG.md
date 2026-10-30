@@ -1,5 +1,45 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added support for Vert.x 5.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent
+  when running with Vert.x 5.x.
+- Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections,
+  including reset failures caused by incompatible method return types in Vert.x 5.x.
+- Fixed the SDK write timeout continuing to run after writing completed, incorrectly terminating slow responses.
+- Fixed excessive retention of canceled write-timeout tasks during streamed uploads with many small buffers.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `vertx-codegen` and `vertx-core` from `4.5.32` to `4.5.35`.
+
+## 1.2.0 (2026-09-29)
+
+### Features Added
+- Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent with
+  `sendHead()` and the request body is written from `continueHandler()`, rather than sending headers and body
+  together.
+  If the service does not answer the expectation the body is sent after a one second fallback, so the request does
+  not stall.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+
 ## 1.1.7 (2026-08-27)
 
 ### Other Changes

@@ -12,7 +12,7 @@ public final class LinkedAccessCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedAccessCheck model = BinaryData.fromString(
-            "{\"actionName\":\"git\",\"linkedProperty\":\"qhabifpikxwcz\",\"linkedAction\":\"scnpqxuhivy\",\"linkedActionVerb\":\"iwbybrkxvdumjg\",\"linkedType\":\"fwvuk\"}")
+            "{\"actionName\":\"git\",\"linkedProperty\":\"qhabifpikxwcz\",\"linkedAction\":\"scnpqxuhivy\",\"linkedActionVerb\":\"iwbybrkxvdumjg\",\"linkedType\":\"fwvuk\",\"options\":\"IgnoreEmptyStringLinkedType\"}")
             .toObject(LinkedAccessCheck.class);
         Assertions.assertEquals("git", model.actionName());
         Assertions.assertEquals("qhabifpikxwcz", model.linkedProperty());

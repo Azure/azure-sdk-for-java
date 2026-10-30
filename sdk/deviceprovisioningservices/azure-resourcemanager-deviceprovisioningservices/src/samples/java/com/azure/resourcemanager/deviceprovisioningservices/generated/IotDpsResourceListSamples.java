@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSListBySubscription.json
+     * x-ms-original-file: 2026-08-31/DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.

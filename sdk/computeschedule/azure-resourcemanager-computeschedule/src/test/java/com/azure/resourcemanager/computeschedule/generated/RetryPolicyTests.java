@@ -5,23 +5,29 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import org.junit.jupiter.api.Assertions;
 
 public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetryPolicy model = BinaryData.fromString("{\"retryCount\":257838249,\"retryWindowInMinutes\":355535904}")
+        RetryPolicy model = BinaryData
+            .fromString("{\"retryCount\":832798449,\"retryWindowInMinutes\":1629282531,\"onFailureAction\":\"Delete\"}")
             .toObject(RetryPolicy.class);
-        Assertions.assertEquals(257838249, model.retryCount());
-        Assertions.assertEquals(355535904, model.retryWindowInMinutes());
+        Assertions.assertEquals(832798449, model.retryCount());
+        Assertions.assertEquals(1629282531, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withRetryCount(257838249).withRetryWindowInMinutes(355535904);
+        RetryPolicy model = new RetryPolicy().withRetryCount(832798449)
+            .withRetryWindowInMinutes(1629282531)
+            .withOnFailureAction(ResourceOperationType.DELETE);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(257838249, model.retryCount());
-        Assertions.assertEquals(355535904, model.retryWindowInMinutes());
+        Assertions.assertEquals(832798449, model.retryCount());
+        Assertions.assertEquals(1629282531, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE, model.onFailureAction());
     }
 }

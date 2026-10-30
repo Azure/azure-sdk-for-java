@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AllowedResourceNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedResourceName model
-            = BinaryData.fromString("{\"name\":\"tfnmdx\",\"getActionVerb\":\"ngfdgugeyzihgrky\"}")
-                .toObject(AllowedResourceName.class);
-        Assertions.assertEquals("tfnmdx", model.name());
-        Assertions.assertEquals("ngfdgugeyzihgrky", model.getActionVerb());
+        AllowedResourceName model = BinaryData.fromString("{\"name\":\"gclrci\",\"getActionVerb\":\"soxfrken\"}")
+            .toObject(AllowedResourceName.class);
+        Assertions.assertEquals("gclrci", model.name());
+        Assertions.assertEquals("soxfrken", model.getActionVerb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllowedResourceName model = new AllowedResourceName().withName("tfnmdx").withGetActionVerb("ngfdgugeyzihgrky");
+        AllowedResourceName model = new AllowedResourceName().withName("gclrci").withGetActionVerb("soxfrken");
         model = BinaryData.fromObject(model).toObject(AllowedResourceName.class);
-        Assertions.assertEquals("tfnmdx", model.name());
-        Assertions.assertEquals("ngfdgugeyzihgrky", model.getActionVerb());
+        Assertions.assertEquals("gclrci", model.name());
+        Assertions.assertEquals("soxfrken", model.getActionVerb());
     }
 }

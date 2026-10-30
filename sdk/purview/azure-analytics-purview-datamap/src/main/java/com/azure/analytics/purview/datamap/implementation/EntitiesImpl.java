@@ -5132,7 +5132,7 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(BinaryData body,
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseInternalAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -5171,7 +5171,8 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> importBusinessMetadataWithResponseInternal(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.importBusinessMetadataSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,

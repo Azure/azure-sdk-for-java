@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPut.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.

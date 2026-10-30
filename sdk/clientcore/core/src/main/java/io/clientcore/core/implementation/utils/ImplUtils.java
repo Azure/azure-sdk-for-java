@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,22 +42,11 @@ public final class ImplUtils {
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
-    private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_HTTP_READ_TIMEOUT;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_HTTP_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_HTTP_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_HTTP_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_HTTP_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            Configuration.REQUEST_READ_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
-    }
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+    private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_HTTP_READ_TIMEOUT = Duration.ofSeconds(60);
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
@@ -104,6 +94,50 @@ public final class ImplUtils {
 
             return defaultTimeout;
         }
+    }
+
+    /**
+     * Resolves a timeout from the explicit value, the builder's configuration, the global configuration, and finally
+     * the default, in that order. Missing, empty, or invalid configuration values fall back to the next source.
+     *
+     * @param configuredTimeout The explicitly configured timeout, or null.
+     * @param configuration The builder's configuration, or null to use the global configuration.
+     * @param timeoutPropertyName The timeout configuration property name.
+     * @param defaultTimeout The fallback timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Configuration configuration,
+        String timeoutPropertyName, Duration defaultTimeout) {
+        if (configuredTimeout != null) {
+            return getTimeout(configuredTimeout, defaultTimeout);
+        }
+
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        Duration timeout = (configuration == null || configuration == globalConfiguration)
+            ? null
+            : getDefaultTimeoutFromEnvironment(configuration, timeoutPropertyName, null, LOGGER);
+
+        return timeout == null
+            ? getDefaultTimeoutFromEnvironment(globalConfiguration, timeoutPropertyName, defaultTimeout, LOGGER)
+            : timeout;
+    }
+
+    /**
+     * Normalizes a timeout, using the default for null, zero for nonpositive values, and at least one millisecond for
+     * positive values.
+     *
+     * @param configuredTimeout The configured timeout.
+     * @param defaultTimeout The default timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+        if (configuredTimeout.isNegative() || configuredTimeout.isZero()) {
+            return Duration.ZERO;
+        }
+        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0 ? MINIMUM_TIMEOUT : configuredTimeout;
     }
 
     /**
@@ -354,17 +388,47 @@ public final class ImplUtils {
      * the shutdown hook with privileged permissions.
      * <p>
      * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * If the JVM is already shutting down a shutdown hook can no longer be registered, and one registered now could
+     * never run. Rather than failing the caller's work, which may be an in-flight request draining during shutdown,
+     * this method logs the reason and returns null to indicate that no hook was registered.
      *
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
-     * @return The {@link Thread} that was passed in.
+     * @return The {@link Thread} that was passed in, or null if it was null or the JVM is already shutting down.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        return addShutdownHookSafely(shutdownThread, ImplUtils::registerShutdownHook);
+    }
+
+    /**
+     * Implementation of {@link #addShutdownHookSafely(Thread)} where the registration with the JVM is passed in so
+     * that it can be driven in testing.
+     *
+     * @param shutdownThread The {@link Thread} to register as a shutdown hook.
+     * @param registrar Registers the thread with the JVM.
+     * @return The {@link Thread} that was passed in, or null if it was null or the JVM is already shutting down.
+     */
+    static Thread addShutdownHookSafely(Thread shutdownThread, Consumer<Thread> registrar) {
         if (shutdownThread == null) {
             return null;
         }
 
+        try {
+            registrar.accept(shutdownThread);
+        } catch (IllegalStateException e) {
+            // Runtime.addShutdownHook throws IllegalStateException only when the JVM is already shutting down. A
+            // hook registered then could never run, so there is nothing to clean up later and nothing the caller
+            // could do about it.
+            LOGGER.atVerbose().setThrowable(e).log("The JVM is shutting down, so no shutdown hook was registered.");
+            return null;
+        }
+
+        return shutdownThread;
+    }
+
+    @SuppressWarnings({ "deprecation", "removal" })
+    private static void registerShutdownHook(Thread shutdownThread) {
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
             java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
@@ -373,8 +437,6 @@ public final class ImplUtils {
         } else {
             Runtime.getRuntime().addShutdownHook(shutdownThread);
         }
-
-        return shutdownThread;
     }
 
     /**
@@ -386,16 +448,40 @@ public final class ImplUtils {
      * the shutdown hook with privileged permissions.
      * <p>
      * If {@code shutdownThread} is null, no shutdown hook will be removed.
+     * <p>
+     * If the JVM is already shutting down a shutdown hook can no longer be removed; the hook has either already run
+     * or is about to. This method logs the reason rather than throwing in that case.
      *
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static void removeShutdownHookSafely(Thread shutdownThread) {
+        removeShutdownHookSafely(shutdownThread, ImplUtils::deregisterShutdownHook);
+    }
+
+    /**
+     * Implementation of {@link #removeShutdownHookSafely(Thread)} where the deregistration with the JVM is passed in
+     * so that it can be driven in testing.
+     *
+     * @param shutdownThread The {@link Thread} to remove as a shutdown hook.
+     * @param deregistrar Removes the thread from the JVM.
+     */
+    static void removeShutdownHookSafely(Thread shutdownThread, Consumer<Thread> deregistrar) {
         if (shutdownThread == null) {
             return;
         }
 
+        try {
+            deregistrar.accept(shutdownThread);
+        } catch (IllegalStateException e) {
+            // Runtime.removeShutdownHook throws IllegalStateException only when the JVM is already shutting down,
+            // at which point the hook has either already run or is about to.
+            LOGGER.atVerbose().setThrowable(e).log("The JVM is shutting down, so no shutdown hook was removed.");
+        }
+    }
+
+    @SuppressWarnings({ "deprecation", "removal" })
+    private static void deregisterShutdownHook(Thread shutdownThread) {
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
             java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
                 Runtime.getRuntime().removeShutdownHook(shutdownThread);

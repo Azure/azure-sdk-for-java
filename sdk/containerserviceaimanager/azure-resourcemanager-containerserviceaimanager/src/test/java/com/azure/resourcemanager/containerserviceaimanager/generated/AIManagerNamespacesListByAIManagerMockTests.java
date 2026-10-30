@@ -22,7 +22,7 @@ public final class AIManagerNamespacesListByAIManagerMockTests {
     @Test
     public void testListByAIManager() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"labels\":{\"el\":\"bhjpglkfgohdne\",\"fikdowwqu\":\"phsdyhto\",\"zx\":\"v\",\"hcohfwdsjnk\":\"lvithhqzonosgg\"},\"annotations\":{\"gdkz\":\"utiiswacf\",\"vpnpp\":\"ewkfvhqcrai\",\"hdlxyjrxsagafcn\":\"uflrwd\"}},\"eTag\":\"gwq\",\"id\":\"nedgfbc\",\"name\":\"kcvqvpke\",\"type\":\"dcvd\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"labels\":{\"ibrhosxsdqr\":\"bcuejrjxgci\",\"luszdtmhrkwof\":\"zoymibmrqyibahw\",\"piexpbtgiw\":\"yvoqa\",\"nwashrtd\":\"wo\"},\"annotations\":{\"kulpiujwaasi\":\"nqxwbp\",\"qlpqwcciuq\":\"qiiobyuqer\",\"tkuwhhmhykojo\":\"bdbutauvf\",\"lpichk\":\"afnn\"}},\"eTag\":\"mkcdyhbpkkpwdre\",\"id\":\"ovvqfovljxywsu\",\"name\":\"syrsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class AIManagerNamespacesListByAIManagerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AIManagerNamespace> response
-            = manager.aIManagerNamespaces().listByAIManager("p", "xe", com.azure.core.util.Context.NONE);
+            = manager.aIManagerNamespaces().listByAIManager("xozap", "helxprglya", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bhjpglkfgohdne", response.iterator().next().properties().labels().get("el"));
-        Assertions.assertEquals("utiiswacf", response.iterator().next().properties().annotations().get("gdkz"));
+        Assertions.assertEquals("bcuejrjxgci", response.iterator().next().properties().labels().get("ibrhosxsdqr"));
+        Assertions.assertEquals("nqxwbp", response.iterator().next().properties().annotations().get("kulpiujwaasi"));
     }
 }

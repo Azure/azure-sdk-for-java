@@ -65,8 +65,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -1552,24 +1550,43 @@ public class BlobTestBase extends TestProxyTestBase {
         return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
     }
 
-    protected static long expectedStructuredMessageEncodedLength(int unencodedContentBytes) {
-        return new StructuredMessageEncoder(unencodedContentBytes,
-            StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64)
-                .getEncodedMessageLength();
+    /**
+     * Creates a BlobClient that records every outgoing request (method, URL, and a snapshot of its headers taken
+     * after the content-validation encoding policy has run) and passes the request through to the service. Extra
+     * policies (e.g. fault injection) run closer to the wire than the recorder. Used by content-validation tests
+     * that must assert which requests carried validation headers and with what values.
+     */
+    protected BlobClient createBlobClientWithFullRequestSniffer(
+        List<ContentValidationTestUtils.RecordedRequest> recorded, HttpPipelinePolicy... extraPolicies) {
+        return getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), fullSnifferPolicies(recorded, extraPolicies))
+                .getBlobContainerClient(containerName)
+                .getBlobClient(generateBlobName());
     }
 
     /**
-     * Sum of encoded lengths per block upload (each HTTP request carries its own structured message wrapper).
+     * Async counterpart of {@link #createBlobClientWithFullRequestSniffer(List, HttpPipelinePolicy...)}.
      */
-    protected static long expectedStructuredMessageEncodedLengthChunked(int totalUnencodedBytes, long blockSizeBytes) {
-        long sum = 0;
-        int remaining = totalUnencodedBytes;
-        while (remaining > 0) {
-            int chunk = (int) Math.min(remaining, blockSizeBytes);
-            sum += expectedStructuredMessageEncodedLength(chunk);
-            remaining -= chunk;
-        }
-        return sum;
+    protected BlobAsyncClient createBlobAsyncClientWithFullRequestSniffer(
+        List<ContentValidationTestUtils.RecordedRequest> recorded, HttpPipelinePolicy... extraPolicies) {
+        return getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), fullSnifferPolicies(recorded, extraPolicies))
+                .getBlobContainerAsyncClient(containerName)
+                .getBlobAsyncClient(generateBlobName());
+    }
+
+    private static HttpPipelinePolicy[] fullSnifferPolicies(List<ContentValidationTestUtils.RecordedRequest> recorded,
+        HttpPipelinePolicy... extraPolicies) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            HttpRequest request = context.getHttpRequest();
+            recorded.add(new ContentValidationTestUtils.RecordedRequest(request.getHttpMethod(),
+                request.getUrl().toString(), new HttpHeaders().setAllHttpHeaders(request.getHeaders())));
+            return next.process();
+        };
+        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[extraPolicies.length + 1];
+        policies[0] = sniffPolicy;
+        System.arraycopy(extraPolicies, 0, policies, 1, extraPolicies.length);
+        return policies;
     }
 
     /**

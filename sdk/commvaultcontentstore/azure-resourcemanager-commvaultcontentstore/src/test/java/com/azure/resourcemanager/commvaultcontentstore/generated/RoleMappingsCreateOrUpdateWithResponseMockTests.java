@@ -27,7 +27,7 @@ public final class RoleMappingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]}],\"provisioningState\":\"Failed\"},\"id\":\"dfc\",\"name\":\"sspuunnoxyhkx\",\"type\":\"qddrihpfhoqcaae\"}";
+            = "{\"properties\":{\"roles\":[{\"roleName\":\"BackupUser\",\"entities\":[{}]},{\"roleName\":\"BackupUser\",\"entities\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"edcg\",\"name\":\"ulwm\",\"type\":\"rqzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,20 @@ public final class RoleMappingsCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RoleMapping response
-            = manager.roleMappings()
-                .createOrUpdateWithResponse("db", "evwrdnhfuk",
-                    new RoleMappingInner()
-                        .withProperties(new RoleMappingProperties().withRoles(Arrays.asList(
-                            new RoleAssignment().withRoleName(RoleName.MULTI_PERSON_AUTHORIZATION)
-                                .withEntities(Arrays.asList(new EntityInfo(), new EntityInfo(), new EntityInfo(),
-                                    new EntityInfo())),
-                            new RoleAssignment().withRoleName(RoleName.SECURITY_ADMIN)
-                                .withEntities(Arrays.asList(new EntityInfo(), new EntityInfo()))))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        RoleMapping response = manager.roleMappings()
+            .createOrUpdateWithResponse("mbtrnegvmnvu", "eqvldspast",
+                new RoleMappingInner().withProperties(new RoleMappingProperties().withRoles(Arrays.asList(
+                    new RoleAssignment().withRoleName(RoleName.BACKUP_ADMIN)
+                        .withEntities(Arrays.asList(new EntityInfo(), new EntityInfo())),
+                    new RoleAssignment().withRoleName(RoleName.BACKUP_USER)
+                        .withEntities(Arrays.asList(new EntityInfo())),
+                    new RoleAssignment().withRoleName(RoleName.BACKUP_OPERATOR)
+                        .withEntities(Arrays.asList(new EntityInfo())),
+                    new RoleAssignment().withRoleName(RoleName.BACKUP_USER)
+                        .withEntities(Arrays.asList(new EntityInfo(), new EntityInfo()))))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(RoleName.BACKUP_OPERATOR, response.properties().roles().get(0).roleName());
+        Assertions.assertEquals(RoleName.BACKUP_USER, response.properties().roles().get(0).roleName());
     }
 }

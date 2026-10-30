@@ -13,17 +13,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes a reference to Key Vault Secret.
+ * A reference to a secret stored in Azure Key Vault.
  */
 @Fluent
 public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultSecretReference> {
     /*
-     * The URL referencing a secret in a Key Vault.
+     * The URL of the secret in Azure Key Vault.
      */
     private String secretUrl;
 
     /*
-     * The relative URL of the Key Vault containing the secret.
+     * The Azure resource ID of the Key Vault that contains the secret.
      */
     private SubResource sourceVault;
 
@@ -34,7 +34,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
     }
 
     /**
-     * Get the secretUrl property: The URL referencing a secret in a Key Vault.
+     * Get the secretUrl property: The URL of the secret in Azure Key Vault.
      * 
      * @return the secretUrl value.
      */
@@ -43,7 +43,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
     }
 
     /**
-     * Set the secretUrl property: The URL referencing a secret in a Key Vault.
+     * Set the secretUrl property: The URL of the secret in Azure Key Vault.
      * 
      * @param secretUrl the secretUrl value to set.
      * @return the KeyVaultSecretReference object itself.
@@ -54,7 +54,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
     }
 
     /**
-     * Get the sourceVault property: The relative URL of the Key Vault containing the secret.
+     * Get the sourceVault property: The Azure resource ID of the Key Vault that contains the secret.
      * 
      * @return the sourceVault value.
      */
@@ -63,7 +63,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
     }
 
     /**
-     * Set the sourceVault property: The relative URL of the Key Vault containing the secret.
+     * Set the sourceVault property: The Azure resource ID of the Key Vault that contains the secret.
      * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultSecretReference object itself.

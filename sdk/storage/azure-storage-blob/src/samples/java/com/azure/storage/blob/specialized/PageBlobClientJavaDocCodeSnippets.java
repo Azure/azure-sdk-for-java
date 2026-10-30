@@ -7,6 +7,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -23,6 +24,8 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -151,6 +154,24 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link PageBlobClient#uploadPagesWithResponse(PageBlobUploadPagesOptions, Duration, Context)}
+     */
+    public void uploadPagesWithResponseOptionsCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        BinaryData data = BinaryData.fromBytes(new byte[512]);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange, data)
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        Context context = new Context(key, value);
+
+        PageBlobItem item = client.uploadPagesWithResponse(options, timeout, context).getValue();
+        System.out.printf("Uploaded page blob with sequence number %s%n", item.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context
     }
 
     /**

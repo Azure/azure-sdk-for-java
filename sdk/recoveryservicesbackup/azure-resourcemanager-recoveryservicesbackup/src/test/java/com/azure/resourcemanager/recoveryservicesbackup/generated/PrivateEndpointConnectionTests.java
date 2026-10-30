@@ -18,36 +18,34 @@ public final class PrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnection model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"w\"},\"groupIds\":[\"AzureSiteRecovery\",\"AzureBackup_secondary\",\"AzureBackup_secondary\",\"AzureBackup_secondary\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bhxv\",\"actionsRequired\":\"nul\"}}")
+            "{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"jxnw\"},\"groupIds\":[\"AzureBackup\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lehzlxpgfq\",\"actionsRequired\":\"zpw\"}}")
             .toObject(PrivateEndpointConnection.class);
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
-        Assertions.assertEquals("w", model.privateEndpoint().id());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.PENDING,
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals("jxnw", model.privateEndpoint().id());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bhxv", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("nul", model.privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("lehzlxpgfq", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("zpw", model.privateLinkServiceConnectionState().actionRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnection model
-            = new PrivateEndpointConnection().withProvisioningState(ProvisioningState.SUCCEEDED)
-                .withPrivateEndpoint(new PrivateEndpoint().withId("w"))
-                .withGroupIds(
-                    Arrays.asList(VaultSubResourceType.AZURE_SITE_RECOVERY, VaultSubResourceType.AZURE_BACKUP_SECONDARY,
-                        VaultSubResourceType.AZURE_BACKUP_SECONDARY, VaultSubResourceType.AZURE_BACKUP_SECONDARY))
+            = new PrivateEndpointConnection().withProvisioningState(ProvisioningState.DELETING)
+                .withPrivateEndpoint(new PrivateEndpoint().withId("jxnw"))
+                .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP))
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.PENDING)
-                        .withDescription("bhxv")
-                        .withActionRequired("nul"));
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.APPROVED)
+                        .withDescription("lehzlxpgfq")
+                        .withActionRequired("zpw"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnection.class);
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
-        Assertions.assertEquals("w", model.privateEndpoint().id());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.PENDING,
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals("jxnw", model.privateEndpoint().id());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bhxv", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("nul", model.privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("lehzlxpgfq", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("zpw", model.privateLinkServiceConnectionState().actionRequired());
     }
 }

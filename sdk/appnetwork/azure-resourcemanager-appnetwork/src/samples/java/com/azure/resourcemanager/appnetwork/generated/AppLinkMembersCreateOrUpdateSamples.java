@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class AppLinkMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_CreateOrUpdate.json
      */
     /**
      * Sample code: AppLinkMembers_CreateOrUpdate.
@@ -38,7 +38,7 @@ public final class AppLinkMembersCreateOrUpdateSamples {
             .withTags(mapOf("key2913", "fakeTokenPlaceholder"))
             .withProperties(new AppLinkMemberProperties().withClusterType(ClusterType.AKS)
                 .withMetadata(new Metadata().withResourceId(
-                    "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"))
+                    "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"))
                 .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.FULLY_MANAGED)
                     .withFullyManagedUpgradeProfile(
                         new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.STABLE)))
@@ -46,7 +46,8 @@ public final class AppLinkMembersCreateOrUpdateSamples {
                     .withEastWestGateway(
                         new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
                     .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId(
-                        "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-vnet-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))))
+                        "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-vnet-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withNetwork("network1")))
             .create();
     }
 

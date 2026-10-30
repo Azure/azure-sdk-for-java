@@ -16,28 +16,29 @@ public final class LoggingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoggingRule model = BinaryData.fromString(
-            "{\"action\":\"gaudcc\",\"direction\":\"None\",\"detailLevel\":\"None\",\"hiddenPropertyPaths\":{\"hiddenPathsOnRequest\":[\"nyejhkryhtnap\",\"zw\",\"okjye\",\"kkvnipjox\"],\"hiddenPathsOnResponse\":[\"chgejspodm\",\"ilzyd\"]}}")
+            "{\"action\":\"udccsnhsjc\",\"direction\":\"None\",\"detailLevel\":\"None\",\"hiddenPropertyPaths\":{\"hiddenPathsOnRequest\":[\"ryhtnapczwlokjy\",\"mkkvnip\",\"oxzjnchgejspod\",\"ailzydehojwyahu\"],\"hiddenPathsOnResponse\":[\"pmqnja\",\"wixjsprozvcp\",\"tegjvwmf\",\"atscmd\"]}}")
             .toObject(LoggingRule.class);
-        Assertions.assertEquals("gaudcc", model.action());
+        Assertions.assertEquals("udccsnhsjc", model.action());
         Assertions.assertEquals(LoggingDirections.NONE, model.direction());
         Assertions.assertEquals(LoggingDetails.NONE, model.detailLevel());
-        Assertions.assertEquals("nyejhkryhtnap", model.hiddenPropertyPaths().hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("chgejspodm", model.hiddenPropertyPaths().hiddenPathsOnResponse().get(0));
+        Assertions.assertEquals("ryhtnapczwlokjy", model.hiddenPropertyPaths().hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("pmqnja", model.hiddenPropertyPaths().hiddenPathsOnResponse().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoggingRule model = new LoggingRule().withAction("gaudcc")
+        LoggingRule model = new LoggingRule().withAction("udccsnhsjc")
             .withDirection(LoggingDirections.NONE)
             .withDetailLevel(LoggingDetails.NONE)
             .withHiddenPropertyPaths(new LoggingRuleHiddenPropertyPaths()
-                .withHiddenPathsOnRequest(Arrays.asList("nyejhkryhtnap", "zw", "okjye", "kkvnipjox"))
-                .withHiddenPathsOnResponse(Arrays.asList("chgejspodm", "ilzyd")));
+                .withHiddenPathsOnRequest(
+                    Arrays.asList("ryhtnapczwlokjy", "mkkvnip", "oxzjnchgejspod", "ailzydehojwyahu"))
+                .withHiddenPathsOnResponse(Arrays.asList("pmqnja", "wixjsprozvcp", "tegjvwmf", "atscmd")));
         model = BinaryData.fromObject(model).toObject(LoggingRule.class);
-        Assertions.assertEquals("gaudcc", model.action());
+        Assertions.assertEquals("udccsnhsjc", model.action());
         Assertions.assertEquals(LoggingDirections.NONE, model.direction());
         Assertions.assertEquals(LoggingDetails.NONE, model.detailLevel());
-        Assertions.assertEquals("nyejhkryhtnap", model.hiddenPropertyPaths().hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("chgejspodm", model.hiddenPropertyPaths().hiddenPathsOnResponse().get(0));
+        Assertions.assertEquals("ryhtnapczwlokjy", model.hiddenPropertyPaths().hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("pmqnja", model.hiddenPropertyPaths().hiddenPathsOnResponse().get(0));
     }
 }

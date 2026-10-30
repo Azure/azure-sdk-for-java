@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentialsPatch;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationData;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationDataPatch;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
-import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyPatch;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputOverride;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
@@ -17,15 +17,15 @@ import com.azure.resourcemanager.networkcloud.models.IdentitySelector;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentitySelectorType;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.networkcloud.models.RackDefinition;
-import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.RackDefinitionPatch;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionDefinitionUpdateMode;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionEnforcementLevel;
 import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationData;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationDataPatch;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
-import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdGrouping;
+import com.azure.resourcemanager.networkcloud.models.ValidationThresholdPatch;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdType;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsContainerScan;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_UpdateStrategy.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_UpdateStrategy.json
      */
     /**
      * Sample code: Patch update strategy.
@@ -51,7 +51,7 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withUpdateStrategy(new ClusterUpdateStrategy().withMaxUnavailable(4L)
+            .withUpdateStrategy(new ClusterUpdateStrategyPatch().withMaxUnavailable(4L)
                 .withStrategyType(ClusterUpdateStrategyType.RACK)
                 .withThresholdType(ValidationThresholdType.COUNT_SUCCESS)
                 .withThresholdValue(4L)
@@ -60,7 +60,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_VulnerabilityScanning.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_VulnerabilityScanning.json
      */
     /**
      * Sample code: Patch vulnerability scanning.
@@ -79,7 +79,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_Location.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_Location.json
      */
     /**
      * Sample code: Patch cluster location.
@@ -97,7 +97,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
      * Sample code: Patch cluster AggregatorOrSingleRackDefinition.
@@ -111,50 +111,47 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withAggregatorOrSingleRackDefinition(
-                new RackDefinition()
-                    .withBareMetalMachineConfigurationData(Arrays.asList(
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
-                                .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
-                            .withBootMacAddress("00:BB:CC:DD:EE:FF")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName1")
-                            .withRackSlot(1L)
-                            .withSerialNumber("BM1219XXX"),
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(
-                                new AdministrativeCredentials()
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:00")
-                            .withBootMacAddress("00:BB:CC:DD:EE:00")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName2")
-                            .withRackSlot(2L)
-                            .withSerialNumber("BM1219YYY")))
-                    .withNetworkRackId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
-                    .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
-                    .withRackSerialNumber("newSerialNumber")
-                    .withRackSkuId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
-                    .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationData()
-                        .withAdminCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
+            .withAggregatorOrSingleRackDefinition(new RackDefinitionPatch()
+                .withBareMetalMachineConfigurationData(Arrays.asList(
+                    new BareMetalMachineConfigurationDataPatch()
+                        .withBmcCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
                             .withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
+                        .withBootMacAddress("00:BB:CC:DD:EE:FF")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName1")
                         .withRackSlot(1L)
-                        .withSerialNumber("BM1219XXX")
-                        .withStorageApplianceName("vmName"))))
+                        .withSerialNumber("BM1219XXX"),
+                    new BareMetalMachineConfigurationDataPatch()
+                        .withBmcCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
+                            .withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:00")
+                        .withBootMacAddress("00:BB:CC:DD:EE:00")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName2")
+                        .withRackSlot(2L)
+                        .withSerialNumber("BM1219YYY")))
+                .withNetworkRackId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
+                .withRackSerialNumber("newSerialNumber")
+                .withRackSkuId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationDataPatch()
+                    .withAdminCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
+                        .withUsername("username"))
+                    .withRackSlot(1L)
+                    .withSerialNumber("BM1219XXX")
+                    .withStorageApplianceName("vmName"))))
             .withComputeDeploymentThreshold(
-                new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
+                new ValidationThresholdPatch().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
                     .withType(ValidationThresholdType.PERCENT_SUCCESS)
                     .withValue(90L))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_CommandOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_CommandOutput.json
      */
     /**
      * Sample code: Patch cluster command output.
@@ -188,7 +185,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_RuntimeProtectionConfiguration.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_RuntimeProtectionConfiguration.json
      */
     /**
      * Sample code: Patch runtime protection configuration.
@@ -202,14 +199,14 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withRuntimeProtectionConfiguration(new RuntimeProtectionConfiguration()
+            .withRuntimeProtectionConfiguration(new RuntimeProtectionConfigurationPatch()
                 .withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC)
                 .withEnforcementLevel(RuntimeProtectionEnforcementLevel.ON_DEMAND))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_SecretArchive.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_SecretArchive.json
      */
     /**
      * Sample code: Patch secret archive.
@@ -231,7 +228,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_AnalyticsOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AnalyticsOutput.json
      */
     /**
      * Sample code: Patch cluster analytics output.

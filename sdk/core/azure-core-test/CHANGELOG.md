@@ -1,5 +1,28 @@
 # Release History
 
+## 1.27.0-beta.20 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor to `3.8.7` and the shared Netty transport to Netty `4.2.17.Final` / Reactor Netty `1.3.7`.
+
+## 1.27.0-beta.19 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded Apache Ant from `1.10.15` to `1.10.18`.
+
 ## 1.27.0-beta.18 (2026-08-27)
 
 ### Other Changes

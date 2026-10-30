@@ -17,7 +17,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
-@Disabled("TODO: re-record once service no longer requires Foundry-Features opt-in keys for these operations.")
 public class ToolboxSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
@@ -83,11 +81,11 @@ public class ToolboxSamplesTests extends ClientTestBase {
 
         List<ToolboxTool> toolsWithMcpApprovalNever = Collections
             .singletonList(new McpToolboxTool("api_specs").setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval(BinaryData.fromString("\"never\"")));
+                .setRequireApproval(BinaryData.fromObject("never")));
 
         List<ToolboxTool> toolsWithMcpApprovalAlways = Collections
             .singletonList(new McpToolboxTool("api_specs").setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval(BinaryData.fromString("\"always\"")));
+                .setRequireApproval(BinaryData.fromObject("always")));
 
         Mono<Void> testFlow = toolboxesAsyncClient.deleteToolbox(toolboxName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
