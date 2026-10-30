@@ -3,6 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.projects.datageneration.DataGenerationJobWithEvaluationSample;
 import com.azure.ai.projects.models.ApiError;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
@@ -36,10 +37,9 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
+        DatasetsClient datasetsClient = getClientBuilder(httpClient, serviceVersion).buildDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -60,7 +60,6 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -68,14 +67,14 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
         DataGenerationJob job
-            = dataGenerationJobsClient
+            = datasetsClient
                 .beginCreateGenerationJob(
                     DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
                     testResourceNamer.randomUuid())
                 .poll()
                 .getValue();
 
-        job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
+        job = waitForDataGenerationJob(datasetsClient, job.getId(), 5, 180);
         if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
             ApiError error = job.getError();
             String message = error == null ? "<no error message>" : error.getMessage();
@@ -113,16 +112,16 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         Assertions.assertTrue(outputItemCount > 0);
 
         openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
-        dataGenerationJobsClient.deleteGenerationJob(job.getId());
+        datasetsClient.deleteGenerationJob(job.getId());
     }
 
-    private DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient, String jobId,
+    private DataGenerationJob waitForDataGenerationJob(DatasetsClient datasetsClient, String jobId,
         int pollIntervalSeconds, int maxAttempts) throws InterruptedException {
         DataGenerationJob job;
         int attempts = 0;
         do {
             sleepIfRunningAgainstService(pollIntervalSeconds * 1000L);
-            job = dataGenerationJobsClient.getGenerationJob(jobId);
+            job = datasetsClient.getGenerationJob(jobId);
             attempts++;
         } while (!DataGenerationJobWithEvaluationSample.isTerminalStatus(job.getStatus()) && attempts < maxAttempts);
         return job;

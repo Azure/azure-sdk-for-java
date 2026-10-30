@@ -13,18 +13,18 @@ public final class FeatureValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureValidationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"Invalid\",\"featureName\":\"iloxggdufiq\"}")
+            "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"Invalid\",\"featureName\":\"jtlvofqzhvfciby\"}")
             .toObject(FeatureValidationRequest.class);
         Assertions.assertEquals(FeatureType.INVALID, model.featureType());
-        Assertions.assertEquals("iloxggdufiq", model.featureName());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.featureName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FeatureValidationRequest model
-            = new FeatureValidationRequest().withFeatureType(FeatureType.INVALID).withFeatureName("iloxggdufiq");
+            = new FeatureValidationRequest().withFeatureType(FeatureType.INVALID).withFeatureName("jtlvofqzhvfciby");
         model = BinaryData.fromObject(model).toObject(FeatureValidationRequest.class);
         Assertions.assertEquals(FeatureType.INVALID, model.featureType());
-        Assertions.assertEquals("iloxggdufiq", model.featureName());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.featureName());
     }
 }

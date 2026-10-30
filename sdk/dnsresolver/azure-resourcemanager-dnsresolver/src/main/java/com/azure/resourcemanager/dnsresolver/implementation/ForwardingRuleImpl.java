@@ -158,10 +158,15 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsForwardingRulesetName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
-        this.forwardingRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "forwardingRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}",
+            "resourceGroupName");
+        this.dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}",
+            "dnsForwardingRulesetName");
+        this.forwardingRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}",
+            "forwardingRuleName");
     }
 
     public ForwardingRule refresh() {

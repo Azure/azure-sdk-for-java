@@ -17,7 +17,7 @@ import java.util.Map;
  * Function
  *
  * Defines a function in your own code the model can choose to call. Learn more about [function
- * calling](https://platform.openai.com/docs/guides/function-calling).
+ * calling](https://developers.openai.com/api/docs/guides/function-calling).
  */
 @Fluent
 public final class FunctionTool extends Tool {
@@ -132,6 +132,7 @@ public final class FunctionTool extends Tool {
         });
         jsonWriter.writeBooleanField("strict", this.strict);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("async", this.async);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("output_schema", this.outputSchema, (writer, element) -> {
             if (element == null) {
@@ -162,6 +163,7 @@ public final class FunctionTool extends Tool {
             Map<String, BinaryData> parameters = null;
             Boolean strict = null;
             ToolType type = ToolType.FUNCTION;
+            Boolean async = null;
             String description = null;
             Map<String, BinaryData> outputSchema = null;
             Boolean deferLoading = null;
@@ -178,6 +180,8 @@ public final class FunctionTool extends Tool {
                     strict = reader.getNullable(JsonReader::getBoolean);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
+                } else if ("async".equals(fieldName)) {
+                    async = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("output_schema".equals(fieldName)) {
@@ -194,6 +198,7 @@ public final class FunctionTool extends Tool {
             }
             FunctionTool deserializedFunctionTool = new FunctionTool(name, parameters, strict);
             deserializedFunctionTool.type = type;
+            deserializedFunctionTool.async = async;
             deserializedFunctionTool.description = description;
             deserializedFunctionTool.outputSchema = outputSchema;
             deserializedFunctionTool.deferLoading = deferLoading;
@@ -297,6 +302,34 @@ public final class FunctionTool extends Tool {
     @Generated
     public FunctionTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
         this.allowedCallers = allowedCallers;
+        return this;
+    }
+
+    /*
+     * The async property.
+     */
+    @Generated
+    private Boolean async;
+
+    /**
+     * Get the async property: The async property.
+     *
+     * @return the async value.
+     */
+    @Generated
+    public Boolean isAsync() {
+        return this.async;
+    }
+
+    /**
+     * Set the async property: The async property.
+     *
+     * @param async the async value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setAsync(Boolean async) {
+        this.async = async;
         return this;
     }
 }

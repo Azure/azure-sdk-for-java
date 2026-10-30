@@ -14,19 +14,19 @@ public final class AzureSqlProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":91671580,\"resourceGuardOperationRequests\":[\"ycxhxzgaztta\",\"o\",\"dvmfqhppub\"]}")
+            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":246722999,\"resourceGuardOperationRequests\":[\"ziu\",\"fbzkk\",\"tnhqsycl\",\"selpkpbaf\"]}")
             .toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(91671580, model.protectedItemsCount());
-        Assertions.assertEquals("ycxhxzgaztta", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(246722999, model.protectedItemsCount());
+        Assertions.assertEquals("ziu", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(91671580)
-            .withResourceGuardOperationRequests(Arrays.asList("ycxhxzgaztta", "o", "dvmfqhppub"))
+        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(246722999)
+            .withResourceGuardOperationRequests(Arrays.asList("ziu", "fbzkk", "tnhqsycl", "selpkpbaf"))
             .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(91671580, model.protectedItemsCount());
-        Assertions.assertEquals("ycxhxzgaztta", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(246722999, model.protectedItemsCount());
+        Assertions.assertEquals("ziu", model.resourceGuardOperationRequests().get(0));
     }
 }

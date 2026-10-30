@@ -20,7 +20,7 @@ public final class EntityAddOrUpdateBusinessMetadataTests extends DataMapClientT
         entityClient.addOrUpdateBusinessMetadata("02c373fe-2823-4be3-97fa-55180a9faa06",
             mapOf("myBizMetadata1",
                 mapOf("bizAttr1", BinaryData.fromBytes("myBizMetaData1.bizAttr1".getBytes(StandardCharsets.UTF_8)))),
-            null);
+            (Boolean) null);
     }
 
     // Use "Map.of" if available

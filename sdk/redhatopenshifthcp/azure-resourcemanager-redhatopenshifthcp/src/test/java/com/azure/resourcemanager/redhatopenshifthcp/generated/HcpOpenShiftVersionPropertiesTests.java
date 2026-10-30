@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class HcpOpenShiftVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HcpOpenShiftVersionProperties model = BinaryData
-            .fromString("{\"channelGroup\":\"y\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-02-14T18:57Z\"}")
+        HcpOpenShiftVersionProperties model = BinaryData.fromString(
+            "{\"channelGroup\":\"ymjhxxjyngudivkr\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-10-05T00:25:34Z\"}")
             .toObject(HcpOpenShiftVersionProperties.class);
-        Assertions.assertEquals("y", model.channelGroup());
+        Assertions.assertEquals("ymjhxxjyngudivkr", model.channelGroup());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T18:57Z"), model.endOfLifeTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-05T00:25:34Z"), model.endOfLifeTimestamp());
     }
 }

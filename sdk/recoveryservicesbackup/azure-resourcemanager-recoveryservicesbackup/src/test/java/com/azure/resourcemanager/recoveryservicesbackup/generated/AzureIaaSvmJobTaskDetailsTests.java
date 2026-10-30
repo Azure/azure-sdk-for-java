@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"xv\",\"startTime\":\"2021-03-17T06:48:24Z\",\"endTime\":\"2021-01-20T08:10:48Z\",\"instanceId\":\"rymo\",\"duration\":\"PT123H18M20S\",\"status\":\"xkl\",\"progressPercentage\":6.0931556754500455,\"taskExecutionDetails\":\"azpmkmlmv\"}")
+            "{\"taskId\":\"krxwet\",\"startTime\":\"2021-03-03T08:34:14Z\",\"endTime\":\"2021-05-20T10:11:19Z\",\"instanceId\":\"rucpcunnuz\",\"duration\":\"PT26H47M8S\",\"status\":\"oenodnaienh\",\"progressPercentage\":99.61060010726467,\"taskExecutionDetails\":\"dnelqkaad\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("xv", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T06:48:24Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T08:10:48Z"), model.endTime());
-        Assertions.assertEquals("rymo", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT123H18M20S"), model.duration());
-        Assertions.assertEquals("xkl", model.status());
-        Assertions.assertEquals(6.0931556754500455D, model.progressPercentage());
-        Assertions.assertEquals("azpmkmlmv", model.taskExecutionDetails());
+        Assertions.assertEquals("krxwet", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T08:34:14Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T10:11:19Z"), model.endTime());
+        Assertions.assertEquals("rucpcunnuz", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT26H47M8S"), model.duration());
+        Assertions.assertEquals("oenodnaienh", model.status());
+        Assertions.assertEquals(99.61060010726467D, model.progressPercentage());
+        Assertions.assertEquals("dnelqkaad", model.taskExecutionDetails());
     }
 }

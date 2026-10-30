@@ -12,14 +12,14 @@ public final class CassandraKeyspaceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceResource model
-            = BinaryData.fromString("{\"id\":\"zcvjytiqswbqerz\"}").toObject(CassandraKeyspaceResource.class);
-        Assertions.assertEquals("zcvjytiqswbqerz", model.id());
+            = BinaryData.fromString("{\"id\":\"bdsuifr\"}").toObject(CassandraKeyspaceResource.class);
+        Assertions.assertEquals("bdsuifr", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CassandraKeyspaceResource model = new CassandraKeyspaceResource().withId("zcvjytiqswbqerz");
+        CassandraKeyspaceResource model = new CassandraKeyspaceResource().withId("bdsuifr");
         model = BinaryData.fromObject(model).toObject(CassandraKeyspaceResource.class);
-        Assertions.assertEquals("zcvjytiqswbqerz", model.id());
+        Assertions.assertEquals("bdsuifr", model.id());
     }
 }

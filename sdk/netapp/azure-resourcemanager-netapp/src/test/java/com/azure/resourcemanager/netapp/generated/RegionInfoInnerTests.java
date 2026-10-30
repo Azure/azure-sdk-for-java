@@ -13,11 +13,10 @@ public final class RegionInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfoInner model = BinaryData.fromString(
-            "{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"lmbkzu\",\"isAvailable\":true},{\"availabilityZone\":\"rfih\",\"isAvailable\":true},{\"availabilityZone\":\"wlpxuzzjg\",\"isAvailable\":true},{\"availabilityZone\":\"qyhqo\",\"isAvailable\":true}]}")
+            "{\"storageToNetworkProximity\":\"T1AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"xgvttxp\",\"isAvailable\":true},{\"availabilityZone\":\"zaamrdixtrekid\",\"isAvailable\":false},{\"availabilityZone\":\"kbr\",\"isAvailable\":true},{\"availabilityZone\":\"l\",\"isAvailable\":false}]}")
             .toObject(RegionInfoInner.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            model.storageToNetworkProximity());
-        Assertions.assertEquals("lmbkzu", model.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_ACROSS_T2, model.storageToNetworkProximity());
+        Assertions.assertEquals("xgvttxp", model.availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertTrue(model.availabilityZoneMappings().get(0).isAvailable());
     }
 }

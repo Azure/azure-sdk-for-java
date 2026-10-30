@@ -20,43 +20,44 @@ public final class ConnectionUpdateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionUpdateContent model = BinaryData.fromString(
-            "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"GoogleCloudStorage\",\"createdByWorkspaceArmId\":\"ivensrpmeyyvpk\",\"error\":\"tlbijpzg\",\"expiryTime\":\"2021-10-22T08:48:44Z\",\"group\":\"NoSQL\",\"isSharedToAll\":true,\"metadata\":{\"pvfqawz\":\"lmknbnxwcdom\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"iac\",\"kiexhajlfnthiq\",\"yuttdiygbpvnwswm\",\"xkyctwwgzwx\"],\"target\":\"mecvogygzyvneeza\",\"useWorkspaceManagedIdentity\":false}}")
+            "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Spark\",\"createdByWorkspaceArmId\":\"rjb\",\"error\":\"ykfhyqezvqqugdrf\",\"expiryTime\":\"2021-07-24T11:55:41Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":true,\"metadata\":{\"khyxvrqtvbcz\":\"quowtljvfwhrea\",\"pjpfseykgs\":\"ulmdgglm\",\"lkvec\":\"ngpszngafpg\",\"dyedmzrgjfo\":\"ujcngo\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"tp\",\"pz\",\"rgdg\"],\"target\":\"coqra\",\"useWorkspaceManagedIdentity\":false}}")
             .toObject(ConnectionUpdateContent.class);
-        Assertions.assertEquals(ConnectionCategory.GOOGLE_CLOUD_STORAGE, model.properties().category());
-        Assertions.assertEquals("tlbijpzg", model.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T08:48:44Z"), model.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.SPARK, model.properties().category());
+        Assertions.assertEquals("ykfhyqezvqqugdrf", model.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T11:55:41Z"), model.properties().expiryTime());
         Assertions.assertTrue(model.properties().isSharedToAll());
-        Assertions.assertEquals("lmknbnxwcdom", model.properties().metadata().get("pvfqawz"));
+        Assertions.assertEquals("quowtljvfwhrea", model.properties().metadata().get("khyxvrqtvbcz"));
         Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.properties().peStatus());
-        Assertions.assertEquals("iac", model.properties().sharedUserList().get(0));
-        Assertions.assertEquals("mecvogygzyvneeza", model.properties().target());
+        Assertions.assertEquals(ManagedPEStatus.INACTIVE, model.properties().peStatus());
+        Assertions.assertEquals("tp", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("coqra", model.properties().target());
         Assertions.assertFalse(model.properties().useWorkspaceManagedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionUpdateContent model = new ConnectionUpdateContent()
-            .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.GOOGLE_CLOUD_STORAGE)
-                .withError("tlbijpzg")
-                .withExpiryTime(OffsetDateTime.parse("2021-10-22T08:48:44Z"))
+            .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.SPARK)
+                .withError("ykfhyqezvqqugdrf")
+                .withExpiryTime(OffsetDateTime.parse("2021-07-24T11:55:41Z"))
                 .withIsSharedToAll(true)
-                .withMetadata(mapOf("pvfqawz", "lmknbnxwcdom"))
+                .withMetadata(mapOf("khyxvrqtvbcz", "quowtljvfwhrea", "pjpfseykgs", "ulmdgglm", "lkvec", "ngpszngafpg",
+                    "dyedmzrgjfo", "ujcngo"))
                 .withPeRequirement(ManagedPERequirement.NOT_APPLICABLE)
-                .withPeStatus(ManagedPEStatus.NOT_APPLICABLE)
-                .withSharedUserList(Arrays.asList("iac", "kiexhajlfnthiq", "yuttdiygbpvnwswm", "xkyctwwgzwx"))
-                .withTarget("mecvogygzyvneeza")
+                .withPeStatus(ManagedPEStatus.INACTIVE)
+                .withSharedUserList(Arrays.asList("tp", "pz", "rgdg"))
+                .withTarget("coqra")
                 .withUseWorkspaceManagedIdentity(false));
         model = BinaryData.fromObject(model).toObject(ConnectionUpdateContent.class);
-        Assertions.assertEquals(ConnectionCategory.GOOGLE_CLOUD_STORAGE, model.properties().category());
-        Assertions.assertEquals("tlbijpzg", model.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T08:48:44Z"), model.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.SPARK, model.properties().category());
+        Assertions.assertEquals("ykfhyqezvqqugdrf", model.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T11:55:41Z"), model.properties().expiryTime());
         Assertions.assertTrue(model.properties().isSharedToAll());
-        Assertions.assertEquals("lmknbnxwcdom", model.properties().metadata().get("pvfqawz"));
+        Assertions.assertEquals("quowtljvfwhrea", model.properties().metadata().get("khyxvrqtvbcz"));
         Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.properties().peStatus());
-        Assertions.assertEquals("iac", model.properties().sharedUserList().get(0));
-        Assertions.assertEquals("mecvogygzyvneeza", model.properties().target());
+        Assertions.assertEquals(ManagedPEStatus.INACTIVE, model.properties().peStatus());
+        Assertions.assertEquals("tp", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("coqra", model.properties().target());
         Assertions.assertFalse(model.properties().useWorkspaceManagedIdentity());
     }
 

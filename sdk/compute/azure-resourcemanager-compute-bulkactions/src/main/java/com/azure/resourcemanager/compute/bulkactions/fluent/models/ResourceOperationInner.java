@@ -14,32 +14,32 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineInfo;
 import java.io.IOException;
 
 /**
- * High level response from an operation on a resource.
+ * The result of a bulk action for one virtual machine.
  */
 @Immutable
 public final class ResourceOperationInner implements JsonSerializable<ResourceOperationInner> {
     /*
-     * Unique identifier for the resource involved in the operation, for example Azure resource ID
+     * The virtual machine Azure resource ID.
      */
     private String resourceId;
 
     /*
-     * Resource level error code if it exists
+     * A code that identifies the error for the virtual machine operation.
      */
     private String errorCode;
 
     /*
-     * Resource level error details if they exist
+     * A message that describes the error for the virtual machine operation.
      */
     private String errorDetails;
 
     /*
-     * Details of the operation performed on a resource
+     * The virtual machine operation details.
      */
     private ResourceOperationDetails operation;
 
     /*
-     * Information about the virtual machine
+     * Details of the virtual machine on which the operation is performed.
      */
     private VirtualMachineInfo virtualMachineInfo;
 
@@ -50,8 +50,7 @@ public final class ResourceOperationInner implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
-     * resource ID.
+     * Get the resourceId property: The virtual machine Azure resource ID.
      * 
      * @return the resourceId value.
      */
@@ -60,7 +59,7 @@ public final class ResourceOperationInner implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the errorCode property: Resource level error code if it exists.
+     * Get the errorCode property: A code that identifies the error for the virtual machine operation.
      * 
      * @return the errorCode value.
      */
@@ -69,7 +68,7 @@ public final class ResourceOperationInner implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the errorDetails property: Resource level error details if they exist.
+     * Get the errorDetails property: A message that describes the error for the virtual machine operation.
      * 
      * @return the errorDetails value.
      */
@@ -78,7 +77,7 @@ public final class ResourceOperationInner implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the operation property: Details of the operation performed on a resource.
+     * Get the operation property: The virtual machine operation details.
      * 
      * @return the operation value.
      */
@@ -87,7 +86,7 @@ public final class ResourceOperationInner implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the virtualMachineInfo property: Information about the virtual machine.
+     * Get the virtualMachineInfo property: Details of the virtual machine on which the operation is performed.
      * 
      * @return the virtualMachineInfo value.
      */

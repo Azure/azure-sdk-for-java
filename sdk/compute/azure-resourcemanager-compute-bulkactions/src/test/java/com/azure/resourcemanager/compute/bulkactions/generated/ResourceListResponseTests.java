@@ -14,13 +14,13 @@ public final class ResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"pmjerbdkelvidiz\",\"id\":\"zsdbccxjmon\",\"type\":\"gnwncypuuwwlt\",\"resourceId\":\"uqj\",\"notificationSettings\":[{\"destination\":\"e\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"zzhmkd\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"yhbxcudchxgs\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"forobwjlv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"name\":\"fovvacqpbtuodxes\",\"id\":\"abbelawumuaslzk\",\"type\":\"rwoycqucwyh\",\"resourceId\":\"hnomdrkywuh\",\"notificationSettings\":[{\"destination\":\"fuurutlwexx\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"iexzsrzpge\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}],\"nextLink\":\"wwpgdakchzyvlixq\"}")
+            "{\"value\":[{\"name\":\"tcktyhjtqedcgzu\",\"id\":\"wmmrq\",\"type\":\"rr\",\"resourceId\":\"vpglydz\",\"notificationSettings\":[{\"destination\":\"vqeevtoep\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"wytpzdmovz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"wzqa\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ur\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"cx\",\"id\":\"dticokpvzml\",\"type\":\"mldgxobfirc\",\"resourceId\":\"npkc\",\"notificationSettings\":[{\"destination\":\"zriykhy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"lboxqvkjl\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}],\"nextLink\":\"ynhdwdigum\"}")
             .toObject(ResourceListResponse.class);
-        Assertions.assertEquals("uqj", model.value().get(0).resourceId());
-        Assertions.assertEquals("e", model.value().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("vpglydz", model.value().get(0).resourceId());
+        Assertions.assertEquals("vqeevtoep", model.value().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.value().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.value().get(0).notificationSettings().get(0).language());
-        Assertions.assertTrue(model.value().get(0).notificationSettings().get(0).disabled());
-        Assertions.assertEquals("wwpgdakchzyvlixq", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).notificationSettings().get(0).disabled());
+        Assertions.assertEquals("ynhdwdigum", model.nextLink());
     }
 }

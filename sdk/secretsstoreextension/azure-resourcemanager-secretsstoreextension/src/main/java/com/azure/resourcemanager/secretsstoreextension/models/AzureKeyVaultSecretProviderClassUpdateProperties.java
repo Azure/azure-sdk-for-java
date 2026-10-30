@@ -23,6 +23,12 @@ public final class AzureKeyVaultSecretProviderClassUpdateProperties
     private String keyvaultName;
 
     /*
+     * The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     */
+    private AzureCloudName cloudName;
+
+    /*
      * The user assigned managed identity client ID that should be used to access the Azure Key Vault.
      */
     private String clientId;
@@ -60,6 +66,28 @@ public final class AzureKeyVaultSecretProviderClassUpdateProperties
      */
     public AzureKeyVaultSecretProviderClassUpdateProperties withKeyvaultName(String keyvaultName) {
         this.keyvaultName = keyvaultName;
+        return this;
+    }
+
+    /**
+     * Get the cloudName property: The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     * 
+     * @return the cloudName value.
+     */
+    public AzureCloudName cloudName() {
+        return this.cloudName;
+    }
+
+    /**
+     * Set the cloudName property: The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     * 
+     * @param cloudName the cloudName value to set.
+     * @return the AzureKeyVaultSecretProviderClassUpdateProperties object itself.
+     */
+    public AzureKeyVaultSecretProviderClassUpdateProperties withCloudName(AzureCloudName cloudName) {
+        this.cloudName = cloudName;
         return this;
     }
 
@@ -134,6 +162,7 @@ public final class AzureKeyVaultSecretProviderClassUpdateProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyvaultName", this.keyvaultName);
+        jsonWriter.writeStringField("cloudName", this.cloudName == null ? null : this.cloudName.toString());
         jsonWriter.writeStringField("clientId", this.clientId);
         jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("objects", this.objects);
@@ -158,6 +187,9 @@ public final class AzureKeyVaultSecretProviderClassUpdateProperties
 
                 if ("keyvaultName".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassUpdateProperties.keyvaultName = reader.getString();
+                } else if ("cloudName".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretProviderClassUpdateProperties.cloudName
+                        = AzureCloudName.fromString(reader.getString());
                 } else if ("clientId".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassUpdateProperties.clientId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {

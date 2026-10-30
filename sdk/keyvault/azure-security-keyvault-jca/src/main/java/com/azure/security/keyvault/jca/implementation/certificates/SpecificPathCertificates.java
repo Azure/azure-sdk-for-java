@@ -19,9 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
@@ -32,8 +30,6 @@ import static java.util.logging.Level.WARNING;
  * Store certificates loaded from file system.
  */
 public final class SpecificPathCertificates implements AzureCertificates {
-
-    private static final Map<String, SpecificPathCertificates> CACHE = new HashMap<>();
 
     /**
      * Stores the logger.
@@ -203,29 +199,22 @@ public final class SpecificPathCertificates implements AzureCertificates {
         List<File> files = new ArrayList<>();
         File filePackage = new File(certificatePath);
         File[] array = filePackage.listFiles();
-        Optional.ofNullable(array)
-            .map(Arrays::stream)
-            .orElseGet(Stream::empty)
-            .filter(Objects::nonNull)
-            .filter(File::isFile)
-            .filter(File::exists)
-            .filter(File::canRead)
+        if (array == null) {
+            return files;
+        }
+        Arrays.stream(array)
+            .filter(file -> Objects.nonNull(file) && file.exists() && file.isFile() && file.canRead())
             .forEach(files::add);
         return files;
     }
 
     /**
-     * Get File System certificates by path
+     * Load a new snapshot of file system certificates from the given path.
      *
-     * @param path certificate path, which works only in first time
-     * @return file certificate
+     * @param path certificate directory path
+     * @return independently loaded file system certificates
      */
-    public static synchronized SpecificPathCertificates getSpecificPathCertificates(String path) {
-        SpecificPathCertificates result = CACHE.getOrDefault(path, null);
-        if (result == null) {
-            result = new SpecificPathCertificates(path);
-            CACHE.put(path, result);
-        }
-        return result;
+    public static SpecificPathCertificates getSpecificPathCertificates(String path) {
+        return new SpecificPathCertificates(path);
     }
 }

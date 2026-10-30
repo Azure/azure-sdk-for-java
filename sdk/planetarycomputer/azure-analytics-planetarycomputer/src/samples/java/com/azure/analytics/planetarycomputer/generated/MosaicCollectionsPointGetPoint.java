@@ -6,10 +6,14 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicCollectionsPointGetPoint {
     public static void main(String[] args) {
@@ -18,9 +22,12 @@ public class MosaicCollectionsPointGetPoint {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-point.mosaic-collections-point-get-point
-        TilerCoreModelsResponsesPoint response = dataClient.getCollectionPoint("naip-atl", -84.386, 33.676, null, null,
-            null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null,
-            null, null, Arrays.asList("image"), null, null, null, null, null, null, null, null);
+        TilerCoreModelsResponsesPoint response = dataClient.getCollectionPoint("naip-atl", -84.386, 33.676,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, "item-id-1,item-id-2",
+            "-180,-90,180,90", "{}", "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null,
+            (List<String>) null, (SelMethod) null, (List<Integer>) null, Arrays.asList("image"), (String) null,
+            (List<String>) null, (Boolean) null, (String) null, (Boolean) null, (WarpKernelResampling) null,
+            (String) null, (Resampling) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-point.mosaic-collections-point-get-point
     }
 }

@@ -13,16 +13,14 @@ public final class CapacityAdministrationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityAdministration model
-            = BinaryData.fromString("{\"members\":[\"zntocipaouajps\",\"ucmpoyfd\",\"fogknygjofjdde\"]}")
-                .toObject(CapacityAdministration.class);
-        Assertions.assertEquals("zntocipaouajps", model.members().get(0));
+            = BinaryData.fromString("{\"members\":[\"esaagdfm\"]}").toObject(CapacityAdministration.class);
+        Assertions.assertEquals("esaagdfm", model.members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityAdministration model
-            = new CapacityAdministration().withMembers(Arrays.asList("zntocipaouajps", "ucmpoyfd", "fogknygjofjdde"));
+        CapacityAdministration model = new CapacityAdministration().withMembers(Arrays.asList("esaagdfm"));
         model = BinaryData.fromObject(model).toObject(CapacityAdministration.class);
-        Assertions.assertEquals("zntocipaouajps", model.members().get(0));
+        Assertions.assertEquals("esaagdfm", model.members().get(0));
     }
 }

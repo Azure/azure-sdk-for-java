@@ -23,7 +23,7 @@ public final class AgentDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"lks\",\"deploymentId\":\"sutacuctihavish\",\"state\":\"Deleting\",\"protocols\":[{\"protocol\":\"Responses\",\"version\":\"qququxlph\"}],\"agents\":[{\"agentVersion\":\"lexoweorocr\",\"agentId\":\"cgym\",\"agentName\":\"bqpfyrv\"},{\"agentVersion\":\"vijvwmrgcnzhr\",\"agentId\":\"cxfmbzquuutqmhb\",\"agentName\":\"yzycgcmbkygv\"},{\"agentVersion\":\"dqosxzmdzly\",\"agentId\":\"fufkekzfk\",\"agentName\":\"xh\"},{\"agentVersion\":\"vmnkgghvsryjok\",\"agentId\":\"wvb\",\"agentName\":\"arxsvmfpabw\"}],\"provisioningState\":\"Failed\",\"description\":\"fgqpud\",\"tags\":{\"x\":\"gieabbf\",\"gsnuhwy\":\"avlozu\",\"skemqqerw\":\"jsfmaxcebnbe\"}},\"id\":\"pjpvemdfkhttu\",\"name\":\"brxz\",\"type\":\"hyt\"}";
+            = "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"xpu\",\"deploymentId\":\"dmwnfhmjusuqn\",\"state\":\"Running\",\"protocols\":[{\"protocol\":\"Responses\",\"version\":\"dhekaqnirmidtv\"}],\"agents\":[{\"agentVersion\":\"sz\",\"agentId\":\"qygkx\",\"agentName\":\"fojlclpumv\"},{\"agentVersion\":\"bod\",\"agentId\":\"vykduumw\",\"agentName\":\"umjvegpdxtsaujt\"},{\"agentVersion\":\"ojybolqoxuptsli\",\"agentId\":\"mlkwk\",\"agentName\":\"invamtykxsz\"},{\"agentVersion\":\"kfxcsqmz\",\"agentId\":\"zktkdpczeo\",\"agentName\":\"lrg\"}],\"provisioningState\":\"Deleting\",\"description\":\"mhvqpkedaxk\",\"tags\":{\"odaweo\":\"rfjid\",\"yfjcypazwi\":\"avfyihuzsbpw\"}},\"id\":\"dlzgkoo\",\"name\":\"grlw\",\"type\":\"amesit\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class AgentDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentDeployment response = manager.agentDeployments()
-            .getWithResponse("tcqxmyvkxixypavi", "jczgohv", "suwichmxczbyfkoc", "mzdctsnlwscrngt", "gxrolw",
+            .getWithResponse("cqcjozzjku", "pdqqbtok", "ocuzxllbpwa", "hwettohgpzwx", "vtkzbh",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fgqpud", response.properties().description());
-        Assertions.assertEquals("gieabbf", response.properties().tags().get("x"));
-        Assertions.assertEquals("lks", response.properties().displayName());
-        Assertions.assertEquals("sutacuctihavish", response.properties().deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.DELETING, response.properties().state());
+        Assertions.assertEquals("mhvqpkedaxk", response.properties().description());
+        Assertions.assertEquals("rfjid", response.properties().tags().get("odaweo"));
+        Assertions.assertEquals("xpu", response.properties().displayName());
+        Assertions.assertEquals("dmwnfhmjusuqn", response.properties().deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.RUNNING, response.properties().state());
         Assertions.assertEquals(AgentProtocol.RESPONSES, response.properties().protocols().get(0).protocol());
-        Assertions.assertEquals("qququxlph", response.properties().protocols().get(0).version());
-        Assertions.assertEquals("cgym", response.properties().agents().get(0).agentId());
-        Assertions.assertEquals("bqpfyrv", response.properties().agents().get(0).agentName());
-        Assertions.assertEquals("lexoweorocr", response.properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("dhekaqnirmidtv", response.properties().protocols().get(0).version());
+        Assertions.assertEquals("qygkx", response.properties().agents().get(0).agentId());
+        Assertions.assertEquals("fojlclpumv", response.properties().agents().get(0).agentName());
+        Assertions.assertEquals("sz", response.properties().agents().get(0).agentVersion());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TileSetLink;
 import com.azure.analytics.planetarycomputer.models.TileSetMetadata;
 import java.util.List;
@@ -17,8 +18,9 @@ public final class MosaicSearchesTileSetMetadataGetTests extends PlanetaryComput
     @Disabled
     public void testMosaicSearchesTileSetMetadataGetTests() {
         // method invocation
-        TileSetMetadata response = dataClient.getSearchTilesetMetadata("ba13fc7947b9b585690d84ee61aaa653",
-            "WebMercatorQuad", null, null, null, null, null, null);
+        TileSetMetadata response
+            = dataClient.getSearchTilesetMetadata("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad", (String) null,
+                (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
 
         // response assertion
         Assertions.assertNotNull(response);

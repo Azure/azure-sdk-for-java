@@ -115,7 +115,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
             @PathParam("galleryImageName") String galleryImageName,
-            @PathParam("galleryImageVersionName") String galleryImageVersionName, Context context);
+            @PathParam("galleryImageVersionName") String galleryImageVersionName,
+            @QueryParam("bypassSoftDelete") Boolean bypassSoftDelete, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions")
@@ -176,7 +177,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -225,7 +226,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -342,7 +343,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -400,7 +401,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -641,7 +642,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -699,7 +700,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -899,6 +900,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -906,7 +911,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
-        String galleryImageName, String galleryImageVersionName) {
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -930,11 +935,11 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, galleryImageName,
+                galleryImageVersionName, bypassSoftDelete, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -945,6 +950,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -953,7 +962,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
-        String galleryImageName, String galleryImageVersionName, Context context) {
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -977,10 +986,35 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            galleryName, galleryImageName, galleryImageVersionName, context);
+            galleryName, galleryImageName, galleryImageVersionName, bypassSoftDelete, context);
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName,
+            galleryImageName, galleryImageVersionName, bypassSoftDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -998,8 +1032,9 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
         String galleryImageName, String galleryImageVersionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName);
+        final Boolean bypassSoftDelete = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName,
+            galleryImageName, galleryImageVersionName, bypassSoftDelete);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1011,6 +1046,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1019,10 +1058,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
-        String galleryImageName, String galleryImageVersionName, Context context) {
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName,
-            galleryImageName, galleryImageVersionName, context);
+            galleryImageName, galleryImageVersionName, bypassSoftDelete, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1042,7 +1081,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String galleryImageName, String galleryImageVersionName) {
-        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
+        final Boolean bypassSoftDelete = null;
+        return this
+            .beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                bypassSoftDelete)
             .getSyncPoller();
     }
 
@@ -1053,6 +1095,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1061,9 +1107,34 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
-        String galleryImageName, String galleryImageVersionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context)
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                bypassSoftDelete, context)
             .getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName, Boolean bypassSoftDelete) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+            bypassSoftDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1081,8 +1152,9 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
         String galleryImageVersionName) {
-        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        final Boolean bypassSoftDelete = null;
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+            bypassSoftDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1092,6 +1164,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1100,10 +1176,9 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
-        String galleryImageVersionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+            bypassSoftDelete, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1120,7 +1195,9 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String galleryImageName,
         String galleryImageVersionName) {
-        deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName).block();
+        final Boolean bypassSoftDelete = null;
+        deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, bypassSoftDelete)
+            .block();
     }
 
     /**
@@ -1130,6 +1207,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1137,8 +1218,9 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String galleryImageName,
-        String galleryImageVersionName, Context context) {
-        deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context).block();
+        String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
+        deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, bypassSoftDelete,
+            context).block();
     }
 
     /**
@@ -1175,7 +1257,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGalleryImage(this.client.getEndpoint(), apiVersion,
@@ -1220,7 +1302,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
