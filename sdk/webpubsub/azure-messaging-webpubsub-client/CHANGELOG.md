@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
+
+
 ## 1.1.11 (2026-10-06)
 
 ### Other Changes
