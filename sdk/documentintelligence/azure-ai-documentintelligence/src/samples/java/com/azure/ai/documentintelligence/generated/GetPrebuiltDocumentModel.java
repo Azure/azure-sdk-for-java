@@ -16,8 +16,8 @@ public class GetPrebuiltDocumentModel {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.get-model.get-prebuilt-document-model
+        // BEGIN:com.azure.ai.documentintelligence.generated.getmodel.getprebuiltdocumentmodel
         DocumentModelDetails response = documentIntelligenceAdministrationClient.getModel("prebuilt-invoice");
-        // END:com.azure.ai.documentintelligence.generated.get-model.get-prebuilt-document-model
+        // END:com.azure.ai.documentintelligence.generated.getmodel.getprebuiltdocumentmodel
     }
 }

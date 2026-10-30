@@ -311,14 +311,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -417,13 +409,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document model.
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -502,14 +487,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -735,14 +712,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -812,13 +781,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document classifier.
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -940,16 +902,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listModels(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DocumentModelDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1039,16 +994,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DocumentIntelligenceOperationDetails>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1166,16 +1114,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listClassifiers(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DocumentClassifierDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

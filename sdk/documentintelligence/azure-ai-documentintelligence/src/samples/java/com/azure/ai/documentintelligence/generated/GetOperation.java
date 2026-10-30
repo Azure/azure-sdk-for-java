@@ -16,9 +16,9 @@ public class GetOperation {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.get-operation.get-operation
+        // BEGIN:com.azure.ai.documentintelligence.generated.getoperation.getoperation
         DocumentIntelligenceOperationDetails response
             = documentIntelligenceAdministrationClient.getOperation("b704bb00-d130-4f3f-a1d8-ca96de3eabb4");
-        // END:com.azure.ai.documentintelligence.generated.get-operation.get-operation
+        // END:com.azure.ai.documentintelligence.generated.getoperation.getoperation
     }
 }

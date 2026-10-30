@@ -308,6 +308,7 @@ public final class DocumentIntelligenceAsyncClient {
     }
 
     /**
+     * /**
      * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
@@ -319,6 +320,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -401,6 +403,7 @@ public final class DocumentIntelligenceAsyncClient {
     }
 
     /**
+     * /**
      * Analyzes batch documents with document model.
      *
      * @param modelId Unique document model name.
@@ -412,6 +415,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -446,16 +450,9 @@ public final class DocumentIntelligenceAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAnalyzeBatchResults(modelId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchOperationDetails>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -510,6 +507,7 @@ public final class DocumentIntelligenceAsyncClient {
     }
 
     /**
+     * /**
      * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
@@ -521,6 +519,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
