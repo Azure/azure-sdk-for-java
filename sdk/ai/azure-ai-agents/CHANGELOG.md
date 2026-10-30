@@ -4,8 +4,8 @@
 
 ### Features Added
 
-- Added hosted-agent memory snapshot opt-in through `HostedAgentDefinition.setEnableMemorySnapshot(...)` and
-  `isEnableMemorySnapshot()`. Sessions for a snapshot-enabled agent version start from a snapshot of its initialized
+- Added hosted-agent memory snapshot opt-in through `HostedAgentDefinition.setMemorySnapshotEnabled(...)` and
+  `isMemorySnapshotEnabled()`. Sessions for a snapshot-enabled agent version start from a snapshot of its initialized
   process instead of starting the process from its image.
 - Added preview voice-agent soundscapes through `VoiceAgentDefinition.setSoundscape(...)`,
   `VoiceAgentSoundscapeConfiguration`, and related track and built-in sound models. Soundscapes support background
