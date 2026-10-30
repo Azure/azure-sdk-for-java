@@ -107,8 +107,13 @@ class FeatureFlagClient {
     }
 
     WatchedConfigurationSettings processFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
+        processFeatureFlags(features.getConfigurationSettings(), endpoint);
+        return features;
+    }
+
+    void processFeatureFlags(List<ConfigurationSetting> features, String endpoint) {
         // Reading In Features
-        for (ConfigurationSetting setting : features.getConfigurationSettings()) {
+        for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
@@ -121,7 +126,6 @@ class FeatureFlagClient {
                 }
             }
         }
-        return features;
     }
 
     /**
