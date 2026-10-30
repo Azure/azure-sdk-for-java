@@ -424,6 +424,14 @@ public class DataLakeFileSystemAsyncClient {
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.delete -->
@@ -445,6 +453,14 @@ public class DataLakeFileSystemAsyncClient {
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -475,6 +491,14 @@ public class DataLakeFileSystemAsyncClient {
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists -->
@@ -501,6 +525,14 @@ public class DataLakeFileSystemAsyncClient {
      * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

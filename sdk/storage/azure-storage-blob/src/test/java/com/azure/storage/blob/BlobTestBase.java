@@ -164,6 +164,15 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
+    /*
+    The values below are shared fixtures for session authentication tests. They are never sent to the service.
+     */
+    public static final String TEST_SESSION_KEY = "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
+
+    public static final String TEST_SESSION_TOKEN = "test-session-token-abc123";
+
+    public static final String TEST_SESSION_ACCOUNT_NAME = "testaccount";
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -193,6 +202,11 @@ public class BlobTestBase extends TestProxyTestBase {
         super.beforeTest();
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
+        // Mock-only tests do not need service clients or a live container.
+        if (testContextManager.doNotRecordTest()) {
+            return;
+        }
+
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager
                 .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
@@ -203,7 +217,11 @@ public class BlobTestBase extends TestProxyTestBase {
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER),
-                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -240,7 +258,7 @@ public class BlobTestBase extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.PLAYBACK || testContextManager.doNotRecordTest()) {
             return;
         }
 
@@ -415,21 +433,85 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceClient(new SessionContext());
+    }
 
-        instrument(builder);
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildClient();
+    }
+
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceAsyncClient(new SessionContext());
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildAsyncClient();
+    }
+
+    /**
+     * Builds an OAuth service client builder. When {@code httpClient} is supplied it replaces the transport that
+     * {@code instrument} installed, which lets a test observe requests as they go on the wire.
+     *
+     * @param sessionContext The session options to configure.
+     * @param httpClient The transport to send requests with, or null to keep the instrumented one.
+     * @param policies Additional policies to add to the pipeline.
+     * @return The configured builder.
+     */
+    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext, HttpClient httpClient,
+        HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionContext(sessionContext)
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+        if (httpClient != null) {
+            builder.httpClient(httpClient);
+        }
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    /**
+     * Creates a session expiration time in the future.
+     *
+     * @return A valid session expiration time.
+     */
+    public static OffsetDateTime createValidSessionExpiration() {
+        return OffsetDateTime.now().plusHours(1);
+    }
+
+    /**
+     * Creates a session expiration time in the past.
+     *
+     * @return An expired session expiration time.
+     */
+    public static OffsetDateTime createExpiredSessionExpiration() {
+        return OffsetDateTime.now().minusMinutes(5);
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {

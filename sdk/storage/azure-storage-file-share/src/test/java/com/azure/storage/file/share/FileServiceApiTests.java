@@ -173,6 +173,19 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertTrue(includeDeleted || !shares.hasNext());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void listSharesIncludesCreationTime() {
+        primaryFileServiceClient.createShare(shareName);
+
+        Iterator<ShareItem> shares
+            = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(shareName), null, null).iterator();
+        assertTrue(shares.hasNext());
+        ShareItem firstShare = shares.next();
+        assertEquals(shareName, firstShare.getName());
+        assertNotNull(firstShare.getProperties().getCreationTime());
+    }
+
     private static Stream<Arguments> listSharesWithFilterSupplier() {
         return Stream.of(Arguments.of(new ListSharesOptions(), 3, false, true, false),
             Arguments.of(new ListSharesOptions().setIncludeMetadata(true), 3, true, true, false),

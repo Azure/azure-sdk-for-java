@@ -19,12 +19,14 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +53,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -255,6 +258,51 @@ public class EncryptedBlobClientBuilderTests {
             .buildEncryptedBlobClient();
 
         sendAndValidateUserAgentHeader(cryptoClient.getHttpPipeline(), cryptoClient.getBlobUrl());
+    }
+
+    @Test
+    public void encryptedBlobClientPipelineDoesNotSupportDataLocality() {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+
+        // The encrypted pipeline never retains or installs DataLocalityPolicy, so the chunked download paths skip the
+        // getLayout call entirely rather than pay for a round trip whose result nothing can act on. Layout offsets are
+        // also ciphertext rather than plaintext.
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClient.getHttpPipeline()));
+
+        BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .buildClient();
+
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(blobClient.getHttpPipeline()));
+
+        EncryptedBlobClient encryptedBlobClientFromBlobClient = new EncryptedBlobClientBuilder().blobClient(blobClient)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClientFromBlobClient.getHttpPipeline()));
+
+        BlobAsyncClient blobAsyncClient = new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .buildAsyncClient();
+
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(blobAsyncClient.getHttpPipeline()));
+
+        EncryptedBlobAsyncClient encryptedBlobClientFromBlobAsyncClient
+            = new EncryptedBlobClientBuilder().blobAsyncClient(blobAsyncClient)
+                .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+                .buildEncryptedBlobAsyncClient();
+
+        assertFalse(
+            StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClientFromBlobAsyncClient.getHttpPipeline()));
     }
 
     private static Stream<Arguments> getNonEncodedBlobNameSupplier() {

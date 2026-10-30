@@ -5,6 +5,8 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -16,6 +18,9 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersCo
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
+import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem;
+import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
@@ -33,6 +38,7 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -40,6 +46,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
@@ -48,14 +55,19 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -66,6 +78,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -93,7 +106,20 @@ public final class ModelHelper {
      * but it is not a public API change.
      */
     private static final StorageResponseSerializationFormat DEFAULT_SERIALIZATION_FORMAT
-        = StorageResponseSerializationFormat.XML;
+        = StorageResponseSerializationFormat.ARROW;
+
+    // Change this value to switch AUTO session authentication behavior across all clients and policies.
+    private static final SessionMode DEFAULT_SESSION_MODE = SessionMode.DISABLED;
+
+    /**
+     * The routing mode that {@link LayoutAwareRouting#AUTO} currently resolves to. Changing this constant
+     * is a behavioral change, but it is not a public API change.
+     */
+    private static final LayoutAwareRouting DEFAULT_LAYOUT_AWARE_ROUTING = LayoutAwareRouting.DISABLED;
+
+    static final String UNSUPPORTED_DATA_LOCALITY_WARNING
+        = "Layout-aware routing was enabled, but this client does not support data locality. "
+            + "The download will use the configured endpoint.";
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -196,6 +222,144 @@ public final class ModelHelper {
         wrapping it. Because it's headers type, we couldn't change the name of the generated type.
          */
         return BlobDownloadHeadersConstructorProxy.create(internalHeaders).setErrorCode(errorCode);
+    }
+
+    /**
+     * Gets whether layout-aware routing should be used after resolving the default routing mode and checking pipeline
+     * support. If routing was explicitly enabled for an unsupported pipeline, logs a warning and returns {@code false}.
+     *
+     * @param layoutAwareRouting The layout-aware routing option.
+     * @param pipeline The pipeline used by the client.
+     * @return Whether layout-aware routing should be used.
+     */
+    public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting, HttpPipeline pipeline) {
+        return isLayoutRoutingEnabled(layoutAwareRouting, pipeline, LOGGER);
+    }
+
+    static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting, HttpPipeline pipeline,
+        ClientLogger logger) {
+        if (resolveLayoutAwareRouting(layoutAwareRouting) != LayoutAwareRouting.ENABLED) {
+            return false;
+        }
+        if (StorageImplUtils.pipelineSupportsDataLocality(pipeline)) {
+            return true;
+        }
+        if (layoutAwareRouting == LayoutAwareRouting.ENABLED) {
+            logger.warning(UNSUPPORTED_DATA_LOCALITY_WARNING);
+        }
+        return false;
+    }
+
+    /**
+     * Resolves a user-supplied {@link LayoutAwareRouting} to a concrete routing mode.
+     * Treats {@code null} and {@link LayoutAwareRouting#AUTO} identically:
+     * both yield {@link #DEFAULT_LAYOUT_AWARE_ROUTING}.
+     *
+     * @param layoutAwareRouting The routing mode requested by the caller, or {@code null} if unset.
+     * @return The concrete routing mode to use.
+     */
+    public static LayoutAwareRouting resolveLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        if (layoutAwareRouting == null || layoutAwareRouting == LayoutAwareRouting.AUTO) {
+            return DEFAULT_LAYOUT_AWARE_ROUTING;
+        }
+        return layoutAwareRouting;
+    }
+
+    /**
+     * Copies layout options and pins continuation requests to the initial response ETag.
+     *
+     * @param options The layout options.
+     * @param marker The continuation marker.
+     * @param layoutETag The ETag from the first page observed by this enumeration.
+     * @return The options to use for the request.
+     */
+    public static BlobGetLayoutOptions getLayoutOptionsWithLockedETag(BlobGetLayoutOptions options, String marker,
+        String layoutETag) {
+        if (marker == null || layoutETag == null) {
+            return options;
+        }
+
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+        return new BlobGetLayoutOptions().setRange(finalOptions.getRange())
+            .setRequestConditions(
+                copyBlobRequestConditionsWithIfMatch(finalOptions.getRequestConditions(), layoutETag));
+    }
+
+    /**
+     * Copies request conditions and replaces If-Match when an ETag is provided.
+     *
+     * @param source The request conditions to copy.
+     * @param layoutETag The ETag to use for If-Match.
+     * @return The copied request conditions.
+     */
+    public static BlobRequestConditions copyBlobRequestConditionsWithIfMatch(BlobRequestConditions source,
+        String layoutETag) {
+        // ScrubEtagPolicy strips the quotes from the response ETag, but RFC 9110 requires them on the wire.
+        if (source == null) {
+            return new BlobRequestConditions().setIfMatch(StorageImplUtils.toETagHeaderValue(layoutETag));
+        }
+
+        return copyBlobRequestConditions(source)
+            .setIfMatch(layoutETag == null ? source.getIfMatch() : StorageImplUtils.toETagHeaderValue(layoutETag));
+    }
+
+    /**
+     * Determines whether a layout-fetch failure must fail the download.
+     *
+     * @param statusCode The layout response status code.
+     * @return Whether the failure is fatal.
+     */
+    public static boolean isFatalLayoutFetchStatus(int statusCode) {
+        // The blob cannot be read consistently after these responses.
+        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
+    }
+
+    /**
+     * Determines whether an optional layout fetch can fall back to the original blob endpoint.
+     *
+     * @param exception The layout-fetch failure.
+     * @return Whether the failure is a non-fatal service response or a transport failure.
+     */
+    public static boolean isRecoverableLayoutFetchError(Throwable exception) {
+        // Match RequestRetryPolicy's transport-failure classification, including wrapped causes.
+        for (Throwable cause = exception; cause != null; cause = cause.getCause()) {
+            if (cause instanceof Error) {
+                return false;
+            }
+            if (cause instanceof BlobStorageException) {
+                return !isFatalLayoutFetchStatus(((BlobStorageException) cause).getStatusCode());
+            }
+            if (cause instanceof IOException || cause instanceof TimeoutException) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Creates the cached value used to fall back to the original blob endpoint after a non-fatal layout failure.
+     *
+     * @param exception The layout-fetch failure.
+     * @return A cache value with no usable layout.
+     */
+    public static BlobLayoutCacheValue createLayoutFallbackValue(Throwable exception) {
+        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
+        return new BlobLayoutCacheValue(null);
+    }
+
+    private static BlobRequestConditions copyBlobRequestConditions(BlobRequestConditions source) {
+        if (source == null) {
+            return null;
+        }
+
+        return new BlobRequestConditions().setLeaseId(source.getLeaseId())
+            .setTagsConditions(source.getTagsConditions())
+            .setIfModifiedSince(source.getIfModifiedSince())
+            .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
+            .setIfMatch(source.getIfMatch())
+            .setIfNoneMatch(source.getIfNoneMatch())
+            .setAccessTierIfModifiedSince(source.getAccessTierIfModifiedSince())
+            .setAccessTierIfUnmodifiedSince(source.getAccessTierIfUnmodifiedSince());
     }
 
     /**
@@ -403,6 +567,56 @@ public final class ModelHelper {
 
     public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
         return new BlobsDownloadHeaders(headers);
+    }
+
+    /**
+     * Transforms the generated layout response body into public blob layout range models.
+     *
+     * @param layout The generated layout response body.
+     * @return The public blob layout ranges.
+     */
+    public static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {
+        List<BlobLayoutRange> layoutRanges = new ArrayList<>();
+        if (layout == null || layout.getRanges() == null || layout.getRanges().getRange() == null) {
+            return layoutRanges;
+        }
+
+        Map<Integer, URI> endpointsByIndex = new HashMap<>();
+        if (layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
+            for (BlobLayoutEndpointsEndpointItem endpointItem : layout.getEndpoints().getEndpoint()) {
+                if (endpointItem != null) {
+                    endpointsByIndex.put(endpointItem.getIndex(), toEndpointUri(endpointItem.getValue()));
+                }
+            }
+        }
+
+        for (BlobLayoutRangesRangeItem rangeItem : layout.getRanges().getRange()) {
+            if (rangeItem != null) {
+                HttpRange httpRange
+                    = new HttpRange(rangeItem.getStart(), rangeItem.getEnd() - rangeItem.getStart() + 1);
+                layoutRanges.add(new BlobLayoutRange(httpRange, endpointsByIndex.get(rangeItem.getEndpointIndex())));
+            }
+        }
+
+        return layoutRanges;
+    }
+
+    private static URI toEndpointUri(String endpoint) {
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
+            return null;
+        }
+
+        try {
+            URI endpointUri = new URI(endpoint);
+            if (endpointUri.getHost() != null) {
+                return endpointUri;
+            }
+
+            endpointUri = new URI("//" + endpoint);
+            return endpointUri.getHost() == null ? null : endpointUri;
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
@@ -674,6 +888,16 @@ public final class ModelHelper {
     }
 
     /**
+     * Resolves {@link SessionMode#AUTO} to the session mode selected by the client library.
+     *
+     * @param mode the session mode requested by the caller.
+     * @return the resolved session mode.
+     */
+    public static SessionMode resolveSessionMode(SessionMode mode) {
+        return mode == SessionMode.AUTO ? DEFAULT_SESSION_MODE : mode;
+    }
+
+    /**
      * Resolves a user-supplied {@link StorageResponseSerializationFormat} to the concrete value
      * to send on the wire. Treats {@code null} and {@link StorageResponseSerializationFormat#AUTO}
      * identically — both yield {@link #DEFAULT_SERIALIZATION_FORMAT}.
@@ -687,6 +911,34 @@ public final class ModelHelper {
             return DEFAULT_SERIALIZATION_FORMAT;
         }
         return format;
+    }
+
+    /**
+     * Copies list blobs options.
+     *
+     * @param options the listing options to copy, or {@code null}.
+     * @return the copied options.
+     */
+    public static ListBlobsOptions copyListBlobsOptions(ListBlobsOptions options) {
+        if (options == null) {
+            return new ListBlobsOptions();
+        }
+        return new ListBlobsOptions().setMaxResultsPerPage(options.getMaxResultsPerPage())
+            .setPrefix(options.getPrefix())
+            .setStartFrom(options.getStartFrom())
+            .setEndBefore(options.getEndBefore())
+            .setDetails(options.getDetails())
+            .setStorageResponseSerializationFormat(options.getStorageResponseSerializationFormat());
+    }
+
+    /**
+     * Replaces the requested serialization format with the concrete wire format.
+     *
+     * @param options the listing options to update.
+     */
+    public static void applyDefaultsToListBlobsOptions(ListBlobsOptions options) {
+        options.setStorageResponseSerializationFormat(
+            resolveSerializationFormat(options.getStorageResponseSerializationFormat()));
     }
 
     /**

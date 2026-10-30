@@ -36,6 +36,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -105,6 +106,7 @@ public final class BuilderHelper {
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new DataLocalityPolicy());
         policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
 
         policies.add(new AddDatePolicy());

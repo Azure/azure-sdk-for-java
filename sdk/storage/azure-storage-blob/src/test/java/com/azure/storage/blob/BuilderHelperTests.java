@@ -6,32 +6,53 @@ package com.azure.storage.blob;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
+import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.ExpectContinueMode;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.RetryPolicyType;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,16 +61,27 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,6 +93,17 @@ public class BuilderHelperTests {
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
+    private static final String CREATE_SESSION_RESPONSE_BODY
+        = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<CreateSessionResult><Id>session-id</Id><Expiration>"
+            + OffsetDateTime.now().plusHours(1).format(java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME)
+            + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
+            + "<SessionToken>session-token</SessionToken>"
+            + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+            + "</Credentials></CreateSessionResult>";
+    private static final String DATA_RESPONSE_BODY = "data-response";
+
+    // Guards tests that set, or rely on the absence of, the expect-continue opt out in the global configuration.
+    private static final String GLOBAL_CONFIGURATION_LOCK = "ExpectContinueGlobalConfiguration";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setBody(Flux.empty())
@@ -72,10 +115,10 @@ public class BuilderHelperTests {
      */
     @Test
     public void freshDateAppliedOnRetry() {
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
-                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null, null,
+            new ClientLogger(BuilderHelperTests.class), null, null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -176,7 +219,8 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null,
+            null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -305,7 +349,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -628,6 +672,255 @@ public class BuilderHelperTests {
                 .buildBlockBlobClient());
     }
 
+    @Test
+    public void expectContinuePolicyIsPerRetryAndBeforeCredentials() {
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.APPLY_ON_THROTTLE),
+            new ClientLogger(BuilderHelperTests.class), null, null);
+
+        int retryIndex = indexOfPolicy(pipeline, RequestRetryPolicy.class);
+        int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinuePolicy.class);
+        int credentialIndex = indexOfPolicy(pipeline, StorageSharedKeyCredentialPolicy.class);
+
+        assertNotEquals(-1, expectContinueIndex, "Expect-continue policy was not added to the pipeline.");
+        assertTrue(retryIndex < expectContinueIndex,
+            "Expect-continue policy must be after the retry policy so it is evaluated on every attempt.");
+        assertTrue(expectContinueIndex < credentialIndex,
+            "Expect-continue policy must be before the credential policy.");
+    }
+
+    @Test
+    public void expectContinueIsNotAppliedByDefault() {
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
+    }
+
+    @Test
+    public void expectContinueOptionsAreHonoredByBuilder() {
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, new ExpectContinueOptions().setMode(ExpectContinueMode.OFF),
+                new ClientLogger(BuilderHelperTests.class), null, null);
+
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
+    }
+
+    @Test
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ)
+    public void expectContinueHeaderReachesTransport() throws MalformedURLException {
+        AtomicReference<String> expectHeader = new AtomicReference<>();
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient() {
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        expectHeader.set(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+                        return new MockHttpResponse(request, 201);
+                    }
+                }, new ArrayList<>(), new ArrayList<>(), null, null,
+                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class),
+                null, null);
+
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
+        pipeline.sendSync(request, Context.NONE);
+
+        assertEquals("100-continue", expectHeader.get());
+    }
+
+    @Test
+    public void expectHeaderIsAllowedInDefaultLogOptions() {
+        assertTrue(
+            BuilderHelper.getDefaultHttpLogOptions().getAllowedHttpHeaderNames().contains(HttpHeaderName.EXPECT));
+    }
+
+    // The threshold must be compared with the Content-Length actually sent, which content validation encoding grows.
+    // With a threshold between the raw and encoded sizes, only an encoded request qualifies, on every attempt.
+    @ParameterizedTest(name = "encoded={0}, sync={1}")
+    @CsvSource({ "true, true", "true, false", "false, true", "false, false" })
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ)
+    public void expectContinueThresholdUsesEncodedContentLength(boolean encoded, boolean sync)
+        throws MalformedURLException {
+        byte[] body = new byte[1024];
+        List<String> expectHeaders = Collections.synchronizedList(new ArrayList<>());
+        List<Long> contentLengths = Collections.synchronizedList(new ArrayList<>());
+        AtomicInteger attempts = new AtomicInteger();
+        HttpClient httpClient = new NoOpHttpClient() {
+            private HttpResponse handle(HttpRequest request) {
+                expectHeaders.add(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+                contentLengths.add(Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)));
+                return new MockHttpResponse(request, attempts.getAndIncrement() == 0 ? 503 : 201);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request, Context context) {
+                return Mono.fromCallable(() -> handle(request));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return handle(request);
+            }
+        };
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            new RequestRetryOptions(RetryPolicyType.FIXED, 2, (Integer) null, 1L, 5L, null), null,
+            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), httpClient, new ArrayList<>(),
+            new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.ON).setContentLengthThreshold(body.length + 1L),
+            new ClientLogger(BuilderHelperTests.class), null, null);
+
+        Context context = encoded
+            ? new Context(StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY,
+                StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT)
+            : Context.NONE;
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT + "container/blob")).setBody(body);
+        try (HttpResponse response
+            = sync ? pipeline.sendSync(request, context) : pipeline.send(request, context).block()) {
+            assertEquals(201, response.getStatusCode());
+        }
+
+        assertEquals(2, expectHeaders.size(), "the 503 should have been retried");
+        for (int attempt = 0; attempt < 2; attempt++) {
+            if (encoded) {
+                assertTrue(contentLengths.get(attempt) > body.length, "attempt " + attempt + " was not encoded");
+                assertEquals("100-continue", expectHeaders.get(attempt), "attempt " + attempt);
+            } else {
+                assertEquals(body.length, contentLengths.get(attempt), "attempt " + attempt);
+                assertNull(expectHeaders.get(attempt), "attempt " + attempt);
+            }
+        }
+    }
+
+    // The opt out set in a client's own configuration must be honored, not only one set globally.
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("expectContinueBuilders")
+    public void expectContinueHonorsBuilderConfigurationOptOut(String name,
+        BiFunction<Configuration, HttpClient, HttpPipeline> pipelineFactory) throws MalformedURLException {
+        Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
+            new TestConfigurationSource(),
+            new TestConfigurationSource().put(Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER, "true"))
+                .build();
+        ExpectHeaderRecordingHttpClient client = new ExpectHeaderRecordingHttpClient();
+
+        sendRequestWithBody(pipelineFactory.apply(configuration, client));
+
+        assertNull(client.expectHeader.get(), name + " ignored the opt out in its configuration");
+    }
+
+    // Configuration.NONE must not inherit an opt out set globally, while no configuration falls back to the global one.
+    @SuppressWarnings("deprecation")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("expectContinueBuilders")
+    @ResourceLock(value = GLOBAL_CONFIGURATION_LOCK, mode = ResourceAccessMode.READ_WRITE)
+    public void expectContinueConfigurationNoneIgnoresGlobalOptOut(String name,
+        BiFunction<Configuration, HttpClient, HttpPipeline> pipelineFactory) throws MalformedURLException {
+        String property = Constants.PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER;
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        String original = globalConfiguration.remove(property);
+        globalConfiguration.put(property, "true");
+        try {
+            ExpectHeaderRecordingHttpClient noneClient = new ExpectHeaderRecordingHttpClient();
+            sendRequestWithBody(pipelineFactory.apply(Configuration.NONE, noneClient));
+            assertEquals("100-continue", noneClient.expectHeader.get(),
+                name + " inherited the global opt out despite Configuration.NONE");
+
+            ExpectHeaderRecordingHttpClient defaultClient = new ExpectHeaderRecordingHttpClient();
+            sendRequestWithBody(pipelineFactory.apply(null, defaultClient));
+            assertNull(defaultClient.expectHeader.get(),
+                name + " ignored the global opt out when no configuration was supplied");
+        } finally {
+            globalConfiguration.remove(property);
+            if (original != null) {
+                globalConfiguration.put(property, original);
+            }
+        }
+    }
+
+    private static Stream<Arguments> expectContinueBuilders() {
+        return Stream.of(
+            Arguments.of("BlobServiceClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("BlobContainerClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("BlobClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new BlobClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .blobName("blob")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildClient()
+                        .getHttpPipeline()),
+            Arguments.of("SpecializedBlobClientBuilder",
+                (BiFunction<Configuration, HttpClient, HttpPipeline>) (configuration,
+                    httpClient) -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                        .containerName("container")
+                        .blobName("blob")
+                        .credential(CREDENTIALS)
+                        .httpClient(httpClient)
+                        .configuration(configuration)
+                        .expectContinueBehavior(expectContinueOn())
+                        .buildBlockBlobClient()
+                        .getHttpPipeline()));
+    }
+
+    private static ExpectContinueOptions expectContinueOn() {
+        return new ExpectContinueOptions().setMode(ExpectContinueMode.ON);
+    }
+
+    private static void sendRequestWithBody(HttpPipeline pipeline) throws MalformedURLException {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT + "container/blob")).setBody(new byte[1024]);
+        pipeline.sendSync(request, Context.NONE).close();
+    }
+
+    private static final class ExpectHeaderRecordingHttpClient extends NoOpHttpClient {
+        private final AtomicReference<String> expectHeader = new AtomicReference<>();
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return Mono.fromCallable(() -> sendSync(request, Context.NONE));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            expectHeader.set(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+            return new MockHttpResponse(request, 201);
+        }
+    }
+
+    private static int indexOfPolicy(HttpPipeline pipeline, Class<?> policyType) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (policyType.isInstance(pipeline.getPolicy(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private static final class FreshDateTestClient implements HttpClient {
         private DateTimeRfc1123 firstDate;
 
@@ -698,4 +991,355 @@ public class BuilderHelperTests {
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }
+
+    // region buildPipeline session tests
+
+    @Test
+    public void sessionContextUseAutoByDefault() {
+        assertEquals(SessionMode.AUTO, new SessionContext().getSessionMode());
+    }
+
+    @Test
+    public void nullSessionModeResetsToAuto() {
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED);
+
+        assertEquals(SessionMode.ENABLED, options.getSessionMode());
+        assertSame(options, options.setSessionMode(null));
+        assertEquals(SessionMode.AUTO, options.getSessionMode());
+    }
+
+    @Test
+    public void autoSessionModeResolvesToDisabled() {
+        assertEquals(SessionMode.DISABLED, ModelHelper.resolveSessionMode(SessionMode.AUTO));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = SessionMode.class, names = { "DISABLED", "ENABLED" })
+    public void explicitSessionModesAreNotChanged(SessionMode mode) {
+        assertEquals(mode, ModelHelper.resolveSessionMode(mode));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void serviceBuilderRespectsSessionModeSync(SessionMode mode) {
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionContext(new SessionContext().setSessionMode(mode))
+            .buildClient()
+            .getHttpPipeline();
+
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void serviceBuilderRespectsSessionModeAsync(SessionMode mode) {
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionContext(new SessionContext().setSessionMode(mode))
+            .buildAsyncClient()
+            .getHttpPipeline();
+
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("pipelinesWithoutSessionsSupplier")
+    public void pipelinesWithoutSessionsDoNotContainSessionPolicy(String scenario,
+        Supplier<HttpPipeline> pipelineSupplier, boolean expectsBearerPolicy) {
+        HttpPipeline pipeline = pipelineSupplier.get();
+
+        assertFalse(hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"),
+            scenario + " should not contain SessionAuthenticationPolicy");
+        assertEquals(expectsBearerPolicy, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"),
+            scenario + " bearer policy expectation mismatch");
+    }
+
+    @Test
+    public void serviceBuilderDoesNotUseSessionByDefault() {
+        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .buildClient();
+
+        assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionAuthenticationPolicy"));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("standaloneSessionPipelineSupplier")
+    public void standaloneBlobBuildersDoNotUseSessionByDefault(String scenario,
+        Supplier<HttpPipeline> pipelineSupplier) {
+        assertFalse(hasPolicyOfType(pipelineSupplier.get(), "SessionAuthenticationPolicy"),
+            scenario + " should not contain SessionAuthenticationPolicy");
+    }
+
+    /**
+     * CreateSession is sent through the client's own pipeline, so the customer's per-call and per-retry policies and
+     * the client's HttpClient handle it exactly like data requests.
+     */
+    @Test
+    public void customerPoliciesAndTransportAreAppliedToCreateSessionRequests() {
+        List<HttpMethod> observedMethods = Collections.synchronizedList(new ArrayList<>());
+        List<HttpMethod> perCallMethods = Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy perRetryPolicy = (context, next) -> {
+            observedMethods.add(context.getHttpRequest().getHttpMethod());
+            return next.process();
+        };
+        HttpPipelinePolicy perCallPolicy = (context, next) -> {
+            perCallMethods.add(context.getHttpRequest().getHttpMethod());
+            return next.process();
+        };
+        List<HttpMethod> transportMethods = Collections.synchronizedList(new ArrayList<>());
+
+        HttpClient sessionClient = request -> {
+            transportMethods.add(request.getHttpMethod());
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+                return Mono.just(new MockHttpResponse(request, 201, headers,
+                    CREATE_SESSION_RESPONSE_BODY.getBytes(StandardCharsets.UTF_8)));
+            }
+
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
+            Collections.singletonList(perCallPolicy), Collections.singletonList(perRetryPolicy), null, null, null,
+            new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
+            BlobServiceVersion.getLatest());
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertEquals(Arrays.asList(HttpMethod.GET, HttpMethod.POST), perCallMethods,
+            "Per-call policies must run once for the data request and once for CreateSession");
+        assertTrue(observedMethods.contains(HttpMethod.POST),
+            "Per-retry policies must run for CreateSession requests, saw " + observedMethods);
+        assertTrue(observedMethods.contains(HttpMethod.GET),
+            "Per-retry policies must run for data requests, saw " + observedMethods);
+        assertEquals(Arrays.asList(HttpMethod.POST, HttpMethod.GET), transportMethods,
+            "CreateSession and the data request must share the client's HttpClient");
+    }
+
+    @Test
+    public void pipelinesWithoutSessionsKeepPlainLoggingPolicy() {
+        HttpPipeline pipeline = buildTokenPipeline(new SessionContext());
+
+        assertTrue(hasPolicyOfType(pipeline, "HttpLoggingPolicy"));
+        assertFalse(hasPolicyOfType(pipeline, "SessionAwareLoggingPolicy"));
+    }
+
+    @Test
+    public void sessionPipelinesWrapAllLoggingPolicies() {
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(),
+            Collections.singletonList(new HttpLoggingPolicy(new HttpLogOptions())), null, null, null,
+            new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
+            BlobServiceVersion.getLatest());
+
+        assertFalse(hasPolicyOfType(pipeline, "HttpLoggingPolicy"),
+            "Logging policies must be wrapped so CreateSession responses aren't logged with their body");
+        assertEquals(2, countPoliciesOfType(pipeline, "SessionAwareLoggingPolicy"));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void createSessionResponseBodyIsNotLoggedAsync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel);
+
+        StepVerifier.create(testContext.pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void createSessionResponseBodyIsNotLoggedSync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel);
+
+        try (HttpResponse response = testContext.pipeline
+            .sendSync(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob"), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
+    @Test
+    public void customEndpointRequiresAccountNameForDefaultSessionProvider() {
+        assertThrows(IllegalArgumentException.class,
+            () -> BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null,
+                "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class),
+                new SessionContext().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
+    }
+
+    private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {
+        List<String> loggedBodies = Collections.synchronizedList(new ArrayList<>());
+        AtomicReference<BufferTrackingHttpResponse> sessionResponse = new AtomicReference<>();
+        AtomicReference<BufferTrackingHttpResponse> dataResponse = new AtomicReference<>();
+
+        HttpClient httpClient = request -> {
+            boolean createSession = request.getHttpMethod() == HttpMethod.POST;
+            String body = createSession ? CREATE_SESSION_RESPONSE_BODY : DATA_RESPONSE_BODY;
+            HttpHeaders headers
+                = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, createSession ? "application/xml" : "text/plain")
+                    .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(body.getBytes(StandardCharsets.UTF_8).length));
+            BufferTrackingHttpResponse response
+                = new BufferTrackingHttpResponse(request, createSession ? 201 : 200, headers, body);
+            (createSession ? sessionResponse : dataResponse).set(response);
+            return Mono.just(response);
+        };
+
+        HttpLogOptions logOptions = BuilderHelper.getDefaultHttpLogOptions()
+            .setLogLevel(logLevel)
+            .setResponseLogger((logger, loggingContext) -> {
+                HttpResponse response = loggingContext.getHttpResponse().buffer();
+                return response.getBodyAsString().defaultIfEmpty("").doOnNext(loggedBodies::add).thenReturn(response);
+            });
+
+        SessionContext sessionContext = new SessionContext().setSessionMode(SessionMode.ENABLED);
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
+                null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(), new ArrayList<>(), null, null,
+                null, new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
+        return new SessionLoggingTestContext(pipeline, loggedBodies, sessionResponse, dataResponse);
+    }
+
+    private static final class SessionLoggingTestContext {
+        private final HttpPipeline pipeline;
+        private final List<String> loggedBodies;
+        private final AtomicReference<BufferTrackingHttpResponse> sessionResponse;
+        private final AtomicReference<BufferTrackingHttpResponse> dataResponse;
+
+        private SessionLoggingTestContext(HttpPipeline pipeline, List<String> loggedBodies,
+            AtomicReference<BufferTrackingHttpResponse> sessionResponse,
+            AtomicReference<BufferTrackingHttpResponse> dataResponse) {
+            this.pipeline = pipeline;
+            this.loggedBodies = loggedBodies;
+            this.sessionResponse = sessionResponse;
+            this.dataResponse = dataResponse;
+        }
+
+        private void assertOnlyDataResponseWasLogged() {
+            assertNotNull(sessionResponse.get());
+            assertNotNull(dataResponse.get());
+            assertEquals(0, sessionResponse.get().getBufferCount());
+            assertEquals(1, dataResponse.get().getBufferCount());
+            assertEquals(Collections.singletonList(DATA_RESPONSE_BODY), loggedBodies);
+        }
+    }
+
+    private static final class BufferTrackingHttpResponse extends MockHttpResponse {
+        private final AtomicInteger bufferCount = new AtomicInteger();
+
+        private BufferTrackingHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
+            super(request, statusCode, headers, body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        @Override
+        public HttpResponse buffer() {
+            bufferCount.incrementAndGet();
+            return this;
+        }
+
+        private int getBufferCount() {
+            return bufferCount.get();
+        }
+    }
+
+    private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {
+        return Stream.of(
+            Arguments.of("null session options", (Supplier<HttpPipeline>) () -> buildTokenPipeline(null), true),
+            Arguments.of("default session options",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(new SessionContext()), true),
+            Arguments.of("automatic session mode",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionContext().setSessionMode(SessionMode.AUTO)),
+                true),
+            Arguments.of("session mode reset to null",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionContext().setSessionMode(SessionMode.ENABLED).setSessionMode(null)),
+                true),
+            Arguments.of("sessions disabled",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionContext().setSessionMode(SessionMode.DISABLED)),
+                true),
+            Arguments.of("shared key credential", (Supplier<HttpPipeline>) BuilderHelperTests::buildSharedKeyPipeline,
+                false));
+    }
+
+    private static Stream<Arguments> standaloneSessionPipelineSupplier() {
+        return Stream.of(
+            Arguments.of("standalone BlobClientBuilder",
+                (Supplier<HttpPipeline>) () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .blobName("myblob")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildClient()
+                    .getHttpPipeline()),
+            Arguments.of("standalone BlobContainerClientBuilder",
+                (Supplier<HttpPipeline>) () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildClient()
+                    .getHttpPipeline()),
+            Arguments.of("standalone SpecializedBlobClientBuilder",
+                (Supplier<HttpPipeline>) () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .blobName("myblob")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildBlockBlobClient()
+                    .getHttpPipeline()));
+    }
+
+    /**
+     * Helper to build a pipeline with bearer token auth and the given session options.
+     */
+    private static HttpPipeline buildTokenPipeline(SessionContext sessionContext) {
+        return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null, null,
+            new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
+    }
+
+    /**
+     * Helper to build a pipeline without bearer token auth (shared key only).
+     */
+    private static HttpPipeline buildSharedKeyPipeline() {
+        return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
+            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+            new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+    }
+
+    /**
+     * Checks whether the pipeline contains a policy whose simple class name matches the given name.
+     */
+    private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
+        return countPoliciesOfType(pipeline, simpleClassName) > 0;
+    }
+
+    private static int countPoliciesOfType(HttpPipeline pipeline, String simpleClassName) {
+        int count = 0;
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
+                count++;
+            }
+        }
+        return count;
+    }
+    // endregion
 }
