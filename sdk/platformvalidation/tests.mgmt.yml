@@ -1,0 +1,30 @@
+trigger: none
+
+pr: none
+
+parameters:
+  - name: RunExecution
+    displayName: Run boot execution with an approved image fixture
+    type: boolean
+    default: false
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: platformvalidation
+    MaxParallel: 1
+    TestOptions: '$(TestOptions) -Djunit.jupiter.execution.parallel.enabled=false'
+    EnvVars:
+      PLATFORMVALIDATION_LOCATION: eastus2euap
+      PLATFORMVALIDATION_ARM_ENDPOINT: https://eastus2euap.management.azure.com
+      ${{ if eq(parameters.RunExecution, true) }}:
+        PLATFORMVALIDATION_RUN_EXECUTION: 'true'
+        PLATFORMVALIDATION_SOURCE_VHD_URI: $(PlatformValidationSourceVhdUri)
+      ${{ else }}:
+        PLATFORMVALIDATION_RUN_EXECUTION: 'false'
+    Artifacts:
+      - name: azure-resourcemanager-platformvalidation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerplatformvalidation
+    MatrixFilters:
+      - pool=.*(win).*
