@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,79 +14,66 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /**
      * Static value AzureApplicationInsights for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_APPLICATION_INSIGHTS = fromString("AzureApplicationInsights");
 
     /**
      * Static value AzureBlob for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_BLOB = fromString("AzureBlob");
 
     /**
      * Static value AzureCosmosDB for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_COSMOS_DB = fromString("AzureCosmosDB");
 
     /**
      * Static value AzureDataExplorer for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");
 
     /**
      * Static value AzureDataLakeStorageGen2 for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_DATA_LAKE_STORAGE_GEN2 = fromString("AzureDataLakeStorageGen2");
 
     /**
      * Static value AzureEventHubs for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_EVENT_HUBS = fromString("AzureEventHubs");
 
     /**
      * Static value AzureLogAnalytics for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_LOG_ANALYTICS = fromString("AzureLogAnalytics");
 
     /**
      * Static value AzureTable for DataSourceType.
      */
-    @Generated
     public static final DataSourceType AZURE_TABLE = fromString("AzureTable");
 
     /**
      * Static value InfluxDB for DataSourceType.
      */
-    @Generated
     public static final DataSourceType INFLUX_DB = fromString("InfluxDB");
 
     /**
      * Static value MongoDB for DataSourceType.
      */
-    @Generated
     public static final DataSourceType MONGO_DB = fromString("MongoDB");
 
     /**
      * Static value MySql for DataSourceType.
      */
-    @Generated
     public static final DataSourceType MY_SQL = fromString("MySql");
 
     /**
      * Static value PostgreSql for DataSourceType.
      */
-    @Generated
     public static final DataSourceType POSTGRE_SQL = fromString("PostgreSql");
 
     /**
      * Static value SqlServer for DataSourceType.
      */
-    @Generated
     public static final DataSourceType SQL_SERVER = fromString("SqlServer");
 
     /**
@@ -95,7 +81,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public DataSourceType() {
     }
@@ -106,7 +91,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
      * @param name a name to look for.
      * @return the corresponding DataSourceType.
      */
-    @Generated
     public static DataSourceType fromString(String name) {
         return fromString(name, DataSourceType.class);
     }
@@ -116,7 +100,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
      * 
      * @return known DataSourceType values.
      */
-    @Generated
     public static Collection<DataSourceType> values() {
         return values(DataSourceType.class);
     }

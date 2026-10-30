@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,33 +17,14 @@ import java.util.UUID;
 @Fluent
 public final class AzureSQLConnectionStringCredential extends DataSourceCredential {
     /*
-     * Type of data source credential
-     */
-    @Generated
-    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.AZURE_SQLCONNECTION_STRING;
-
-    /*
      * The parameters property.
      */
-    @Generated
     private AzureSQLConnectionStringParam parameters;
 
     /**
      * Creates an instance of AzureSQLConnectionStringCredential class.
      */
-    @Generated
     public AzureSQLConnectionStringCredential() {
-    }
-
-    /**
-     * Get the dataSourceCredentialType property: Type of data source credential.
-     * 
-     * @return the dataSourceCredentialType value.
-     */
-    @Generated
-    @Override
-    public DataSourceCredentialType getDataSourceCredentialType() {
-        return this.dataSourceCredentialType;
     }
 
     /**
@@ -52,7 +32,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
      * 
      * @return the parameters value.
      */
-    @Generated
     public AzureSQLConnectionStringParam getParameters() {
         return this.parameters;
     }
@@ -63,7 +42,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
      * @param parameters the parameters value to set.
      * @return the AzureSQLConnectionStringCredential object itself.
      */
-    @Generated
     public AzureSQLConnectionStringCredential setParameters(AzureSQLConnectionStringParam parameters) {
         this.parameters = parameters;
         return this;
@@ -72,7 +50,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureSQLConnectionStringCredential setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -82,7 +59,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureSQLConnectionStringCredential
         setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
@@ -90,18 +66,16 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.AZURE_SQLCONNECTION_STRING == null
+                ? null
+                : DataSourceCredentialType.AZURE_SQLCONNECTION_STRING.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -111,10 +85,10 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureSQLConnectionStringCredential if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureSQLConnectionStringCredential.
      */
-    @Generated
     public static AzureSQLConnectionStringCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSQLConnectionStringCredential deserializedAzureSQLConnectionStringCredential
@@ -123,7 +97,14 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    String dataSourceCredentialType = reader.getString();
+                    if (!"AzureSQLConnectionString".equals(dataSourceCredentialType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceCredentialType' was expected to be non-null and equal to 'AzureSQLConnectionString'. The found 'dataSourceCredentialType' was '"
+                                + dataSourceCredentialType + "'.");
+                    }
+                } else if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential.setDataSourceCredentialId(
@@ -134,9 +115,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
                 } else if ("parameters".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential.parameters
                         = AzureSQLConnectionStringParam.fromJson(reader);
-                } else if ("dataSourceCredentialType".equals(fieldName)) {
-                    deserializedAzureSQLConnectionStringCredential.dataSourceCredentialType
-                        = DataSourceCredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,56 +19,34 @@ import java.util.UUID;
 @Fluent
 public class HookInfo implements JsonSerializable<HookInfo> {
     /*
-     * hook type
-     */
-    @Generated
-    private HookType hookType = HookType.fromString("HookInfo");
-
-    /*
      * Hook unique id
      */
-    @Generated
     private UUID hookId;
 
     /*
      * hook unique name
      */
-    @Generated
     private String hookName;
 
     /*
      * hook description
      */
-    @Generated
     private String description;
 
     /*
      * hook external link
      */
-    @Generated
     private String externalLink;
 
     /*
      * hook administrators
      */
-    @Generated
     private List<String> admins;
 
     /**
      * Creates an instance of HookInfo class.
      */
-    @Generated
     public HookInfo() {
-    }
-
-    /**
-     * Get the hookType property: hook type.
-     * 
-     * @return the hookType value.
-     */
-    @Generated
-    public HookType getHookType() {
-        return this.hookType;
     }
 
     /**
@@ -77,7 +54,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the hookId value.
      */
-    @Generated
     public UUID getHookId() {
         return this.hookId;
     }
@@ -88,7 +64,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param hookId the hookId value to set.
      * @return the HookInfo object itself.
      */
-    @Generated
     HookInfo setHookId(UUID hookId) {
         this.hookId = hookId;
         return this;
@@ -99,7 +74,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the hookName value.
      */
-    @Generated
     public String getHookName() {
         return this.hookName;
     }
@@ -110,7 +84,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param hookName the hookName value to set.
      * @return the HookInfo object itself.
      */
-    @Generated
     public HookInfo setHookName(String hookName) {
         this.hookName = hookName;
         return this;
@@ -121,7 +94,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -132,7 +104,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param description the description value to set.
      * @return the HookInfo object itself.
      */
-    @Generated
     public HookInfo setDescription(String description) {
         this.description = description;
         return this;
@@ -143,7 +114,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the externalLink value.
      */
-    @Generated
     public String getExternalLink() {
         return this.externalLink;
     }
@@ -154,7 +124,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param externalLink the externalLink value to set.
      * @return the HookInfo object itself.
      */
-    @Generated
     public HookInfo setExternalLink(String externalLink) {
         this.externalLink = externalLink;
         return this;
@@ -165,7 +134,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the admins value.
      */
-    @Generated
     public List<String> getAdmins() {
         return this.admins;
     }
@@ -176,21 +144,15 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param admins the admins value to set.
      * @return the HookInfo object itself.
      */
-    @Generated
     public HookInfo setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("hookName", this.hookName);
-        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("externalLink", this.externalLink);
         jsonWriter.writeArrayField("admins", this.admins, (writer, element) -> writer.writeString(element));
@@ -203,38 +165,37 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of HookInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the HookInfo.
      */
-    @Generated
     public static HookInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("hookType".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Email".equals(discriminatorValue)) {
-                    return EmailHookInfo.fromJson(readerToUse.reset());
-                } else if ("Webhook".equals(discriminatorValue)) {
-                    return WebhookHookInfo.fromJson(readerToUse.reset());
+            JsonReader readerToUse = reader.bufferObject();
+
+            readerToUse.nextToken(); // Prepare for reading
+            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = readerToUse.getFieldName();
+                readerToUse.nextToken();
+                if ("hookType".equals(fieldName)) {
+                    discriminatorValue = readerToUse.getString();
+                    break;
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    readerToUse.skipChildren();
                 }
+            }
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("Email".equals(discriminatorValue)) {
+                return EmailHookInfo.fromJson(readerToUse.reset());
+            } else if ("Webhook".equals(discriminatorValue)) {
+                return WebhookHookInfo.fromJson(readerToUse.reset());
+            } else {
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
         });
     }
 
-    @Generated
     static HookInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HookInfo deserializedHookInfo = new HookInfo();
@@ -244,8 +205,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
                 if ("hookName".equals(fieldName)) {
                     deserializedHookInfo.hookName = reader.getString();
-                } else if ("hookType".equals(fieldName)) {
-                    deserializedHookInfo.hookType = HookType.fromString(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
                     deserializedHookInfo.hookId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));

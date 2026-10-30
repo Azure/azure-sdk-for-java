@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
     /*
      * The connection string of this MongoDB
      */
-    @Generated
     private String connectionString;
 
     /*
      * A database name in this MongoDB
      */
-    @Generated
     private String database;
 
     /*
      * The script to query this database
      */
-    @Generated
     private String command;
 
     /**
      * Creates an instance of MongoDBParameter class.
      */
-    @Generated
     public MongoDBParameter() {
     }
 
@@ -47,7 +42,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -58,7 +52,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * @param connectionString the connectionString value to set.
      * @return the MongoDBParameter object itself.
      */
-    @Generated
     public MongoDBParameter setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -69,7 +62,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * 
      * @return the database value.
      */
-    @Generated
     public String getDatabase() {
         return this.database;
     }
@@ -80,7 +72,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * @param database the database value to set.
      * @return the MongoDBParameter object itself.
      */
-    @Generated
     public MongoDBParameter setDatabase(String database) {
         this.database = database;
         return this;
@@ -91,7 +82,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * 
      * @return the command value.
      */
-    @Generated
     public String getCommand() {
         return this.command;
     }
@@ -102,16 +92,11 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * @param command the command value to set.
      * @return the MongoDBParameter object itself.
      */
-    @Generated
     public MongoDBParameter setCommand(String command) {
         this.command = command;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +115,6 @@ public final class MongoDBParameter implements JsonSerializable<MongoDBParameter
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MongoDBParameter.
      */
-    @Generated
     public static MongoDBParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDBParameter deserializedMongoDBParameter = new MongoDBParameter();

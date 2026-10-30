@@ -14,8 +14,8 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -299,8 +299,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedNullId() {
         // Arrange
-        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(null))
@@ -316,8 +315,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(INCORRECT_UUID))
@@ -345,7 +343,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 // Act & Assert
                 StepVerifier.create(client.getDataFeedWithResponse(createdDataFeed.getId()))
                     .assertNext(dataFeedResponse -> {
-                        assertEquals(200, dataFeedResponse.getStatusCode());
+                        assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
                         validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
                     });
                 // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
@@ -701,8 +699,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void deleteIncorrectDataFeedId() {
         // Arrange
-        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.deleteDataFeed(INCORRECT_UUID))
@@ -724,7 +721,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
             assertNotNull(createdDataFeed);
             StepVerifier.create(client.deleteDataFeedWithResponse(createdDataFeed.getId()))
-                .assertNext(response -> assertEquals(204, response.getStatusCode()))
+                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
@@ -733,7 +730,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 .expectErrorSatisfies(throwable -> {
                     assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
                     final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
-                    assertEquals("datafeedId is invalid.", errorCode.getMessage());
+                    assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
                 })
                 .verify(DEFAULT_TIMEOUT);
         }, SQL_SERVER_DB);

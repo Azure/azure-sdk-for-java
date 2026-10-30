@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,33 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class SQLServerDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.SQL_SERVER;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private SqlSourceParameter dataSourceParameter;
 
     /**
      * Creates an instance of SQLServerDataFeed class.
      */
-    @Generated
     public SQLServerDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -56,7 +35,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -67,7 +45,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the SQLServerDataFeed object itself.
      */
-    @Generated
     public SQLServerDataFeed setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -76,7 +53,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -86,7 +62,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -96,7 +71,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
@@ -106,7 +80,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
@@ -116,7 +89,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
@@ -126,7 +98,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
@@ -136,7 +107,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -146,7 +116,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -156,7 +125,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -166,7 +134,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -176,7 +143,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -186,7 +152,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -196,7 +161,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -206,7 +170,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -216,7 +179,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -226,7 +188,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -236,7 +197,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -246,7 +206,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -256,7 +215,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -266,7 +224,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -276,7 +233,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -286,7 +242,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -296,7 +251,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -306,20 +260,17 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.SQL_SERVER == null ? null : DataSourceType.SQL_SERVER.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -350,8 +301,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -361,10 +310,10 @@ public final class SQLServerDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SQLServerDataFeed if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SQLServerDataFeed.
      */
-    @Generated
     public static SQLServerDataFeed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SQLServerDataFeed deserializedSQLServerDataFeed = new SQLServerDataFeed();
@@ -372,7 +321,14 @@ public final class SQLServerDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"SqlServer".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'SqlServer'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedSQLServerDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedSQLServerDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -380,8 +336,8 @@ public final class SQLServerDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedSQLServerDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedSQLServerDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedSQLServerDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
                     deserializedSQLServerDataFeed
                         .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
@@ -432,8 +388,8 @@ public final class SQLServerDataFeed extends DataFeedDetail {
                 } else if ("status".equals(fieldName)) {
                     deserializedSQLServerDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedSQLServerDataFeed.setCreatedTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedSQLServerDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedSQLServerDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -443,8 +399,6 @@ public final class SQLServerDataFeed extends DataFeedDetail {
                     deserializedSQLServerDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedSQLServerDataFeed.dataSourceParameter = SqlSourceParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedSQLServerDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
