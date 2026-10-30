@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -13,6 +15,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -77,6 +80,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
+    private final AmqpRetryPolicy retryPolicy;
     private final ChannelCacheWrapper channelCache;
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
@@ -85,7 +89,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private volatile boolean isDisposed;
 
     ManagementChannel(ChannelCacheWrapper channelCache, String fullyQualifiedNamespace, String entityPath,
-        TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
+        TokenManager tokenManager, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
@@ -97,7 +101,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
-        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
+        this.retryPolicy
+            = RetryUtil.getRetryPolicy(Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null."));
+        this.operationTimeout = retryOptions.getTryTimeout();
     }
 
     /**
@@ -380,17 +386,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Map<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(ManagementConstants.MESSAGES, messageList);
 
-            final Message requestMessage = createManagementMessage(OPERATION_SCHEDULE_MESSAGE, associatedLinkName);
-
-            requestMessage.setBody(new AmqpValue(requestBodyMap));
-
             TransactionalState transactionalState = null;
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 transactionalState = new TransactionalState();
                 transactionalState.setTxnId(Binary.create(transactionContext.getTransactionId()));
             }
 
-            return sendWithVerify(channel, requestMessage, transactionalState);
+            return verifyResponse(channel,
+                sendScheduleRequest(channel, requestBodyMap, associatedLinkName, transactionalState, 0));
         }).flatMapMany(response -> {
             final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
             if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
@@ -401,6 +404,39 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
             return Flux.fromIterable(sequenceNumbers);
         }));
+    }
+
+    private Mono<Message> sendScheduleRequest(RequestResponseChannel channel, Map<String, Object> requestBody,
+        String associatedLinkName, DeliveryState deliveryState, int retryCount) {
+        // sendWithAck assigns correlation properties, so every attempt needs a fresh management message.
+        final Message request = createManagementMessage(OPERATION_SCHEDULE_MESSAGE, associatedLinkName);
+        request.setBody(new AmqpValue(requestBody));
+
+        return channel.sendWithAck(request, deliveryState).flatMap(response -> {
+            // Retry only an explicit busy response, not an uncertain send or an operation within a transaction.
+            if (deliveryState != null
+                || RequestResponseUtils.getStatusCode(response) != AmqpResponseCode.SERVICE_UNAVAILABLE
+                || !AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()
+                    .equals(RequestResponseUtils.getErrorCondition(response))
+                || retryCount >= retryPolicy.getMaxRetries()) {
+                return Mono.just(response);
+            }
+
+            final Throwable error = ExceptionUtil.toException(RequestResponseUtils.getErrorCondition(response),
+                RequestResponseUtils.getStatusDescription(response), channel.getErrorContext());
+            final Duration delay = retryPolicy.calculateRetryDelay(error, retryCount + 1);
+            if (delay == null) {
+                return Mono.just(response);
+            }
+
+            logger.atVerbose()
+                .addKeyValue("retryCount", retryCount + 1)
+                .addKeyValue("delay", delay)
+                .log("Retrying scheduling after a server-busy response.");
+            return Mono.delay(delay)
+                .then(Mono
+                    .defer(() -> sendScheduleRequest(channel, requestBody, associatedLinkName, null, retryCount + 1)));
+        });
     }
 
     @Override
@@ -723,7 +759,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message, DeliveryState deliveryState) {
-        return channel.sendWithAck(message, deliveryState).handle((Message response, SynchronousSink<Message> sink) -> {
+        return verifyResponse(channel, channel.sendWithAck(message, deliveryState));
+    }
+
+    private Mono<Message> verifyResponse(RequestResponseChannel channel, Mono<Message> responseMono) {
+        return responseMono.handle((Message response, SynchronousSink<Message> sink) -> {
             if (RequestResponseUtils.isSuccessful(response)) {
                 sink.next(response);
                 return;

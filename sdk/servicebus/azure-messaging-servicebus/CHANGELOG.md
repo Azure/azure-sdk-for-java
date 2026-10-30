@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed non-transactional message scheduling not retrying an explicit server-busy management response according to the configured AMQP retry options.
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.

@@ -158,6 +158,7 @@ import java.util.Objects;
 public final class ServiceBusSenderClient implements AutoCloseable {
     private final ServiceBusSenderAsyncClient asyncClient;
     private final Duration tryTimeout;
+    private final Duration scheduleTimeout;
 
     /**
      * Creates a new instance of {@link ServiceBusSenderClient} that sends messages to an Azure Service Bus.
@@ -165,8 +166,13 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code asyncClient} or {@code tryTimeout} is null.
      */
     ServiceBusSenderClient(ServiceBusSenderAsyncClient asyncClient, Duration tryTimeout) {
+        this(asyncClient, tryTimeout, tryTimeout);
+    }
+
+    ServiceBusSenderClient(ServiceBusSenderAsyncClient asyncClient, Duration tryTimeout, Duration scheduleTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
+        this.scheduleTimeout = Objects.requireNonNull(scheduleTimeout, "'scheduleTimeout' cannot be null.");
     }
 
     /**
@@ -359,7 +365,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @throws IllegalStateException if sender is already disposed.
      */
     public Long scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
-        return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
+        return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(scheduleTimeout);
     }
 
     /**

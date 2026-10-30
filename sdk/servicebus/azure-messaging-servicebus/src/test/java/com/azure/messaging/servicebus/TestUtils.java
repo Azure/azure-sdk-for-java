@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
@@ -61,6 +62,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
+
+    public static MessageSerializer createMessageSerializer() {
+        return new ServiceBusMessageSerializer();
+    }
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);

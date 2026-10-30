@@ -1544,7 +1544,12 @@ public final class ServiceBusClientBuilder
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderClient buildClient() {
-            return new ServiceBusSenderClient(buildAsyncClient(), MessageUtils.getTotalTimeout(retryOptions));
+            final ServiceBusSenderAsyncClient asyncClient = buildAsyncClient();
+            // Server-busy backoff includes a policy-added delay, bounded by maxDelay rather than delay.
+            final Duration scheduleTimeout = retryOptions.getTryTimeout()
+                .multipliedBy((long) retryOptions.getMaxRetries() + 1)
+                .plus(retryOptions.getMaxDelay().multipliedBy(retryOptions.getMaxRetries()));
+            return new ServiceBusSenderClient(asyncClient, MessageUtils.getTotalTimeout(retryOptions), scheduleTimeout);
         }
     }
 
