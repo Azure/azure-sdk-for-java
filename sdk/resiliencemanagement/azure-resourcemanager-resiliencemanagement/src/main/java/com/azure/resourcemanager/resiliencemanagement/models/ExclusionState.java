@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class ExclusionState extends ExpandableStringEnum<ExclusionState> {
     /**
-     * Resource is not included in the goals.
+     * The resource is excluded from the goals.
      */
     public static final ExclusionState EXCLUDED = fromString("Excluded");
 
     /**
-     * Resource is excluded from the goals.
+     * The resource is included in the goals.
      */
     public static final ExclusionState INCLUDED = fromString("Included");
 

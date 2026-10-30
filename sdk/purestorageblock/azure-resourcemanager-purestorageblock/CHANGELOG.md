@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0-beta.1 (2026-07-29)
 
 - Azure Resource Manager Pure Storage Block client library for Java. This package contains Microsoft Azure SDK for Pure Storage Block Management SDK.  Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

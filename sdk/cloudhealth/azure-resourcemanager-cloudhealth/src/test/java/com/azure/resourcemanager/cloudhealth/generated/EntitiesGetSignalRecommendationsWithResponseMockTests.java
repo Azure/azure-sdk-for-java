@@ -12,8 +12,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.GetSignalRecommendationsResponse;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
-import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
+import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +24,7 @@ public final class EntitiesGetSignalRecommendationsWithResponseMockTests {
     @Test
     public void testGetSignalRecommendationsWithResponse() throws Exception {
         String responseStr
-            = "{\"recommendedSignals\":[{\"signalId\":\"em\",\"metricNamespace\":\"kzsz\",\"metricName\":\"iwtglxxhljfpg\",\"aggregationType\":\"Count\",\"unit\":\"mnzhrgmqg\",\"timeGrain\":\"x\",\"dimensionFilter\":\"qcbfrmbodths\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":43.02034378983023,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT5M\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":1.1040477658518455,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"}}},{\"signalId\":\"ousxauzlwvsgmw\",\"metricNamespace\":\"qf\",\"metricName\":\"zvuxm\",\"aggregationType\":\"None\",\"unit\":\"vthn\",\"timeGrain\":\"zt\",\"dimensionFilter\":\"ovmribiattg\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":76.85833541431322,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT5M\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":85.07544948362933,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"}}},{\"signalId\":\"gswvxwlmzqwm\",\"metricNamespace\":\"xnjmxm\",\"metricName\":\"qudtcvclx\",\"aggregationType\":\"Minimum\",\"unit\":\"k\",\"timeGrain\":\"fabuiyjibu\",\"dimensionFilter\":\"hdugneiknpg\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":12.524588233364353,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":15.025936645835436,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT30M\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"mur\",\"metricNamespace\":\"x\",\"metricName\":\"wpktvqylkmqpzoyh\",\"aggregationType\":\"Average\",\"unit\":\"gwgcl\",\"timeGrain\":\"oebqinjipn\",\"dimensionFilter\":\"fujqlafcba\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":31.11252736133039,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":63.4397466234802,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"}}}]}";
+            = "{\"recommendedSignals\":[{\"signalId\":\"olbauirop\",\"displayName\":\"nszonwpngaj\",\"description\":\"nixjawrtmjfjmy\",\"applicableResourceTypes\":[\"lzhcoxovnekh\",\"nlusfnrd\",\"jxtxrdc\",\"tjvidt\"],\"refreshInterval\":\"PT2H\",\"dataUnit\":\"uslvyjtcvuwkasi\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":93.56828623203732,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":80.89302293543858,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"jxeygtuhxu\",\"displayName\":\"buew\",\"description\":\"s\",\"applicableResourceTypes\":[\"lx\",\"zrhwp\"],\"refreshInterval\":\"PT5M\",\"dataUnit\":\"baqehgpdoh\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":30.215123515162688,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Dynamic\",\"threshold\":69.84355209205428,\"sensitivity\":\"Low\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"wfepbnwgfmx\",\"displayName\":\"cgbjbgdlfgt\",\"description\":\"snaquf\",\"applicableResourceTypes\":[\"ctqhamzjrwdk\",\"zeqyjleziun\",\"xdfzantkw\"],\"refreshInterval\":\"PT2H\",\"dataUnit\":\"amlbnseqacjjvpil\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":34.168722216267724,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":11.103840083976824,\"sensitivity\":\"High\"}}},{\"signalId\":\"iookjbsah\",\"displayName\":\"dt\",\"description\":\"elqacslmot\",\"applicableResourceTypes\":[\"nfxofvcj\",\"gdirazf\"],\"refreshInterval\":\"PT5M\",\"dataUnit\":\"w\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":29.85640068332599,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Dynamic\",\"threshold\":69.45875397877154,\"sensitivity\":\"Low\"}}},{\"signalId\":\"m\",\"displayName\":\"rbuhhlky\",\"description\":\"tqsrogtuwkff\",\"applicableResourceTypes\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"],\"refreshInterval\":\"PT30M\",\"dataUnit\":\"xfz\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":33.23397463229028,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":3.2495562780315956,\"sensitivity\":\"Medium\"}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,56 +34,45 @@ public final class EntitiesGetSignalRecommendationsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetSignalRecommendationsResponse response = manager.entities()
-            .getSignalRecommendationsWithResponse("uydzvk", "vxcnqmxqps", "okmvkhlggd",
-                com.azure.core.util.Context.NONE)
+            .getSignalRecommendationsWithResponse("oc", "ctfjgtixr", "vzuyturmlmu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("em", response.recommendedSignals().get(0).signalId());
-        Assertions.assertEquals("kzsz", response.recommendedSignals().get(0).metricNamespace());
-        Assertions.assertEquals("iwtglxxhljfpg", response.recommendedSignals().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.COUNT, response.recommendedSignals().get(0).aggregationType());
-        Assertions.assertEquals("mnzhrgmqg", response.recommendedSignals().get(0).unit());
-        Assertions.assertEquals("x", response.recommendedSignals().get(0).timeGrain());
-        Assertions.assertEquals("qcbfrmbodths", response.recommendedSignals().get(0).dimensionFilter());
-        Assertions.assertEquals(SignalOperator.EQUAL,
+        Assertions.assertEquals("olbauirop", response.recommendedSignals().get(0).signalId());
+        Assertions.assertEquals("nszonwpngaj", response.recommendedSignals().get(0).displayName());
+        Assertions.assertEquals("nixjawrtmjfjmy", response.recommendedSignals().get(0).description());
+        Assertions.assertEquals("lzhcoxovnekh", response.recommendedSignals().get(0).applicableResourceTypes().get(0));
+        Assertions.assertEquals(RefreshInterval.PT2H, response.recommendedSignals().get(0).refreshInterval());
+        Assertions.assertEquals("uslvyjtcvuwkasi", response.recommendedSignals().get(0).dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             response.recommendedSignals().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(43.02034378983023D,
+        Assertions.assertEquals(93.56828623203732D,
             response.recommendedSignals().get(0).evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             response.recommendedSignals().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT5M,
-            response.recommendedSignals().get(0).evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.LESS_THAN,
+        Assertions.assertEquals(SignalOperator.EQUAL,
             response.recommendedSignals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(1.1040477658518455D,
+        Assertions.assertEquals(80.89302293543858D,
             response.recommendedSignals().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             response.recommendedSignals().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            response.recommendedSignals().get(0).evaluationRules().unhealthyRule().lookBackWindow());
-        Assertions.assertEquals("mur", response.recommendedConfigurations().get(0).signalId());
-        Assertions.assertEquals("x", response.recommendedConfigurations().get(0).metricNamespace());
-        Assertions.assertEquals("wpktvqylkmqpzoyh", response.recommendedConfigurations().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.AVERAGE,
-            response.recommendedConfigurations().get(0).aggregationType());
-        Assertions.assertEquals("gwgcl", response.recommendedConfigurations().get(0).unit());
-        Assertions.assertEquals("oebqinjipn", response.recommendedConfigurations().get(0).timeGrain());
-        Assertions.assertEquals("fujqlafcba", response.recommendedConfigurations().get(0).dimensionFilter());
+        Assertions.assertEquals("wfepbnwgfmx", response.recommendedConfigurations().get(0).signalId());
+        Assertions.assertEquals("cgbjbgdlfgt", response.recommendedConfigurations().get(0).displayName());
+        Assertions.assertEquals("snaquf", response.recommendedConfigurations().get(0).description());
+        Assertions.assertEquals("ctqhamzjrwdk",
+            response.recommendedConfigurations().get(0).applicableResourceTypes().get(0));
+        Assertions.assertEquals(RefreshInterval.PT2H, response.recommendedConfigurations().get(0).refreshInterval());
+        Assertions.assertEquals("amlbnseqacjjvpil", response.recommendedConfigurations().get(0).dataUnit());
         Assertions.assertEquals(SignalOperator.LESS_THAN,
             response.recommendedConfigurations().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(31.11252736133039D,
+        Assertions.assertEquals(34.168722216267724D,
             response.recommendedConfigurations().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             response.recommendedConfigurations().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M,
-            response.recommendedConfigurations().get(0).evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(SignalOperator.GREATER_THAN,
             response.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(63.4397466234802D,
+        Assertions.assertEquals(11.103840083976824D,
             response.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             response.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            response.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().lookBackWindow());
     }
 }

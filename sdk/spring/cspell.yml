@@ -146,3 +146,5 @@ words:
   - "yugabytedb"
   - "zaxxer"
   - "zjsonpatch"
+ignorePaths:
+    - "scripts/spring_boot_*_managed_external_dependencies.txt"

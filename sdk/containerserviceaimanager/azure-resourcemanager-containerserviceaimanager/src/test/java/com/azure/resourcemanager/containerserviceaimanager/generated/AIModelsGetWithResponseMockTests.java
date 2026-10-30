@@ -20,7 +20,7 @@ public final class AIModelsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"modelId\":\"uiizynke\",\"description\":\"atrwyhqmibzyh\",\"spec\":{\"license\":\"tsmypyynpcdp\",\"isRestricted\":true,\"maxContextLength\":874382237}},\"id\":\"g\",\"name\":\"wznm\",\"type\":\"biknsorgjhxbld\"}";
+            = "{\"properties\":{\"modelId\":\"bfatklddxbjhwu\",\"description\":\"nozj\",\"spec\":{\"license\":\"ph\",\"isRestricted\":false,\"maxContextLength\":1172987793}},\"id\":\"pjrvxagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class AIModelsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AIModel response = manager.aIModels()
-            .getWithResponse("rmslyzrpzbchckqq", "qioxi", com.azure.core.util.Context.NONE)
-            .getValue();
+        AIModel response
+            = manager.aIModels().getWithResponse("wczelpci", "elsfeaen", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

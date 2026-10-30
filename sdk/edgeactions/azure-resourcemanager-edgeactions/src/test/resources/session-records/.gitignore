@@ -1,0 +1,2 @@
+# Initial recordings are captured locally, reviewed, then published to azure-sdk-assets.
+*.json

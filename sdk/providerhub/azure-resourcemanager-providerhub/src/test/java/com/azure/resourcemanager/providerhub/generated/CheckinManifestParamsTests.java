@@ -12,18 +12,18 @@ public final class CheckinManifestParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckinManifestParams model = BinaryData
-            .fromString("{\"environment\":\"jmkljavbqidtqajz\",\"baselineArmManifestLocation\":\"ulpkudjkrl\"}")
+            .fromString("{\"environment\":\"qajzyulpkudjkr\",\"baselineArmManifestLocation\":\"khbzhfepgzg\"}")
             .toObject(CheckinManifestParams.class);
-        Assertions.assertEquals("jmkljavbqidtqajz", model.environment());
-        Assertions.assertEquals("ulpkudjkrl", model.baselineArmManifestLocation());
+        Assertions.assertEquals("qajzyulpkudjkr", model.environment());
+        Assertions.assertEquals("khbzhfepgzg", model.baselineArmManifestLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckinManifestParams model = new CheckinManifestParams().withEnvironment("jmkljavbqidtqajz")
-            .withBaselineArmManifestLocation("ulpkudjkrl");
+        CheckinManifestParams model = new CheckinManifestParams().withEnvironment("qajzyulpkudjkr")
+            .withBaselineArmManifestLocation("khbzhfepgzg");
         model = BinaryData.fromObject(model).toObject(CheckinManifestParams.class);
-        Assertions.assertEquals("jmkljavbqidtqajz", model.environment());
-        Assertions.assertEquals("ulpkudjkrl", model.baselineArmManifestLocation());
+        Assertions.assertEquals("qajzyulpkudjkr", model.environment());
+        Assertions.assertEquals("khbzhfepgzg", model.baselineArmManifestLocation());
     }
 }

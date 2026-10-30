@@ -1594,9 +1594,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndex>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1865,9 +1872,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListAliases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchAlias>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2042,9 +2056,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeBases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeBase>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2235,9 +2256,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSource>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -4610,9 +4638,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4757,9 +4792,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4859,9 +4901,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4935,94 +4984,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
      * metadata) and a 'content' part with the raw file bytes.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     fileId: String (Optional)
-     *     fileName: String (Optional)
-     *     fileSizeBytes: Long (Optional)
-     *     createdAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
-     *     errorMessage: String (Optional)
-     *     prefix: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *     extractionMode: String(minimal/standard) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the knowledge source.
-     * @param body The multipart/form-data body containing the metadata and content parts.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadKnowledgeSourceFileMultipartWithResponse(String name, BinaryData body,
-        RequestOptions requestOptions) {
-        // Operation 'uploadKnowledgeSourceFileMultipart' is of content-type 'multipart/form-data'. Protocol API is not
-        // usable and hence not generated.
-        return this.serviceClient.uploadKnowledgeSourceFileMultipartWithResponseAsync(name, body, requestOptions);
-    }
-
-    /**
-     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
-     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
-     * file bytes.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     fileId: String (Optional)
-     *     fileName: String (Optional)
-     *     fileSizeBytes: Long (Optional)
-     *     createdAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
-     *     errorMessage: String (Optional)
-     *     prefix: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *     extractionMode: String(minimal/standard) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param fileId The unique identifier of the file to update.
-     * @param name The name of the knowledge source.
-     * @param body The multipart/form-data body containing the metadata and content parts.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponse(String fileId, String name, BinaryData body,
-        RequestOptions requestOptions) {
-        // Operation 'updateKnowledgeSourceFile' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.updateKnowledgeSourceFileWithResponseAsync(fileId, name, body, requestOptions);
-    }
-
-    /**
-     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
-     * metadata) and a 'content' part with the raw file bytes.
      *
      * @param name The name of the knowledge source.
      * @param body The multipart/form-data body containing the metadata and content parts.
@@ -5038,9 +4999,9 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFileMultipart(String name,
         UploadKnowledgeSourceFileMultipartRequest body) {
-        // Generated convenience method for uploadKnowledgeSourceFileMultipartWithResponse
+        // Generated convenience method for uploadKnowledgeSourceFileMultipartWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return uploadKnowledgeSourceFileMultipartWithResponse(name,
+        return uploadKnowledgeSourceFileMultipartWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
                 .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
                     body.getContent().getFilename())
@@ -5088,9 +5049,16 @@ public final class SearchIndexAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -5122,9 +5090,9 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String fileId, String name,
         UpdateKnowledgeSourceFileRequest body) {
-        // Generated convenience method for updateKnowledgeSourceFileWithResponse
+        // Generated convenience method for updateKnowledgeSourceFileWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return updateKnowledgeSourceFileWithResponse(fileId, name,
+        return updateKnowledgeSourceFileWithResponseInternal(fileId, name,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
                 .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
                     body.getContent().getFilename())
@@ -5168,9 +5136,16 @@ public final class SearchIndexAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -5259,5 +5234,95 @@ public final class SearchIndexAsyncClient {
         return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> uploadKnowledgeSourceFileMultipartWithResponseInternal(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        // Operation 'uploadKnowledgeSourceFileMultipart' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
+        return this.serviceClient.uploadKnowledgeSourceFileMultipartWithResponseInternalAsync(name, body,
+            requestOptions);
+    }
+
+    /**
+     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param fileId The unique identifier of the file to update.
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternal(String fileId, String name,
+        BinaryData body, RequestOptions requestOptions) {
+        // Operation 'updateKnowledgeSourceFile' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.updateKnowledgeSourceFileWithResponseInternalAsync(fileId, name, body,
+            requestOptions);
     }
 }

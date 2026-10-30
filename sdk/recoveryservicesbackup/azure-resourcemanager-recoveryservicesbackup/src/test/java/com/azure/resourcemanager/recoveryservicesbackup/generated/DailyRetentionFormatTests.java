@@ -14,18 +14,18 @@ public final class DailyRetentionFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DailyRetentionFormat model
-            = BinaryData.fromString("{\"daysOfTheMonth\":[{\"date\":1040750997,\"isLast\":true}]}")
+            = BinaryData.fromString("{\"daysOfTheMonth\":[{\"date\":1201558438,\"isLast\":true}]}")
                 .toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(1040750997, model.daysOfTheMonth().get(0).date());
+        Assertions.assertEquals(1201558438, model.daysOfTheMonth().get(0).date());
         Assertions.assertTrue(model.daysOfTheMonth().get(0).isLast());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DailyRetentionFormat model = new DailyRetentionFormat()
-            .withDaysOfTheMonth(Arrays.asList(new Day().withDate(1040750997).withIsLast(true)));
+            .withDaysOfTheMonth(Arrays.asList(new Day().withDate(1201558438).withIsLast(true)));
         model = BinaryData.fromObject(model).toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(1040750997, model.daysOfTheMonth().get(0).date());
+        Assertions.assertEquals(1201558438, model.daysOfTheMonth().get(0).date());
         Assertions.assertTrue(model.daysOfTheMonth().get(0).isLast());
     }
 }

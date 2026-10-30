@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class GremlinResourcesCreateUpdateGremlinRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinRoleDefinitionCreateUpdate.

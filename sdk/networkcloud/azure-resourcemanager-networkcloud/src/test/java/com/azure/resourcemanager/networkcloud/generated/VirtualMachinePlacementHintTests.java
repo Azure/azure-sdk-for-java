@@ -15,10 +15,10 @@ public final class VirtualMachinePlacementHintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePlacementHint model = BinaryData.fromString(
-            "{\"hintType\":\"AntiAffinity\",\"resourceId\":\"igrfihotjewl\",\"schedulingExecution\":\"Soft\",\"scope\":\"Rack\"}")
+            "{\"hintType\":\"AntiAffinity\",\"resourceId\":\"swankltytmh\",\"schedulingExecution\":\"Soft\",\"scope\":\"Rack\"}")
             .toObject(VirtualMachinePlacementHint.class);
         Assertions.assertEquals(VirtualMachinePlacementHintType.ANTI_AFFINITY, model.hintType());
-        Assertions.assertEquals("igrfihotjewl", model.resourceId());
+        Assertions.assertEquals("swankltytmh", model.resourceId());
         Assertions.assertEquals(VirtualMachineSchedulingExecution.SOFT, model.schedulingExecution());
         Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.RACK, model.scope());
     }
@@ -27,12 +27,12 @@ public final class VirtualMachinePlacementHintTests {
     public void testSerialize() throws Exception {
         VirtualMachinePlacementHint model
             = new VirtualMachinePlacementHint().withHintType(VirtualMachinePlacementHintType.ANTI_AFFINITY)
-                .withResourceId("igrfihotjewl")
+                .withResourceId("swankltytmh")
                 .withSchedulingExecution(VirtualMachineSchedulingExecution.SOFT)
                 .withScope(VirtualMachinePlacementHintPodAffinityScope.RACK);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePlacementHint.class);
         Assertions.assertEquals(VirtualMachinePlacementHintType.ANTI_AFFINITY, model.hintType());
-        Assertions.assertEquals("igrfihotjewl", model.resourceId());
+        Assertions.assertEquals("swankltytmh", model.resourceId());
         Assertions.assertEquals(VirtualMachineSchedulingExecution.SOFT, model.schedulingExecution());
         Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.RACK, model.scope());
     }

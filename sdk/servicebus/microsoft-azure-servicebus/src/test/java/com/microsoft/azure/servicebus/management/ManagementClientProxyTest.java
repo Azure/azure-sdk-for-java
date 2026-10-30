@@ -9,9 +9,9 @@ import com.microsoft.azure.servicebus.management.ManagementClient;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.TransportType;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ManagementClientProxyTest {
-    @Ignore
+    @Disabled
     @Test
     public void managementClientWithProxy() throws Exception {
         String proxyHostName = "127.0.0.1";
@@ -60,7 +60,7 @@ public class ManagementClientProxyTest {
         String queueName = "test" + UUID.randomUUID().toString().substring(0, 8);
         QueueDescription q = new QueueDescription(queueName);
         QueueDescription qCreated = managementClient.createQueue(q);
-        Assert.assertEquals(q, qCreated);
+        Assertions.assertEquals(q, qCreated);
 
         // send message
         String connectionString = TestUtils.getNamespaceConnectionString();

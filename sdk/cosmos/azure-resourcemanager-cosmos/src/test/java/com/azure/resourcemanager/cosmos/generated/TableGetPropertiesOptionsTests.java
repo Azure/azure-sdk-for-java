@@ -12,9 +12,9 @@ public final class TableGetPropertiesOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableGetPropertiesOptions model
-            = BinaryData.fromString("{\"throughput\":345832677,\"autoscaleSettings\":{\"maxThroughput\":833526505}}")
+            = BinaryData.fromString("{\"throughput\":59854716,\"autoscaleSettings\":{\"maxThroughput\":227025000}}")
                 .toObject(TableGetPropertiesOptions.class);
-        Assertions.assertEquals(345832677, model.throughput());
-        Assertions.assertEquals(833526505, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(59854716, model.throughput());
+        Assertions.assertEquals(227025000, model.autoscaleSettings().maxThroughput());
     }
 }

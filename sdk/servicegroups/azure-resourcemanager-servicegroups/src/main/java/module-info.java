@@ -12,4 +12,5 @@ module com.azure.resourcemanager.servicegroups {
 
     opens com.azure.resourcemanager.servicegroups.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.servicegroups.models to com.azure.core;
+    opens com.azure.resourcemanager.servicegroups.implementation.models to com.azure.core;
 }

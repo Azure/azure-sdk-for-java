@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -173,6 +174,12 @@ public class ChainedTokenCredential implements TokenCredential {
 
     private void handleExceptionSync(Exception e, TokenCredential selectedCredential,
         List<CredentialUnavailableException> exceptions, String logMessage, TokenCredential selectedCredential1) {
+        if (e instanceof RuntimeException && IdentityUtil.isShutdownSignal(e)) {
+            // The calling thread was interrupted, or the JVM is shutting down, while a credential was waiting for
+            // a token. That is a cancellation, not an authentication failure of this credential, and the remaining
+            // credentials in the chain would run into the same signal, so surface it unchanged.
+            throw (RuntimeException) e;
+        }
         if (e.getClass() != CredentialUnavailableException.class) {
             throw new ClientAuthenticationException(getCredUnavailableMessage(selectedCredential, e), null, e);
         } else {

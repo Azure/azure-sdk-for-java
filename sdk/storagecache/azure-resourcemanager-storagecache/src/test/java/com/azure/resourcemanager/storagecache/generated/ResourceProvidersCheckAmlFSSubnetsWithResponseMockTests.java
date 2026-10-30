@@ -30,10 +30,10 @@ public final class ResourceProvidersCheckAmlFSSubnetsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceProviders()
-            .checkAmlFSSubnetsWithResponse(new AmlFilesystemSubnetInfo().withFilesystemSubnet("pqvujzraehtwdwrf")
-                .withStorageCapacityTiB(13.409633F)
-                .withSku(new SkuName().withName("yrcdlbhshfwprac"))
-                .withLocation("wity"), com.azure.core.util.Context.NONE);
+            .checkAmlFSSubnetsWithResponse(new AmlFilesystemSubnetInfo().withFilesystemSubnet("vuzlm")
+                .withStorageCapacityTiB(23.838371F)
+                .withSku(new SkuName().withName("ktgplcr"))
+                .withLocation("jxeznoigbrnjwmw"), com.azure.core.util.Context.NONE);
 
     }
 }

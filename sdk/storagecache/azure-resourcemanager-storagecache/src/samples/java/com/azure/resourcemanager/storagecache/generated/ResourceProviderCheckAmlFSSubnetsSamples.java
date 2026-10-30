@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storagecache.models.SkuName;
  */
 public final class ResourceProviderCheckAmlFSSubnetsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/checkAmlFSSubnets.json
+     * x-ms-original-file: 2026-08-01/checkAmlFSSubnets.json
      */
     /**
      * Sample code: checkAmlFSSubnets.

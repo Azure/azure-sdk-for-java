@@ -15,7 +15,7 @@ public final class GetCurrentLedgerEntryTests extends ConfidentialLedgerClientTe
     @Disabled
     public void testGetCurrentLedgerEntryTests() {
         // method invocation
-        LedgerEntry response = confidentialLedgerClient.getCurrentLedgerEntry(null);
+        LedgerEntry response = confidentialLedgerClient.getCurrentLedgerEntry((String) null);
 
         // response assertion
         Assertions.assertNotNull(response);

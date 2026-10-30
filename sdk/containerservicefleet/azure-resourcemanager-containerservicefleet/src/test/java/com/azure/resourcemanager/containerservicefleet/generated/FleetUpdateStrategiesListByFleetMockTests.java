@@ -23,7 +23,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"lds\",\"groups\":[{\"name\":\"tjb\"},{\"name\":\"kdmflvestmjlx\"},{\"name\":\"ril\"}],\"afterStageWaitInSeconds\":1058689711,\"maxConcurrency\":\"eewchpxlktw\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"uztcktyhjtqed\",\"groups\":[{\"name\":\"ulwm\"},{\"name\":\"rqzz\"},{\"name\":\"rjvpglydzgkrvqee\"},{\"name\":\"toepryu\"}],\"afterStageWaitInSeconds\":479918870,\"maxConcurrency\":\"tpzdmovzvfvaawzq\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"iglaecx\",\"id\":\"t\",\"name\":\"cokpv\",\"type\":\"mlqtmldgxob\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"ikczvvitacgxmf\",\"groups\":[{\"name\":\"er\"},{\"name\":\"htvs\"}],\"memberSelector\":{\"byLabel\":\"hlwntsjgq\"},\"afterStageWaitInSeconds\":2055251936,\"maxAllowedFailures\":\"p\",\"maxConcurrency\":\"uuybnchrsz\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"}]},{\"name\":\"ndnbfqy\",\"groups\":[{\"name\":\"g\"}],\"memberSelector\":{\"byLabel\":\"nlgmtrwahzjmu\"},\"afterStageWaitInSeconds\":373505246,\"maxAllowedFailures\":\"yrplrohkpigqfus\",\"maxConcurrency\":\"kzmkwklsnoxaxmqe\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"}]},{\"name\":\"gwydyy\",\"groups\":[{\"name\":\"vkh\"},{\"name\":\"bvqt\"}],\"memberSelector\":{\"byLabel\":\"arfdlpukhpyrnei\"},\"afterStageWaitInSeconds\":1539061935,\"maxAllowedFailures\":\"eogkhnmgbro\",\"maxConcurrency\":\"ddbhf\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"}]}]}},\"eTag\":\"pdulon\",\"id\":\"cnpqwteht\",\"name\":\"evrh\",\"type\":\"ljyoogwx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,20 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies()
-            .listByFleet("xrkjpvdw", "fzwiivwzjbhyz", 954639384, "jrkambtrnegvmnv", com.azure.core.util.Context.NONE);
+            .listByFleet("wkpqhjpenuygbq", "qqekewvnqvcdlgu", 1458855216, "cmfdjwnlax",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lds", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("tjb", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1058689711,
+        Assertions.assertEquals("ikczvvitacgxmf", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("er", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("hlwntsjgq",
+            response.iterator().next().strategy().stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(2055251936,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("eewchpxlktw", response.iterator().next().strategy().stages().get(0).maxConcurrency());
+        Assertions.assertEquals("p", response.iterator().next().strategy().stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("uuybnchrsz", response.iterator().next().strategy().stages().get(0).maxConcurrency());
         Assertions.assertEquals(GateType.APPROVAL,
             response.iterator().next().strategy().stages().get(0).beforeGates().get(0).type());
-        Assertions.assertEquals(GateType.APPROVAL,
+        Assertions.assertEquals(GateType.SCHEDULED_START,
             response.iterator().next().strategy().stages().get(0).afterGates().get(0).type());
     }
 }
