@@ -47,6 +47,8 @@
 
 ### Other Changes
 
+- Extracted shared protocol-neutral WebSocket transports for Live and Realtime, keeping independent blocking
+  and asynchronous implementations and protocol-specific event decoding in the respective clients.
 - Deprecated `BrowserAutomationPreviewTool`, `BrowserAutomationPreviewToolboxTool`, and the corresponding
   `BROWSER_AUTOMATION_PREVIEW` tool-type values. Use `BrowserAutomationTool`, `BrowserAutomationToolboxTool`,
   and the `BROWSER_AUTOMATION` values instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
@@ -90,8 +92,6 @@
 
 ### Other Changes
 
-- Extracted shared protocol-neutral WebSocket transports for Live and Realtime, keeping independent blocking
-  and asynchronous implementations and protocol-specific event decoding in the respective clients.
 - Regenerated from the updated Foundry TypeSpec specification.
 - Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
   (four hours); the default remains 900 seconds.
