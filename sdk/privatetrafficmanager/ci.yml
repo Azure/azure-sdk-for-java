@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/privatetrafficmanager/ci.yml
+      - sdk/privatetrafficmanager/azure-resourcemanager-privatetrafficmanager/
+    exclude:
+      - sdk/privatetrafficmanager/pom.xml
+      - sdk/privatetrafficmanager/azure-resourcemanager-privatetrafficmanager/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/privatetrafficmanager/ci.yml
+      - sdk/privatetrafficmanager/azure-resourcemanager-privatetrafficmanager/
+    exclude:
+      - sdk/privatetrafficmanager/pom.xml
+      - sdk/privatetrafficmanager/azure-resourcemanager-privatetrafficmanager/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerprivatetrafficmanager
+    displayName: azure-resourcemanager-privatetrafficmanager
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: privatetrafficmanager
+    Artifacts:
+      - name: azure-resourcemanager-privatetrafficmanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprivatetrafficmanager
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerprivatetrafficmanager }}
