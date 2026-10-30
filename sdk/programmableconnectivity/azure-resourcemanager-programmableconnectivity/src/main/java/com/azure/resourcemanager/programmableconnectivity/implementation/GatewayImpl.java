@@ -129,8 +129,12 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
         com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.gatewayName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "gateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/gateways/{gatewayName}",
+            "resourceGroupName");
+        this.gatewayName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/gateways/{gatewayName}",
+            "gatewayName");
     }
 
     public Gateway refresh() {
