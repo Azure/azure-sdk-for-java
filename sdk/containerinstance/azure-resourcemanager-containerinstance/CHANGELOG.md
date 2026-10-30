@@ -1,5 +1,19 @@
 # Release History
 
+## 2.54.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.61.2` to version `2.63.0`.
+- Upgraded `azure-resourcemanager-storage` from `2.58.1` to version `2.60.0`.
+- Upgraded `azure-storage-file-share` from `12.31.2` to version `12.33.0`.
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.13` to version `2.54.0`.
+- Upgraded `azure-resourcemanager-msi` from `2.54.2` to version `2.55.0`.
+
+
 ## 2.53.15 (2026-10-09)
 
 ### Other Changes
