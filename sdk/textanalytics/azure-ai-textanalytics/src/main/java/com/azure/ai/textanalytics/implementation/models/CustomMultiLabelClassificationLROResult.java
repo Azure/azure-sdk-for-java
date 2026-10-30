@@ -5,8 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,19 +20,16 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
-    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.CUSTOM_MULTI_LABEL_CLASSIFICATION_LRORESULTS;
 
     /*
      * The results property.
      */
-    @Generated
     private CustomLabelClassificationResult results;
 
     /**
      * Creates an instance of CustomMultiLabelClassificationLROResult class.
      */
-    @Generated
     public CustomMultiLabelClassificationLROResult() {
     }
 
@@ -43,7 +38,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -54,7 +48,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * 
      * @return the results value.
      */
-    @Generated
     public CustomLabelClassificationResult getResults() {
         return this.results;
     }
@@ -65,7 +58,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * @param results the results value to set.
      * @return the CustomMultiLabelClassificationLROResult object itself.
      */
-    @Generated
     public CustomMultiLabelClassificationLROResult setResults(CustomLabelClassificationResult results) {
         this.results = results;
         return this;
@@ -74,7 +66,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomMultiLabelClassificationLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -84,7 +75,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomMultiLabelClassificationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -94,7 +84,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomMultiLabelClassificationLROResult setStatus(State status) {
         super.setStatus(status);
@@ -104,7 +93,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,7 +116,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomMultiLabelClassificationLROResult.
      */
-    @Generated
     public static CustomMultiLabelClassificationLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomMultiLabelClassificationLROResult deserializedCustomMultiLabelClassificationLROResult
@@ -138,8 +125,8 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedCustomMultiLabelClassificationLROResult.setLastUpdateDateTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedCustomMultiLabelClassificationLROResult.setLastUpdateDateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedCustomMultiLabelClassificationLROResult.setStatus(State.fromString(reader.getString()));
                 } else if ("taskName".equals(fieldName)) {

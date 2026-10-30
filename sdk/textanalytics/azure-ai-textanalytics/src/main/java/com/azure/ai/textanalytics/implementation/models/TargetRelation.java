@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
     /*
      * The type related to the target.
      */
-    @Generated
     private TargetRelationType relationType;
 
     /*
      * The JSON pointer indicating the linked object.
      */
-    @Generated
     private String ref;
 
     /**
      * Creates an instance of TargetRelation class.
      */
-    @Generated
     public TargetRelation() {
     }
 
@@ -41,7 +37,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      * 
      * @return the relationType value.
      */
-    @Generated
     public TargetRelationType getRelationType() {
         return this.relationType;
     }
@@ -52,7 +47,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      * @param relationType the relationType value to set.
      * @return the TargetRelation object itself.
      */
-    @Generated
     public TargetRelation setRelationType(TargetRelationType relationType) {
         this.relationType = relationType;
         return this;
@@ -63,7 +57,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      * 
      * @return the ref value.
      */
-    @Generated
     public String getRef() {
         return this.ref;
     }
@@ -74,7 +67,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      * @param ref the ref value to set.
      * @return the TargetRelation object itself.
      */
-    @Generated
     public TargetRelation setRef(String ref) {
         this.ref = ref;
         return this;
@@ -83,7 +75,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TargetRelation.
      */
-    @Generated
     public static TargetRelation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TargetRelation deserializedTargetRelation = new TargetRelation();

@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
     /*
      * Unique, non-empty document identifier.
      */
-    @Generated
     private String id;
 
     /*
      * Warnings encountered while processing document.
      */
-    @Generated
     private List<DocumentWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the document payload.
      */
-    @Generated
     private DocumentStatistics statistics;
 
     /**
      * Creates an instance of DocumentResult class.
      */
-    @Generated
     public DocumentResult() {
     }
 
@@ -48,7 +43,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,7 +53,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param id the id value to set.
      * @return the DocumentResult object itself.
      */
-    @Generated
     public DocumentResult setId(String id) {
         this.id = id;
         return this;
@@ -70,7 +63,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the warnings value.
      */
-    @Generated
     public List<DocumentWarning> getWarnings() {
         return this.warnings;
     }
@@ -81,7 +73,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param warnings the warnings value to set.
      * @return the DocumentResult object itself.
      */
-    @Generated
     public DocumentResult setWarnings(List<DocumentWarning> warnings) {
         this.warnings = warnings;
         return this;
@@ -93,7 +84,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the statistics value.
      */
-    @Generated
     public DocumentStatistics getStatistics() {
         return this.statistics;
     }
@@ -105,7 +95,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param statistics the statistics value to set.
      * @return the DocumentResult object itself.
      */
-    @Generated
     public DocumentResult setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -114,7 +103,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,7 +121,6 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentResult.
      */
-    @Generated
     public static DocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentResult deserializedDocumentResult = new DocumentResult();

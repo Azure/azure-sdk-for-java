@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,37 +20,31 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
     /*
      * The completed property.
      */
-    @Generated
     private int completed;
 
     /*
      * The failed property.
      */
-    @Generated
     private int failed;
 
     /*
      * The inProgress property.
      */
-    @Generated
     private int inProgress;
 
     /*
      * The total property.
      */
-    @Generated
     private int total;
 
     /*
      * The items property.
      */
-    @Generated
     private List<AnalyzeTextLROResult> items;
 
     /**
      * Creates an instance of TasksStateTasks class.
      */
-    @Generated
     public TasksStateTasks() {
     }
 
@@ -60,7 +53,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * 
      * @return the completed value.
      */
-    @Generated
     public int getCompleted() {
         return this.completed;
     }
@@ -71,7 +63,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @param completed the completed value to set.
      * @return the TasksStateTasks object itself.
      */
-    @Generated
     public TasksStateTasks setCompleted(int completed) {
         this.completed = completed;
         return this;
@@ -82,7 +73,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * 
      * @return the failed value.
      */
-    @Generated
     public int getFailed() {
         return this.failed;
     }
@@ -93,7 +83,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @param failed the failed value to set.
      * @return the TasksStateTasks object itself.
      */
-    @Generated
     public TasksStateTasks setFailed(int failed) {
         this.failed = failed;
         return this;
@@ -104,7 +93,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * 
      * @return the inProgress value.
      */
-    @Generated
     public int getInProgress() {
         return this.inProgress;
     }
@@ -115,7 +103,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @param inProgress the inProgress value to set.
      * @return the TasksStateTasks object itself.
      */
-    @Generated
     public TasksStateTasks setInProgress(int inProgress) {
         this.inProgress = inProgress;
         return this;
@@ -126,7 +113,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * 
      * @return the total value.
      */
-    @Generated
     public int getTotal() {
         return this.total;
     }
@@ -137,7 +123,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @param total the total value to set.
      * @return the TasksStateTasks object itself.
      */
-    @Generated
     public TasksStateTasks setTotal(int total) {
         this.total = total;
         return this;
@@ -148,7 +133,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * 
      * @return the items value.
      */
-    @Generated
     public List<AnalyzeTextLROResult> getItems() {
         return this.items;
     }
@@ -159,7 +143,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @param items the items value to set.
      * @return the TasksStateTasks object itself.
      */
-    @Generated
     public TasksStateTasks setItems(List<AnalyzeTextLROResult> items) {
         this.items = items;
         return this;
@@ -168,7 +151,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,7 +171,6 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TasksStateTasks.
      */
-    @Generated
     public static TasksStateTasks fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TasksStateTasks deserializedTasksStateTasks = new TasksStateTasks();

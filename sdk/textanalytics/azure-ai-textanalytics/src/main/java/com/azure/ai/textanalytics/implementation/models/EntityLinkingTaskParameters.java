@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,16 +16,13 @@ import java.io.IOException;
 @Fluent
 public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
     /*
-     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
-     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of EntityLinkingTaskParameters class.
      */
-    @Generated
     public EntityLinkingTaskParameters() {
     }
 
@@ -37,7 +33,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
      * 
      * @return the stringIndexType value.
      */
-    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -50,7 +45,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntityLinkingTaskParameters object itself.
      */
-    @Generated
     public EntityLinkingTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -59,7 +53,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -69,7 +62,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -79,7 +71,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,7 +89,6 @@ public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EntityLinkingTaskParameters.
      */
-    @Generated
     public static EntityLinkingTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingTaskParameters deserializedEntityLinkingTaskParameters = new EntityLinkingTaskParameters();

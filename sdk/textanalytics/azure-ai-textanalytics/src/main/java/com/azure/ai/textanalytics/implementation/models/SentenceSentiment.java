@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,49 +20,41 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
     /*
      * The sentence text.
      */
-    @Generated
     private String text;
 
     /*
      * The predicted Sentiment for the sentence.
      */
-    @Generated
     private SentenceSentimentValue sentiment;
 
     /*
      * The sentiment confidence score between 0 and 1 for the sentence for all classes.
      */
-    @Generated
     private SentimentConfidenceScorePerLabel confidenceScores;
 
     /*
      * The sentence offset from the start of the document.
      */
-    @Generated
     private int offset;
 
     /*
      * The length of the sentence.
      */
-    @Generated
     private int length;
 
     /*
      * The array of sentence targets for the sentence.
      */
-    @Generated
     private List<SentenceTarget> targets;
 
     /*
      * The array of assessments for the sentence.
      */
-    @Generated
     private List<SentenceAssessment> assessments;
 
     /**
      * Creates an instance of SentenceSentiment class.
      */
-    @Generated
     public SentenceSentiment() {
     }
 
@@ -72,7 +63,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -83,7 +73,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param text the text value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setText(String text) {
         this.text = text;
         return this;
@@ -94,7 +83,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the sentiment value.
      */
-    @Generated
     public SentenceSentimentValue getSentiment() {
         return this.sentiment;
     }
@@ -105,7 +93,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param sentiment the sentiment value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setSentiment(SentenceSentimentValue sentiment) {
         this.sentiment = sentiment;
         return this;
@@ -117,7 +104,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the confidenceScores value.
      */
-    @Generated
     public SentimentConfidenceScorePerLabel getConfidenceScores() {
         return this.confidenceScores;
     }
@@ -129,7 +115,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
         this.confidenceScores = confidenceScores;
         return this;
@@ -140,7 +125,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the offset value.
      */
-    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -151,7 +135,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param offset the offset value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -162,7 +145,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the length value.
      */
-    @Generated
     public int getLength() {
         return this.length;
     }
@@ -173,7 +155,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param length the length value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setLength(int length) {
         this.length = length;
         return this;
@@ -184,7 +165,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the targets value.
      */
-    @Generated
     public List<SentenceTarget> getTargets() {
         return this.targets;
     }
@@ -195,7 +175,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param targets the targets value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setTargets(List<SentenceTarget> targets) {
         this.targets = targets;
         return this;
@@ -206,7 +185,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * 
      * @return the assessments value.
      */
-    @Generated
     public List<SentenceAssessment> getAssessments() {
         return this.assessments;
     }
@@ -217,7 +195,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @param assessments the assessments value to set.
      * @return the SentenceSentiment object itself.
      */
-    @Generated
     public SentenceSentiment setAssessments(List<SentenceAssessment> assessments) {
         this.assessments = assessments;
         return this;
@@ -226,7 +203,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -249,7 +225,6 @@ public final class SentenceSentiment implements JsonSerializable<SentenceSentime
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentenceSentiment.
      */
-    @Generated
     public static SentenceSentiment fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentenceSentiment deserializedSentenceSentiment = new SentenceSentiment();
