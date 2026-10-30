@@ -89,15 +89,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_DEPLOYMENT_NAME", "search-knowledge-agent-model");
     protected static final String OPENAI_MODEL_NAME
         = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_MODEL_NAME", "gpt-4.1-nano");
-    protected static final String OPENAI_EMBEDDING_DEPLOYMENT_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_OPENAI_EMBEDDING_DEPLOYMENT_NAME", "text-embedding-3-large");
-    protected static final String OPENAI_EMBEDDING_MODEL_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_EMBEDDING_MODEL_NAME", "text-embedding-3-large");
-    protected static final String AI_SERVICES_ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SEARCH_AI_SERVICES_ENDPOINT",
-            OPENAI_ENDPOINT.replace(".openai.azure.com", ".cognitiveservices.azure.com"));
-    protected static final String AI_SERVICES_API_KEY
-        = Configuration.getGlobalConfiguration().get("SEARCH_AI_SERVICES_API_KEY");
 
     protected static final String STORAGE_ACCOUNT_NAME
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
@@ -111,13 +102,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         = Configuration.getGlobalConfiguration().get("SEARCH_SUBSCRIPTION_ID", "subscription-id");
     protected static final String RESOURCE_GROUP
         = Configuration.getGlobalConfiguration().get("SEARCH_RESOURCE_GROUP", "resource-group");
-
-    protected static final String FABRIC_WORKSPACE_ID
-        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_WORKSPACE_ID", "<FABRIC_WORKSPACE_ID>");
-    protected static final String FABRIC_ONTOLOGY_ID
-        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_ONTOLOGY_ID", "<FABRIC_ONTOLOGY_ID>");
-    protected static final String FABRIC_DATA_AGENT_ID
-        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_DATA_AGENT_ID", "<FABRIC_DATA_AGENT_ID>");
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
