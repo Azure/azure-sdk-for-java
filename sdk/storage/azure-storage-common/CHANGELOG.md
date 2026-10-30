@@ -1,19 +1,5 @@
 # Release History
 
-## 12.36.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
-  before a buffer's position, when that position was not 0 and the buffer was larger than the block size. This affected
-  both the sync and async clients.
-
-### Other Changes
-
 ## 12.35.0 (2026-10-07)
 
 ### Features Added
@@ -24,14 +10,6 @@
 
 ### Bugs Fixed
 - Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
-
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
-- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
-
-## 12.34.2 (2026-10-06)
 
 ### Other Changes
 

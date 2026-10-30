@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
@@ -24,27 +25,6 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
     private static final Map<Class<? extends Enum<? extends ServiceVersion>>, ServiceVersion> LATEST_SERVICE_VERSIONS
         = new ConcurrentHashMap<>();
 
-    static ConditionEvaluationResult evaluateServiceVersion(
-        Class<? extends Enum<? extends ServiceVersion>> targetEnumClass, String minServiceVersion,
-        String configuredServiceVersion) {
-        ServiceVersion[] serviceVersions = getServiceVersions(targetEnumClass);
-        int minOrdinal = getRequiredServiceVersionOrdinal(serviceVersions, minServiceVersion);
-
-        if (configuredServiceVersion == null) {
-            // Fall back to "latest" service version if environment variable is not set.
-            configuredServiceVersion = getLatestServiceVersion(targetEnumClass).getVersion();
-        }
-
-        int configuredOrdinal = getConfiguredServiceVersionOrdinal(serviceVersions, configuredServiceVersion,
-            targetEnumClass);
-
-        return configuredOrdinal < minOrdinal
-            ? ConditionEvaluationResult.disabled(
-                String.format("Test requires minimum service version '%s'.", minServiceVersion))
-            : ConditionEvaluationResult.enabled(
-                String.format("Configured service version meets minimum version '%s'.", minServiceVersion));
-    }
-
     @Override
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
         // Check for the RequiredServiceVersion annotation on the test method.
@@ -56,9 +36,28 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
             return ConditionEvaluationResult.enabled("No service version required");
         }
 
-        String configuredServiceVersion = TestEnvironment.getInstance().getServiceVersion();
-        return evaluateServiceVersion(requiredServiceVersion.clazz(), requiredServiceVersion.min(),
-            configuredServiceVersion);
+        if (shouldSkip(requiredServiceVersion.clazz(), requiredServiceVersion.min())) {
+            return ConditionEvaluationResult.disabled("Test ignored to run with " + requiredServiceVersion.min()
+                + " service version");
+        } else {
+            return ConditionEvaluationResult.enabled("Test enabled to run with " + requiredServiceVersion.min()
+                + " service version");
+        }
+    }
+
+    private static boolean shouldSkip(Class<? extends Enum<? extends ServiceVersion>> targetEnumClass,
+        String minServiceVersion) {
+        ServiceVersion[] serviceVersions = getServiceVersions(targetEnumClass);
+        String environmentServiceVersion = TestEnvironment.getInstance().getServiceVersion();
+        if (environmentServiceVersion == null) {
+            // Fall back to "latest" service version if environment variable is not set.
+            environmentServiceVersion = getLatestServiceVersion(targetEnumClass).toString();
+        }
+
+        int minOrdinal = getOrdinal(serviceVersions, minServiceVersion);
+        int environmentOrdinal = getOrdinal(serviceVersions, environmentServiceVersion);
+
+        return environmentOrdinal < minOrdinal;
     }
 
     private static ServiceVersion[] getServiceVersions(Class<? extends Enum<? extends ServiceVersion>> clazz) {
@@ -75,43 +74,9 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
         });
     }
 
-    /*
-     * Resolves the annotation's required minimum version. An unknown minimum indicates an invalid annotation and must
-     * fail the test rather than skip it.
-     */
-    private static int getRequiredServiceVersionOrdinal(ServiceVersion[] serviceVersions, String target) {
-        int ordinal = findServiceVersionOrdinal(serviceVersions, target);
-        if (ordinal == -1) {
-            throw new IllegalArgumentException(
-                String.format("Minimum service version '%s' is not supported.", target));
-        }
-        return ordinal;
-    }
-
-    /*
-     * Resolves the configured service version. An unknown value indicates invalid test configuration and must fail the
-     * test rather than silently reduce coverage.
-     */
-    private static int getConfiguredServiceVersionOrdinal(ServiceVersion[] serviceVersions, String target,
-        Class<? extends Enum<? extends ServiceVersion>> targetEnumClass) {
-        int ordinal = findServiceVersionOrdinal(serviceVersions, target);
-        if (ordinal == -1) {
-            throw new IllegalArgumentException(String.format(
-                "AZURE_LIVE_TEST_SERVICE_VERSION '%s' is not supported by %s.", target,
-                targetEnumClass.getSimpleName()));
-        }
-        return ordinal;
-    }
-
-    /*
-     * Resolves either a service wire value or enum name, returning -1 when the version is absent.
-     */
-    private static int findServiceVersionOrdinal(ServiceVersion[] serviceVersions, String target) {
+    private static int getOrdinal(ServiceVersion[] serviceVersions, String target) {
         for (int i = 0; i < serviceVersions.length; i++) {
-            ServiceVersion serviceVersion = serviceVersions[i];
-            Enum<?> serviceVersionEnum = (Enum<?>) serviceVersion;
-
-            if (target.equals(serviceVersion.getVersion()) || target.equals(serviceVersionEnum.name())) {
+            if (Objects.equals(String.valueOf(serviceVersions[i]), target)) {
                 return i;
             }
         }
