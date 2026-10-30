@@ -3,19 +3,20 @@
 
 package com.azure.security.confidentialledger;
 
+import java.io.IOException;
+
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.models.JsonObject;
-import com.azure.json.models.JsonString;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GetUserSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
-                        .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
+                        .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
@@ -25,8 +26,15 @@ public class GetUserSample {
 
         BinaryData parsedResponse = response.getValue();
 
-        JsonObject responseBodyJson = parsedResponse.toObject(JsonObject.class);
-        System.out.println("Assigned role for user is "
-            + ((JsonString) responseBodyJson.getProperty("assignedRole")).getValue());
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = null;
+
+        try {
+            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Assigned role for user is " + responseBodyJson.get("assignedRole"));
     }
 }
