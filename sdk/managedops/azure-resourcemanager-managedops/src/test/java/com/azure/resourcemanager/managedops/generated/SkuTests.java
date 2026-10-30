@@ -6,13 +6,23 @@ package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedops.models.Sku;
+import com.azure.resourcemanager.managedops.models.SkuName;
+import com.azure.resourcemanager.managedops.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
 
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"odjpslwejd\",\"tier\":\"vwryoqpso\"}").toObject(Sku.class);
-        Assertions.assertEquals("odjpslwejd", model.name());
-        Assertions.assertEquals("vwryoqpso", model.tier());
+        Sku model = BinaryData.fromString("{\"name\":\"ManagedOps\",\"tier\":\"Essential\"}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.MANAGED_OPS, model.name());
+        Assertions.assertEquals(SkuTier.ESSENTIAL, model.tier());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Sku model = new Sku().withName(SkuName.MANAGED_OPS).withTier(SkuTier.ESSENTIAL);
+        model = BinaryData.fromObject(model).toObject(Sku.class);
+        Assertions.assertEquals(SkuName.MANAGED_OPS, model.name());
+        Assertions.assertEquals(SkuTier.ESSENTIAL, model.tier());
     }
 }

@@ -15,29 +15,28 @@ public final class DesiredConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DesiredConfiguration model = BinaryData.fromString(
-            "{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"cctazakljlahbc\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"yffdfdos\"},\"userAssignedManagedIdentityId\":\"gexpaojakhmsbz\",\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Enable\"}")
+            "{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"yejhk\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"yhtnapczwlokjye\"},\"userAssignedManagedIdentityId\":\"kkvnipjox\",\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Disable\"}")
             .toObject(DesiredConfiguration.class);
-        Assertions.assertEquals("cctazakljlahbc", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("yffdfdos", model.azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("gexpaojakhmsbz", model.userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
+        Assertions.assertEquals("yejhk", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
+        Assertions.assertEquals("yhtnapczwlokjye", model.azureMonitorInsights().azureMonitorWorkspaceId());
+        Assertions.assertEquals("kkvnipjox", model.userAssignedManagedIdentityId());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DesiredConfiguration model = new DesiredConfiguration()
-            .withChangeTrackingAndInventory(
-                new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("cctazakljlahbc"))
-            .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("yffdfdos"))
-            .withUserAssignedManagedIdentityId("gexpaojakhmsbz")
-            .withDefenderForServers(DesiredEnablementState.DISABLE)
-            .withDefenderCspm(DesiredEnablementState.ENABLE);
+            .withChangeTrackingAndInventory(new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("yejhk"))
+            .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("yhtnapczwlokjye"))
+            .withUserAssignedManagedIdentityId("kkvnipjox")
+            .withDefenderForServers(DesiredEnablementState.ENABLE)
+            .withDefenderCspm(DesiredEnablementState.DISABLE);
         model = BinaryData.fromObject(model).toObject(DesiredConfiguration.class);
-        Assertions.assertEquals("cctazakljlahbc", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("yffdfdos", model.azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("gexpaojakhmsbz", model.userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
+        Assertions.assertEquals("yejhk", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
+        Assertions.assertEquals("yhtnapczwlokjye", model.azureMonitorInsights().azureMonitorWorkspaceId());
+        Assertions.assertEquals("kkvnipjox", model.userAssignedManagedIdentityId());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderCspm());
     }
 }
