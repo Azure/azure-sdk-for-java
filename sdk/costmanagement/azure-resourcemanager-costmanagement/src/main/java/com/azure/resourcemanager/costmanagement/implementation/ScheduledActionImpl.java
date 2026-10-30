@@ -149,6 +149,10 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
         this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
+        if (this.name == null) {
+            this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
+        }
     }
 
     public ScheduledAction refresh() {

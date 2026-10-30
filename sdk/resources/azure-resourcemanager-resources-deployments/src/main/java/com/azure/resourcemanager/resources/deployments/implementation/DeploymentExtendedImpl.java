@@ -143,6 +143,24 @@ public final class DeploymentExtendedImpl
         this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}",
             "deploymentName");
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
     }
 
     public DeploymentExtended refresh() {

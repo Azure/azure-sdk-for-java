@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/aiinfraoptimization/ci.yml
+      - sdk/aiinfraoptimization/azure-resourcemanager-aiinfraoptimization/
+    exclude:
+      - sdk/aiinfraoptimization/pom.xml
+      - sdk/aiinfraoptimization/azure-resourcemanager-aiinfraoptimization/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/aiinfraoptimization/ci.yml
+      - sdk/aiinfraoptimization/azure-resourcemanager-aiinfraoptimization/
+    exclude:
+      - sdk/aiinfraoptimization/pom.xml
+      - sdk/aiinfraoptimization/azure-resourcemanager-aiinfraoptimization/pom.xml
+
+parameters:
+  - name: release_azureresourcemanageraiinfraoptimization
+    displayName: azure-resourcemanager-aiinfraoptimization
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: aiinfraoptimization
+    Artifacts:
+      - name: azure-resourcemanager-aiinfraoptimization
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageraiinfraoptimization
+        releaseInBatch: ${{ parameters.release_azureresourcemanageraiinfraoptimization }}

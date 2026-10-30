@@ -186,6 +186,10 @@ public final class ViewImpl implements View, View.Definition, View.Update {
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
         this.viewName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
+        if (this.viewName == null) {
+            this.viewName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
+        }
     }
 
     public View refresh() {
