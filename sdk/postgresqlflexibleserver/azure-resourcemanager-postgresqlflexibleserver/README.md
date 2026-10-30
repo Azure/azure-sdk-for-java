@@ -2,7 +2,7 @@
 
 Azure Resource Manager PostgreSql client library for Java.
 
-This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-postgresqlflexibleserver</artifactId>
-    <version>2.1.0-beta.3</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,7 @@ server = postgreSqlManager.servers()
         .withPasswordAuth(PasswordBasedAuth.ENABLED))
     .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
     .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
-    .withVersion(PostgresMajorVersion.ONE_FOUR)
+    .withVersion("14")
     .withAvailabilityZone("2")
     .withStorage(new Storage().withStorageSizeGB(128))
     .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)

@@ -21,7 +21,7 @@ public final class ServersMigrateNetworkModeMockTests {
     @Test
     public void testMigrateNetworkMode() throws Exception {
         String responseStr
-            = "{\"subscriptionId\":\"iquvrehm\",\"resourceGroupName\":\"jhvsujztczyt\",\"serverName\":\"t\",\"state\":\"InProgress\"}";
+            = "{\"subscriptionId\":\"ycxhxzgaztta\",\"resourceGroupName\":\"idvmfqhppubo\",\"serverName\":\"epdfgkmtdherng\",\"state\":\"Failed\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,11 @@ public final class ServersMigrateNetworkModeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        MigrateNetworkStatus response = manager.servers()
-            .migrateNetworkMode("clnapxbiygnugjkn", "smfcttuxuuyilfl", com.azure.core.util.Context.NONE);
+        MigrateNetworkStatus response
+            = manager.servers().migrateNetworkMode("fifhxwrsnew", "ozqvbubqmam", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iquvrehm", response.subscriptionId());
-        Assertions.assertEquals("jhvsujztczyt", response.resourceGroupName());
-        Assertions.assertEquals("t", response.serverName());
+        Assertions.assertEquals("ycxhxzgaztta", response.subscriptionId());
+        Assertions.assertEquals("idvmfqhppubo", response.resourceGroupName());
+        Assertions.assertEquals("epdfgkmtdherng", response.serverName());
     }
 }
