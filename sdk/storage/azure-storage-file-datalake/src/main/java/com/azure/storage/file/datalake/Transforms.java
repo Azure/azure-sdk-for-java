@@ -312,8 +312,9 @@ class Transforms {
         return new BlobDownloadStreamOptions().setRange(toBlobRange(options.getRange()))
             .setDownloadRetryOptions(toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
-            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5())
-            .setDataLocalityEndpoint(options.getDataLocalityEndpoint());
+            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // .setDataLocalityEndpoint(options.getDataLocalityEndpoint());
     }
 
     static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(

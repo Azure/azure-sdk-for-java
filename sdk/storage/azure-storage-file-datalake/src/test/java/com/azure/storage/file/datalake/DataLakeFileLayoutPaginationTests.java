@@ -12,7 +12,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -23,6 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataLakeFileLayoutPaginationTests {
@@ -46,6 +50,14 @@ public class DataLakeFileLayoutPaginationTests {
     private static final String SECOND_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"100\" End=\"199\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints></BlobLayout>";
+
+    @ParameterizedTest
+    @ValueSource(classes = { DataLakeFileClient.class, DataLakeFileAsyncClient.class })
+    public void getLayoutIsPackagePrivate(Class<?> clientClass) throws NoSuchMethodException {
+        assertEquals(0, clientClass.getDeclaredMethod("getLayout", DataLakeFileGetLayoutOptions.class).getModifiers());
+        assertThrows(NoSuchMethodException.class,
+            () -> clientClass.getMethod("getLayout", DataLakeFileGetLayoutOptions.class));
+    }
 
     @Test
     @DoNotRecord

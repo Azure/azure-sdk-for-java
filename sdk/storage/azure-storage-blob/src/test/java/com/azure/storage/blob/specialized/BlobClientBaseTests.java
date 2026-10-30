@@ -122,7 +122,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         + "<BlobLayout><Ranges><Range Start=\"200\" End=\"299\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-c:443\" /></Endpoints></BlobLayout>";
 
-    private BlobClient bc;
+    private BlockBlobClient bc;
 
     @Override
     public void beforeTest() {
@@ -149,8 +149,8 @@ public class BlobClientBaseTests extends BlobTestBase {
         }
 
         String blobName = generateBlobName();
-        bc = cc.getBlobClient(blobName);
-        bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        bc = cc.getBlobClient(blobName).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -167,8 +167,8 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutEmptyBlob() {
-        BlobClient emptyBlob = cc.getBlobClient(generateBlobName());
-        emptyBlob.getBlockBlobClient().commitBlockList(new ArrayList<>());
+        BlockBlobClient emptyBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        emptyBlob.commitBlockList(new ArrayList<>());
 
         assertDoesNotThrow(() -> emptyBlob.getLayout(null, Context.NONE).stream().count());
     }
@@ -176,7 +176,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutRange() {
-        bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
+        bc.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
         assertDoesNotThrow(
             () -> bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB)), Context.NONE)
@@ -250,7 +250,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutError() {
-        BlobClient blobClient = cc.getBlobClient(generateBlobName());
+        BlobClientBase blobClient = cc.getBlobClient(generateBlobName());
 
         assertThrows(BlobStorageException.class, () -> blobClient.getLayout(null, Context.NONE).stream().count());
     }
@@ -274,7 +274,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveLargeBlobCoversWholeBlobAcrossPages() {
-        BlobClient blobClient = uploadLargeLiveBlob();
+        BlobClientBase blobClient = uploadLargeLiveBlob();
         String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
 
         // Part (a): the service currently returns one range covering the whole blob, but the contract permits
@@ -303,7 +303,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveRangeRequestCoversRequestedWindow() {
-        BlobClient blobClient = uploadLargeLiveBlob();
+        BlobClientBase blobClient = uploadLargeLiveBlob();
         String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
         long rangeOffset = 8L * Constants.MB;
         long rangeLength = 4L * Constants.MB;
@@ -335,7 +335,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutLiveRangeRequestEnumeratesEveryPage() {
-        BlobClient blobClient = uploadLargeLiveBlob();
+        BlobClientBase blobClient = uploadLargeLiveBlob();
         String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
         long rangeOffset = 8L * Constants.MB;
         long rangeLength = 4L * Constants.MB;
@@ -351,7 +351,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutContinuationUsesFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
 
         assertEquals(2, client.getLayout(null).stream().count());
 
@@ -367,7 +367,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutReturnsRangesAndPageMetadata() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
         Iterator<PagedResponse<BlobLayoutRange>> pages
             = client.getLayout(null, Context.NONE).iterableByPage(REQUESTED_PAGE_SIZE).iterator();
 
@@ -385,7 +385,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @DoNotRecord
     @Test
     public void getLayoutSinglePageHasNoContinuationToken() {
-        BlobClient client = client(new LayoutPagesHttpClient(false));
+        BlobClientBase client = client(new LayoutPagesHttpClient(false));
         PagedResponse<BlobLayoutRange> page = client.getLayout(null, Context.NONE).iterableByPage().iterator().next();
 
         assertNull(page.getContinuationToken());
@@ -396,7 +396,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutContinuationPreservesOtherConditions() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(LEASE_ID)
             .setIfNoneMatch(IF_NONE_MATCH)
             .setIfUnmodifiedSince(IF_UNMODIFIED_SINCE);
@@ -417,7 +417,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutSinglePageDoesNotSendIfMatch() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(false);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
 
         assertEquals(1, client.getLayout(null).stream().count());
 
@@ -429,7 +429,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutIndependentEnumerationsUseTheirOwnFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true, true);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
         PagedIterable<BlobLayoutRange> layouts = client.getLayout(null);
         Iterator<PagedResponse<BlobLayoutRange>> firstEnumeration = layouts.iterableByPage().iterator();
         Iterator<PagedResponse<BlobLayoutRange>> secondEnumeration = layouts.iterableByPage().iterator();
@@ -450,7 +450,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutResumedEnumerationLocksContinuationPagesToItsFirstPageETag() {
         ResumedLayoutPagesHttpClient httpClient = new ResumedLayoutPagesHttpClient();
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
         List<PagedResponse<BlobLayoutRange>> pages = new ArrayList<>();
 
         client.getLayout(null).iterableByPage(NEXT_MARKER).forEach(pages::add);
@@ -842,7 +842,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
         // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobClient client = client(httpClient);
+        BlobClientBase client = client(httpClient);
 
         assertEquals(2, client.getLayout(null).stream().count());
 

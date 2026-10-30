@@ -52,13 +52,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobAsyncClientBaseTests extends BlobTestBase {
-    private BlobAsyncClient bc;
+    private BlockBlobAsyncClient bc;
 
     @BeforeEach
     public void setup() {
         String blobName = generateBlobName();
-        bc = ccAsync.getBlobAsyncClient(blobName);
-        bc.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -74,19 +74,16 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutEmptyBlob() {
-        BlobAsyncClient emptyBlob = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlockBlobAsyncClient emptyBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        StepVerifier.create(emptyBlob.getBlockBlobAsyncClient()
-            .commitBlockList(new ArrayList<>())
-            .thenMany(emptyBlob.getLayout(null))
-            .then()).verifyComplete();
+        StepVerifier.create(emptyBlob.commitBlockList(new ArrayList<>()).thenMany(emptyBlob.getLayout(null)).then())
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutRange() {
-        StepVerifier.create(bc.getBlockBlobAsyncClient()
-            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+        StepVerifier.create(bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
             .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
             .then()).verifyComplete();
     }
@@ -160,7 +157,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutError() {
-        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlobAsyncClientBase blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
 
         StepVerifier.create(blobClient.getLayout(null)).verifyError(BlobStorageException.class);
     }
@@ -250,7 +247,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutContinuationUsesFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
 
         StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(2, layouts.size()))
@@ -267,7 +264,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutReturnsRangesAndPageMetadata() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
 
         StepVerifier.create(client.getLayout(null).byPage(REQUESTED_PAGE_SIZE).next()).assertNext(firstPage -> {
             assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
@@ -282,7 +279,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
     @Test
     public void getLayoutSinglePageHasNoContinuationToken() {
-        BlobAsyncClient client = client(new LayoutPagesHttpClient(false));
+        BlobAsyncClientBase client = client(new LayoutPagesHttpClient(false));
 
         StepVerifier.create(client.getLayout(null).byPage(REQUESTED_PAGE_SIZE).next()).assertNext(firstPage -> {
             assertNull(firstPage.getContinuationToken());
@@ -293,7 +290,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutContinuationPreservesOtherConditions() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(LEASE_ID)
             .setIfNoneMatch(IF_NONE_MATCH)
             .setIfUnmodifiedSince(IF_UNMODIFIED_SINCE);
@@ -313,7 +310,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutSinglePageDoesNotSendIfMatch() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(false);
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
 
         StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(1, layouts.size()))
@@ -326,7 +323,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutResumedEnumerationLocksContinuationPagesToItsFirstPageETag() {
         ResumedLayoutPagesHttpClient httpClient = new ResumedLayoutPagesHttpClient();
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
 
         StepVerifier.create(client.getLayout(null).byPage(NEXT_MARKER).collectList())
             .assertNext(pages -> assertEquals(2, pages.size()))
@@ -384,7 +381,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
         // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
-        BlobAsyncClient client = client(httpClient);
+        BlobAsyncClientBase client = client(httpClient);
 
         StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(2, layouts.size()))

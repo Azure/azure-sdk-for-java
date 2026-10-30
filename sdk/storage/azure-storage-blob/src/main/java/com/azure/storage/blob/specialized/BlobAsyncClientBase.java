@@ -1212,7 +1212,9 @@ public class BlobAsyncClientBase {
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
-                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
+                // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+                // StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1266,7 +1268,9 @@ public class BlobAsyncClientBase {
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
-                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
+                // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+                // StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
+                context)
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1916,7 +1920,7 @@ public class BlobAsyncClientBase {
      * @return A paged reactive response emitting the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
+    PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
         return PagedFlux.create(layoutPageRetrieverProvider(options, null));
     }
 
@@ -1931,7 +1935,7 @@ public class BlobAsyncClientBase {
      * @param context {@link Context}
      * @return A paged reactive response emitting the blob's layout ranges.
      */
-    public PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
+    PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         return PagedFlux.create(layoutPageRetrieverProvider(options, finalContext));
     }
