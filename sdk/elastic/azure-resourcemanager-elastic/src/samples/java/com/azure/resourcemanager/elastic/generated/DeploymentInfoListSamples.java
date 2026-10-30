@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class DeploymentInfoListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/DeploymentInfo_List.json
+     * x-ms-original-file: 2026-03-15-preview/DeploymentInfo_List.json
      */
     /**
      * Sample code: DeploymentInfo_List.

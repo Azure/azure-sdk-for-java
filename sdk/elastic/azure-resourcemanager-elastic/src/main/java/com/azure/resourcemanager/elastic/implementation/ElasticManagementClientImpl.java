@@ -517,7 +517,7 @@ public final class ElasticManagementClientImpl implements ElasticManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01";
+        this.apiVersion = "2026-03-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.monitoredSubscriptions = new MonitoredSubscriptionsClientImpl(this);
         this.tagRules = new TagRulesClientImpl(this);
