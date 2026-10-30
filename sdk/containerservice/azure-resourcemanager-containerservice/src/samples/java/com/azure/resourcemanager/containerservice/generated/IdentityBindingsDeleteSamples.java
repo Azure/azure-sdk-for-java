@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class IdentityBindingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/IdentityBindings_Delete.json
+     * x-ms-original-file: 2026-08-01/IdentityBindings_Delete.json
      */
     /**
      * Sample code: Delete Identity Binding.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersGetAccessProfileSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGetAccessProfile.json
+     * x-ms-original-file: 2026-08-01/ManagedClustersGetAccessProfile.json
      */
     /**
      * Sample code: Get Managed Cluster.
