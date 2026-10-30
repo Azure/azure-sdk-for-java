@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+- Updated credential builder documentation to clarify that providing managed identity ID options select a user-assigned identity, while omitting them selects the system-assigned identity. ([#51021](https://github.com/Azure/azure-sdk-for-java/pull/51021))
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.60.0` to version `1.61.0`.

@@ -16,8 +16,10 @@ import java.util.Map;
 
 /**
  * A closed reference to the hosted text agent that owns conversation handling for a voice agent. The hosted agent is
- * resolved within the same project and must support the `invocations_ws` protocol, Voice Live compatibility, and Bridge
- * Protocol 1.0.
+ * resolved within the same project and must declare `voice_conversation_engine` version `1.0.0`. Voice Live connects
+ * through the dedicated voice-conversation-engine endpoint using the existing Bridge Protocol 1.0 wire semantics; the
+ * Bridge message version is independent of the container protocol version and the Hosted Agents API version `v1`.
+ * Declaring `invocations_ws` is optional and does not substitute for `voice_conversation_engine`.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -45,8 +47,10 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
 
     /*
      * A closed reference to the hosted text agent that owns conversation handling for a voice agent. The hosted agent
-     * is resolved within the same project and must support the `invocations_ws` protocol, Voice Live compatibility, and
-     * Bridge Protocol 1.0.
+     * is resolved within the same project and must declare `voice_conversation_engine` version `1.0.0`. Voice Live
+     * connects through the dedicated voice-conversation-engine endpoint using the existing Bridge Protocol 1.0 wire
+     * semantics; the Bridge message version is independent of the container protocol version and the Hosted Agents API
+     * version `v1`. Declaring `invocations_ws` is optional and does not substitute for `voice_conversation_engine`.
      */
     @Generated
     private Map<String, BinaryData> additionalProperties;
@@ -110,8 +114,11 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
 
     /**
      * Get the additionalProperties property: A closed reference to the hosted text agent that owns conversation
-     * handling for a voice agent. The hosted agent is resolved within the same project and must support the
-     * `invocations_ws` protocol, Voice Live compatibility, and Bridge Protocol 1.0.
+     * handling for a voice agent. The hosted agent is resolved within the same project and must declare
+     * `voice_conversation_engine` version `1.0.0`. Voice Live connects through the dedicated voice-conversation-engine
+     * endpoint using the existing Bridge Protocol 1.0 wire semantics; the Bridge message version is independent of the
+     * container protocol version and the Hosted Agents API version `v1`. Declaring `invocations_ws` is optional and
+     * does not substitute for `voice_conversation_engine`.
      *
      * @return the additionalProperties value.
      */
@@ -122,8 +129,11 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
 
     /**
      * Set the additionalProperties property: A closed reference to the hosted text agent that owns conversation
-     * handling for a voice agent. The hosted agent is resolved within the same project and must support the
-     * `invocations_ws` protocol, Voice Live compatibility, and Bridge Protocol 1.0.
+     * handling for a voice agent. The hosted agent is resolved within the same project and must declare
+     * `voice_conversation_engine` version `1.0.0`. Voice Live connects through the dedicated voice-conversation-engine
+     * endpoint using the existing Bridge Protocol 1.0 wire semantics; the Bridge message version is independent of the
+     * container protocol version and the Hosted Agents API version `v1`. Declaring `invocations_ws` is optional and
+     * does not substitute for `voice_conversation_engine`.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the VoiceHostedAgentConversationEngine object itself.

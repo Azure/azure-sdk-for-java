@@ -1,14 +1,51 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0 (2026-10-30)
 
 ### Features Added
 
+- Added hosted-agent memory snapshot opt-in through `HostedAgentDefinition.setMemorySnapshotEnabled(...)` and
+  `isMemorySnapshotEnabled()`. Sessions for a snapshot-enabled agent version start from a snapshot of its initialized
+  process instead of starting the process from its image.
+- Added preview voice-agent soundscapes through `VoiceAgentDefinition.setSoundscape(...)`,
+  `VoiceAgentSoundscapeConfiguration`, and related track and built-in sound models. Soundscapes support background
+  ambience, delayed working audio while tools are pending, and opening, transfer, and closing cues. Rendering is
+  currently limited to telephony calls; persisted conversation recordings do not include the soundscape mix.
+- Added preview input-transcript profanity filtering through `VoiceAgentInputTranscription.setProfanityFilter(...)`
+  and `VoiceAgentProfanityFilterMode`, with `MASKED`, `REMOVED`, and `UNFILTERED` modes. Filtering is supported with
+  managed Azure Speech, including Custom Speech, and must be configured before the session starts.
+- Added `VoiceAgentInputTranscriptionModel.AZURE_SPEECH_STREAMING` for preview streaming Azure Speech transcription
+  in cascaded text-model conversations. It requires a nonempty language setting and supports Custom Speech,
+  phrase hints, and profanity filtering; it is not supported with realtime speech-to-speech models.
+- Added preview `VoiceAgentNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION_HEADSET` and
+  `AZURE_PERSONAL_NOISE_SUPPRESSION` modes for local voice activity detection. These modes enhance detection audio
+  without changing the audio used for recognition.
+- Added preview `AgentEndpointProtocol.VOICE_CONVERSATION_ENGINE` for the hosted-agent text conversation protocol
+  used by Voice Live Bridge. Audio transport remains outside this protocol.
+
 ### Breaking Changes
+
+- Updated the preview hosted voice conversation-engine contract: hosted agents referenced by
+  `VoiceHostedAgentConversationEngine` must declare `voice_conversation_engine` version `1.0.0`.
+  Declaring `invocations_ws` is optional and no longer substitutes for the dedicated voice conversation-engine protocol.
 
 ### Bugs Fixed
 
+- Fixed cursor-based list operations that stopped after the first page, including memory-store, memory-item,
+  toolbox, and voice-agent listings. Paging now follows the service's `last_id` cursor and supports resuming from
+  a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
 ### Other Changes
+
+- Deprecated `BrowserAutomationPreviewTool`, `BrowserAutomationPreviewToolboxTool`, and the corresponding
+  `BROWSER_AUTOMATION_PREVIEW` tool-type values. Use `BrowserAutomationTool`, `BrowserAutomationToolboxTool`,
+  and the `BROWSER_AUTOMATION` values instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+- Updated Reactor Netty from `1.2.18` to `1.3.7` and Netty from `4.1.138.Final` to `4.2.19.Final`,
+  including the Netty codec module changes required by the newer runtime.
 
 ## 2.8.0 (2026-10-19)
 
