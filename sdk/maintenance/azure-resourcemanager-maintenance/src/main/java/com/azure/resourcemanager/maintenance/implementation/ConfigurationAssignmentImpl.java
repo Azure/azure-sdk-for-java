@@ -116,6 +116,21 @@ public final class ConfigurationAssignmentImpl
         this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
             "configurationAssignmentName");
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
     }
 
     public ConfigurationAssignment refresh() {
