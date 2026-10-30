@@ -83,7 +83,7 @@ public final class ProgressReporter {
     }
 
     /**
-     * Creates child {@link ProgressReporter}. It tracks it's own progress and reports to parent.
+     * Creates child {@link ProgressReporter}. It tracks its own progress and reports to parent.
      * @param parent The parent {@link ProgressReporter}. Must not be null.
      */
     private ProgressReporter(ProgressReporter parent) {

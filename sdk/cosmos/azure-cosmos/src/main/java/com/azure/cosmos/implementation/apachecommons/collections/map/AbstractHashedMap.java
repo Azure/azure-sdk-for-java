@@ -293,7 +293,7 @@ public class AbstractHashedMap<K, V> extends AbstractMap<K, V> implements Iterab
      * uses {@link #put(Object, Object)}.
      * <p>
      * It is private to allow the constructor to still call it
-     * even when putAll is overriden.
+     * even when putAll is overridden.
      *
      * @param map  the map to add
      * @throws NullPointerException if the map is null
