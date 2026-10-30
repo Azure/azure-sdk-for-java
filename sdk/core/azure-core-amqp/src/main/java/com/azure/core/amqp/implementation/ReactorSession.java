@@ -416,11 +416,20 @@ public class ReactorSession implements AmqpSession {
             if (error != null) {
                 return Mono.error(error);
             }
+            final AmqpReceiveLink existingReceiveLink = existingLink.getLink();
+            if (existingReceiveLink != null && !existingReceiveLink.isDisposed()) {
+                logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log("Returning existing receive link.");
+                return Mono.just(existingReceiveLink);
+            }
+            // Link is disposed (e.g. after silent AMQP detach). Fall through to recreate.
+            // The compute() lambda below will atomically handle cache replacement.
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .log("Returning existing receive link.");
-            return Mono.just(existingLink.getLink());
+                .log("Cached receive link is disposed. Will recreate.");
         }
 
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
@@ -433,12 +442,20 @@ public class ReactorSession implements AmqpSession {
                         final LinkSubscription<AmqpReceiveLink> computed
                             = openReceiveLinks.compute(linkName, (linkNameKey, existing) -> {
                                 if (existing != null) {
-                                    logger.atInfo()
-                                        .addKeyValue(LINK_NAME_KEY, linkName)
-                                        .log("Another receive link exists. Disposing of new one.");
-                                    tokenManager.close();
+                                    final AmqpReceiveLink link = existing.getLink();
+                                    if (link != null && link.isDisposed()) {
+                                        logger.atInfo()
+                                            .addKeyValue(LINK_NAME_KEY, linkName)
+                                            .log("Cached receive link is disposed. Recreating.");
+                                        existing.closeAsync(null).subscribe();
+                                    } else {
+                                        logger.atInfo()
+                                            .addKeyValue(LINK_NAME_KEY, linkName)
+                                            .log("Another receive link exists. Disposing of new one.");
+                                        tokenManager.close();
 
-                                    return existing;
+                                        return existing;
+                                    }
                                 }
 
                                 logger.atInfo()
@@ -512,8 +529,14 @@ public class ReactorSession implements AmqpSession {
             if (error != null) {
                 return Mono.error(error);
             }
-            logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Returning existing send link.");
-            return Mono.just(existing.getLink());
+            final AmqpSendLink existingLink = existing.getLink();
+            if (existingLink != null && !existingLink.isDisposed()) {
+                logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Returning existing send link.");
+                return Mono.just(existingLink);
+            }
+            // Link is disposed (e.g. after silent AMQP detach). Fall through to recreate.
+            // The compute() lambda below will atomically handle cache replacement.
+            logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Cached send link is disposed. Will recreate.");
         }
 
         final TokenManager tokenManager;
@@ -534,14 +557,22 @@ public class ReactorSession implements AmqpSession {
                     final LinkSubscription<AmqpSendLink> computed
                         = openSendLinks.compute(linkName, (linkNameKey, existingLink) -> {
                             if (existingLink != null) {
-                                logger.atInfo()
-                                    .addKeyValue(LINK_NAME_KEY, linkName)
-                                    .log("Another send link exists. Disposing of new one.");
+                                final AmqpSendLink link = existingLink.getLink();
+                                if (link != null && link.isDisposed()) {
+                                    logger.atInfo()
+                                        .addKeyValue(LINK_NAME_KEY, linkName)
+                                        .log("Cached send link is disposed. Recreating.");
+                                    existingLink.closeAsync(null).subscribe();
+                                } else {
+                                    logger.atInfo()
+                                        .addKeyValue(LINK_NAME_KEY, linkName)
+                                        .log("Another send link exists. Disposing of new one.");
 
-                                if (tokenManager != null) {
-                                    tokenManager.close();
+                                    if (tokenManager != null) {
+                                        tokenManager.close();
+                                    }
+                                    return existingLink;
                                 }
-                                return existingLink;
                             }
 
                             logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Creating a new send link.");
