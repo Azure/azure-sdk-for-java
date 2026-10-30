@@ -110,6 +110,15 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/sites/{siteName}",
             "siteName");
+        if (this.siteName == null) {
+            this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}", "siteName");
+        }
+        if (this.siteName == null) {
+            this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}",
+                "siteName");
+        }
     }
 
     public Site refresh() {

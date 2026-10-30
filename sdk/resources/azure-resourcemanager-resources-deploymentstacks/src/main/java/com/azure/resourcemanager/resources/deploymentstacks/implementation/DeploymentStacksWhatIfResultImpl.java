@@ -130,6 +130,16 @@ public final class DeploymentStacksWhatIfResultImpl implements DeploymentStacksW
         this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
             "deploymentStacksWhatIfResultName");
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
     }
 
     public DeploymentStacksWhatIfResult refresh() {
