@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.8.0</version>
+    <version>2.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -160,7 +160,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | Tool class | Description |
 |---|---|
 | `BingCustomSearchPreviewTool` | Bing custom search |
-| `BrowserAutomationPreviewTool` | Browser automation |
+| `BrowserAutomationPreviewTool` | Deprecated; use `BrowserAutomationTool` |
 | `ComputerUsePreviewTool` | Computer use |
 | `FabricIqPreviewTool` | Fabric IQ |
 | `MemorySearchPreviewTool` | Memory search |
@@ -661,6 +661,9 @@ See the full sample in [SharePointGroundingSync.java](https://github.com/Azure/a
 ##### **Browser Automation** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation?pivots=java))
 
 Interact with web pages using `BrowserAutomationTool`. For toolbox configuration, use `BrowserAutomationToolboxTool`.
+
+The legacy `BrowserAutomationPreviewTool` and `BrowserAutomationPreviewToolboxTool` are deprecated and no longer available.
+Use `BrowserAutomationTool` and `BrowserAutomationToolboxTool` instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
 
 ```java com.azure.ai.agents.define_browser_automation
 // Create browser automation tool with connection configuration
