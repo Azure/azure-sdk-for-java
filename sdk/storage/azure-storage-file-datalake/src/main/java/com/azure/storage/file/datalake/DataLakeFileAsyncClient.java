@@ -183,7 +183,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A paged reactive response emitting the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
+    PagedFlux<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return PagedFlux.create(() -> {
             Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>> provider = BlobLayoutPagingAccessHelper
                 .getPageRetrieverProvider(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
@@ -1493,7 +1493,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
             Context context = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, null);
-            context = StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
+            // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+            // context = StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
 
             return blockBlobAsyncClient.downloadStreamWithResponse(Transforms.toBlobDownloadStreamOptions(finalOptions))
                 .contextWrite(FluxUtil.toReactorContext(context))

@@ -169,7 +169,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A paged response containing the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
+    PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 
@@ -1139,8 +1139,10 @@ public class DataLakeFileClient extends DataLakePathClient {
         Context context) {
         FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
         Context upnContext = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, context);
-        Context finalContext
-            = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // Context finalContext
+        //     = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+        Context finalContext = upnContext;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
             BlobDownloadResponse response = blockBlobClient.downloadStreamWithResponse(stream,

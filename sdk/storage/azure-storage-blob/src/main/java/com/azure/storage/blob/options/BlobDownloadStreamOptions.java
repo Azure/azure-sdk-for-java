@@ -141,7 +141,7 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
      *
      * @return The data locality endpoint, or null if the client's configured endpoint should be used.
      */
-    public URI getDataLocalityEndpoint() {
+    URI getDataLocalityEndpoint() {
         return dataLocalityEndpoint;
     }
 
@@ -155,7 +155,7 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
      * authority-only URI reference such as {@code //host:port}. The request's scheme is preserved.
      * @return The updated options.
      */
-    public BlobDownloadStreamOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
+    BlobDownloadStreamOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
         this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }
