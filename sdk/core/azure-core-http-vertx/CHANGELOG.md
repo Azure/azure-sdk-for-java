@@ -6,6 +6,7 @@
 
 - Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback without changing defaults or mutating
   caller-supplied Vert.x options.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
 
 ### Breaking Changes
 
