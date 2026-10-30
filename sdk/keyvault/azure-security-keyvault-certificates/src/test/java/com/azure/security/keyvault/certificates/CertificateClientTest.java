@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -487,27 +486,21 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner(certName -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
-                = certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                = certificateClient.beginCreateCertificate(certName, TestUtils.setupCancellationPolicy())
                     .setPollInterval(Duration.ofMillis(100));
 
             certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
             certPoller.cancelOperation();
 
-            try {
-                certPoller.waitUntil(Duration.ofSeconds(60), LongRunningOperationStatus.fromString("cancelled", true));
-            } catch (NoSuchElementException e) {
-                // The operation did not reach the expected status, either because it was completed before it could be
-                // canceled or there was a service timing issue when attempting to cancel the operation.
-                return;
-            }
+            LongRunningOperationStatus cancelled = LongRunningOperationStatus.fromString("cancelled", true);
+            certPoller.waitUntil(Duration.ofSeconds(60), cancelled);
 
             PollResponse<CertificateOperation> pollResponse = certPoller.poll();
 
             assertTrue(pollResponse.getValue().getCancellationRequested());
-
-            KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-
-            assertFalse(certificate.getProperties().isEnabled());
+            // Manual issuance has no signed certificate to fetch; verify the terminal operation instead.
+            assertEquals(cancelled, pollResponse.getStatus());
+            assertEquals("cancelled", pollResponse.getValue().getStatus());
         });
     }
 
