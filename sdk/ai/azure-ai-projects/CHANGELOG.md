@@ -2,6 +2,12 @@
 
 ## 2.9.0 (2026-10-30)
 
+### Breaking Changes
+
+- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
+  value. Use `SimulationSeedDataGenerationJobConfiguration(int maxSamples)` with a value between 1 and 1000 instead
+  of the no-argument constructor.
+
 ### Bugs Fixed
 
 - Fixed cursor-based list operations that stopped after the first page, including data-generation jobs,
