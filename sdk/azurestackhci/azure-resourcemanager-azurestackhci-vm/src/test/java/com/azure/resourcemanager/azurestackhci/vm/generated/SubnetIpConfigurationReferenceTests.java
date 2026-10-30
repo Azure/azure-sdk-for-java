@@ -12,14 +12,14 @@ public final class SubnetIpConfigurationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubnetIpConfigurationReference model
-            = BinaryData.fromString("{\"ID\":\"kirsoodqxhc\"}").toObject(SubnetIpConfigurationReference.class);
-        Assertions.assertEquals("kirsoodqxhc", model.id());
+            = BinaryData.fromString("{\"ID\":\"lmjthjq\"}").toObject(SubnetIpConfigurationReference.class);
+        Assertions.assertEquals("lmjthjq", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetIpConfigurationReference model = new SubnetIpConfigurationReference().withId("kirsoodqxhc");
+        SubnetIpConfigurationReference model = new SubnetIpConfigurationReference().withId("lmjthjq");
         model = BinaryData.fromObject(model).toObject(SubnetIpConfigurationReference.class);
-        Assertions.assertEquals("kirsoodqxhc", model.id());
+        Assertions.assertEquals("lmjthjq", model.id());
     }
 }

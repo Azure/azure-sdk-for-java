@@ -13,19 +13,19 @@ public final class RouteTests {
     public void testDeserialize() throws Exception {
         Route model = BinaryData
             .fromString(
-                "{\"properties\":{\"addressPrefix\":\"gmaajrm\",\"nextHopIpAddress\":\"jwzrl\"},\"name\":\"mcl\"}")
+                "{\"properties\":{\"addressPrefix\":\"pphrcgynco\",\"nextHopIpAddress\":\"ecfvmm\"},\"name\":\"ofsx\"}")
             .toObject(Route.class);
-        Assertions.assertEquals("mcl", model.name());
-        Assertions.assertEquals("gmaajrm", model.addressPrefix());
-        Assertions.assertEquals("jwzrl", model.nextHopIpAddress());
+        Assertions.assertEquals("ofsx", model.name());
+        Assertions.assertEquals("pphrcgynco", model.addressPrefix());
+        Assertions.assertEquals("ecfvmm", model.nextHopIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Route model = new Route().withName("mcl").withAddressPrefix("gmaajrm").withNextHopIpAddress("jwzrl");
+        Route model = new Route().withName("ofsx").withAddressPrefix("pphrcgynco").withNextHopIpAddress("ecfvmm");
         model = BinaryData.fromObject(model).toObject(Route.class);
-        Assertions.assertEquals("mcl", model.name());
-        Assertions.assertEquals("gmaajrm", model.addressPrefix());
-        Assertions.assertEquals("jwzrl", model.nextHopIpAddress());
+        Assertions.assertEquals("ofsx", model.name());
+        Assertions.assertEquals("pphrcgynco", model.addressPrefix());
+        Assertions.assertEquals("ecfvmm", model.nextHopIpAddress());
     }
 }

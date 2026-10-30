@@ -22,6 +22,11 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
     private Integer blockSizeBytes;
 
     /*
+     * Data used when creating a virtual hard disk
+     */
+    private CreationData creationData;
+
+    /*
      * Size of the disk in GB
      */
     private Long diskSizeGB;
@@ -61,6 +66,11 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
      * Boolean indicating whether it is an existing local hard disk or if one should be created.
      */
     private Boolean createFromLocal;
+
+    /*
+     * Absolute path of the VHD. This is only applicable when createFromLocal is true.
+     */
+    private String localVhdPath;
 
     /*
      * Provisioning state of the virtual hard disk.
@@ -106,6 +116,26 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
      */
     public VirtualHardDiskProperties withBlockSizeBytes(Integer blockSizeBytes) {
         this.blockSizeBytes = blockSizeBytes;
+        return this;
+    }
+
+    /**
+     * Get the creationData property: Data used when creating a virtual hard disk.
+     * 
+     * @return the creationData value.
+     */
+    public CreationData creationData() {
+        return this.creationData;
+    }
+
+    /**
+     * Set the creationData property: Data used when creating a virtual hard disk.
+     * 
+     * @param creationData the creationData value to set.
+     * @return the VirtualHardDiskProperties object itself.
+     */
+    public VirtualHardDiskProperties withCreationData(CreationData creationData) {
+        this.creationData = creationData;
         return this;
     }
 
@@ -274,6 +304,26 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
     }
 
     /**
+     * Get the localVhdPath property: Absolute path of the VHD. This is only applicable when createFromLocal is true.
+     * 
+     * @return the localVhdPath value.
+     */
+    public String localVhdPath() {
+        return this.localVhdPath;
+    }
+
+    /**
+     * Set the localVhdPath property: Absolute path of the VHD. This is only applicable when createFromLocal is true.
+     * 
+     * @param localVhdPath the localVhdPath value to set.
+     * @return the VirtualHardDiskProperties object itself.
+     */
+    public VirtualHardDiskProperties withLocalVhdPath(String localVhdPath) {
+        this.localVhdPath = localVhdPath;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the virtual hard disk.
      * 
      * @return the provisioningState value.
@@ -340,6 +390,7 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("blockSizeBytes", this.blockSizeBytes);
+        jsonWriter.writeJsonField("creationData", this.creationData);
         jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
         jsonWriter.writeBooleanField("dynamic", this.dynamic);
         jsonWriter.writeNumberField("logicalSectorBytes", this.logicalSectorBytes);
@@ -350,6 +401,7 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
         jsonWriter.writeStringField("diskFileFormat",
             this.diskFileFormat == null ? null : this.diskFileFormat.toString());
         jsonWriter.writeBooleanField("createFromLocal", this.createFromLocal);
+        jsonWriter.writeStringField("localVhdPath", this.localVhdPath);
         jsonWriter.writeStringField("containerId", this.containerId);
         jsonWriter.writeNumberField("maxShares", this.maxShares);
         return jsonWriter.writeEndObject();
@@ -372,6 +424,8 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
 
                 if ("blockSizeBytes".equals(fieldName)) {
                     deserializedVirtualHardDiskProperties.blockSizeBytes = reader.getNullable(JsonReader::getInt);
+                } else if ("creationData".equals(fieldName)) {
+                    deserializedVirtualHardDiskProperties.creationData = CreationData.fromJson(reader);
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedVirtualHardDiskProperties.diskSizeGB = reader.getNullable(JsonReader::getLong);
                 } else if ("dynamic".equals(fieldName)) {
@@ -390,6 +444,8 @@ public final class VirtualHardDiskProperties implements JsonSerializable<Virtual
                         = DiskFileFormat.fromString(reader.getString());
                 } else if ("createFromLocal".equals(fieldName)) {
                     deserializedVirtualHardDiskProperties.createFromLocal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("localVhdPath".equals(fieldName)) {
+                    deserializedVirtualHardDiskProperties.localVhdPath = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualHardDiskProperties.provisioningState
                         = ProvisioningStateEnum.fromString(reader.getString());

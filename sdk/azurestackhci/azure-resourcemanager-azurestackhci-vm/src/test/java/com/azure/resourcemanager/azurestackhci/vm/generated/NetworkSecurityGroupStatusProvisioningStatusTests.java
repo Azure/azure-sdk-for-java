@@ -13,9 +13,9 @@ public final class NetworkSecurityGroupStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityGroupStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"ihkaetcktvfc\",\"status\":\"Failed\"}")
+            = BinaryData.fromString("{\"operationId\":\"hckfrlhrx\",\"status\":\"InProgress\"}")
                 .toObject(NetworkSecurityGroupStatusProvisioningStatus.class);
-        Assertions.assertEquals("ihkaetcktvfc", model.operationId());
-        Assertions.assertEquals(Status.FAILED, model.status());
+        Assertions.assertEquals("hckfrlhrx", model.operationId());
+        Assertions.assertEquals(Status.IN_PROGRESS, model.status());
     }
 }

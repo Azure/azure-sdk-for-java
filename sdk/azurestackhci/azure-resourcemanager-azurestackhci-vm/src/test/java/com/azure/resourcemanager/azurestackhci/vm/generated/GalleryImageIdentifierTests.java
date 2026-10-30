@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class GalleryImageIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GalleryImageIdentifier model
-            = BinaryData.fromString("{\"publisher\":\"foooj\",\"offer\":\"wifsq\",\"sku\":\"saagdf\"}")
-                .toObject(GalleryImageIdentifier.class);
-        Assertions.assertEquals("foooj", model.publisher());
-        Assertions.assertEquals("wifsq", model.offer());
-        Assertions.assertEquals("saagdf", model.sku());
+        GalleryImageIdentifier model = BinaryData
+            .fromString("{\"publisher\":\"xrifkwmrvkts\",\"offer\":\"zntocipaouajps\",\"sku\":\"ucmpoyfd\"}")
+            .toObject(GalleryImageIdentifier.class);
+        Assertions.assertEquals("xrifkwmrvkts", model.publisher());
+        Assertions.assertEquals("zntocipaouajps", model.offer());
+        Assertions.assertEquals("ucmpoyfd", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryImageIdentifier model
-            = new GalleryImageIdentifier().withPublisher("foooj").withOffer("wifsq").withSku("saagdf");
+        GalleryImageIdentifier model = new GalleryImageIdentifier().withPublisher("xrifkwmrvkts")
+            .withOffer("zntocipaouajps")
+            .withSku("ucmpoyfd");
         model = BinaryData.fromObject(model).toObject(GalleryImageIdentifier.class);
-        Assertions.assertEquals("foooj", model.publisher());
-        Assertions.assertEquals("wifsq", model.offer());
-        Assertions.assertEquals("saagdf", model.sku());
+        Assertions.assertEquals("xrifkwmrvkts", model.publisher());
+        Assertions.assertEquals("zntocipaouajps", model.offer());
+        Assertions.assertEquals("ucmpoyfd", model.sku());
     }
 }

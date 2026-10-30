@@ -13,16 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageContainerTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageContainerTagsUpdate model
-            = BinaryData.fromString("{\"tags\":{\"kphywpnvjto\":\"dhbt\"}}").toObject(StorageContainerTagsUpdate.class);
-        Assertions.assertEquals("dhbt", model.tags().get("kphywpnvjto"));
+        StorageContainerTagsUpdate model = BinaryData
+            .fromString(
+                "{\"tags\":{\"sub\":\"rruvwbhsq\",\"rxbpyb\":\"gjb\",\"twss\":\"rfbjf\",\"tpvjzbexilzznfqq\":\"t\"}}")
+            .toObject(StorageContainerTagsUpdate.class);
+        Assertions.assertEquals("rruvwbhsq", model.tags().get("sub"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageContainerTagsUpdate model = new StorageContainerTagsUpdate().withTags(mapOf("kphywpnvjto", "dhbt"));
+        StorageContainerTagsUpdate model = new StorageContainerTagsUpdate()
+            .withTags(mapOf("sub", "rruvwbhsq", "rxbpyb", "gjb", "twss", "rfbjf", "tpvjzbexilzznfqq", "t"));
         model = BinaryData.fromObject(model).toObject(StorageContainerTagsUpdate.class);
-        Assertions.assertEquals("dhbt", model.tags().get("kphywpnvjto"));
+        Assertions.assertEquals("rruvwbhsq", model.tags().get("sub"));
     }
 
     // Use "Map.of" if available

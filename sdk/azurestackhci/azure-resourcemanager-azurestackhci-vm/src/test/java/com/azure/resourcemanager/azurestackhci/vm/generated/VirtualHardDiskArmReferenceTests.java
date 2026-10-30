@@ -12,14 +12,14 @@ public final class VirtualHardDiskArmReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualHardDiskArmReference model
-            = BinaryData.fromString("{\"id\":\"qwwncw\"}").toObject(VirtualHardDiskArmReference.class);
-        Assertions.assertEquals("qwwncw", model.id());
+            = BinaryData.fromString("{\"id\":\"kpw\"}").toObject(VirtualHardDiskArmReference.class);
+        Assertions.assertEquals("kpw", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualHardDiskArmReference model = new VirtualHardDiskArmReference().withId("qwwncw");
+        VirtualHardDiskArmReference model = new VirtualHardDiskArmReference().withId("kpw");
         model = BinaryData.fromObject(model).toObject(VirtualHardDiskArmReference.class);
-        Assertions.assertEquals("qwwncw", model.id());
+        Assertions.assertEquals("kpw", model.id());
     }
 }

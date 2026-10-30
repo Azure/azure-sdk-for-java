@@ -12,14 +12,14 @@ public final class NetworkInterfaceArmReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceArmReference model
-            = BinaryData.fromString("{\"id\":\"tcxsenhwlrs\"}").toObject(NetworkInterfaceArmReference.class);
-        Assertions.assertEquals("tcxsenhwlrs", model.id());
+            = BinaryData.fromString("{\"id\":\"fudwpznt\"}").toObject(NetworkInterfaceArmReference.class);
+        Assertions.assertEquals("fudwpznt", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceArmReference model = new NetworkInterfaceArmReference().withId("tcxsenhwlrs");
+        NetworkInterfaceArmReference model = new NetworkInterfaceArmReference().withId("fudwpznt");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceArmReference.class);
-        Assertions.assertEquals("tcxsenhwlrs", model.id());
+        Assertions.assertEquals("fudwpznt", model.id());
     }
 }
