@@ -1,5 +1,14 @@
 # Release History
 
+## 2.63.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.0`.
+
+
 ## 2.62.0 (2026-10-09)
 
 - Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.
