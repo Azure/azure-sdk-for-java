@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/PolicyCRUD/ListBackupPolicy.json
+     * x-ms-original-file: 2026-08-31-preview/PolicyCRUD/ListBackupPolicy.json
      */
     /**
      * Sample code: List BackupPolicy.

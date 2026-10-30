@@ -13,9 +13,9 @@ public final class RecoveryPointImmutabilityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointImmutabilityProperties model
-            = BinaryData.fromString("{\"isImmutable\":true,\"expiryTime\":\"2021-01-29T00:13:03Z\"}")
+            = BinaryData.fromString("{\"isImmutable\":true,\"expiryTime\":\"2021-01-08T05:14:28Z\"}")
                 .toObject(RecoveryPointImmutabilityProperties.class);
         Assertions.assertTrue(model.isImmutable());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T00:13:03Z"), model.expiryTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T05:14:28Z"), model.expiryTime());
     }
 }

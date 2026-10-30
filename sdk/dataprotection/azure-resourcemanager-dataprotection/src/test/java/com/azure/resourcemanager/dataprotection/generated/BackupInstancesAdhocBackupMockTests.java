@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesAdhocBackupMockTests {
     @Test
     public void testAdhocBackup() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"sjnygqdnfwqzdzgt\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"rntvlwijp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class BackupInstancesAdhocBackupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationJobExtendedInfo response = manager.backupInstances()
-            .adhocBackup("zhhzjhfjmhvvmu", "gpmuneqsxvmhfbuz", "yihsasbhudypohyu",
-                new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("ms")
-                    .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("nsqyrpfoobrltt"))),
+            .adhocBackup("rzpgep", "tybbwwpgda", "chzyvlixqnrk",
+                new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("xkjibnxmy")
+                    .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("xs"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.jobId());
+        Assertions.assertEquals("rntvlwijp", response.jobId());
     }
 }

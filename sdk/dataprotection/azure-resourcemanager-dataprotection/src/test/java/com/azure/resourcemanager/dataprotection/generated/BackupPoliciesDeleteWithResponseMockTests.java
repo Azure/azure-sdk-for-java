@@ -28,7 +28,7 @@ public final class BackupPoliciesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupPolicies()
-            .deleteWithResponse("mr", "ddoui", "amowaziynknlqwzd", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lzgaufcshhvnew", "nxkympqanxrjk", "xtwbta", com.azure.core.util.Context.NONE);
 
     }
 }

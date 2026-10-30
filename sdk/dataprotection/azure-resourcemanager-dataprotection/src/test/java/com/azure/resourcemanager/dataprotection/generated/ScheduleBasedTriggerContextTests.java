@@ -17,46 +17,48 @@ public final class ScheduleBasedTriggerContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleBasedTriggerContext model = BinaryData.fromString(
-            "{\"objectType\":\"ScheduleBasedTriggerContext\",\"schedule\":{\"repeatingTimeIntervals\":[\"movsmzlxwabmqoe\",\"kif\"],\"timeZone\":\"tpuqujmq\"},\"taggingCriteria\":[{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":2595329865796026079,\"tagInfo\":{\"eTag\":\"oaongbjc\",\"id\":\"ujitcjedftww\",\"tagName\":\"ezkojvdcp\"}},{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":true,\"taggingPriority\":6364486515251999629,\"tagInfo\":{\"eTag\":\"cybxa\",\"id\":\"gszufoxciqopid\",\"tagName\":\"amcio\"}},{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":7478138751380304372,\"tagInfo\":{\"eTag\":\"khnzbonlw\",\"id\":\"oegokdwbwh\",\"tagName\":\"szzcmrvexztv\"}}]}")
+            "{\"objectType\":\"ScheduleBasedTriggerContext\",\"schedule\":{\"repeatingTimeIntervals\":[\"hzovaj\",\"ziuxxpshnee\",\"ulfgslqu\",\"kwdlenrdsutujba\"],\"timeZone\":\"juohminyflnorw\"},\"taggingCriteria\":[{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":6592682584026148798,\"tagInfo\":{\"eTag\":\"vxwmygd\",\"id\":\"gpqch\",\"tagName\":\"sze\"}},{\"criteria\":[{\"objectType\":\"BackupCriteria\"}],\"isDefault\":true,\"taggingPriority\":6219904994785247374,\"tagInfo\":{\"eTag\":\"xgibbda\",\"id\":\"onfo\",\"tagName\":\"auorsukokw\"}},{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":2795143579421655198,\"tagInfo\":{\"eTag\":\"nuuepzlrp\",\"id\":\"zsoldwey\",\"tagName\":\"qdunvmnnrwrbior\"}},{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":2046569881616478612,\"tagInfo\":{\"eTag\":\"hhg\",\"id\":\"hxmsivfo\",\"tagName\":\"iloxggdufiq\"}}]}")
             .toObject(ScheduleBasedTriggerContext.class);
-        Assertions.assertEquals("movsmzlxwabmqoe", model.schedule().repeatingTimeIntervals().get(0));
-        Assertions.assertEquals("tpuqujmq", model.schedule().timeZone());
+        Assertions.assertEquals("hzovaj", model.schedule().repeatingTimeIntervals().get(0));
+        Assertions.assertEquals("juohminyflnorw", model.schedule().timeZone());
         Assertions.assertFalse(model.taggingCriteria().get(0).isDefault());
-        Assertions.assertEquals(2595329865796026079L, model.taggingCriteria().get(0).taggingPriority());
-        Assertions.assertEquals("ezkojvdcp", model.taggingCriteria().get(0).tagInfo().tagName());
+        Assertions.assertEquals(6592682584026148798L, model.taggingCriteria().get(0).taggingPriority());
+        Assertions.assertEquals("sze", model.taggingCriteria().get(0).tagInfo().tagName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleBasedTriggerContext model
-            = new ScheduleBasedTriggerContext()
-                .withSchedule(new BackupSchedule().withRepeatingTimeIntervals(Arrays.asList("movsmzlxwabmqoe", "kif"))
-                    .withTimeZone("tpuqujmq"))
-                .withTaggingCriteria(
-                    Arrays.asList(
-                        new TaggingCriteria()
-                            .withCriteria(
-                                Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria()))
-                            .withIsDefault(false)
-                            .withTaggingPriority(2595329865796026079L)
-                            .withTagInfo(new RetentionTag().withTagName("ezkojvdcp")),
-                        new TaggingCriteria()
-                            .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(),
-                                new BackupCriteria(), new BackupCriteria()))
-                            .withIsDefault(true)
-                            .withTaggingPriority(6364486515251999629L)
-                            .withTagInfo(new RetentionTag().withTagName("amcio")),
-                        new TaggingCriteria()
-                            .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(),
-                                new BackupCriteria(), new BackupCriteria()))
-                            .withIsDefault(false)
-                            .withTaggingPriority(7478138751380304372L)
-                            .withTagInfo(new RetentionTag().withTagName("szzcmrvexztv"))));
+        ScheduleBasedTriggerContext model = new ScheduleBasedTriggerContext()
+            .withSchedule(new BackupSchedule()
+                .withRepeatingTimeIntervals(Arrays.asList("hzovaj", "ziuxxpshnee", "ulfgslqu", "kwdlenrdsutujba"))
+                .withTimeZone("juohminyflnorw"))
+            .withTaggingCriteria(Arrays.asList(
+                new TaggingCriteria()
+                    .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria(),
+                        new BackupCriteria()))
+                    .withIsDefault(false)
+                    .withTaggingPriority(6592682584026148798L)
+                    .withTagInfo(new RetentionTag().withTagName("sze")),
+                new TaggingCriteria().withCriteria(Arrays.asList(new BackupCriteria()))
+                    .withIsDefault(true)
+                    .withTaggingPriority(6219904994785247374L)
+                    .withTagInfo(new RetentionTag().withTagName("auorsukokw")),
+                new TaggingCriteria()
+                    .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria(),
+                        new BackupCriteria()))
+                    .withIsDefault(false)
+                    .withTaggingPriority(2795143579421655198L)
+                    .withTagInfo(new RetentionTag().withTagName("qdunvmnnrwrbior")),
+                new TaggingCriteria()
+                    .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria()))
+                    .withIsDefault(false)
+                    .withTaggingPriority(2046569881616478612L)
+                    .withTagInfo(new RetentionTag().withTagName("iloxggdufiq"))));
         model = BinaryData.fromObject(model).toObject(ScheduleBasedTriggerContext.class);
-        Assertions.assertEquals("movsmzlxwabmqoe", model.schedule().repeatingTimeIntervals().get(0));
-        Assertions.assertEquals("tpuqujmq", model.schedule().timeZone());
+        Assertions.assertEquals("hzovaj", model.schedule().repeatingTimeIntervals().get(0));
+        Assertions.assertEquals("juohminyflnorw", model.schedule().timeZone());
         Assertions.assertFalse(model.taggingCriteria().get(0).isDefault());
-        Assertions.assertEquals(2595329865796026079L, model.taggingCriteria().get(0).taggingPriority());
-        Assertions.assertEquals("ezkojvdcp", model.taggingCriteria().get(0).tagInfo().tagName());
+        Assertions.assertEquals(6592682584026148798L, model.taggingCriteria().get(0).taggingPriority());
+        Assertions.assertEquals("sze", model.taggingCriteria().get(0).tagInfo().tagName());
     }
 }

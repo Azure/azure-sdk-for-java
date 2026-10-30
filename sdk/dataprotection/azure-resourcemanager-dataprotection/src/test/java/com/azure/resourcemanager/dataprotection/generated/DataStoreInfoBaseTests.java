@@ -13,18 +13,18 @@ public final class DataStoreInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataStoreInfoBase model
-            = BinaryData.fromString("{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"glsbjjc\"}")
+            = BinaryData.fromString("{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"gzslesjcbhernnti\"}")
                 .toObject(DataStoreInfoBase.class);
         Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
-        Assertions.assertEquals("glsbjjc", model.objectType());
+        Assertions.assertEquals("gzslesjcbhernnti", model.objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataStoreInfoBase model
-            = new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE).withObjectType("glsbjjc");
+        DataStoreInfoBase model = new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
+            .withObjectType("gzslesjcbhernnti");
         model = BinaryData.fromObject(model).toObject(DataStoreInfoBase.class);
         Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
-        Assertions.assertEquals("glsbjjc", model.objectType());
+        Assertions.assertEquals("gzslesjcbhernnti", model.objectType());
     }
 }

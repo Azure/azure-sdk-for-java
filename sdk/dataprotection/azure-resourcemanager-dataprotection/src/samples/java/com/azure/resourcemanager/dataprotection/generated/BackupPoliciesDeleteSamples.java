@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/PolicyCRUD/DeleteBackupPolicy.json
+     * x-ms-original-file: 2026-08-31-preview/PolicyCRUD/DeleteBackupPolicy.json
      */
     /**
      * Sample code: Delete BackupPolicy.

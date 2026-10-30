@@ -27,8 +27,7 @@ public final class BackupInstancesResumeProtectionMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.backupInstances()
-            .resumeProtection("nsymoyqhlwigd", "vbkbxgomf", "juwasqvdaeyyguxa", com.azure.core.util.Context.NONE);
+        manager.backupInstances().resumeProtection("yui", "absnmfpp", "ojeevy", com.azure.core.util.Context.NONE);
 
     }
 }
