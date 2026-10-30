@@ -100,6 +100,13 @@
 * `sourceType()` was added
 * `withSourceType(models.NfsMountSourceType)` was added
 
+### Other Changes
+
+- Added Python-parity scenario and request-contract coverage for API version 2026-05-01, including cross-tenant settings,
+  hourly schedules, agentless jobs, FSX/NFS 4.1 serialization, synchronization fields, and reconciliation.
+- Added live-only shared-fixture overrides while keeping playback independent of local Azure credentials and settings.
+- Sanitized shared identities and signed ARM polling URLs in scenario recordings.
+
 ## 1.5.0 (2026-04-06)
 
 - Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

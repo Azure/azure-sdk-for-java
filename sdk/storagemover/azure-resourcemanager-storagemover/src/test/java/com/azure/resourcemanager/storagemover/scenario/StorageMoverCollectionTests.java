@@ -28,7 +28,7 @@ public class StorageMoverCollectionTests extends StorageMoverManagementTestBase 
 
         StorageMover sm1 = storageMoverManager.storageMovers()
             .define(storageMoverName1)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .withTags(tags)
             .withDescription("This is a new storage mover")
@@ -39,7 +39,7 @@ public class StorageMoverCollectionTests extends StorageMoverManagementTestBase 
 
         StorageMover sm2 = storageMoverManager.storageMovers()
             .define(storageMoverName2)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .withTags(tags)
             .withDescription("This is a new storage mover")

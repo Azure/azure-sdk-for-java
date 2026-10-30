@@ -35,7 +35,7 @@ public class ConnectionTests extends StorageMoverManagementTestBase {
 
     @Override
     protected Region testRegion() {
-        return WEST_CENTRAL_US;
+        return c2cRegion;
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ConnectionTests extends StorageMoverManagementTestBase {
                 .define(connectionName)
                 .withExistingStorageMover(resourceGroupName, sm.name())
                 .withProperties(new ConnectionProperties().withDescription("initial description")
-                    .withPrivateLinkServiceId(PRIVATE_LINK_SERVICE_ID))
+                    .withPrivateLinkServiceId(privateLinkServiceId))
                 .create();
             Assertions.assertEquals(connectionName, created.name());
             Assertions.assertNotNull(created.properties());
@@ -64,8 +64,8 @@ public class ConnectionTests extends StorageMoverManagementTestBase {
             // assert only the resource-group + name suffix (which is what the
             // round-trip actually verifies). The sub segment is identical in
             // record and playback after sanitization.
-            String expectedPlsSuffix = "/resourceGroups/" + PRIVATE_LINK_SERVICE_RG
-                + "/providers/Microsoft.Network/privateLinkServices/" + PRIVATE_LINK_SERVICE_NAME;
+            String expectedPlsSuffix = "/resourceGroups/" + privateLinkServiceResourceGroup
+                + "/providers/Microsoft.Network/privateLinkServices/" + privateLinkServiceName;
             Assertions.assertNotNull(created.properties().privateLinkServiceId());
             Assertions.assertTrue(created.properties().privateLinkServiceId().endsWith(expectedPlsSuffix),
                 "expected privateLinkServiceId to end with " + expectedPlsSuffix + " but was "
@@ -90,7 +90,7 @@ public class ConnectionTests extends StorageMoverManagementTestBase {
             // seconds after the PATCH (cross-language flakiness — see playbook).
             Connection updated = fetched.update()
                 .withProperties(new ConnectionProperties().withDescription("updated description")
-                    .withPrivateLinkServiceId(PRIVATE_LINK_SERVICE_ID))
+                    .withPrivateLinkServiceId(privateLinkServiceId))
                 .apply();
             Assertions.assertEquals(connectionName, updated.name());
 
