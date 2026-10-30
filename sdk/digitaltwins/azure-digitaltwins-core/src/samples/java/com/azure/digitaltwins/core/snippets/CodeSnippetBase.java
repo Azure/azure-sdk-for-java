@@ -110,7 +110,7 @@ public abstract class CodeSnippetBase {
      *
      * @return {@code null}
      */
-    protected String getTenantId() {
+    protected String getTenenatId() {
         return null;
     }
 
