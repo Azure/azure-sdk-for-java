@@ -114,7 +114,7 @@ public final class FileReadOptions {
      *
      * @return The data locality endpoint, or {@code null} if the client's configured endpoint should be used.
      */
-    public URI getDataLocalityEndpoint() {
+    URI getDataLocalityEndpoint() {
         return dataLocalityEndpoint;
     }
 
@@ -128,7 +128,7 @@ public final class FileReadOptions {
      * authority-only URI reference such as {@code //host:port}. The request's scheme is preserved.
      * @return The updated options.
      */
-    public FileReadOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
+    FileReadOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
         this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }

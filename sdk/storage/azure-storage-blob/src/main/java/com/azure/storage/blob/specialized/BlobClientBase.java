@@ -1345,7 +1345,8 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         options = options == null ? new BlobDownloadStreamOptions() : options;
-        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1451,7 +1452,8 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
         Context context) {
         options = options == null ? new BlobDownloadContentOptions() : options;
-        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1873,7 +1875,7 @@ public class BlobClientBase {
      * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
+    PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
         return getLayout(options, Context.NONE);
     }
 
@@ -1889,7 +1891,7 @@ public class BlobClientBase {
      * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
+    PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 

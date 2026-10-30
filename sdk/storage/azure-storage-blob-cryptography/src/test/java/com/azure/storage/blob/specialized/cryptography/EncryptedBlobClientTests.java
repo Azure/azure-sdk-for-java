@@ -11,21 +11,27 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.models.BlobLayoutRange;
+// TODO: Re-enable when getLayout is made public.
+// import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
+// TODO: Re-enable when getLayout is made public.
+// import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -34,6 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EncryptedBlobClientTests {
@@ -106,29 +113,70 @@ public class EncryptedBlobClientTests {
         assertArrayEquals(plaintext, encryptedBlobClient.downloadContent().toBytes());
     }
 
+    // TODO: Delete when getLayout is made public; replaced by encryptedClientGetLayoutBypassesDecryption below.
     @Test
-    void encryptedClientGetLayoutBypassesDecryption() {
+    void encryptedClientLayoutRequestBypassesDecryption() {
         EncryptedLayoutHttpClient httpClient = new EncryptedLayoutHttpClient();
         EncryptedBlobClient encryptedBlobClient = createBuilder(httpClient).buildEncryptedBlobClient();
 
-        BlobLayoutRange layoutRange
-            = encryptedBlobClient.getLayout(null).stream().findFirst().orElseThrow(AssertionError::new);
-
-        assertEquals(URI.create("https://host-a:443"), layoutRange.getEndpoint());
+        try (HttpResponse response = encryptedBlobClient.getHttpPipeline()
+            .sendSync(new HttpRequest(HttpMethod.GET, encryptedBlobClient.getBlobUrl() + "?comp=layout"),
+                Context.NONE)) {
+            assertArrayEquals(LAYOUT_BODY, response.getBodyAsByteArray().block());
+        }
         assertTrue(httpClient.requestUrl.get().contains("comp=layout"));
     }
 
+    // TODO: Delete when getLayout is made public; replaced by encryptedAsyncClientGetLayoutBypassesDecryption below.
     @Test
-    void encryptedAsyncClientGetLayoutBypassesDecryption() {
+    void encryptedAsyncClientLayoutRequestBypassesDecryption() {
         EncryptedLayoutHttpClient httpClient = new EncryptedLayoutHttpClient();
         EncryptedBlobAsyncClient encryptedBlobClient = createBuilder(httpClient).buildEncryptedBlobAsyncClient();
 
-        StepVerifier.create(encryptedBlobClient.getLayout(null).next())
-            .assertNext(layoutRange -> assertEquals(URI.create("https://host-a:443"), layoutRange.getEndpoint()))
+        StepVerifier
+            .create(encryptedBlobClient.getHttpPipeline()
+                .send(new HttpRequest(HttpMethod.GET, encryptedBlobClient.getBlobUrl() + "?comp=layout"))
+                .flatMap(response -> response.getBodyAsByteArray().doFinally(signal -> response.close())))
+            .assertNext(body -> assertArrayEquals(LAYOUT_BODY, body))
             .verifyComplete();
 
         assertTrue(httpClient.requestUrl.get().contains("comp=layout"));
     }
+
+    // TODO: Delete when getLayout is made public.
+    @ParameterizedTest
+    @ValueSource(classes = { EncryptedBlobClient.class, EncryptedBlobAsyncClient.class })
+    void encryptedClientsDoNotExposeGetLayout(Class<?> clientClass) {
+        assertThrows(NoSuchMethodException.class, () -> clientClass.getMethod("getLayout", BlobGetLayoutOptions.class));
+        assertThrows(NoSuchMethodException.class,
+            () -> clientClass.getMethod("getLayout", BlobGetLayoutOptions.class, Context.class));
+    }
+
+    // TODO: Re-enable when getLayout is made public.
+    // @Test
+    // void encryptedClientGetLayoutBypassesDecryption() {
+    //     EncryptedLayoutHttpClient httpClient = new EncryptedLayoutHttpClient();
+    //     EncryptedBlobClient encryptedBlobClient = createBuilder(httpClient).buildEncryptedBlobClient();
+    //
+    //     BlobLayoutRange layoutRange
+    //         = encryptedBlobClient.getLayout(null).stream().findFirst().orElseThrow(AssertionError::new);
+    //
+    //     assertEquals(URI.create("https://host-a:443"), layoutRange.getEndpoint());
+    //     assertTrue(httpClient.requestUrl.get().contains("comp=layout"));
+    // }
+
+    // TODO: Re-enable when getLayout is made public.
+    // @Test
+    // void encryptedAsyncClientGetLayoutBypassesDecryption() {
+    //     EncryptedLayoutHttpClient httpClient = new EncryptedLayoutHttpClient();
+    //     EncryptedBlobAsyncClient encryptedBlobClient = createBuilder(httpClient).buildEncryptedBlobAsyncClient();
+    //
+    //     StepVerifier.create(encryptedBlobClient.getLayout(null).next())
+    //         .assertNext(layoutRange -> assertEquals(URI.create("https://host-a:443"), layoutRange.getEndpoint()))
+    //         .verifyComplete();
+    //
+    //     assertTrue(httpClient.requestUrl.get().contains("comp=layout"));
+    // }
 
     private static EncryptedBlobClientBuilder createBuilder(HttpClient httpClient) {
         return createBuilder(httpClient, new FakeKey("keyId", new byte[256]));
