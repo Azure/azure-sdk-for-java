@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class RegistriesGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/RegistryGenerateCredentials.json
+     * x-ms-original-file: 2025-11-01/RegistryGenerateCredentials.json
      */
     /**
      * Sample code: RegistryGenerateCredentials.

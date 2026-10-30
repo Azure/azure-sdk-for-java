@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/RegistryUpdate.json
+     * x-ms-original-file: 2025-11-01/RegistryUpdate.json
      */
     /**
      * Sample code: RegistryUpdate.

@@ -10,15 +10,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
-import com.azure.resourcemanager.containerregistry.models.EndpointProtocol;
-import com.azure.resourcemanager.containerregistry.models.MetadataSearch;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
-import com.azure.resourcemanager.containerregistry.models.RegionalEndpoints;
 import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
-import com.azure.resourcemanager.containerregistry.models.WritableCacheRepos;
 import java.io.IOException;
 
 /**
@@ -52,16 +48,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     private Boolean dataEndpointEnabled;
 
     /*
-     * Enable per-region endpoints for accessing registry.
-     */
-    private RegionalEndpoints regionalEndpoints;
-
-    /*
-     * The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4 and IPv6).
-     */
-    private EndpointProtocol endpointProtocol;
-
-    /*
      * Whether or not public network access is allowed for the container registry.
      */
     private PublicNetworkAccess publicNetworkAccess;
@@ -80,16 +66,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
      * Enables registry-wide pull from unauthenticated clients.
      */
     private Boolean anonymousPullEnabled;
-
-    /*
-     * Determines whether registry artifacts are indexed for metadata search.
-     */
-    private MetadataSearch metadataSearch;
-
-    /*
-     * Whether to allow cache operations that write to repositories in this registry.
-     */
-    private WritableCacheRepos writableCacheRepos;
 
     /*
      * Determines registry role assignment mode.
@@ -203,48 +179,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
-     * Get the regionalEndpoints property: Enable per-region endpoints for accessing registry.
-     * 
-     * @return the regionalEndpoints value.
-     */
-    public RegionalEndpoints regionalEndpoints() {
-        return this.regionalEndpoints;
-    }
-
-    /**
-     * Set the regionalEndpoints property: Enable per-region endpoints for accessing registry.
-     * 
-     * @param regionalEndpoints the regionalEndpoints value to set.
-     * @return the RegistryPropertiesUpdateParameters object itself.
-     */
-    public RegistryPropertiesUpdateParameters withRegionalEndpoints(RegionalEndpoints regionalEndpoints) {
-        this.regionalEndpoints = regionalEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the endpointProtocol property: The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4
-     * and IPv6).
-     * 
-     * @return the endpointProtocol value.
-     */
-    public EndpointProtocol endpointProtocol() {
-        return this.endpointProtocol;
-    }
-
-    /**
-     * Set the endpointProtocol property: The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4
-     * and IPv6).
-     * 
-     * @param endpointProtocol the endpointProtocol value to set.
-     * @return the RegistryPropertiesUpdateParameters object itself.
-     */
-    public RegistryPropertiesUpdateParameters withEndpointProtocol(EndpointProtocol endpointProtocol) {
-        this.endpointProtocol = endpointProtocol;
-        return this;
-    }
-
-    /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @return the publicNetworkAccess value.
@@ -331,48 +265,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
-     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @return the metadataSearch value.
-     */
-    public MetadataSearch metadataSearch() {
-        return this.metadataSearch;
-    }
-
-    /**
-     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @param metadataSearch the metadataSearch value to set.
-     * @return the RegistryPropertiesUpdateParameters object itself.
-     */
-    public RegistryPropertiesUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
-        this.metadataSearch = metadataSearch;
-        return this;
-    }
-
-    /**
-     * Get the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
-     * registry.
-     * 
-     * @return the writableCacheRepos value.
-     */
-    public WritableCacheRepos writableCacheRepos() {
-        return this.writableCacheRepos;
-    }
-
-    /**
-     * Set the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
-     * registry.
-     * 
-     * @param writableCacheRepos the writableCacheRepos value to set.
-     * @return the RegistryPropertiesUpdateParameters object itself.
-     */
-    public RegistryPropertiesUpdateParameters withWritableCacheRepos(WritableCacheRepos writableCacheRepos) {
-        this.writableCacheRepos = writableCacheRepos;
-        return this;
-    }
-
-    /**
      * Get the roleAssignmentMode property: Determines registry role assignment mode.
      * 
      * @return the roleAssignmentMode value.
@@ -420,20 +312,12 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
         jsonWriter.writeJsonField("policies", this.policies);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeBooleanField("dataEndpointEnabled", this.dataEndpointEnabled);
-        jsonWriter.writeStringField("regionalEndpoints",
-            this.regionalEndpoints == null ? null : this.regionalEndpoints.toString());
-        jsonWriter.writeStringField("endpointProtocol",
-            this.endpointProtocol == null ? null : this.endpointProtocol.toString());
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("networkRuleBypassOptions",
             this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
         jsonWriter.writeBooleanField("networkRuleBypassAllowedForTasks", this.networkRuleBypassAllowedForTasks);
         jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
-        jsonWriter.writeStringField("metadataSearch",
-            this.metadataSearch == null ? null : this.metadataSearch.toString());
-        jsonWriter.writeStringField("writableCacheRepos",
-            this.writableCacheRepos == null ? null : this.writableCacheRepos.toString());
         jsonWriter.writeStringField("roleAssignmentMode",
             this.roleAssignmentMode == null ? null : this.roleAssignmentMode.toString());
         return jsonWriter.writeEndObject();
@@ -467,12 +351,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("dataEndpointEnabled".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.dataEndpointEnabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("regionalEndpoints".equals(fieldName)) {
-                    deserializedRegistryPropertiesUpdateParameters.regionalEndpoints
-                        = RegionalEndpoints.fromString(reader.getString());
-                } else if ("endpointProtocol".equals(fieldName)) {
-                    deserializedRegistryPropertiesUpdateParameters.endpointProtocol
-                        = EndpointProtocol.fromString(reader.getString());
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
@@ -485,12 +363,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("anonymousPullEnabled".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.anonymousPullEnabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("metadataSearch".equals(fieldName)) {
-                    deserializedRegistryPropertiesUpdateParameters.metadataSearch
-                        = MetadataSearch.fromString(reader.getString());
-                } else if ("writableCacheRepos".equals(fieldName)) {
-                    deserializedRegistryPropertiesUpdateParameters.writableCacheRepos
-                        = WritableCacheRepos.fromString(reader.getString());
                 } else if ("roleAssignmentMode".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.roleAssignmentMode
                         = RoleAssignmentMode.fromString(reader.getString());
