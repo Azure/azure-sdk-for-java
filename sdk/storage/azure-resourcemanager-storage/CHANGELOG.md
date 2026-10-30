@@ -1,5 +1,16 @@
 # Release History
 
+## 2.60.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.54.3` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.14` to version `2.54.0`.
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.0`.
+
+
 ## 2.59.0 (2026-10-13)
 
 - Package api-version 2026-09-01.
