@@ -117,15 +117,30 @@ public final class CodeVersionImpl implements CodeVersion, CodeVersion.Definitio
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}",
             "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}/versions/{version}",
+                "resourceGroupName");
+        }
         this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}",
             "workspaceName");
         this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}",
             "name");
+        if (this.name == null) {
+            this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}/versions/{version}",
+                "codeName");
+        }
         this.version = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}",
             "version");
+        if (this.version == null) {
+            this.version = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}/versions/{version}",
+                "version");
+        }
     }
 
     public CodeVersion refresh() {
