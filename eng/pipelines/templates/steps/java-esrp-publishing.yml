@@ -5,7 +5,7 @@ parameters:
 
 steps:
   - ${{if eq(parameters.ShouldPublish, 'true')}}:
-    - task: EsrpRelease@9
+    - task: EsrpRelease@11
       displayName: 'Publish to ESRP'
       inputs:
         ConnectedServiceName: Azure SDK PME Managed Identity
