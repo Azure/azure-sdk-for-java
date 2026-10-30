@@ -24,34 +24,10 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     private String type = "ScoringFunction";
 
     /*
-     * The name of the field used as input to the scoring function.
-     */
-    @Generated
-    private final String fieldName;
-
-    /*
-     * A multiplier for the raw score. Must be a positive number not equal to 1.0.
-     */
-    @Generated
-    private final double boost;
-
-    /*
      * A value indicating how boosting will be interpolated across document scores; defaults to "Linear".
      */
     @Generated
     private ScoringFunctionInterpolation interpolation;
-
-    /**
-     * Creates an instance of ScoringFunction class.
-     *
-     * @param fieldName the fieldName value to set.
-     * @param boost the boost value to set.
-     */
-    @Generated
-    public ScoringFunction(String fieldName, double boost) {
-        this.fieldName = fieldName;
-        this.boost = boost;
-    }
 
     /**
      * Get the type property: Type of ScoringFunction.
@@ -61,26 +37,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     @Generated
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Get the fieldName property: The name of the field used as input to the scoring function.
-     *
-     * @return the fieldName value.
-     */
-    @Generated
-    public String getFieldName() {
-        return this.fieldName;
-    }
-
-    /**
-     * Get the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
-     *
-     * @return the boost value.
-     */
-    @Generated
-    public double getBoost() {
-        return this.boost;
     }
 
     /**
@@ -114,8 +70,10 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", this.fieldName);
-        jsonWriter.writeDoubleField("boost", this.boost);
+        if (this.fieldName != null) {
+            jsonWriter.writeStringField("fieldName", this.fieldName);
+            jsonWriter.writeDoubleField("boost", this.boost);
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("interpolation", this.interpolation == null ? null : this.interpolation.toString());
         return jsonWriter.writeEndObject();
@@ -127,7 +85,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScoringFunction if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScoringFunction.
      */
     @Generated
@@ -138,9 +95,9 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
                 // Prepare for reading
                 readerToUse.nextToken();
                 while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String jsonFieldName = readerToUse.getFieldName();
+                    String fieldName = readerToUse.getFieldName();
                     readerToUse.nextToken();
-                    if ("type".equals(jsonFieldName)) {
+                    if ("type".equals(fieldName)) {
                         discriminatorValue = readerToUse.getString();
                         break;
                     } else {
@@ -148,7 +105,9 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("distance".equals(discriminatorValue)) {
+                if ("random".equals(discriminatorValue)) {
+                    return RandomScoringFunction.fromJson(readerToUse.reset());
+                } else if ("distance".equals(discriminatorValue)) {
                     return DistanceScoringFunction.fromJson(readerToUse.reset());
                 } else if ("freshness".equals(discriminatorValue)) {
                     return FreshnessScoringFunction.fromJson(readerToUse.reset());
@@ -166,29 +125,64 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     @Generated
     static ScoringFunction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String fieldName = null;
-            double boost = 0.0;
-            String type = null;
-            ScoringFunctionInterpolation interpolation = null;
+            ScoringFunction deserializedScoringFunction = new ScoringFunction();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String jsonFieldName = reader.getFieldName();
+                String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("fieldName".equals(jsonFieldName)) {
-                    fieldName = reader.getString();
-                } else if ("boost".equals(jsonFieldName)) {
-                    boost = reader.getDouble();
-                } else if ("type".equals(jsonFieldName)) {
-                    type = reader.getString();
-                } else if ("interpolation".equals(jsonFieldName)) {
-                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
+                if ("fieldName".equals(fieldName)) {
+                    deserializedScoringFunction.fieldName = reader.getString();
+                } else if ("boost".equals(fieldName)) {
+                    deserializedScoringFunction.boost = reader.getDouble();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScoringFunction.type = reader.getString();
+                } else if ("interpolation".equals(fieldName)) {
+                    deserializedScoringFunction.interpolation
+                        = ScoringFunctionInterpolation.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ScoringFunction deserializedScoringFunction = new ScoringFunction(fieldName, boost);
-            deserializedScoringFunction.type = type;
-            deserializedScoringFunction.interpolation = interpolation;
             return deserializedScoringFunction;
         });
+    }
+
+    /**
+     * Creates an instance of ScoringFunction class.
+     */
+    @Generated
+    public ScoringFunction() {
+    }
+
+    private String fieldName;
+
+    private double boost;
+
+    /**
+     * Creates a field-based scoring function.
+     *
+     * @param fieldName the field used as input.
+     * @param boost the score multiplier.
+     */
+    public ScoringFunction(String fieldName, double boost) {
+        this.fieldName = fieldName;
+        this.boost = boost;
+    }
+
+    /**
+     * Gets the field used as input.
+     *
+     * @return the field name.
+     */
+    public String getFieldName() {
+        return this.fieldName;
+    }
+
+    /**
+     * Gets the score multiplier.
+     *
+     * @return the boost.
+     */
+    public double getBoost() {
+        return this.boost;
     }
 }

@@ -48,4 +48,17 @@ public final class KnowledgeBaseModelKind extends ExpandableStringEnum<Knowledge
     public static Collection<KnowledgeBaseModelKind> values() {
         return values(KnowledgeBaseModelKind.class);
     }
+
+    /**
+     * Use a customer-controlled OpenAI-compatible endpoint for knowledge base retrieval or knowledge source image
+     * verbalization.
+     */
+    @Generated
+    public static final KnowledgeBaseModelKind OPEN_AICOMPATIBLE = fromString("openAICompatible");
+
+    /**
+     * Use Microsoft Retriever 1 for query planning and retrieval.
+     */
+    @Generated
+    public static final KnowledgeBaseModelKind MICROSOFT_RETRIEVER1 = fromString("microsoftRetriever1");
 }

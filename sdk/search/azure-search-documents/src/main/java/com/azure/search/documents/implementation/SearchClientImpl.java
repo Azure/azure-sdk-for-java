@@ -165,6 +165,28 @@ public final class SearchClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchClient")
     public interface SearchClientService {
+        @Post("/indexes('{indexName}')/docs/search.graph")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> graph(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData graphRequest, RequestOptions requestOptions, Context context);
+
+        @Post("/indexes('{indexName}')/docs/search.graph")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> graphSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData graphRequest, RequestOptions requestOptions, Context context);
+
         @Get("/indexes('{indexName}')/docs/$count")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -172,8 +194,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentCount(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/$count")
         @ExpectedResponses({ 200 })
@@ -182,8 +204,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentCountSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs")
         @ExpectedResponses({ 200, 206 })
@@ -192,8 +214,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs")
         @ExpectedResponses({ 200, 206 })
@@ -202,8 +224,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> searchGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.search")
         @ExpectedResponses({ 200, 206 })
@@ -212,8 +234,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> search(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -224,8 +246,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> searchSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -236,8 +258,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocument(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("key") String key, @PathParam("indexName") String indexName, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @PathParam("key") String key, RequestOptions requestOptions,
             Context context);
 
         @Get("/indexes('{indexName}')/docs('{key}')")
@@ -247,8 +269,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("key") String key, @PathParam("indexName") String indexName, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @PathParam("key") String key, RequestOptions requestOptions,
             Context context);
 
         @Get("/indexes('{indexName}')/docs/search.suggest")
@@ -258,9 +280,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggestGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.suggest")
         @ExpectedResponses({ 200 })
@@ -269,9 +291,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> suggestGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
@@ -280,8 +302,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggest(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -292,8 +314,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> suggestSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -304,8 +326,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> index(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData batch, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.index")
@@ -315,8 +337,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> indexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData batch, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.autocomplete")
@@ -326,9 +348,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> autocompleteGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.autocomplete")
         @ExpectedResponses({ 200 })
@@ -337,9 +359,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> autocompleteGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.autocomplete")
         @ExpectedResponses({ 200 })
@@ -348,8 +370,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> autocomplete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -360,10 +382,297 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> autocompleteSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
             Context context);
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     gql: String (Required)
+     *     search: String (Optional)
+     *     filter: String (Optional)
+     *     vectorQueries (Optional): [
+     *          (Optional){
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             k: Integer (Optional)
+     *             fields: String (Optional)
+     *             exhaustive: Boolean (Optional)
+     *             oversampling: Double (Optional)
+     *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
+     *         }
+     *     ]
+     *     executionMode: String(execute/planOnly) (Optional)
+     *     explain (Optional): [
+     *         String(syntax/semanticIr/logicalPlan/optimizedLogicalPlan/physicalPlan/requestAttributions/full) (Optional)
+     *     ]
+     *     includeStatistics: Boolean (Optional)
+     *     includeDiagnostics: Boolean (Optional)
+     *     provenance (Optional): {
+     *         kind: String(ids/hydrate) (Required)
+     *         maxEvidencePerRow: Integer (Optional)
+     *         hydrateDocuments (Optional): {
+     *             select: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     &#64;odata.count: Long (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.graphProvenance (Optional): {
+     *                 kind: String(ids/hydrate) (Optional)
+     *                 evidenceCount (Optional): {
+     *                     value: Integer (Optional)
+     *                     relation: String(exact/lowerBound) (Optional)
+     *                 }
+     *                 evidence (Optional): [
+     *                      (Optional){
+     *                         edgeId: String (Optional)
+     *                         chunkId: String (Optional)
+     *                         parentId: String (Optional)
+     *                         confidence (Optional): {
+     *                             edge: Double (Optional)
+     *                             subject: Double (Optional)
+     *                             predicate: Double (Optional)
+     *                             object: Double (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.graphStats (Optional): {
+     *         executionMode: String(execute/planOnly) (Optional)
+     *         queryCount: Integer (Optional)
+     *         documentsFetched: Integer (Optional)
+     *         isEstimated: Boolean (Optional)
+     *         totalMs: Long (Optional)
+     *         searchMs: Long (Optional)
+     *         planningMs: Long (Optional)
+     *     }
+     *     &#64;search.graphDiagnostics (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             severity: String(error/warning/info) (Optional)
+     *             phase: String(parse/bind/validation/planning/execution) (Optional)
+     *             message: String (Optional)
+     *             span: String (Optional)
+     *             suggestions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     &#64;search.graphExplain (Optional): {
+     *          (Optional): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     &#64;search.graphProvenanceDocuments (Optional): {
+     *          (Optional): {
+     *             String (Required): {
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param graphRequest The graphRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a graph query's projected rows and optional execution information along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> graphWithResponseAsync(BinaryData graphRequest, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=none";
+        final String contentType = "application/json";
+        return FluxUtil.withContext(context -> service.graph(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getIndexName(), accept, contentType, graphRequest, requestOptions, context));
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     gql: String (Required)
+     *     search: String (Optional)
+     *     filter: String (Optional)
+     *     vectorQueries (Optional): [
+     *          (Optional){
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             k: Integer (Optional)
+     *             fields: String (Optional)
+     *             exhaustive: Boolean (Optional)
+     *             oversampling: Double (Optional)
+     *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
+     *         }
+     *     ]
+     *     executionMode: String(execute/planOnly) (Optional)
+     *     explain (Optional): [
+     *         String(syntax/semanticIr/logicalPlan/optimizedLogicalPlan/physicalPlan/requestAttributions/full) (Optional)
+     *     ]
+     *     includeStatistics: Boolean (Optional)
+     *     includeDiagnostics: Boolean (Optional)
+     *     provenance (Optional): {
+     *         kind: String(ids/hydrate) (Required)
+     *         maxEvidencePerRow: Integer (Optional)
+     *         hydrateDocuments (Optional): {
+     *             select: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     &#64;odata.count: Long (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.graphProvenance (Optional): {
+     *                 kind: String(ids/hydrate) (Optional)
+     *                 evidenceCount (Optional): {
+     *                     value: Integer (Optional)
+     *                     relation: String(exact/lowerBound) (Optional)
+     *                 }
+     *                 evidence (Optional): [
+     *                      (Optional){
+     *                         edgeId: String (Optional)
+     *                         chunkId: String (Optional)
+     *                         parentId: String (Optional)
+     *                         confidence (Optional): {
+     *                             edge: Double (Optional)
+     *                             subject: Double (Optional)
+     *                             predicate: Double (Optional)
+     *                             object: Double (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.graphStats (Optional): {
+     *         executionMode: String(execute/planOnly) (Optional)
+     *         queryCount: Integer (Optional)
+     *         documentsFetched: Integer (Optional)
+     *         isEstimated: Boolean (Optional)
+     *         totalMs: Long (Optional)
+     *         searchMs: Long (Optional)
+     *         planningMs: Long (Optional)
+     *     }
+     *     &#64;search.graphDiagnostics (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             severity: String(error/warning/info) (Optional)
+     *             phase: String(parse/bind/validation/planning/execution) (Optional)
+     *             message: String (Optional)
+     *             span: String (Optional)
+     *             suggestions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     &#64;search.graphExplain (Optional): {
+     *          (Optional): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     &#64;search.graphProvenanceDocuments (Optional): {
+     *          (Optional): {
+     *             String (Required): {
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param graphRequest The graphRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a graph query's projected rows and optional execution information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> graphWithResponse(BinaryData graphRequest, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=none";
+        final String contentType = "application/json";
+        return service.graphSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(), accept,
+            contentType, graphRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -387,7 +696,7 @@ public final class SearchClientImpl {
     public Mono<Response<BinaryData>> getDocumentCountWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.getDocumentCount(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), this.getIndexName(), accept, requestOptions, context));
     }
 
     /**
@@ -410,8 +719,8 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDocumentCountWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
-        return service.getDocumentCountSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), requestOptions, Context.NONE);
+        return service.getDocumentCountSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getIndexName(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -441,6 +750,8 @@ public final class SearchClientImpl {
      * the index that must be covered by a search query in order for the query to be reported as a success. This
      * parameter can be useful for ensuring search availability even for services with only one replica. The default is
      * 100.</td></tr>
+     * <tr><td>moreLikeThis</td><td>String</td><td>No</td><td>The key of the document to use as the basis for finding
+     * similar documents. This parameter cannot be used together with search text.</td></tr>
      * <tr><td>$orderby</td><td>List&lt;String&gt;</td><td>No</td><td>The list of OData $orderby expressions by which to
      * sort the results. Each expression can be either a field name or a call to either the geo.distance() or the
      * search.score() functions. Each expression can be followed by asc to indicate ascending, and desc to indicate
@@ -449,7 +760,7 @@ public final class SearchClientImpl {
      * clauses. In the form of "," separated string.</td></tr>
      * <tr><td>queryType</td><td>String</td><td>No</td><td>A value that specifies the syntax of the search query. The
      * default is 'simple'. Use 'full' if your query uses the Lucene query syntax. Allowed values: "simple", "full",
-     * "semantic".</td></tr>
+     * "semantic", "agentic".</td></tr>
      * <tr><td>scoringParameter</td><td>List&lt;String&gt;</td><td>No</td><td>The list of parameter values to be used in
      * scoring functions (for example, referencePointParameter) using the format name-values. For example, if the
      * scoring profile defines a function with a parameter called 'mylocation' the parameter string would be
@@ -512,7 +823,8 @@ public final class SearchClientImpl {
      * `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`. This parameter is
      * only valid if the query type is `semantic`. Allowed values: "none", "generative".</td></tr>
      * <tr><td>debug</td><td>String</td><td>No</td><td>Enables a debugging tool that can be used to further explore your
-     * search results. Allowed values: "disabled", "semantic", "vector", "queryRewrites", "innerHits", "all".</td></tr>
+     * search results. Allowed values: "disabled", "semantic", "vector", "queryRewrites", "agentic", "innerHits",
+     * "all".</td></tr>
      * <tr><td>queryLanguage</td><td>String</td><td>No</td><td>The language of the query. Allowed values: "none",
      * "en-us", "en-gb", "en-in", "en-ca", "en-au", "fr-fr", "fr-ca", "de-de", "es-es", "es-mx", "zh-cn", "zh-tw",
      * "pt-br", "pt-pt", "it-it", "ja-jp", "ko-kr", "ru-ru", "cs-cz", "nl-be", "nl-nl", "hu-hu", "pl-pl", "sv-se",
@@ -524,6 +836,9 @@ public final class SearchClientImpl {
      * query terms. Allowed values: "none", "lexicon".</td></tr>
      * <tr><td>semanticFields</td><td>List&lt;String&gt;</td><td>No</td><td>The list of field names used for semantic
      * ranking. In the form of "," separated string.</td></tr>
+     * <tr><td>agenticMaxRuntimeInSeconds</td><td>Integer</td><td>No</td><td>Maximum duration in seconds for the
+     * complete agentic search request, including retrieval, ranking and retries. Not supported with other query
+     * modes.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -586,6 +901,19 @@ public final class SearchClientImpl {
      *                 (recursive schema, see above)
      *             ]
      *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
      *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
@@ -599,17 +927,21 @@ public final class SearchClientImpl {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
@@ -645,6 +977,9 @@ public final class SearchClientImpl {
      *                 }
      *                 filterOverride: String (Optional)
      *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -744,7 +1079,7 @@ public final class SearchClientImpl {
     public Mono<Response<BinaryData>> searchGetWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.searchGet(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), this.getIndexName(), accept, requestOptions, context));
     }
 
     /**
@@ -774,6 +1109,8 @@ public final class SearchClientImpl {
      * the index that must be covered by a search query in order for the query to be reported as a success. This
      * parameter can be useful for ensuring search availability even for services with only one replica. The default is
      * 100.</td></tr>
+     * <tr><td>moreLikeThis</td><td>String</td><td>No</td><td>The key of the document to use as the basis for finding
+     * similar documents. This parameter cannot be used together with search text.</td></tr>
      * <tr><td>$orderby</td><td>List&lt;String&gt;</td><td>No</td><td>The list of OData $orderby expressions by which to
      * sort the results. Each expression can be either a field name or a call to either the geo.distance() or the
      * search.score() functions. Each expression can be followed by asc to indicate ascending, and desc to indicate
@@ -782,7 +1119,7 @@ public final class SearchClientImpl {
      * clauses. In the form of "," separated string.</td></tr>
      * <tr><td>queryType</td><td>String</td><td>No</td><td>A value that specifies the syntax of the search query. The
      * default is 'simple'. Use 'full' if your query uses the Lucene query syntax. Allowed values: "simple", "full",
-     * "semantic".</td></tr>
+     * "semantic", "agentic".</td></tr>
      * <tr><td>scoringParameter</td><td>List&lt;String&gt;</td><td>No</td><td>The list of parameter values to be used in
      * scoring functions (for example, referencePointParameter) using the format name-values. For example, if the
      * scoring profile defines a function with a parameter called 'mylocation' the parameter string would be
@@ -845,7 +1182,8 @@ public final class SearchClientImpl {
      * `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`. This parameter is
      * only valid if the query type is `semantic`. Allowed values: "none", "generative".</td></tr>
      * <tr><td>debug</td><td>String</td><td>No</td><td>Enables a debugging tool that can be used to further explore your
-     * search results. Allowed values: "disabled", "semantic", "vector", "queryRewrites", "innerHits", "all".</td></tr>
+     * search results. Allowed values: "disabled", "semantic", "vector", "queryRewrites", "agentic", "innerHits",
+     * "all".</td></tr>
      * <tr><td>queryLanguage</td><td>String</td><td>No</td><td>The language of the query. Allowed values: "none",
      * "en-us", "en-gb", "en-in", "en-ca", "en-au", "fr-fr", "fr-ca", "de-de", "es-es", "es-mx", "zh-cn", "zh-tw",
      * "pt-br", "pt-pt", "it-it", "ja-jp", "ko-kr", "ru-ru", "cs-cz", "nl-be", "nl-nl", "hu-hu", "pl-pl", "sv-se",
@@ -857,6 +1195,9 @@ public final class SearchClientImpl {
      * query terms. Allowed values: "none", "lexicon".</td></tr>
      * <tr><td>semanticFields</td><td>List&lt;String&gt;</td><td>No</td><td>The list of field names used for semantic
      * ranking. In the form of "," separated string.</td></tr>
+     * <tr><td>agenticMaxRuntimeInSeconds</td><td>Integer</td><td>No</td><td>Maximum duration in seconds for the
+     * complete agentic search request, including retrieval, ranking and retries. Not supported with other query
+     * modes.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -919,6 +1260,19 @@ public final class SearchClientImpl {
      *                 (recursive schema, see above)
      *             ]
      *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
      *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
@@ -932,17 +1286,21 @@ public final class SearchClientImpl {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
@@ -978,6 +1336,9 @@ public final class SearchClientImpl {
      *                 }
      *                 filterOverride: String (Optional)
      *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1075,8 +1436,8 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> searchGetWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
-        return service.searchGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), requestOptions, Context.NONE);
+        return service.searchGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1107,17 +1468,21 @@ public final class SearchClientImpl {
      *     highlightPostTag: String (Optional)
      *     highlightPreTag: String (Optional)
      *     minimumCoverage: Double (Optional)
+     *     moreLikeThis: String (Optional)
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
-     *     queryType: String(simple/full/semantic) (Optional)
+     *     queryType: String(simple/full/semantic/agentic) (Optional)
+     *     agenticOptions (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *     }
      *     scoringStatistics: String(local/global) (Optional)
      *     sessionId: String (Optional)
      *     scoringParameters (Optional): [
      *         String (Optional)
      *     ]
      *     scoringProfile: String (Optional)
-     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *     debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *     search: String (Optional)
      *     searchFields (Optional): [
      *         String (Optional)
@@ -1153,6 +1518,9 @@ public final class SearchClientImpl {
      *             }
      *             filterOverride: String (Optional)
      *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1214,6 +1582,19 @@ public final class SearchClientImpl {
      *                 (recursive schema, see above)
      *             ]
      *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
      *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
@@ -1227,17 +1608,21 @@ public final class SearchClientImpl {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
@@ -1273,6 +1658,9 @@ public final class SearchClientImpl {
      *                 }
      *                 filterOverride: String (Optional)
      *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1375,7 +1763,7 @@ public final class SearchClientImpl {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.search(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, this.getIndexName(), contentType, searchPostRequest, requestOptions, context));
+            this.getIndexName(), accept, contentType, searchPostRequest, requestOptions, context));
     }
 
     /**
@@ -1406,17 +1794,21 @@ public final class SearchClientImpl {
      *     highlightPostTag: String (Optional)
      *     highlightPreTag: String (Optional)
      *     minimumCoverage: Double (Optional)
+     *     moreLikeThis: String (Optional)
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
-     *     queryType: String(simple/full/semantic) (Optional)
+     *     queryType: String(simple/full/semantic/agentic) (Optional)
+     *     agenticOptions (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *     }
      *     scoringStatistics: String(local/global) (Optional)
      *     sessionId: String (Optional)
      *     scoringParameters (Optional): [
      *         String (Optional)
      *     ]
      *     scoringProfile: String (Optional)
-     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *     debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *     search: String (Optional)
      *     searchFields (Optional): [
      *         String (Optional)
@@ -1452,6 +1844,9 @@ public final class SearchClientImpl {
      *             }
      *             filterOverride: String (Optional)
      *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1513,6 +1908,19 @@ public final class SearchClientImpl {
      *                 (recursive schema, see above)
      *             ]
      *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
      *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
@@ -1526,17 +1934,21 @@ public final class SearchClientImpl {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
@@ -1572,6 +1984,9 @@ public final class SearchClientImpl {
      *                 }
      *                 filterOverride: String (Optional)
      *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1671,8 +2086,8 @@ public final class SearchClientImpl {
     public Response<BinaryData> searchWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.searchSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, searchPostRequest, requestOptions, Context.NONE);
+        return service.searchSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, contentType, searchPostRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1721,7 +2136,7 @@ public final class SearchClientImpl {
     public Mono<Response<BinaryData>> getDocumentWithResponseAsync(String key, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.getDocument(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, key, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), this.getIndexName(), accept, key, requestOptions, context));
     }
 
     /**
@@ -1768,8 +2183,8 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDocumentWithResponse(String key, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
-        return service.getDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, key,
-            this.getIndexName(), requestOptions, Context.NONE);
+        return service.getDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, key, requestOptions, Context.NONE);
     }
 
     /**
@@ -1843,7 +2258,7 @@ public final class SearchClientImpl {
         final String accept = "application/json;odata.metadata=none";
         return FluxUtil
             .withContext(context -> service.suggestGet(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, searchText, suggesterName, this.getIndexName(), requestOptions, context));
+                this.getIndexName(), accept, searchText, suggesterName, requestOptions, context));
     }
 
     /**
@@ -1914,8 +2329,8 @@ public final class SearchClientImpl {
     public Response<BinaryData> suggestGetWithResponse(String searchText, String suggesterName,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
-        return service.suggestGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, searchText,
-            suggesterName, this.getIndexName(), requestOptions, Context.NONE);
+        return service.suggestGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, searchText, suggesterName, requestOptions, Context.NONE);
     }
 
     /**
@@ -1979,8 +2394,8 @@ public final class SearchClientImpl {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.suggest(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                this.getIndexName(), contentType, suggestPostRequest, requestOptions, context));
+            .withContext(context -> service.suggest(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                this.getIndexName(), accept, contentType, suggestPostRequest, requestOptions, context));
     }
 
     /**
@@ -2041,8 +2456,8 @@ public final class SearchClientImpl {
     public Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.suggestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, suggestPostRequest, requestOptions, Context.NONE);
+        return service.suggestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, contentType, suggestPostRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2095,7 +2510,7 @@ public final class SearchClientImpl {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.index(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, this.getIndexName(), contentType, batch, requestOptions, context));
+            this.getIndexName(), accept, contentType, batch, requestOptions, context));
     }
 
     /**
@@ -2147,7 +2562,7 @@ public final class SearchClientImpl {
     public Response<BinaryData> indexWithResponse(BinaryData batch, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.indexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, this.getIndexName(),
+        return service.indexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(), accept,
             contentType, batch, requestOptions, Context.NONE);
     }
 
@@ -2213,7 +2628,7 @@ public final class SearchClientImpl {
         final String accept = "application/json;odata.metadata=none";
         return FluxUtil
             .withContext(context -> service.autocompleteGet(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, searchText, suggesterName, this.getIndexName(), requestOptions, context));
+                this.getIndexName(), accept, searchText, suggesterName, requestOptions, context));
     }
 
     /**
@@ -2276,8 +2691,8 @@ public final class SearchClientImpl {
     public Response<BinaryData> autocompleteGetWithResponse(String searchText, String suggesterName,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
-        return service.autocompleteGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            searchText, suggesterName, this.getIndexName(), requestOptions, Context.NONE);
+        return service.autocompleteGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getIndexName(), accept, searchText, suggesterName, requestOptions, Context.NONE);
     }
 
     /**
@@ -2334,7 +2749,7 @@ public final class SearchClientImpl {
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.autocomplete(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, this.getIndexName(), contentType, autocompletePostRequest, requestOptions, context));
+                this.getIndexName(), accept, contentType, autocompletePostRequest, requestOptions, context));
     }
 
     /**
@@ -2389,7 +2804,7 @@ public final class SearchClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.autocompleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, autocompletePostRequest, requestOptions, Context.NONE);
+        return service.autocompleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            accept, contentType, autocompletePostRequest, requestOptions, Context.NONE);
     }
 }

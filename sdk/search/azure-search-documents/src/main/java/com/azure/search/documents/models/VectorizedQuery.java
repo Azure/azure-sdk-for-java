@@ -115,6 +115,7 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
         jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
+        jsonWriter.writeJsonField("topicGraph", getTopicGraph());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -140,6 +141,7 @@ public final class VectorizedQuery extends VectorQuery {
             VectorThreshold threshold = null;
             String filterOverride = null;
             Integer perDocumentVectorLimit = null;
+            VectorQueryTopicGraph topicGraph = null;
             List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -161,6 +163,8 @@ public final class VectorizedQuery extends VectorQuery {
                     filterOverride = reader.getString();
                 } else if ("perDocumentVectorLimit".equals(fieldName)) {
                     perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("topicGraph".equals(fieldName)) {
+                    topicGraph = VectorQueryTopicGraph.fromJson(reader);
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                 } else if ("kind".equals(fieldName)) {
@@ -178,6 +182,7 @@ public final class VectorizedQuery extends VectorQuery {
             deserializedVectorizedQuery.setThreshold(threshold);
             deserializedVectorizedQuery.setFilterOverride(filterOverride);
             deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
+            deserializedVectorizedQuery.setTopicGraph(topicGraph);
             deserializedVectorizedQuery.kind = kind;
             return deserializedVectorizedQuery;
         });
@@ -220,6 +225,16 @@ public final class VectorizedQuery extends VectorQuery {
     @Override
     public VectorizedQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
         super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizedQuery setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        super.setTopicGraph(topicGraph);
         return this;
     }
 }

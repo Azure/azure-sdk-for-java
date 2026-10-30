@@ -4,11 +4,27 @@
 
 ### Features Added
 
+- Added support for `2026-11-01-preview`, now the default service version. Previously supported GA service versions remain available.
+- Added synchronous and asynchronous graph queries, typed HTTP responses, query planning, diagnostics, statistics, and provenance models.
+- Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
+- Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
+- Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
+
 ### Breaking Changes
+
+- Removed `SearchServiceVersion.V2026_08_01_PREVIEW`; `V2026_11_01_PREVIEW` is now the only supported preview service version.
+- Removed preview `queryHints` from `AzureBlobKnowledgeSourceParameters` and `IndexedSharePointKnowledgeSourceParameters`, and `queryHintOverrides` from their runtime parameter models, to match the November contract in [spec PR #47300](https://github.com/Azure/azure-rest-api-specs/pull/47300). These properties remain supported on `SearchIndexKnowledgeSourceParameters` and `SearchIndexKnowledgeSourceParams`, respectively; `topicGraph` is not a replacement for query hints.
+- Removed preview query hints and query hint overrides from other non-SearchIndex knowledge sources, and their query hint processing activity properties, to match the service contract.
 
 ### Bugs Fixed
 
+- Forwarded topic graph profile and organization access expiration settings from field-builder annotations.
+- Added field-builder annotations for sensitivity label IDs and names, source document IDs, and SharePoint site URLs, and forwarded permission filter settings to generated search fields.
+- Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
+
 ### Other Changes
+
+- Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
 
 ## 12.1.0-beta.2 (2026-08-28)
 

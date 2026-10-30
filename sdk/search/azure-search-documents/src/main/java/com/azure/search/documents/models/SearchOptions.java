@@ -1208,4 +1208,66 @@ public final class SearchOptions {
         this.hybridSearch = hybridSearch;
         return this;
     }
+
+    /*
+     * The key of the document to use as the basis for finding similar documents. This parameter cannot be used together
+     * with search text.
+     */
+    @Generated
+    private String moreLikeThis;
+
+    /*
+     * Request-scoped runtime options when queryType is set to 'agentic'. Not supported with other query modes. Use the
+     * existing debug selector for diagnostics.
+     */
+    @Generated
+    private AgenticSearchOptions agenticOptions;
+
+    /**
+     * Get the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @return the moreLikeThis value.
+     */
+    @Generated
+    public String getMoreLikeThis() {
+        return this.moreLikeThis;
+    }
+
+    /**
+     * Set the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @param moreLikeThis the moreLikeThis value to set.
+     * @return the SearchOptions object itself.
+     */
+    @Generated
+    public SearchOptions setMoreLikeThis(String moreLikeThis) {
+        this.moreLikeThis = moreLikeThis;
+        return this;
+    }
+
+    /**
+     * Get the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @return the agenticOptions value.
+     */
+    @Generated
+    public AgenticSearchOptions getAgenticOptions() {
+        return this.agenticOptions;
+    }
+
+    /**
+     * Set the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @param agenticOptions the agenticOptions value to set.
+     * @return the SearchOptions object itself.
+     */
+    @Generated
+    public SearchOptions setAgenticOptions(AgenticSearchOptions agenticOptions) {
+        this.agenticOptions = agenticOptions;
+        return this;
+    }
 }

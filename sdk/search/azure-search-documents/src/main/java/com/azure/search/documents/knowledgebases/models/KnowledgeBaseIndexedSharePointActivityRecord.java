@@ -149,7 +149,6 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("indexedSharePointArguments", this.indexedSharePointArguments);
-        jsonWriter.writeJsonField("queryHintProcessing", this.queryHintProcessing);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,7 +176,6 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
             Integer count = null;
             ImageServingStatistics imageServing = null;
             KnowledgeBaseIndexedSharePointActivityArguments indexedSharePointArguments = null;
-            KnowledgeBaseQueryHintProcessing queryHintProcessing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -208,8 +206,6 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
                     imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("indexedSharePointArguments".equals(fieldName)) {
                     indexedSharePointArguments = KnowledgeBaseIndexedSharePointActivityArguments.fromJson(reader);
-                } else if ("queryHintProcessing".equals(fieldName)) {
-                    queryHintProcessing = KnowledgeBaseQueryHintProcessing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -228,24 +224,7 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.indexedSharePointArguments
                 = indexedSharePointArguments;
-            deserializedKnowledgeBaseIndexedSharePointActivityRecord.queryHintProcessing = queryHintProcessing;
             return deserializedKnowledgeBaseIndexedSharePointActivityRecord;
         });
-    }
-
-    /*
-     * Details about the expressions generated from query hints for this activity.
-     */
-    @Generated
-    private KnowledgeBaseQueryHintProcessing queryHintProcessing;
-
-    /**
-     * Get the queryHintProcessing property: Details about the expressions generated from query hints for this activity.
-     *
-     * @return the queryHintProcessing value.
-     */
-    @Generated
-    public KnowledgeBaseQueryHintProcessing getQueryHintProcessing() {
-        return this.queryHintProcessing;
     }
 }

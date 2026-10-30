@@ -52,9 +52,9 @@ Generated methods have `@Generated` annotation. Some generated files contain BOT
 
 ## Service Version
 
-`SearchServiceVersion.java` is generated but customized. The generator produces only the latest version constant. Older versions are added by `includeOldApiVersions()` in `SearchCustomizations.java`.
+`SearchServiceVersion.java` is generated but customized. Supported GA versions missing from generated output are added by `includeOldApiVersions()` in `SearchCustomizations.java`.
 
-When a new API version is released, the generator produces a new constant and updates `getLatest()`. The previous latest must be added to the customization list -- but only if the generator does NOT also produce it (otherwise you get duplicate enum constants).
+Retain supported GA versions and only the latest preview. When a new API version is generated, verify `getLatest()` returns it. Do not re-add obsolete previews in `includeOldApiVersions()`; remove obsolete preview constants through `removeOldPreviewApiVersions()`. Do not add a GA constant already produced by the generator. Regenerate and run the latest-preview-only regression test.
 
 ## Key Hand-Written Files
 

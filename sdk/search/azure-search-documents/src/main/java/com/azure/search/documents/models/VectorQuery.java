@@ -203,6 +203,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         jsonWriter.writeJsonField("threshold", this.threshold);
         jsonWriter.writeStringField("filterOverride", this.filterOverride);
         jsonWriter.writeNumberField("perDocumentVectorLimit", this.perDocumentVectorLimit);
+        jsonWriter.writeJsonField("topicGraph", this.topicGraph);
         return jsonWriter.writeEndObject();
     }
 
@@ -272,6 +273,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.filterOverride = reader.getString();
                 } else if ("perDocumentVectorLimit".equals(fieldName)) {
                     deserializedVectorQuery.perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("topicGraph".equals(fieldName)) {
+                    deserializedVectorQuery.topicGraph = VectorQueryTopicGraph.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -392,6 +395,34 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     @Generated
     public VectorQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
         this.perDocumentVectorLimit = perDocumentVectorLimit;
+        return this;
+    }
+
+    /*
+     * Topic graph vector search options.
+     */
+    @Generated
+    private VectorQueryTopicGraph topicGraph;
+
+    /**
+     * Get the topicGraph property: Topic graph vector search options.
+     *
+     * @return the topicGraph value.
+     */
+    @Generated
+    public VectorQueryTopicGraph getTopicGraph() {
+        return this.topicGraph;
+    }
+
+    /**
+     * Set the topicGraph property: Topic graph vector search options.
+     *
+     * @param topicGraph the topicGraph value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        this.topicGraph = topicGraph;
         return this;
     }
 }

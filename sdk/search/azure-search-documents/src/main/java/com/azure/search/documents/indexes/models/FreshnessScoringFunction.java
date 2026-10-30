@@ -29,19 +29,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     private final FreshnessScoringParameters parameters;
 
     /**
-     * Creates an instance of FreshnessScoringFunction class.
-     *
-     * @param fieldName the fieldName value to set.
-     * @param boost the boost value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
-        super(fieldName, boost);
-        this.parameters = parameters;
-    }
-
-    /**
      * Get the type property: Type of ScoringFunction.
      *
      * @return the type value.
@@ -79,9 +66,9 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
         jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        jsonWriter.writeDoubleField("boost", this.boost);
+        jsonWriter.writeStringField("fieldName", this.fieldName);
         jsonWriter.writeJsonField("freshness", this.parameters);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
@@ -99,20 +86,20 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     @Generated
     public static FreshnessScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String fieldName = null;
-            double boost = 0.0;
             ScoringFunctionInterpolation interpolation = null;
+            double boost = 0.0;
+            String fieldName = null;
             FreshnessScoringParameters parameters = null;
             String type = "freshness";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String jsonFieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("fieldName".equals(jsonFieldName)) {
-                    fieldName = reader.getString();
+                if ("interpolation".equals(jsonFieldName)) {
+                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
                 } else if ("boost".equals(jsonFieldName)) {
                     boost = reader.getDouble();
-                } else if ("interpolation".equals(jsonFieldName)) {
-                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
+                } else if ("fieldName".equals(jsonFieldName)) {
+                    fieldName = reader.getString();
                 } else if ("freshness".equals(jsonFieldName)) {
                     parameters = FreshnessScoringParameters.fromJson(reader);
                 } else if ("type".equals(jsonFieldName)) {
@@ -122,10 +109,67 @@ public final class FreshnessScoringFunction extends ScoringFunction {
                 }
             }
             FreshnessScoringFunction deserializedFreshnessScoringFunction
-                = new FreshnessScoringFunction(fieldName, boost, parameters);
+                = new FreshnessScoringFunction(boost, fieldName, parameters);
             deserializedFreshnessScoringFunction.setInterpolation(interpolation);
             deserializedFreshnessScoringFunction.type = type;
             return deserializedFreshnessScoringFunction;
         });
+    }
+
+    /*
+     * A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     */
+    @Generated
+    private final double boost;
+
+    /*
+     * The name of the field used as input to the scoring function.
+     */
+    @Generated
+    private final String fieldName;
+
+    /**
+     * Creates an instance of FreshnessScoringFunction class.
+     *
+     * @param boost the boost value to set.
+     * @param fieldName the fieldName value to set.
+     * @param parameters the parameters value to set.
+     */
+    @Generated
+    public FreshnessScoringFunction(double boost, String fieldName, FreshnessScoringParameters parameters) {
+        this.boost = boost;
+        this.fieldName = fieldName;
+        this.parameters = parameters;
+    }
+
+    /**
+     * Get the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     *
+     * @return the boost value.
+     */
+    @Generated
+    public double getBoost() {
+        return this.boost;
+    }
+
+    /**
+     * Get the fieldName property: The name of the field used as input to the scoring function.
+     *
+     * @return the fieldName value.
+     */
+    @Generated
+    public String getFieldName() {
+        return this.fieldName;
+    }
+
+    /**
+     * Creates a field-based scoring function.
+     *
+     * @param fieldName the field used as input.
+     * @param boost the score multiplier.
+     * @param parameters the scoring parameters.
+     */
+    public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
+        this(boost, fieldName, parameters);
     }
 }

@@ -750,6 +750,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("facetable", this.facetable);
         jsonWriter.writeStringField("permissionFilter",
             this.permissionFilter == null ? null : this.permissionFilter.toString());
+        jsonWriter.writeBooleanField("organizationAccessExpiration", this.organizationAccessExpiration);
         jsonWriter.writeBooleanField("sensitivityLabelId", this.sensitivityLabelId);
         jsonWriter.writeBooleanField("sensitivityLabelName", this.sensitivityLabelName);
         jsonWriter.writeBooleanField("sourceDocumentId", this.sourceDocumentId);
@@ -762,6 +763,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
+        jsonWriter.writeStringField("topicGraphProfile", this.topicGraphProfile);
         jsonWriter.writeStringField("vectorEncoding",
             this.vectorEncodingFormat == null ? null : this.vectorEncodingFormat.toString());
         jsonWriter.writeArrayField("synonymMaps", this.synonymMapNames,
@@ -792,6 +794,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean sortable = null;
             Boolean facetable = null;
             PermissionFilter permissionFilter = null;
+            Boolean organizationAccessExpiration = null;
             Boolean sensitivityLabelId = null;
             Boolean sensitivityLabelName = null;
             Boolean sourceDocumentId = null;
@@ -802,6 +805,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
+            String topicGraphProfile = null;
             VectorEncodingFormat vectorEncodingFormat = null;
             List<String> synonymMapNames = null;
             List<SearchField> fields = null;
@@ -828,6 +832,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     facetable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("permissionFilter".equals(fieldName)) {
                     permissionFilter = PermissionFilter.fromString(reader.getString());
+                } else if ("organizationAccessExpiration".equals(fieldName)) {
+                    organizationAccessExpiration = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sensitivityLabelId".equals(fieldName)) {
                     sensitivityLabelId = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sensitivityLabelName".equals(fieldName)) {
@@ -848,6 +854,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
                     vectorSearchProfileName = reader.getString();
+                } else if ("topicGraphProfile".equals(fieldName)) {
+                    topicGraphProfile = reader.getString();
                 } else if ("vectorEncoding".equals(fieldName)) {
                     vectorEncodingFormat = VectorEncodingFormat.fromString(reader.getString());
                 } else if ("synonymMaps".equals(fieldName)) {
@@ -867,6 +875,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.sortable = sortable;
             deserializedSearchField.facetable = facetable;
             deserializedSearchField.permissionFilter = permissionFilter;
+            deserializedSearchField.organizationAccessExpiration = organizationAccessExpiration;
             deserializedSearchField.sensitivityLabelId = sensitivityLabelId;
             deserializedSearchField.sensitivityLabelName = sensitivityLabelName;
             deserializedSearchField.sourceDocumentId = sourceDocumentId;
@@ -877,6 +886,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.normalizerName = normalizerName;
             deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
             deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
+            deserializedSearchField.topicGraphProfile = topicGraphProfile;
             deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;
             deserializedSearchField.synonymMapNames = synonymMapNames;
             deserializedSearchField.fields = fields;
@@ -1031,6 +1041,80 @@ public final class SearchField implements JsonSerializable<SearchField> {
     @Generated
     public SearchField setSharepointSiteUrl(Boolean sharepointSiteUrl) {
         this.sharepointSiteUrl = sharepointSiteUrl;
+        return this;
+    }
+
+    /*
+     * A value indicating whether the field contains the expiration timestamp for organization-scoped SharePoint sharing
+     * links. At most one top-level field of type Edm.DateTimeOffset can have this property set to true. On
+     * permission-filtered queries, expiration applies only to orgLink:<tenantId> values in a userIds permission-filter
+     * field whose tenant ID matches the validated user's tenant ID. The grant is valid only before the timestamp; an
+     * absent expiration field or a null timestamp means no time limit. Expiration does not affect orgGroup:<tenantId>
+     * values in groupIds permission-filter fields or ordinary user and group grants. If omitted or false, this field is
+     * not used for organization-link expiration.
+     */
+    @Generated
+    private Boolean organizationAccessExpiration;
+
+    /*
+     * The name of the topic graph profile linked to this vector field.
+     */
+    @Generated
+    private String topicGraphProfile;
+
+    /**
+     * Get the organizationAccessExpiration property: A value indicating whether the field contains the expiration
+     * timestamp for organization-scoped SharePoint sharing links. At most one top-level field of type
+     * Edm.DateTimeOffset can have this property set to true. On permission-filtered queries, expiration applies only to
+     * orgLink:&lt;tenantId&gt; values in a userIds permission-filter field whose tenant ID matches the validated user's
+     * tenant ID. The grant is valid only before the timestamp; an absent expiration field or a null timestamp means no
+     * time limit. Expiration does not affect orgGroup:&lt;tenantId&gt; values in groupIds permission-filter fields or
+     * ordinary user and group grants. If omitted or false, this field is not used for organization-link expiration.
+     *
+     * @return the organizationAccessExpiration value.
+     */
+    @Generated
+    public Boolean isOrganizationAccessExpiration() {
+        return this.organizationAccessExpiration;
+    }
+
+    /**
+     * Set the organizationAccessExpiration property: A value indicating whether the field contains the expiration
+     * timestamp for organization-scoped SharePoint sharing links. At most one top-level field of type
+     * Edm.DateTimeOffset can have this property set to true. On permission-filtered queries, expiration applies only to
+     * orgLink:&lt;tenantId&gt; values in a userIds permission-filter field whose tenant ID matches the validated user's
+     * tenant ID. The grant is valid only before the timestamp; an absent expiration field or a null timestamp means no
+     * time limit. Expiration does not affect orgGroup:&lt;tenantId&gt; values in groupIds permission-filter fields or
+     * ordinary user and group grants. If omitted or false, this field is not used for organization-link expiration.
+     *
+     * @param organizationAccessExpiration the organizationAccessExpiration value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setOrganizationAccessExpiration(Boolean organizationAccessExpiration) {
+        this.organizationAccessExpiration = organizationAccessExpiration;
+        return this;
+    }
+
+    /**
+     * Get the topicGraphProfile property: The name of the topic graph profile linked to this vector field.
+     *
+     * @return the topicGraphProfile value.
+     */
+    @Generated
+    public String getTopicGraphProfile() {
+        return this.topicGraphProfile;
+    }
+
+    /**
+     * Set the topicGraphProfile property: The name of the topic graph profile linked to this vector field.
+     *
+     * @param topicGraphProfile the topicGraphProfile value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setTopicGraphProfile(String topicGraphProfile) {
+        this.topicGraphProfile = topicGraphProfile;
         return this;
     }
 }

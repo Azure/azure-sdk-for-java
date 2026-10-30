@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A hint that identifies a field and representative values the query planner can use when constructing a filter.
+ * A hint that identifies a field and exhaustive grounding values the query planner can use when constructing a filter.
  */
 @Fluent
 public final class SearchIndexKnowledgeSourceFilterHint
@@ -26,28 +26,18 @@ public final class SearchIndexKnowledgeSourceFilterHint
     private final String field;
 
     /*
-     * Representative values for the field.
+     * The exhaustive set of values for the field. At most 160 values, with a maximum of 128 characters per value and
+     * 2048 characters combined. In versions supporting `autoConfiguration`, required unless `autoConfiguration` is
+     * specified, and mutually exclusive with it.
      */
     @Generated
-    private final List<String> fieldValues;
+    private List<String> fieldValues;
 
     /*
      * Natural-language instructions that explain when and how to filter on the field.
      */
     @Generated
     private String filterInstructions;
-
-    /**
-     * Creates an instance of SearchIndexKnowledgeSourceFilterHint class.
-     *
-     * @param field the field value to set.
-     * @param fieldValues the fieldValues value to set.
-     */
-    @Generated
-    public SearchIndexKnowledgeSourceFilterHint(String field, List<String> fieldValues) {
-        this.field = field;
-        this.fieldValues = fieldValues;
-    }
 
     /**
      * Get the field property: The name of the filterable search index field.
@@ -60,7 +50,9 @@ public final class SearchIndexKnowledgeSourceFilterHint
     }
 
     /**
-     * Get the fieldValues property: Representative values for the field.
+     * Get the fieldValues property: The exhaustive set of values for the field. At most 160 values, with a maximum of
+     * 128 characters per value and 2048 characters combined. In versions supporting `autoConfiguration`, required
+     * unless `autoConfiguration` is specified, and mutually exclusive with it.
      *
      * @return the fieldValues value.
      */
@@ -102,6 +94,7 @@ public final class SearchIndexKnowledgeSourceFilterHint
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("field", this.field);
         jsonWriter.writeArrayField("fieldValues", this.fieldValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("autoConfiguration", this.autoConfiguration);
         jsonWriter.writeStringField("filterInstructions", this.filterInstructions);
         return jsonWriter.writeEndObject();
     }
@@ -120,6 +113,7 @@ public final class SearchIndexKnowledgeSourceFilterHint
         return jsonReader.readObject(reader -> {
             String field = null;
             List<String> fieldValues = null;
+            SearchIndexKnowledgeSourceFilterHintAutoConfiguration autoConfiguration = null;
             String filterInstructions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -128,6 +122,8 @@ public final class SearchIndexKnowledgeSourceFilterHint
                     field = reader.getString();
                 } else if ("fieldValues".equals(fieldName)) {
                     fieldValues = reader.readArray(reader1 -> reader1.getString());
+                } else if ("autoConfiguration".equals(fieldName)) {
+                    autoConfiguration = SearchIndexKnowledgeSourceFilterHintAutoConfiguration.fromJson(reader);
                 } else if ("filterInstructions".equals(fieldName)) {
                     filterInstructions = reader.getString();
                 } else {
@@ -135,9 +131,87 @@ public final class SearchIndexKnowledgeSourceFilterHint
                 }
             }
             SearchIndexKnowledgeSourceFilterHint deserializedSearchIndexKnowledgeSourceFilterHint
-                = new SearchIndexKnowledgeSourceFilterHint(field, fieldValues);
+                = new SearchIndexKnowledgeSourceFilterHint(field);
+            deserializedSearchIndexKnowledgeSourceFilterHint.fieldValues = fieldValues;
+            deserializedSearchIndexKnowledgeSourceFilterHint.autoConfiguration = autoConfiguration;
             deserializedSearchIndexKnowledgeSourceFilterHint.filterInstructions = filterInstructions;
             return deserializedSearchIndexKnowledgeSourceFilterHint;
         });
+    }
+
+    /*
+     * Configures the service to resolve grounding values from the field's facets. Its presence enables
+     * auto-configuration. The field must be filterable and facetable. Not supported when the target index has
+     * document-level permissions or Purview sensitivity labels enabled; this restriction is validated at knowledge
+     * source create/update and knowledge base retrieval time. Mutually exclusive with `fieldValues`. Supported only in
+     * a knowledge source's stored `queryHints`, not in request-time `queryHintOverrides`.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceFilterHintAutoConfiguration autoConfiguration;
+
+    /**
+     * Creates an instance of SearchIndexKnowledgeSourceFilterHint class.
+     *
+     * @param field the field value to set.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceFilterHint(String field) {
+        this.field = field;
+    }
+
+    /**
+     * Set the fieldValues property: The exhaustive set of values for the field. At most 160 values, with a maximum of
+     * 128 characters per value and 2048 characters combined. In versions supporting `autoConfiguration`, required
+     * unless `autoConfiguration` is specified, and mutually exclusive with it.
+     *
+     * @param fieldValues the fieldValues value to set.
+     * @return the SearchIndexKnowledgeSourceFilterHint object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceFilterHint setFieldValues(List<String> fieldValues) {
+        this.fieldValues = fieldValues;
+        return this;
+    }
+
+    /**
+     * Get the autoConfiguration property: Configures the service to resolve grounding values from the field's facets.
+     * Its presence enables auto-configuration. The field must be filterable and facetable. Not supported when the
+     * target index has document-level permissions or Purview sensitivity labels enabled; this restriction is validated
+     * at knowledge source create/update and knowledge base retrieval time. Mutually exclusive with `fieldValues`.
+     * Supported only in a knowledge source's stored `queryHints`, not in request-time `queryHintOverrides`.
+     *
+     * @return the autoConfiguration value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceFilterHintAutoConfiguration getAutoConfiguration() {
+        return this.autoConfiguration;
+    }
+
+    /**
+     * Set the autoConfiguration property: Configures the service to resolve grounding values from the field's facets.
+     * Its presence enables auto-configuration. The field must be filterable and facetable. Not supported when the
+     * target index has document-level permissions or Purview sensitivity labels enabled; this restriction is validated
+     * at knowledge source create/update and knowledge base retrieval time. Mutually exclusive with `fieldValues`.
+     * Supported only in a knowledge source's stored `queryHints`, not in request-time `queryHintOverrides`.
+     *
+     * @param autoConfiguration the autoConfiguration value to set.
+     * @return the SearchIndexKnowledgeSourceFilterHint object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceFilterHint
+        setAutoConfiguration(SearchIndexKnowledgeSourceFilterHintAutoConfiguration autoConfiguration) {
+        this.autoConfiguration = autoConfiguration;
+        return this;
+    }
+
+    /**
+     * Creates a filter hint with explicit values.
+     *
+     * @param field the field to filter.
+     * @param fieldValues the allowed filter values.
+     */
+    public SearchIndexKnowledgeSourceFilterHint(String field, List<String> fieldValues) {
+        this(field);
+        setFieldValues(fieldValues);
     }
 }

@@ -26,11 +26,11 @@ Note: The `azsdk_customized_code_update` MCP tool can apply many customization f
 
 ### 3. includeOldApiVersions
 
-**What**: Prepends older version constants to the SearchServiceVersion enum.
+**What**: Prepends supported GA version constants missing from the generated SearchServiceVersion enum.
 
-**Current list**: See `includeOldApiVersions()` in `SearchCustomizations.java` for the authoritative version list. When a new API version is released, add the previous latest to this list -- but only if the generator does not already produce it.
+**Current list**: See `includeOldApiVersions()` in `SearchCustomizations.java` for the authoritative GA version list. Do not add a version already produced by the generator or re-add an obsolete preview.
 
-**When to update**: When a new API version is released -- add the previous latest to this list. **Critical**: check if the generator now produces a version that's in this list. If so, remove it to avoid duplicate enum constants.
+**When to update**: Retain supported GA versions and only the latest preview. Add supported GA versions missing from generated output, and remove obsolete preview constants through `removeOldPreviewApiVersions()`. If the generator now produces a GA version in the inclusion list, remove it from the list to avoid duplicates. Regenerate and verify the latest-preview-only regression test passes.
 
 ### 4. removeGetApis
 
@@ -59,7 +59,9 @@ Note: The `azsdk_customized_code_update` MCP tool can apply many customization f
     (silently does nothing -- no error, no warning)
 [ ] If new API version:
     [ ] Check includeOldApiVersions() list for duplicates with generator
+    [ ] Retain supported GA versions and remove obsolete previews through removeOldPreviewApiVersions()
     [ ] Verify getLatest() returns the new version
+    [ ] Run the latest-preview-only regression test
 [ ] If new client classes generated:
     [ ] Add hideWithResponseBinaryDataApis() call
     [ ] Add addSearchAudienceScopeHandling() call for builder

@@ -81,7 +81,6 @@ public final class FileKnowledgeSourceParameters implements JsonSerializable<Fil
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
-        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,9 +103,6 @@ public final class FileKnowledgeSourceParameters implements JsonSerializable<Fil
                 if ("ingestionParameters".equals(fieldName)) {
                     deserializedFileKnowledgeSourceParameters.ingestionParameters
                         = KnowledgeSourceIngestionParameters.fromJson(reader);
-                } else if ("queryHints".equals(fieldName)) {
-                    deserializedFileKnowledgeSourceParameters.queryHints
-                        = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     deserializedFileKnowledgeSourceParameters.createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -115,36 +111,5 @@ public final class FileKnowledgeSourceParameters implements JsonSerializable<Fil
             }
             return deserializedFileKnowledgeSourceParameters;
         });
-    }
-
-    /*
-     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
-     * Request-time query hints replace these defaults as a complete object.
-     */
-    @Generated
-    private SearchIndexKnowledgeSourceQueryHints queryHints;
-
-    /**
-     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
-     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
-     *
-     * @return the queryHints value.
-     */
-    @Generated
-    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
-        return this.queryHints;
-    }
-
-    /**
-     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
-     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
-     *
-     * @param queryHints the queryHints value to set.
-     * @return the FileKnowledgeSourceParameters object itself.
-     */
-    @Generated
-    public FileKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
-        this.queryHints = queryHints;
-        return this;
     }
 }

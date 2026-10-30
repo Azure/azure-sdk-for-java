@@ -79,4 +79,11 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     public static Collection<QueryDebugMode> values() {
         return values(QueryDebugMode.class);
     }
+
+    /**
+     * Returns bounded diagnostics for agentic search under &#064;search.debug.agentic. Combine with other supported
+     * modes using |; this selector does not enable agentic retrieval or query rewriting.
+     */
+    @Generated
+    public static final QueryDebugMode AGENTIC = fromString("agentic");
 }

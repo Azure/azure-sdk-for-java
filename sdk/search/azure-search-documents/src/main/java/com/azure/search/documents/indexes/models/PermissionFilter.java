@@ -60,4 +60,18 @@ public final class PermissionFilter extends ExpandableStringEnum<PermissionFilte
     public static Collection<PermissionFilter> values() {
         return values(PermissionFilter.class);
     }
+
+    /**
+     * Field represents the OneLake parent folder paths of the source item that should be used to filter document access
+     * on queries. The index must also specify 'oneLakeSecuritySource'.
+     */
+    @Generated
+    public static final PermissionFilter ONE_LAKE_PARENT_FOLDERS = fromString("oneLakeParentFolders");
+
+    /**
+     * Field represents a OneLake lakehouse ID that should be used to filter document access on queries. The index must
+     * also specify 'oneLakeSecuritySource'.
+     */
+    @Generated
+    public static final PermissionFilter ONE_LAKE_LAKEHOUSE_ID = fromString("oneLakeLakehouseId");
 }

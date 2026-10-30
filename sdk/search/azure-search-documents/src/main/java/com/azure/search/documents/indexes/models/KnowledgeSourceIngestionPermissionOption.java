@@ -67,4 +67,20 @@ public final class KnowledgeSourceIngestionPermissionOption
     public static Collection<KnowledgeSourceIngestionPermissionOption> values() {
         return values(KnowledgeSourceIngestionPermissionOption.class);
     }
+
+    /**
+     * Ingest OneLake parent folder paths and enable OneLake permission filtering on the generated index. Only supported
+     * for indexed OneLake knowledge sources.
+     */
+    @Generated
+    public static final KnowledgeSourceIngestionPermissionOption ONE_LAKE_PARENT_FOLDERS
+        = fromString("oneLakeParentFolders");
+
+    /**
+     * Ingest the source item's OneLake lakehouse ID and enable OneLake permission filtering on the generated index.
+     * Only supported for indexed OneLake knowledge sources.
+     */
+    @Generated
+    public static final KnowledgeSourceIngestionPermissionOption ONE_LAKE_LAKEHOUSE_ID
+        = fromString("oneLakeLakehouseId");
 }

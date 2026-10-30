@@ -199,6 +199,8 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
         jsonWriter.writeArrayField("algorithms", this.algorithms, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("vectorizers", this.vectorizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("compressions", this.compressions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("topicGraphProfiles", this.topicGraphProfiles,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -233,11 +235,43 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
                     List<VectorSearchCompression> compressions
                         = reader.readArray(reader1 -> VectorSearchCompression.fromJson(reader1));
                     deserializedVectorSearch.compressions = compressions;
+                } else if ("topicGraphProfiles".equals(fieldName)) {
+                    List<VectorSearchTopicGraphProfile> topicGraphProfiles
+                        = reader.readArray(reader1 -> VectorSearchTopicGraphProfile.fromJson(reader1));
+                    deserializedVectorSearch.topicGraphProfiles = topicGraphProfiles;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedVectorSearch;
         });
+    }
+
+    /*
+     * Contains profiles for topic graph vector search.
+     */
+    @Generated
+    private List<VectorSearchTopicGraphProfile> topicGraphProfiles;
+
+    /**
+     * Get the topicGraphProfiles property: Contains profiles for topic graph vector search.
+     *
+     * @return the topicGraphProfiles value.
+     */
+    @Generated
+    public List<VectorSearchTopicGraphProfile> getTopicGraphProfiles() {
+        return this.topicGraphProfiles;
+    }
+
+    /**
+     * Set the topicGraphProfiles property: Contains profiles for topic graph vector search.
+     *
+     * @param topicGraphProfiles the topicGraphProfiles value to set.
+     * @return the VectorSearch object itself.
+     */
+    @Generated
+    public VectorSearch setTopicGraphProfiles(List<VectorSearchTopicGraphProfile> topicGraphProfiles) {
+        this.topicGraphProfiles = topicGraphProfiles;
+        return this;
     }
 }
