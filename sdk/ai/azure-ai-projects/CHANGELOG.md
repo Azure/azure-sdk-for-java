@@ -2,14 +2,11 @@
 
 ## 2.9.0 (2026-10-30)
 
-### Breaking Changes
-
-- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
-  value. Use `SimulationSeedDataGenerationJobConfiguration(int maxSamples)` with a value between 1 and 1000 instead
-  of the no-argument constructor.
-
 ### Bugs Fixed
 
+- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
+  through its constructor or `setMaxSamples(int)`, while preserving the no-argument constructor for backward
+  compatibility.
 - Fixed cursor-based list operations that stopped after the first page, including data-generation jobs,
   evaluator-generation jobs, skills and skill versions, and agent insight monitors, runs, and insights.
   Paging now follows the service's `last_id` cursor and supports resuming from a continuation token.

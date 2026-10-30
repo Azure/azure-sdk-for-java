@@ -112,8 +112,19 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
     /*
      * Maximum number of samples to generate, up to service-defined limits.
      */
-    @Generated
-    private final int maxSamples;
+    private int maxSamples;
+
+    /**
+     * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
+     * Retained for backward compatibility.
+     *
+     * @deprecated The service requires {@code maxSamples} to be between 1 and 1000. Use
+     * {@link #SimulationSeedDataGenerationJobConfiguration(int)} instead.
+     */
+    @Deprecated
+    public SimulationSeedDataGenerationJobConfiguration() {
+        this(0);
+    }
 
     /**
      * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
@@ -133,5 +144,16 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
     @Generated
     public int getMaxSamples() {
         return this.maxSamples;
+    }
+
+    /**
+     * Set the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @param maxSamples the sample limit, between 1 and 1000.
+     * @return the SimulationSeedDataGenerationJobConfiguration object itself.
+     */
+    public SimulationSeedDataGenerationJobConfiguration setMaxSamples(int maxSamples) {
+        this.maxSamples = maxSamples;
+        return this;
     }
 }
