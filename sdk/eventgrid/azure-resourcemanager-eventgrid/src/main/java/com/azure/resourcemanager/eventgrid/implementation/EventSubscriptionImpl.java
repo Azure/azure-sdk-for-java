@@ -162,6 +162,31 @@ public final class EventSubscriptionImpl
         this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
             "eventSubscriptionName");
+        if (this.eventSubscriptionName == null) {
+            this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}",
+                "eventSubscriptionName");
+        }
+        if (this.eventSubscriptionName == null) {
+            this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}",
+                "eventSubscriptionName");
+        }
+        if (this.eventSubscriptionName == null) {
+            this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}/eventSubscriptions/{eventSubscriptionName}",
+                "eventSubscriptionName");
+        }
+        if (this.eventSubscriptionName == null) {
+            this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}",
+                "eventSubscriptionName");
+        }
+        if (this.eventSubscriptionName == null) {
+            this.eventSubscriptionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}",
+                "eventSubscriptionName");
+        }
     }
 
     public EventSubscription refresh() {
