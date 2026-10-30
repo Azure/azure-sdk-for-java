@@ -11,13 +11,14 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Validates the Azure AD B2C user flow in the {@code tfp} claim, falling back to {@code acr} only when
- * {@code tfp} is absent. User flow names are matched case-insensitively.
+ * {@code tfp} is absent. User flow names are matched case-insensitively, and blank claims are rejected.
  */
 public final class AadB2cJwtUserFlowValidator implements OAuth2TokenValidator<Jwt> {
 
@@ -53,6 +54,10 @@ public final class AadB2cJwtUserFlowValidator implements OAuth2TokenValidator<Jw
         if (!(userFlow instanceof String)) {
             LOGGER.debug("Azure AD B2C user flow validation failed: the '{}' claim is missing or is not a string.",
                 claimName);
+            return OAuth2TokenValidatorResult.failure(INVALID_USER_FLOW);
+        }
+        if (!StringUtils.hasText((String) userFlow)) {
+            LOGGER.debug("Azure AD B2C user flow validation failed: the '{}' claim is blank.", claimName);
             return OAuth2TokenValidatorResult.failure(INVALID_USER_FLOW);
         }
         if (userFlows.stream().anyMatch(configuredFlow -> configuredFlow.equalsIgnoreCase((String) userFlow))) {

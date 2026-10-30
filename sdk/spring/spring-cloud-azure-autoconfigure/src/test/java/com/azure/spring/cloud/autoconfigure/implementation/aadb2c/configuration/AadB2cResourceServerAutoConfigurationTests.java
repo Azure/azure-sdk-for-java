@@ -408,6 +408,21 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     }
 
     @ParameterizedTest
+    @ValueSource(strings = { "tfp", "acr" })
+    void testJwtDecoderRejectsBlankClaimWhenOptionalUserFlowIsEmpty(String claimName) throws Exception {
+        JWTClaimsSet claims = validJwtClaims().claim(claimName, "").build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .withPropertyValues(AadB2cConstants.USER_FLOWS + "." + AadB2cConstants.TEST_KEY_PROFILE_EDIT + "=")
+            .run(context -> {
+                assertThat(context.getBean(AadB2cProperties.class).getUserFlows())
+                    .containsEntry(AadB2cConstants.TEST_KEY_PROFILE_EDIT, "");
+                assertThatExceptionOfType(JwtValidationException.class)
+                    .isThrownBy(() -> context.getBean(JwtDecoder.class).decode(token(claims)))
+                    .withMessageContaining("The tfp or acr claim does not match a configured user flow.");
+            });
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = { "fake-sign-in-or-up", "unconfigured-flow" })
     void testJwtDecoderValidatesUserFlowWithPolicySpecificIssuer(String userFlow) throws Exception {
         JWTClaimsSet claims = validJwtClaims()

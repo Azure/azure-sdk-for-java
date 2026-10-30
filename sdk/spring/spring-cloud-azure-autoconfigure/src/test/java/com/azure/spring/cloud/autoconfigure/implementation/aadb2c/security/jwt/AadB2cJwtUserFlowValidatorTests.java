@@ -50,6 +50,26 @@ class AadB2cJwtUserFlowValidatorTests {
             + claimName + "' claim does not match a configured user flow.");
     }
 
+    @ParameterizedTest
+    @MethodSource("blankUserFlowClaims")
+    void testRejectsBlankClaimEvenIfConfigured(String claimName, String blank, CapturedOutput output) {
+        AadB2cJwtUserFlowValidator blankFlowValidator =
+            new AadB2cJwtUserFlowValidator(Arrays.asList("allowed-flow", blank));
+        Map<String, Object> claims = "tfp".equals(claimName)
+            ? Map.of("tfp", blank, "acr", "allowed-flow") : Map.of("acr", blank);
+
+        assertInvalidUserFlow(blankFlowValidator.validate(jwt(claims)));
+        assertThat(output.getAll()).contains(
+            "Azure AD B2C user flow validation failed: the '" + claimName + "' claim is blank.")
+            .doesNotContain("sensitive-token-value", "allowed-flow");
+        assertThat(blankFlowValidator.validate(jwt(Map.of(claimName, "allowed-flow"))).hasErrors()).isFalse();
+    }
+
+    private static Stream<Arguments> blankUserFlowClaims() {
+        return Stream.of("", " ", "\t", "\r\n", "\u2003")
+            .flatMap(blank -> Stream.of(Arguments.of("tfp", blank), Arguments.of("acr", blank)));
+    }
+
     @Test
     void testRejectsMissingUserFlowClaims(CapturedOutput output) {
         assertInvalidUserFlow(validator.validate(jwt(Collections.emptyMap())));

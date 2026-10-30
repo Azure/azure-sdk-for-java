@@ -12,6 +12,7 @@
 
 - Validate the `tfp` claim, or `acr` when `tfp` is absent, against configured user flow names (case-insensitively) for Azure AD B2C resource servers. Tokens with missing or unrecognized user flow claims are rejected when user flows are configured.
   - Success and failure diagnostics are available at DEBUG level for `com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cJwtUserFlowValidator`, without logging token or claim values.
+  - Reject blank `tfp` or `acr` claims even when an optional configured user flow name is also blank.
 
 ### Other Changes
 
