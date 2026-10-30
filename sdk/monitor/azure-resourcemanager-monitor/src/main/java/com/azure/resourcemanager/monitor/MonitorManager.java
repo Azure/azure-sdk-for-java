@@ -5,9 +5,7 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.monitor.fluent.AlertRuleManagementClient;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
-import com.azure.resourcemanager.monitor.implementation.AlertRuleManagementClientBuilder;
 import com.azure.resourcemanager.monitor.implementation.MonitorClientBuilder;
 import com.azure.resourcemanager.monitor.implementation.ActionGroupsImpl;
 import com.azure.resourcemanager.monitor.implementation.ActivityLogsImpl;
@@ -38,8 +36,6 @@ public final class MonitorManager extends Manager<MonitorClient> {
     private ActionGroups actionGroups;
     private AlertRules alerts;
     private AutoscaleSettings autoscaleSettings;
-
-    private final AlertRuleManagementClient alertRuleClient;
 
     /**
      * Get a Configurable instance that can be used to create MonitorManager with optional configuration.
@@ -173,18 +169,5 @@ public final class MonitorManager extends Manager<MonitorClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        alertRuleClient = new AlertRuleManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-            .subscriptionId(profile.getSubscriptionId())
-            .buildClient();
-    }
-
-    /**
-     * Gets the AlertRuleManagementClient for accessing DiagnosticSettings and related operations.
-     *
-     * @return the AlertRuleManagementClient
-     */
-    public AlertRuleManagementClient alertRuleClient() {
-        return this.alertRuleClient;
     }
 }
