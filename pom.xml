@@ -14,6 +14,7 @@
     <module>sdk/ai</module>
     <module>sdk/aiinfraoptimization</module>
     <module>sdk/alertsmanagement</module>
+    <module>sdk/anyscale</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
