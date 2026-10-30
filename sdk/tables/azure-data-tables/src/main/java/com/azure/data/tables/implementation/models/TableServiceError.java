@@ -5,7 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,13 +21,11 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
     /*
      * The error message.
      */
-    @Generated
     private String message;
 
     /**
      * Creates an instance of TableServiceError class.
      */
-    @Generated
     public TableServiceError() {
     }
 
@@ -36,7 +34,6 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -47,22 +44,19 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
      * @param message the message value to set.
      * @return the TableServiceError object itself.
      */
-    @Generated
     public TableServiceError setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "TableServiceError" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Message", this.message);
         return xmlWriter.writeEndElement();
@@ -76,7 +70,6 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceError.
      */
-    @Generated
     public static TableServiceError fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -91,10 +84,8 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceError.
      */
-    @Generated
     public static TableServiceError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "TableServiceError" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceError" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceError deserializedTableServiceError = new TableServiceError();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -5,7 +5,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,20 +21,17 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
     /*
      * Indicates whether a retention policy is enabled for the service.
      */
-    @Generated
     private boolean enabled;
 
     /*
      * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
      * this value will be deleted.
      */
-    @Generated
     private Integer daysToRetain;
 
     /**
      * Creates an instance of TableServiceRetentionPolicy class.
      */
-    @Generated
     public TableServiceRetentionPolicy() {
     }
 
@@ -43,7 +40,6 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * 
      * @return the enabled value.
      */
-    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -54,7 +50,6 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * @param enabled the enabled value to set.
      * @return the TableServiceRetentionPolicy object itself.
      */
-    @Generated
     public TableServiceRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -66,7 +61,6 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * 
      * @return the daysToRetain value.
      */
-    @Generated
     public Integer getDaysToRetain() {
         return this.daysToRetain;
     }
@@ -78,22 +72,19 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * @param daysToRetain the daysToRetain value to set.
      * @return the TableServiceRetentionPolicy object itself.
      */
-    @Generated
     public TableServiceRetentionPolicy setDaysToRetain(Integer daysToRetain) {
         this.daysToRetain = daysToRetain;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "RetentionPolicy" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.daysToRetain);
@@ -108,7 +99,6 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceRetentionPolicy.
      */
-    @Generated
     public static TableServiceRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -123,11 +113,9 @@ public final class TableServiceRetentionPolicy implements XmlSerializable<TableS
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceRetentionPolicy.
      */
-    @Generated
     public static TableServiceRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "RetentionPolicy" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceRetentionPolicy deserializedTableServiceRetentionPolicy = new TableServiceRetentionPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
