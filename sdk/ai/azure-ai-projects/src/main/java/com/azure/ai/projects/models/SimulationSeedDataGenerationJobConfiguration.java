@@ -116,10 +116,14 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
 
     /**
      * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
-     * Retained for backward compatibility. Call {@link #setMaxSamples(int)} to set the required sample limit before
-     * submitting a request.
+     * Retained for backward compatibility.
+     *
+     * @deprecated The service requires {@code maxSamples} to be between 1 and 1000. Use
+     * {@link #SimulationSeedDataGenerationJobConfiguration(int)} instead.
      */
+    @Deprecated
     public SimulationSeedDataGenerationJobConfiguration() {
+        this(0);
     }
 
     /**
