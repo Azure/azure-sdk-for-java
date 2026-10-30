@@ -6,9 +6,12 @@
 
 - Added `enableAzureProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`). ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
 
+- `AzureDeveloperCliCredential` now reports structured AAD authentication failures as `ClientAuthenticationException` instead of `CredentialUnavailableException`. In a manually constructed `ChainedTokenCredential`, these failures now stop the chain instead of trying the next credential. `DefaultAzureCredential` retains its developer-credential continuation behavior. ([#49271](https://github.com/Azure/azure-sdk-for-java/pull/49271))
+
 ### Bugs Fixed
 
 - Fixed `OnBehalfOfCredential` token cache lookup to remain bound to the configured user assertion, preventing a cached token acquired for one user from being returned for another user with matching scopes. ([#50618](https://github.com/Azure/azure-sdk-for-java/pull/50618))
+- Fixed `AzureDeveloperCliCredential` error parsing for Azure Developer CLI v1.23.7 and later, which previously surfaced the friendly wrapper "Authentication with Azure failed." instead of the underlying error text. The parser now prefers the structured top-level `error` field while preserving fallback behavior for older `consoleMessage` output. ([#49271](https://github.com/Azure/azure-sdk-for-java/pull/49271))
 
 ### Other Changes
 
