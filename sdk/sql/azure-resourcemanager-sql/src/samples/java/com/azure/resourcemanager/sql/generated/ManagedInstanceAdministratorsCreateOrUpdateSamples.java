@@ -6,7 +6,6 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
-import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorPrincipalType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
  */
 public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceAdministratorCreate.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorCreate.json
      */
     /**
      * Sample code: Create administrator of managed instance.
@@ -30,13 +29,12 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
                     .withAdministratorType(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("44444444-3333-2222-1111-000000000000"))
-                    .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111"))
-                    .withPrincipalType(ManagedInstanceAdministratorPrincipalType.USER),
+                    .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceAdministratorUpdate.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorUpdate.json
      */
     /**
      * Sample code: Update administrator of managed instance.
@@ -51,8 +49,7 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
                     .withAdministratorType(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("44444444-3333-2222-1111-000000000000"))
-                    .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111"))
-                    .withPrincipalType(ManagedInstanceAdministratorPrincipalType.USER),
+                    .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111")),
                 com.azure.core.util.Context.NONE);
     }
 }
