@@ -6,7 +6,12 @@
 
 ### Breaking Changes
 
+- When `spring.cloud.azure.active-directory.b2c.user-flows` is configured, the default Azure AD B2C resource server JWT decoder now rejects tokens without a matching string `tfp` claim, or `acr` when `tfp` is absent, even if the issuer contains a configured policy. Previously accepted tokens may now receive HTTP 401. Before upgrading, ensure your B2C policy emits one of these claims and that the configured user flow names cover the policies accepted by your API. See [token compatibility settings](https://learn.microsoft.com/azure/active-directory-b2c/configure-tokens#token-compatibility-settings).
+
 ### Bugs Fixed
+
+- Validate the `tfp` claim, or `acr` when `tfp` is absent, against configured user flow names (case-insensitively) for Azure AD B2C resource servers. Tokens with missing or unrecognized user flow claims are rejected when user flows are configured.
+  - Success and failure diagnostics are available at DEBUG level for `com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cJwtUserFlowValidator`, without logging token or claim values.
 
 ### Other Changes
 

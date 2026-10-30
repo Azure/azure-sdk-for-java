@@ -110,6 +110,8 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * Azure AD B2C User flows. Configure the user flow type and name mapping. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
+     * For resource servers, configured names also restrict the token's 'tfp' claim, or 'acr' when 'tfp' is absent.
+     * When this mapping is non-empty, tokens without a matching string policy claim are rejected.
      * See Microsoft doc about User flows for more details: https://learn.microsoft.com/azure/active-directory-b2c/user-flow-overview#user-flows
      */
     private Map<String, String> userFlows = new HashMap<>();
