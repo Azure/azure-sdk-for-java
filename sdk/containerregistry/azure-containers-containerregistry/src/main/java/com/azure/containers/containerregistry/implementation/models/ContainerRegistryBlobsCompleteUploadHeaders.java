@@ -5,31 +5,25 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsCompleteUploadHeaders model.
- */
+/** The ContainerRegistryBlobsCompleteUploadHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsCompleteUploadHeaders {
     /*
      * The Range property.
      */
-    @Generated
     private String range;
 
     /*
      * The Location property.
      */
-    @Generated
     private String location;
 
     /*
      * The Docker-Content-Digest property.
      */
-    @Generated
     private String dockerContentDigest;
 
     private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
@@ -37,7 +31,7 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsCompleteUploadHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCompleteUploadHeaders(HttpHeaders rawHeaders) {
@@ -48,21 +42,19 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
 
     /**
      * Get the range property: The Range property.
-     * 
+     *
      * @return the range value.
      */
-    @Generated
     public String getRange() {
         return this.range;
     }
 
     /**
      * Set the range property: The Range property.
-     * 
+     *
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsCompleteUploadHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsCompleteUploadHeaders setRange(String range) {
         this.range = range;
         return this;
@@ -70,21 +62,19 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
-    @Generated
     public String getLocation() {
         return this.location;
     }
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsCompleteUploadHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsCompleteUploadHeaders setLocation(String location) {
         this.location = location;
         return this;
@@ -92,21 +82,19 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
 
     /**
      * Get the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @return the dockerContentDigest value.
      */
-    @Generated
     public String getDockerContentDigest() {
         return this.dockerContentDigest;
     }
 
     /**
      * Set the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsCompleteUploadHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsCompleteUploadHeaders setDockerContentDigest(String dockerContentDigest) {
         this.dockerContentDigest = dockerContentDigest;
         return this;

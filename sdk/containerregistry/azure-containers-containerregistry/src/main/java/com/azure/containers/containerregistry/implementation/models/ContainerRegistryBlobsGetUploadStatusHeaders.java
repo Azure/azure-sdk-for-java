@@ -5,25 +5,20 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsGetUploadStatusHeaders model.
- */
+/** The ContainerRegistryBlobsGetUploadStatusHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsGetUploadStatusHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
-    @Generated
     private String dockerUploadUUID;
 
     /*
      * The Range property.
      */
-    @Generated
     private String range;
 
     private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
@@ -31,7 +26,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsGetUploadStatusHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsGetUploadStatusHeaders(HttpHeaders rawHeaders) {
@@ -41,21 +36,19 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
-     * 
+     *
      * @return the dockerUploadUUID value.
      */
-    @Generated
     public String getDockerUploadUUID() {
         return this.dockerUploadUUID;
     }
 
     /**
      * Set the dockerUploadUUID property: The Docker-Upload-UUID property.
-     * 
+     *
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsGetUploadStatusHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsGetUploadStatusHeaders setDockerUploadUUID(String dockerUploadUUID) {
         this.dockerUploadUUID = dockerUploadUUID;
         return this;
@@ -63,21 +56,19 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Get the range property: The Range property.
-     * 
+     *
      * @return the range value.
      */
-    @Generated
     public String getRange() {
         return this.range;
     }
 
     /**
      * Set the range property: The Range property.
-     * 
+     *
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsGetUploadStatusHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsGetUploadStatusHeaders setRange(String range) {
         this.range = range;
         return this;

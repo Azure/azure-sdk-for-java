@@ -5,165 +5,141 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
-/**
- * Properties of this repository.
- */
+/** Properties of this repository. */
 @Fluent
-public class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
+public final class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
-    @Generated
     private String registryLoginServer;
 
     /*
      * Image name
      */
-    @Generated
     private String name;
 
     /*
      * Image created time
      */
-    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Image last update time
      */
-    @Generated
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Number of the manifests
      */
-    @Generated
     private int manifestCount;
 
     /*
      * Number of the tags
      */
-    @Generated
     private int tagCount;
 
     /*
      * Delete enabled
      */
-    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
-    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
-    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
-    @Generated
     private Boolean readEnabled;
 
-    /**
-     * Creates an instance of ContainerRepositoryProperties class.
-     */
-    @Generated
+    /** Creates an instance of ContainerRepositoryProperties class. */
     public ContainerRepositoryProperties() {
     }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     * 
+     *
      * @return the registryLoginServer value.
      */
-    @Generated
     public String getRegistryLoginServer() {
         return this.registryLoginServer;
     }
 
     /**
      * Get the name property: Image name.
-     * 
+     *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
 
     /**
      * Get the createdOn property: Image created time.
-     * 
+     *
      * @return the createdOn value.
      */
-    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
     /**
      * Get the lastUpdatedOn property: Image last update time.
-     * 
+     *
      * @return the lastUpdatedOn value.
      */
-    @Generated
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
     }
 
     /**
      * Get the manifestCount property: Number of the manifests.
-     * 
+     *
      * @return the manifestCount value.
      */
-    @Generated
     public int getManifestCount() {
         return this.manifestCount;
     }
 
     /**
      * Get the tagCount property: Number of the tags.
-     * 
+     *
      * @return the tagCount value.
      */
-    @Generated
     public int getTagCount() {
         return this.tagCount;
     }
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @return the deleteEnabled value.
      */
-    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
-    @Generated
     public ContainerRepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -171,21 +147,19 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
 
     /**
      * Get the writeEnabled property: Write enabled.
-     * 
+     *
      * @return the writeEnabled value.
      */
-    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
 
     /**
      * Set the writeEnabled property: Write enabled.
-     * 
+     *
      * @param writeEnabled the writeEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
-    @Generated
     public ContainerRepositoryProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -193,21 +167,19 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
 
     /**
      * Get the listEnabled property: List enabled.
-     * 
+     *
      * @return the listEnabled value.
      */
-    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
 
     /**
      * Set the listEnabled property: List enabled.
-     * 
+     *
      * @param listEnabled the listEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
-    @Generated
     public ContainerRepositoryProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -215,33 +187,33 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
 
     /**
      * Get the readEnabled property: Read enabled.
-     * 
+     *
      * @return the readEnabled value.
      */
-    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
 
     /**
      * Set the readEnabled property: Read enabled.
-     * 
+     *
      * @param readEnabled the readEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
-    @Generated
     public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registry", this.registryLoginServer);
+        jsonWriter.writeStringField("imageName", this.name);
+        jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
+        jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
+        jsonWriter.writeIntField("manifestCount", this.manifestCount);
+        jsonWriter.writeIntField("tagCount", this.tagCount);
         if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
             jsonWriter.writeStartObject("changeableAttributes");
             jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
@@ -255,14 +227,13 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
 
     /**
      * Reads an instance of ContainerRepositoryProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRepositoryProperties if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRepositoryProperties.
      */
-    @Generated
     public static ContainerRepositoryProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRepositoryProperties deserializedContainerRepositoryProperties
@@ -276,11 +247,11 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
                 } else if ("imageName".equals(fieldName)) {
                     deserializedContainerRepositoryProperties.name = reader.getString();
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedContainerRepositoryProperties.createdOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedContainerRepositoryProperties.createdOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    deserializedContainerRepositoryProperties.lastUpdatedOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedContainerRepositoryProperties.lastUpdatedOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("manifestCount".equals(fieldName)) {
                     deserializedContainerRepositoryProperties.manifestCount = reader.getInt();
                 } else if ("tagCount".equals(fieldName)) {
