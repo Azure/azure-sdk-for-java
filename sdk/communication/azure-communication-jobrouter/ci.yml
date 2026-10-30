@@ -28,7 +28,7 @@ pr:
 extends:
     template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
-        ServiceDirectory: communication/azure-communication-jobrouter
+        ServiceDirectory: communication
         Artifacts:
             - name: azure-communication-jobrouter
               groupId: com.azure

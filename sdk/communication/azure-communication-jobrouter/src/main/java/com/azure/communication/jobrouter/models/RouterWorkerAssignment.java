@@ -5,44 +5,62 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * The assignment for a worker to a job.
  */
 @Immutable
-public final class RouterWorkerAssignment implements JsonSerializable<RouterWorkerAssignment> {
+public final class RouterWorkerAssignment {
 
     /*
      * Id of the assignment.
      */
     @Generated
-    private final String assignmentId;
+    @JsonProperty(value = "assignmentId")
+    private String assignmentId;
 
     /*
      * Id of the job assigned.
      */
     @Generated
-    private final String jobId;
+    @JsonProperty(value = "jobId")
+    private String jobId;
 
     /*
      * The amount of capacity this assignment has consumed on the worker.
      */
     @Generated
-    private final int capacityCost;
+    @JsonProperty(value = "capacityCost")
+    private int capacityCost;
 
     /*
      * The assignment time of the job in UTC.
      */
     @Generated
-    private final OffsetDateTime assignedAt;
+    @JsonProperty(value = "assignedAt")
+    private OffsetDateTime assignedAt;
+
+    /**
+     * Creates an instance of RouterWorkerAssignment class.
+     *
+     * @param assignmentId the assignmentId value to set.
+     * @param jobId the jobId value to set.
+     * @param capacityCost the capacityCost value to set.
+     * @param assignedAt the assignedAt value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RouterWorkerAssignment(@JsonProperty(value = "assignmentId") String assignmentId,
+        @JsonProperty(value = "jobId") String jobId, @JsonProperty(value = "capacityCost") int capacityCost,
+        @JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
+        this.assignmentId = assignmentId;
+        this.jobId = jobId;
+        this.capacityCost = capacityCost;
+        this.assignedAt = assignedAt;
+    }
 
     /**
      * Get the assignmentId property: Id of the assignment.
@@ -82,72 +100,5 @@ public final class RouterWorkerAssignment implements JsonSerializable<RouterWork
     @Generated
     public OffsetDateTime getAssignedAt() {
         return this.assignedAt;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("assignmentId", this.assignmentId);
-        jsonWriter.writeStringField("jobId", this.jobId);
-        jsonWriter.writeIntField("capacityCost", this.capacityCost);
-        jsonWriter.writeStringField("assignedAt",
-            this.assignedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.assignedAt));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RouterWorkerAssignment from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RouterWorkerAssignment if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RouterWorkerAssignment.
-     */
-    @Generated
-    public static RouterWorkerAssignment fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String assignmentId = null;
-            String jobId = null;
-            int capacityCost = 0;
-            OffsetDateTime assignedAt = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("assignmentId".equals(fieldName)) {
-                    assignmentId = reader.getString();
-                } else if ("jobId".equals(fieldName)) {
-                    jobId = reader.getString();
-                } else if ("capacityCost".equals(fieldName)) {
-                    capacityCost = reader.getInt();
-                } else if ("assignedAt".equals(fieldName)) {
-                    assignedAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RouterWorkerAssignment(assignmentId, jobId, capacityCost, assignedAt);
-        });
-    }
-
-    /**
-     * Creates an instance of RouterWorkerAssignment class.
-     *
-     * @param assignmentId the assignmentId value to set.
-     * @param jobId the jobId value to set.
-     * @param capacityCost the capacityCost value to set.
-     * @param assignedAt the assignedAt value to set.
-     */
-    @Generated
-    private RouterWorkerAssignment(String assignmentId, String jobId, int capacityCost, OffsetDateTime assignedAt) {
-        this.assignmentId = assignmentId;
-        this.jobId = jobId;
-        this.capacityCost = capacityCost;
-        this.assignedAt = assignedAt;
     }
 }
