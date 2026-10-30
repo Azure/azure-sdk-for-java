@@ -1,5 +1,15 @@
 # Release History
 
+## 2.56.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-management` from `1.19.8` to version `1.20.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+
 ## 2.55.0 (2026-10-08)
 
 - Package api-version 2026-07-01.
