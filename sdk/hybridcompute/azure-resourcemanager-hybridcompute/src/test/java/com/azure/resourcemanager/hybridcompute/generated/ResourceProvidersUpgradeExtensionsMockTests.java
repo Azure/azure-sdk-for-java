@@ -32,11 +32,9 @@ public final class ResourceProvidersUpgradeExtensionsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceProviders()
-            .upgradeExtensions("yfp", "hrqbnjjrcg",
-                new MachineExtensionUpgrade()
-                    .withExtensionTargets(mapOf("oxjumvqqo", new ExtensionTargetProperties().withTargetVersion("cw"),
-                        "loqxfuojrngif", new ExtensionTargetProperties().withTargetVersion("hrraiouaubrj"), "asccbiui",
-                        new ExtensionTargetProperties().withTargetVersion("z"))),
+            .upgradeExtensions("tshi", "xgvelfclduccbird",
+                new MachineExtensionUpgrade().withExtensionTargets(
+                    mapOf("i", new ExtensionTargetProperties().withTargetVersion("cobiegstmninwjiz"))),
                 com.azure.core.util.Context.NONE);
 
     }

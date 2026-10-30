@@ -96,6 +96,13 @@ public interface HybridComputeManagementClient {
     MachineRunCommandsClient getMachineRunCommands();
 
     /**
+     * Gets the VmApplicationsClient object to access its operations.
+     * 
+     * @return the VmApplicationsClient object.
+     */
+    VmApplicationsClient getVmApplications();
+
+    /**
      * Gets the GatewaysClient object to access its operations.
      * 
      * @return the GatewaysClient object.

@@ -27,7 +27,7 @@ public final class PrivateLinkScopesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.privateLinkScopes().delete("dqumoenodnai", "nhq", com.azure.core.util.Context.NONE);
+        manager.privateLinkScopes().delete("izjixlq", "hefkwabsolronqq", com.azure.core.util.Context.NONE);
 
     }
 }

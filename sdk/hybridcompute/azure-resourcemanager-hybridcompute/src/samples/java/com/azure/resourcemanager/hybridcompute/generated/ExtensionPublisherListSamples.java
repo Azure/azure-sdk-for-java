@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class ExtensionPublisherListSamples {
     /*
-     * x-ms-original-file: 2026-07-15/extension/ExtensionPublisher_List.json
+     * x-ms-original-file: 2026-09-01/extension/ExtensionPublisher_List.json
      */
     /**
      * Sample code: GET a list of extension publishers.

@@ -22,7 +22,7 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"gatewayId\":\"xlghieegj\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"paseksgb\",\"allowedFeatures\":[\"ntuygdhgaqipir\",\"iwrqofulopmjnl\",\"x\",\"hcbjpibk\"],\"gatewayBypass\":[\"uuuercta\"]},\"location\":\"yintqpbrlcy\",\"tags\":{\"pcjttbstvjeaqn\":\"czkgofxyfsrucvcr\",\"mlghktuidvrmazlp\":\"mvvfko\",\"wvqsgny\":\"wwexymzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"gatewayId\":\"bcccgzpra\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"uffatsgftipwc\",\"allowedFeatures\":[\"ubhiqdxyur\",\"pnuhzafccnu\"],\"gatewayBypass\":[\"gbylbuig\"]},\"location\":\"vatvcrkd\",\"tags\":{\"ov\":\"bqxvhcsyhzlwxae\",\"ead\":\"rexdndsbd\",\"opagttmvmmag\":\"rzmwn\",\"azjcgmxitpfin\":\"aqylkjztji\"},\"id\":\"cpdltkrlg\",\"name\":\"mtbdrvcqgu\",\"type\":\"fzhompheq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gateway response = manager.gateways()
-            .getByResourceGroupWithResponse("ocxnehvsmtodl", "pyapucygvoav", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("nhii", "ialwc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yintqpbrlcy", response.location());
-        Assertions.assertEquals("czkgofxyfsrucvcr", response.tags().get("pcjttbstvjeaqn"));
+        Assertions.assertEquals("vatvcrkd", response.location());
+        Assertions.assertEquals("bqxvhcsyhzlwxae", response.tags().get("ov"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("ntuygdhgaqipir", response.allowedFeatures().get(0));
-        Assertions.assertEquals("uuuercta", response.gatewayBypass().get(0));
+        Assertions.assertEquals("ubhiqdxyur", response.allowedFeatures().get(0));
+        Assertions.assertEquals("gbylbuig", response.gatewayBypass().get(0));
     }
 }

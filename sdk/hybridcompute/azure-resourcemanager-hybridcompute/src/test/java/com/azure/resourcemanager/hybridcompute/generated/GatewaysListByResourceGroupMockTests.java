@@ -23,7 +23,7 @@ public final class GatewaysListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"gatewayId\":\"ttuiaclkiexhajl\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"iqfyuttdi\",\"allowedFeatures\":[\"pvn\"],\"gatewayBypass\":[\"mtx\",\"yctww\",\"zwxjlm\"]},\"location\":\"vogygzyvneez\",\"tags\":{\"moqqtlffhzbk\":\"gh\"},\"id\":\"kjj\",\"name\":\"avfqnvhnqoewdogi\",\"type\":\"etesypvidbztjhqt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"gatewayId\":\"lcdi\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"jbrzmqxucyc\",\"allowedFeatures\":[\"clxiutg\",\"cyzyzjdnrqjbt\"],\"gatewayBypass\":[\"aoqaqbzgyhfwwv\",\"atbwbqam\",\"e\"]},\"location\":\"iyslpkcvmwfaux\",\"tags\":{\"ormcqmic\":\"myw\",\"yqwixvcpwnkwywzw\":\"ijqpkzfbojxjmcs\",\"sknxrwzawnvsbcf\":\"falickduoiqtamty\"},\"id\":\"zagxnvhycvdi\",\"name\":\"wrzregzgyufu\",\"type\":\"rw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class GatewaysListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Gateway> response
-            = manager.gateways().listByResourceGroup("ommpvfqaw", com.azure.core.util.Context.NONE);
+            = manager.gateways().listByResourceGroup("urelyujlfyoump", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vogygzyvneez", response.iterator().next().location());
-        Assertions.assertEquals("gh", response.iterator().next().tags().get("moqqtlffhzbk"));
+        Assertions.assertEquals("iyslpkcvmwfaux", response.iterator().next().location());
+        Assertions.assertEquals("myw", response.iterator().next().tags().get("ormcqmic"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("pvn", response.iterator().next().allowedFeatures().get(0));
-        Assertions.assertEquals("mtx", response.iterator().next().gatewayBypass().get(0));
+        Assertions.assertEquals("clxiutg", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("aoqaqbzgyhfwwv", response.iterator().next().gatewayBypass().get(0));
     }
 }

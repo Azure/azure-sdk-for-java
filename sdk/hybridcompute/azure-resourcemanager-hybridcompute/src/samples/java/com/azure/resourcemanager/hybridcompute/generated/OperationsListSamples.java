@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15/Operations_List.json
+     * x-ms-original-file: 2026-09-01/Operations_List.json
      */
     /**
      * Sample code: List Hybrid Compute Provider Operations.

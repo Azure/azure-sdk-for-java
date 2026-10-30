@@ -21,7 +21,7 @@ public final class ExtensionMetadatasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"u\",\"extensionType\":\"slczwciidjsllf\",\"publisher\":\"vdmvxadqa\"},\"id\":\"rgnawbabgfbk\",\"name\":\"yjmfczlfsyqkfr\",\"type\":\"zgowox\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"hfupetasvvoqsbpk\",\"extensionType\":\"anfkgxsyaowuzow\",\"publisher\":\"ohdkcprgukx\"},\"id\":\"tiochlutixmqr\",\"name\":\"djizcbf\",\"type\":\"mcrunfhiucn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ExtensionMetadatasListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ExtensionValue> response = manager.extensionMetadatas()
-            .list("edvabbxbhmedeilb", "ywfcfxzi", "zzihvwy", com.azure.core.util.Context.NONE);
+        PagedIterable<ExtensionValue> response
+            = manager.extensionMetadatas().list("calincryqxz", "aqzi", "mqimiymqru", com.azure.core.util.Context.NONE);
 
     }
 }
