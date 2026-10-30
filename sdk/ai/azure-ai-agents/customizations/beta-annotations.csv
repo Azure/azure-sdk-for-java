@@ -5,6 +5,7 @@ class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
 field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;VOICE
+field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;VOICE_CONVERSATION_ENGINE
 class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview;
 field;com.azure.ai.agents.models.AgentKind;Preview API.;VOICE
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
@@ -282,6 +283,7 @@ class;com.azure.ai.agents.models.VoiceAgentMaxOutputTokens;Preview API. VoiceAge
 class;com.azure.ai.agents.models.VoiceAgentMcpTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReduction;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReductionType;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentProfanityFilterMode;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRealtimeResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDeltaEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDoneEvent;Preview API. VoiceAgents=V1Preview;
@@ -312,6 +314,11 @@ class;com.azure.ai.agents.models.VoiceAgentSessionSubagentCompletedEvent;Preview
 class;com.azure.ai.agents.models.VoiceAgentSessionSubagentStartedEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionUpdate;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionUpdateConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeSound;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeSourceConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeTrackConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSoundscapeWorkingTrackConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentStaticInterimResponseConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSubagent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSubagentAbortReason;Preview API. VoiceAgents=V1Preview;

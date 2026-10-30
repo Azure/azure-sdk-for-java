@@ -10,6 +10,12 @@ import java.util.Collection;
 
 /**
  * The input audio noise reduction mode.
+ * - `azure_deep_noise_suppression_headset`: Azure headset-optimized noise suppression for local voice activity
+ * detection. Optimized for low-sample-rate audio, including 8 kHz telephony audio. Enhances detection audio without
+ * changing the audio used for recognition. The mode is not restricted to headset devices.
+ * - `azure_personal_noise_suppression`: Azure personalized noise suppression for local voice activity detection. Starts
+ * with headset suppression and personalizes detection after automatic speaker enrollment. Recognition audio is
+ * unchanged; headset suppression remains active when personalization is unavailable.
  */
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentNoiseReductionType extends ExpandableStringEnum<VoiceAgentNoiseReductionType> {
@@ -63,4 +69,22 @@ public final class VoiceAgentNoiseReductionType extends ExpandableStringEnum<Voi
     public static Collection<VoiceAgentNoiseReductionType> values() {
         return values(VoiceAgentNoiseReductionType.class);
     }
+
+    /**
+     * Azure headset-optimized noise suppression for local voice activity detection. Optimized for low-sample-rate
+     * audio, including 8 kHz telephony audio. Enhances detection audio without changing the audio used for recognition.
+     * The mode is not restricted to headset devices.
+     */
+    @Generated
+    public static final VoiceAgentNoiseReductionType AZURE_DEEP_NOISE_SUPPRESSION_HEADSET
+        = fromString("azure_deep_noise_suppression_headset");
+
+    /**
+     * Azure personalized noise suppression for local voice activity detection. Starts with headset suppression and
+     * personalizes detection after automatic speaker enrollment. Recognition audio is unchanged; headset suppression
+     * remains active when personalization is unavailable.
+     */
+    @Generated
+    public static final VoiceAgentNoiseReductionType AZURE_PERSONAL_NOISE_SUPPRESSION
+        = fromString("azure_personal_noise_suppression");
 }
