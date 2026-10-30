@@ -9,9 +9,14 @@ Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies 
 - Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
 - Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 
+#### Breaking Changes
+
+- Azure AD B2C resource servers now reject missing or invalid policy claims when `spring.cloud.azure.active-directory.b2c.user-flows` is configured, even for policy-specific issuers. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
+
 #### Bugs Fixed
 
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
+- Fixed missing user flow validation in Azure AD B2C resource servers by checking `tfp` or fallback `acr` against configured names. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
 
 ### Spring Cloud Azure Starter Monitor
 This section includes changes in `spring-cloud-azure-starter-monitor` module.

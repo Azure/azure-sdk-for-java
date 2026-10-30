@@ -22,4 +22,14 @@ public final class AadJwtClaimNames {
     public static final String SCP = "scp";
     public static final String SUB = "sub";
     public static final String TID = "tid";
+
+    /**
+     * The Azure AD B2C trust framework policy claim.
+     */
+    public static final String TFP = "tfp";
+
+    /**
+     * The authentication context class reference claim used by older Azure AD B2C policies.
+     */
+    public static final String ACR = "acr";
 }
