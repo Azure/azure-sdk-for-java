@@ -1,5 +1,18 @@
 # Release History
 
+## 2.63.0 (2026-10-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.62.0` to version `2.63.0`.
+- Upgraded `azure-resourcemanager-msi` from `2.54.3` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.14` to version `2.54.0`.
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.0`.
+- Upgraded `azure-resourcemanager-storage` from `2.58.2` to version `2.60.0`.
+
+
 ## 2.62.0 (2026-10-15)
 
 - Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2026-03-03, ComputeSku: 2021-07-01.
