@@ -25,13 +25,6 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
     private DataGenerationJobType type = DataGenerationJobType.SIMULATION_SEED;
 
     /**
-     * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
-     */
-    @Generated
-    public SimulationSeedDataGenerationJobConfiguration() {
-    }
-
-    /**
      * Get the type property: The data generation job type.
      *
      * @return the type value.
@@ -71,6 +64,7 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("train_split", getTrainSplit());
         jsonWriter.writeJsonField("model_options", getModelOptions());
+        jsonWriter.writeIntField("max_samples", this.maxSamples);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -81,30 +75,85 @@ public final class SimulationSeedDataGenerationJobConfiguration extends DataGene
      * @param jsonReader The JsonReader being read.
      * @return An instance of SimulationSeedDataGenerationJobConfiguration if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SimulationSeedDataGenerationJobConfiguration.
      */
     @Generated
     public static SimulationSeedDataGenerationJobConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SimulationSeedDataGenerationJobConfiguration deserializedSimulationSeedDataGenerationJobConfiguration
-                = new SimulationSeedDataGenerationJobConfiguration();
+            Double trainSplit = null;
+            DataGenerationModelOptions modelOptions = null;
+            int maxSamples = 0;
+            DataGenerationJobType type = DataGenerationJobType.SIMULATION_SEED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("train_split".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobConfiguration
-                        .setTrainSplit(reader.getNullable(JsonReader::getDouble));
+                    trainSplit = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_options".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobConfiguration
-                        .setModelOptions(DataGenerationModelOptions.fromJson(reader));
+                    modelOptions = DataGenerationModelOptions.fromJson(reader);
+                } else if ("max_samples".equals(fieldName)) {
+                    maxSamples = reader.getInt();
                 } else if ("type".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobConfiguration.type
-                        = DataGenerationJobType.fromString(reader.getString());
+                    type = DataGenerationJobType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            SimulationSeedDataGenerationJobConfiguration deserializedSimulationSeedDataGenerationJobConfiguration
+                = new SimulationSeedDataGenerationJobConfiguration(maxSamples);
+            deserializedSimulationSeedDataGenerationJobConfiguration.setTrainSplit(trainSplit);
+            deserializedSimulationSeedDataGenerationJobConfiguration.setModelOptions(modelOptions);
+            deserializedSimulationSeedDataGenerationJobConfiguration.type = type;
             return deserializedSimulationSeedDataGenerationJobConfiguration;
         });
+    }
+
+    /*
+     * Maximum number of samples to generate, up to service-defined limits.
+     */
+    private int maxSamples;
+
+    /**
+     * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
+     * Retained for backward compatibility.
+     *
+     * @deprecated The service requires {@code maxSamples} to be between 1 and 1000. Use
+     * {@link #SimulationSeedDataGenerationJobConfiguration(int)} instead.
+     */
+    @Deprecated
+    public SimulationSeedDataGenerationJobConfiguration() {
+        this(0);
+    }
+
+    /**
+     * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
+     *
+     * @param maxSamples the maxSamples value to set.
+     */
+    @Generated
+    public SimulationSeedDataGenerationJobConfiguration(int maxSamples) {
+        this.maxSamples = maxSamples;
+    }
+
+    /**
+     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @return the maxSamples value.
+     */
+    @Generated
+    public int getMaxSamples() {
+        return this.maxSamples;
+    }
+
+    /**
+     * Set the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @param maxSamples the sample limit, between 1 and 1000.
+     * @return the SimulationSeedDataGenerationJobConfiguration object itself.
+     */
+    public SimulationSeedDataGenerationJobConfiguration setMaxSamples(int maxSamples) {
+        this.maxSamples = maxSamples;
+        return this;
     }
 }

@@ -124,6 +124,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
         jsonWriter.writeJsonField("code_configuration", this.codeConfiguration);
         jsonWriter.writeJsonField("telemetry_config", this.telemetryConfig);
         jsonWriter.writeJsonField("session_configuration", this.sessionConfiguration);
+        jsonWriter.writeBooleanField("enable_memory_snapshot", this.memorySnapshotEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +150,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             CodeConfiguration codeConfiguration = null;
             TelemetryConfig telemetryConfig = null;
             SessionConfiguration sessionConfiguration = null;
+            Boolean memorySnapshotEnabled = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -172,6 +174,8 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     telemetryConfig = TelemetryConfig.fromJson(reader);
                 } else if ("session_configuration".equals(fieldName)) {
                     sessionConfiguration = SessionConfiguration.fromJson(reader);
+                } else if ("enable_memory_snapshot".equals(fieldName)) {
+                    memorySnapshotEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -185,6 +189,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             deserializedHostedAgentDefinition.codeConfiguration = codeConfiguration;
             deserializedHostedAgentDefinition.telemetryConfig = telemetryConfig;
             deserializedHostedAgentDefinition.sessionConfiguration = sessionConfiguration;
+            deserializedHostedAgentDefinition.memorySnapshotEnabled = memorySnapshotEnabled;
             return deserializedHostedAgentDefinition;
         });
     }
@@ -348,6 +353,39 @@ public final class HostedAgentDefinition extends AgentDefinition {
     @Generated
     public HostedAgentDefinition setSessionConfiguration(SessionConfiguration sessionConfiguration) {
         this.sessionConfiguration = sessionConfiguration;
+        return this;
+    }
+
+    /*
+     * Whether this agent version uses memory snapshots. Sessions for a snapshot-enabled version start from a snapshot
+     * of the agent's initialized process rather than starting the process from its image. Defaults to false.
+     */
+    @Generated
+    private Boolean memorySnapshotEnabled;
+
+    /**
+     * Get the memorySnapshotEnabled property: Whether this agent version uses memory snapshots. Sessions for a
+     * snapshot-enabled version start from a snapshot of the agent's initialized process rather than starting the
+     * process from its image. Defaults to false.
+     *
+     * @return the memorySnapshotEnabled value.
+     */
+    @Generated
+    public Boolean isMemorySnapshotEnabled() {
+        return this.memorySnapshotEnabled;
+    }
+
+    /**
+     * Set the memorySnapshotEnabled property: Whether this agent version uses memory snapshots. Sessions for a
+     * snapshot-enabled version start from a snapshot of the agent's initialized process rather than starting the
+     * process from its image. Defaults to false.
+     *
+     * @param memorySnapshotEnabled the memorySnapshotEnabled value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setMemorySnapshotEnabled(Boolean memorySnapshotEnabled) {
+        this.memorySnapshotEnabled = memorySnapshotEnabled;
         return this;
     }
 }
