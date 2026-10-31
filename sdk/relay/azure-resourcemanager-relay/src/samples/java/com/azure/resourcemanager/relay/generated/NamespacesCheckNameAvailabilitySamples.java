@@ -11,7 +11,7 @@ import com.azure.resourcemanager.relay.models.CheckNameAvailability;
  */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceCheckNameAvailability.json
      */
     /**
      * Sample code: RelayCheckNameAvailability.

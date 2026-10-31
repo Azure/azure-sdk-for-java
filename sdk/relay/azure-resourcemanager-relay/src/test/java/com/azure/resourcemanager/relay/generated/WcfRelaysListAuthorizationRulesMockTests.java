@@ -23,7 +23,7 @@ public final class WcfRelaysListAuthorizationRulesMockTests {
     @Test
     public void testListAuthorizationRules() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"rights\":[\"Send\"]},\"location\":\"zlfmisgwbnbbeld\",\"id\":\"k\",\"name\":\"baliourqhakauha\",\"type\":\"hsfwxosowzxcug\"}]}";
+            = "{\"value\":[{\"properties\":{\"rights\":[\"Manage\",\"Send\"]},\"location\":\"opppcqeq\",\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class WcfRelaysListAuthorizationRulesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AuthorizationRule> response = manager.wcfRelays()
-            .listAuthorizationRules("duala", "xqpvfadmw", "rcrgvx", com.azure.core.util.Context.NONE);
+            .listAuthorizationRules("pkteo", "llwptfdy", "pfqbuaceopzf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AccessRights.SEND, response.iterator().next().rights().get(0));
+        Assertions.assertEquals(AccessRights.MANAGE, response.iterator().next().rights().get(0));
     }
 }

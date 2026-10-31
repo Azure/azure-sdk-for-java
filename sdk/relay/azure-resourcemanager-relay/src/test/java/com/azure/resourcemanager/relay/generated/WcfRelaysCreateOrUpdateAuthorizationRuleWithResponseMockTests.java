@@ -24,7 +24,7 @@ public final class WcfRelaysCreateOrUpdateAuthorizationRuleWithResponseMockTests
     @Test
     public void testCreateOrUpdateAuthorizationRuleWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rights\":[\"Send\",\"Send\",\"Listen\"]},\"location\":\"vpycanuzbp\",\"id\":\"afkuwb\",\"name\":\"rnwb\",\"type\":\"ehhseyvjusrts\"}";
+            = "{\"properties\":{\"rights\":[\"Manage\",\"Manage\",\"Manage\"]},\"location\":\"rzt\",\"id\":\"lhbnxkna\",\"name\":\"aulppggd\",\"type\":\"pnapnyiropuh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class WcfRelaysCreateOrUpdateAuthorizationRuleWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationRule response = manager.wcfRelays()
-            .createOrUpdateAuthorizationRuleWithResponse("rpabg", "epsbjtazqu", "xywpmueefjzwfqkq", "jidsuyonobglaoc",
-                new AuthorizationRuleInner().withRights(Arrays.asList(AccessRights.SEND)),
+            .createOrUpdateAuthorizationRuleWithResponse("ekg", "wozuhkf", "bsjyofdx", "uusdttouwa",
+                new AuthorizationRuleInner().withRights(Arrays.asList(AccessRights.SEND, AccessRights.MANAGE)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(AccessRights.SEND, response.rights().get(0));
+        Assertions.assertEquals(AccessRights.MANAGE, response.rights().get(0));
     }
 }
