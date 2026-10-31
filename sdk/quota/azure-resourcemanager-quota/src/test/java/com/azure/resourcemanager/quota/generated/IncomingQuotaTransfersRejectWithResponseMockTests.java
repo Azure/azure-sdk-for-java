@@ -21,7 +21,7 @@ public final class IncomingQuotaTransfersRejectWithResponseMockTests {
     @Test
     public void testRejectWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Cancelled\",\"transferId\":\"pmfi\",\"transferRef\":\"fggjioolvr\",\"sourceSubscriptionId\":\"kvtkkg\",\"sourceTenantId\":\"qwjygvja\",\"billingAccountId\":\"blmhvkzuhb\",\"resourceName\":\"vyhgs\",\"amount\":9113659582785442970,\"sourceEtag\":\"qufegxuvwzfbn\",\"approval\":{\"comment\":\"ctlpdngitvgb\",\"actor\":\"hrixkwmy\",\"occurredAt\":\"2021-11-14T16:57:12Z\"},\"rejection\":{\"reason\":\"veg\",\"actor\":\"hbpnaixexccbd\",\"occurredAt\":\"2021-08-31T06:18:37Z\"}},\"etag\":\"xhcexdrrvqahq\",\"id\":\"htpwij\",\"name\":\"hyjsvfycx\",\"type\":\"bfvoowvrv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"transferStatus\":\"Failed\",\"transferId\":\"zonokixrjqci\",\"transferRef\":\"zpfrla\",\"sourceSubscriptionId\":\"zrnw\",\"sourceTenantId\":\"indfpwpjyl\",\"billingAccountId\":\"tlhflsjcdhszf\",\"resourceName\":\"fbgofeljagrqmqh\",\"amount\":5870493459842724770,\"sourceEtag\":\"iiojnal\",\"approval\":{\"comment\":\"kvtvsexso\",\"actor\":\"ueluqhhahhxvrhmz\",\"occurredAt\":\"2021-05-28T05:41:18Z\"},\"rejection\":{\"reason\":\"g\",\"actor\":\"wspughftqsxhqx\",\"occurredAt\":\"2020-12-22T03:09:08Z\"}},\"etag\":\"ukndxdigrjgu\",\"id\":\"zdmsyqtfi\",\"name\":\"whbotzingamv\",\"type\":\"phoszqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class IncomingQuotaTransfersRejectWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IncomingQuotaTransfer response = manager.incomingQuotaTransfers()
-            .rejectWithResponse("gikdgsz", "w", "birryuzhl", "kj",
-                new IncomingQuotaTransferRejectRequest().withReason("rvqqaatj"), com.azure.core.util.Context.NONE)
+            .rejectWithResponse("wbdsr", "zpdrhneu", "owqkdwytisi", "ircgpikpz",
+                new IncomingQuotaTransferRejectRequest().withReason("ejzanlfz"), com.azure.core.util.Context.NONE)
             .getValue();
 
     }

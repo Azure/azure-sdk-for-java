@@ -21,7 +21,7 @@ public final class GroupQuotaSubscriptionRequestsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subscriptionId\":\"q\",\"requestSubmitTime\":\"2021-06-13T11:03:38Z\",\"provisioningState\":\"InProgress\"},\"id\":\"ovljxywsu\",\"name\":\"syrsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}";
+            = "{\"properties\":{\"subscriptionId\":\"bgye\",\"requestSubmitTime\":\"2021-01-22T05:40:33Z\",\"provisioningState\":\"Failed\"},\"id\":\"aojfm\",\"name\":\"nc\",\"type\":\"tmr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class GroupQuotaSubscriptionRequestsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotaSubscriptionRequestStatus response = manager.groupQuotaSubscriptionRequests()
-            .getWithResponse("joxafnndlpi", "hkoymkcdyhbp", "kpw", com.azure.core.util.Context.NONE)
+            .getWithResponse("rujbzbomvzzbtdc", "vp", "iyujviylwdshfs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("q", response.properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T11:03:38Z"),
+        Assertions.assertEquals("bgye", response.properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T05:40:33Z"),
             response.properties().requestSubmitTime());
     }
 }

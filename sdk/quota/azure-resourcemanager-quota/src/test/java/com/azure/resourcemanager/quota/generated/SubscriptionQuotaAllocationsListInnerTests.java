@@ -16,10 +16,10 @@ public final class SubscriptionQuotaAllocationsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaAllocationsListInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Created\",\"value\":[{\"properties\":{\"resourceName\":\"watkpnpulexxb\",\"limit\":8119628141774012024,\"shareableQuota\":6075438403018061337,\"name\":{\"value\":\"zb\",\"localizedValue\":\"vsovmyokac\"}}},{\"properties\":{\"resourceName\":\"w\",\"limit\":9019954696773982094,\"shareableQuota\":7249564448679749970,\"name\":{\"value\":\"mflbv\",\"localizedValue\":\"chrkcciwwzjuqk\"}}},{\"properties\":{\"resourceName\":\"ajiwkuo\",\"limit\":2694337408684732165,\"shareableQuota\":6158949985595063443,\"name\":{\"value\":\"uimjmvx\",\"localizedValue\":\"duugidyjr\"}}}],\"nextLink\":\"byao\"},\"id\":\"e\",\"name\":\"csonpclhoco\",\"type\":\"slkevle\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"skxfbk\",\"limit\":2149160095093178460,\"shareableQuota\":3207887590068682243,\"name\":{\"value\":\"nhjdauw\",\"localizedValue\":\"ylwz\"}}},{\"properties\":{\"resourceName\":\"h\",\"limit\":4211220470844188894,\"shareableQuota\":1513829541348448586,\"name\":{\"value\":\"wuwprzqlv\",\"localizedValue\":\"alupjm\"}}},{\"properties\":{\"resourceName\":\"xobbcswsrt\",\"limit\":7888839879044625152,\"shareableQuota\":7224326417185039390,\"name\":{\"value\":\"ewtghfgblcgw\",\"localizedValue\":\"vlvqhjkbegi\"}}}],\"nextLink\":\"nmxiebwwaloayqc\"},\"id\":\"rtzju\",\"name\":\"gwyzm\",\"type\":\"txon\"}")
             .toObject(SubscriptionQuotaAllocationsListInner.class);
-        Assertions.assertEquals("watkpnpulexxb", model.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(8119628141774012024L, model.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("skxfbk", model.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(2149160095093178460L, model.properties().value().get(0).properties().limit());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,15 +27,15 @@ public final class SubscriptionQuotaAllocationsListInnerTests {
         SubscriptionQuotaAllocationsListInner model = new SubscriptionQuotaAllocationsListInner()
             .withProperties(new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
                 new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("watkpnpulexxb")
-                        .withLimit(8119628141774012024L)),
+                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("skxfbk")
+                        .withLimit(2149160095093178460L)),
                 new SubscriptionQuotaAllocations().withProperties(
-                    new SubscriptionQuotaAllocationsProperties().withResourceName("w").withLimit(9019954696773982094L)),
+                    new SubscriptionQuotaAllocationsProperties().withResourceName("h").withLimit(4211220470844188894L)),
                 new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("ajiwkuo")
-                        .withLimit(2694337408684732165L)))));
+                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("xobbcswsrt")
+                        .withLimit(7888839879044625152L)))));
         model = BinaryData.fromObject(model).toObject(SubscriptionQuotaAllocationsListInner.class);
-        Assertions.assertEquals("watkpnpulexxb", model.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(8119628141774012024L, model.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("skxfbk", model.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(2149160095093178460L, model.properties().value().get(0).properties().limit());
     }
 }

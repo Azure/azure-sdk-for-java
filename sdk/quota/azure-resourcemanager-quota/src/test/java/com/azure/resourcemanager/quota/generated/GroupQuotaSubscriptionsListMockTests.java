@@ -22,7 +22,7 @@ public final class GroupQuotaSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"yuq\",\"provisioningState\":\"Invalid\"},\"id\":\"lp\",\"name\":\"wcciuqgbdbu\",\"type\":\"auvfbtkuwhhmhyk\"}]}";
+            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"bibgjmfxumv\",\"provisioningState\":\"Canceled\"},\"id\":\"yo\",\"name\":\"wxnb\",\"type\":\"fezzxscyhwzdg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class GroupQuotaSubscriptionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupQuotaSubscriptionId> response
-            = manager.groupQuotaSubscriptions().list("ulpiuj", "aasipqi", com.azure.core.util.Context.NONE);
+            = manager.groupQuotaSubscriptions().list("yaomtb", "hhavgrvkffovjz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yuq", response.iterator().next().properties().subscriptionId());
+        Assertions.assertEquals("bibgjmfxumv", response.iterator().next().properties().subscriptionId());
     }
 }
