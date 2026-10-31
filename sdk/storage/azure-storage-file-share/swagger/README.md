@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/99ba8f1136fe3b3ba173b613c3291386fb0687d1/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-12-06/file.json
+input-file: https://raw.githubusercontent.com/browndav-msft/azure-rest-api-specs/672abf88f9686ec82cb07259f782a1b59d891ec5/specification/storage/data-plane/Microsoft.FileStorage/stable/2027-03-07/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -97,6 +97,30 @@ directive:
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}"];
+        op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}?comp=hardlinks
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}?comp=hardlinks"];
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
@@ -249,6 +273,7 @@ directive:
         $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
     $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.CreationTime.xml = {"name": "Creation-Time"};
 ```
 
 ### ShareUsageBytes

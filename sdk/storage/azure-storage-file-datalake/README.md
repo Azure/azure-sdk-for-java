@@ -193,6 +193,11 @@ https://${myaccount}.dfs.core.windows.net/${myfilesystem}/${mypath}
 
 Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
 
+### Data locality routing and HTTP transports
+
+For transport-specific requirements when enabling data locality routing, see the
+[JDK HTTP transport's host override guidance][jdk_http_host_overrides].
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
@@ -446,5 +451,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
-
-
+[jdk_http_host_overrides]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-jdk-httpclient/README.md#request-host-overrides
