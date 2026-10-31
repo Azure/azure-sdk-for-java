@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchListOperations.json
+     * x-ms-original-file: 2026-11-01/SearchListOperations.json
      */
     /**
      * Sample code: SearchListOperations.
