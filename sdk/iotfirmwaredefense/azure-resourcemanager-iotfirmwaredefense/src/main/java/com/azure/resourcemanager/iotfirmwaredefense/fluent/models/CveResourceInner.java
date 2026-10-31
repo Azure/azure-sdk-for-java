@@ -13,6 +13,10 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CweProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.EpssProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.ExploitMaturityLevel;
+import com.azure.resourcemanager.iotfirmwaredefense.models.KevProperties;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -165,7 +169,7 @@ public final class CveResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the cvssScore property: Legacy property for the effective CVE score.
+     * Get the cvssScore property: Legacy property for the effective CVE score (deprecated).
      * 
      * @return the cvssScore value.
      */
@@ -174,7 +178,7 @@ public final class CveResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated).
      * 
      * @return the cvssV2Score value.
      */
@@ -183,7 +187,7 @@ public final class CveResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated).
      * 
      * @return the cvssV3Score value.
      */
@@ -193,7 +197,7 @@ public final class CveResourceInner extends ProxyResource {
 
     /**
      * Get the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
-     * property.
+     * property (deprecated).
      * 
      * @return the cvssVersion value.
      */
@@ -217,6 +221,24 @@ public final class CveResourceInner extends ProxyResource {
      */
     public Integer effectiveCvssVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().effectiveCvssVersion();
+    }
+
+    /**
+     * Get the effectiveVectorString property: The CVSS vector string for the effectiveCvssVersion.
+     * 
+     * @return the effectiveVectorString value.
+     */
+    public String effectiveVectorString() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveVectorString();
+    }
+
+    /**
+     * Get the effectiveExploitMaturity property: The CVSS exploit maturity value for the effectiveCvssVersion.
+     * 
+     * @return the effectiveExploitMaturity value.
+     */
+    public ExploitMaturityLevel effectiveExploitMaturity() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveExploitMaturity();
     }
 
     /**
@@ -244,6 +266,42 @@ public final class CveResourceInner extends ProxyResource {
      */
     public String description() {
         return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Get the epss property: EPSS (Exploit Prediction Scoring System) information related to this CVE.
+     * 
+     * @return the epss value.
+     */
+    public EpssProperties epss() {
+        return this.innerProperties() == null ? null : this.innerProperties().epss();
+    }
+
+    /**
+     * Get the cwes property: CWE (Common Weakness Enumeration) information related to this CVE.
+     * 
+     * @return the cwes value.
+     */
+    public List<CweProperties> cwes() {
+        return this.innerProperties() == null ? null : this.innerProperties().cwes();
+    }
+
+    /**
+     * Get the kev property: KEV (Known Exploited Vulnerabilities) information related to this CVE.
+     * 
+     * @return the kev value.
+     */
+    public KevProperties kev() {
+        return this.innerProperties() == null ? null : this.innerProperties().kev();
+    }
+
+    /**
+     * Get the fixedInVersions property: The component versions in which this weakness was fixed, if any.
+     * 
+     * @return the fixedInVersions value.
+     */
+    public List<String> fixedInVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().fixedInVersions();
     }
 
     /**

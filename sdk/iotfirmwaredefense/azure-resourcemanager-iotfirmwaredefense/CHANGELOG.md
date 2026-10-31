@@ -1,14 +1,135 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (2026-08-21)
 
-### Features Added
+- Azure Resource Manager IoT Firmware Defense client library for Java. This package contains Microsoft Azure SDK for IoT Firmware Defense Management SDK. Firmware & IoT Security REST API. Package api-version 2026-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PairedKey` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.WorkspaceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.CryptoCertificateSummaryResource` was modified
+
+* `validate()` was removed
+
+#### `models.BinaryHardeningSummaryResource` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.CryptoCertificateEntity` was modified
+
+* `validate()` was removed
+
+#### `models.CveLink` was modified
+
+* `validate()` was removed
+
+#### `models.FirmwareSummary` was modified
+
+* `validate()` was removed
+
+#### `models.CvssScore` was modified
+
+* `validate()` was removed
+
+#### `models.StatusMessage` was modified
+
+* `validate()` was removed
+
+#### `models.CveComponent` was modified
+
+* `validate()` was removed
+
+#### `models.CveSummary` was modified
+
+* `validate()` was removed
+
+#### `models.BinaryHardeningFeatures` was modified
+
+* `validate()` was removed
+
+#### `models.SummaryResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FirmwareUpdateDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.CryptoKeySummaryResource` was modified
+
+* `validate()` was removed
+
+#### `models.GenerateUploadUrlRequest` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.UnsafeFunctionCallsResource` was added
+
+* `models.CweProperties` was added
+
+* `models.SbomSummaryResource` was added
+
+* `models.UnsafeFunctionCalls` was added
+
+* `models.EpssProperties` was added
+
+* `models.CveSummaryResource` was added
+
+* `models.PasswordHashSummaryResource` was added
+
+* `models.KevProperties` was added
+
+* `models.UnsafeFunctionCallsResult` was added
+
+* `models.UnsafeFunctionCallsSummaryResource` was added
+
+* `models.RansomwareCampaignUse` was added
+
+* `models.FunctionCall` was added
+
+* `models.ExploitMaturityLevel` was added
+
+#### `models.CveResource` was modified
+
+* `effectiveVectorString()` was added
+* `effectiveExploitMaturity()` was added
+* `fixedInVersions()` was added
+* `kev()` was added
+* `cwes()` was added
+* `epss()` was added
+
+#### `IoTFirmwareDefenseManager` was modified
+
+* `unsafeFunctionCalls()` was added
+
+#### `models.SummaryType` was modified
+
+* `CVE` was added
+* `PASSWORD_HASH` was added
+* `UNSAFE_FUNCTION_CALLS` was added
+* `SBOM` was added
+
+#### `models.CvssScore` was modified
+
+* `exploitMaturity()` was added
+* `vectorString()` was added
 
 ## 2.0.0 (2025-08-29)
 
