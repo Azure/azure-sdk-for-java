@@ -38,12 +38,12 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
     /*
      * Resolved configuration values
      */
-    private String configuration;
+    private BinaryData configuration;
 
     /*
      * Configuration on the line level across all solution template versions
      */
-    private String targetLevelConfiguration;
+    private BinaryData targetLevelConfiguration;
 
     /*
      * App components spec
@@ -66,6 +66,16 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
     private State state;
 
     /*
+     * Current Stage of revision
+     */
+    private StageMap currentStage;
+
+    /*
+     * Stages of revision
+     */
+    private List<StageMap> stages;
+
+    /*
      * Solution instance name
      */
     private String solutionInstanceName;
@@ -84,6 +94,11 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
      * The URI for tracking the latest action performed on this solution version.
      */
     private String latestActionTrackingUri;
+
+    /*
+     * Object Id of user who triggered the latest action on this solution version.
+     */
+    private String latestActionTriggeredBy;
 
     /*
      * The type of the latest action performed on this solution version.
@@ -133,7 +148,7 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
      * 
      * @return the configuration value.
      */
-    public String configuration() {
+    public BinaryData configuration() {
         return this.configuration;
     }
 
@@ -142,7 +157,7 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
      * 
      * @return the targetLevelConfiguration value.
      */
-    public String targetLevelConfiguration() {
+    public BinaryData targetLevelConfiguration() {
         return this.targetLevelConfiguration;
     }
 
@@ -194,6 +209,24 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
     }
 
     /**
+     * Get the currentStage property: Current Stage of revision.
+     * 
+     * @return the currentStage value.
+     */
+    public StageMap currentStage() {
+        return this.currentStage;
+    }
+
+    /**
+     * Get the stages property: Stages of revision.
+     * 
+     * @return the stages value.
+     */
+    public List<StageMap> stages() {
+        return this.stages;
+    }
+
+    /**
      * Get the solutionInstanceName property: Solution instance name.
      * 
      * @return the solutionInstanceName value.
@@ -228,6 +261,16 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
      */
     public String latestActionTrackingUri() {
         return this.latestActionTrackingUri;
+    }
+
+    /**
+     * Get the latestActionTriggeredBy property: Object Id of user who triggered the latest action on this solution
+     * version.
+     * 
+     * @return the latestActionTriggeredBy value.
+     */
+    public String latestActionTriggeredBy() {
+        return this.latestActionTriggeredBy;
     }
 
     /**
@@ -291,15 +334,22 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
                 } else if ("targetDisplayName".equals(fieldName)) {
                     deserializedSolutionVersionProperties.targetDisplayName = reader.getString();
                 } else if ("configuration".equals(fieldName)) {
-                    deserializedSolutionVersionProperties.configuration = reader.getString();
+                    deserializedSolutionVersionProperties.configuration
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("targetLevelConfiguration".equals(fieldName)) {
-                    deserializedSolutionVersionProperties.targetLevelConfiguration = reader.getString();
+                    deserializedSolutionVersionProperties.targetLevelConfiguration
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("reviewId".equals(fieldName)) {
                     deserializedSolutionVersionProperties.reviewId = reader.getString();
                 } else if ("externalValidationId".equals(fieldName)) {
                     deserializedSolutionVersionProperties.externalValidationId = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     deserializedSolutionVersionProperties.state = State.fromString(reader.getString());
+                } else if ("currentStage".equals(fieldName)) {
+                    deserializedSolutionVersionProperties.currentStage = StageMap.fromJson(reader);
+                } else if ("stages".equals(fieldName)) {
+                    List<StageMap> stages = reader.readArray(reader1 -> StageMap.fromJson(reader1));
+                    deserializedSolutionVersionProperties.stages = stages;
                 } else if ("solutionInstanceName".equals(fieldName)) {
                     deserializedSolutionVersionProperties.solutionInstanceName = reader.getString();
                 } else if ("solutionDependencies".equals(fieldName)) {
@@ -310,6 +360,8 @@ public final class SolutionVersionProperties implements JsonSerializable<Solutio
                     deserializedSolutionVersionProperties.errorDetails = ManagementError.fromJson(reader);
                 } else if ("latestActionTrackingUri".equals(fieldName)) {
                     deserializedSolutionVersionProperties.latestActionTrackingUri = reader.getString();
+                } else if ("latestActionTriggeredBy".equals(fieldName)) {
+                    deserializedSolutionVersionProperties.latestActionTriggeredBy = reader.getString();
                 } else if ("actionType".equals(fieldName)) {
                     deserializedSolutionVersionProperties.actionType = JobType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {

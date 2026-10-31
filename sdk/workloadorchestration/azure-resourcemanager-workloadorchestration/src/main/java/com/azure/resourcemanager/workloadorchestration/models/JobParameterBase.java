@@ -72,6 +72,10 @@ public class JobParameterBase implements JsonSerializable<JobParameterBase> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("deploy".equals(discriminatorValue)) {
                     return DeployJobParameter.fromJson(readerToUse.reset());
+                } else if ("publish".equals(discriminatorValue)) {
+                    return PublishJobParameter.fromJson(readerToUse.reset());
+                } else if ("uninstall".equals(discriminatorValue)) {
+                    return UninstallJobParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

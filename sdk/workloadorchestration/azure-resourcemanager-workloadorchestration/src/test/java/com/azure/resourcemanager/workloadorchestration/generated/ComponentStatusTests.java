@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentStatus model
-            = BinaryData.fromString("{\"name\":\"pp\",\"status\":\"lcxog\"}").toObject(ComponentStatus.class);
-        Assertions.assertEquals("pp", model.name());
-        Assertions.assertEquals("lcxog", model.status());
+        ComponentStatus model = BinaryData.fromString("{\"name\":\"wiithtywub\",\"status\":\"bihwqknfdnt\"}")
+            .toObject(ComponentStatus.class);
+        Assertions.assertEquals("wiithtywub", model.name());
+        Assertions.assertEquals("bihwqknfdnt", model.status());
     }
 }

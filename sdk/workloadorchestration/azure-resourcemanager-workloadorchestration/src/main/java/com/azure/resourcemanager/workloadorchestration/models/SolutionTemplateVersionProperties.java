@@ -21,7 +21,7 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
     /*
      * Config expressions for this solution version
      */
-    private String configurations;
+    private BinaryData configurations;
 
     /*
      * App components spec
@@ -32,6 +32,11 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
      * Orchestrator type
      */
     private OrchestratorType orchestratorType;
+
+    /*
+     * Internal State of resource
+     */
+    private InternalState internalState;
 
     /*
      * Provisioning state of resource
@@ -49,7 +54,7 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
      * 
      * @return the configurations value.
      */
-    public String configurations() {
+    public BinaryData configurations() {
         return this.configurations;
     }
 
@@ -59,7 +64,7 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
      * @param configurations the configurations value to set.
      * @return the SolutionTemplateVersionProperties object itself.
      */
-    public SolutionTemplateVersionProperties withConfigurations(String configurations) {
+    public SolutionTemplateVersionProperties withConfigurations(BinaryData configurations) {
         this.configurations = configurations;
         return this;
     }
@@ -105,6 +110,15 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
     }
 
     /**
+     * Get the internalState property: Internal State of resource.
+     * 
+     * @return the internalState value.
+     */
+    public InternalState internalState() {
+        return this.internalState;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of resource.
      * 
      * @return the provisioningState value.
@@ -119,7 +133,6 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("configurations", this.configurations);
         jsonWriter.writeMapField("specification", this.specification, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
@@ -127,6 +140,10 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
                 element.writeTo(writer);
             }
         });
+        if (this.configurations != null) {
+            jsonWriter.writeFieldName("configurations");
+            this.configurations.writeTo(jsonWriter);
+        }
         jsonWriter.writeStringField("orchestratorType",
             this.orchestratorType == null ? null : this.orchestratorType.toString());
         return jsonWriter.writeEndObject();
@@ -149,15 +166,19 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("configurations".equals(fieldName)) {
-                    deserializedSolutionTemplateVersionProperties.configurations = reader.getString();
-                } else if ("specification".equals(fieldName)) {
+                if ("specification".equals(fieldName)) {
                     Map<String, BinaryData> specification = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedSolutionTemplateVersionProperties.specification = specification;
+                } else if ("configurations".equals(fieldName)) {
+                    deserializedSolutionTemplateVersionProperties.configurations
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("orchestratorType".equals(fieldName)) {
                     deserializedSolutionTemplateVersionProperties.orchestratorType
                         = OrchestratorType.fromString(reader.getString());
+                } else if ("internalState".equals(fieldName)) {
+                    deserializedSolutionTemplateVersionProperties.internalState
+                        = InternalState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSolutionTemplateVersionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

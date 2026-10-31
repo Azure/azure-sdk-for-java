@@ -9,28 +9,27 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersi
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateType;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 
 public final class SchemaVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Patch\",\"version\":\"nryrtihf\",\"schemaVersion\":{\"properties\":{\"value\":\"ijbpzvgnwzsymgl\",\"provisioningState\":\"Canceled\"},\"eTag\":\"yzkohdbihanuf\",\"id\":\"cbjy\",\"name\":\"a\",\"type\":\"ithxqhabifpi\"}}")
+            "{\"updateType\":\"Major\",\"version\":\"emkkvnipjox\",\"schemaVersion\":{\"properties\":{\"value\":\"\\\"datanchgej\\\"\",\"provisioningState\":\"Failed\"},\"eTag\":\"mailzydehojw\",\"id\":\"huxinpmqnj\",\"name\":\"qwixjspro\",\"type\":\"vcputegj\"}}")
             .toObject(SchemaVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
-        Assertions.assertEquals("nryrtihf", model.version());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.schemaVersion().properties().value());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("emkkvnipjox", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionWithUpdateTypeInner model = new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
-            .withVersion("nryrtihf")
-            .withSchemaVersion(
-                new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("ijbpzvgnwzsymgl")));
+        SchemaVersionWithUpdateTypeInner model = new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
+            .withVersion("emkkvnipjox")
+            .withSchemaVersion(new SchemaVersionInner().withProperties(new SchemaVersionProperties()
+                .withValue(BinaryData.fromBytes("\"datanchgej\"".getBytes(StandardCharsets.UTF_8)))));
         model = BinaryData.fromObject(model).toObject(SchemaVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
-        Assertions.assertEquals("nryrtihf", model.version());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.schemaVersion().properties().value());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("emkkvnipjox", model.version());
     }
 }

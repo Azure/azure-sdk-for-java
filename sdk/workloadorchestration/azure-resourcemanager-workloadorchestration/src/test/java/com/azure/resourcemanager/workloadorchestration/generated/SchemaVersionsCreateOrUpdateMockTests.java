@@ -9,12 +9,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +22,7 @@ public final class SchemaVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"i\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"f\",\"id\":\"jmvl\",\"name\":\"yzgib\",\"type\":\"kujrllfojui\"}";
+            = "{\"properties\":{\"value\":\"\\\"datakya\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"kd\",\"id\":\"nht\",\"name\":\"wdowrczfjjn\",\"type\":\"uxxrkkmhmnulwemp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SchemaVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .define("sowsaael")
-            .withExistingSchema("dlpnfpubn", "nbatzvi")
-            .withProperties(new SchemaVersionProperties().withValue("ttcjuhplrvkmjc"))
+            .define("kzfzqxjosho")
+            .withExistingSchema("ohewjj", "ajnkdflqionswae")
+            .withProperties(new SchemaVersionProperties()
+                .withValue(BinaryData.fromBytes("\"dataotryegp\"".getBytes(StandardCharsets.UTF_8))))
             .create();
 
-        Assertions.assertEquals("i", response.properties().value());
     }
 }

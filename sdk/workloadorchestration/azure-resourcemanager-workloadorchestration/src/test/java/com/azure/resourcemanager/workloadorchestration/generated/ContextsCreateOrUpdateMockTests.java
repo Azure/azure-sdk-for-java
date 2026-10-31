@@ -28,7 +28,7 @@ public final class ContextsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"capabilities\":[{\"name\":\"rgdtpeqnacyheqw\",\"description\":\"pqqncju\",\"state\":\"active\"},{\"name\":\"jozfym\",\"description\":\"wmbupyvqyvliq\",\"state\":\"inactive\"},{\"name\":\"sejb\",\"description\":\"vsi\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"whddzydisnuepyw\",\"description\":\"jlnldpxottdiiaoc\"},{\"name\":\"ibz\",\"description\":\"ihweeb\"},{\"name\":\"ph\",\"description\":\"yv\"},{\"name\":\"jw\",\"description\":\"w\"}],\"provisioningState\":\"Succeeded\"},\"location\":\"atjhdhzybspijhf\",\"tags\":{\"rfmzhwilz\":\"dkkagvwukhsusmm\",\"lrcxivcbkut\":\"hnijmriprlkdneyt\",\"ynbpvzlqywauy\":\"umltwjflu\"},\"id\":\"njc\",\"name\":\"hmocgjshg\",\"type\":\"u\"}";
+            = "{\"properties\":{\"uniqueIdentifier\":\"l\",\"capabilities\":[{\"name\":\"mnbzkopai\",\"description\":\"ldcpudkhquxsyj\",\"state\":\"active\"},{\"name\":\"gvedrobujnjg\",\"description\":\"buxmqxigidull\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"pskgrhn\",\"description\":\"tslgsazuqznghx\"},{\"name\":\"kyqzjsdkpvnr\",\"description\":\"zwpf\"},{\"name\":\"xsfybntmveho\",\"description\":\"flyuvbgtz\"}],\"provisioningState\":\"Succeeded\"},\"location\":\"euydybnairvhpq\",\"tags\":{\"nqnvnc\":\"zeogeatr\",\"vjnkoiz\":\"rfcs\"},\"id\":\"zsqbibaaugicovj\",\"name\":\"mvwrmjxyvuodnx\",\"type\":\"zbassqfyy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,28 +37,27 @@ public final class ContextsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ContextModel response = manager.contexts()
-            .define("obektmbozo")
-            .withRegion("xweyslandkdcdjh")
-            .withExistingResourceGroup("hxjxjoezlqxrkdkn")
-            .withTags(mapOf("xsotir", "ghcgawnrrnqu", "xstcyilbvzm", "imseobf", "okjxebjvb", "xcjzlquze", "v",
-                "inzabwmvoglj"))
-            .withProperties(new ContextProperties().withCapabilities(Arrays.asList(
-                new Capability().withName("amicbigwcdgz").withDescription("eznuxkeu").withState(ResourceState.INACTIVE),
-                new Capability().withName("aabmdlqjb").withDescription("dp").withState(ResourceState.INACTIVE)))
-                .withHierarchies(Arrays.asList(new Hierarchy().withName("hupmomihzbd").withDescription("p"),
-                    new Hierarchy().withName("pkcdpreyxely").withDescription("cghf"),
-                    new Hierarchy().withName("rufssjyg").withDescription("sfxrkbhammgm"),
-                    new Hierarchy().withName("fm").withDescription("fgvqcpdw"))))
-            .create();
+        ContextModel response
+            = manager.contexts()
+                .define("pwxslaj")
+                .withRegion("jziuucrlnewnuwk")
+                .withExistingResourceGroup("b")
+                .withTags(mapOf("zlvwyw", "zetlvhdy", "lgqpwwlzpd", "v", "knmstbdoprwkamp", "arcbcdwhslxebaja"))
+                .withProperties(new ContextProperties().withCapabilities(Arrays.asList(
+                    new Capability().withName("dwiu").withDescription("nicupdyt").withState(ResourceState.INACTIVE)))
+                    .withHierarchies(Arrays.asList(new Hierarchy().withName("u").withDescription("jplosebmh"),
+                        new Hierarchy().withName("tuqmtxynoflqob").withDescription("ixngxebihexhnkin"),
+                        new Hierarchy().withName("iqcdolrpg").withDescription("psjlbsm"),
+                        new Hierarchy().withName("dafbncuy").withDescription("eykcnhpplzh"))))
+                .create();
 
-        Assertions.assertEquals("atjhdhzybspijhf", response.location());
-        Assertions.assertEquals("dkkagvwukhsusmm", response.tags().get("rfmzhwilz"));
-        Assertions.assertEquals("rgdtpeqnacyheqw", response.properties().capabilities().get(0).name());
-        Assertions.assertEquals("pqqncju", response.properties().capabilities().get(0).description());
+        Assertions.assertEquals("euydybnairvhpq", response.location());
+        Assertions.assertEquals("zeogeatr", response.tags().get("nqnvnc"));
+        Assertions.assertEquals("mnbzkopai", response.properties().capabilities().get(0).name());
+        Assertions.assertEquals("ldcpudkhquxsyj", response.properties().capabilities().get(0).description());
         Assertions.assertEquals(ResourceState.ACTIVE, response.properties().capabilities().get(0).state());
-        Assertions.assertEquals("whddzydisnuepyw", response.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("jlnldpxottdiiaoc", response.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("pskgrhn", response.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("tslgsazuqznghx", response.properties().hierarchies().get(0).description());
     }
 
     // Use "Map.of" if available

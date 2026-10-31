@@ -7,22 +7,20 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.DynamicSchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
-import org.junit.jupiter.api.Assertions;
+import java.nio.charset.StandardCharsets;
 
 public final class DynamicSchemaVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"kgymareqnajxqug\",\"provisioningState\":\"Initialized\"},\"eTag\":\"cubeddgssofw\",\"id\":\"zqalkrmnjijpx\",\"name\":\"cqqudf\",\"type\":\"byxbaaabjy\"}")
+            "{\"properties\":{\"value\":\"\\\"dataabwidfcxsspuun\\\"\",\"provisioningState\":\"Canceled\"},\"eTag\":\"hkx\",\"id\":\"ddrihpf\",\"name\":\"oqcaaewdaomdj\",\"type\":\"l\"}")
             .toObject(DynamicSchemaVersionInner.class);
-        Assertions.assertEquals("kgymareqnajxqug", model.properties().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicSchemaVersionInner model = new DynamicSchemaVersionInner()
-            .withProperties(new SchemaVersionProperties().withValue("kgymareqnajxqug"));
+        DynamicSchemaVersionInner model = new DynamicSchemaVersionInner().withProperties(new SchemaVersionProperties()
+            .withValue(BinaryData.fromBytes("\"dataabwidfcxsspuun\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(DynamicSchemaVersionInner.class);
-        Assertions.assertEquals("kgymareqnajxqug", model.properties().value());
     }
 }

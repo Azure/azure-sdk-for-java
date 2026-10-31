@@ -15,18 +15,19 @@ public final class SolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"solutionTemplateId\":\"riolxorjalt\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"ncwsob\",\"latestConfigRevision\":\"wcsdbnwdcfhucq\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"fuvglsbjjca\",\"latestConfigRevision\":\"vxb\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"vudutncor\",\"latestConfigRevision\":\"r\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"qtvcofudflvkgj\",\"latestConfigRevision\":\"bgdknnqv\",\"isConfigured\":true}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"n\",\"type\":\"EdgeZone\"},\"eTag\":\"udsgs\",\"id\":\"mkycgra\",\"name\":\"wjue\",\"type\":\"aeburuvdmo\"}")
+            "{\"properties\":{\"solutionTemplateId\":\"ayzri\",\"displayName\":\"hya\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"jlb\",\"latestConfigRevision\":\"xqvkjlmxhomdyn\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"wdigumbnraauz\",\"latestConfigRevision\":\"p\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"a\",\"latestConfigRevision\":\"ysdzhez\",\"isConfigured\":false}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"qyuvvfonkp\",\"type\":\"EdgeZone\"},\"eTag\":\"yik\",\"id\":\"lauyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}")
             .toObject(SolutionInner.class);
-        Assertions.assertEquals("n", model.extendedLocation().name());
+        Assertions.assertEquals("qyuvvfonkp", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SolutionInner model = new SolutionInner().withProperties(new SolutionProperties())
-            .withExtendedLocation(new ExtendedLocation().withName("n").withType(ExtendedLocationType.EDGE_ZONE));
+            .withExtendedLocation(
+                new ExtendedLocation().withName("qyuvvfonkp").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(SolutionInner.class);
-        Assertions.assertEquals("n", model.extendedLocation().name());
+        Assertions.assertEquals("qyuvvfonkp", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 }

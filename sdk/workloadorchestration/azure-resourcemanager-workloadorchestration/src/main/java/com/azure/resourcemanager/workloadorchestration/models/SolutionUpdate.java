@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The type used for update operations of the Solution.
+ * The updatable properties of the Solution.
  */
 @Fluent
 public final class SolutionUpdate implements JsonSerializable<SolutionUpdate> {
