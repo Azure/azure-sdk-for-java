@@ -184,16 +184,24 @@ public class AadAuthenticationProperties implements InitializingBean {
 
         /**
          * The group names can be used to construct 'GrantedAuthority'.
+         * <p>
+         * <strong>Note:</strong> Group display names in Microsoft Entra ID are mutable and are not guaranteed to be
+         * unique within a tenant. For reliable group identification, it is strongly recommended to use
+         * {@link #allowedGroupIds} (group Object IDs) instead, which are immutable and unique.
+         * Microsoft Entra App Roles are another recommended approach where appropriate.
          */
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
          * The group IDs can be used to construct 'GrantedAuthority'.
+         * <p>
+         * Group Object IDs are immutable and unique within a tenant, making them the preferred way to identify groups.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
+         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members.
+         * Otherwise, use "v1.0/me/memberOf".
          */
         private boolean useTransitiveMembers = false;
 
@@ -205,10 +213,30 @@ public class AadAuthenticationProperties implements InitializingBean {
             this.allowedGroupIds = allowedGroupIds;
         }
 
+        /**
+         * Gets the list of allowed group names.
+         * <p>
+         * <strong>Note:</strong> Group display names in Microsoft Entra ID are mutable and are not guaranteed to be
+         * unique within a tenant. For reliable group identification, it is strongly recommended to use
+         * {@link #getAllowedGroupIds()} (group Object IDs) instead, which are immutable and unique.
+         * Microsoft Entra App Roles are another recommended approach where appropriate.
+         *
+         * @return the list of allowed group names
+         */
         public List<String> getAllowedGroupNames() {
             return allowedGroupNames;
         }
 
+        /**
+         * Sets the list of allowed group names.
+         * <p>
+         * <strong>Note:</strong> Group display names in Microsoft Entra ID are mutable and are not guaranteed to be
+         * unique within a tenant. For reliable group identification, it is strongly recommended to use
+         * {@link #setAllowedGroupIds(Set)} (group Object IDs) instead, which are immutable and unique.
+         * Microsoft Entra App Roles are another recommended approach where appropriate.
+         *
+         * @param allowedGroupNames the list of allowed group names to set
+         */
         public void setAllowedGroupNames(List<String> allowedGroupNames) {
             this.allowedGroupNames = allowedGroupNames;
         }
@@ -363,6 +391,14 @@ public class AadAuthenticationProperties implements InitializingBean {
                 + "contains 'all', no other group ids can be configured. "
                 + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids="
                 + allowedGroupIds);
+        }
+
+        // Log a warning when allowed-group-names is configured, recommending allowed-group-ids instead
+        if (!userGroup.getAllowedGroupNames().isEmpty()) {
+            LOGGER.warn("The property 'spring.cloud.azure.active-directory.user-group.allowed-group-names' is "
+                + "configured. Group display names in Microsoft Entra ID are mutable and not guaranteed to be unique. "
+                + "For reliable group identification, consider using 'spring.cloud.azure.active-directory.user-group."
+                + "allowed-group-ids' (group Object IDs) or Microsoft Entra App Roles instead.");
         }
 
         validateTenantId();
