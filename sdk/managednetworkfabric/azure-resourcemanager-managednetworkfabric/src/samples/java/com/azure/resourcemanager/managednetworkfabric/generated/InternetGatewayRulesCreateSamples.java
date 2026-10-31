@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class InternetGatewayRulesCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternetGatewayRules_Create.json
+     * x-ms-original-file: 2026-01-15-preview/InternetGatewayRules_Create.json
      */
     /**
      * Sample code: InternetGatewayRules_Create_MaximumSet_Gen.

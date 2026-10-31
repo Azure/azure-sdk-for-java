@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public final class L3IsolationDomainsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/L3IsolationDomains_Update.json
+     * x-ms-original-file: 2026-01-15-preview/L3IsolationDomains_Update.json
      */
     /**
      * Sample code: L3IsolationDomains_Update_MaximumSet_Gen.

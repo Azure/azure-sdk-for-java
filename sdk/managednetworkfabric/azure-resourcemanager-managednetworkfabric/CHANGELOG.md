@@ -1,14 +1,277 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (2026-10-30)
 
-### Features Added
+- Azure Resource Manager Managed Network Fabric client library for Java. This package contains Microsoft Azure SDK for Managed Network Fabric Management SDK. Self service experience for Azure Network Fabric API. Package api-version 2026-01-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ValidateConfigurationResponse` was removed
 
-### Other Changes
+#### `models.L2IsolationDomains` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.NetworkTapRules` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+
+#### `models.L3IsolationDomain` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
+* `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+
+#### `models.NetworkFabrics` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties,com.azure.core.util.Context)`
+* `refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,models.ValidateConfigurationProperties)`
+
+#### `models.AccessControlList` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
+
+#### `models.NetworkTapRule` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
+
+#### `models.RoutePolicy` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
+
+#### `models.RoutePolicies` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.L2IsolationDomain` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration()` -> `models.ValidateConfigurationResponseV2 validateConfiguration()`
+* `models.ValidateConfigurationResponse validateConfiguration(com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(com.azure.core.util.Context)`
+
+#### `models.AccessControlLists` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.NetworkFabric` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(models.ValidateConfigurationProperties,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(models.ValidateConfigurationProperties,com.azure.core.util.Context)`
+* `refreshConfiguration(com.azure.core.util.Context)` was removed
+* `models.ValidateConfigurationResponse validateConfiguration(models.ValidateConfigurationProperties)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(models.ValidateConfigurationProperties)`
+
+#### `models.L3IsolationDomains` was modified
+
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse validateConfiguration(java.lang.String,java.lang.String)` -> `models.ValidateConfigurationResponseV2 validateConfiguration(java.lang.String,java.lang.String)`
+
+### Features Added
+
+* `models.SecretArchiveSettings` was added
+
+* `models.PatchInfrastructureNetworks` was added
+
+* `models.SecretArchivePatchSettings` was added
+
+* `models.OperationalState` was added
+
+* `models.PreUpgradeProfileProperties` was added
+
+* `models.PatchInfrastructureServices` was added
+
+* `models.PreUpgradeProfilePatchProperties` was added
+
+* `models.PostUpgradeProfileProperties` was added
+
+* `models.ManagementMode` was added
+
+* `models.EdgeConnectorPatchableProperties` was added
+
+* `models.InfraNetwork` was added
+
+* `models.EdgeConnector$UpdateStages` was added
+
+* `models.GenerateBaseConfiguration` was added
+
+* `models.EdgeConnectorProperties` was added
+
+* `models.ValidateConfigurationResponseProperties` was added
+
+* `models.InfraNetworkOptionalIp` was added
+
+* `models.Fabric$DefinitionStages` was added
+
+* `models.RefreshConfigurationRequestProperties` was added
+
+* `models.PatchInfraNetwork` was added
+
+* `models.EdgeConnector$Update` was added
+
+* `models.ValidateConfigurationResponseV2` was added
+
+* `models.VmProfile` was added
+
+* `models.Fabric$UpdateStages` was added
+
+* `models.ConfigurationRegenerationType` was added
+
+* `models.EdgeConnector` was added
+
+* `models.EdgeConnector$DefinitionStages` was added
+
+* `models.Fabric$Update` was added
+
+* `models.Fabric` was added
+
+* `models.Fabric$Definition` was added
+
+* `models.UpgradeProfileProperties` was added
+
+* `models.EdgeConnector$Definition` was added
+
+* `models.PlatformProxy` was added
+
+* `models.EdgeConnectors` was added
+
+* `models.PostUpgradeProfilePatchProperties` was added
+
+* `models.FabricPatchableProperties` was added
+
+* `models.Fabrics` was added
+
+* `models.ConnectivityModel` was added
+
+* `models.FabricPatch` was added
+
+* `models.NetworkFabricRefreshDeviceTypes` was added
+
+* `models.ControllerType` was added
+
+* `models.PatchPlatformProxy` was added
+
+* `models.InfrastructureServices` was added
+
+* `models.InfrastructureNetworks` was added
+
+* `models.UpgradeProfilePropertiesPatchProperties` was added
+
+* `models.NetworkPacketBrokerPatchProperties` was added
+
+* `models.OperationPolicy` was added
+
+* `models.FabricProperties` was added
+
+* `models.EdgeConnectorPatch` was added
+
+#### `models.NetworkPacketBroker$Definition` was modified
+
+* `withSourceNetworkTapRuleId(java.lang.String)` was added
+
+#### `models.NetworkBootstrapInterface` was modified
+
+* `operationalState()` was added
+
+#### `models.NetworkBootstrapDevice$Definition` was modified
+
+* `withControlPlaneAcls(java.util.List)` was added
+
+#### `models.NetworkInterface` was modified
+
+* `operationalState()` was added
+
+#### `ManagedNetworkFabricManager` was modified
+
+* `edgeConnectors()` was added
+* `fabrics()` was added
+
+#### `models.ConfigurationState` was modified
+
+* `COMMIT_STAGED` was added
+* `COMMIT_ROLLBACK_FAILED` was added
+* `COMMIT_STAGE_FAILED` was added
+
+#### `models.NetworkBootstrapDevicePatch` was modified
+
+* `withControlPlaneAcls(java.util.List)` was added
+* `controlPlaneAcls()` was added
+
+#### `models.NetworkFabricController$Definition` was modified
+
+* `withVmProfile(models.VmProfile)` was added
+
+#### `models.NetworkBootstrapDevice$Update` was modified
+
+* `withControlPlaneAcls(java.util.List)` was added
+
+#### `models.NetworkFabric$Definition` was modified
+
+* `withUpgradeProfile(java.util.List)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.NetworkFabrics` was modified
+
+* `refreshConfiguration(java.lang.String,java.lang.String,models.RefreshConfigurationRequestProperties,com.azure.core.util.Context)` was added
+
+#### `models.DeviceRole` was modified
+
+* `TERMINAL_SERVER` was added
+
+#### `models.NetworkDevice` was modified
+
+* `operationalState()` was added
+
+#### `models.NetworkFabricController` was modified
+
+* `vmProfile()` was added
+* `operationalState()` was added
+
+#### `models.NetworkPacketBrokerPatch` was modified
+
+* `withProperties(models.NetworkPacketBrokerPatchProperties)` was added
+* `properties()` was added
+
+#### `models.NetworkPacketBroker$Update` was modified
+
+* `withProperties(models.NetworkPacketBrokerPatchProperties)` was added
+
+#### `models.NetworkFabricPatch` was modified
+
+* `secretArchiveSettings()` was added
+* `upgradeProfile()` was added
+* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
+* `withUpgradeProfile(java.util.List)` was added
+
+#### `models.NetworkFabric` was modified
+
+* `upgradeProfile()` was added
+* `refreshConfiguration(models.RefreshConfigurationRequestProperties,com.azure.core.util.Context)` was added
+* `networkBootstrapDeviceId()` was added
+* `operationalState()` was added
+* `secretArchiveSettings()` was added
+
+#### `models.NetworkFabric$Update` was modified
+
+* `withUpgradeProfileForUpdate(java.util.List)` was added
+* `withSecretArchiveSettings(models.SecretArchivePatchSettings)` was added
+
+#### `models.NetworkBootstrapDevice` was modified
+
+* `controlPlaneAcls()` was added
+* `secretRotationStatus()` was added
+* `operationalState()` was added
+
+#### `models.NeighborGroup` was modified
+
+* `administrativeState()` was added
+
+#### `models.NetworkPacketBroker` was modified
+
+* `sourceNetworkTapRuleId()` was added
 
 ## 2.0.0 (2026-06-03)
 

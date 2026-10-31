@@ -22,7 +22,7 @@ public final class NeighborGroupsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"moazsjsuevfvnn\",\"destination\":{\"ipv4Addresses\":[\"cvx\",\"bxg\",\"k\"],\"ipv6Addresses\":[\"riwxe\"]},\"networkTapIds\":[\"vwqldil\"],\"networkTapRuleIds\":[\"vz\",\"bk\",\"al\",\"bxldl\"],\"networkFabricIds\":[\"mibq\",\"ldhttkalpqln\",\"yevjealxlewlwb\"],\"lastOperation\":{\"details\":\"qfdkkviji\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"ErrorDeprovisioning\"},\"identity\":{\"principalId\":\"owdqvqfldaqoao\",\"tenantId\":\"qpfwnjdyoxformfe\",\"type\":\"None\",\"userAssignedIdentities\":{\"pqttusux\":{\"principalId\":\"neszx\",\"clientId\":\"snhxphxokdbv\"},\"grxzcnwguezx\":{\"principalId\":\"z\",\"clientId\":\"vueijrnn\"},\"uuuyvpcf\":{\"principalId\":\"imkwbwmgqzq\",\"clientId\":\"nycchpcjztz\"}}},\"location\":\"njxciunetcxgdg\",\"tags\":{\"tjdrqgionmoky\":\"etlwavtzbphxxv\"},\"id\":\"mtdnymbeey\",\"name\":\"kbqlcaklesjg\",\"type\":\"dhgezyhpha\"}";
+            = "{\"properties\":{\"annotation\":\"cjialvchfumlfgm\",\"destination\":{\"ipv4Addresses\":[\"xko\",\"ipklfwn\",\"fkbqlrtffsw\",\"dkvljitbnhg\"],\"ipv6Addresses\":[\"laro\",\"swmucrza\"]},\"networkTapIds\":[\"dxtwqqukgonl\",\"jgskbkslt\",\"nrwxsqvxlupccfwq\"],\"networkTapRuleIds\":[\"uqyzxzjehd\",\"lvqtmzociaetctj\",\"pgmoazsj\",\"uevfvnnt\"],\"networkFabricIds\":[\"vxqbxgqkawnri\"],\"lastOperation\":{\"details\":\"kibvw\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"PendingAdministrativeUpdate\",\"administrativeState\":\"UnderMaintenance\"},\"identity\":{\"principalId\":\"zwbktalo\",\"tenantId\":\"ldlj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nyevjeal\":{\"principalId\":\"qgldhttka\",\"clientId\":\"ql\"},\"ijil\":{\"principalId\":\"ewlwbxuf\",\"clientId\":\"dkk\"},\"fldaq\":{\"principalId\":\"v\",\"clientId\":\"zowdqv\"},\"hxphxokdbv\":{\"principalId\":\"opzqpfwnjdyoxfo\",\"clientId\":\"feedfqjneszxtes\"}}},\"location\":\"qttusuxxb\",\"tags\":{\"grxzcnwguezx\":\"vueijrnn\"},\"id\":\"uim\",\"name\":\"wbwmgqzq\",\"type\":\"snycchpcjztziuu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class NeighborGroupsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeighborGroup response = manager.neighborGroups()
-            .getByResourceGroupWithResponse("xzjehdklvqtmzoci", "etctjh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ltrnq", "icyozryoxmfrxf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("njxciunetcxgdg", response.location());
-        Assertions.assertEquals("etlwavtzbphxxv", response.tags().get("tjdrqgionmoky"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("moazsjsuevfvnn", response.annotation());
-        Assertions.assertEquals("cvx", response.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("riwxe", response.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("qttusuxxb", response.location());
+        Assertions.assertEquals("vueijrnn", response.tags().get("grxzcnwguezx"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("cjialvchfumlfgm", response.annotation());
+        Assertions.assertEquals("xko", response.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("laro", response.destination().ipv6Addresses().get(0));
     }
 }

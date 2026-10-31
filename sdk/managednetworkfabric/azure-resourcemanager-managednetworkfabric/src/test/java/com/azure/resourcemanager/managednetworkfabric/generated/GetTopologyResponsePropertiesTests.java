@@ -12,7 +12,7 @@ public final class GetTopologyResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetTopologyResponseProperties model
-            = BinaryData.fromString("{\"url\":\"ibxovu\"}").toObject(GetTopologyResponseProperties.class);
-        Assertions.assertEquals("ibxovu", model.url());
+            = BinaryData.fromString("{\"url\":\"otoc\"}").toObject(GetTopologyResponseProperties.class);
+        Assertions.assertEquals("otoc", model.url());
     }
 }

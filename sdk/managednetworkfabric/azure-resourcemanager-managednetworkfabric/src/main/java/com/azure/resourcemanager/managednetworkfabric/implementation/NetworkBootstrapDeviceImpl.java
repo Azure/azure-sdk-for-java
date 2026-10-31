@@ -19,10 +19,13 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapDev
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapDeviceResyncPasswordsResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapDeviceUpdateAdministrativeStateResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapDeviceUpgradeResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class NetworkBootstrapDeviceImpl
@@ -76,6 +79,15 @@ public final class NetworkBootstrapDeviceImpl
         return this.innerModel().serialNumber();
     }
 
+    public List<String> controlPlaneAcls() {
+        List<String> inner = this.innerModel().controlPlaneAcls();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String version() {
         return this.innerModel().version();
     }
@@ -118,6 +130,19 @@ public final class NetworkBootstrapDeviceImpl
 
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
+    }
+
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
+    }
+
+    public List<SecretRotationStatus> secretRotationStatus() {
+        List<SecretRotationStatus> inner = this.innerModel().secretRotationStatus();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -318,6 +343,16 @@ public final class NetworkBootstrapDeviceImpl
             return this;
         } else {
             this.updateBody.withSerialNumber(serialNumber);
+            return this;
+        }
+    }
+
+    public NetworkBootstrapDeviceImpl withControlPlaneAcls(List<String> controlPlaneAcls) {
+        if (isInCreateMode()) {
+            this.innerModel().withControlPlaneAcls(controlPlaneAcls);
+            return this;
+        } else {
+            this.updateBody.withControlPlaneAcls(controlPlaneAcls);
             return this;
         }
     }

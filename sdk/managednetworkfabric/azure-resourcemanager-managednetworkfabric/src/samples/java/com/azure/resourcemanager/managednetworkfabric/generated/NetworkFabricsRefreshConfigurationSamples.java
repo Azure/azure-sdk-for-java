@@ -4,12 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationRegenerationType;
+import com.azure.resourcemanager.managednetworkfabric.models.GenerateBaseConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricRefreshDeviceTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.RefreshConfigurationRequestProperties;
+import java.util.Arrays;
+
 /**
  * Samples for NetworkFabrics RefreshConfiguration.
  */
 public final class NetworkFabricsRefreshConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RefreshConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RefreshConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_RefreshConfiguration_MaximumSet_Gen.
@@ -18,6 +24,13 @@ public final class NetworkFabricsRefreshConfigurationSamples {
      */
     public static void networkFabricsRefreshConfigurationMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkFabrics().refreshConfiguration("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+        manager.networkFabrics()
+            .refreshConfiguration("example-rg", "example-fabric",
+                new RefreshConfigurationRequestProperties()
+                    .withGenerateBaseConfiguration(GenerateBaseConfiguration.DISABLED)
+                    .withConfigurationRegenerationType(ConfigurationRegenerationType.fromString("Full"))
+                    .withDeviceTypes(
+                        Arrays.asList(NetworkFabricRefreshDeviceTypes.CE, NetworkFabricRefreshDeviceTypes.TOR)),
+                com.azure.core.util.Context.NONE);
     }
 }

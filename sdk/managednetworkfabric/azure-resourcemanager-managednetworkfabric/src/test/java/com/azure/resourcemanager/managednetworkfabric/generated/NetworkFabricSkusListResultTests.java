@@ -12,10 +12,10 @@ public final class NetworkFabricSkusListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkFabricSkusListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"SingleRack\",\"maxComputeRacks\":1477736921,\"maximumServerCount\":2104029750,\"supportedVersions\":[\"zwwy\",\"bdjzghximkg\",\"mxpqkjnpyriwn\"],\"details\":\"tcxmmqm\",\"provisioningState\":\"Accepted\"},\"id\":\"yjrexwdonbexfte\",\"name\":\"aubheeggzgrnqt\",\"type\":\"fozuumrtgjq\"}],\"nextLink\":\"cant\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":2002692689,\"maximumServerCount\":1521190874,\"supportedVersions\":[\"aeooifqdyw\"],\"details\":\"lobha\",\"provisioningState\":\"Updating\"},\"id\":\"mfecorkfrocgbmxl\",\"name\":\"j\",\"type\":\"zezbjes\"}],\"nextLink\":\"slurbqfygpny\"}")
             .toObject(NetworkFabricSkusListResult.class);
-        Assertions.assertEquals(1477736921, model.value().get(0).maxComputeRacks());
-        Assertions.assertEquals(2104029750, model.value().get(0).maximumServerCount());
-        Assertions.assertEquals("cant", model.nextLink());
+        Assertions.assertEquals(2002692689, model.value().get(0).maxComputeRacks());
+        Assertions.assertEquals(1521190874, model.value().get(0).maximumServerCount());
+        Assertions.assertEquals("slurbqfygpny", model.nextLink());
     }
 }

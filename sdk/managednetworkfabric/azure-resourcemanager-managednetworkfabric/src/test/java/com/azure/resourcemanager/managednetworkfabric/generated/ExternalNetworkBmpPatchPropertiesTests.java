@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalNetworkBmpPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalNetworkBmpPatchProperties model = BinaryData.fromString("{\"configurationState\":\"Enabled\"}")
+        ExternalNetworkBmpPatchProperties model = BinaryData.fromString("{\"configurationState\":\"Disabled\"}")
             .toObject(ExternalNetworkBmpPatchProperties.class);
-        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.configurationState());
+        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.configurationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalNetworkBmpPatchProperties model
-            = new ExternalNetworkBmpPatchProperties().withConfigurationState(BmpConfigurationState.ENABLED);
+            = new ExternalNetworkBmpPatchProperties().withConfigurationState(BmpConfigurationState.DISABLED);
         model = BinaryData.fromObject(model).toObject(ExternalNetworkBmpPatchProperties.class);
-        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.configurationState());
+        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.configurationState());
     }
 }

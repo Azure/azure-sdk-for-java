@@ -25,7 +25,7 @@ public final class NetworkMonitorsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"jh\",\"stationName\":\"nyoktcgmcthjgb\",\"stationIp\":\"mxqskemtajjfmkw\",\"stationPort\":81177491,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":1566020904,\"probeInterval\":380519040,\"probeCount\":1486559764},\"stationNetwork\":\"cmjiibtvwa\",\"monitoredNetworks\":[\"woptiqf\",\"iavtapc\",\"smapddmmwylr\"],\"exportPolicy\":\"LocalRib\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"LocalRib\",\"All\",\"Post-Policy\"]},\"monitoredAddressFamilies\":[\"ipv6Unicast\",\"vpnIpv4\",\"All\",\"ipv4Unicast\"]},\"lastOperation\":{\"details\":\"mtnrcvovhyqexuj\"},\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Failed\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"qbsythycdckcpfom\"},\"location\":\"fwxthrcmgsimgos\",\"tags\":{\"asenye\":\"jgckkb\",\"sahgcchz\":\"mwzgfankeolor\"},\"id\":\"apkhfhuuizyey\",\"name\":\"kinidyjf\",\"type\":\"puuykyvbpneyml\"}";
+            = "{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"ppphwvduuzpiooa\",\"stationName\":\"xsofsirit\",\"stationIp\":\"qp\",\"stationPort\":2040835394,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":1910448297,\"probeInterval\":196241301,\"probeCount\":148331213},\"stationNetwork\":\"cjnfyubc\",\"monitoredNetworks\":[\"fnqqnum\",\"navfpkleie\"],\"exportPolicy\":\"Pre-Policy\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"LocalRib\"]},\"monitoredAddressFamilies\":[\"ipv4Unicast\",\"vpnIpv6\"]},\"lastOperation\":{\"details\":\"dhnbofeucctppbgz\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"vvwd\"},\"location\":\"rqsobusur\",\"tags\":{\"tknywxpmef\":\"dxlbsnskcksf\",\"ugbi\":\"nccbvchozkmifyxd\",\"tqdrkwridro\":\"fn\"},\"id\":\"dhbulvkisy\",\"name\":\"nfqnekpx\",\"type\":\"ddeahfgdjahnsmk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,29 +35,29 @@ public final class NetworkMonitorsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkMonitor response = manager.networkMonitors()
-            .getByResourceGroupWithResponse("bsaaxstnziv", "ccgtujiwzbzed", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dzruuscbs", "tjdioevifzqqs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fwxthrcmgsimgos", response.location());
-        Assertions.assertEquals("jgckkb", response.tags().get("asenye"));
+        Assertions.assertEquals("rqsobusur", response.location());
+        Assertions.assertEquals("dxlbsnskcksf", response.tags().get("tknywxpmef"));
         Assertions.assertEquals(StationConfigurationState.ENABLED,
             response.bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("jh", response.bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("nyoktcgmcthjgb", response.bmpConfiguration().stationName());
-        Assertions.assertEquals("mxqskemtajjfmkw", response.bmpConfiguration().stationIp());
-        Assertions.assertEquals(81177491, response.bmpConfiguration().stationPort());
+        Assertions.assertEquals("ppphwvduuzpiooa", response.bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("xsofsirit", response.bmpConfiguration().stationName());
+        Assertions.assertEquals("qp", response.bmpConfiguration().stationIp());
+        Assertions.assertEquals(2040835394, response.bmpConfiguration().stationPort());
         Assertions.assertEquals(StationConnectionMode.PASSIVE, response.bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(1566020904,
+        Assertions.assertEquals(1910448297,
             response.bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(380519040, response.bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(1486559764, response.bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("cmjiibtvwa", response.bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("woptiqf", response.bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, response.bmpConfiguration().exportPolicy());
-        Assertions.assertEquals(BmpExportPolicy.ALL,
+        Assertions.assertEquals(196241301, response.bmpConfiguration().stationConnectionProperties().probeInterval());
+        Assertions.assertEquals(148331213, response.bmpConfiguration().stationConnectionProperties().probeCount());
+        Assertions.assertEquals("cjnfyubc", response.bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("fnqqnum", response.bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, response.bmpConfiguration().exportPolicy());
+        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB,
             response.bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV6UNICAST,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV4UNICAST,
             response.bmpConfiguration().monitoredAddressFamilies().get(0));
-        Assertions.assertEquals("qbsythycdckcpfom", response.annotation());
+        Assertions.assertEquals("vvwd", response.annotation());
     }
 }

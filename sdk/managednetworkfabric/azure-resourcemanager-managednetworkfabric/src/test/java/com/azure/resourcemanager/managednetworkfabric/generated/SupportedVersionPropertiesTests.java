@@ -13,11 +13,11 @@ public final class SupportedVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"aklwzlwee\",\"vendorOsVersion\":\"nejzltkaszfjsxs\",\"vendorFirmwareVersion\":\"dux\",\"isDefault\":\"False\"}")
+            "{\"version\":\"mvcdsvmwbitek\",\"vendorOsVersion\":\"fobvfiybxqich\",\"vendorFirmwareVersion\":\"bfzdqekiv\",\"isDefault\":\"True\"}")
             .toObject(SupportedVersionProperties.class);
-        Assertions.assertEquals("aklwzlwee", model.version());
-        Assertions.assertEquals("nejzltkaszfjsxs", model.vendorOsVersion());
-        Assertions.assertEquals("dux", model.vendorFirmwareVersion());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isDefault());
+        Assertions.assertEquals("mvcdsvmwbitek", model.version());
+        Assertions.assertEquals("fobvfiybxqich", model.vendorOsVersion());
+        Assertions.assertEquals("bfzdqekiv", model.vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.isDefault());
     }
 }

@@ -27,7 +27,7 @@ public final class L2IsolationDomainsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"networkFabricId\":\"vqyi\",\"vlanId\":1378450823,\"mtu\":1120818770,\"extendedVlan\":\"Disabled\",\"networkToNetworkInterconnectId\":\"vmxnavxzpyaptex\",\"lastOperation\":{\"details\":\"qhewhcchexczrmyn\"},\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"wolfmfazxwcaic\"},\"identity\":{\"principalId\":\"ttzfswohddlii\",\"tenantId\":\"osqpli\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"crzbtlrbzqt\":{\"principalId\":\"nb\",\"clientId\":\"vuukydiks\"},\"hyujqxyfbkaz\":{\"principalId\":\"gajfa\",\"clientId\":\"tohdlpcixpxxnyhi\"}}},\"location\":\"ayabrdnovuduww\",\"tags\":{\"kmci\":\"gcn\"},\"id\":\"hwwhyejhwbdf\",\"name\":\"f\",\"type\":\"zwkmrjfsqbc\"}";
+            = "{\"properties\":{\"networkFabricId\":\"frrjp\",\"vlanId\":1598760863,\"mtu\":300786264,\"extendedVlan\":\"Enabled\",\"networkToNetworkInterconnectId\":\"vcpgqiis\",\"lastOperation\":{\"details\":\"g\"},\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"annotation\":\"kkcxc\"},\"identity\":{\"principalId\":\"ronxmtrhwwd\",\"tenantId\":\"cqutyszhzlvkm\",\"type\":\"None\",\"userAssignedIdentities\":{\"kg\":{\"principalId\":\"bzarmepbmogtfp\",\"clientId\":\"kxsyohfrlyy\"},\"dgnuoewfgt\":{\"principalId\":\"chuzhngwtbhjg\",\"clientId\":\"ioe\"},\"gkrppmvnoqt\":{\"principalId\":\"mfixtyavv\",\"clientId\":\"jqdjkonbgegwx\"}}},\"location\":\"ciqaw\",\"tags\":{\"scotidi\":\"kvaqspb\",\"jkfmrjn\":\"xmt\",\"yjmbydr\":\"rjsqtirhabhhpcvs\",\"wruogmthfqcy\":\"xvnmtjmuxrdmu\"},\"id\":\"cxlllk\",\"name\":\"jgjlwfssgiebq\",\"type\":\"uscm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,32 +36,34 @@ public final class L2IsolationDomainsCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        L2IsolationDomain response = manager.l2IsolationDomains()
-            .define("oxohgkdnhb")
-            .withRegion("ugwhkw")
-            .withExistingResourceGroup("fijpjiudnustb")
-            .withNetworkFabricId("uepuv")
-            .withVlanId(239779991)
-            .withTags(mapOf("crkm", "qnxpo", "egsbuqdpzhq", "ajy", "xrexbargbmemopyp", "czzutxtid", "nnowpvxuuvhwsr",
-                "uomowucj"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("bzjyzajdpbnbpzxn", new UserAssignedIdentity(), "xi",
-                    new UserAssignedIdentity(), "mipfudzntb", new UserAssignedIdentity())))
-            .withMtu(1735632778)
-            .withExtendedVlan(ExtendedVlan.ENABLED)
-            .withNetworkToNetworkInterconnectId("vfrhyxlw")
-            .withAnnotation("mkyouwmjxhmkch")
-            .create();
+        L2IsolationDomain response
+            = manager.l2IsolationDomains()
+                .define("fkjd")
+                .withRegion("hwbdfcfyzw")
+                .withExistingResourceGroup("j")
+                .withNetworkFabricId("lqtqjabwtk")
+                .withVlanId(1101700630)
+                .withTags(mapOf("eqow", "jfsqbcfqaqo", "iicfsbjhhad", "odispasx"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("liikkosqpl", new UserAssignedIdentity(), "hgajfayftohdlpc",
+                            new UserAssignedIdentity(), "ujq", new UserAssignedIdentity(), "ivhwwhy",
+                            new UserAssignedIdentity())))
+                .withMtu(390361189)
+                .withExtendedVlan(ExtendedVlan.DISABLED)
+                .withNetworkToNetworkInterconnectId("ir")
+                .withAnnotation("ewhc")
+                .create();
 
-        Assertions.assertEquals("ayabrdnovuduww", response.location());
-        Assertions.assertEquals("gcn", response.tags().get("kmci"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("vqyi", response.networkFabricId());
-        Assertions.assertEquals(1378450823, response.vlanId());
-        Assertions.assertEquals(1120818770, response.mtu());
-        Assertions.assertEquals(ExtendedVlan.DISABLED, response.extendedVlan());
-        Assertions.assertEquals("vmxnavxzpyaptex", response.networkToNetworkInterconnectId());
-        Assertions.assertEquals("wolfmfazxwcaic", response.annotation());
+        Assertions.assertEquals("ciqaw", response.location());
+        Assertions.assertEquals("kvaqspb", response.tags().get("scotidi"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("frrjp", response.networkFabricId());
+        Assertions.assertEquals(1598760863, response.vlanId());
+        Assertions.assertEquals(300786264, response.mtu());
+        Assertions.assertEquals(ExtendedVlan.ENABLED, response.extendedVlan());
+        Assertions.assertEquals("vcpgqiis", response.networkToNetworkInterconnectId());
+        Assertions.assertEquals("kkcxc", response.annotation());
     }
 
     // Use "Map.of" if available

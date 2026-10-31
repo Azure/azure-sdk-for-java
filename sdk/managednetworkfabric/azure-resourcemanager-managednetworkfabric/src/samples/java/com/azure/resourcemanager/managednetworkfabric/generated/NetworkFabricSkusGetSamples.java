@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricSkusGetSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabricSkus_Get.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabricSkus_Get.json
      */
     /**
      * Sample code: NetworkFabricSkus_Get_MaximumSet_Gen.
@@ -18,6 +18,6 @@ public final class NetworkFabricSkusGetSamples {
      */
     public static void networkFabricSkusGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkFabricSkus().getWithResponse("example-fabricsku", com.azure.core.util.Context.NONE);
+        manager.networkFabricSkus().getWithResponse("wxample-fabricsku", com.azure.core.util.Context.NONE);
     }
 }

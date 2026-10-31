@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Network Bootstrap Device Patch properties.
@@ -31,6 +32,11 @@ public final class NetworkBootstrapDevicePatchProperties
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
     private String serialNumber;
+
+    /*
+     * Control Plane Access Control List ARM resource IDs.
+     */
+    private List<String> controlPlaneAcls;
 
     /**
      * Creates an instance of NetworkBootstrapDevicePatchProperties class.
@@ -101,6 +107,26 @@ public final class NetworkBootstrapDevicePatchProperties
     }
 
     /**
+     * Get the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @return the controlPlaneAcls value.
+     */
+    public List<String> controlPlaneAcls() {
+        return this.controlPlaneAcls;
+    }
+
+    /**
+     * Set the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @param controlPlaneAcls the controlPlaneAcls value to set.
+     * @return the NetworkBootstrapDevicePatchProperties object itself.
+     */
+    public NetworkBootstrapDevicePatchProperties withControlPlaneAcls(List<String> controlPlaneAcls) {
+        this.controlPlaneAcls = controlPlaneAcls;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +135,8 @@ public final class NetworkBootstrapDevicePatchProperties
         jsonWriter.writeStringField("annotation", this.annotation);
         jsonWriter.writeStringField("hostName", this.hostName);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeArrayField("controlPlaneAcls", this.controlPlaneAcls,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -134,6 +162,9 @@ public final class NetworkBootstrapDevicePatchProperties
                     deserializedNetworkBootstrapDevicePatchProperties.hostName = reader.getString();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedNetworkBootstrapDevicePatchProperties.serialNumber = reader.getString();
+                } else if ("controlPlaneAcls".equals(fieldName)) {
+                    List<String> controlPlaneAcls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkBootstrapDevicePatchProperties.controlPlaneAcls = controlPlaneAcls;
                 } else {
                     reader.skipChildren();
                 }

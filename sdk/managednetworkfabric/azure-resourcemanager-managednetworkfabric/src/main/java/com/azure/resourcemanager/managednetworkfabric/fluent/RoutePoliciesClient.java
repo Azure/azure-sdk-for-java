@@ -14,7 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
@@ -344,7 +344,7 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName);
 
     /**
@@ -359,7 +359,7 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName, Context context);
 
     /**
@@ -373,7 +373,7 @@ public interface RoutePoliciesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName);
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String routePolicyName);
 
     /**
      * Validates the configuration of the resources.
@@ -387,7 +387,7 @@ public interface RoutePoliciesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName,
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String routePolicyName,
         Context context);
 
     /**

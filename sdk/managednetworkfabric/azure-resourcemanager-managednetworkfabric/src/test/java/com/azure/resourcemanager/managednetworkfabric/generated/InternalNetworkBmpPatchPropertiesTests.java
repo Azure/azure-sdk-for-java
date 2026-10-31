@@ -14,19 +14,19 @@ public final class InternalNetworkBmpPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkBmpPatchProperties model = BinaryData.fromString(
-            "{\"neighborIpExclusions\":[\"mpdxxzetwwzjwotn\",\"lkfhglhrfoxqwec\",\"snhpcselqx\"],\"bmpConfigurationState\":\"Enabled\"}")
+            "{\"neighborIpExclusions\":[\"sdyepfno\",\"mbezacfpztg\",\"zwyqejga\",\"okctgkppgkqzkc\"],\"bmpConfigurationState\":\"Disabled\"}")
             .toObject(InternalNetworkBmpPatchProperties.class);
-        Assertions.assertEquals("mpdxxzetwwzjwotn", model.neighborIpExclusions().get(0));
-        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfigurationState());
+        Assertions.assertEquals("sdyepfno", model.neighborIpExclusions().get(0));
+        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfigurationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternalNetworkBmpPatchProperties model = new InternalNetworkBmpPatchProperties()
-            .withNeighborIpExclusions(Arrays.asList("mpdxxzetwwzjwotn", "lkfhglhrfoxqwec", "snhpcselqx"))
-            .withBmpConfigurationState(BmpConfigurationState.ENABLED);
+            .withNeighborIpExclusions(Arrays.asList("sdyepfno", "mbezacfpztg", "zwyqejga", "okctgkppgkqzkc"))
+            .withBmpConfigurationState(BmpConfigurationState.DISABLED);
         model = BinaryData.fromObject(model).toObject(InternalNetworkBmpPatchProperties.class);
-        Assertions.assertEquals("mpdxxzetwwzjwotn", model.neighborIpExclusions().get(0));
-        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfigurationState());
+        Assertions.assertEquals("sdyepfno", model.neighborIpExclusions().get(0));
+        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfigurationState());
     }
 }

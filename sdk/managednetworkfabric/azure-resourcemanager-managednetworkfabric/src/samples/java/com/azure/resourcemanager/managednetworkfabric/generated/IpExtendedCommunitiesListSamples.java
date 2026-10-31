@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class IpExtendedCommunitiesListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/IpExtendedCommunities_ListBySubscription.json
      */
     /**
      * Sample code: IpExtendedCommunities_ListBySubscription_MaximumSet_Gen.

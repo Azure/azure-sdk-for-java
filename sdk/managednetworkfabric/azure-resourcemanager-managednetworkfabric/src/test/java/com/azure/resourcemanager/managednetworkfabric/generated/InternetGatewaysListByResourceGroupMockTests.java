@@ -23,7 +23,7 @@ public final class InternetGatewaysListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"bsbkvfk\",\"internetGatewayRuleId\":\"bbpoijs\",\"ipv4Address\":\"ru\",\"port\":697078351,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"knarscxnk\",\"lastOperation\":{\"details\":\"inzosxrs\"},\"provisioningState\":\"Canceled\"},\"location\":\"jw\",\"tags\":{\"vuxqactoqqehnqi\":\"xvezwwqchxowp\",\"lbkize\":\"rgnvuolvptv\"},\"id\":\"brwlpe\",\"name\":\"misoiq\",\"type\":\"etzgwywyxbwuam\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"sdouzohihqlwy\",\"internetGatewayRuleId\":\"xeqtltlmczcxoua\",\"ipv4Address\":\"uepgqztakovs\",\"port\":621709182,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Infrastructure\",\"networkFabricControllerId\":\"t\",\"lastOperation\":{\"details\":\"tucmiqsdsn\"},\"provisioningState\":\"Updating\"},\"location\":\"sqitiuttkasxjkcl\",\"tags\":{\"letb\":\"asr\",\"gcvqewx\":\"lbhkij\",\"kzvjyvobevfbmxz\":\"qiwxeppuhkizo\",\"ilhdbbxm\":\"bpghsrlkpajiobyb\"},\"id\":\"uyxhcwubtego\",\"name\":\"choji\",\"type\":\"laqqfrgiplxr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class InternetGatewaysListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<InternetGateway> response
-            = manager.internetGateways().listByResourceGroup("laqqfrgiplxr", com.azure.core.util.Context.NONE);
+            = manager.internetGateways().listByResourceGroup("zypmmyr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jw", response.iterator().next().location());
-        Assertions.assertEquals("xvezwwqchxowp", response.iterator().next().tags().get("vuxqactoqqehnqi"));
-        Assertions.assertEquals("bsbkvfk", response.iterator().next().annotation());
-        Assertions.assertEquals("bbpoijs", response.iterator().next().internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().internetGatewayType());
-        Assertions.assertEquals("knarscxnk", response.iterator().next().networkFabricControllerId());
+        Assertions.assertEquals("sqitiuttkasxjkcl", response.iterator().next().location());
+        Assertions.assertEquals("asr", response.iterator().next().tags().get("letb"));
+        Assertions.assertEquals("sdouzohihqlwy", response.iterator().next().annotation());
+        Assertions.assertEquals("xeqtltlmczcxoua", response.iterator().next().internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.iterator().next().typePropertiesType());
+        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.iterator().next().internetGatewayType());
+        Assertions.assertEquals("t", response.iterator().next().networkFabricControllerId());
     }
 }

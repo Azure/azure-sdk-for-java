@@ -16,42 +16,42 @@ public final class OptionBLayer3ConfigurationPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OptionBLayer3ConfigurationPatchProperties model = BinaryData.fromString(
-            "{\"peerASN\":8278215974801858009,\"vlanId\":418993281,\"fabricASN\":5458833762732606760,\"peLoopbackIpAddress\":[\"slzymqxserwycuhy\",\"jwgetfigwneqjxz\",\"zebjrahg\",\"stubw\"],\"bmpConfiguration\":{\"configurationState\":\"Disabled\"},\"prefixLimits\":[{\"maximumRoutes\":2120959166}],\"primaryIpv4Prefix\":\"iqmsckwhfmdoiiyo\",\"primaryIpv6Prefix\":\"zw\",\"secondaryIpv4Prefix\":\"lwrsofxcacrmv\",\"secondaryIpv6Prefix\":\"mrs\"}")
+            "{\"peerASN\":4423953961585019720,\"vlanId\":953756150,\"fabricASN\":5345204024206796639,\"peLoopbackIpAddress\":[\"uq\",\"uptessjlwjta\",\"pv\",\"lskxgxqaygaslkv\"],\"bmpConfiguration\":{\"configurationState\":\"Disabled\"},\"prefixLimits\":[{\"maximumRoutes\":1019330448}],\"primaryIpv4Prefix\":\"vyezjwjk\",\"primaryIpv6Prefix\":\"nbwhiieyoz\",\"secondaryIpv4Prefix\":\"cwf\",\"secondaryIpv6Prefix\":\"cwnbcgqefgzjvbx\"}")
             .toObject(OptionBLayer3ConfigurationPatchProperties.class);
-        Assertions.assertEquals("iqmsckwhfmdoiiyo", model.primaryIpv4Prefix());
-        Assertions.assertEquals("zw", model.primaryIpv6Prefix());
-        Assertions.assertEquals("lwrsofxcacrmv", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("mrs", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(8278215974801858009L, model.peerAsn());
-        Assertions.assertEquals(418993281, model.vlanId());
-        Assertions.assertEquals("slzymqxserwycuhy", model.peLoopbackIpAddress().get(0));
+        Assertions.assertEquals("vyezjwjk", model.primaryIpv4Prefix());
+        Assertions.assertEquals("nbwhiieyoz", model.primaryIpv6Prefix());
+        Assertions.assertEquals("cwf", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("cwnbcgqefgzjvbx", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(4423953961585019720L, model.peerAsn());
+        Assertions.assertEquals(953756150, model.vlanId());
+        Assertions.assertEquals("uq", model.peLoopbackIpAddress().get(0));
         Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfiguration().configurationState());
-        Assertions.assertEquals(2120959166, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(1019330448, model.prefixLimits().get(0).maximumRoutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OptionBLayer3ConfigurationPatchProperties model
-            = new OptionBLayer3ConfigurationPatchProperties().withPrimaryIpv4Prefix("iqmsckwhfmdoiiyo")
-                .withPrimaryIpv6Prefix("zw")
-                .withSecondaryIpv4Prefix("lwrsofxcacrmv")
-                .withSecondaryIpv6Prefix("mrs")
-                .withPeerAsn(8278215974801858009L)
-                .withVlanId(418993281)
-                .withPeLoopbackIpAddress(Arrays.asList("slzymqxserwycuhy", "jwgetfigwneqjxz", "zebjrahg", "stubw"))
+            = new OptionBLayer3ConfigurationPatchProperties().withPrimaryIpv4Prefix("vyezjwjk")
+                .withPrimaryIpv6Prefix("nbwhiieyoz")
+                .withSecondaryIpv4Prefix("cwf")
+                .withSecondaryIpv6Prefix("cwnbcgqefgzjvbx")
+                .withPeerAsn(4423953961585019720L)
+                .withVlanId(953756150)
+                .withPeLoopbackIpAddress(Arrays.asList("uq", "uptessjlwjta", "pv", "lskxgxqaygaslkv"))
                 .withBmpConfiguration(
                     new NniBmpPatchProperties().withConfigurationState(BmpConfigurationState.DISABLED))
                 .withPrefixLimits(
-                    Arrays.asList(new OptionBLayer3PrefixLimitPatchProperties().withMaximumRoutes(2120959166)));
+                    Arrays.asList(new OptionBLayer3PrefixLimitPatchProperties().withMaximumRoutes(1019330448)));
         model = BinaryData.fromObject(model).toObject(OptionBLayer3ConfigurationPatchProperties.class);
-        Assertions.assertEquals("iqmsckwhfmdoiiyo", model.primaryIpv4Prefix());
-        Assertions.assertEquals("zw", model.primaryIpv6Prefix());
-        Assertions.assertEquals("lwrsofxcacrmv", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("mrs", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(8278215974801858009L, model.peerAsn());
-        Assertions.assertEquals(418993281, model.vlanId());
-        Assertions.assertEquals("slzymqxserwycuhy", model.peLoopbackIpAddress().get(0));
+        Assertions.assertEquals("vyezjwjk", model.primaryIpv4Prefix());
+        Assertions.assertEquals("nbwhiieyoz", model.primaryIpv6Prefix());
+        Assertions.assertEquals("cwf", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("cwnbcgqefgzjvbx", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(4423953961585019720L, model.peerAsn());
+        Assertions.assertEquals(953756150, model.vlanId());
+        Assertions.assertEquals("uq", model.peLoopbackIpAddress().get(0));
         Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfiguration().configurationState());
-        Assertions.assertEquals(2120959166, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(1019330448, model.prefixLimits().get(0).maximumRoutes());
     }
 }

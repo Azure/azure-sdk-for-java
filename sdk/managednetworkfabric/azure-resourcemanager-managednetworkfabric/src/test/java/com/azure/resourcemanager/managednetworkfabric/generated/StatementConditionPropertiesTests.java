@@ -14,25 +14,25 @@ public final class StatementConditionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StatementConditionProperties model = BinaryData.fromString(
-            "{\"ipCommunityIds\":[\"lzzietumzenkr\",\"ruesxe\",\"awx\"],\"ipExtendedCommunityIds\":[\"dctjwfebqq\",\"eet\"],\"type\":\"Or\",\"ipPrefixId\":\"lczf\"}")
+            "{\"ipCommunityIds\":[\"ddvjlpbj\",\"zqjfsk\",\"vaycxrwk\"],\"ipExtendedCommunityIds\":[\"gh\",\"pbrzwi\"],\"type\":\"And\",\"ipPrefixId\":\"yhkecebt\"}")
             .toObject(StatementConditionProperties.class);
-        Assertions.assertEquals("lzzietumzenkr", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("dctjwfebqq", model.ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
-        Assertions.assertEquals("lczf", model.ipPrefixId());
+        Assertions.assertEquals("ddvjlpbj", model.ipCommunityIds().get(0));
+        Assertions.assertEquals("gh", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.AND, model.type());
+        Assertions.assertEquals("yhkecebt", model.ipPrefixId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatementConditionProperties model
-            = new StatementConditionProperties().withIpCommunityIds(Arrays.asList("lzzietumzenkr", "ruesxe", "awx"))
-                .withIpExtendedCommunityIds(Arrays.asList("dctjwfebqq", "eet"))
-                .withType(RoutePolicyConditionType.OR)
-                .withIpPrefixId("lczf");
+            = new StatementConditionProperties().withIpCommunityIds(Arrays.asList("ddvjlpbj", "zqjfsk", "vaycxrwk"))
+                .withIpExtendedCommunityIds(Arrays.asList("gh", "pbrzwi"))
+                .withType(RoutePolicyConditionType.AND)
+                .withIpPrefixId("yhkecebt");
         model = BinaryData.fromObject(model).toObject(StatementConditionProperties.class);
-        Assertions.assertEquals("lzzietumzenkr", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("dctjwfebqq", model.ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
-        Assertions.assertEquals("lczf", model.ipPrefixId());
+        Assertions.assertEquals("ddvjlpbj", model.ipCommunityIds().get(0));
+        Assertions.assertEquals("gh", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.AND, model.type());
+        Assertions.assertEquals("yhkecebt", model.ipPrefixId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/Operations_List.json
+     * x-ms-original-file: 2026-01-15-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

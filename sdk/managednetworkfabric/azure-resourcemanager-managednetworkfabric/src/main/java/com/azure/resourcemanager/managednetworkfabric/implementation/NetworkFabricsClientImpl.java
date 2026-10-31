@@ -47,7 +47,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricRotatePasswordsResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ViewDeviceConfigurationOperationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.implementation.models.NetworkFabricsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.CommitBatchStatusRequest;
@@ -55,6 +55,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.CommitConfiguration
 import com.azure.resourcemanager.managednetworkfabric.models.DiscardCommitBatchRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.RefreshConfigurationRequestProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
@@ -274,7 +275,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") RefreshConfigurationRequestProperties body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration")
@@ -284,7 +285,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") RefreshConfigurationRequestProperties body, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration")
         @ExpectedResponses({ 200, 202 })
@@ -1865,6 +1866,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1873,11 +1875,11 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
-        String networkFabricName) {
+        String networkFabricName, RefreshConfigurationRequestProperties body) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.refreshConfiguration(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1886,16 +1888,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkFabricName) {
+    private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkFabricName,
+        RefreshConfigurationRequestProperties body) {
         final String accept = "application/json";
         return service.refreshConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, body, Context.NONE);
     }
 
     /**
@@ -1903,6 +1907,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1911,10 +1916,32 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkFabricName,
-        Context context) {
+        RefreshConfigurationRequestProperties body, Context context) {
         final String accept = "application/json";
         return service.refreshConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, body, context);
+    }
+
+    /**
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRefreshConfigurationAsync(String resourceGroupName, String networkFabricName,
+            RefreshConfigurationRequestProperties body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1930,11 +1957,31 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginRefreshConfigurationAsync(String resourceGroupName, String networkFabricName) {
+        final RefreshConfigurationRequestProperties body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName);
+            = refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
+    }
+
+    /**
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRefreshConfiguration(
+        String resourceGroupName, String networkFabricName, RefreshConfigurationRequestProperties body) {
+        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkFabricName, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -1950,7 +1997,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginRefreshConfiguration(String resourceGroupName, String networkFabricName) {
-        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkFabricName);
+        final RefreshConfigurationRequestProperties body = null;
+        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkFabricName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
             OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
@@ -1960,6 +2008,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1967,11 +2016,31 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginRefreshConfiguration(String resourceGroupName, String networkFabricName, Context context) {
-        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkFabricName, context);
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRefreshConfiguration(
+        String resourceGroupName, String networkFabricName, RefreshConfigurationRequestProperties body,
+        Context context) {
+        Response<BinaryData> response
+            = refreshConfigurationWithResponse(resourceGroupName, networkFabricName, body, context);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
             OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> refreshConfigurationAsync(String resourceGroupName,
+        String networkFabricName, RefreshConfigurationRequestProperties body) {
+        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1987,7 +2056,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> refreshConfigurationAsync(String resourceGroupName,
         String networkFabricName) {
-        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName).last()
+        final RefreshConfigurationRequestProperties body = null;
+        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2003,7 +2073,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner refreshConfiguration(String resourceGroupName, String networkFabricName) {
-        return beginRefreshConfiguration(resourceGroupName, networkFabricName).getFinalResult();
+        final RefreshConfigurationRequestProperties body = null;
+        return beginRefreshConfiguration(resourceGroupName, networkFabricName, body).getFinalResult();
     }
 
     /**
@@ -2011,6 +2082,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2019,8 +2091,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner refreshConfiguration(String resourceGroupName, String networkFabricName,
-        Context context) {
-        return beginRefreshConfiguration(resourceGroupName, networkFabricName, context).getFinalResult();
+        RefreshConfigurationRequestProperties body, Context context) {
+        return beginRefreshConfiguration(resourceGroupName, networkFabricName, body, context).getFinalResult();
     }
 
     /**
@@ -2486,14 +2558,14 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    private PollerFlux<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfigurationAsync(String resourceGroupName, String networkFabricName,
             ValidateConfigurationProperties body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
-            ValidateConfigurationResponseInner.class, this.client.getContext());
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            mono, this.client.getHttpPipeline(), ValidateConfigurationResponseV2Inner.class,
+            ValidateConfigurationResponseV2Inner.class, this.client.getContext());
     }
 
     /**
@@ -2508,12 +2580,13 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkFabricName,
             ValidateConfigurationProperties body) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, networkFabricName, body);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class,
+            Context.NONE);
     }
 
     /**
@@ -2529,13 +2602,13 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkFabricName,
             ValidateConfigurationProperties body, Context context) {
         Response<BinaryData> response
             = validateConfigurationWithResponse(resourceGroupName, networkFabricName, body, context);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, context);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class, context);
     }
 
     /**
@@ -2550,7 +2623,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+    private Mono<ValidateConfigurationResponseV2Inner> validateConfigurationAsync(String resourceGroupName,
         String networkFabricName, ValidateConfigurationProperties body) {
         return beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2568,8 +2641,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
-        ValidateConfigurationProperties body) {
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body) {
         return beginValidateConfiguration(resourceGroupName, networkFabricName, body).getFinalResult();
     }
 
@@ -2586,8 +2659,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
-        ValidateConfigurationProperties body, Context context) {
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body, Context context) {
         return beginValidateConfiguration(resourceGroupName, networkFabricName, body, context).getFinalResult();
     }
 

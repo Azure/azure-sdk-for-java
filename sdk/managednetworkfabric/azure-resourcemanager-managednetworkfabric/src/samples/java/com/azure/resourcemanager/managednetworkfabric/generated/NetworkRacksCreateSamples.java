@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkRacksCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkRacks_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkRacks_Create.json
      */
     /**
      * Sample code: NetworkRacks_Create_MaximumSet_Gen.

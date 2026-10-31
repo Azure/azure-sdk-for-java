@@ -13,19 +13,19 @@ public final class GlobalNetworkTapRuleActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalNetworkTapRuleActionProperties model
-            = BinaryData.fromString("{\"enableCount\":\"True\",\"truncate\":\"dpvhwirilam\"}")
+            = BinaryData.fromString("{\"enableCount\":\"True\",\"truncate\":\"eswvnhqkgebzqz\"}")
                 .toObject(GlobalNetworkTapRuleActionProperties.class);
         Assertions.assertEquals(BooleanEnumProperty.TRUE, model.enableCount());
-        Assertions.assertEquals("dpvhwirilam", model.truncate());
+        Assertions.assertEquals("eswvnhqkgebzqz", model.truncate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GlobalNetworkTapRuleActionProperties model
             = new GlobalNetworkTapRuleActionProperties().withEnableCount(BooleanEnumProperty.TRUE)
-                .withTruncate("dpvhwirilam");
+                .withTruncate("eswvnhqkgebzqz");
         model = BinaryData.fromObject(model).toObject(GlobalNetworkTapRuleActionProperties.class);
         Assertions.assertEquals(BooleanEnumProperty.TRUE, model.enableCount());
-        Assertions.assertEquals("dpvhwirilam", model.truncate());
+        Assertions.assertEquals("eswvnhqkgebzqz", model.truncate());
     }
 }

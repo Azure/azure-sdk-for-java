@@ -13,6 +13,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.io.IOException;
 
@@ -80,6 +81,11 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
      * Configuration state of the resource.
      */
     private ConfigurationState configurationState;
+
+    /*
+     * Operational state of networkInterface indicating if the interface is reachable
+     */
+    private OperationalState operationalState;
 
     /**
      * Creates an instance of NetworkInterfaceProperties class.
@@ -207,6 +213,16 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
     }
 
     /**
+     * Get the operationalState property: Operational state of networkInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -270,6 +286,9 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
                 } else if ("configurationState".equals(fieldName)) {
                     deserializedNetworkInterfaceProperties.configurationState
                         = ConfigurationState.fromString(reader.getString());
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

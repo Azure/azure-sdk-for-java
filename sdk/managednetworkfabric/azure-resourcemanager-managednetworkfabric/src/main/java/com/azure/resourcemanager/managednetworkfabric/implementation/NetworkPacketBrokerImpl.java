@@ -14,6 +14,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBroker;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
@@ -96,6 +97,10 @@ public final class NetworkPacketBrokerImpl
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String sourceNetworkTapRuleId() {
+        return this.innerModel().sourceNetworkTapRuleId();
     }
 
     public LastOperationProperties lastOperation() {
@@ -236,6 +241,16 @@ public final class NetworkPacketBrokerImpl
 
     public NetworkPacketBrokerImpl withIdentity(ManagedServiceIdentity identity) {
         this.innerModel().withIdentity(identity);
+        return this;
+    }
+
+    public NetworkPacketBrokerImpl withSourceNetworkTapRuleId(String sourceNetworkTapRuleId) {
+        this.innerModel().withSourceNetworkTapRuleId(sourceNetworkTapRuleId);
+        return this;
+    }
+
+    public NetworkPacketBrokerImpl withProperties(NetworkPacketBrokerPatchProperties properties) {
+        this.updateBody.withProperties(properties);
         return this;
     }
 

@@ -13,13 +13,13 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsC
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlLists;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 
 public final class AccessControlListsImpl implements AccessControlLists {
     private static final ClientLogger LOGGER = new ClientLogger(AccessControlListsImpl.class);
@@ -124,22 +124,23 @@ public final class AccessControlListsImpl implements AccessControlLists {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName) {
-        ValidateConfigurationResponseInner inner
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName,
+        String accessControlListName) {
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String accessControlListName,
         Context context) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName, context);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }

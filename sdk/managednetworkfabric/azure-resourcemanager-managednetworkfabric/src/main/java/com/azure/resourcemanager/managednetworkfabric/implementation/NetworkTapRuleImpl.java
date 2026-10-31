@@ -28,7 +28,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRulePatch
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleResyncResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -273,11 +273,11 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
         return serviceManager.networkTapRules().resync(resourceGroupName, networkTapRuleName, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration() {
+    public ValidateConfigurationResponseV2 validateConfiguration() {
         return serviceManager.networkTapRules().validateConfiguration(resourceGroupName, networkTapRuleName);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(Context context) {
         return serviceManager.networkTapRules().validateConfiguration(resourceGroupName, networkTapRuleName, context);
     }
 

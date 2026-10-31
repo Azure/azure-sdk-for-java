@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NeighborGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NeighborGroups_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NeighborGroups_ListBySubscription.json
      */
     /**
      * Sample code: NeighborGroups_ListBySubscription_MaximumSet_Gen.

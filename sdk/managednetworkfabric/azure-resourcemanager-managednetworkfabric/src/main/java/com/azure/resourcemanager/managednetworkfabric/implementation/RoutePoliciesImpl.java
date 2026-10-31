@@ -13,13 +13,13 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.RoutePoliciesClient
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicies;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 
 public final class RoutePoliciesImpl implements RoutePolicies {
     private static final ClientLogger LOGGER = new ClientLogger(RoutePoliciesImpl.class);
@@ -101,22 +101,22 @@ public final class RoutePoliciesImpl implements RoutePolicies {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName) {
-        ValidateConfigurationResponseInner inner
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String routePolicyName) {
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String routePolicyName,
         Context context) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName, context);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }

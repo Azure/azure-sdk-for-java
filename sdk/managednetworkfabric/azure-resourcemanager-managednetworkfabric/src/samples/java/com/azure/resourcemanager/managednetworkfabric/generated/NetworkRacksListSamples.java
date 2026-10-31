@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkRacksListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkRacks_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkRacks_ListBySubscription.json
      */
     /**
      * Sample code: NetworkRacks_ListBySubscription_MaximumSet_Gen.

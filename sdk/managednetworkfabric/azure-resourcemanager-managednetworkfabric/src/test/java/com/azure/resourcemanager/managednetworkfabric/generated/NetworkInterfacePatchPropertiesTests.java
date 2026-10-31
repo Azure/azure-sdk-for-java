@@ -12,18 +12,18 @@ public final class NetworkInterfacePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfacePatchProperties model
-            = BinaryData.fromString("{\"additionalDescription\":\"kixsps\",\"annotation\":\"gavkmv\"}")
+            = BinaryData.fromString("{\"additionalDescription\":\"ienezf\",\"annotation\":\"ennmf\"}")
                 .toObject(NetworkInterfacePatchProperties.class);
-        Assertions.assertEquals("gavkmv", model.annotation());
-        Assertions.assertEquals("kixsps", model.additionalDescription());
+        Assertions.assertEquals("ennmf", model.annotation());
+        Assertions.assertEquals("ienezf", model.additionalDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfacePatchProperties model
-            = new NetworkInterfacePatchProperties().withAnnotation("gavkmv").withAdditionalDescription("kixsps");
+            = new NetworkInterfacePatchProperties().withAnnotation("ennmf").withAdditionalDescription("ienezf");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacePatchProperties.class);
-        Assertions.assertEquals("gavkmv", model.annotation());
-        Assertions.assertEquals("kixsps", model.additionalDescription());
+        Assertions.assertEquals("ennmf", model.annotation());
+        Assertions.assertEquals("ienezf", model.additionalDescription());
     }
 }

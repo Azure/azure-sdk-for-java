@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IsolationDomainPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IsolationDomainPatchProperties model = BinaryData.fromString(
-            "{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"ptb\",\"ponhblqi\",\"cnuqfpzjz\",\"bpcwtwtrchkcmru\"]}")
-            .toObject(IsolationDomainPatchProperties.class);
-        Assertions.assertEquals(Encapsulation.NONE, model.encapsulation());
-        Assertions.assertEquals("ptb", model.neighborGroupIds().get(0));
+        IsolationDomainPatchProperties model
+            = BinaryData.fromString("{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"emxkahapesnbyo\"]}")
+                .toObject(IsolationDomainPatchProperties.class);
+        Assertions.assertEquals(Encapsulation.GRE, model.encapsulation());
+        Assertions.assertEquals("emxkahapesnbyo", model.neighborGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IsolationDomainPatchProperties model
-            = new IsolationDomainPatchProperties().withEncapsulation(Encapsulation.NONE)
-                .withNeighborGroupIds(Arrays.asList("ptb", "ponhblqi", "cnuqfpzjz", "bpcwtwtrchkcmru"));
+        IsolationDomainPatchProperties model = new IsolationDomainPatchProperties().withEncapsulation(Encapsulation.GRE)
+            .withNeighborGroupIds(Arrays.asList("emxkahapesnbyo"));
         model = BinaryData.fromObject(model).toObject(IsolationDomainPatchProperties.class);
-        Assertions.assertEquals(Encapsulation.NONE, model.encapsulation());
-        Assertions.assertEquals("ptb", model.neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.GRE, model.encapsulation());
+        Assertions.assertEquals("emxkahapesnbyo", model.neighborGroupIds().get(0));
     }
 }

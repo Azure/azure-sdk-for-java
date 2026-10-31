@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NeighborGroupInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
@@ -105,6 +106,10 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
 
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public Region region() {

@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborAddressBfdAdministrativeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborAddressBfdAdministrativeStatus model = BinaryData
-            .fromString("{\"neighborAddress\":\"m\",\"administrativeState\":\"Disabled\",\"error\":\"jlvzklk\"}")
-            .toObject(NeighborAddressBfdAdministrativeStatus.class);
+        NeighborAddressBfdAdministrativeStatus model
+            = BinaryData.fromString("{\"neighborAddress\":\"m\",\"administrativeState\":\"MAT\",\"error\":\"bwayb\"}")
+                .toObject(NeighborAddressBfdAdministrativeStatus.class);
         Assertions.assertEquals("m", model.neighborAddress());
-        Assertions.assertEquals(BfdAdministrativeState.DISABLED, model.administrativeState());
-        Assertions.assertEquals("jlvzklk", model.error());
+        Assertions.assertEquals(BfdAdministrativeState.MAT, model.administrativeState());
+        Assertions.assertEquals("bwayb", model.error());
     }
 }

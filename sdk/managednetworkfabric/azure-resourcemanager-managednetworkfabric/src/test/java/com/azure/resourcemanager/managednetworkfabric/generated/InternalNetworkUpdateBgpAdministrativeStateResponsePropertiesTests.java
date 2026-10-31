@@ -13,11 +13,11 @@ public final class InternalNetworkUpdateBgpAdministrativeStateResponseProperties
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkUpdateBgpAdministrativeStateResponseProperties model = BinaryData.fromString(
-            "{\"neighborAddressAdministrativeStatus\":[{\"neighborAddress\":\"zqfsgnwdxzed\",\"administrativeState\":\"Enabled\",\"error\":\"fb\"},{\"neighborAddress\":\"xi\",\"administrativeState\":\"Enabled\",\"error\":\"fyzavfrbypicdb\"}]}")
+            "{\"neighborAddressAdministrativeStatus\":[{\"neighborAddress\":\"fzuscstun\",\"administrativeState\":\"Enabled\",\"error\":\"dfb\"},{\"neighborAddress\":\"ciichgj\",\"administrativeState\":\"Enabled\",\"error\":\"vxodgwxfkzs\"}]}")
             .toObject(InternalNetworkUpdateBgpAdministrativeStateResponseProperties.class);
-        Assertions.assertEquals("zqfsgnwdxzed", model.neighborAddressAdministrativeStatus().get(0).neighborAddress());
+        Assertions.assertEquals("fzuscstun", model.neighborAddressAdministrativeStatus().get(0).neighborAddress());
         Assertions.assertEquals(BgpAdministrativeState.ENABLED,
             model.neighborAddressAdministrativeStatus().get(0).administrativeState());
-        Assertions.assertEquals("fb", model.neighborAddressAdministrativeStatus().get(0).error());
+        Assertions.assertEquals("dfb", model.neighborAddressAdministrativeStatus().get(0).error());
     }
 }

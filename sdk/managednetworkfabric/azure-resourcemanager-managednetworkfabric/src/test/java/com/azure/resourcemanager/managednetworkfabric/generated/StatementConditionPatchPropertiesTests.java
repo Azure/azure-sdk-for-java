@@ -14,25 +14,25 @@ public final class StatementConditionPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StatementConditionPatchProperties model = BinaryData.fromString(
-            "{\"ipCommunityIds\":[\"ricv\"],\"ipExtendedCommunityIds\":[\"enintz\",\"nhyyqxckd\",\"xjpisrdnowinc\"],\"type\":\"And\",\"ipPrefixId\":\"vijnubxfiiytqx\"}")
+            "{\"ipCommunityIds\":[\"wgpmdmwiwevvesw\",\"hh\"],\"ipExtendedCommunityIds\":[\"hdldarg\",\"wimtcceeeuquu\",\"czzc\",\"jwx\"],\"type\":\"Or\",\"ipPrefixId\":\"rgknhfwlajwda\"}")
             .toObject(StatementConditionPatchProperties.class);
-        Assertions.assertEquals("ricv", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("enintz", model.ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.AND, model.type());
-        Assertions.assertEquals("vijnubxfiiytqx", model.ipPrefixId());
+        Assertions.assertEquals("wgpmdmwiwevvesw", model.ipCommunityIds().get(0));
+        Assertions.assertEquals("hdldarg", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
+        Assertions.assertEquals("rgknhfwlajwda", model.ipPrefixId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatementConditionPatchProperties model
-            = new StatementConditionPatchProperties().withIpCommunityIds(Arrays.asList("ricv"))
-                .withIpExtendedCommunityIds(Arrays.asList("enintz", "nhyyqxckd", "xjpisrdnowinc"))
-                .withType(RoutePolicyConditionType.AND)
-                .withIpPrefixId("vijnubxfiiytqx");
+            = new StatementConditionPatchProperties().withIpCommunityIds(Arrays.asList("wgpmdmwiwevvesw", "hh"))
+                .withIpExtendedCommunityIds(Arrays.asList("hdldarg", "wimtcceeeuquu", "czzc", "jwx"))
+                .withType(RoutePolicyConditionType.OR)
+                .withIpPrefixId("rgknhfwlajwda");
         model = BinaryData.fromObject(model).toObject(StatementConditionPatchProperties.class);
-        Assertions.assertEquals("ricv", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("enintz", model.ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.AND, model.type());
-        Assertions.assertEquals("vijnubxfiiytqx", model.ipPrefixId());
+        Assertions.assertEquals("wgpmdmwiwevvesw", model.ipCommunityIds().get(0));
+        Assertions.assertEquals("hdldarg", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
+        Assertions.assertEquals("rgknhfwlajwda", model.ipPrefixId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkToNetworkInterconnectsListByNetworkFabricSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_ListByNetworkFabric.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkToNetworkInterconnects_ListByNetworkFabric.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.

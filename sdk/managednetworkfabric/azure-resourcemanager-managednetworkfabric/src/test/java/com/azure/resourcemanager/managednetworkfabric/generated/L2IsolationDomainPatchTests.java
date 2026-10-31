@@ -18,35 +18,34 @@ public final class L2IsolationDomainPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2IsolationDomainPatch model = BinaryData.fromString(
-            "{\"properties\":{\"mtu\":1778225754,\"extendedVlan\":\"Enabled\",\"networkToNetworkInterconnectId\":\"ajsvk\",\"annotation\":\"mqozzkivy\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"qlmgnlqxsjxt\":{\"principalId\":\"jixlqfhefkwabs\",\"clientId\":\"ron\"},\"nndtsnxa\":{\"principalId\":\"exhvuqbozoolz\",\"clientId\":\"carkuzlb\"}}},\"tags\":{\"yzm\":\"tllh\",\"nxakckyw\":\"ckze\",\"zvkiwrsiwdy\":\"mxgaabjkdtfohfao\"}}")
+            "{\"properties\":{\"mtu\":1468932349,\"extendedVlan\":\"Enabled\",\"networkToNetworkInterconnectId\":\"vq\",\"annotation\":\"tmbqdabzfivfok\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lrz\":{\"principalId\":\"agjfwyyrlhgenuze\",\"clientId\":\"vkvebaqsz\"}}},\"tags\":{\"nxtminklog\":\"mdqgmihzpimcqr\",\"nsqktc\":\"svtzarhzv\",\"pkybtgl\":\"bjwzzos\",\"qjcemqbmf\":\"kzpgaj\"}}")
             .toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("tllh", model.tags().get("yzm"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(1778225754, model.mtu());
+        Assertions.assertEquals("mdqgmihzpimcqr", model.tags().get("nxtminklog"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(1468932349, model.mtu());
         Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("ajsvk", model.networkToNetworkInterconnectId());
-        Assertions.assertEquals("mqozzkivy", model.annotation());
+        Assertions.assertEquals("vq", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("tmbqdabzfivfok", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2IsolationDomainPatch model = new L2IsolationDomainPatch()
-            .withTags(mapOf("yzm", "tllh", "nxakckyw", "ckze", "zvkiwrsiwdy", "mxgaabjkdtfohfao"))
-            .withIdentity(
-                new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("qlmgnlqxsjxt", new UserAssignedIdentity(), "nndtsnxa", new UserAssignedIdentity())))
-            .withMtu(1778225754)
+            .withTags(mapOf("nxtminklog", "mdqgmihzpimcqr", "nsqktc", "svtzarhzv", "pkybtgl", "bjwzzos", "qjcemqbmf",
+                "kzpgaj"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("lrz", new UserAssignedIdentity())))
+            .withMtu(1468932349)
             .withExtendedVlan(ExtendedVlan.ENABLED)
-            .withNetworkToNetworkInterconnectId("ajsvk")
-            .withAnnotation("mqozzkivy");
+            .withNetworkToNetworkInterconnectId("vq")
+            .withAnnotation("tmbqdabzfivfok");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("tllh", model.tags().get("yzm"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(1778225754, model.mtu());
+        Assertions.assertEquals("mdqgmihzpimcqr", model.tags().get("nxtminklog"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(1468932349, model.mtu());
         Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("ajsvk", model.networkToNetworkInterconnectId());
-        Assertions.assertEquals("mqozzkivy", model.annotation());
+        Assertions.assertEquals("vq", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("tmbqdabzfivfok", model.annotation());
     }
 
     // Use "Map.of" if available
