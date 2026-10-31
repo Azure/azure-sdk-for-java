@@ -286,14 +286,41 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     private static class ChallengeParameters {
+        private static final String DSTS_V2_PATH_SEGMENT = "dstsv2";
+
         private final URI authorizationUri;
         private final String tenantId;
         private final String[] scopes;
 
         ChallengeParameters(URI authorizationUri, String[] scopes) {
             this.authorizationUri = authorizationUri;
-            tenantId = authorizationUri.getPath().split("/")[1];
+            this.tenantId = extractTenantId(authorizationUri);
             this.scopes = scopes;
+        }
+
+        /**
+         * Extracts the tenant ID from the {@code authorization} or {@code authorization_uri} parameter of a challenge.
+         * <p>
+         * For Microsoft Entra ID authorities the tenant ID is the first path segment, for example
+         * {@code https://login.microsoftonline.com/<tenantId>}. For DSTSv2 authorities the first path segment is the
+         * literal {@code dstsv2} and the tenant ID is the second path segment, for example
+         * {@code https://uswest2-passive-dsts.dsts.core.windows.net/dstsv2/<tenantId>}.
+         *
+         * @param authorizationUri The authorization URI from the challenge.
+         * @return The tenant ID contained in the authorization URI.
+         */
+        static String extractTenantId(URI authorizationUri) {
+            // getPath() returns the path with its leading slash, so the first element of the split is an empty string.
+            String[] pathSegments = authorizationUri.getPath().split("/");
+            String tenantId = pathSegments[1];
+
+            if (DSTS_V2_PATH_SEGMENT.equalsIgnoreCase(tenantId)
+                && pathSegments.length > 2
+                && !pathSegments[2].isEmpty()) {
+                tenantId = pathSegments[2];
+            }
+
+            return tenantId;
         }
 
         /**
