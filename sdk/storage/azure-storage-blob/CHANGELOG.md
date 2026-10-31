@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `BlobOutputStream.getETag()` to get the ETag of the blob after the stream has been closed.
+
 ### Breaking Changes
 
 ### Bugs Fixed
