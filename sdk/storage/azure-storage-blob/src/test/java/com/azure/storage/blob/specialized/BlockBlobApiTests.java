@@ -64,6 +64,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -124,6 +125,34 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(headers.getValue(X_MS_VERSION));
         assertNotNull(headers.getValue(HttpHeaderName.DATE));
         assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+    }
+
+    @LiveOnly
+    @Test
+    public void stageBlockNonMarkableStream() {
+        InputStream data = new FilterInputStream(DATA.getDefaultInputStream()) {
+            @Override
+            public boolean markSupported() {
+                return false;
+            }
+
+            @Override
+            public synchronized void mark(int readlimit) {
+            }
+
+            @Override
+            public synchronized void reset() throws IOException {
+                throw new IOException("mark/reset not supported");
+            }
+        };
+        String blockId = getBlockID();
+
+        Response<Void> response
+            = blockBlobClient.stageBlockWithResponse(blockId, data, DATA.getDefaultDataSize(), null, null, null, null);
+        assertResponseStatusCode(response, 201);
+
+        blockBlobClient.commitBlockList(Collections.singletonList(blockId), true);
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), blockBlobClient.downloadContent().toBytes());
     }
 
     @Test
