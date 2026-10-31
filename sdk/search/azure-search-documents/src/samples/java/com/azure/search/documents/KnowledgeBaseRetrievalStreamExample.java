@@ -3,7 +3,10 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.util.CloseableIterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
@@ -23,6 +26,12 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReferencesCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseErrorStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
@@ -32,9 +41,9 @@ import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.ServerSentEvent;
-import com.azure.search.documents.models.ServerSentEventListener;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -44,16 +53,30 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Demonstrates streaming a knowledge base retrieval response as server-sent events.
  *
- * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
- * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and {@code SEARCH_OPENAI_MODEL_NAME}. Run
+ * <p>Set {@code SEARCH_SERVICE_ENDPOINT}, {@code SEARCH_OPENAI_ENDPOINT}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME},
+ * and {@code SEARCH_OPENAI_MODEL_NAME}. Authenticate locally with {@code az login}. The example uses
+ * {@link com.azure.identity.DefaultAzureCredential}, which also supports managed identity when hosted in Azure. Run
  * without arguments for the asynchronous client or pass {@code sync} to use the synchronous client.</p>
+ *
+ * <p>Enable RBAC authentication on the Search service and grant the caller Search Service Contributor and
+ * Search Index Data Contributor. Enable the Search service's system-assigned managed identity and grant it
+ * Cognitive Services OpenAI User on the Azure OpenAI resource. Omitting the model API key and authentication
+ * identity lets Search use its system-assigned identity for Azure OpenAI.</p>
+ *
+ * <p>The example prints each event's deserialized JSON payload, which can contain document content and citation
+ * URLs. Use sample data and avoid sharing output containing sensitive information.</p>
  */
 public class KnowledgeBaseRetrievalStreamExample {
     private static final String SEMANTIC_CONFIGURATION_NAME = "sample-semantic-config";
+    private static final ObjectMapper EVENT_MAPPER = new ObjectMapper().findAndRegisterModules();
 
     public static void main(String[] args) {
-        String endpoint = System.getenv("SEARCH_ENDPOINT");
-        AzureKeyCredential credential = new AzureKeyCredential(System.getenv("SEARCH_API_KEY"));
+        String endpoint = System.getenv("SEARCH_SERVICE_ENDPOINT");
+        if (endpoint == null || endpoint.trim().isEmpty()) {
+            throw new IllegalArgumentException("Set SEARCH_SERVICE_ENDPOINT before running this example. "
+                + "Load your environment script in the same PowerShell session as Maven.");
+        }
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         SearchIndexClient indexClient
             = new SearchIndexClientBuilder().endpoint(endpoint).credential(credential).buildClient();
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
@@ -80,7 +103,6 @@ public class KnowledgeBaseRetrievalStreamExample {
                 new KnowledgeBase(knowledgeBaseName, new KnowledgeSourceReference(knowledgeSourceName))
                     .setModels(new KnowledgeBaseAzureOpenAIModel(new AzureOpenAIVectorizerParameters()
                         .setResourceUrl(System.getenv("SEARCH_OPENAI_ENDPOINT"))
-                        .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
                         .setDeploymentName(System.getenv("SEARCH_OPENAI_DEPLOYMENT_NAME"))
                         .setModelName(AzureOpenAIModelName.fromString(System.getenv("SEARCH_OPENAI_MODEL_NAME"))))));
             knowledgeBaseCreated = true;
@@ -117,39 +139,74 @@ public class KnowledgeBaseRetrievalStreamExample {
     private static void streamSynchronously(KnowledgeBaseRetrievalClient client, KnowledgeBaseRetrievalOptions request) {
         AtomicBoolean started = new AtomicBoolean();
         AtomicBoolean completed = new AtomicBoolean();
-        client.retrieveStream(request, new ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent>() {
-            @Override
-            public void onEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event) {
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+            for (KnowledgeBaseRetrievalStreamEvent event : events) {
                 inspectEvent(event, started, completed);
             }
-
-            @Override
-            public void onError(Throwable error) {
-                throw new IllegalStateException("Knowledge base retrieval stream failed.", error);
-            }
-
-            @Override
-            public void onClose() {
-                System.out.println("Stream closed.");
-            }
-        });
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Failed to close the knowledge base retrieval stream.", exception);
+        }
         verifyStream(started, completed);
     }
 
-    private static void inspectEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event, AtomicBoolean started,
+    static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
         AtomicBoolean completed) {
-        System.out.println("Received event: " + event.getEvent());
-        if (event.getData() instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
-            started.set(true);
+        System.out.println("Received event: " + event.getEventName());
+        if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
+            KnowledgeBaseAnswerCompletedStreamEvent answerEvent = (KnowledgeBaseAnswerCompletedStreamEvent) event;
+            printEventData(answerEvent.getValue());
+            answerEvent.getValue().getMessage().getContent().forEach(content -> {
+                if (content instanceof KnowledgeBaseMessageTextContent) {
+                    System.out.println("Answer: " + ((KnowledgeBaseMessageTextContent) content).getText());
+                }
+            });
         }
-        if (event.getData() instanceof KnowledgeBaseResponseCompletedStreamEvent) {
+        if (event instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
+            started.set(true);
+            KnowledgeBaseRetrievalStartedStreamEvent retrieval = (KnowledgeBaseRetrievalStartedStreamEvent) event;
+            printEventData(retrieval.getValue());
+            if (retrieval.getValue().getReasoningEffort() != null) {
+                System.out.println("Reasoning effort: " + retrieval.getValue().getReasoningEffort().getKind());
+            }
+        }
+        if (event instanceof KnowledgeBaseActivityStartedStreamEvent) {
+            printEventData(((KnowledgeBaseActivityStartedStreamEvent) event).getValue());
+            System.out.println("Activity started: "
+                + ((KnowledgeBaseActivityStartedStreamEvent) event).getValue().getId());
+        }
+        if (event instanceof KnowledgeBaseActivityCompletedStreamEvent) {
+            printEventData(((KnowledgeBaseActivityCompletedStreamEvent) event).getValue());
+            System.out.println("Activity completed: "
+                + ((KnowledgeBaseActivityCompletedStreamEvent) event).getValue().getType());
+        }
+        if (event instanceof KnowledgeBaseReferencesCompletedStreamEvent) {
+            printEventData(((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue());
+            ((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue().forEach(reference ->
+                System.out.println("Citation URL: " + KnowledgeRetrievalResponseExample.citationUrl(reference)));
+        }
+        if (event instanceof KnowledgeBaseErrorStreamEvent) {
+            printEventData(((KnowledgeBaseErrorStreamEvent) event).getValue());
+            throw new IllegalStateException("Knowledge retrieval failed: "
+                + ((KnowledgeBaseErrorStreamEvent) event).getValue().getError().getMessage());
+        }
+        if (event instanceof KnowledgeBaseResponseCompletedStreamEvent) {
             KnowledgeBaseResponseCompletedStreamEvent completionEvent
-                = (KnowledgeBaseResponseCompletedStreamEvent) event.getData();
+                = (KnowledgeBaseResponseCompletedStreamEvent) event;
+            printEventData(completionEvent.getValue());
             if (!completionEvent.isTerminal() || completionEvent.getValue().getResponse() == null) {
                 throw new IllegalStateException("The terminal event didn't contain the completed response.");
             }
             System.out.println("Retrieval completed with status: " + completionEvent.getValue().getStatusCode());
             completed.set(true);
+        }
+    }
+
+    private static void printEventData(Object value) {
+        try {
+            // Serialize getters so read-only response properties are included in diagnostic output.
+            System.out.println("Event data: " + EVENT_MAPPER.writeValueAsString(value));
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Failed to format the received event data.", exception);
         }
     }
 

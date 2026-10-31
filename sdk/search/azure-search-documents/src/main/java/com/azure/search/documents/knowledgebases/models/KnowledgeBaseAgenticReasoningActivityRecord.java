@@ -31,12 +31,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
     @Generated
     private Integer reasoningTokens;
 
-    /*
-     * The retrieval reasoning effort configuration.
-     */
-    @Generated
-    private KnowledgeRetrievalReasoningEffort retrievalReasoningEffort;
-
     /**
      * Creates an instance of KnowledgeBaseAgenticReasoningActivityRecord class.
      *
@@ -69,16 +63,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
     }
 
     /**
-     * Get the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
-     *
-     * @return the retrievalReasoningEffort value.
-     */
-    @Generated
-    public KnowledgeRetrievalReasoningEffort getRetrievalReasoningEffort() {
-        return this.retrievalReasoningEffort;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -95,8 +79,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
         jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("reasoningTokens", this.reasoningTokens);
-        jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
-        jsonWriter.writeJsonField("logicalReasoningEffort", this.logicalReasoningEffort);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,8 +102,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
             String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.AGENTIC_REASONING;
             Integer reasoningTokens = null;
-            KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
-            KnowledgeRetrievalReasoningEffort logicalReasoningEffort = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -143,10 +123,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
                 } else if ("reasoningTokens".equals(fieldName)) {
                     reasoningTokens = reader.getNullable(JsonReader::getInt);
-                } else if ("retrievalReasoningEffort".equals(fieldName)) {
-                    retrievalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
-                } else if ("logicalReasoningEffort".equals(fieldName)) {
-                    logicalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -160,27 +136,7 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.type = type;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.reasoningTokens = reasoningTokens;
-            deserializedKnowledgeBaseAgenticReasoningActivityRecord.retrievalReasoningEffort = retrievalReasoningEffort;
-            deserializedKnowledgeBaseAgenticReasoningActivityRecord.logicalReasoningEffort = logicalReasoningEffort;
             return deserializedKnowledgeBaseAgenticReasoningActivityRecord;
         });
-    }
-
-    /*
-     * The logical reasoning effort requested by the customer. This is distinct from `retrievalReasoningEffort`, which
-     * reports the reasoning effort used for billing.
-     */
-    @Generated
-    private KnowledgeRetrievalReasoningEffort logicalReasoningEffort;
-
-    /**
-     * Get the logicalReasoningEffort property: The logical reasoning effort requested by the customer. This is distinct
-     * from `retrievalReasoningEffort`, which reports the reasoning effort used for billing.
-     *
-     * @return the logicalReasoningEffort value.
-     */
-    @Generated
-    public KnowledgeRetrievalReasoningEffort getLogicalReasoningEffort() {
-        return this.logicalReasoningEffort;
     }
 }
