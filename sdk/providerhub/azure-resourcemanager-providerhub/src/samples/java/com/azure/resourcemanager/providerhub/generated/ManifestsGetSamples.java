@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ManifestsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Manifests_Get.json
+     * x-ms-original-file: 2026-10-01/Manifests_Get.json
      */
     /**
      * Sample code: Manifests_Get.

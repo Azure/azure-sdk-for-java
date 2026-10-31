@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManifestInfoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManifestInfoProperties model = BinaryData
-            .fromString("{\"manifest\":\"pijubyq\",\"manifestUri\":\"kakfqfr\",\"commitId\":\"myildudxjasc\"}")
-            .toObject(ManifestInfoProperties.class);
-        Assertions.assertEquals("pijubyq", model.manifest());
-        Assertions.assertEquals("kakfqfr", model.manifestUri());
+        ManifestInfoProperties model
+            = BinaryData.fromString("{\"manifest\":\"wjiqullqxb\",\"manifestUri\":\"vr\",\"commitId\":\"mqerndb\"}")
+                .toObject(ManifestInfoProperties.class);
+        Assertions.assertEquals("wjiqullqxb", model.manifest());
+        Assertions.assertEquals("vr", model.manifestUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManifestInfoProperties model = new ManifestInfoProperties().withManifest("pijubyq").withManifestUri("kakfqfr");
+        ManifestInfoProperties model = new ManifestInfoProperties().withManifest("wjiqullqxb").withManifestUri("vr");
         model = BinaryData.fromObject(model).toObject(ManifestInfoProperties.class);
-        Assertions.assertEquals("pijubyq", model.manifest());
-        Assertions.assertEquals("kakfqfr", model.manifestUri());
+        Assertions.assertEquals("wjiqullqxb", model.manifest());
+        Assertions.assertEquals("vr", model.manifestUri());
     }
 }

@@ -16,43 +16,38 @@ public final class ResourceProviderManifestPropertiesNotificationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model = BinaryData.fromString(
-            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"mduvw\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"mygdxpgpqch\",\"endpointInformation\":[{}]},{\"filterQuery\":\"pnnbjc\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"bbdaxco\",\"endpointInformation\":[{},{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"orsukokwbqp\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"nuuepzlrp\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"oldweyuqdu\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"wrbiorkt\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"jhhgdnhxmsi\",\"endpointInformation\":[{}]},{\"filterQuery\":\"iloxggdufiq\",\"endpointInformation\":[{},{},{},{}]}]}]}")
+            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"xgsrboldforobw\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"zbfhfovvac\",\"endpointInformation\":[{},{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"dxe\",\"endpointInformation\":[{},{},{},{}]},{\"filterQuery\":\"belawumuaslzkwr\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"ucwyhahno\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"ywuhpsvfuur\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"exxwlalniexzsrz\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"yb\",\"endpointInformation\":[{},{}]}]}]}")
             .toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("mduvw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("xgsrboldforobw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model
             = new ResourceProviderManifestPropertiesNotificationSettings().withSubscriberSettings(Arrays.asList(
-                new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery("mduvw")
-                    .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())))),
                 new SubscriberSetting().withFilterRules(Arrays.asList(
-                    new FilterRule().withFilterQuery("mygdxpgpqch")
-                        .withEndpointInformation(Arrays.asList(new EndpointInformation())),
-                    new FilterRule().withFilterQuery("pnnbjc")
+                    new FilterRule().withFilterQuery("xgsrboldforobw")
                         .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
-                    new FilterRule().withFilterQuery("bbdaxco")
+                    new FilterRule().withFilterQuery("zbfhfovvac")
                         .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
                             new EndpointInformation(), new EndpointInformation())))),
                 new SubscriberSetting().withFilterRules(Arrays.asList(
-                    new FilterRule().withFilterQuery("orsukokwbqp")
+                    new FilterRule().withFilterQuery("dxe")
                         .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
-                            new EndpointInformation())),
-                    new FilterRule().withFilterQuery("nuuepzlrp")
-                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
-                    new FilterRule().withFilterQuery("oldweyuqdu")
+                            new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("belawumuaslzkwr")
                         .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())))),
                 new SubscriberSetting().withFilterRules(Arrays.asList(
-                    new FilterRule().withFilterQuery("wrbiorkt")
+                    new FilterRule().withFilterQuery("ucwyhahno")
                         .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
                             new EndpointInformation())),
-                    new FilterRule().withFilterQuery("jhhgdnhxmsi")
-                        .withEndpointInformation(Arrays.asList(new EndpointInformation())),
-                    new FilterRule().withFilterQuery("iloxggdufiq")
-                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
-                            new EndpointInformation(), new EndpointInformation()))))));
+                    new FilterRule().withFilterQuery("ywuhpsvfuur")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("exxwlalniexzsrz")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery("yb")
+                    .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation()))))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("mduvw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("xgsrboldforobw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 }

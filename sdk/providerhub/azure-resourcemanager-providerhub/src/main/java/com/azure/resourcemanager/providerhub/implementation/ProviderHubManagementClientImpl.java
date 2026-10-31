@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.providerhub.fluent.AuthorizedApplicationsClient;
 import com.azure.resourcemanager.providerhub.fluent.CustomRolloutsClient;
 import com.azure.resourcemanager.providerhub.fluent.DefaultRolloutsClient;
+import com.azure.resourcemanager.providerhub.fluent.EndpointRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.ManifestsClient;
 import com.azure.resourcemanager.providerhub.fluent.NotificationRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
@@ -292,6 +293,20 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
     }
 
     /**
+     * The EndpointRegistrationsClient object to access its operations.
+     */
+    private final EndpointRegistrationsClient endpointRegistrations;
+
+    /**
+     * Gets the EndpointRegistrationsClient object to access its operations.
+     * 
+     * @return the EndpointRegistrationsClient object.
+     */
+    public EndpointRegistrationsClient getEndpointRegistrations() {
+        return this.endpointRegistrations;
+    }
+
+    /**
      * The ResourceActionsClient object to access its operations.
      */
     private final ResourceActionsClient resourceActions;
@@ -322,7 +337,7 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-01";
+        this.apiVersion = "2026-10-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.customRollouts = new CustomRolloutsClientImpl(this);
@@ -334,6 +349,7 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
         this.authorizedApplications = new AuthorizedApplicationsClientImpl(this);
         this.providerMonitorSettings = new ProviderMonitorSettingsClientImpl(this);
         this.manifests = new ManifestsClientImpl(this);
+        this.endpointRegistrations = new EndpointRegistrationsClientImpl(this);
         this.resourceActions = new ResourceActionsClientImpl(this);
     }
 

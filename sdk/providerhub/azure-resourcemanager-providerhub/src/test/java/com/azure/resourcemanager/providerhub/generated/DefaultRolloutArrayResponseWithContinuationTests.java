@@ -18,40 +18,39 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"wjutifdwfmv\",\"gorqjbttzh\"],\"regions\":[\"lkafhonqjuje\"]},\"lowTraffic\":{\"waitDuration\":\"PT193H24M12S\",\"regions\":[\"cpopmxel\",\"wcltyjede\"]},\"mediumTraffic\":{\"waitDuration\":\"PT187H58M50S\",\"regions\":[\"kqscazuawxtzx\",\"uamwabzxrvxc\"]},\"highTraffic\":{\"waitDuration\":\"PT238H41M55S\",\"regions\":[\"aivmxyasflvgs\",\"zwywako\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT184H35M38S\",\"regions\":[\"jblmljhlnymz\",\"tqyryuzcbmqqv\",\"mv\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT148H41M4S\",\"regions\":[\"xo\",\"supe\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"hcvsqltnzoi\",\"name\":\"gsxgnxfyqon\",\"type\":\"p\"},\"resourceTypeRegistrations\":[{\"id\":\"wdofdbxiqx\",\"name\":\"iiqbi\",\"type\":\"htmwwinh\"},{\"id\":\"hfqpofv\",\"name\":\"bcblemb\",\"type\":\"kbwvqvxkdiv\"}],\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":true},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"zuwfmdur\",\"baselineArmManifestLocation\":\"gegizvcjfel\"}}},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupOne\",\"nextTrafficRegionScheduledTime\":\"2021-06-16T14:37:30Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"igkxkbsazga\",\"pullRequest\":\"acy\",\"commitId\":\"m\"},\"completedRegions\":[\"spofapvuhry\",\"ni\",\"frzgbzjed\",\"st\"],\"failedOrSkippedRegions\":{\"l\":{},\"xbcuiiznkt\":{},\"f\":{}}}},\"id\":\"snvpdibmi\",\"name\":\"ostbzbkiwb\",\"type\":\"qnyophzfyls\"},{\"properties\":{\"provisioningState\":\"Created\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"zcezelfwyfwl\",\"xjwet\",\"psihcla\",\"zvaylptrsqqw\"],\"regions\":[\"mwqkchcxwaxf\",\"w\",\"jkjexf\"]},\"lowTraffic\":{\"waitDuration\":\"PT227H4M46S\",\"regions\":[\"sylkks\",\"kbffmbmx\",\"jrgywwpgjxsn\",\"tf\"]},\"mediumTraffic\":{\"waitDuration\":\"PT33H47M6S\",\"regions\":[\"aaoepttaqut\"]},\"highTraffic\":{\"waitDuration\":\"PT126H30M42S\",\"regions\":[\"swvr\",\"unzzjgehk\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT174H14M28S\",\"regions\":[\"ixokffqyin\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT160H22M48S\",\"regions\":[\"whixmonstsh\",\"yxgvelfcld\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"ds\",\"name\":\"uwc\",\"type\":\"b\"},\"resourceTypeRegistrations\":[{\"id\":\"stmninwjizcilng\",\"name\":\"gshejjtbxqmulux\",\"type\":\"xqzv\"},{\"id\":\"ers\",\"name\":\"ycucrwnamikzeb\",\"type\":\"qbsms\"},{\"id\":\"ziqgfuh\",\"name\":\"kzruswh\",\"type\":\"hczznvf\"},{\"id\":\"ycjsx\",\"name\":\"wwixzvumw\",\"type\":\"xqhndvnoamlds\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":false},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"lzok\",\"baselineArmManifestLocation\":\"coxpelnjeta\"}}},\"status\":{\"nextTrafficRegion\":\"Canary\",\"nextTrafficRegionScheduledTime\":\"2021-07-15T12:54:47Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"g\",\"pullRequest\":\"npbs\",\"commitId\":\"e\"},\"completedRegions\":[\"ccsrmozihmipgaw\",\"xxpkyjcxc\"],\"failedOrSkippedRegions\":{\"rytfmpcycil\":{},\"mcayk\":{},\"gnoxuztrksx\":{}}}},\"id\":\"ndfcpfn\",\"name\":\"nthjtwkjaosrxuzv\",\"type\":\"amktcqiosmgbzah\"}],\"nextLink\":\"qdlyrtl\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"specification\":{\"expeditedRollout\":{\"enabled\":true},\"canary\":{\"skipRegions\":[\"vyrrleaesinuq\",\"ljqobbpihehcecyb\",\"rqbrjbbmpxdlvyk\",\"rexcrseqwjksghu\"],\"regions\":[\"hxogjggsvoujkxi\",\"dafhr\",\"mdyomkxfbvfbh\"]},\"lowTraffic\":{\"waitDuration\":\"PT45H56M36S\",\"regions\":[\"wpg\",\"deimawzov\"]},\"mediumTraffic\":{\"waitDuration\":\"PT32H36M14S\",\"regions\":[\"ikjcjcazt\"]},\"highTraffic\":{\"waitDuration\":\"PT204H27M46S\",\"regions\":[\"owxwcomli\",\"ytwvczcswkacve\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT47H19M17S\",\"regions\":[\"vhb\",\"rnfxtgddp\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT182H59M15S\",\"regions\":[\"mnaoy\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"qswankltytmhdr\",\"name\":\"znnhd\",\"type\":\"lktgjc\"},\"resourceTypeRegistrations\":[{\"id\":\"uxhemlwywaeeczg\",\"name\":\"bukklels\",\"type\":\"xblycsxzuj\"},{\"id\":\"srlsmd\",\"name\":\"sqplpvmjcd\",\"type\":\"ewbidyvteowxv\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":false},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"AttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"xzecpaxwkufykhvu\",\"baselineArmManifestLocation\":\"xepmrut\"}}},\"status\":{\"nextTrafficRegion\":\"LowTraffic\",\"nextTrafficRegionScheduledTime\":\"2021-07-09T17:03:36Z\",\"subscriptionReregistrationResult\":\"ConditionalUpdate\",\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"ujdjltymkmvg\",\"pullRequest\":\"hywartspph\",\"commitId\":\"xkykxdssjp\"},\"completedRegions\":[\"ucfx\",\"i\",\"kflrmymy\"],\"failedOrSkippedRegions\":{\"qlhris\":{}}}},\"id\":\"lmiiiovg\",\"name\":\"cgxuugqkctotiowl\",\"type\":\"teqdptj\"},{\"properties\":{\"provisioningState\":\"Creating\",\"specification\":{\"expeditedRollout\":{\"enabled\":true},\"canary\":{\"skipRegions\":[\"lwphqlkccuzgyg\"],\"regions\":[\"hoi\",\"lwgniiprglvawu\",\"z\"]},\"lowTraffic\":{\"waitDuration\":\"PT93H6M49S\",\"regions\":[\"vlsbbjpmcubkmifo\",\"xkubvphavpmhbrbq\",\"vgovpbbttefjokn\"]},\"mediumTraffic\":{\"waitDuration\":\"PT40H53M46S\",\"regions\":[\"edikdfrdbiq\",\"rjgeih\",\"qlggwfi\"]},\"highTraffic\":{\"waitDuration\":\"PT72H32M\",\"regions\":[\"pbyephmgtvljvrcm\",\"fqip\",\"xhnpo\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT40H45M52S\",\"regions\":[\"bvnuile\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT109H54M24S\",\"regions\":[\"paugmrmfjlrxwt\",\"aukhfkvcisiz\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"xjw\",\"name\":\"ive\",\"type\":\"wcgyeewxeiqb\"},\"resourceTypeRegistrations\":[{\"id\":\"g\",\"name\":\"mguaml\",\"type\":\"dlrgms\"},{\"id\":\"lzgaufcshhvnew\",\"name\":\"nxkympqanxrjk\",\"type\":\"xtwbta\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"cyl\",\"baselineArmManifestLocation\":\"kgmnsghpxyc\"}}},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupTwo\",\"nextTrafficRegionScheduledTime\":\"2021-05-12T01:08:34Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"yomacluzvxnqm\",\"pullRequest\":\"pqpdfwmkoisqc\",\"commitId\":\"f\"},\"completedRegions\":[\"ifmcsypobkdqzr\",\"zsylollgt\"],\"failedOrSkippedRegions\":{\"zydmxzjijpvuaurk\":{},\"hci\":{},\"ldefxrdcoxn\":{},\"kkjanurnnqbnqbp\":{}}}},\"id\":\"xqltgrd\",\"name\":\"gypxrxvbfihwuhvc\",\"type\":\"a\"}],\"nextLink\":\"rbxrblmliowxihsp\"}")
             .toObject(DefaultRolloutArrayResponseWithContinuation.class);
-        Assertions.assertFalse(model.value().get(0).properties().specification().expeditedRollout().enabled());
-        Assertions.assertEquals("wjutifdwfmv",
+        Assertions.assertTrue(model.value().get(0).properties().specification().expeditedRollout().enabled());
+        Assertions.assertEquals("vyrrleaesinuq",
             model.value().get(0).properties().specification().canary().skipRegions().get(0));
-        Assertions.assertEquals("lkafhonqjuje",
+        Assertions.assertEquals("hxogjggsvoujkxi",
             model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("cpopmxel",
-            model.value().get(0).properties().specification().lowTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT193H24M12S"),
+        Assertions.assertEquals("wpg", model.value().get(0).properties().specification().lowTraffic().regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT45H56M36S"),
             model.value().get(0).properties().specification().lowTraffic().waitDuration());
-        Assertions.assertEquals("kqscazuawxtzx",
+        Assertions.assertEquals("ikjcjcazt",
             model.value().get(0).properties().specification().mediumTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT187H58M50S"),
+        Assertions.assertEquals(Duration.parse("PT32H36M14S"),
             model.value().get(0).properties().specification().mediumTraffic().waitDuration());
-        Assertions.assertEquals("aivmxyasflvgs",
+        Assertions.assertEquals("owxwcomli",
             model.value().get(0).properties().specification().highTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT238H41M55S"),
+        Assertions.assertEquals(Duration.parse("PT204H27M46S"),
             model.value().get(0).properties().specification().highTraffic().waitDuration());
-        Assertions.assertEquals("jblmljhlnymz",
+        Assertions.assertEquals("vhb",
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT184H35M38S"),
+        Assertions.assertEquals(Duration.parse("PT47H19M17S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().waitDuration());
-        Assertions.assertEquals("xo",
+        Assertions.assertEquals("mnaoy",
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT148H41M4S"),
+        Assertions.assertEquals(Duration.parse("PT182H59M15S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().waitDuration());
         Assertions.assertEquals(ProviderRegistrationKind.HYBRID,
             model.value().get(0).properties().specification().providerRegistration().kind());
-        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
-        Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
-        Assertions.assertEquals(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
+        Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
             model.value().get(0).properties().specification().manifestCheckinSpecification().manifestCheckinOption());
-        Assertions.assertEquals("zuwfmdur",
+        Assertions.assertEquals("xzecpaxwkufykhvu",
             model.value()
                 .get(0)
                 .properties()
@@ -59,7 +58,7 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
                 .manifestCheckinSpecification()
                 .manifestCheckinParams()
                 .environment());
-        Assertions.assertEquals("gegizvcjfel",
+        Assertions.assertEquals("xepmrut",
             model.value()
                 .get(0)
                 .properties()
@@ -67,19 +66,20 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
                 .manifestCheckinSpecification()
                 .manifestCheckinParams()
                 .baselineArmManifestLocation());
-        Assertions.assertEquals("spofapvuhry", model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals(TrafficRegionCategory.REST_OF_THE_WORLD_GROUP_ONE,
+        Assertions.assertEquals("ucfx", model.value().get(0).properties().status().completedRegions().get(0));
+        Assertions.assertEquals(TrafficRegionCategory.LOW_TRAFFIC,
             model.value().get(0).properties().status().nextTrafficRegion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T14:37:30Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T17:03:36Z"),
             model.value().get(0).properties().status().nextTrafficRegionScheduledTime());
-        Assertions.assertEquals(SubscriptionReregistrationResult.NOT_APPLICABLE,
+        Assertions.assertEquals(SubscriptionReregistrationResult.CONDITIONAL_UPDATE,
             model.value().get(0).properties().status().subscriptionReregistrationResult());
-        Assertions.assertFalse(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
-        Assertions.assertEquals("igkxkbsazga",
+        Assertions.assertTrue(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
+        Assertions.assertEquals("ujdjltymkmvg",
             model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
-        Assertions.assertEquals("acy",
+        Assertions.assertEquals("hywartspph",
             model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
-        Assertions.assertEquals("m", model.value().get(0).properties().status().manifestCheckinStatus().commitId());
-        Assertions.assertEquals("qdlyrtl", model.nextLink());
+        Assertions.assertEquals("xkykxdssjp",
+            model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("rbxrblmliowxihsp", model.nextLink());
     }
 }

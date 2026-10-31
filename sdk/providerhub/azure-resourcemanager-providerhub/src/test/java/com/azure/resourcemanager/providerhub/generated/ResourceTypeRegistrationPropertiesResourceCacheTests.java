@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeRegistrationPropertiesResourceCacheTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeRegistrationPropertiesResourceCache model = BinaryData
-            .fromString("{\"enableResourceCache\":false,\"resourceCacheExpirationTimespan\":\"yefrpmpdnqqska\"}")
-            .toObject(ResourceTypeRegistrationPropertiesResourceCache.class);
+        ResourceTypeRegistrationPropertiesResourceCache model
+            = BinaryData.fromString("{\"enableResourceCache\":false,\"resourceCacheExpirationTimespan\":\"mcayk\"}")
+                .toObject(ResourceTypeRegistrationPropertiesResourceCache.class);
         Assertions.assertFalse(model.enableResourceCache());
-        Assertions.assertEquals("yefrpmpdnqqska", model.resourceCacheExpirationTimespan());
+        Assertions.assertEquals("mcayk", model.resourceCacheExpirationTimespan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceCache model
             = new ResourceTypeRegistrationPropertiesResourceCache().withEnableResourceCache(false)
-                .withResourceCacheExpirationTimespan("yefrpmpdnqqska");
+                .withResourceCacheExpirationTimespan("mcayk");
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceCache.class);
         Assertions.assertFalse(model.enableResourceCache());
-        Assertions.assertEquals("yefrpmpdnqqska", model.resourceCacheExpirationTimespan());
+        Assertions.assertEquals("mcayk", model.resourceCacheExpirationTimespan());
     }
 }

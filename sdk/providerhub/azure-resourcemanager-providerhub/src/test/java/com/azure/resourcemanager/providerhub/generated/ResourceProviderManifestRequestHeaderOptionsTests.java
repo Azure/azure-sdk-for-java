@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestRequestHeaderOptions model = BinaryData
-            .fromString("{\"optInHeaders\":\"PrivateLinkVnetTrafficTag\",\"optOutHeaders\":\"NotSpecified\"}")
-            .toObject(ResourceProviderManifestRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_VNET_TRAFFIC_TAG, model.optInHeaders());
+        ResourceProviderManifestRequestHeaderOptions model
+            = BinaryData.fromString("{\"optInHeaders\":\"NotSpecified\",\"optOutHeaders\":\"NotSpecified\"}")
+                .toObject(ResourceProviderManifestRequestHeaderOptions.class);
+        Assertions.assertEquals(OptInHeaderType.NOT_SPECIFIED, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }
