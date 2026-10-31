@@ -12,11 +12,11 @@ public final class TargetEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetEndpointProperties model = BinaryData.fromString(
-            "{\"name\":\"gsxnkjzkdeslpv\",\"targetEndpointResourceId\":\"pwiyig\",\"azureStorageAccountResourceId\":\"pkdwzbai\",\"azureStorageBlobContainerName\":\"bbaumnyquped\"}")
+            "{\"name\":\"dhxujznbmpo\",\"targetEndpointResourceId\":\"wpr\",\"azureStorageAccountResourceId\":\"lve\",\"azureStorageBlobContainerName\":\"lupj\"}")
             .toObject(TargetEndpointProperties.class);
-        Assertions.assertEquals("gsxnkjzkdeslpv", model.name());
-        Assertions.assertEquals("pwiyig", model.targetEndpointResourceId());
-        Assertions.assertEquals("pkdwzbai", model.azureStorageAccountResourceId());
-        Assertions.assertEquals("bbaumnyquped", model.azureStorageBlobContainerName());
+        Assertions.assertEquals("dhxujznbmpo", model.name());
+        Assertions.assertEquals("wpr", model.targetEndpointResourceId());
+        Assertions.assertEquals("lve", model.azureStorageAccountResourceId());
+        Assertions.assertEquals("lupj", model.azureStorageBlobContainerName());
     }
 }
