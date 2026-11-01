@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class SchemaRegistryCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SchemaRegistry/SchemaRegistryCreate.json
+     * x-ms-original-file: 2026-07-01-preview/SchemaRegistry/SchemaRegistryCreate.json
      */
     /**
      * Sample code: SchemaRegistryCreate.
