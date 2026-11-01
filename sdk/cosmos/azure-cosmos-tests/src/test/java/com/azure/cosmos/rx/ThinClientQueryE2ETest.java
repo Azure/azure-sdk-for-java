@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
@@ -48,6 +49,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -1291,12 +1293,31 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     // ==================== Vector Search ====================
 
+    @DataProvider(name = "vectorDataTypes")
+    public Object[][] vectorDataTypes() {
+        Number[][] floatingPointEmbeddings = {
+            {1.0, 0.0, 0.0}, {0.0, 2.0, 1.0}, {0.1, 3.0, 0.1},
+            {1.0, 1.0, 0.0}, {0.9, 0.1, 0.0},
+        };
+        Number[][] integerEmbeddings = {
+            {10, 0, 0}, {0, 20, 10}, {1, 30, 1},
+            {10, 10, 0}, {9, 1, 0},
+        };
+        return new Object[][] {
+            {CosmosVectorDataType.FLOAT32, CosmosVectorIndexType.FLAT, floatingPointEmbeddings},
+            {CosmosVectorDataType.FLOAT16, CosmosVectorIndexType.QUANTIZED_FLAT, floatingPointEmbeddings},
+            {CosmosVectorDataType.INT8, CosmosVectorIndexType.FLAT, integerEmbeddings},
+            {CosmosVectorDataType.UINT8, CosmosVectorIndexType.FLAT, integerEmbeddings},
+        };
+    }
+
     /**
-     * Creates a vector-enabled container, runs VectorDistance query through both
+     * Creates a vector-enabled container for each embedding data type, runs VectorDistance queries through both
      * Direct and thin client, compares results.
      */
-    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT * 2)
-    public void testVectorSearchGatewayVsThinClient() {
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "vectorDataTypes", timeOut = TIMEOUT * 2)
+    public void testVectorSearchGatewayVsThinClient(CosmosVectorDataType dataType,
+        CosmosVectorIndexType indexType, Number[][] embeddings) {
         String vectorContainerId = "vecCompare_" + UUID.randomUUID().toString().substring(0, 8);
         CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
         CosmosAsyncContainer directVecContainer = db.getContainer(vectorContainerId);
@@ -1310,7 +1331,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             CosmosVectorEmbeddingPolicy policy = new CosmosVectorEmbeddingPolicy();
             CosmosVectorEmbedding emb = new CosmosVectorEmbedding();
             emb.setPath("/embedding");
-            emb.setDataType(CosmosVectorDataType.FLOAT32);
+            emb.setDataType(dataType);
             emb.setEmbeddingDimensions(3);
             emb.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
             policy.setCosmosVectorEmbeddings(Collections.singletonList(emb));
@@ -1322,18 +1343,26 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             idxPolicy.setExcludedPaths(Arrays.asList(new ExcludedPath("/embedding/*"), new ExcludedPath("/\"_etag\"/?")));
             CosmosVectorIndexSpec vecIdx = new CosmosVectorIndexSpec();
             vecIdx.setPath("/embedding");
-            vecIdx.setType(CosmosVectorIndexType.FLAT.toString());
+            vecIdx.setType(indexType.toString());
             idxPolicy.setVectorIndexes(Collections.singletonList(vecIdx));
             props.setIndexingPolicy(idxPolicy);
 
-            db.createContainer(props).block();
+            createCollection(db, props, new CosmosContainerRequestOptions());
             CosmosAsyncContainer tcVecContainer = thinClient.getDatabase(db.getId()).getContainer(vectorContainerId);
 
-            double[][] embeddings = {
-                {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0},
-                {1.0, 1.0, 0.0}, {0.9, 0.1, 0.0},
-            };
+            CosmosContainerProperties actual = directVecContainer.read().block().getProperties();
+            assertThat(actual.getVectorEmbeddingPolicy()).isNotNull();
+            assertThat(actual.getVectorEmbeddingPolicy().getVectorEmbeddings().size()).isEqualTo(1);
+            CosmosVectorEmbedding actualEmbedding = actual.getVectorEmbeddingPolicy().getVectorEmbeddings().get(0);
+            assertThat(actualEmbedding.getPath()).isEqualTo("/embedding");
+            assertThat(actualEmbedding.getDataType()).isEqualTo(dataType);
+            assertThat(actualEmbedding.getEmbeddingDimensions()).isEqualTo(3);
+            assertThat(actualEmbedding.getDistanceFunction()).isEqualTo(CosmosVectorDistanceFunction.COSINE);
+            assertThat(actual.getIndexingPolicy().getVectorIndexes().size()).isEqualTo(1);
+            assertThat(actual.getIndexingPolicy().getVectorIndexes().get(0).getPath()).isEqualTo("/embedding");
+            assertThat(actual.getIndexingPolicy().getVectorIndexes().get(0).getType()).isEqualTo(indexType.toString());
 
+            // The float16 case uses quantizedFlat's full-scan fallback below its training threshold.
             String vecPk = UUID.randomUUID().toString();
             List<String> docIds = new ArrayList<>();
             for (int i = 0; i < embeddings.length; i++) {
@@ -1343,13 +1372,14 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 doc.put(ID_FIELD, docId);
                 doc.put(PK_FIELD, vecPk);
                 doc.put("text", "document " + i);
-                ArrayNode arr = doc.putArray("embedding");
-                for (double v : embeddings[i]) { arr.add(v); }
+                doc.set("embedding", OBJECT_MAPPER.valueToTree(embeddings[i]));
                 directVecContainer.createItem(doc, new PartitionKey(vecPk), null).block();
             }
 
-            String query = "SELECT TOP 5 c.id, c.text, VectorDistance(c.embedding, [1.0, 0.0, 0.0]) AS score "
-                + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0])";
+            String vectorDistance = "VectorDistance(c.embedding, @vector, false, {'dataType':'" + dataType + "'})";
+            List<SqlParameter> parameters = Collections.singletonList(new SqlParameter("@vector", embeddings[0]));
+            SqlQuerySpec query = new SqlQuerySpec("SELECT TOP 5 c.id, c.text, " + vectorDistance + " AS score "
+                + "FROM c ORDER BY " + vectorDistance, parameters);
 
             QueryResult<ObjectNode> directResult = drainQuery(directVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
             QueryResult<ObjectNode> tcResult = drainQuery(tcVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
@@ -1359,16 +1389,21 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
             assertThat(tcResult.results.size()).isEqualTo(5);
 
-            for (int i = 0; i < directResult.results.size(); i++) {
-                assertThat(tcResult.results.get(i).get("id").asText()).isEqualTo(directResult.results.get(i).get("id").asText());
+            List<String> expectedCosineIds = Arrays.asList(
+                docIds.get(0), docIds.get(4), docIds.get(3), docIds.get(2), docIds.get(1));
+            for (int i = 0; i < expectedCosineIds.size(); i++) {
+                assertThat(directResult.results.get(i).get("id").asText()).isEqualTo(expectedCosineIds.get(i));
+                assertThat(tcResult.results.get(i).get("id").asText()).isEqualTo(expectedCosineIds.get(i));
             }
 
             assertThat(tcResult.results.get(0).get("id").asText()).isEqualTo(docIds.get(0));
             assertThat(tcResult.results.get(0).get("score").asDouble()).isGreaterThan(0.99);
 
             // Euclidean variant — validates ORDER BY score semantics with a different distance function
-            String euclideanQuery = "SELECT TOP 5 c.id, VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'}) AS score "
-                + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'})";
+            String euclideanDistance = "VectorDistance(c.embedding, @vector, false, {'distanceFunction':'euclidean',"
+                + "'dataType':'" + dataType + "'})";
+            SqlQuerySpec euclideanQuery = new SqlQuerySpec("SELECT TOP 5 c.id, " + euclideanDistance + " AS score "
+                + "FROM c ORDER BY " + euclideanDistance, parameters);
 
             QueryResult<ObjectNode> directEuclidean = drainQuery(directVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
             QueryResult<ObjectNode> tcEuclidean = drainQuery(tcVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
@@ -1378,10 +1413,15 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             assertThat(tcEuclidean.results.size()).isEqualTo(directEuclidean.results.size());
             assertThat(tcEuclidean.results.size()).isEqualTo(5);
 
-            for (int i = 0; i < directEuclidean.results.size(); i++) {
+            List<String> expectedEuclideanIds = Arrays.asList(
+                docIds.get(0), docIds.get(4), docIds.get(3), docIds.get(1), docIds.get(2));
+            for (int i = 0; i < expectedEuclideanIds.size(); i++) {
+                assertThat(directEuclidean.results.get(i).get("id").asText())
+                    .as("Direct Euclidean vector search result mismatch at position " + i)
+                    .isEqualTo(expectedEuclideanIds.get(i));
                 assertThat(tcEuclidean.results.get(i).get("id").asText())
-                    .as("Euclidean vector search result mismatch at position " + i)
-                    .isEqualTo(directEuclidean.results.get(i).get("id").asText());
+                    .as("Thin client Euclidean vector search result mismatch at position " + i)
+                    .isEqualTo(expectedEuclideanIds.get(i));
             }
 
         } finally {

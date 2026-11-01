@@ -2,7 +2,28 @@
 Library containing tests for azure-cosmos and azure-cosmos-test libraries. Only used internally  as home for tests to allow using failure injection even in the unit- and integration tests of azure-cosmos.
 
 ## Getting started
-n/a
+
+### Vector embedding end-to-end coverage
+
+`ThinClientQueryE2ETest.testVectorSearchGatewayVsThinClient` covers `float16`,
+`float32`, `int8`, and `uint8` through Direct TCP and the thin client. It creates
+and cleans up one container per type, verifies its embedding policy, and checks
+expected cosine and Euclidean query rankings. The `float16` case uses the
+`quantizedFlat` full-scan fallback; the other cases use `flat` indexes.
+
+Configure `ACCOUNT_HOST` and `ACCOUNT_KEY` for an existing test account supporting
+these vector types and the thin-client endpoint. The test runs in the
+`thinclient` and `thinclientEndpointProbe` suites.
+
+After building and installing the Cosmos modules with the same JDK, run from the
+repository root:
+
+```shell
+mvn -pl com.azure:azure-cosmos-tests verify -Pthinclient \
+  -Dit.test=ThinClientQueryE2ETest#testVectorSearchGatewayVsThinClient \
+  -Dfailsafe.failIfNoTests=true \
+  -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
+```
 
 ## Key concepts
 n/a
@@ -43,4 +64,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-
