@@ -198,6 +198,38 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the maximum page prefetch count, or {@code null} when the SDK determines the count from
+     * {@link #getMaxBufferedItemCount()} and the requested page size.
+     *
+     * @return the maximum page prefetch count.
+     */
+    public Integer getMaxPrefetchPageCount() {
+        return this.actualRequestOptions.getMaxPrefetchPageCount();
+    }
+
+    /**
+     * Sets the maximum page prefetch count. Set to zero to fetch pages only when requested by the
+     * downstream subscriber. This is useful when consuming a single page with
+     * {@code byPage(continuationToken, pageSize).next()}.
+     * <p>
+     * This setting controls backend pagination within each query producer. Cross-partition queries,
+     * including ORDER BY queries, may still need multiple backend requests to produce one result page.
+     * Synchronous iteration and downstream Reactor operators can also request pages ahead of consumption.
+     * Disabling prefetch can reduce throughput when consuming multiple pages.
+     * <p>
+     * By default, or when set to {@code null}, the SDK determines the count from
+     * {@link #getMaxBufferedItemCount()} and the requested page size.
+     *
+     * @param maxPrefetchPageCount the non-negative maximum page prefetch count, or {@code null} for the default.
+     * @return the CosmosQueryRequestOptions.
+     * @throws IllegalArgumentException if the value is negative.
+     */
+    public CosmosQueryRequestOptions setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
+        this.actualRequestOptions.setMaxPrefetchPageCount(maxPrefetchPageCount);
+        return this;
+    }
+
+    /**
      * Sets the ResponseContinuationTokenLimitInKb request option for item query
      * requests in the Azure Cosmos DB service.
      * <p>

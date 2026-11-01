@@ -130,14 +130,28 @@ public class Paginator {
                 fetcherFactory::get,
                 (tFetcher, sink) -> {
                     if (tFetcher.shouldFetchMore()) {
-                        Mono<FeedResponse<T>> nextPage = tFetcher.nextPage();
-                        sink.next(nextPage.flux());
+                        if (preFetchCount == 0) {
+                            // concatMap can subscribe to the next inner publisher with no remaining demand.
+                            // Generate the request only when that inner publisher receives demand.
+                            sink.next(Mono.fromSupplier(tFetcher::nextPage)
+                                .flux()
+                                .hide() // Prevent scalar optimizations from invoking the supplier on subscription.
+                                .concatMap(nextPage -> nextPage, 0));
+                        } else {
+                            Mono<FeedResponse<T>> nextPage = tFetcher.nextPage();
+                            sink.next(nextPage.flux());
+                        }
                     } else {
                         logger.debug("No more results, Context: {}", tFetcher.getOperationContextText());
                         sink.complete();
                     }
                     return tFetcher;
                 });
+
+            if (preFetchCount == 0) {
+                // Preserve page ordering without requesting pages ahead of downstream demand.
+                return generate.concatMap(feedResponseFlux -> feedResponseFlux, 0);
+            }
 
             return generate.flatMapSequential(
                 feedResponseFlux -> feedResponseFlux,
@@ -203,6 +217,9 @@ public class Paginator {
     }
 
     public static int getPreFetchCount(CosmosQueryRequestOptions queryOptions, int top, int maxPageSize) {
+        if (queryOptions != null && queryOptions.getMaxPrefetchPageCount() != null) {
+            return Math.min(queryOptions.getMaxPrefetchPageCount(), Queues.XS_BUFFER_SIZE);
+        }
         int maxBufferedItemCount = queryOptions != null ? queryOptions.getMaxBufferedItemCount() : 0;
         if (maxBufferedItemCount <= 0) {
             return Queues.XS_BUFFER_SIZE;

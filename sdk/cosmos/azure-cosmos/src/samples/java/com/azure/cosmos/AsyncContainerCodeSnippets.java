@@ -246,6 +246,19 @@ public class AsyncContainerCodeSnippets {
         // END: com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed
     }
 
+    public void querySinglePageAsyncSample() {
+        String continuationToken = null; // Use the token returned by the previous call to resume.
+        // BEGIN: readme-sample-querySinglePage
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions()
+            .setPartitionKey(new PartitionKey("<partition-key-value>"))
+            .setMaxPrefetchPageCount(0);
+        cosmosAsyncContainer.queryItems("SELECT * FROM c", options, Passenger.class)
+            .byPage(continuationToken, 20)
+            .next()
+            .subscribe(page -> System.out.println("Next continuation token: " + page.getContinuationToken()));
+        // END: readme-sample-querySinglePage
+    }
+
     public void queryItemsAsyncSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.queryItems
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
