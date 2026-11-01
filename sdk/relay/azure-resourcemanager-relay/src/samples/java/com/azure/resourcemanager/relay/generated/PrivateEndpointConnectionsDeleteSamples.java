@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionDelete.

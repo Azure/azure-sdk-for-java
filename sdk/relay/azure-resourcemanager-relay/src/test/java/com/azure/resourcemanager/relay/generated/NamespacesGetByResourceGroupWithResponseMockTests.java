@@ -26,7 +26,7 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"rlltmuwlauwzizx\",\"status\":\"pgcjefuzmuvp\",\"createdAt\":\"2021-05-23T17:52:43Z\",\"updatedAt\":\"2021-04-26T02:21:23Z\",\"serviceBusEndpoint\":\"orppxebmnzbtb\",\"metricId\":\"pglkf\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Canceled\"},\"location\":\"fphsdyhtozfikdow\",\"id\":\"uuvxz\",\"name\":\"clvit\",\"type\":\"hqzonosggbhcoh\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"aljutiiswac\",\"id\":\"gdkz\",\"name\":\"ewkfvhqcrai\",\"type\":\"vpnpp\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"mh\",\"id\":\"xyjrxsagafcnih\",\"name\":\"wqapnedgfbcvk\",\"type\":\"vq\"}],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"minimumTlsVersion\":\"1.3\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"hvoodsotbobzd\",\"tags\":{\"vnhdldwmgxcxr\":\"j\",\"niyqslui\":\"lpmutwuoegrpkhj\"},\"id\":\"pdggkzzlvm\",\"name\":\"mpaxmodfvuefywsb\",\"type\":\"fvmwy\"}";
+            = "{\"properties\":{\"provisioningState\":\"zqwhxxbuyqaxzfeq\",\"status\":\"ppriol\",\"createdAt\":\"2020-12-22T04:16:08Z\",\"updatedAt\":\"2021-08-09T00:51:03Z\",\"serviceBusEndpoint\":\"tolmncwsobqw\",\"metricId\":\"dbnw\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"location\":\"fuvglsbjjca\",\"id\":\"xbvtvudu\",\"name\":\"ncormrlxqtvcof\",\"type\":\"dflvkg\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"location\":\"nqvsaznqnto\",\"id\":\"dsg\",\"name\":\"a\",\"type\":\"mkycgra\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"location\":\"eburu\",\"id\":\"movsmzlxwabmqoe\",\"name\":\"kif\",\"type\":\"vtpuqujmqlgk\"}],\"publicNetworkAccess\":\"Enabled\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"bjcntujitc\",\"tags\":{\"zfoqouicybxar\":\"ftwwaezkojvdc\"},\"id\":\"gszufoxciqopid\",\"name\":\"amcio\",\"type\":\"hkh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,16 +36,16 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RelayNamespace response = manager.namespaces()
-            .getByResourceGroupWithResponse("xmubyyntwlrbq", "koievseo", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("buukzclewyhml", "paztzpofncck", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hvoodsotbobzd", response.location());
-        Assertions.assertEquals("j", response.tags().get("vnhdldwmgxcxr"));
+        Assertions.assertEquals("bjcntujitc", response.location());
+        Assertions.assertEquals("ftwwaezkojvdc", response.tags().get("zfoqouicybxar"));
         Assertions.assertEquals(SkuName.STANDARD, response.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals(EndPointProvisioningState.CANCELED,
+        Assertions.assertEquals(EndPointProvisioningState.DELETING,
             response.privateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, response.publicNetworkAccess());
-        Assertions.assertEquals(TlsVersion.ONE_THREE, response.minimumTlsVersion());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, response.minimumTlsVersion());
     }
 }

@@ -13,9 +13,10 @@ public final class CheckNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckNameAvailabilityResultInner model = BinaryData
-            .fromString("{\"message\":\"qhgyxzkonocukok\",\"nameAvailable\":false,\"reason\":\"NameInUse\"}")
+            .fromString(
+                "{\"message\":\"ped\",\"nameAvailable\":false,\"reason\":\"TooManyNamespaceInCurrentSubscription\"}")
             .toObject(CheckNameAvailabilityResultInner.class);
         Assertions.assertFalse(model.nameAvailable());
-        Assertions.assertEquals(UnavailableReason.NAME_IN_USE, model.reason());
+        Assertions.assertEquals(UnavailableReason.TOO_MANY_NAMESPACE_IN_CURRENT_SUBSCRIPTION, model.reason());
     }
 }
