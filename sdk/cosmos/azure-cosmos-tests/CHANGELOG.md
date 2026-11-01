@@ -4,4 +4,4 @@
 
 ### Other Changes
 
-- Added live container creation and vector query coverage for `float16`, `float32`, `int8`, and `uint8` embeddings.
+- Extended the existing Direct/thin-client vector search test from `float32` to all four embedding data types, with policy read-back and expected query rankings.

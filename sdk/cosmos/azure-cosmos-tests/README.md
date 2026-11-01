@@ -5,24 +5,25 @@ Library containing tests for azure-cosmos and azure-cosmos-test libraries. Only 
 
 ### Vector embedding end-to-end coverage
 
-`VectorEmbeddingQueryTest` runs in the live `query` profile. Configure `ACCOUNT_HOST`
-and `ACCOUNT_KEY` for an existing test account supporting vector search and the
-`float16`, `float32`, `int8`, and `uint8` embedding types. It creates and deletes its
-own database, verifies a four-path embedding policy, and checks deterministic
-nearest-neighbor results in both query directions. Its small fixture exercises
-the `quantizedFlat` full-scan fallback, not approximate-index recall.
+`ThinClientQueryE2ETest.testVectorSearchGatewayVsThinClient` covers `float16`,
+`float32`, `int8`, and `uint8` through Direct TCP and the thin client. It creates
+and cleans up one container per type, verifies its embedding policy, and checks
+expected cosine and Euclidean query rankings. The `float16` case uses the
+`quantizedFlat` full-scan fallback; the other cases use `flat` indexes.
+
+Configure `ACCOUNT_HOST` and `ACCOUNT_KEY` for an existing test account supporting
+these vector types and the thin-client endpoint. The test runs in the
+`thinclient` and `thinclientEndpointProbe` suites.
 
 After building and installing the Cosmos modules with the same JDK, run from the
 repository root:
 
 ```shell
-mvn -pl com.azure:azure-cosmos-tests verify -Pquery \
-  -Dit.test=VectorEmbeddingQueryTest -Dfailsafe.failIfNoTests=true \
+mvn -pl com.azure:azure-cosmos-tests verify -Pthinclient \
+  -Dit.test=ThinClientQueryE2ETest#testVectorSearchGatewayVsThinClient \
+  -Dfailsafe.failIfNoTests=true \
   -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
 ```
-
-The `allVectorDataTypesRoundTrip` test belongs to the `unit` group and does not
-require an account.
 
 ## Key concepts
 n/a
