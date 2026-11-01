@@ -106,7 +106,12 @@ TYPESPEC_DEPENDENCY_PREFIXES = ("@azure-tools/", "@typespec/")
 DESIGNATED_LIBRARIES_FROM_SPECS = [
     OPENAI_TYPESPEC_PACKAGE_NAME,
     "@azure-tools/typespec-liftr-base",
+    "@azure-tools/typespec-foundry-core",
 ]
+
+SPECS_WORKSPACE_PACKAGE_PATHS = {
+    "@azure-tools/typespec-foundry-core": "libs/foundry-core/package.json",
+}
 
 # These designated libraries are versioned from the latest published npm version instead of the
 # specs repo. They belong to the same release group as the TypeSpec compiler / Azure libraries that
@@ -124,7 +129,7 @@ DESIGNATED_LIBRARIES_FROM_NPM_LATEST = [
 # are versioned separately by add_designated_libraries).
 DESIGNATED_LIBRARIES = DESIGNATED_LIBRARIES_FROM_SPECS + DESIGNATED_LIBRARIES_FROM_NPM_LATEST
 
-# Read the specs manifest and pnpm catalogs at the same commit.
+# Read the specs manifest, workspace packages, and pnpm catalogs at the same commit.
 SPECS_REPO_API_URL = "https://api.github.com/repos/Azure/azure-rest-api-specs"
 SPECS_RAW_URL = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs"
 
@@ -258,7 +263,28 @@ def fetch_specs_dev_dependencies() -> dict:
     workspace = None
     for library in DESIGNATED_LIBRARIES_FROM_SPECS:
         reference = dependencies.get(library)
-        if not reference or not isinstance(reference, str) or not reference.startswith("catalog:"):
+        if not reference or not isinstance(reference, str):
+            continue
+        if reference.startswith("workspace:"):
+            package_path = SPECS_WORKSPACE_PACKAGE_PATHS.get(library)
+            if not package_path:
+                raise ValueError(f"Cannot resolve {library} {reference}: unknown specs workspace package path.")
+            with urllib.request.urlopen(f"{specs_root}/{package_path}", timeout=30) as response:
+                package = json.loads(response.read().decode("utf-8"))
+            version = package.get("version")
+            if (
+                package.get("name") != library
+                or not isinstance(version, str)
+                or not version.strip()
+                or version.strip().startswith(("catalog:", "workspace:", "link:", "file:"))
+            ):
+                raise ValueError(
+                    f"Cannot resolve {library} {reference}: expected a matching package name and npm version "
+                    f"in {package_path}, got {package!r}."
+                )
+            dependencies[library] = version.strip()
+            continue
+        if not reference.startswith("catalog:"):
             continue
         if workspace is None:
             with urllib.request.urlopen(f"{specs_root}/pnpm-workspace.yaml", timeout=30) as response:

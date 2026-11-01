@@ -20,6 +20,7 @@
     "@typespec/streams": "0.87.0",
     "@azure-tools/openai-typespec": "1.29.0",
     "@azure-tools/typespec-liftr-base": "0.13.0",
+    "@azure-tools/typespec-foundry-core": "0.1.0-beta.1",
     "@azure-tools/typespec-azure-portal-core": "0.73.0",
     "@typespec/openapi3": "1.17.0"
   }
