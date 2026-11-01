@@ -22,7 +22,7 @@ public final class GroupQuotasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"pmqtaru\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Canceled\"},\"id\":\"jhwqytjrybnw\",\"name\":\"ewgdrjervn\",\"type\":\"enq\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"opbyrqufegxu\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Invalid\"},\"id\":\"hlmctlpdngitvgb\",\"name\":\"hrixkwmy\",\"type\":\"jejveg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class GroupQuotasListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupQuotasEntity> response
-            = manager.groupQuotas().list("tpvjzbexilzznfqq", com.azure.core.util.Context.NONE);
+            = manager.groupQuotas().list("uhbxvvy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pmqtaru", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("opbyrqufegxu", response.iterator().next().properties().displayName());
     }
 }
