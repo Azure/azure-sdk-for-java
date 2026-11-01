@@ -13,16 +13,16 @@ public final class AdhocBasedTaggingCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdhocBasedTaggingCriteria model
-            = BinaryData.fromString("{\"tagInfo\":{\"eTag\":\"vkg\",\"id\":\"bgdknnqv\",\"tagName\":\"aznqntoru\"}}")
+            = BinaryData.fromString("{\"tagInfo\":{\"eTag\":\"fkmr\",\"id\":\"mvvhmxtdrjfuta\",\"tagName\":\"oe\"}}")
                 .toObject(AdhocBasedTaggingCriteria.class);
-        Assertions.assertEquals("aznqntoru", model.tagInfo().tagName());
+        Assertions.assertEquals("oe", model.tagInfo().tagName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdhocBasedTaggingCriteria model
-            = new AdhocBasedTaggingCriteria().withTagInfo(new RetentionTag().withTagName("aznqntoru"));
+            = new AdhocBasedTaggingCriteria().withTagInfo(new RetentionTag().withTagName("oe"));
         model = BinaryData.fromObject(model).toObject(AdhocBasedTaggingCriteria.class);
-        Assertions.assertEquals("aznqntoru", model.tagInfo().tagName());
+        Assertions.assertEquals("oe", model.tagInfo().tagName());
     }
 }
