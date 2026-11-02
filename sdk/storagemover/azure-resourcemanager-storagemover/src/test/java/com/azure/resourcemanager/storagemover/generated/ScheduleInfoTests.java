@@ -17,38 +17,41 @@ public final class ScheduleInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleInfo model = BinaryData.fromString(
-            "{\"frequency\":\"Monthly\",\"isActive\":false,\"executionTime\":{\"hour\":996509936,\"minute\":30},\"startDate\":\"2021-11-20T16:21:10Z\",\"daysOfWeek\":[\"siebtfhvpesapskr\",\"qmhjjdhtld\",\"kyzxuutk\"],\"daysOfMonth\":[1341187268],\"cronExpression\":\"wsvlxotogtwrupqs\",\"endDate\":\"2021-05-04T00:58:15Z\"}")
+            "{\"frequency\":\"Daily\",\"isActive\":true,\"executionTime\":{\"hour\":1860294594,\"minute\":0},\"startDate\":\"2021-03-12T03:03:28Z\",\"daysOfWeek\":[\"jriplrbpbewtghf\",\"blcg\"],\"daysOfMonth\":[748159283,1623747079,161265854,932562427],\"cronExpression\":\"jkbegibtnmxiebww\",\"endDate\":\"2021-01-03T05:44:47Z\",\"repeatInterval\":\"yqcgwrtzjuzgwy\"}")
             .toObject(ScheduleInfo.class);
-        Assertions.assertEquals(Frequency.MONTHLY, model.frequency());
-        Assertions.assertFalse(model.isActive());
-        Assertions.assertEquals(996509936, model.executionTime().hour());
-        Assertions.assertEquals(Minute.THREE_ZERO, model.executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T16:21:10Z"), model.startDate());
-        Assertions.assertEquals("siebtfhvpesapskr", model.daysOfWeek().get(0));
-        Assertions.assertEquals(1341187268, model.daysOfMonth().get(0));
-        Assertions.assertEquals("wsvlxotogtwrupqs", model.cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T00:58:15Z"), model.endDate());
+        Assertions.assertEquals(Frequency.DAILY, model.frequency());
+        Assertions.assertTrue(model.isActive());
+        Assertions.assertEquals(1860294594, model.executionTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:03:28Z"), model.startDate());
+        Assertions.assertEquals("jriplrbpbewtghf", model.daysOfWeek().get(0));
+        Assertions.assertEquals(748159283, model.daysOfMonth().get(0));
+        Assertions.assertEquals("jkbegibtnmxiebww", model.cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T05:44:47Z"), model.endDate());
+        Assertions.assertEquals("yqcgwrtzjuzgwy", model.repeatInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleInfo model = new ScheduleInfo().withFrequency(Frequency.MONTHLY)
-            .withIsActive(false)
-            .withExecutionTime(new SchedulerTime().withHour(996509936).withMinute(Minute.THREE_ZERO))
-            .withStartDate(OffsetDateTime.parse("2021-11-20T16:21:10Z"))
-            .withDaysOfWeek(Arrays.asList("siebtfhvpesapskr", "qmhjjdhtld", "kyzxuutk"))
-            .withDaysOfMonth(Arrays.asList(1341187268))
-            .withCronExpression("wsvlxotogtwrupqs")
-            .withEndDate(OffsetDateTime.parse("2021-05-04T00:58:15Z"));
+        ScheduleInfo model = new ScheduleInfo().withFrequency(Frequency.DAILY)
+            .withIsActive(true)
+            .withExecutionTime(new SchedulerTime().withHour(1860294594).withMinute(Minute.ZERO))
+            .withStartDate(OffsetDateTime.parse("2021-03-12T03:03:28Z"))
+            .withDaysOfWeek(Arrays.asList("jriplrbpbewtghf", "blcg"))
+            .withDaysOfMonth(Arrays.asList(748159283, 1623747079, 161265854, 932562427))
+            .withCronExpression("jkbegibtnmxiebww")
+            .withEndDate(OffsetDateTime.parse("2021-01-03T05:44:47Z"))
+            .withRepeatInterval("yqcgwrtzjuzgwy");
         model = BinaryData.fromObject(model).toObject(ScheduleInfo.class);
-        Assertions.assertEquals(Frequency.MONTHLY, model.frequency());
-        Assertions.assertFalse(model.isActive());
-        Assertions.assertEquals(996509936, model.executionTime().hour());
-        Assertions.assertEquals(Minute.THREE_ZERO, model.executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T16:21:10Z"), model.startDate());
-        Assertions.assertEquals("siebtfhvpesapskr", model.daysOfWeek().get(0));
-        Assertions.assertEquals(1341187268, model.daysOfMonth().get(0));
-        Assertions.assertEquals("wsvlxotogtwrupqs", model.cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T00:58:15Z"), model.endDate());
+        Assertions.assertEquals(Frequency.DAILY, model.frequency());
+        Assertions.assertTrue(model.isActive());
+        Assertions.assertEquals(1860294594, model.executionTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:03:28Z"), model.startDate());
+        Assertions.assertEquals("jriplrbpbewtghf", model.daysOfWeek().get(0));
+        Assertions.assertEquals(748159283, model.daysOfMonth().get(0));
+        Assertions.assertEquals("jkbegibtnmxiebww", model.cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T05:44:47Z"), model.endDate());
+        Assertions.assertEquals("yqcgwrtzjuzgwy", model.repeatInterval());
     }
 }

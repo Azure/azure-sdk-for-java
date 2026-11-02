@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class JobDefinitionsStopJobSamples {
     /*
-     * x-ms-original-file: 2025-12-01/JobDefinitions_StopJob.json
+     * x-ms-original-file: 2026-05-01/JobDefinitions_StopJob.json
      */
     /**
      * Sample code: JobDefinitions_StopJob.
