@@ -12,6 +12,9 @@
 
 ### Bugs Fixed
 
+- Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
+  `InterruptedException`, which caused callers to silently lose the interruption signal.
+
 ### Other Changes
 
 ## 1.61.0 (2026-10-27)

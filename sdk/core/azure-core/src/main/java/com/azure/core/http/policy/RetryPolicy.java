@@ -223,6 +223,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     try {
                         Thread.sleep(delayDuration.toMillis());
                     } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                         err.addSuppressed(ex);
                         throw LOGGER.logExceptionAsError(err);
                     }
@@ -252,6 +253,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(delayDuration.toMillis());
                 } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
                     throw LOGGER.logExceptionAsError(new RuntimeException(ie));
                 }
             }
