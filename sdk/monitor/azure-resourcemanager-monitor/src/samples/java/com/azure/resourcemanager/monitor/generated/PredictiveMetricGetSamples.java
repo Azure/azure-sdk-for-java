@@ -11,7 +11,7 @@ import java.time.Duration;
  */
 public final class PredictiveMetricGetSamples {
     /*
-     * x-ms-original-file: 2022-10-01/GetPredictiveMetric.json
+     * x-ms-original-file: 2025-09-01-preview/GetPredictiveMetric.json
      */
     /**
      * Sample code: Get Metric for data.

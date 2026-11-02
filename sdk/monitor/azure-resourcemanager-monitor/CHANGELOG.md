@@ -1,14 +1,687 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
+## 2.54.0-beta.2 (2026-10-23)
 
-### Features Added
+- Package api-version DataCollectionApi: 2024-03-11, PrivateLinkScopesApi: 2023-06-01-preview, AutoScaleApi: 2025-09-01-preview, ActivityLogsApi: 2015-04-01, MetricsApi: 2024-02-01, ServiceDiagnosticsSettingsApi: 2016-09-01, AlertRulesIncidentsApi: 2016-03-01, LogProfilesApi: 2016-03-01, ActivityLogAlertsApi: 2023-01-01-preview, MetricAlertApi: 2026-01-01, ScheduledQueryRuleApi: 2025-01-01-preview, MetricBaselinesApi: 2019-03-01, ActionGroupsApi: 2024-10-01-preview, NetworkSecurityPerimeterApi: 2021-10-01, TenantActionGroups: 2023-05-01-preview, VmInsightsOnboarding: 2018-11-27-preview, DiagnosticsSettings: 2021-05-01-preview.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationDisplay` was removed
 
-### Other Changes
+#### `models.DataCollectionRuleAssociationProxyOnlyResourceListResult` was removed
+
+#### `models.DataCollectionEndpointResourceListResult` was removed
+
+#### `models.EventCategoryCollection` was removed
+
+#### `models.ScopedResourceListResult` was removed
+
+#### `models.Operation` was removed
+
+#### `models.MetricAlertResourceCollection` was removed
+
+#### `models.DataCollectionRuleResourceListResult` was removed
+
+#### `models.MetricDefinitionCollection` was removed
+
+#### `models.MetricAlertStatus` was removed
+
+#### `models.LogProfileCollection` was removed
+
+#### `models.ActionGroupList` was removed
+
+#### `models.MetricBaselinesResponse` was removed
+
+#### `models.MetricNamespaceCollection` was removed
+
+#### `models.AzureMonitorPrivateLinkScopeListResult` was removed
+
+#### `models.ScheduledQueryRuleResourceCollection` was removed
+
+#### `models.IncidentListResult` was removed
+
+#### `models.AlertRuleList` was removed
+
+#### `models.EventDataCollection` was removed
+
+#### `models.AutoscaleSettingResourceCollection` was removed
+
+#### `models.AutoscaleNotification` was modified
+
+* `withOperation(java.lang.String)` was removed
+
+#### `models.DataCollectionRuleMetadata` was modified
+
+* `DataCollectionRuleMetadata()` was changed to private access
+
+#### `models.MetricValue` was modified
+
+* `MetricValue()` was changed to private access
+* `withTotal(java.lang.Double)` was removed
+* `withMaximum(java.lang.Double)` was removed
+* `withCount(java.lang.Double)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withMinimum(java.lang.Double)` was removed
+* `withAverage(java.lang.Double)` was removed
+
+#### `models.DataContainer` was modified
+
+* `DataContainer()` was changed to private access
+* `withWorkspace(models.WorkspaceInfo)` was removed
+
+#### `models.CategoryType` was modified
+
+* `models.CategoryType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+#### `models.ConditionOperator` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.ConditionOperator[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.BaselineMetadata` was modified
+
+* `BaselineMetadata()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.HttpRequestInfo` was modified
+
+* `HttpRequestInfo()` was changed to private access
+* `withMethod(java.lang.String)` was removed
+* `withClientRequestId(java.lang.String)` was removed
+* `withClientIpAddress(java.lang.String)` was removed
+* `withUri(java.lang.String)` was removed
+
+#### `models.SingleBaseline` was modified
+
+* `SingleBaseline()` was changed to private access
+* `withHighThresholds(java.util.List)` was removed
+* `withSensitivity(models.BaselineSensitivity)` was removed
+* `withLowThresholds(java.util.List)` was removed
+
+#### `models.WorkspaceInfo` was modified
+
+* `WorkspaceInfo()` was changed to private access
+* `withCustomerId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.SenderAuthorization` was modified
+
+* `SenderAuthorization()` was changed to private access
+* `withAction(java.lang.String)` was removed
+* `withRole(java.lang.String)` was removed
+* `withScope(java.lang.String)` was removed
+
+#### `models.MetricAvailability` was modified
+
+* `MetricAvailability()` was changed to private access
+* `withTimeGrain(java.time.Duration)` was removed
+* `withRetention(java.time.Duration)` was removed
+
+#### `models.TimeSeriesBaseline` was modified
+
+* `TimeSeriesBaseline()` was changed to private access
+* `withMetadataValues(java.util.List)` was removed
+* `withAggregation(java.lang.String)` was removed
+* `withData(java.util.List)` was removed
+* `withTimestamps(java.util.List)` was removed
+* `withDimensions(java.util.List)` was removed
+
+#### `models.DataCollectionRuleAssociationMetadata` was modified
+
+* `DataCollectionRuleAssociationMetadata()` was changed to private access
+
+#### `models.MetricNamespaceName` was modified
+
+* `MetricNamespaceName()` was changed to private access
+* `withMetricNamespaceName(java.lang.String)` was removed
+
+#### `models.MetricSingleDimension` was modified
+
+* `MetricSingleDimension()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.MetricAlertStatusProperties` was modified
+
+* `MetricAlertStatusProperties()` was changed to private access
+* `withStatus(java.lang.String)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withDimensions(java.util.Map)` was removed
+
+#### `models.PredictiveValue` was modified
+
+* `PredictiveValue()` was changed to private access
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withValue(double)` was removed
+
+#### `models.TimeSeriesElement` was modified
+
+* `TimeSeriesElement()` was changed to private access
+* `withData(java.util.List)` was removed
+* `withMetadatavalues(java.util.List)` was removed
+
+#### `models.Context` was modified
+
+* `Context()` was changed to private access
+* `withNotificationSource(java.lang.String)` was removed
+* `withContextType(java.lang.String)` was removed
+
+#### `models.AlertSeverity` was modified
+
+* `AlertSeverity()` was removed
+* `fromLong(long)` was removed
+
+#### `models.ActionDetail` was modified
+
+* `ActionDetail()` was changed to private access
+* `withSubState(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withSendTime(java.lang.String)` was removed
+* `withMechanismType(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withDetail(java.lang.String)` was removed
+
+### Features Added
+
+* `models.PromQLCriteria` was added
+
+* `models.IngestionQuotas` was added
+
+* `models.EtwProviderDataSource` was added
+
+* `models.IdentityType` was added
+
+* `models.DirectDataSourcesSpec` was added
+
+* `models.WindowsFirewallLogsDataSource` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.KnownOtelTracesDirectDataSourceStreams` was added
+
+* `models.OtelTracesDirectDataSource` was added
+
+* `models.UserIdentityProperties` was added
+
+* `models.DataCollectionEndpointResourceIdentity` was added
+
+* `models.ServiceDiagnosticSettingsResourcePatch` was added
+
+* `models.QueryFailingPeriods` was added
+
+* `models.KnownAgentSettingName` was added
+
+* `models.ScopedResourceKind` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.MetricResultType` was added
+
+* `models.DynamicPromQLCriteria` was added
+
+* `models.OtelLogsDirectDataSource` was added
+
+* `models.DataCollectionEndpointMetadata` was added
+
+* `models.DataSourcesSpecDataImports` was added
+
+* `models.NetworkSecurityProfile` was added
+
+* `models.KnownOtelLogsDirectDataSourceStreams` was added
+
+* `models.ReferencesSpec` was added
+
+* `models.Severity` was added
+
+* `models.TenantActionGroupActionDetail` was added
+
+* `models.KnownWindowsFirewallLogsDataSourceProfileFilter` was added
+
+* `models.SubscriptionScopeMetricsRequestBodyParameters` was added
+
+* `models.IngestionQuotasLogs` was added
+
+* `models.RuleResolveConfiguration` was added
+
+* `models.KnownOtelTracesDataSourceStreams` was added
+
+* `models.DataCollectionRuleResourceSku` was added
+
+* `models.DataCollectionRuleResourceIdentity` was added
+
+* `models.AgentSetting` was added
+
+* `models.KnownStorageBlobLookupType` was added
+
+* `models.TenantActionGroupWebhookReceiver` was added
+
+* `models.FailoverConfigurationSpec` was added
+
+* `models.OtelTracesDataSourceResourceAttributeRouting` was added
+
+* `models.StaticPromQLCriteria` was added
+
+* `models.DataCollectionEndpointMetricsIngestion` was added
+
+* `models.PlatformTelemetryDataSource` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.DataImportSourcesEventHub` was added
+
+* `models.DataCollectionRuleReferences` was added
+
+* `models.OtelTracesDataSource` was added
+
+* `models.EventHubDirectDestination` was added
+
+* `models.DataCollectionRuleEndpoints` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.EventHubDestination` was added
+
+* `models.LogsQuotaSpec` was added
+
+* `models.IncidentReceiver` was added
+
+* `models.OtelMetricsDirectDataSource` was added
+
+* `models.OtelMetricsDataSourceResourceAttributeRouting` was added
+
+* `models.AccessRuleProperties` was added
+
+* `models.DataCollectionEndpointResourceSku` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.DataCollectionRuleAgentSettings` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.OtelLogsDataSourceResourceAttributeRouting` was added
+
+* `models.MicrosoftFabricDestination` was added
+
+* `models.PrivateLinkScopeProvisioningState` was added
+
+* `models.PrometheusForwarderDataSource` was added
+
+* `models.StorageBlobDestination` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.Sku` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.KnownPerformanceCountersOTelDataSourceStreams` was added
+
+* `models.ApplicationInsights` was added
+
+* `models.AccessRule` was added
+
+* `models.KnownOtelLogsDataSourceStreams` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.TenantNotificationRequestBody` was added
+
+* `models.MetricAggregationType` was added
+
+* `models.Identity` was added
+
+* `models.MetricsIngestionEndpointSpec` was added
+
+* `models.SkuTier` was added
+
+* `models.OtelDataSourceResourceAttributeRouting` was added
+
+* `models.PerformanceCountersOTelDataSource` was added
+
+* `models.StorageBlob` was added
+
+* `models.KnownLocationSpecProvisioningStatus` was added
+
+* `models.OtelMetricsDataSource` was added
+
+* `models.KnownPrometheusForwarderDataSourceStreams` was added
+
+* `models.DataImportSources` was added
+
+* `models.OtelLogsDataSource` was added
+
+* `models.DataCollectionRuleIngestionQuotas` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.ReferencesSpecEnrichmentData` was added
+
+* `models.StorageTableDestination` was added
+
+* `models.KnownEtwProviderDataSourceLogLevel` was added
+
+* `models.PrivateLinkScopedResource` was added
+
+* `models.AdxDestination` was added
+
+* `models.EnrichmentData` was added
+
+* `models.ResolveConfiguration` was added
+
+* `models.MonitoringAccountDestination` was added
+
+* `models.DataCollectionRuleDirectDataSources` was added
+
+* `models.MultiPromQLCriteria` was added
+
+* `models.EndpointsSpec` was added
+
+* `models.IncidentManagementService` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.TenantActionGroupPatchBody` was added
+
+* `models.AgentSettingsSpec` was added
+
+* `models.EventHubDataSource` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.ResourceForUpdateIdentity` was added
+
+* `models.IssueType` was added
+
+* `models.KnownEtwProviderType` was added
+
+* `models.DataCollectionEndpointFailoverConfiguration` was added
+
+* `models.LocationSpec` was added
+
+* `models.IncidentServiceConnection` was added
+
+* `models.ScopedResourceProvisioningState` was added
+
+#### `models.DataCollectionRuleDataSources` was modified
+
+* `withPrometheusForwarder(java.util.List)` was added
+* `withDataImports(models.DataSourcesSpecDataImports)` was added
+* `withPlatformTelemetry(java.util.List)` was added
+* `withOtelLogs(java.util.List)` was added
+* `withPerformanceCountersOTel(java.util.List)` was added
+* `withEtwProviders(java.util.List)` was added
+* `withOtelTraces(java.util.List)` was added
+* `withWindowsFirewallLogs(java.util.List)` was added
+* `withOtelMetrics(java.util.List)` was added
+
+#### `models.MetricAlertResourcePatch` was modified
+
+* `identity()` was added
+* `customProperties()` was added
+* `actionProperties()` was added
+* `withCustomProperties(java.util.Map)` was added
+* `withResolveConfiguration(models.ResolveConfiguration)` was added
+* `withActionProperties(java.util.Map)` was added
+* `resolveConfiguration()` was added
+* `withIdentity(models.Identity)` was added
+
+#### `models.ActivityLogAlertActionGroup` was modified
+
+* `actionProperties()` was added
+* `withActionProperties(java.util.Map)` was added
+
+#### `models.Odatatype` was modified
+
+* `MICROSOFT_AZURE_MONITOR_PROM_QLCRITERIA` was added
+
+#### `models.DataCollectionEndpoint` was modified
+
+* `privateLinkScopedResources()` was added
+* `failoverConfiguration()` was added
+* `metadata()` was added
+* `withMetricsIngestion(models.DataCollectionEndpointMetricsIngestion)` was added
+* `metricsIngestion()` was added
+
+#### `models.Actions` was modified
+
+* `withActionProperties(java.util.Map)` was added
+* `actionProperties()` was added
+
+#### `models.DataCollectionRuleMetadata` was modified
+
+* `provisionedByResourceId()` was added
+* `provisionedByImmutableId()` was added
+
+#### `models.SyslogDataSource` was modified
+
+* `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
+
+#### `models.WebhookReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `models.CategoryType` was modified
+
+* `CategoryType()` was added
+
+#### `models.ConditionOperator` was modified
+
+* `ConditionOperator()` was added
+* `GREATER_OR_LESS_THAN` was added
+
+#### `models.LogFilesDataSource` was modified
+
+* `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
+
+#### `models.DataSourcesSpec` was modified
+
+* `otelTraces()` was added
+* `withPerformanceCountersOTel(java.util.List)` was added
+* `otelLogs()` was added
+* `withDataImports(models.DataSourcesSpecDataImports)` was added
+* `platformTelemetry()` was added
+* `performanceCountersOTel()` was added
+* `withOtelTraces(java.util.List)` was added
+* `withPlatformTelemetry(java.util.List)` was added
+* `etwProviders()` was added
+* `withOtelLogs(java.util.List)` was added
+* `withWindowsFirewallLogs(java.util.List)` was added
+* `prometheusForwarder()` was added
+* `otelMetrics()` was added
+* `windowsFirewallLogs()` was added
+* `withOtelMetrics(java.util.List)` was added
+* `dataImports()` was added
+* `withEtwProviders(java.util.List)` was added
+* `withPrometheusForwarder(java.util.List)` was added
+
+#### `models.Metadata` was modified
+
+* `provisionedByImmutableId()` was added
+* `provisionedByResourceId()` was added
+
+#### `models.AutomationRunbookReceiver` was modified
+
+* `managedIdentity()` was added
+* `withManagedIdentity(java.lang.String)` was added
+
+#### `models.AzureFunctionReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `MonitorManager` was modified
+
+* `alertRuleClient()` was added
+
+#### `models.IisLogsDataSource` was modified
+
+* `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
+
+#### `models.DestinationsSpec` was modified
+
+* `withMicrosoftFabric(java.util.List)` was added
+* `withStorageAccounts(java.util.List)` was added
+* `storageTablesDirect()` was added
+* `storageAccounts()` was added
+* `storageBlobsDirect()` was added
+* `withEventHubsDirect(java.util.List)` was added
+* `withEventHubs(java.util.List)` was added
+* `withAzureDataExplorer(java.util.List)` was added
+* `azureDataExplorer()` was added
+* `eventHubs()` was added
+* `microsoftFabric()` was added
+* `withMonitoringAccounts(java.util.List)` was added
+* `monitoringAccounts()` was added
+* `withStorageBlobsDirect(java.util.List)` was added
+* `eventHubsDirect()` was added
+* `withStorageTablesDirect(java.util.List)` was added
+
+#### `models.KnownDataCollectionRuleProvisioningState` was modified
+
+* `CANCELED` was added
+
+#### `models.NotificationRequestBody` was modified
+
+* `incidentReceivers()` was added
+* `withIncidentReceivers(java.util.List)` was added
+
+#### `models.KnownDataCollectionEndpointProvisioningState` was modified
+
+* `CANCELED` was added
+
+#### `models.ScheduledQueryRuleResourcePatch` was modified
+
+* `withResolveConfiguration(models.RuleResolveConfiguration)` was added
+* `resolveConfiguration()` was added
+* `withIdentity(models.Identity)` was added
+* `identity()` was added
+
+#### `models.KnownPublicNetworkAccessOptions` was modified
+
+* `SECURED_BY_PERIMETER` was added
+
+#### `models.DataCollectionRule` was modified
+
+* `withDirectDataSources(models.DataCollectionRuleDirectDataSources)` was added
+* `references()` was added
+* `withReferences(models.DataCollectionRuleReferences)` was added
+* `endpoints()` was added
+* `directDataSources()` was added
+* `withAgentSettings(models.DataCollectionRuleAgentSettings)` was added
+* `ingestionQuotas()` was added
+* `agentSettings()` was added
+
+#### `models.DataFlow` was modified
+
+* `builtInTransform()` was added
+* `withCaptureOverflow(java.lang.Boolean)` was added
+* `withBuiltInTransform(java.lang.String)` was added
+* `captureOverflow()` was added
+
+#### `models.DataCollectionRuleDestinations` was modified
+
+* `withMonitoringAccounts(java.util.List)` was added
+* `withAzureDataExplorer(java.util.List)` was added
+* `withMicrosoftFabric(java.util.List)` was added
+* `withStorageTablesDirect(java.util.List)` was added
+* `withEventHubs(java.util.List)` was added
+* `withEventHubsDirect(java.util.List)` was added
+* `withStorageAccounts(java.util.List)` was added
+* `withStorageBlobsDirect(java.util.List)` was added
+
+#### `models.DataCollectionRuleAssociationMetadata` was modified
+
+* `provisionedByResourceId()` was added
+* `provisionedByImmutableId()` was added
+
+#### `models.WindowsEventLogDataSource` was modified
+
+* `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
+
+#### `models.PerfCounterDataSource` was modified
+
+* `withTransformKql(java.lang.String)` was added
+* `transformKql()` was added
+
+#### `models.ResourceForUpdate` was modified
+
+* `identity()` was added
+* `withIdentity(models.ResourceForUpdateIdentity)` was added
+
+#### `models.Kind` was modified
+
+* `SIMPLE_LOG_ALERT` was added
+
+#### `models.KnownSyslogDataSourceFacilityNames` was modified
+
+* `AUDIT` was added
+* `FTP` was added
+* `ALERT` was added
+* `NTP` was added
+* `NOPRI` was added
+* `CLOCK` was added
+
+#### `models.KnownDataCollectionRuleAssociationProvisioningState` was modified
+
+* `CANCELED` was added
+
+#### `models.AutoscaleSettingResourcePatch` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Condition` was modified
+
+* `withIgnoreDataBefore(java.time.OffsetDateTime)` was added
+* `criterionType()` was added
+* `withCriterionType(models.CriterionType)` was added
+* `ignoreDataBefore()` was added
+* `withAlertSensitivity(java.lang.String)` was added
+* `withMinRecurrenceCount(java.lang.Long)` was added
+* `minRecurrenceCount()` was added
+* `alertSensitivity()` was added
+
+#### `models.EventHubReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `models.KnownLogFilesDataSourceFormat` was modified
+
+* `JSON` was added
+
+#### `models.AlertSeverity` was modified
+
+* `getValue()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `fromValue(java.lang.Long)` was added
+* `equals(java.lang.Object)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `hashCode()` was added
+* `toString()` was added
+
+#### `models.LogicAppReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `models.ActionGroupPatchBody` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 ## 2.53.12 (2026-10-09)
 
