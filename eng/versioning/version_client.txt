@@ -285,7 +285,7 @@ com.azure.resourcemanager:azure-resourcemanager-search;2.54.11;2.55.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.12;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sql;2.54.3;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-storage;2.59.0;2.60.0
-com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.54.0;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.54.0;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.2;1.1.0-beta.1
