@@ -597,6 +597,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(String location,
         String publisherName, String type, String filter, Integer top, String orderby, Context context) {
+        final ListVersionsExpandOptions expand = null;
         return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby, context).block();
     }
 

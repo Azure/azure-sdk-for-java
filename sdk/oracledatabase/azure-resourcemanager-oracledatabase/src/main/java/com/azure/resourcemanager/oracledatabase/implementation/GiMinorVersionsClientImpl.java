@@ -251,6 +251,9 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname,
         ShapeFamily shapeFamily, String zone) {
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
         return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone),
             nextLink -> listByParentNextSinglePageAsync(nextLink));
     }
@@ -406,6 +409,9 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname,
         ShapeFamily shapeFamily, String zone, Context context) {
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
         return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone, context),
             nextLink -> listByParentNextSinglePage(nextLink, context));
     }

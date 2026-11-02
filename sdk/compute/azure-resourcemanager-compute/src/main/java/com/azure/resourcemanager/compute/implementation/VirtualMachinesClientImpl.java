@@ -2903,6 +2903,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
         Boolean hibernate, Context context) {
+        final Boolean forceDeallocate = null;
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deallocateWithResponseAsync(resourceGroupName, vmName, hibernate, context);
@@ -2925,6 +2926,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
         Boolean hibernate) {
+        final Boolean forceDeallocate = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, vmName, hibernate);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
@@ -2985,6 +2987,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName,
         Boolean hibernate, Context context) {
+        final Boolean forceDeallocate = null;
         return this.beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).getSyncPoller();
     }
 
@@ -3063,6 +3066,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        final Boolean forceDeallocate = null;
         return beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3081,6 +3085,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate) {
+        final Boolean forceDeallocate = null;
         return beginDeallocateAsync(resourceGroupName, vmName, hibernate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3135,6 +3140,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        final Boolean forceDeallocate = null;
         deallocateAsync(resourceGroupName, vmName, hibernate, context).block();
     }
 

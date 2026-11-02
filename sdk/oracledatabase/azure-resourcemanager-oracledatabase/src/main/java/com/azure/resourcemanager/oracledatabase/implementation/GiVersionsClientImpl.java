@@ -285,6 +285,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GiVersionInner> listByLocationAsync(String location, SystemShapes shape, String zone) {
+        final String shapeAttribute = null;
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, shape, zone),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
@@ -413,6 +414,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiVersionInner> listByLocation(String location, SystemShapes shape, String zone,
         Context context) {
+        final String shapeAttribute = null;
         return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone, context),
             nextLink -> listByLocationNextSinglePage(nextLink, context));
     }

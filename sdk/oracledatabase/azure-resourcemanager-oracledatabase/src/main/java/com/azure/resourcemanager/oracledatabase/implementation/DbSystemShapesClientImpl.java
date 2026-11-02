@@ -275,6 +275,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DbSystemShapeInner> listByLocationAsync(String location, String zone) {
+        final String shapeAttribute = null;
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, zone),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
@@ -395,6 +396,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemShapeInner> listByLocation(String location, String zone, Context context) {
+        final String shapeAttribute = null;
         return new PagedIterable<>(() -> listByLocationSinglePage(location, zone, context),
             nextLink -> listByLocationNextSinglePage(nextLink, context));
     }
