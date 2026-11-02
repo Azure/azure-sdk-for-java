@@ -9,6 +9,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.ComparisonFilter;
+import com.openai.models.CompoundFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -152,8 +154,8 @@ public final class FileSearchTool extends Tool {
      *
      * @return the filters value.
      */
-    @Generated
-    public BinaryData getFilters() {
+    BinaryData getFilters() {
+        // AI Tooling: union type
         return this.filters;
     }
 
@@ -163,10 +165,100 @@ public final class FileSearchTool extends Tool {
      * @param filters the filters value to set.
      * @return the FileSearchTool object itself.
      */
-    @Generated
-    public FileSearchTool setFilters(BinaryData filters) {
+    FileSearchTool setFilters(BinaryData filters) {
+        // AI Tooling: union type
         this.filters = filters;
         return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link ComparisonFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link com.azure.core.util.BinaryData}.
+     *
+     * @param filter the openai-java ComparisonFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setComparisonFilter(ComparisonFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /**
+     * Gets the file search filters as an openai-java {@link ComparisonFilter}.
+     *
+     * @return the openai-java ComparisonFilter, or {@code null} if filters are not set or contain a different filter
+     * type.
+     */
+    public ComparisonFilter getComparisonFilter() {
+        // AI Tooling: openai-java de-dup
+        Object filter = getOpenAIFileSearchFilter();
+        if (filter instanceof ComparisonFilter) {
+            return (ComparisonFilter) filter;
+        }
+        return null;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link CompoundFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link BinaryData}.
+     *
+     * @param filter the openai-java CompoundFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setCompoundFilter(CompoundFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /**
+     * Gets the file search filters as an openai-java {@link CompoundFilter}.
+     *
+     * @return the openai-java CompoundFilter, or {@code null} if filters are not set or contain a different filter
+     * type.
+     */
+    public CompoundFilter getCompoundFilter() {
+        // AI Tooling: openai-java de-dup
+        Object filter = getOpenAIFileSearchFilter();
+        if (filter instanceof CompoundFilter) {
+            return (CompoundFilter) filter;
+        }
+        return null;
+    }
+
+    private Object getOpenAIFileSearchFilter() {
+        // AI Tooling: openai-java de-dup
+        com.openai.models.responses.FileSearchTool.Filters filter = com.azure.ai.agents.implementation.OpenAIJsonHelper
+            .fromBinaryData(this.filters, com.openai.models.responses.FileSearchTool.Filters.class);
+        if (filter == null) {
+            return null;
+        }
+        if (filter.isComparisonFilter()) {
+            ComparisonFilter comparisonFilter = filter.asComparisonFilter();
+            if (!comparisonFilter._key().isMissing()
+                && !comparisonFilter._key().isNull()
+                && !comparisonFilter._type().isMissing()
+                && !comparisonFilter._type().isNull()
+                && !comparisonFilter._value().isMissing()
+                && !comparisonFilter._value().isNull()) {
+                return comparisonFilter;
+            }
+        }
+        if (filter.isCompoundFilter()) {
+            CompoundFilter compoundFilter = filter.asCompoundFilter();
+            if (!compoundFilter._type().isMissing()
+                && !compoundFilter._type().isNull()
+                && !compoundFilter._filters().isMissing()
+                && !compoundFilter._filters().isNull()) {
+                return compoundFilter;
+            }
+        }
+        return null;
     }
 
     /**
