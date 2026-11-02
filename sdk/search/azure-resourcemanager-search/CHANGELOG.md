@@ -1,14 +1,171 @@
 # Release History
 
-## 2.55.0-beta.3 (Unreleased)
+## 2.55.0 (2026-11-01)
 
-### Features Added
+- Package api-version 2026-11-01.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SearchServiceListResult` was removed
 
-### Other Changes
+#### `models.PrivateLinkResourcesResult` was removed
+
+#### `models.SharedPrivateLinkResourceListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.QuotaUsagesListResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ListQueryKeysResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
+
+* `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `withResourceAssociation(models.ResourceAssociation)` was removed
+* `withProfile(models.NetworkSecurityProfile)` was removed
+
+#### `models.AccessRuleProperties` was modified
+
+* `AccessRuleProperties()` was changed to private access
+* `withAddressPrefixes(java.util.List)` was removed
+* `withPhoneNumbers(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
+* `withDirection(models.AccessRuleDirection)` was removed
+* `withEmailAddresses(java.util.List)` was removed
+
+#### `models.ProvisioningIssue` was modified
+
+* `ProvisioningIssue()` was changed to private access
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+#### `models.ProvisioningIssueProperties` was modified
+
+* `ProvisioningIssueProperties()` was changed to private access
+
+#### `models.QuotaUsageResultName` was modified
+
+* `QuotaUsageResultName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.ShareablePrivateLinkResourceProperties` was modified
+
+* `ShareablePrivateLinkResourceProperties()` was changed to private access
+
+#### `models.AccessRulePropertiesSubscriptionsItem` was modified
+
+* `AccessRulePropertiesSubscriptionsItem()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.NetworkSecurityProfile` was modified
+
+* `NetworkSecurityProfile()` was changed to private access
+* `withAccessRules(java.util.List)` was removed
+* `withDiagnosticSettingsVersion(java.lang.Integer)` was removed
+* `withName(java.lang.String)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+* `withAccessRulesVersion(java.lang.Integer)` was removed
+
+#### `models.AccessRule` was modified
+
+* `AccessRule()` was changed to private access
+* `withProperties(models.AccessRuleProperties)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `NetworkSecurityPerimeter()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withPerimeterGuid(java.util.UUID)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.ShareablePrivateLinkResourceType` was modified
+
+* `ShareablePrivateLinkResourceType()` was changed to private access
+
+#### `models.CheckNameAvailabilityOutput` was modified
+
+* `CheckNameAvailabilityOutput()` was changed to private access
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `PrivateLinkResourceProperties()` was changed to private access
+
+#### `models.PublicNetworkAccess` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.PublicNetworkAccess[] values()` -> `java.util.Collection values()`
+
+#### `models.ResourceAssociation` was modified
+
+* `ResourceAssociation()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+
+#### `models.SharedPrivateLinkResourceProvisioningState` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.SharedPrivateLinkResourceProvisioningState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.SkuName` was modified
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.SkuName[] values()` -> `java.util.Collection values()`
+
+#### `models.SharedPrivateLinkResourceStatus` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.SharedPrivateLinkResourceStatus[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.IdentityType` was modified
+
+* `models.IdentityType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+* `models.KnowledgeRetrieval` was added
+
+#### `models.PublicNetworkAccess` was modified
+
+* `PublicNetworkAccess()` was added
+
+#### `models.SearchServiceUpdate` was modified
+
+* `withKnowledgeRetrieval(models.KnowledgeRetrieval)` was added
+* `knowledgeRetrieval()` was added
+
+#### `models.SharedPrivateLinkResourceProvisioningState` was modified
+
+* `SharedPrivateLinkResourceProvisioningState()` was added
+
+#### `models.SkuName` was modified
+
+* `SkuName()` was added
+* `SERVERLESS` was added
+
+#### `models.SharedPrivateLinkResourceStatus` was modified
+
+* `SharedPrivateLinkResourceStatus()` was added
+
+#### `models.IdentityType` was modified
+
+* `IdentityType()` was added
 
 ## 2.54.11 (2026-10-09)
 

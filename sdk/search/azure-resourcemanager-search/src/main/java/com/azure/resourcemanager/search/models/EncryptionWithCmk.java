@@ -29,11 +29,6 @@ public final class EncryptionWithCmk implements JsonSerializable<EncryptionWithC
      */
     private SearchEncryptionComplianceStatus encryptionComplianceStatus;
 
-    /*
-     * Describes the customer-managed key configuration for encrypting the search service.
-     */
-    private SearchResourceEncryptionKey serviceLevelEncryptionKey;
-
     /**
      * Creates an instance of EncryptionWithCmk class.
      */
@@ -74,36 +69,11 @@ public final class EncryptionWithCmk implements JsonSerializable<EncryptionWithC
     }
 
     /**
-     * Get the serviceLevelEncryptionKey property: Describes the customer-managed key configuration for encrypting the
-     * search service.
-     * 
-     * @return the serviceLevelEncryptionKey value.
-     */
-    public SearchResourceEncryptionKey serviceLevelEncryptionKey() {
-        return this.serviceLevelEncryptionKey;
-    }
-
-    /**
-     * Set the serviceLevelEncryptionKey property: Describes the customer-managed key configuration for encrypting the
-     * search service.
-     * 
-     * @param serviceLevelEncryptionKey the serviceLevelEncryptionKey value to set.
-     * @return the EncryptionWithCmk object itself.
-     */
-    public EncryptionWithCmk withServiceLevelEncryptionKey(SearchResourceEncryptionKey serviceLevelEncryptionKey) {
-        this.serviceLevelEncryptionKey = serviceLevelEncryptionKey;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (serviceLevelEncryptionKey() != null) {
-            serviceLevelEncryptionKey().validate();
-        }
     }
 
     /**
@@ -113,7 +83,6 @@ public final class EncryptionWithCmk implements JsonSerializable<EncryptionWithC
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("enforcement", this.enforcement == null ? null : this.enforcement.toString());
-        jsonWriter.writeJsonField("serviceLevelEncryptionKey", this.serviceLevelEncryptionKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -137,9 +106,6 @@ public final class EncryptionWithCmk implements JsonSerializable<EncryptionWithC
                 } else if ("encryptionComplianceStatus".equals(fieldName)) {
                     deserializedEncryptionWithCmk.encryptionComplianceStatus
                         = SearchEncryptionComplianceStatus.fromString(reader.getString());
-                } else if ("serviceLevelEncryptionKey".equals(fieldName)) {
-                    deserializedEncryptionWithCmk.serviceLevelEncryptionKey
-                        = SearchResourceEncryptionKey.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
