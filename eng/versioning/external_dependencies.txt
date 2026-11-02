@@ -158,7 +158,7 @@ com.beust:jcommander;1.82
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.github.javaparser:javaparser-core;3.28.2
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;9.37.3
+com.nimbusds:nimbus-jose-jwt;9.37.4
 com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.12.0
 commons-io:commons-io;2.17.0

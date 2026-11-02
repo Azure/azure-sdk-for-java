@@ -143,9 +143,19 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
             "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}",
+                "resourceGroupName");
+        }
         this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
             "commitmentPlanName");
+        if (this.commitmentPlanName == null) {
+            this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}",
+                "commitmentPlanName");
+        }
     }
 
     public CommitmentPlan refresh() {

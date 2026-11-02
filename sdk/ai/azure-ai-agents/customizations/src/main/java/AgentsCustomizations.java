@@ -14,6 +14,8 @@ import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
+import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -39,6 +41,7 @@ public class AgentsCustomizations extends Customization {
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
         stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
+        deprecateLegacyBrowserAutomationTools(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
@@ -75,6 +78,50 @@ public class AgentsCustomizations extends Customization {
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
+
+    private void deprecateLegacyBrowserAutomationTools(LibraryCustomization customization) {
+        for (String className : Arrays.asList("BrowserAutomationPreviewTool", "BrowserAutomationPreviewToolboxTool")) {
+            customization.getClass(MODELS_PACKAGE, className).customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"));
+                deprecateBrowserAutomationNode(clazz, className.replace("Preview", ""));
+            });
+        }
+
+        customization.getClass(MODELS_PACKAGE, "ToolType").customizeAst(ast -> {
+            FieldDeclaration field = ast.getClassByName("ToolType")
+                .orElseThrow(() -> new IllegalStateException("ToolType was not generated"))
+                .getFieldByName("BROWSER_AUTOMATION_PREVIEW")
+                .orElseThrow(() -> new IllegalStateException("ToolType.BROWSER_AUTOMATION_PREVIEW was not generated"));
+            deprecateBrowserAutomationNode(field, "ToolType#BROWSER_AUTOMATION");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "ToolboxToolType")
+            .customizeAst(ast -> deprecateBrowserAutomationNode(
+                ast.getEnumByName("ToolboxToolType")
+                    .orElseThrow(() -> new IllegalStateException("ToolboxToolType was not generated"))
+                    .getEntries()
+                    .stream()
+                    .filter(entry -> "BROWSER_AUTOMATION_PREVIEW".equals(entry.getNameAsString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "ToolboxToolType.BROWSER_AUTOMATION_PREVIEW was not generated")),
+                "ToolboxToolType#BROWSER_AUTOMATION"));
+    }
+
+    private <T extends Node & NodeWithAnnotations<T> & NodeWithJavadoc<T>> void deprecateBrowserAutomationNode(T node,
+        String replacement) {
+        if (!node.isAnnotationPresent(Deprecated.class)) {
+            node.addMarkerAnnotation(Deprecated.class);
+        }
+        com.github.javaparser.javadoc.Javadoc javadoc = node.getJavadoc()
+            .orElseThrow(() -> new IllegalStateException("Missing Javadoc for legacy Browser Automation API"));
+        javadoc.getBlockTags().removeIf(tag -> "deprecated".equals(tag.getTagName()));
+        javadoc.addBlockTag("deprecated",
+            "This legacy Browser Automation tool is deprecated and is no longer available. Use {@link " + replacement
+                + "} instead. See <a href=\"https://aka.ms/bat/docs\">Browser Automation documentation</a>.");
+        node.setJavadocComment(javadoc);
+    }
 
     private static final String UNION_MARKER = "AI Tooling: union type";
 
@@ -819,7 +866,9 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateMember(TypeDeclaration<?> type, String member, String description, Logger logger) {
-        String fieldName = toCamelCase(member);
+        String fieldName = type.getFields().stream()
+            .flatMap(field -> field.getVariables().stream())
+            .anyMatch(variable -> variable.getNameAsString().equals(member)) ? member : toCamelCase(member);
         boolean found = false;
 
         for (FieldDeclaration field : type.getFields()) {
