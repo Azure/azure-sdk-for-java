@@ -18,44 +18,43 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateRuntimeImageConfigurationSettings model = BinaryData.fromString(
-            "{\"imageName\":\"hgfipnsxkmcw\",\"imagePullPolicy\":\"Always\",\"readinessProbe\":{\"exec\":{\"command\":[\"reafxtsgumhjg\",\"ikkx\",\"slol\"]},\"failureThreshold\":1671943968,\"initialDelaySeconds\":878184103,\"periodSeconds\":613388775,\"successThreshold\":1725196825,\"timeoutSeconds\":1023850423},\"replicas\":1613313334,\"registrySettings\":{\"registrySettingsType\":\"AkriConnectorsRegistrySettings\"},\"tagDigestSettings\":{\"tagDigestType\":\"AkriConnectorsTagDigestSettings\"}}")
+            "{\"imageName\":\"itvgbmhrixkwm\",\"imagePullPolicy\":\"Always\",\"readinessProbe\":{\"exec\":{\"command\":[\"egrhbpnaixexc\"]},\"failureThreshold\":1390286927,\"initialDelaySeconds\":1956561787,\"periodSeconds\":1155534980,\"successThreshold\":144519378,\"timeoutSeconds\":1486564388},\"replicas\":1191628211,\"registrySettings\":{\"registrySettingsType\":\"AkriConnectorsRegistrySettings\"},\"tagDigestSettings\":{\"tagDigestType\":\"AkriConnectorsTagDigestSettings\"}}")
             .toObject(AkriConnectorTemplateRuntimeImageConfigurationSettings.class);
-        Assertions.assertEquals("hgfipnsxkmcw", model.imageName());
+        Assertions.assertEquals("itvgbmhrixkwm", model.imageName());
         Assertions.assertEquals(AkriConnectorsImagePullPolicy.ALWAYS, model.imagePullPolicy());
-        Assertions.assertEquals("reafxtsgumhjg", model.readinessProbe().exec().command().get(0));
-        Assertions.assertEquals(1671943968, model.readinessProbe().failureThreshold());
-        Assertions.assertEquals(878184103, model.readinessProbe().initialDelaySeconds());
-        Assertions.assertEquals(613388775, model.readinessProbe().periodSeconds());
-        Assertions.assertEquals(1725196825, model.readinessProbe().successThreshold());
-        Assertions.assertEquals(1023850423, model.readinessProbe().timeoutSeconds());
-        Assertions.assertEquals(1613313334, model.replicas());
+        Assertions.assertEquals("egrhbpnaixexc", model.readinessProbe().exec().command().get(0));
+        Assertions.assertEquals(1390286927, model.readinessProbe().failureThreshold());
+        Assertions.assertEquals(1956561787, model.readinessProbe().initialDelaySeconds());
+        Assertions.assertEquals(1155534980, model.readinessProbe().periodSeconds());
+        Assertions.assertEquals(144519378, model.readinessProbe().successThreshold());
+        Assertions.assertEquals(1486564388, model.readinessProbe().timeoutSeconds());
+        Assertions.assertEquals(1191628211, model.replicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateRuntimeImageConfigurationSettings model
-            = new AkriConnectorTemplateRuntimeImageConfigurationSettings().withImageName("hgfipnsxkmcw")
+            = new AkriConnectorTemplateRuntimeImageConfigurationSettings().withImageName("itvgbmhrixkwm")
                 .withImagePullPolicy(AkriConnectorsImagePullPolicy.ALWAYS)
                 .withReadinessProbe(new AkriConnectorTemplateReadinessProbe()
-                    .withExec(new AkriConnectorTemplateExecAction()
-                        .withCommand(Arrays.asList("reafxtsgumhjg", "ikkx", "slol")))
-                    .withFailureThreshold(1671943968)
-                    .withInitialDelaySeconds(878184103)
-                    .withPeriodSeconds(613388775)
-                    .withSuccessThreshold(1725196825)
-                    .withTimeoutSeconds(1023850423))
-                .withReplicas(1613313334)
+                    .withExec(new AkriConnectorTemplateExecAction().withCommand(Arrays.asList("egrhbpnaixexc")))
+                    .withFailureThreshold(1390286927)
+                    .withInitialDelaySeconds(1956561787)
+                    .withPeriodSeconds(1155534980)
+                    .withSuccessThreshold(144519378)
+                    .withTimeoutSeconds(1486564388))
+                .withReplicas(1191628211)
                 .withRegistrySettings(new AkriConnectorsRegistrySettings())
                 .withTagDigestSettings(new AkriConnectorsTagDigestSettings());
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateRuntimeImageConfigurationSettings.class);
-        Assertions.assertEquals("hgfipnsxkmcw", model.imageName());
+        Assertions.assertEquals("itvgbmhrixkwm", model.imageName());
         Assertions.assertEquals(AkriConnectorsImagePullPolicy.ALWAYS, model.imagePullPolicy());
-        Assertions.assertEquals("reafxtsgumhjg", model.readinessProbe().exec().command().get(0));
-        Assertions.assertEquals(1671943968, model.readinessProbe().failureThreshold());
-        Assertions.assertEquals(878184103, model.readinessProbe().initialDelaySeconds());
-        Assertions.assertEquals(613388775, model.readinessProbe().periodSeconds());
-        Assertions.assertEquals(1725196825, model.readinessProbe().successThreshold());
-        Assertions.assertEquals(1023850423, model.readinessProbe().timeoutSeconds());
-        Assertions.assertEquals(1613313334, model.replicas());
+        Assertions.assertEquals("egrhbpnaixexc", model.readinessProbe().exec().command().get(0));
+        Assertions.assertEquals(1390286927, model.readinessProbe().failureThreshold());
+        Assertions.assertEquals(1956561787, model.readinessProbe().initialDelaySeconds());
+        Assertions.assertEquals(1155534980, model.readinessProbe().periodSeconds());
+        Assertions.assertEquals(144519378, model.readinessProbe().successThreshold());
+        Assertions.assertEquals(1486564388, model.readinessProbe().timeoutSeconds());
+        Assertions.assertEquals(1191628211, model.replicas());
     }
 }

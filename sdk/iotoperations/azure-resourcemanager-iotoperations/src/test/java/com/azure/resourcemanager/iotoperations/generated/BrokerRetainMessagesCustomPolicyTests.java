@@ -16,19 +16,20 @@ public final class BrokerRetainMessagesCustomPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerRetainMessagesCustomPolicy model = BinaryData.fromString(
-            "{\"mode\":\"Custom\",\"retainSettings\":{\"topics\":[\"cynpwlbjnp\"],\"dynamic\":{\"mode\":\"Enabled\"}}}")
+            "{\"mode\":\"Custom\",\"retainSettings\":{\"topics\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"dynamic\":{\"mode\":\"Enabled\"}}}")
             .toObject(BrokerRetainMessagesCustomPolicy.class);
-        Assertions.assertEquals("cynpwlbjnp", model.retainSettings().topics().get(0));
+        Assertions.assertEquals("l", model.retainSettings().topics().get(0));
         Assertions.assertEquals(OperationalMode.ENABLED, model.retainSettings().dynamic().mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerRetainMessagesCustomPolicy model = new BrokerRetainMessagesCustomPolicy()
-            .withRetainSettings(new BrokerRetainMessagesSettings().withTopics(Arrays.asList("cynpwlbjnp"))
+        BrokerRetainMessagesCustomPolicy model
+            = new BrokerRetainMessagesCustomPolicy().withRetainSettings(new BrokerRetainMessagesSettings()
+                .withTopics(Arrays.asList("l", "bxetqgtzxdpn", "bqqwxrj", "eallnwsubisnj"))
                 .withDynamic(new BrokerRetainMessagesDynamic().withMode(OperationalMode.ENABLED)));
         model = BinaryData.fromObject(model).toObject(BrokerRetainMessagesCustomPolicy.class);
-        Assertions.assertEquals("cynpwlbjnp", model.retainSettings().topics().get(0));
+        Assertions.assertEquals("l", model.retainSettings().topics().get(0));
         Assertions.assertEquals(OperationalMode.ENABLED, model.retainSettings().dynamic().mode());
     }
 }
