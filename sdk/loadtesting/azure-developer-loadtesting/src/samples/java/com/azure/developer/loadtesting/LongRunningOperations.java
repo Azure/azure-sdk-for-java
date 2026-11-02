@@ -3,13 +3,13 @@
 
 package com.azure.developer.loadtesting;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.LoadTestRun;
-import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -17,12 +17,13 @@ import com.azure.json.JsonReader;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to upload and validate a test file and running a test run.
+ * Sample demonstrates how to upload and validate a test file, and running a test run.
  *
- * Authenticates with the load testing resource and shows how to upload and validate a test file, run a test run
+ * Authenticates with the load testing resource and shows how to upload and validate a test file, and running a test run
  * in a given resource.
  *
  * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
@@ -44,7 +45,7 @@ public final class LongRunningOperations {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", LoadTestingFileType.TEST_SCRIPT.toString());
+            .addQueryParam("fileType", "JMX_FILE");
 
         SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
@@ -100,24 +101,26 @@ public final class LongRunningOperations {
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";
 
-        LoadTestRun testRun = new LoadTestRun()
-            .setTestId(inputTestId)
-            .setDisplayName("Sample Test Run")
-            .setDescription("Java SDK Sample Test Run");
+        Map<String, Object> testRunMap = new HashMap<>();
+        testRunMap.put("testId", inputTestId);
+        testRunMap.put("displayName", "Sample Test Run");
+        testRunMap.put("description", "Java SDK Sample Test Run");
 
         Duration pollInterval = Duration.ofSeconds(5);
 
-        SyncPoller<LoadTestRun, LoadTestRun> poller = client.beginTestRun(inputTestRunId, testRun, null);
+        BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
+
+        SyncPoller<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
         poller = poller.setPollInterval(pollInterval);
 
-        PollResponse<LoadTestRun> pollResponse = poller.poll();
+        PollResponse<BinaryData> pollResponse = poller.poll();
 
         while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
             || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
 
-            LoadTestRun testRunResponse = pollResponse.getValue();
+            BinaryData testRunBinary = pollResponse.getValue();
 
-            System.out.println("Test Run all info: " + testRunResponse.toString());
+            System.out.println("Test Run all info: " + testRunBinary.toString());
 
             try {
                 Thread.sleep(pollInterval.toMillis());
@@ -129,13 +132,18 @@ public final class LongRunningOperations {
         }
 
         poller.waitForCompletion();
-        LoadTestRun testRunResponse = poller.getFinalResult();
+        BinaryData testRunBinary = poller.getFinalResult();
 
-        String testId = testRunResponse.getTestId();
-        String testRunId = testRunResponse.getTestRunId();
-        String status = testRunResponse.getStatus().toString();
+        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-        System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
+            String testId = jsonTree.get("testId").toString();
+            String testRunId = jsonTree.get("testRunId").toString();
+            String status = jsonTree.get("status").toString();
+            System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // END: java-longRunningOperations-sample-beginTestRun
     }
 }

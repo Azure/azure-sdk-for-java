@@ -6,30 +6,24 @@ package com.azure.developer.loadtesting;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.LoadTest;
-import com.azure.developer.loadtesting.models.LoadTestConfiguration;
-import com.azure.developer.loadtesting.models.LoadTestRun;
-import com.azure.developer.loadtesting.models.MetricDefinitions;
-import com.azure.developer.loadtesting.models.MetricNamespaces;
-import com.azure.developer.loadtesting.models.PassFailAction;
-import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
-import com.azure.developer.loadtesting.models.PassFailCriteria;
-import com.azure.developer.loadtesting.models.PassFailMetric;
-import com.azure.developer.loadtesting.models.PfMetrics;
-import com.azure.developer.loadtesting.models.SecretType;
-import com.azure.developer.loadtesting.models.TestRunStatus;
-import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public final class ReadmeSamples {
     public void auth() {
         // BEGIN: java-readme-sample-auth
@@ -64,45 +58,50 @@ public final class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
-        
-        // Create a test object
-        LoadTest loadTest = new LoadTest()
-            .setDisplayName("Sample Display Name")
-            .setDescription("Sample Description")
-            .setLoadTestConfiguration(new LoadTestConfiguration() // Load Test Configuration describes the number of test engines to generate load
-                .setEngineInstances(1));
 
-        // Environment Variables are plain-text data passed to test engines
-        Map<String, String> envVarMap = new HashMap<>();
+        // construct Test object using nested String:Object Maps
+        Map<String, Object> testMap = new HashMap<>();
+        testMap.put("displayName", "Sample Display Name");
+        testMap.put("description", "Sample Description");
+
+        // loadTestConfig describes the number of test engines to generate load
+        Map<String, Object> loadTestConfigMap = new HashMap<>();
+        loadTestConfigMap.put("engineInstances", 1);
+        testMap.put("loadTestConfiguration", loadTestConfigMap);
+
+        // environmentVariables are plain-text data passed to test engines
+        Map<String, Object> envVarMap = new HashMap<>();
         envVarMap.put("a", "b");
         envVarMap.put("x", "y");
-        loadTest.setEnvironmentVariables(envVarMap);
+        testMap.put("environmentVariables", envVarMap);
 
-        // Secrets are secure data sent using Azure Key Vault
-        TestSecret testSecrets = new TestSecret()
-            .setType(SecretType.KEY_VAULT_SECRET_URI)
-            .setValue("https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827");
-        Map<String, TestSecret> secretsMap = new HashMap<>();
-        secretsMap.put("sampleSecret", testSecrets);
-        loadTest.setSecrets(secretsMap);
+        // secrets are secure data sent using Azure Key Vault
+        Map<String, Object> secretMap = new HashMap<>();
+        Map<String, Object> sampleSecretMap = new HashMap<>();
+        sampleSecretMap.put("value", "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827");
+        sampleSecretMap.put("type", "AKV_SECRET_URI");
+        secretMap.put("sampleSecret", sampleSecretMap);
+        testMap.put("secrets", secretMap);
 
-        // PassFailCriteria defines the conditions to conclude the test as success
-        Map<String, PassFailMetric> passFailMetrics = new HashMap<>();
-        PassFailMetric samplePassFailMetric = new PassFailMetric()
-            .setClientMetric(PfMetrics.RESPONSE_TIME_IN_MILLISECONDS)
-            .setAggregate(PassFailAggregationFunction.AVERAGE)
-            .setCondition(">")
-            .setValue(20D)
-            .setAction(PassFailAction.CONTINUE);
+        // passFailCriteria define the conditions to conclude the test as success
+        Map<String, Object> passFailMap = new HashMap<>();
+        Map<String, Object> passFailMetrics = new HashMap<>();
+        Map<String, Object> samplePassFailMetric = new HashMap<>();
+        samplePassFailMetric.put("clientmetric", "response_time_ms");
+        samplePassFailMetric.put("aggregate", "percentage");
+        samplePassFailMetric.put("condition", ">");
+        samplePassFailMetric.put("value", "20");
+        samplePassFailMetric.put("action", "continue");
         passFailMetrics.put("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe", samplePassFailMetric);
-        PassFailCriteria passFailCriteria = new PassFailCriteria()
-            .setPassFailMetrics(passFailMetrics);
-        loadTest.setPassFailCriteria(passFailCriteria);
+        passFailMap.put("passFailMetrics", passFailMetrics);
+        testMap.put("passFailCriteria", passFailMap);
 
-        // Now can create the test using the client and receive the response
-        LoadTest testResponse = adminClient.createOrUpdateTest("test12345", loadTest);
+        // convert the object Map to JSON BinaryData
+        BinaryData test = BinaryData.fromObject(testMap);
 
-        System.out.println(testResponse.toString());
+        // receive response with BinaryData content
+        Response<BinaryData> testOutResponse = adminClient.createOrUpdateTestWithResponse("test12345", test, null);
+        System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
 
@@ -130,55 +129,95 @@ public final class ReadmeSamples {
             .endpoint("<endpoint>")
             .buildClient();
 
-        LoadTestRun testRun = new LoadTestRun()
-            .setDisplayName("Sample Test Run Display Name")
-            .setDescription("Sample Test Run Description")
-            .setTestId("test12345");
+        // construct Test Run object using nested String:Object Maps
+        Map<String, Object> testRunMap = new HashMap<>();
+        testRunMap.put("testId", "test12345");
+        testRunMap.put("displayName", "SDK-Created-TestRun");
 
-        // Now can create the test run using the client and receive response
-        SyncPoller<LoadTestRun, LoadTestRun> testRunPoller = testRunClient.beginTestRun("testrun12345", testRun, null);
+        // convert the object Map to JSON BinaryData
+        BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-        System.out.println(testRunPoller.poll().getValue().toString());
+        // start test with poller
+        SyncPoller<BinaryData, BinaryData> poller = testRunClient.beginTestRun("testrun12345", testRun, null);
+        Duration pollInterval = Duration.ofSeconds(5);
+        poller = poller.setPollInterval(pollInterval);
 
-        // Wait for test to reach terminal state
-        // Wait for test to reach terminal state
-        PollResponse<LoadTestRun> testRunOut = testRunPoller.poll();
-        TestRunStatus testStatus = null;
-        String startDateTime = null, endDateTime = null;
+        // wait for test to reach terminal state
+        Map<String, Object> jsonTree = null;
+        String testStatus;
+        PollResponse<BinaryData> pollResponse = poller.poll();
+        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
 
-        while (!testRunOut.getStatus().isComplete()) {
-            testRunOut = testRunPoller.poll();
+            try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
+                jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-            // Get the status of the test run
-            testStatus = testRunOut.getValue().getStatus();
-            System.out.println("Test run status: " + testStatus.toString());
+                testStatus = jsonTree.get("status").toString();
+                System.out.println("Test run status: " + testStatus);
+            } catch (IOException e) {
+                System.out.println("Error processing JSON response");
+                // handle error condition
+            }
 
-            // Wait and check test status every 5 seconds
+            // wait and check test status every 5 seconds
             try {
-                Thread.sleep(5 * 1000);
+                Thread.sleep(pollInterval.toMillis());
             } catch (InterruptedException e) {
                 // handle interruption
             }
+
+            pollResponse = poller.poll();
         }
 
-        LoadTestRun finalResponse = testRunPoller.getFinalResult();
-        startDateTime = finalResponse.getStartDateTime().toString();
-        endDateTime = finalResponse.getEndDateTime().toString();
+        poller.waitForCompletion();
+        BinaryData testRunBinary = poller.getFinalResult();
 
-        // Get list of all metric namespaces and pick the first one
-        MetricNamespaces metricNamespaces = testRunClient.getMetricNamespaces("testrun12345");
+        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            testStatus = jsonTree.get("status").toString();
+            System.out.println("Test run status: " + testStatus);
+        } catch (IOException e) {
+            System.out.println("Error processing JSON response");
+            // handle error condition
+        }
+
+        String startDateTime = jsonTree.get("startDateTime").toString();
+        String endDateTime = jsonTree.get("endDateTime").toString();
+        OffsetDateTime startOffsetDateTime = OffsetDateTime.parse(startDateTime);
+        OffsetDateTime endOffsetDateTime = OffsetDateTime.parse(endDateTime);
+
+        // get list of all metric namespaces and pick the first one
+        Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
         String metricNamespace = null;
+        // parse JSON and read first value
+        try (JsonReader jsonReader = JsonProviders.createReader(metricNamespacesOut.getValue().toBytes())) {
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
+            Map<String, Object> namespaceMap = (Map<String, Object>) metricNamespaces.get(0);
+            metricNamespace = namespaceMap.get("name").toString();
+        } catch (IOException e) {
+            System.out.println("Error processing JSON response");
+            // handle error condition
+        }
 
-        metricNamespace = metricNamespaces.getValue().get(0).getName();
-
-        // Get list of all metric definitions and pick the first one
-        MetricDefinitions metricDefinitions = testRunClient.getMetricDefinitions("testrun12345", metricNamespace);
+        // get list of all metric definitions and pick the first one
+        Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
         String metricName = null;
-        metricName = metricDefinitions.getValue().get(0).getName();
+        // parse JSON and read first value
+        try (JsonReader jsonReader = JsonProviders.createReader(metricDefinitionsOut.getValue().toBytes())) {
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
+            Map<String, Object> definitionMap = (Map<String, Object>) metricDefinitions.get(0);
+            Map<String, Object> nameMap = (Map<String, Object>) definitionMap.get("name");
+            metricName = nameMap.get("value").toString();
+        } catch (IOException e) {
+            System.out.println("Error processing JSON response");
+            // handle error condition
+        }
 
-        // Fetch client metrics using metric namespace and metric name
+        // fetch client metrics using metric namespace and metric name
         PagedIterable<BinaryData> clientMetricsOut = testRunClient.listMetrics("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
-
         clientMetricsOut.forEach((clientMetric) -> {
             System.out.println(clientMetric.toString());
         });
