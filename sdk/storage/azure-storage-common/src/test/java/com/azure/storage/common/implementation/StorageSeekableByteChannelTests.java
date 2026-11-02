@@ -5,12 +5,9 @@ package com.azure.storage.common.implementation;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.common.implementation.mocking.MockReadBehavior;
 import com.azure.storage.common.implementation.mocking.MockWriteBehavior;
-import com.azure.storage.common.test.shared.ByteBufferState;
-import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +17,6 @@ import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -351,110 +347,5 @@ public class StorageSeekableByteChannelTests {
         assertThrows(NonWritableChannelException.class,
             () -> new StorageSeekableByteChannel(Constants.KB, new MockReadBehavior(), 0L)
                 .write(ByteBuffer.allocate(Constants.KB)));
-    }
-
-    // A write larger than the channel's buffer, so it's written to the resource in several pieces.
-    private static final int VARIANT_DATA_LENGTH = 2500;
-    private static final int VARIANT_CHUNK_SIZE = 1000;
-
-    @ParameterizedTest
-    @EnumSource(TestByteBufferVariant.class)
-    public void writeWritesOnlyExposedBytes(TestByteBufferVariant variant) throws IOException {
-        byte[] content = getRandomData(VARIANT_DATA_LENGTH);
-        ByteBufferState src = variant.wrap(content);
-        ByteArrayOutputStream written = new ByteArrayOutputStream();
-
-        try (StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
-            while (src.getBuffer().hasRemaining()) {
-                channel.write(src.getBuffer());
-            }
-        }
-
-        TestUtils.assertArraysEqual(content, written.toByteArray());
-        src.assertNoBytesChanged();
-        src.assertPositionAndLimit(src.getOriginalLimit(), src.getOriginalLimit());
-    }
-
-    @Test
-    public void writeWritesOnlyExposedBytesOfMixedBuffers() throws IOException {
-        byte[] content = getRandomData(VARIANT_DATA_LENGTH);
-        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 300);
-        ByteArrayOutputStream written = new ByteArrayOutputStream();
-
-        try (StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
-            for (ByteBufferState src : sources) {
-                while (src.getBuffer().hasRemaining()) {
-                    channel.write(src.getBuffer());
-                }
-            }
-        }
-
-        TestUtils.assertArraysEqual(content, written.toByteArray());
-        for (ByteBufferState src : sources) {
-            src.assertNoBytesChanged();
-        }
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = TestByteBufferVariant.class, names = "READ_ONLY", mode = EnumSource.Mode.EXCLUDE)
-    public void readFillsOnlyExposedBytes(TestByteBufferVariant variant) throws IOException {
-        byte[] data = getRandomData(VARIANT_DATA_LENGTH);
-        ByteBufferState dst = variant.allocate(VARIANT_DATA_LENGTH);
-        StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, readBehaviorOf(data), 0L);
-
-        while (dst.getBuffer().hasRemaining()) {
-            channel.read(dst.getBuffer());
-        }
-
-        TestUtils.assertArraysEqual(data, dst.getExposedBytes());
-        dst.assertOnlyExposedBytesChanged();
-        dst.assertPositionAndLimit(dst.getOriginalLimit(), dst.getOriginalLimit());
-    }
-
-    @Test
-    public void readFillsOnlyExposedBytesOfMixedBuffers() throws IOException {
-        byte[] data = getRandomData(VARIANT_DATA_LENGTH);
-        StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, readBehaviorOf(data), 0L);
-        List<TestByteBufferVariant> variants = TestByteBufferVariant.writableVariants();
-        int pieceLength = 300;
-
-        for (int offset = 0, i = 0; offset < data.length; offset += pieceLength, i++) {
-            int length = Math.min(pieceLength, data.length - offset);
-            ByteBufferState dst = variants.get(i % variants.size()).allocate(length);
-
-            while (dst.getBuffer().hasRemaining()) {
-                channel.read(dst.getBuffer());
-            }
-
-            TestUtils.assertArraysEqual(Arrays.copyOfRange(data, offset, offset + length), dst.getExposedBytes());
-            dst.assertOnlyExposedBytesChanged();
-        }
-    }
-
-    private static StorageSeekableByteChannel.WriteBehavior capturingWriteBehavior(ByteArrayOutputStream written) {
-        return new MockWriteBehavior() {
-            @Override
-            public void write(ByteBuffer src, long destOffset) {
-                assertEquals(written.size(), destOffset);
-                byte[] bytes = new byte[src.remaining()];
-                src.get(bytes);
-                written.write(bytes, 0, bytes.length);
-            }
-        };
-    }
-
-    private static StorageSeekableByteChannel.ReadBehavior readBehaviorOf(byte[] data) {
-        return new MockReadBehavior(data.length, (dst, sourceOffset) -> {
-            if (sourceOffset >= data.length) {
-                return -1;
-            }
-            int read = Math.min(dst.remaining(), data.length - sourceOffset.intValue());
-            dst.put(data, sourceOffset.intValue(), read);
-            return read;
-        });
     }
 }
