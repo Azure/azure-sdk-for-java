@@ -164,32 +164,15 @@ deletes it only when empty after successful child cleanup. It never adopts exist
 or grants roles; arrange service permissions separately. Do not enable this setting in
 environments that automatically provision managed groups.
 
-The existing `sdk/platformvalidation/tests.mgmt.yml` and `test-resources.bicep` are an
-optional live-test pipeline, not the recording workflow. Standard PR CI runs playback
+Standard PR CI runs playback
 using published recordings; it does not need the SDK test subscription to host the service.
-The optional live pipeline uses regional Canary ARM routing, service-managed resource
-groups, and serial test execution. Boot execution remains an explicit opt-in:
-set the `RunExecution` pipeline parameter to `true` and configure the secret pipeline
-variable `PlatformValidationSourceVhdUri` with the approved image URL.
-An unset or expired fixture fails an opted-in run. The default pipeline run exercises
-discovery and CloudValidation lifecycle; image-dependent scenarios are skipped.
-Before queuing a run, configure the intended subscription and identity through the shared
-pipeline's service connection and subscription configuration. Overriding only
-`AZURE_SUBSCRIPTION_ID` does not move pipeline-provisioned resources to that subscription.
-The Bicep template grants Contributor only on the supplied parent resource group.
-The live-test client uses the SDK's `ProviderRegistrationPolicy` to register the resource
+
+For RECORD/LIVE, the test client uses the SDK's `ProviderRegistrationPolicy` to register the resource
 provider when ARM returns `MissingSubscriptionRegistration`. This requires the test
 identity to have subscription-level provider registration permission; otherwise, arrange
 registration separately. The policy does not handle `SubscriptionNotRegistered` or
 `LocationNotAvailableForResourceType`; verify registration and regional availability
 separately if those errors persist.
-The service owns managed-group provisioning; the test identity does not create sibling
-managed groups or assign service roles.
-Supply the approved image through a secret environment variable, never through checked-in YAML.
-After opening the test PR, `/azp run prepare-pipelines` requests
-pipeline creation and `/azp run java - platformvalidation - mgmt - tests` requests a run.
-Adding these files alone does not confirm pipeline registration, a schedule, or boot-fixture
-configuration. Verify those with the SDK team before claiming scheduled execution coverage.
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 
