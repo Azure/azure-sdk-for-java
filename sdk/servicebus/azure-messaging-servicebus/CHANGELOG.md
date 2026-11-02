@@ -1,5 +1,15 @@
 # Release History
 
+## 7.19.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.12.2` to version `2.13.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
 ## 7.19.0-beta.1 (Unreleased)
 
 ### Features Added
