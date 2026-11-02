@@ -5,25 +5,67 @@ Library containing tests for azure-cosmos and azure-cosmos-test libraries. Only 
 
 ### Vector embedding end-to-end coverage
 
-`ThinClientQueryE2ETest.testVectorSearchGatewayVsThinClient` covers `float16`,
-`float32`, `int8`, and `uint8` through Direct TCP and the thin client. It creates
-and cleans up one container per type, verifies its embedding policy, and checks
-expected cosine and Euclidean query rankings. The `float16` case uses the
-`quantizedFlat` full-scan fallback; the other cases use `flat` indexes.
+`VectorSearchQueryTest.testVectorSearchAcrossEmbeddingTypes` uses one fresh
+container with four embedding paths: `/float16`, `/float32`, `/int8`, and `/uint8`.
+Every document contains all four vectors. One fixed SQL query projects four
+`VectorDistance` scores and orders by the `float16` distance. It uses Euclidean
+distance and the same query vector for all four paths.
 
-Configure `ACCOUNT_HOST` and `ACCOUNT_KEY` for an existing test account supporting
-these vector types and the thin-client endpoint. The test runs in the
-`thinclient` and `thinclientEndpointProbe` suites.
+The test verifies the persisted policies, document ordering, and all four numeric
+scores for every result. The fixture includes fractional floats, negative `int8`
+values, and `uint8` values above 127. The `float16` index uses the `quantizedFlat`
+full-scan fallback; the other paths use `flat` indexes.
+
+Setup uses a separate Direct client. The first document operation from the client
+under test is this query, exercising deserialization of metadata containing all
+four types. Teardown deletes the database and its container.
+
+There are three logical connection-mode cases, not a type-by-mode matrix. The
+factory selects one client per existing CI lane, in separate JVMs:
+
+| Suite / lane | Clients exercised |
+| --- | --- |
+| `query`, HTTP/2 disabled | Direct TCP |
+| HTTP/2 `query`, `COSMOS.THINCLIENT_ENABLED=false` | Compute |
+| `thinclient` | ThinClient |
+
+The `thinclientEndpointProbe` suite additionally runs the same ThinClient case
+using probe-selected routing rather than explicit opt-in.
+
+Diagnostics must show actual document-query requests on the expected path.
+Compute queries must negotiate HTTP/2 and must not target the thin-client proxy;
+ThinClient queries must use that proxy, including in the endpoint-probe lane.
+Do not switch the global thin-client flag between live clients: routing reads it
+lazily on each request.
+
+Configure `ACCOUNT_HOST` and `ACCOUNT_KEY` for an existing account supporting these
+vector types. Compute runs require an HTTP/2-capable Compute Gateway endpoint;
+thin-client runs require the thin-client endpoint.
 
 After building and installing the Cosmos modules with the same JDK, run from the
 repository root:
 
 ```shell
+mvn -pl com.azure:azure-cosmos-tests verify -Pquery \
+  -DCOSMOS.HTTP2_ENABLED=false -DCOSMOS.THINCLIENT_ENABLED=false \
+  -Dit.test=VectorSearchQueryTest \
+  -Dfailsafe.failIfNoTests=true \
+  -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
+
+mvn -pl com.azure:azure-cosmos-tests verify -Pquery \
+  -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.THINCLIENT_ENABLED=false \
+  -Dit.test=VectorSearchQueryTest \
+  -Dfailsafe.failIfNoTests=true \
+  -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
+
 mvn -pl com.azure:azure-cosmos-tests verify -Pthinclient \
-  -Dit.test=ThinClientQueryE2ETest#testVectorSearchGatewayVsThinClient \
+  -Dit.test=VectorSearchQueryTest \
   -Dfailsafe.failIfNoTests=true \
   -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
 ```
+
+For probe-selected ThinClient coverage, use `-Pthinclient-endpoint-probe` instead
+and leave `COSMOS.THINCLIENT_ENABLED` unset.
 
 ## Key concepts
 n/a
