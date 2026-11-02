@@ -1,5 +1,14 @@
 # Release History
 
+## 2.55.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-storage` from `2.58.2` to version `2.60.1`.
+
 ## 2.55.0-beta.2 (Unreleased)
 
 ### Features Added
