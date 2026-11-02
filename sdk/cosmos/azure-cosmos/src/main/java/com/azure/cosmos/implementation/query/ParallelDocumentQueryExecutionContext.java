@@ -21,7 +21,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -34,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -210,10 +210,11 @@ public class ParallelDocumentQueryExecutionContext<T>
         }
     }
 
-    private static class EmptyPagesFilterTransformer<T>
+    static class EmptyPagesFilterTransformer<T>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
-        private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
+        // A page that exhausted its partition; its continuation token points at the next page's range.
+        private DocumentProducer<T>.DocumentProducerFeedResponse pageAwaitingNextRange;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private final UUID correlatedActivityId;
         private final ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
@@ -239,7 +240,6 @@ public class ParallelDocumentQueryExecutionContext<T>
             }
 
             this.tracker = tracker;
-            this.previousPage = null;
             this.cosmosQueryRequestOptions = options;
             this.correlatedActivityId = correlatedActivityId;
             this.operationContextTextProvider = operationContextTextProvider;
@@ -310,6 +310,47 @@ public class ParallelDocumentQueryExecutionContext<T>
             }
         }
 
+        /**
+         * Returns the pages that can be emitted once {@code page} has arrived, with their composite continuation
+         * tokens set.
+         * <p>
+         * A page with a backend continuation token resumes within its own partition, so it is emitted immediately.
+         * Holding it back until the next page arrives would issue a backend request for a page the subscriber may
+         * never request. Only a page that exhausted its partition has to wait: its continuation token points at
+         * the range of the next non-empty page.
+         */
+        private List<DocumentProducer<T>.DocumentProducerFeedResponse> releasePagesWithContinuation(
+            DocumentProducer<T>.DocumentProducerFeedResponse page) {
+
+            List<DocumentProducer<T>.DocumentProducerFeedResponse> releasedPages = new ArrayList<>(2);
+            if (this.pageAwaitingNextRange != null) {
+                CompositeContinuationToken nextRangeContinuation =
+                    new CompositeContinuationToken(null, page.sourceFeedRange.getRange());
+                releasedPages.add(
+                    this.addCompositeContinuationToken(this.pageAwaitingNextRange, nextRangeContinuation.toJson()));
+                this.pageAwaitingNextRange = null;
+            }
+
+            String backendContinuationToken = page.pageResult.getContinuationToken();
+            if (backendContinuationToken == null) {
+                this.pageAwaitingNextRange = page;
+            } else {
+                CompositeContinuationToken sameRangeContinuation =
+                    new CompositeContinuationToken(backendContinuationToken, page.sourceFeedRange.getRange());
+                releasedPages.add(this.addCompositeContinuationToken(page, sameRangeContinuation.toJson()));
+            }
+
+            return releasedPages;
+        }
+
+        private Mono<DocumentProducer<T>.DocumentProducerFeedResponse> releaseLastPage() {
+            DocumentProducer<T>.DocumentProducerFeedResponse lastPage = this.pageAwaitingNextRange;
+            this.pageAwaitingNextRange = null;
+            return lastPage == null
+                ? Mono.empty()
+                : Mono.just(this.addCompositeContinuationToken(lastPage, null));
+        }
+
         @Override
         public Flux<FeedResponse<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             // Emit an empty page so the downstream observables know when there are no more
@@ -351,55 +392,15 @@ public class ParallelDocumentQueryExecutionContext<T>
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
                 if (charge > 0) {
-                    return new ValueHolder<>(plusCharge(documentProducerFeedResponse,
-                            charge));
+                    return plusCharge(documentProducerFeedResponse, charge);
                 } else {
-                    return new ValueHolder<>(documentProducerFeedResponse);
+                    return documentProducerFeedResponse;
                 }
-            }).concatWith(Flux.just(new ValueHolder<>(null))).map(heldValue -> {
-                DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse = heldValue.v;
-                // CREATE pairs from the stream to allow the observables downstream to "peek"
-                // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
-                    ImmutablePair<DocumentProducer<T>.DocumentProducerFeedResponse, DocumentProducer<T>.DocumentProducerFeedResponse> previousCurrent = new ImmutablePair<>(
-                        this.previousPage,
-                        documentProducerFeedResponse);
-                    this.previousPage = documentProducerFeedResponse;
-                    return previousCurrent;
-            }).skip(1).map(currentNext -> {
-                // remove the (null, 1)
-                // Add the continuation token based on the current and next page.
-                DocumentProducer<T>.DocumentProducerFeedResponse current = currentNext.left;
-                DocumentProducer<T>.DocumentProducerFeedResponse next = currentNext.right;
-
-                String compositeContinuationToken;
-                String backendContinuationToken = current.pageResult.getContinuationToken();
-                if (backendContinuationToken == null) {
-                    // We just finished reading the last document from a partition
-                    if (next == null) {
-                        // It was the last partition and we are done
-                        compositeContinuationToken = null;
-                    } else {
-                        // It wasn't the last partition, so we need to give the next range, but with a
-                        // null continuation
-                        CompositeContinuationToken compositeContinuationTokenDom =
-                            new CompositeContinuationToken(null, next.sourceFeedRange.getRange());
-                        compositeContinuationToken = compositeContinuationTokenDom.toJson();
-                    }
-                } else {
-                    // We are in the middle of reading a partition,
-                    // so give back this partition with a backend continuation token
-                    CompositeContinuationToken compositeContinuationTokenDom = new CompositeContinuationToken(
-                            backendContinuationToken,
-                            current.sourceFeedRange.getRange());
-                    compositeContinuationToken = compositeContinuationTokenDom.toJson();
-                }
-
-                DocumentProducer<T>.DocumentProducerFeedResponse page;
-                page = this.addCompositeContinuationToken(current,
-                        compositeContinuationToken);
-
-                return page;
-            }).map(documentProducerFeedResponse -> {
+            })
+            // No prefetch: a page must reach the subscriber before the next backend page is requested.
+            .concatMap(page -> Flux.fromIterable(this.releasePagesWithContinuation(page)), 0)
+            .concatWith(Flux.defer(this::releaseLastPage))
+            .map(documentProducerFeedResponse -> {
                 // merge query metrics for any empty pages after a non-empty page.
                 mergeAndResetQueryMetrics(documentProducerFeedResponse.pageResult);
 
