@@ -179,8 +179,12 @@ public final class FileSystemResourceImpl
         com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fileSystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fileSystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "resourceGroupName");
+        this.fileSystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "fileSystemName");
     }
 
     public FileSystemResource refresh() {

@@ -55,7 +55,7 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @Timeout(value = 20, unit = TimeUnit.MINUTES)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    @Disabled("TODO: re-record")
+    @Disabled("Service returns HTTP 409 unexpectedEntityState when deleting completed data generation jobs.")
     public void dataGenerationJobWithEvaluationAsyncSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
@@ -65,13 +65,14 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         String modelName = getRecordedConfig("FOUNDRY_MODEL_NAME");
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
-        Mono<Void> scenario = datasetsAsyncClient
-            .beginCreateGenerationJob(
-                DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-                testResourceNamer.randomUuid())
-            .next()
-            .map(response -> response.getValue())
-            .flatMap(job -> waitForDataGenerationJob(datasetsAsyncClient, job.getId(), 5, 180).flatMap(completedJob -> {
+        Mono<Void> scenario = Mono.usingWhen(
+            datasetsAsyncClient
+                .beginCreateGenerationJob(
+                    DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+                    testResourceNamer.randomUuid())
+                .next()
+                .map(response -> response.getValue()),
+            job -> waitForDataGenerationJob(datasetsAsyncClient, job.getId(), 5, 180).flatMap(completedJob -> {
                 if (!JobStatus.SUCCEEDED.equals(completedJob.getStatus())) {
                     ApiError error = completedJob.getError();
                     String message = error == null ? "<no error message>" : error.getMessage();
@@ -82,9 +83,8 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
                 DatasetDataGenerationJobOutput output
                     = DataGenerationJobWithEvaluationSample.findDatasetOutput(completedJob);
                 return datasetsAsyncClient.getDatasetVersion(output.getName(), output.getVersion())
-                    .flatMap(dataset -> runEvaluation(openAIAsyncClient, dataset, modelName))
-                    .then(datasetsAsyncClient.deleteGenerationJob(completedJob.getId()));
-            }));
+                    .flatMap(dataset -> runEvaluation(openAIAsyncClient, dataset, modelName));
+            }), job -> datasetsAsyncClient.deleteGenerationJob(job.getId()));
 
         StepVerifier.create(scenario).verifyComplete();
     }
@@ -93,8 +93,8 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         Assertions.assertNotNull(dataset);
         Assertions.assertNotNull(dataset.getId());
 
-        return deferFuture(() -> openAIAsyncClient.evals()
-            .create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName))).flatMap(eval -> {
+        return Mono.usingWhen(deferFuture(() -> openAIAsyncClient.evals()
+            .create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName))), eval -> {
                 Assertions.assertNotNull(eval);
 
                 Mono<RunCreateResponse> createRun = deferFuture(() -> openAIAsyncClient.evals()
@@ -102,11 +102,9 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
                     .create(DataGenerationJobWithEvaluationSample.createEvaluationRunParams(eval.id(), dataset.getId(),
                         modelName)));
 
-                return createRun.flatMap(evalRun -> assertEvaluationRunCompleted(openAIAsyncClient, eval, evalRun))
-                    .then(deferFuture(
-                        () -> openAIAsyncClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build())))
-                    .then();
-            });
+                return createRun.flatMap(evalRun -> assertEvaluationRunCompleted(openAIAsyncClient, eval, evalRun));
+            }, eval -> deferFuture(
+                () -> openAIAsyncClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build())).then());
     }
 
     private Mono<Void> assertEvaluationRunCompleted(OpenAIClientAsync openAIAsyncClient, EvalCreateResponse eval,

@@ -129,8 +129,12 @@ public final class EduEnrollmentImpl implements EduEnrollment, EduEnrollment.Def
         com.azure.resourcemanager.programenrollment.ProgramEnrollmentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.enrollmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "eduEnrollments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "resourceGroupName");
+        this.enrollmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "enrollmentName");
     }
 
     public EduEnrollment refresh() {

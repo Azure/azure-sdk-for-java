@@ -129,9 +129,15 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
         com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.issueName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "issues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "resourceGroupName");
+        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "azureMonitorWorkspaceName");
+        this.issueName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "issueName");
     }
 
     public IssueResource refresh() {

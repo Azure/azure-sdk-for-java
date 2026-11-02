@@ -62,7 +62,9 @@ public final class SecurityContactsImpl implements SecurityContacts {
     }
 
     public SecurityContact getById(String id) {
-        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "securityContacts");
+        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+            "securityContactName");
         if (securityContactNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'securityContacts'.", id)));
@@ -72,7 +74,9 @@ public final class SecurityContactsImpl implements SecurityContacts {
     }
 
     public Response<SecurityContact> getByIdWithResponse(String id, Context context) {
-        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "securityContacts");
+        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+            "securityContactName");
         if (securityContactNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'securityContacts'.", id)));
@@ -82,7 +86,9 @@ public final class SecurityContactsImpl implements SecurityContacts {
     }
 
     public void deleteById(String id) {
-        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "securityContacts");
+        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+            "securityContactName");
         if (securityContactNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'securityContacts'.", id)));
@@ -92,7 +98,9 @@ public final class SecurityContactsImpl implements SecurityContacts {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "securityContacts");
+        String securityContactNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+            "securityContactName");
         if (securityContactNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'securityContacts'.", id)));

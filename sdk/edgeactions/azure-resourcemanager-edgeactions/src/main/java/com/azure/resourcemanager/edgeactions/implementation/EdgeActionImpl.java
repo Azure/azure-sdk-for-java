@@ -133,8 +133,12 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
         com.azure.resourcemanager.edgeactions.EdgeActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeActions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "resourceGroupName");
+        this.edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "edgeActionName");
     }
 
     public EdgeAction refresh() {

@@ -91,7 +91,8 @@ public final class QuotaTierImpl implements QuotaTier, QuotaTier.Definition, Quo
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.defaultParameter = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "quotaTiers");
+        this.defaultParameter = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}", "default");
     }
 
     public QuotaTier refresh() {

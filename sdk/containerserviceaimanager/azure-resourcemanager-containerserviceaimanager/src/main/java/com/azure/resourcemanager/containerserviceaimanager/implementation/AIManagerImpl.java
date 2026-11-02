@@ -151,8 +151,12 @@ public final class AIManagerImpl implements AIManager, AIManager.Definition, AIM
         com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.aiManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "aiManagers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}",
+            "resourceGroupName");
+        this.aiManagerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}",
+            "aiManagerName");
     }
 
     public AIManager refresh() {

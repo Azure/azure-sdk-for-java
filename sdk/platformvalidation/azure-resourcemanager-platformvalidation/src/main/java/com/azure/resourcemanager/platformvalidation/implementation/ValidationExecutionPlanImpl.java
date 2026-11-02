@@ -136,10 +136,15 @@ public final class ValidationExecutionPlanImpl
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudValidations");
-        this.validationExecutionPlanName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "validationExecutionPlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}",
+            "resourceGroupName");
+        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}",
+            "cloudValidationName");
+        this.validationExecutionPlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}",
+            "validationExecutionPlanName");
     }
 
     public ValidationExecutionPlan refresh() {

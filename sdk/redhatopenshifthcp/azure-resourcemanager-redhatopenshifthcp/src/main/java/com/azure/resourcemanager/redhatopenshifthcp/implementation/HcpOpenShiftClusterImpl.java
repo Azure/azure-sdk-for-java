@@ -131,9 +131,12 @@ public final class HcpOpenShiftClusterImpl
         com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hcpOpenShiftClusterName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hcpOpenShiftClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "resourceGroupName");
+        this.hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "hcpOpenShiftClusterName");
     }
 
     public HcpOpenShiftCluster refresh() {

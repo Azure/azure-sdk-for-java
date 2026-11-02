@@ -152,10 +152,15 @@ public final class JitNetworkAccessPolicyImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ascLocation = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.jitNetworkAccessPolicyName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jitNetworkAccessPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "resourceGroupName");
+        this.ascLocation = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "ascLocation");
+        this.jitNetworkAccessPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "jitNetworkAccessPolicyName");
     }
 
     public JitNetworkAccessPolicy refresh() {

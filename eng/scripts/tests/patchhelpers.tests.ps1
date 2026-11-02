@@ -311,6 +311,84 @@ Describe "GetPatchVersion" {
     It "Bumps an existing patch version (12.24.1 → 12.24.2)" {
         GetPatchVersion -ReleaseVersion "12.24.1" | Should -Be "12.24.2"
     }
+
+    It "Keeps patch mode when the minor switch is explicitly false" {
+        GetPatchVersion -ReleaseVersion "12.24.7" -IncrementMinorVersion:$false | Should -Be "12.24.8"
+    }
+
+    It "Bumps <Version> to minor release <Expected>" -TestCases @(
+        @{ Version = "1.0.0"; Expected = "1.1.0" }
+        @{ Version = "12.24.7"; Expected = "12.25.0" }
+    ) {
+        param($Version, $Expected)
+
+        GetPatchVersion -ReleaseVersion $Version -IncrementMinorVersion | Should -Be $Expected
+    }
+}
+
+Describe "FindArtifactsThatNeedPatching with minor versions" {
+    It "Cascades minor targets in either artifact order" -TestCases @(
+        @{ Reverse = $false }
+        @{ Reverse = $true }
+    ) {
+        param($Reverse)
+
+        $artifacts = @(
+            (New-TestArtifactInfo -ArtifactId "azure-json" -LatestGAOrPatchVersion "1.4.0"),
+            (New-TestArtifactInfo -ArtifactId "azure-core" -LatestGAOrPatchVersion "1.41.7" -Dependencies @{
+                "azure-json" = "1.3.0"
+            }),
+            (New-TestArtifactInfo -ArtifactId "azure-identity" -LatestGAOrPatchVersion "1.10.3" -Dependencies @{
+                "azure-core" = "1.41.7"
+            })
+        )
+        if ($Reverse) {
+            [array]::Reverse($artifacts)
+        }
+        $infos = [ordered]@{}
+        foreach ($artifact in $artifacts) {
+            $infos[$artifact.ArtifactId] = $artifact
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos -IncrementMinorVersion
+
+        $infos["azure-json"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+        $infos["azure-core"].FutureReleasePatchVersion | Should -Be "1.42.0"
+        $infos["azure-identity"].FutureReleasePatchVersion | Should -Be "1.11.0"
+    }
+
+    It "Leaves aligned packages and external dependencies unselected" {
+        Mock GetVersionInfoForMavenArtifact { throw "No Maven lookup expected." }
+        $infos = [ordered]@{
+            "azure-core" = (New-TestArtifactInfo -ArtifactId "azure-core" -LatestGAOrPatchVersion "1.41.7")
+            "azure-identity" = (New-TestArtifactInfo -ArtifactId "azure-identity" -LatestGAOrPatchVersion "1.10.3" -Dependencies @{
+                "azure-core" = "1.41.7"
+                "reactor-core" = "3.5.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos -IncrementMinorVersion
+
+        $infos["azure-core"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+        $infos["azure-identity"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+        Should -Invoke GetVersionInfoForMavenArtifact -Times 0
+    }
+
+    It "Uses minor targets when an Azure dependency is resolved outside the patch list" {
+        Mock GetVersionInfoForMavenArtifact {
+            [ArtifactInfo]::new("azure-core", "com.azure", "1.41.0")
+        }
+        $infos = [ordered]@{
+            "azure-storage-blob" = (New-TestArtifactInfo -ArtifactId "azure-storage-blob" -LatestGAOrPatchVersion "12.33.2" -Dependencies @{
+                "azure-core" = "1.40.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos -IncrementMinorVersion
+
+        $infos["azure-storage-blob"].FutureReleasePatchVersion | Should -Be "12.34.0"
+        Should -Invoke GetVersionInfoForMavenArtifact -Times 1 -Exactly
+    }
 }
 
 # ---------------------------------------------------------------------------
@@ -326,6 +404,34 @@ Describe "GetResolvedDependencyVersions" {
         if (Test-Path $script:testDir) {
             Remove-Item -Recurse -Force $script:testDir
         }
+    }
+
+    It "Uses qualified minor release overrides without crossing group IDs" {
+        $versionClientFile = Join-Path $script:testDir "version_client_minor.txt"
+        Set-Content -Path $versionClientFile -Value @(
+            "com.azure:azure-example;1.0.4;1.1.0-beta.2",
+            "com.azure.v2:azure-example;2.3.8;2.4.0-beta.1"
+        )
+        $pomFile = Join-Path $script:testDir "pom_minor.xml"
+        Set-Content -Path $pomFile -Value @'
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-example</artifactId>
+      <version>2.4.0-beta.1</version>
+    </dependency>
+  </dependencies>
+</project>
+'@
+        $overrides = @{
+            "com.azure:azure-example" = "1.1.0"
+            "com.azure.v2:azure-example" = "2.4.0"
+        }
+
+        $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile -PatchVersionOverrides $overrides
+
+        $result["azure-example"] | Should -Be "2.4.0"
     }
 
     It "Uses pom.xml GA version for dependency marker deps" {

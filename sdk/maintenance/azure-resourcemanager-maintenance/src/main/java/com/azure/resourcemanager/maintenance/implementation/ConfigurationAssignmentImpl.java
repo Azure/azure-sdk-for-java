@@ -113,8 +113,24 @@ public final class ConfigurationAssignmentImpl
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.configurationAssignmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationAssignments");
+        this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+            "configurationAssignmentName");
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
     }
 
     public ConfigurationAssignment refresh() {

@@ -124,9 +124,22 @@ public final class DeploymentStacksWhatIfResultImpl implements DeploymentStacksW
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deploymentStacksWhatIfResults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName");
+        this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName");
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
     }
 
     public DeploymentStacksWhatIfResult refresh() {

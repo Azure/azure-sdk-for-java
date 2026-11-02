@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.4</version>
+    <version>1.19.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -145,6 +145,52 @@ public void createDefaultAzureCredentialForVSCode() {
         .buildClient();
 }
 ```
+
+### Authenticate with AKS identity bindings
+
+[Azure Kubernetes Service (AKS) identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts)
+let multiple clusters share a user-assigned managed identity through a single AKS-managed federated identity
+credential, avoiding the limit of 20 federated identity credentials per managed identity.
+
+Use `WorkloadIdentityCredential` directly and call `enableAzureProxy()` to route authentication through the AKS token
+proxy. This option is disabled by default and isn't supported by `DefaultAzureCredential` or `ManagedIdentityCredential`.
+
+The identity binding API requires `azure-identity` `1.19.0-beta.2` or a later version containing this feature.
+It isn't included in `1.18.x` packages. If your BOM selects a `1.18.x` version, override it with an identity binding-enabled
+version.
+
+```java readme-sample-workloadidentitybinding
+WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
+    .enableAzureProxy()
+    .build();
+```
+
+First [configure the AKS identity binding and Kubernetes permissions](https://learn.microsoft.com/azure/aks/identity-bindings).
+The pod must use an authorized service account and have the `azure.workload.identity/use: "true"` label and
+`azure.workload.identity/use-identity-binding: "true"` annotation. For Jobs and Deployments, set these on the pod template.
+The workload identity webhook provides the configuration:
+
+| Environment variable | Purpose |
+| --- | --- |
+| `AZURE_CLIENT_ID` | Client ID of the user-assigned managed identity, not its object ID. |
+| `AZURE_TENANT_ID` | Microsoft Entra tenant ID. |
+| `AZURE_FEDERATED_TOKEN_FILE` | Projected Kubernetes service account token file. |
+| `AZURE_AUTHORITY_HOST` | Microsoft Entra authority. Keep this set to the authority, not the proxy URL. |
+| `AZURE_KUBERNETES_TOKEN_PROXY` | HTTPS token proxy endpoint. It must not contain credentials, query parameters, or a fragment. |
+| `AZURE_KUBERNETES_SNI_NAME` | TLS server name used to verify the proxy certificate. |
+| `AZURE_KUBERNETES_CA_FILE` or `AZURE_KUBERNETES_CA_DATA` | Trusted CA bundle, either a file path or inline PEM text. Don't set both or Base64 encode the inline text. |
+
+The credential reloads changes to a CA file on subsequent network requests. A temporarily missing or empty file during
+rotation retains the previously loaded CA; an invalid nonempty bundle fails authentication. If neither CA setting is
+provided, the platform trust store is used.
+
+Enabling the option without any proxy settings uses the direct workload identity flow. Partial or invalid proxy
+configuration fails instead of silently falling back to direct authentication. With proxy configuration present,
+a dedicated HTTP transport is set on a copy of the credential options. A custom HTTP pipeline retains its usual
+precedence over HTTP client settings.
+
+An identity binding authorizes token acquisition, not access to Azure resources. Assign Azure roles to the managed
+identity separately when resource access is required.
 
 ## Managed Identity support
 

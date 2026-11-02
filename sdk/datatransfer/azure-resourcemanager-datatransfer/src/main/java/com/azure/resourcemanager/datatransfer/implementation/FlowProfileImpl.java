@@ -135,9 +135,15 @@ public final class FlowProfileImpl implements FlowProfile, FlowProfile.Definitio
         com.azure.resourcemanager.datatransfer.DataTransferManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.pipelineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pipelines");
-        this.flowProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flowProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/flowProfiles/{flowProfileName}",
+            "resourceGroupName");
+        this.pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/flowProfiles/{flowProfileName}",
+            "pipelineName");
+        this.flowProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/flowProfiles/{flowProfileName}",
+            "flowProfileName");
     }
 
     public FlowProfile refresh() {

@@ -144,7 +144,18 @@ public final class PolicyDefinitionImpl
         com.azure.resourcemanager.resources.policy.PolicyManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policyDefinitions");
+        this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
+            "policyDefinitionName");
+        if (this.policyDefinitionName == null) {
+            this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}", "policyDefinitionName");
+        }
+        if (this.policyDefinitionName == null) {
+            this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
+                "policyDefinitionName");
+        }
     }
 
     public PolicyDefinition refresh() {

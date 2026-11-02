@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
@@ -33,9 +34,11 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -55,6 +58,7 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.PREBUILT_CLIENT_PATH;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,6 +91,45 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static final Exception EXPECTED_EXCEPTION = new IOException(
         "This is a local test so we " + "cannot connect to remote hosts eagerly. This is exception is expected.");
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) builder.build();
+        assertArrayEquals(version == HttpProtocolVersion.HTTP_2
+            ? new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2 }
+            : new HttpProtocol[] { HttpProtocol.HTTP11 }, client.nettyClient.configuration().protocols());
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2);
+        NettyAsyncHttpClient first = (NettyAsyncHttpClient) builder.build();
+        NettyAsyncHttpClient cleared = (NettyAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11 }, cleared.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2 },
+            first.nettyClient.configuration().protocols());
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        HttpClient internalClient = HttpClient.create().protocol(HttpProtocol.H2C);
+        NettyAsyncHttpClientBuilder builder
+            = new NettyAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
+        NettyAsyncHttpClient original = (NettyAsyncHttpClient) builder.build();
+        NettyAsyncHttpClient limited
+            = (NettyAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        NettyAsyncHttpClient cleared = (NettyAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, original.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11 }, limited.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, cleared.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, internalClient.configuration().protocols());
+    }
 
     /**
      * Tests that constructing a {@link NettyAsyncHttpClient} from a pre-configured Netty {@link HttpClient} will use
@@ -126,6 +169,16 @@ public class NettyAsyncHttpClientBuilderTests {
     public void preconfiguredAllocatorIsMaintained() {
         HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
         NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).build();
+        assertSame(UnpooledByteBufAllocator.DEFAULT,
+            client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
+    }
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersionPreservesPreconfiguredAllocator(HttpProtocolVersion version) {
+        HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
+        NettyAsyncHttpClient client
+            = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).maximumHttpVersion(version).build();
         assertSame(UnpooledByteBufAllocator.DEFAULT,
             client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
     }

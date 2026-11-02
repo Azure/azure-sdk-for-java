@@ -136,8 +136,12 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scheduledActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scheduledActions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "resourceGroupName");
+        this.scheduledActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "scheduledActionName");
     }
 
     public ScheduledAction refresh() {

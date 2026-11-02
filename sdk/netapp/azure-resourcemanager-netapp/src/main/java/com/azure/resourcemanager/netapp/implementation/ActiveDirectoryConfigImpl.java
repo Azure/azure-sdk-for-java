@@ -137,9 +137,12 @@ public final class ActiveDirectoryConfigImpl
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.activeDirectoryConfigName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "activeDirectoryConfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/activeDirectoryConfigs/{activeDirectoryConfigName}",
+            "resourceGroupName");
+        this.activeDirectoryConfigName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/activeDirectoryConfigs/{activeDirectoryConfigName}",
+            "activeDirectoryConfigName");
     }
 
     public ActiveDirectoryConfig refresh() {

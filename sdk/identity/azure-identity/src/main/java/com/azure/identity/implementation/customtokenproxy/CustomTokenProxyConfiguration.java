@@ -7,8 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -48,13 +51,21 @@ public final class CustomTokenProxyConfiguration {
 
         URL proxyUrl = validateProxyUrl(tokenProxyUrl);
 
+        if (!CoreUtils.isNullOrEmpty(caFile) && !Files.isRegularFile(Paths.get(caFile))) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("AZURE_KUBERNETES_CA_FILE must identify an existing certificate file."));
+        }
+
         byte[] caCertBytes = null;
         if (!CoreUtils.isNullOrEmpty(caData)) {
+            if (caData.trim().isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("AZURE_KUBERNETES_CA_DATA must not contain only whitespace."));
+            }
             caCertBytes = caData.getBytes(StandardCharsets.UTF_8);
         }
 
-        ProxyConfig config = new ProxyConfig(proxyUrl, sniName, caFile, caCertBytes);
-        return config;
+        return new ProxyConfig(proxyUrl, sniName, caFile, caCertBytes);
     }
 
     private static URL validateProxyUrl(String endpoint) {
@@ -65,37 +76,38 @@ public final class CustomTokenProxyConfiguration {
         try {
             URI tokenProxy = new URI(endpoint);
 
-            if (!"https".equals(tokenProxy.getScheme())) {
+            if (!"https".equalsIgnoreCase(tokenProxy.getScheme())) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Custom token endpoint must use https scheme, got: " + tokenProxy.getScheme()));
             }
 
             if (tokenProxy.getRawUserInfo() != null) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Custom token endpoint URL must not contain user info: " + endpoint));
+                    new IllegalArgumentException("Custom token endpoint URL must not contain user info."));
             }
 
             if (tokenProxy.getRawQuery() != null) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Custom token endpoint URL must not contain a query: " + endpoint));
+                    new IllegalArgumentException("Custom token endpoint URL must not contain a query."));
             }
 
             if (tokenProxy.getRawFragment() != null) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Custom token endpoint URL must not contain a fragment: " + endpoint));
+                    new IllegalArgumentException("Custom token endpoint URL must not contain a fragment."));
             }
 
-            if (tokenProxy.getRawPath() == null || tokenProxy.getRawPath().isEmpty()) {
-                tokenProxy = new URI(tokenProxy.getScheme(), null, tokenProxy.getHost(), tokenProxy.getPort(), "/",
-                    null, null);
+            if (CoreUtils.isNullOrEmpty(tokenProxy.getHost())
+                || tokenProxy.getPort() < -1
+                || tokenProxy.getPort() > 65535) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "AZURE_KUBERNETES_TOKEN_PROXY must be an absolute HTTPS URL with a valid host and port."));
             }
 
             return tokenProxy.toURL();
 
-        } catch (URISyntaxException | IllegalArgumentException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Failed to normalize proxy URL path", e));
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected error while validating proxy URL: " + endpoint, e);
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("AZURE_KUBERNETES_TOKEN_PROXY must be a valid absolute HTTPS URL.", e));
         }
     }
 

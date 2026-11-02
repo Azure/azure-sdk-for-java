@@ -131,9 +131,12 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
         com.azure.resourcemanager.standbypool.StandbyPoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.standbyVirtualMachinePoolName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "standbyVirtualMachinePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
+            "resourceGroupName");
+        this.standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
+            "standbyVirtualMachinePoolName");
     }
 
     public StandbyVirtualMachinePoolResource refresh() {

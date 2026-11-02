@@ -1,27 +1,51 @@
 # Release History
 
-## 1.19.0-beta.3 (Unreleased)
+## 1.20.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
-- Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
-- Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
+### Other Changes
+
+## 1.19.0 (2026-10-29)
+
+### Features Added
+
+- Added `enableAzureProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`). ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+
+### Bugs Fixed
+
 - Fixed `OnBehalfOfCredential` token cache lookup to remain bound to the configured user assertion, preventing a cached token acquired for one user from being returned for another user with matching scopes. ([#50618](https://github.com/Azure/azure-sdk-for-java/pull/50618))
 
 ### Other Changes
 
-- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
+- Updated credential builder documentation to clarify that providing managed identity ID options select a user-assigned identity, while omitting them selects the system-assigned identity. ([#51021](https://github.com/Azure/azure-sdk-for-java/pull/51021))
 
 #### Dependency Updates
 
-- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+---
+
+The updates below only denote differences between this release and previous 1.19.0 beta releases, not the 1.18.x stable implementation.
+
+### Bugs Fixed
+
+- Fixed verification of `AZURE_KUBERNETES_SNI_NAME` being skipped when the proxy certificate already matched the proxy URL hostname. The configured name is now checked during TLS handshakes, including connections opened by automatic HTTP retries, before sending the service-account assertion. Certificate DNS wildcards that match exactly one label remain supported. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed the AKS token proxy accepting CA bundles containing a valid certificate followed by a malformed certificate entry. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed authentication failures when a previously loaded proxy CA file temporarily disappears during rotation. The existing fallback for an empty CA file is unchanged. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed a race between proxy CA reloads and socket factory creation that could leave requests using the previous CA configuration. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed blocking I/O in the internal AKS proxy transport's reactive send and response-body APIs running on subscriber threads. These operations now use a blocking-I/O scheduler. Synchronous body reads, including those used by the MSAL bridge, stay on the calling thread to avoid starvation when that scheduler is saturated. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed the AKS token proxy converting I/O failures while opening response streams for HTTP statuses below 400 into empty bodies. These failures now propagate. HTTP error responses without a body still retain their error status. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed the proxy transport leaking into subsequent credentials built with the same `WorkloadIdentityCredentialBuilder` after proxy settings were removed. Proxy options are now applied to a per-credential copy instead of mutating the builder. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+
+### Other Changes
+
+- Added AKS identity binding usage guidance and an opt-in example for `WorkloadIdentityCredentialBuilder.enableAzureProxy()`.  ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
 
 ## 1.18.7 (2026-10-01)
 
@@ -45,10 +69,6 @@
 - Upgraded `azure-core` from `1.59.1` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.7` to version `1.16.8`.
 - Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
-
-#### Dependency Updates
-
-- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
 
 ## 1.18.6 (2026-08-31)
 

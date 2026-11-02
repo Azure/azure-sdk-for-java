@@ -93,7 +93,8 @@ public final class ConnectorImpl implements Connector, Connector.Definition, Con
         com.azure.resourcemanager.impactreporting.ImpactReportingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
     }
 
     public Connector refresh() {

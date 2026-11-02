@@ -107,10 +107,15 @@ public final class VirtualNetworkAddressImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudvmclustername = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudVmClusters");
-        this.virtualnetworkaddressname
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkAddresses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "resourceGroupName");
+        this.cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "cloudvmclustername");
+        this.virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "virtualnetworkaddressname");
     }
 
     public VirtualNetworkAddress refresh() {

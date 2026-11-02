@@ -136,8 +136,12 @@ public final class OrganizationResourceImpl
         com.azure.resourcemanager.napsteromniagentapi.NapsterOmniagentApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationname = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}",
+            "resourceGroupName");
+        this.organizationname = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}",
+            "organizationname");
     }
 
     public OrganizationResource refresh() {

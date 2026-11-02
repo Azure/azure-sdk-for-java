@@ -132,8 +132,12 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
         com.azure.resourcemanager.databasewatcher.DatabaseWatcherManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.watcherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}",
+            "resourceGroupName");
+        this.watcherName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}",
+            "watcherName");
     }
 
     public Watcher refresh() {

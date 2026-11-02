@@ -121,8 +121,12 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     BookshelfImpl(BookshelfInner innerObject, com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.bookshelfName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookshelves");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "resourceGroupName");
+        this.bookshelfName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "bookshelfName");
     }
 
     public Bookshelf refresh() {

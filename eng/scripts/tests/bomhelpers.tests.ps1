@@ -31,6 +31,64 @@ BeforeAll {
     . $bomHelpersPath
 }
 
+Describe "GeneratePatch release versions" {
+    BeforeEach {
+        $global:LASTEXITCODE = 0
+        $script:patchInfo = [ArtifactPatchInfo]::new()
+        $script:patchInfo.ArtifactId = "azure-example"
+        $script:patchInfo.LatestGAOrPatchVersion = "1.0.4"
+        $script:patchInfo.CurrentPomFileVersion = "1.1.0-beta.2"
+        $script:patchInfo.ArtifactDirPath = $TestDrive
+        $script:patchInfo.ChangeLogPath = Join-Path $TestDrive "CHANGELOG.md"
+        $script:patchInfo.PipelineName = "example"
+
+        Mock GetCurrentBranchName { "release/patch/test" }
+        Mock git { $global:LASTEXITCODE = 0 }
+        Mock GitCommit {}
+        Mock SetCurrentVersion { $global:LASTEXITCODE = 0 }
+        Mock UpdateDependencyOfClientSDK { $global:LASTEXITCODE = 0 }
+        Mock GetDependencyToVersion { @{ "azure-sibling" = "2.3.8" } }
+        Mock GetResolvedDependencyVersions { @{ "azure-sibling" = "2.4.0" } }
+        Mock Get-ChangeLogEntries { [ordered]@{} }
+        Mock UpdateChangeLogEntry {}
+    }
+
+    It "Prepares <Expected> while preserving the original stable source reset" -TestCases @(
+        @{ Minor = $false; Expected = "1.0.5" }
+        @{ Minor = $true; Expected = "1.1.0" }
+    ) {
+        param($Minor, $Expected)
+
+        GeneratePatch -PatchInfo $script:patchInfo -BranchName "release/patch/test" -RemoteName "origin" `
+            -IncrementMinorVersion:$Minor -PatchVersionOverrides @{ "com.azure:azure-sibling" = "2.4.0" }
+
+        Should -Invoke SetCurrentVersion -Times 1 -Exactly -ParameterFilter { $Version -eq $Expected }
+        Should -Invoke UpdateChangeLogEntry -Times 1 -Exactly -ParameterFilter {
+            $PatchVersion -eq $Expected -and $Content -match "2.4.0"
+        }
+        Should -Invoke GitCommit -Times 1 -Exactly -ParameterFilter {
+            $Message -eq "Reset sources for azure-example to the release version 1.0.4."
+        }
+        Should -Invoke GetResolvedDependencyVersions -Times 1 -Exactly -ParameterFilter {
+            $PatchVersionOverrides["com.azure:azure-sibling"] -eq "2.4.0"
+        }
+    }
+
+    It "Preserves an explicitly supplied target in minor mode" {
+        $script:patchInfo.FutureReleasePatchVersion = "1.2.0"
+
+        GeneratePatch -PatchInfo $script:patchInfo -BranchName "release/patch/test" -RemoteName "origin" -IncrementMinorVersion
+
+        Should -Invoke SetCurrentVersion -Times 1 -Exactly -ParameterFilter { $Version -eq "1.2.0" }
+    }
+
+    It "Forwards minor mode through GeneratePatches" {
+        GeneratePatches -ArtifactPatchInfos @($script:patchInfo) -BranchName "release/patch/test" -RemoteName "origin" -IncrementMinorVersion
+
+        Should -Invoke SetCurrentVersion -Times 1 -Exactly -ParameterFilter { $Version -eq "1.1.0" }
+    }
+}
+
 Describe "GetDependencyUpgradeChangeLogMessage" {
     It "Should return upgrade messages when dependencies have version changes" {
         $oldDeps = @{

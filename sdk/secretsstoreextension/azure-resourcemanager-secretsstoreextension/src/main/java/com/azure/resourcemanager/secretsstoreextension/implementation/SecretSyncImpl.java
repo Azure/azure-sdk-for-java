@@ -133,8 +133,12 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
         com.azure.resourcemanager.secretsstoreextension.SecretsStoreExtensionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.secretSyncName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "secretSyncs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "resourceGroupName");
+        this.secretSyncName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "secretSyncName");
     }
 
     public SecretSync refresh() {

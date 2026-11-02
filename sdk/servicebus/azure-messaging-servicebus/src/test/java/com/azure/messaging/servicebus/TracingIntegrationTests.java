@@ -29,7 +29,10 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -43,6 +46,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -158,30 +162,124 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         Span callerSpan = testTracer.spanBuilder("caller").startSpan();
         String expectedTraceId = callerSpan.getSpanContext().getTraceId();
 
-        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES).setMessageId(UUID.randomUUID().toString());
         try (Scope scope = callerSpan.makeCurrent()) {
             StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
         } finally {
             callerSpan.end();
         }
 
-        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+        try {
+            List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        // Exactly one send span and one message span should be produced for a single sendMessage() call.
-        // An exact-count assertion guards against accidental double-instrumentation regressions.
-        List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
-        assertEquals(1, send.size());
-        assertEquals(expectedTraceId, send.get(0).getSpanContext().getTraceId());
-        assertEquals(expectedTraceId, send.get(0).getParentSpanContext().getTraceId());
+            // Exactly one send span and one message span should be produced for a single sendMessage() call.
+            // An exact-count assertion guards against accidental double-instrumentation regressions.
+            List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
+            assertEquals(1, send.size());
+            assertEquals(expectedTraceId, send.get(0).getSpanContext().getTraceId());
+            assertEquals(expectedTraceId, send.get(0).getParentSpanContext().getTraceId());
 
-        List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
-        assertEquals(1, messageSpans.size());
-        assertMessageSpan(messageSpans.get(0), message);
-        assertEquals(expectedTraceId, messageSpans.get(0).getSpanContext().getTraceId());
+            List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
+            assertEquals(1, messageSpans.size());
+            assertMessageSpan(messageSpans.get(0), message);
+            assertEquals(expectedTraceId, messageSpans.get(0).getSpanContext().getTraceId());
 
-        // the traceparent injected into the outgoing message carries the caller's trace id
-        String traceparent = (String) message.getApplicationProperties().get("traceparent");
-        assertTrue(traceparent.startsWith("00-" + expectedTraceId));
+            // the traceparent injected into the outgoing message carries the caller's trace id
+            String traceparent = (String) message.getApplicationProperties().get("traceparent");
+            assertTrue(traceparent.startsWith("00-" + expectedTraceId));
+        } finally {
+            ServiceBusReceivedMessage received = receiver.receiveMessages().next().block(TIMEOUT);
+            assertNotNull(received);
+            assertEquals(message.getMessageId(), received.getMessageId());
+            receiver.complete(received).block(TIMEOUT);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "single", "iterable", "batch" })
+    public void asyncProcessorForwardingPreservesTraceParent(String sendKind) throws InterruptedException {
+        final ServiceBusMessage input
+            = new ServiceBusMessage(CONTENTS_BYTES).setMessageId(UUID.randomUUID().toString());
+        final ServiceBusMessage output
+            = new ServiceBusMessage(CONTENTS_BYTES).setMessageId(UUID.randomUUID().toString());
+        sender.sendMessage(input).block(TIMEOUT);
+        final String inputProducerId = input.getApplicationProperties().get("traceparent").toString().split("-")[2];
+        final CountDownLatch processed = new CountDownLatch(2);
+        spanProcessor.notifyIfCondition(processed, span -> "ServiceBus.process".equals(span.getName()));
+        final AtomicReference<Throwable> error = new AtomicReference<>();
+        final AtomicReference<ServiceBusReceivedMessage> forwarded = new AtomicReference<>();
+        final AtomicBoolean ambientProcessScope = new AtomicBoolean();
+        final ServiceBusProcessorAsyncClient asyncProcessor
+            = toClose(getAuthenticatedBuilder().clientOptions(clientOptions)
+                .processorAsync()
+                .queueName(getQueueName(0))
+                .disableAutoComplete()
+                .maxConcurrentCalls(1)
+                .processMessage(context -> {
+                    if (output.getMessageId().equals(context.getMessage().getMessageId())) {
+                        forwarded.set(context.getMessage());
+                        return context.complete();
+                    }
+                    if (!input.getMessageId().equals(context.getMessage().getMessageId())) {
+                        return Mono.error(new IllegalStateException("Received an unexpected forwarding-test message"));
+                    }
+                    return Mono.delay(Duration.ofMillis(1)).then(Mono.defer(() -> {
+                        ambientProcessScope.set(Span.current().getSpanContext().isValid());
+                        final Mono<Void> send;
+                        if ("single".equals(sendKind)) {
+                            send = sender.sendMessage(output);
+                        } else if ("iterable".equals(sendKind)) {
+                            send = sender.sendMessages(Collections.singletonList(output));
+                        } else {
+                            send = sender.createMessageBatch().flatMap(batch -> {
+                                if (!batch.tryAddMessage(output)) {
+                                    return Mono.error(new IllegalStateException("Forwarded message did not fit"));
+                                }
+                                return sender.sendMessages(batch);
+                            });
+                        }
+                        return send.then(context.complete());
+                    }));
+                })
+                .processError(context -> {
+                    error.compareAndSet(null, context.getException());
+                    return Mono.empty();
+                })
+                .buildProcessorAsyncClient());
+        try {
+            asyncProcessor.start().block(TIMEOUT);
+            assertTrue(processed.await(30, TimeUnit.SECONDS), "Both input and forwarded messages must be processed");
+        } finally {
+            asyncProcessor.close();
+        }
+        assertNull(error.get());
+        assertFalse(ambientProcessScope.get(), "SDK-only processing must not rely on a thread-local process scope");
+        assertNotNull(forwarded.get());
+        final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+        final List<ReadableSpan> processes = findSpans(spans, "ServiceBus.process");
+        final List<ReadableSpan> messages = findSpans(spans, "ServiceBus.message");
+        final List<ReadableSpan> sends = findSpans(spans, "ServiceBus.send");
+        assertEquals(2, processes.size());
+        assertEquals(2, messages.size());
+        assertEquals(2, sends.size());
+        final ReadableSpan process = processes.stream()
+            .filter(span -> inputProducerId.equals(span.getParentSpanContext().getSpanId()))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("The input process span has no producer parent"));
+        final List<ReadableSpan> forwardedMessages = messages.stream()
+            .filter(span -> process.getSpanContext().getSpanId().equals(span.getParentSpanContext().getSpanId()))
+            .collect(Collectors.toList());
+        final List<ReadableSpan> forwardedSends = sends.stream()
+            .filter(span -> process.getSpanContext().getSpanId().equals(span.getParentSpanContext().getSpanId()))
+            .collect(Collectors.toList());
+        assertEquals(1, forwardedMessages.size());
+        assertEquals(1, forwardedSends.size());
+        assertEquals(process.getSpanContext().getTraceId(), forwardedMessages.get(0).getSpanContext().getTraceId());
+        assertEquals(process.getSpanContext().getTraceId(), forwardedSends.get(0).getSpanContext().getTraceId());
+        assertMessageSpan(forwardedMessages.get(0), output);
+        assertEquals(output.getApplicationProperties().get("traceparent"),
+            forwarded.get().getApplicationProperties().get("traceparent"));
+        assertNull(receiver.peekMessage().block(TIMEOUT), "Both messages must be settled");
     }
 
     @Test
@@ -780,8 +878,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals("ServiceBus.message", actual.getName());
         assertEquals(SpanKind.PRODUCER, actual.getKind());
         assertNull(actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
-        String traceparent
-            = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId() + "-01";
+        String traceparent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId()
+            + "-" + actual.getSpanContext().getTraceFlags().asHex();
         assertEquals(message.getApplicationProperties().get("Diagnostic-Id"), traceparent);
         assertEquals(message.getApplicationProperties().get("traceparent"), traceparent);
     }
@@ -800,7 +898,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getApplicationProperties().get("traceparent");
             SpanContext linkContext = links.get(i).getSpanContext();
-            String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
+            String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-"
+                + linkContext.getTraceFlags().asHex();
             assertEquals(messageTraceparent, linkTraceparent);
         }
     }
@@ -818,7 +917,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getApplicationProperties().get("traceparent");
             SpanContext linkContext = links.get(i).getSpanContext();
-            String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
+            String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-"
+                + linkContext.getTraceFlags().asHex();
             assertEquals(messageTraceparent, linkTraceparent);
             assertNotNull(links.get(i)
                 .getAttributes()

@@ -131,8 +131,12 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     AppLinkImpl(AppLinkInner innerObject, com.azure.resourcemanager.appnetwork.AppnetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.appLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "resourceGroupName");
+        this.appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "appLinkName");
     }
 
     public AppLink refresh() {
