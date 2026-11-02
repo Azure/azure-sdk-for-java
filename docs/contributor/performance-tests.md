@@ -4,7 +4,7 @@
 Service-level performance tests for Azure SDK libraries use the `perf-test-core` framework (`com.azure:perf-test-core`). Each library that needs benchmarking gets its own Maven module at `sdk/<service>/azure-<service>-perf/`.
 
 For the JMH microbenchmarks of Core-library runtime implementations, see
-[Core Multi-Release JAR Performance](multi-release-jar-performance.md).
+[Core Multi-Release JAR Performance](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/multi-release-jar-performance.md).
 
 ---
 

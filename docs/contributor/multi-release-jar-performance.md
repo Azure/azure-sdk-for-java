@@ -145,7 +145,8 @@ pre-change revision and the full feature revision recorded in the metadata, but 
 reproduction of the intermediate artifacts used for the historical tables.
 
 The following PowerShell example runs the 1 MiB heap-buffer transfer case. Set `JAVA_HOME` to JDK 25 and replace
-the two artifact paths. Build prerequisites are described in [Building](building.md#prerequisites).
+the two artifact paths. Build prerequisites are described in
+[Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md#prerequisites).
 
 | Library | `$Package` | `$Benchmark` |
 |---|---|---|
@@ -215,20 +216,20 @@ The available data also does not establish performance on Java 8, 11, or 17, oth
 workloads, real HTTP transports, cold startup, or end-to-end service operations.
 
 [mr-spec]: https://openjdk.org/jeps/238#Description
-[results]: performance-data/core-multi-release-jdk25.csv
-[metadata]: performance-data/core-multi-release-jdk25.metadata.json
-[core-streams]: ../../sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/InputStreamUtils.java
-[client-streams]: ../../sdk/clientcore/core/src/main/java11/io/clientcore/core/implementation/utils/InputStreamUtils.java
-[core-buffer-stream]: ../../sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/ByteBufferInputStream.java
-[client-buffer-stream]: ../../sdk/clientcore/core/src/main/java11/io/clientcore/core/implementation/utils/ByteBufferInputStream.java
-[core-buffer-copy]: ../../sdk/core/azure-core/src/main/java13/com/azure/core/implementation/util/ByteBufferUtils.java
-[client-buffer-copy]: ../../sdk/clientcore/core/src/main/java13/io/clientcore/core/implementation/utils/ByteBufferUtils.java
-[core-hex]: ../../sdk/core/azure-core/src/main/java17/com/azure/core/util/HexEncoding.java
-[client-hex]: ../../sdk/clientcore/core/src/main/java17/io/clientcore/core/utils/HexEncoding.java
-[client-span]: ../../sdk/clientcore/core/src/main/java17/io/clientcore/core/implementation/instrumentation/fallback/SpanIdFormatter.java
-[core-long-parser]: ../../sdk/core/azure-core/src/main/java11/com/azure/core/util/LongParser.java
-[client-long-parser]: ../../sdk/clientcore/core/src/main/java11/io/clientcore/core/utils/LongParser.java
-[core-integer-parser]: ../../sdk/core/azure-core/src/main/java11/com/azure/core/implementation/IntegerParser.java
-[core-cleaner]: ../../sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/CleanerAccess.java
-[core-benchmark]: ../../sdk/core/azure-core/src/test/java/com/azure/core/util/BinaryDataIOBenchmark.java
-[client-benchmark]: ../../sdk/clientcore/core/src/test/java/io/clientcore/core/models/binarydata/BinaryDataIOBenchmark.java
+[results]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.csv
+[metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.metadata.json
+[core-streams]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/InputStreamUtils.java
+[client-streams]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java11/io/clientcore/core/implementation/utils/InputStreamUtils.java
+[core-buffer-stream]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/ByteBufferInputStream.java
+[client-buffer-stream]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java11/io/clientcore/core/implementation/utils/ByteBufferInputStream.java
+[core-buffer-copy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java13/com/azure/core/implementation/util/ByteBufferUtils.java
+[client-buffer-copy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java13/io/clientcore/core/implementation/utils/ByteBufferUtils.java
+[core-hex]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java17/com/azure/core/util/HexEncoding.java
+[client-hex]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java17/io/clientcore/core/utils/HexEncoding.java
+[client-span]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java17/io/clientcore/core/implementation/instrumentation/fallback/SpanIdFormatter.java
+[core-long-parser]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/util/LongParser.java
+[client-long-parser]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java11/io/clientcore/core/utils/LongParser.java
+[core-integer-parser]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/IntegerParser.java
+[core-cleaner]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/CleanerAccess.java
+[core-benchmark]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/test/java/com/azure/core/util/BinaryDataIOBenchmark.java
+[client-benchmark]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/test/java/io/clientcore/core/models/binarydata/BinaryDataIOBenchmark.java
