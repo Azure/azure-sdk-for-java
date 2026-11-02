@@ -69,7 +69,14 @@ public class IterableOfByteBuffersInputStream extends InputStream {
         }
     }
 
-    private ByteBuffer getCurrentBuffer() {
+    final synchronized ByteBuffer takeCurrentBuffer() {
+        ByteBuffer buffer = getCurrentBuffer();
+        currentBuffer = null;
+        return buffer;
+    }
+
+    // The caller must hold this stream's monitor.
+    final ByteBuffer getCurrentBuffer() {
         if (currentBuffer != null && currentBuffer.hasRemaining()) {
             return currentBuffer;
         } else {

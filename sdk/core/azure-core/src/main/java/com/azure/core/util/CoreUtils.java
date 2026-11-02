@@ -54,8 +54,6 @@ public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
-    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
-
     // Used to check if the ISO8601 date time doesn't have a colon in the offset.
     private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
@@ -469,21 +467,7 @@ public final class CoreUtils {
             return "";
         }
 
-        // Hex uses 4 bits, converting a byte to hex will double its size.
-        char[] hexString = new char[bytes.length * 2];
-
-        for (int i = 0; i < bytes.length; i++) {
-            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
-            int b = bytes[i] & 0xFF;
-
-            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
-            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
-
-            // Mask all but the last 4 bits and get the corresponding hex character.
-            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
-        }
-
-        return new String(hexString);
+        return HexEncoding.toHexString(bytes);
     }
 
     /**
@@ -518,13 +502,21 @@ public final class CoreUtils {
                 + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
         }
 
-        String sizeString = contentRange.substring(index + 1).trim();
-        if ("*".equals(sizeString)) {
+        // Match String.trim(), including control characters, rather than Unicode whitespace stripping.
+        int start = index + 1;
+        int end = contentRange.length();
+        while (start < end && contentRange.charAt(start) <= ' ') {
+            start++;
+        }
+        while (start < end && contentRange.charAt(end - 1) <= ' ') {
+            end--;
+        }
+        if (end - start == 1 && contentRange.charAt(start) == '*') {
             // Size unknown to the Content-Range header.
             return -1;
         }
 
-        return Long.parseLong(sizeString);
+        return LongParser.parse(contentRange, start, end);
     }
 
     /**

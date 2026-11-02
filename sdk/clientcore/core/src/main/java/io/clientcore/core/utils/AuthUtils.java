@@ -275,15 +275,7 @@ public final class AuthUtils {
      * @return The hex string representation of the byte array.
      */
     static String bytesToHexString(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            String hex = Integer.toHexString(0xFF & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
+        return HexEncoding.toHexString(bytes);
     }
 
     /**

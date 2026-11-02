@@ -3,10 +3,12 @@
 
 package io.clientcore.core.implementation.utils;
 
+import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -23,6 +25,24 @@ public final class StreamUtil {
     private static final ClientLogger LOGGER = new ClientLogger(StreamUtil.class);
 
     private StreamUtil() {
+    }
+
+    static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        AccessibleByteArrayOutputStream output = new AccessibleByteArrayOutputStream();
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
+            output.write(buffer, 0, read);
+        }
+        return output.toByteArrayUnsafe();
+    }
+
+    static void transferTo(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
+        }
     }
 
     /**

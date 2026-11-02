@@ -22,6 +22,10 @@
 
 ### Other Changes
 
+- Added package-private multi-release implementations for hexadecimal and span ID formatting on Java 17 and later
+  and range-based numeric parsing on Java 11 and later, retaining Java 8 fallbacks.
+- Added multi-release implementations for bulk `BinaryData` stream operations on Java 11 and later and
+  position-preserving `ByteBuffer` copies on Java 13 and later, retaining Java 8 fallbacks.
 - Documented the JDK `Host` header configuration and HTTP/2 authority limitations.
 
 ## 1.0.0-beta.11 (2025-07-21)
