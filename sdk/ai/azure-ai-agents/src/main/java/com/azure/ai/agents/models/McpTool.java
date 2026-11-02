@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -21,13 +20,13 @@ import java.util.Map;
  * (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
  */
 @Fluent
-public final class McpTool implements JsonSerializable<McpTool> {
+public final class McpTool extends Tool {
 
     /*
-     * The type of the MCP tool. Always `mcp`.
+     * The type property.
      */
     @Generated
-    private final String type = "mcp";
+    private ToolType type = ToolType.MCP;
 
     /*
      * A label for this MCP server, used to identify it in tool calls.
@@ -112,12 +111,13 @@ public final class McpTool implements JsonSerializable<McpTool> {
     }
 
     /**
-     * Get the type property: The type of the MCP tool. Always `mcp`.
+     * Get the type property: The type property.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    @Override
+    public ToolType getType() {
         return this.type;
     }
 
@@ -425,8 +425,8 @@ public final class McpTool implements JsonSerializable<McpTool> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("server_label", this.serverLabel);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("connector_id", this.connectorType == null ? null : this.connectorType.toString());
         jsonWriter.writeStringField("tunnel_id", this.tunnelId);
@@ -462,6 +462,7 @@ public final class McpTool implements JsonSerializable<McpTool> {
     public static McpTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
+            ToolType type = ToolType.MCP;
             String serverUrl = null;
             McpToolConnectorId connectorType = null;
             String tunnelId = null;
@@ -479,6 +480,8 @@ public final class McpTool implements JsonSerializable<McpTool> {
                 reader.nextToken();
                 if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = ToolType.fromString(reader.getString());
                 } else if ("server_url".equals(fieldName)) {
                     serverUrl = reader.getString();
                 } else if ("connector_id".equals(fieldName)) {
@@ -511,6 +514,7 @@ public final class McpTool implements JsonSerializable<McpTool> {
                 }
             }
             McpTool deserializedMcpTool = new McpTool(serverLabel);
+            deserializedMcpTool.type = type;
             deserializedMcpTool.serverUrl = serverUrl;
             deserializedMcpTool.connectorType = connectorType;
             deserializedMcpTool.tunnelId = tunnelId;
