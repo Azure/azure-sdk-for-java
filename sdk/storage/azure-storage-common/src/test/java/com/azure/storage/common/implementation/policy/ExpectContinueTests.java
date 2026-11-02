@@ -418,6 +418,7 @@ public class ExpectContinueTests {
     public void transportBehaviorOnTheWire(String name, String providerClassName, ContinueSupport expected,
         boolean sync) throws Exception {
         HttpClient httpClient = createHttpClient(providerClassName);
+        warmUp(httpClient, sync);
 
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
@@ -545,6 +546,7 @@ public class ExpectContinueTests {
     public void earlyRejectionSendsNoBodyAndRetrySucceeds(String name, String providerClassName, boolean sync)
         throws Exception {
         HttpClient httpClient = createHttpClient(providerClassName);
+        warmUp(httpClient, sync);
 
         try (ExpectContinueServer server = new ExpectContinueServer(true)) {
             server.start();
@@ -644,6 +646,25 @@ public class ExpectContinueTests {
             .getDeclaredConstructor()
             .newInstance()
             .createInstance();
+    }
+
+    // Runs one full 100-continue exchange whose results are discarded. A transport's first exchange in the JVM can
+    // spend hundreds of milliseconds on class loading and pipeline setup after arming its fallback timer but before
+    // the headers reach the wire, so the body can arrive well inside the 1 second wait and within BODY_SETTLE_MILLIS
+    // of the headers, making a deferring transport look like it sent the body early.
+    private static void warmUp(HttpClient httpClient, boolean sync) throws Exception {
+        try (ExpectContinueServer server = new ExpectContinueServer()) {
+            server.start();
+
+            HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), httpClient);
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            try (HttpResponse response
+                = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block()) {
+                assertNotNull(response, "warm up exchange returned no response");
+            }
+
+            assertTrue(server.awaitRequest(), "warm up exchange never reached the server");
+        }
     }
 
     private static int javaFeatureVersion() {
