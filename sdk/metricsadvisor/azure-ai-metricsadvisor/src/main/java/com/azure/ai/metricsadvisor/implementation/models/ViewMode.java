@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class ViewMode extends ExpandableStringEnum<ViewMode> {
     /**
      * Static value Private for ViewMode.
      */
-    @Generated
     public static final ViewMode PRIVATE = fromString("Private");
 
     /**
      * Static value Public for ViewMode.
      */
-    @Generated
     public static final ViewMode PUBLIC = fromString("Public");
 
     /**
@@ -29,7 +26,6 @@ public final class ViewMode extends ExpandableStringEnum<ViewMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ViewMode() {
     }
@@ -40,7 +36,6 @@ public final class ViewMode extends ExpandableStringEnum<ViewMode> {
      * @param name a name to look for.
      * @return the corresponding ViewMode.
      */
-    @Generated
     public static ViewMode fromString(String name) {
         return fromString(name, ViewMode.class);
     }
@@ -50,7 +45,6 @@ public final class ViewMode extends ExpandableStringEnum<ViewMode> {
      * 
      * @return known ViewMode values.
      */
-    @Generated
     public static Collection<ViewMode> values() {
         return values(ViewMode.class);
     }

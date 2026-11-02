@@ -145,13 +145,12 @@ final class PollingUtils {
         return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
     }
 
-    private static final Pattern PATTERN = Pattern.compile("[^:]+://[^/]+/documentintelligence/.+/([^?/]+)");
-
     static String parseOperationId(String operationLocationHeader) {
         if (CoreUtils.isNullOrEmpty(operationLocationHeader)) {
             return null;
         }
-        Matcher matcher = PATTERN.matcher(operationLocationHeader);
+        Pattern pattern = Pattern.compile("[^:]+://[^/]+/documentintelligence/.+/([^?/]+)");
+        Matcher matcher = pattern.matcher(operationLocationHeader);
         if (matcher.find() && matcher.group(1) != null) {
             return matcher.group(1);
         }

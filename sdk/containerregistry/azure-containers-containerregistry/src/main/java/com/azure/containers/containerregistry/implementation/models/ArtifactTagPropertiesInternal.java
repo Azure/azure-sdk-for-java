@@ -5,95 +5,77 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-/**
- * Tag attributes.
- */
+/** Tag attributes. */
 @Fluent
 public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactTagPropertiesInternal> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
-    @Generated
     private String registryLoginServer;
 
     /*
      * Image name
      */
-    @Generated
     private String repositoryName;
 
     /*
      * Tag name
      */
-    @Generated
     private String name;
 
     /*
      * Tag digest
      */
-    @Generated
     private String digest;
 
     /*
      * Tag created time
      */
-    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Tag last update time
      */
-    @Generated
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Delete enabled
      */
-    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
-    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
-    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
-    @Generated
     private Boolean readEnabled;
 
-    /**
-     * Creates an instance of ArtifactTagPropertiesInternal class.
-     */
-    @Generated
+    /** Creates an instance of ArtifactTagPropertiesInternal class. */
     public ArtifactTagPropertiesInternal() {
     }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     * 
+     *
      * @return the registryLoginServer value.
      */
-    @Generated
     public String getRegistryLoginServer() {
         return this.registryLoginServer;
     }
@@ -101,11 +83,10 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
     /**
      * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     * 
+     *
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setRegistryLoginServer(String registryLoginServer) {
         this.registryLoginServer = registryLoginServer;
         return this;
@@ -113,21 +94,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the repositoryName property: Image name.
-     * 
+     *
      * @return the repositoryName value.
      */
-    @Generated
     public String getRepositoryName() {
         return this.repositoryName;
     }
 
     /**
      * Set the repositoryName property: Image name.
-     * 
+     *
      * @param repositoryName the repositoryName value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setRepositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
@@ -135,21 +114,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the name property: Tag name.
-     * 
+     *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
 
     /**
      * Set the name property: Tag name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setName(String name) {
         this.name = name;
         return this;
@@ -157,21 +134,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the digest property: Tag digest.
-     * 
+     *
      * @return the digest value.
      */
-    @Generated
     public String getDigest() {
         return this.digest;
     }
 
     /**
      * Set the digest property: Tag digest.
-     * 
+     *
      * @param digest the digest value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -179,21 +154,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the createdOn property: Tag created time.
-     * 
+     *
      * @return the createdOn value.
      */
-    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
     /**
      * Set the createdOn property: Tag created time.
-     * 
+     *
      * @param createdOn the createdOn value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
@@ -201,21 +174,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the lastUpdatedOn property: Tag last update time.
-     * 
+     *
      * @return the lastUpdatedOn value.
      */
-    @Generated
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
     }
 
     /**
      * Set the lastUpdatedOn property: Tag last update time.
-     * 
+     *
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
         return this;
@@ -223,21 +194,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @return the deleteEnabled value.
      */
-    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -245,21 +214,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the writeEnabled property: Write enabled.
-     * 
+     *
      * @return the writeEnabled value.
      */
-    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
 
     /**
      * Set the writeEnabled property: Write enabled.
-     * 
+     *
      * @param writeEnabled the writeEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -267,21 +234,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the listEnabled property: List enabled.
-     * 
+     *
      * @return the listEnabled value.
      */
-    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
 
     /**
      * Set the listEnabled property: List enabled.
-     * 
+     *
      * @param listEnabled the listEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -289,30 +254,24 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Get the readEnabled property: Read enabled.
-     * 
+     *
      * @return the readEnabled value.
      */
-    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
 
     /**
      * Set the readEnabled property: Read enabled.
-     * 
+     *
      * @param readEnabled the readEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
-    @Generated
     public ArtifactTagPropertiesInternal setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -329,10 +288,8 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
             jsonWriter.writeStartObject("tag");
             jsonWriter.writeStringField("name", this.name);
             jsonWriter.writeStringField("digest", this.digest);
-            jsonWriter.writeStringField("createdTime",
-                this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
-            jsonWriter.writeStringField("lastUpdateTime",
-                this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
+            jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
+            jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
             if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
                 jsonWriter.writeStartObject("changeableAttributes");
                 jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
@@ -348,14 +305,13 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
 
     /**
      * Reads an instance of ArtifactTagPropertiesInternal from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ArtifactTagPropertiesInternal if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactTagPropertiesInternal.
      */
-    @Generated
     public static ArtifactTagPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ArtifactTagPropertiesInternal deserializedArtifactTagPropertiesInternal
@@ -378,11 +334,11 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
                         } else if ("digest".equals(fieldName)) {
                             deserializedArtifactTagPropertiesInternal.digest = reader.getString();
                         } else if ("createdTime".equals(fieldName)) {
-                            deserializedArtifactTagPropertiesInternal.createdOn = reader.getNullable(
-                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                            deserializedArtifactTagPropertiesInternal.createdOn
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            deserializedArtifactTagPropertiesInternal.lastUpdatedOn = reader.getNullable(
-                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                            deserializedArtifactTagPropertiesInternal.lastUpdatedOn
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("changeableAttributes".equals(fieldName)
                             && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {

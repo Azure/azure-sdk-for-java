@@ -30,7 +30,7 @@ public class ContainerRepositoryAsyncJavaDocSnippets {
         return repositoryAsyncClient;
     }
 
-    public ContainerRepositoryAsync createAsyncContainerRepositoryClientWithPipeline() {
+    public ContainerRepositoryAsync createAsyncContainerRespositoryClientWithPipeline() {
         String endpoint = getEndpoint();
         String repository = getRepository();
         TokenCredential credential = getTokenCredentials();

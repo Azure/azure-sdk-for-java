@@ -58,8 +58,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docUrl", this.documentUrl);
-        jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
-        jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -81,8 +79,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_ONE_LAKE;
             String documentUrl = null;
-            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
-            String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -98,10 +94,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docUrl".equals(fieldName)) {
                     documentUrl = reader.getString();
-                } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
-                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
-                } else if ("citationUrl".equals(fieldName)) {
-                    citationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -112,8 +104,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
             deserializedKnowledgeBaseIndexedOneLakeReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseIndexedOneLakeReference.type = type;
             deserializedKnowledgeBaseIndexedOneLakeReference.documentUrl = documentUrl;
-            deserializedKnowledgeBaseIndexedOneLakeReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
-            deserializedKnowledgeBaseIndexedOneLakeReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseIndexedOneLakeReference;
         });
     }
@@ -132,38 +122,5 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
     @Generated
     public String getDocumentUrl() {
         return this.documentUrl;
-    }
-
-    /*
-     * The sensitivity label information for the reference.
-     */
-    @Generated
-    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
-
-    /**
-     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
-     *
-     * @return the searchSensitivityLabelInfo value.
-     */
-    @Generated
-    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
-        return this.searchSensitivityLabelInfo;
-    }
-
-    /*
-     * A Search-owned URL that points at the backing document for this reference, usable as a citation target.
-     */
-    @Generated
-    private String citationUrl;
-
-    /**
-     * Get the citationUrl property: A Search-owned URL that points at the backing document for this reference, usable
-     * as a citation target.
-     *
-     * @return the citationUrl value.
-     */
-    @Generated
-    public String getCitationUrl() {
-        return this.citationUrl;
     }
 }

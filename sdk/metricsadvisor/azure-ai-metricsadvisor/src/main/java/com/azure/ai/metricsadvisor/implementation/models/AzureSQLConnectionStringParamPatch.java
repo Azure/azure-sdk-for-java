@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class AzureSQLConnectionStringParamPatch implements JsonSerializabl
     /*
      * The connection string to access the Azure SQL.
      */
-    @Generated
     private String connectionString;
 
     /**
      * Creates an instance of AzureSQLConnectionStringParamPatch class.
      */
-    @Generated
     public AzureSQLConnectionStringParamPatch() {
     }
 
@@ -35,7 +32,6 @@ public final class AzureSQLConnectionStringParamPatch implements JsonSerializabl
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -46,16 +42,11 @@ public final class AzureSQLConnectionStringParamPatch implements JsonSerializabl
      * @param connectionString the connectionString value to set.
      * @return the AzureSQLConnectionStringParamPatch object itself.
      */
-    @Generated
     public AzureSQLConnectionStringParamPatch setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,7 +62,6 @@ public final class AzureSQLConnectionStringParamPatch implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureSQLConnectionStringParamPatch.
      */
-    @Generated
     public static AzureSQLConnectionStringParamPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSQLConnectionStringParamPatch deserializedAzureSQLConnectionStringParamPatch

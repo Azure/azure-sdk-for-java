@@ -182,4 +182,4 @@ For additional samples please take a look at the [Document Intelligence Samples]
 [Sample-AnalyzeAddOnFormulas]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnFormulas.java
 [service_supported_models]: https://aka.ms/azsdk/documentintelligence/models
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdocumentintelligence%2Fazure-ai-documentintelligence%2Fmigration-guide.png)

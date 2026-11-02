@@ -25,12 +25,8 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -64,32 +60,12 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        release(compositeByteBuf);
-        compositeByteBuf = null;
+        publishBuffer();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext context) {
-        ScheduledFuture<?> timeoutFuture = context.executor().schedule(() -> {
-            handshakeFuture.tryFailure(new TimeoutException("WebSocket handshake timed out."));
-        }, 10, TimeUnit.SECONDS);
-        handshakeFuture.addListener(future -> {
-            timeoutFuture.cancel(false);
-            if (!future.isSuccess()) {
-                context.close();
-            }
-        });
-        handshaker.handshake(context.channel()).addListener(future -> {
-            if (!future.isSuccess()) {
-                handshakeFuture.tryFailure(future.cause());
-            }
-        });
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext context) {
-        handshakeFuture.tryFailure(new ClosedChannelException());
-        context.fireChannelInactive();
+        handshaker.handshake(context.channel());
     }
 
     @Override
@@ -99,9 +75,9 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
             try {
                 handshaker.finishHandshake(channel, (FullHttpResponse) message);
-                handshakeFuture.trySuccess();
+                handshakeFuture.setSuccess();
             } catch (WebSocketHandshakeException e) {
-                handshakeFuture.tryFailure(e);
+                handshakeFuture.setFailure(e);
             }
             return;
         }
@@ -119,7 +95,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         if (handshakeFuture != null && !handshakeFuture.isDone()) {
-            handshakeFuture.tryFailure(cause);
+            handshakeFuture.setFailure(cause);
         }
         ctx.close();
         release(compositeByteBuf);
@@ -139,7 +115,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // Ping, reply Pong
             loggerReference.get().atVerbose().log("Received PingWebSocketFrame");
             loggerReference.get().atVerbose().log("Send PongWebSocketFrame");
-            channel.writeAndFlush(new PongWebSocketFrame(webSocketFrame.content().retain()));
+            channel.writeAndFlush(new PongWebSocketFrame());
             return true;
         } else if (webSocketFrame instanceof PongWebSocketFrame) {
             // Pong
@@ -187,25 +163,13 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void publishBuffer() {
-        if (compositeByteBuf == null) {
+        final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
+
+        if (nioBuffers.length == 0) {
             return;
         }
 
-        if (compositeByteBuf.refCnt() == 0) {
-            compositeByteBuf = null;
-            return;
-        }
         try {
-            if (compositeByteBuf.readableBytes() == 0) {
-                return;
-            }
-
-            final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
-
-            if (nioBuffers.length == 0) {
-                return;
-            }
-
             final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(nioBuffers));
             final String collected = data.toString();
             final WebPubSubMessage deserialized = messageDecoder.decode(collected);
@@ -213,7 +177,6 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             messageHandler.accept(deserialized);
         } finally {
             release(compositeByteBuf);
-            compositeByteBuf = null;
         }
     }
 
@@ -235,8 +198,9 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private static void release(CompositeByteBuf buffer) {
-        if (buffer != null && buffer.refCnt() > 0) {
+        if (buffer.refCnt() > 0) {
             buffer.release();
+            buffer.clear();
         }
     }
 }

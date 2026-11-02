@@ -13,21 +13,22 @@ public final class ConflictResolutionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConflictResolutionPolicy model = BinaryData.fromString(
-            "{\"mode\":\"Custom\",\"conflictResolutionPath\":\"vwrevkhgnlnzon\",\"conflictResolutionProcedure\":\"rpiqywncv\"}")
+            "{\"mode\":\"LastWriterWins\",\"conflictResolutionPath\":\"evwrdnhfuk\",\"conflictResolutionProcedure\":\"sjcswsmystuluqyp\"}")
             .toObject(ConflictResolutionPolicy.class);
-        Assertions.assertEquals(ConflictResolutionMode.CUSTOM, model.mode());
-        Assertions.assertEquals("vwrevkhgnlnzon", model.conflictResolutionPath());
-        Assertions.assertEquals("rpiqywncv", model.conflictResolutionProcedure());
+        Assertions.assertEquals(ConflictResolutionMode.LAST_WRITER_WINS, model.mode());
+        Assertions.assertEquals("evwrdnhfuk", model.conflictResolutionPath());
+        Assertions.assertEquals("sjcswsmystuluqyp", model.conflictResolutionProcedure());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConflictResolutionPolicy model = new ConflictResolutionPolicy().withMode(ConflictResolutionMode.CUSTOM)
-            .withConflictResolutionPath("vwrevkhgnlnzon")
-            .withConflictResolutionProcedure("rpiqywncv");
+        ConflictResolutionPolicy model
+            = new ConflictResolutionPolicy().withMode(ConflictResolutionMode.LAST_WRITER_WINS)
+                .withConflictResolutionPath("evwrdnhfuk")
+                .withConflictResolutionProcedure("sjcswsmystuluqyp");
         model = BinaryData.fromObject(model).toObject(ConflictResolutionPolicy.class);
-        Assertions.assertEquals(ConflictResolutionMode.CUSTOM, model.mode());
-        Assertions.assertEquals("vwrevkhgnlnzon", model.conflictResolutionPath());
-        Assertions.assertEquals("rpiqywncv", model.conflictResolutionProcedure());
+        Assertions.assertEquals(ConflictResolutionMode.LAST_WRITER_WINS, model.mode());
+        Assertions.assertEquals("evwrdnhfuk", model.conflictResolutionPath());
+        Assertions.assertEquals("sjcswsmystuluqyp", model.conflictResolutionProcedure());
     }
 }

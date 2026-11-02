@@ -27,7 +27,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Objects;
@@ -457,31 +456,6 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                     null);
             });
         return tracer.traceMono("ServiceBus.listSessions", pageMono);
-    }
-
-    ReceiverOptions getReceiverOptions() {
-        return receiverOptions;
-    }
-
-    Duration getSessionIdleTimeout() {
-        final Duration timeout = receiverOptions.getSessionIdleTimeout();
-        return timeout == null ? connectionCacheWrapper.getRetryOptions().getTryTimeout() : timeout;
-    }
-
-    String getFullyQualifiedNamespace() {
-        return fullyQualifiedNamespace;
-    }
-
-    String getEntityPath() {
-        return entityPath;
-    }
-
-    String getIdentifier() {
-        return identifier;
-    }
-
-    boolean isConnectionClosed() {
-        return connectionCacheWrapper.isChannelClosed();
     }
 
     @Override

@@ -13,12 +13,11 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -28,14 +27,12 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
-import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
-import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
 
     private ContainerRepositoryAsync asyncClient;
@@ -44,8 +41,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @BeforeEach
     void beforeEach() {
-        importImage(REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"),
-            REGISTRY_ENDPOINT);
+        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME,
+            Arrays.asList("latest", "v1", "v2", "v3", "v4"));
     }
 
     @AfterEach
@@ -59,40 +56,46 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         }
 
         client = getContainerRepository(HttpClient.createDefault());
-        client.updateProperties(DEFAULT_REPO_WRITEABLE_PROPERTIES);
+        client.updateProperties(defaultRepoWriteableProperties);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
+        return new AssertingHttpClientBuilder(httpClient).skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertAsync()
+            .build();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
+        return new AssertingHttpClientBuilder(httpClient).skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertSync()
+            .build();
     }
 
     private ContainerRepositoryAsync getContainerRepositoryAsync(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(
+            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .buildAsyncClient()
                 .getRepository(HELLO_WORLD_REPOSITORY_NAME);
     }
 
     private ContainerRepositoryAsync getUnknownContainerRepositoryAsync(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(
+            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .buildAsyncClient()
                 .getRepository(TAG_UNKNOWN);
     }
 
     private ContainerRepository getContainerRepository(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient()
+        return getContainerRegistryBuilder(
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+                .buildClient()
                 .getRepository(HELLO_WORLD_REPOSITORY_NAME);
     }
 
     private ContainerRepository getUnknownContainerRepository(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient()
+        return getContainerRegistryBuilder(
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+                .buildClient()
                 .getRepository(TAG_UNKNOWN);
     }
 
@@ -103,12 +106,10 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.getPropertiesWithResponse())
-            .assertNext(ContainerRegistryClientsTestBase::validateProperties)
+            .assertNext(this::validateProperties)
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.getProperties())
-            .assertNext(ContainerRegistryClientsTestBase::validateProperties)
-            .verifyComplete();
+        StepVerifier.create(asyncClient.getProperties()).assertNext(this::validateProperties).verifyComplete();
 
         validateProperties(client.getProperties());
         validateProperties(client.getPropertiesWithResponse(Context.NONE));
@@ -134,8 +135,13 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        StepVerifier.create(asyncClient.listManifestProperties().collectList())
-            .assertNext(ContainerRegistryClientsTestBase::validateListArtifacts)
+        StepVerifier.create(asyncClient.listManifestProperties())
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(artifacts -> {
+                validateListArtifacts(artifacts);
+                return true;
+            })
             .verifyComplete();
 
         validateListArtifacts(client.listManifestProperties().stream().collect(Collectors.toList()));
@@ -147,8 +153,10 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        StepVerifier.create(asyncClient.listManifestProperties().byPage(PAGESIZE_2).collectList())
-            .assertNext(ContainerRegistryClientsTestBase::validateListArtifactsByPage)
+        StepVerifier.create(asyncClient.listManifestProperties().byPage(PAGESIZE_2))
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(this::validateListArtifactsByPage)
             .verifyComplete();
 
         validateListArtifactsByPage(
@@ -171,10 +179,11 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         client = getContainerRepository(httpClient);
 
         StepVerifier
-            .create(asyncClient.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_ASCENDING)
-                .byPage(PAGESIZE_2)
-                .collectList())
-            .assertNext(pagedResList -> validateListArtifactsByPage(pagedResList, true))
+            .create(
+                asyncClient.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(pagedResList -> validateListArtifactsByPage(pagedResList, true))
             .verifyComplete();
 
         validateListArtifactsByPage(
@@ -194,9 +203,10 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        StepVerifier
-            .create(asyncClient.listManifestProperties(ArtifactManifestOrder.NONE).byPage(PAGESIZE_2).collectList())
-            .assertNext(ContainerRegistryClientsTestBase::validateListArtifactsByPage)
+        StepVerifier.create(asyncClient.listManifestProperties(ArtifactManifestOrder.NONE).byPage(PAGESIZE_2))
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(this::validateListArtifactsByPage)
             .verifyComplete();
 
         validateListArtifactsByPage(client.listManifestProperties(ArtifactManifestOrder.NONE, Context.NONE)
@@ -210,19 +220,19 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        contentProperties = REPO_WRITEABLE_PROPERTIES;
+        contentProperties = repoWriteableProperties;
 
-        StepVerifier.create(asyncClient.updatePropertiesWithResponse(REPO_WRITEABLE_PROPERTIES))
+        StepVerifier.create(asyncClient.updatePropertiesWithResponse(repoWriteableProperties))
             .assertNext(res -> validateRepoContentProperties(res.getValue()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.updateProperties(REPO_WRITEABLE_PROPERTIES))
-            .assertNext(ContainerRegistryClientsTestBase::validateRepoContentProperties)
+        StepVerifier.create(asyncClient.updateProperties(repoWriteableProperties))
+            .assertNext(this::validateRepoContentProperties)
             .verifyComplete();
 
-        validateRepoContentProperties(client.updateProperties(REPO_WRITEABLE_PROPERTIES));
+        validateRepoContentProperties(client.updateProperties(repoWriteableProperties));
         validateRepoContentProperties(
-            client.updatePropertiesWithResponse(REPO_WRITEABLE_PROPERTIES, Context.NONE).getValue());
+            client.updatePropertiesWithResponse(repoWriteableProperties, Context.NONE).getValue());
 
         StepVerifier.create(asyncClient.updateProperties(null)).expectError(NullPointerException.class).verify();
 
@@ -242,12 +252,12 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         RegistryArtifactAsync registryArtifactAsync = asyncClient.getArtifact(LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
         StepVerifier.create(registryArtifactAsync.getManifestProperties())
-            .assertNext(res -> validateManifestProperties(res, false))
+            .assertNext(res -> validateManifestProperties(res, true, false))
             .verifyComplete();
 
         RegistryArtifact registryArtifact = client.getArtifact(LATEST_TAG_NAME);
         assertNotNull(registryArtifact);
-        validateManifestProperties(registryArtifact.getManifestProperties(), false);
+        validateManifestProperties(registryArtifact.getManifestProperties(), true, false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

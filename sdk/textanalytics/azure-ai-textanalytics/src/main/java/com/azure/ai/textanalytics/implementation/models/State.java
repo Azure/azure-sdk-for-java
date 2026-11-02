@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,43 +14,36 @@ public final class State extends ExpandableStringEnum<State> {
     /**
      * Static value notStarted for State.
      */
-    @Generated
     public static final State NOT_STARTED = fromString("notStarted");
 
     /**
      * Static value running for State.
      */
-    @Generated
     public static final State RUNNING = fromString("running");
 
     /**
      * Static value succeeded for State.
      */
-    @Generated
     public static final State SUCCEEDED = fromString("succeeded");
 
     /**
      * Static value failed for State.
      */
-    @Generated
     public static final State FAILED = fromString("failed");
 
     /**
      * Static value cancelled for State.
      */
-    @Generated
     public static final State CANCELLED = fromString("cancelled");
 
     /**
      * Static value cancelling for State.
      */
-    @Generated
     public static final State CANCELLING = fromString("cancelling");
 
     /**
      * Static value partiallyCompleted for State.
      */
-    @Generated
     public static final State PARTIALLY_COMPLETED = fromString("partiallyCompleted");
 
     /**
@@ -59,7 +51,6 @@ public final class State extends ExpandableStringEnum<State> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public State() {
     }
@@ -70,7 +61,6 @@ public final class State extends ExpandableStringEnum<State> {
      * @param name a name to look for.
      * @return the corresponding State.
      */
-    @Generated
     public static State fromString(String name) {
         return fromString(name, State.class);
     }
@@ -80,7 +70,6 @@ public final class State extends ExpandableStringEnum<State> {
      * 
      * @return known State values.
      */
-    @Generated
     public static Collection<State> values() {
         return values(State.class);
     }

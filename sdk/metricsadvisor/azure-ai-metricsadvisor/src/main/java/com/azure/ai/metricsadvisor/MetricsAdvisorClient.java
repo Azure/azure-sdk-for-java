@@ -14,7 +14,7 @@ import com.azure.ai.metricsadvisor.implementation.models.ChangePointFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.ChangePointFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.CommentFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.CommentFeedbackValue;
-import com.azure.ai.metricsadvisor.implementation.models.CreateMetricFeedbackHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateMetricFeedbackResponse;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionIncidentResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionSeriesQuery;
@@ -74,7 +74,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -1707,7 +1706,7 @@ public final class MetricsAdvisorClient {
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Unknown feedback type."));
         }
-        ResponseBase<CreateMetricFeedbackHeaders, Void> createdMetricFeedbackResponse
+        CreateMetricFeedbackResponse createdMetricFeedbackResponse
             = service.createMetricFeedbackWithResponse(innerMetricFeedback, context);
         return getFeedbackWithResponse(
             parseOperationId(createdMetricFeedbackResponse.getDeserializedHeaders().getLocation()), context);

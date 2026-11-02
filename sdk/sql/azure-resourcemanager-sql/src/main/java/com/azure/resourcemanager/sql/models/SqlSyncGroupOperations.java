@@ -10,19 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-/**
- * A representation of the Azure SQL Sync Group operations.
- *
- * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
- * Microsoft Entra ID or managed identities. For distributed applications, use
- * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy. For
- * globally distributed applications, additionally use
- * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with {@link CreateMode#ONLINE_SECONDARY} for
- * active geo-replication. Refer to the
- * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official retirement
- * migration guidance</a> for more alternatives.
- */
-@Deprecated
+/** A representation of the Azure SQL Sync Group operations. */
 @Fluent
 public interface SqlSyncGroupOperations
     extends SupportsCreating<SqlSyncGroupOperations.DefinitionStages.WithSqlServer> {
@@ -206,19 +194,7 @@ public interface SqlSyncGroupOperations
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Server Sync Group common actions.
-     *
-     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
-     * Microsoft Entra ID or managed identities. For distributed applications, use
-     * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy.
-     * For globally distributed applications, additionally use
-     * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with
-     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
-     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
-     * retirement migration guidance</a> for more alternatives.
-     */
-    @Deprecated
+    /** Grouping of the Azure SQL Server Sync Group common actions. */
     interface SqlSyncGroupActionsDefinition extends SqlChildrenOperations.SqlChildrenActionsDefinition<SqlSyncGroup> {
         /**
          * Begins the definition of a new SQL Sync Group to be added to this server.

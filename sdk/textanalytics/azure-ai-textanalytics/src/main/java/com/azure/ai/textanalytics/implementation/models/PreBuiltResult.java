@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
     /*
      * Errors by document id.
      */
-    @Generated
     private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
-    @Generated
     private RequestStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
      */
-    @Generated
     private String modelVersion;
 
     /**
      * Creates an instance of PreBuiltResult class.
      */
-    @Generated
     public PreBuiltResult() {
     }
 
@@ -48,7 +43,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * 
      * @return the errors value.
      */
-    @Generated
     public List<DocumentError> getErrors() {
         return this.errors;
     }
@@ -59,7 +53,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * @param errors the errors value to set.
      * @return the PreBuiltResult object itself.
      */
-    @Generated
     public PreBuiltResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
@@ -71,7 +64,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * 
      * @return the statistics value.
      */
-    @Generated
     public RequestStatistics getStatistics() {
         return this.statistics;
     }
@@ -83,7 +75,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * @param statistics the statistics value to set.
      * @return the PreBuiltResult object itself.
      */
-    @Generated
     public PreBuiltResult setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -94,7 +85,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * 
      * @return the modelVersion value.
      */
-    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -105,7 +95,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * @param modelVersion the modelVersion value to set.
      * @return the PreBuiltResult object itself.
      */
-    @Generated
     public PreBuiltResult setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -114,7 +103,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,7 +121,6 @@ public class PreBuiltResult implements JsonSerializable<PreBuiltResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PreBuiltResult.
      */
-    @Generated
     public static PreBuiltResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PreBuiltResult deserializedPreBuiltResult = new PreBuiltResult();

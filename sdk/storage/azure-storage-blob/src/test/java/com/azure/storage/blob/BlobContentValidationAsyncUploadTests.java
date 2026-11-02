@@ -719,42 +719,6 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    /**
-     * Chunked upload with structured message of a buffer whose position is not zero. Only the bytes between the
-     * buffer's position and limit may be uploaded. The service validates each request's structured message checksums,
-     * which are computed over the bytes sent, so it cannot detect the SDK sending the wrong bytes; comparing the
-     * downloaded content to the source does.
-     */
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @ParameterizedTest
-    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void
-        uploadChunkedPositionedBufferWithStructuredMessageRoundTripDataIntegrity(ContentValidationAlgorithm algorithm) {
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
-
-        int position = Constants.MB + 7;
-        byte[] backing = getRandomByteArray(position + TEN_MB + 3);
-        byte[] expected = Arrays.copyOfRange(backing, position, position + TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(backing, position, TEN_MB));
-        long blockSize = 4 * (long) Constants.MB;
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(algorithm);
-
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
-
-        StepVerifier.create(ccAsync.getBlobAsyncClient(client.getBlobName()).downloadContent())
-            .assertNext(downloaded -> assertArrayEquals(expected, downloaded.toBytes()))
-            .verifyComplete();
-    }
-
     @Test
     public void blockBlobSimpleUploadRoundTripDataIntegrity() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());

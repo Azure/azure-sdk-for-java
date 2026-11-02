@@ -22,9 +22,6 @@ This document explains samples and how to use them.
   * Authenticate client
   * Create Load Test
   * Upload Test File
-  * Clone Load Test
-  * Create and start Test Run, and get metrics
-  * Generate and get actionable insights
   * Create and start Test Run, and get metrics
 
 ### List Operations Samples
@@ -33,25 +30,6 @@ This document explains samples and how to use them.
   * List Load Tests
   * List Test Runs
   * List Load Test files
-  * List Triggers
-  * List Notification Rules
-
-### Trigger Operations Samples
-
-* [TriggerOperations.java][sample_trigger] - Contains samples for following scenarios:
-  * Create or Update a Trigger
-  * Get a Trigger
-  * List Triggers
-  * Delete a Trigger
-
-### Notification Rule Operations Samples
-
-* [NotificationRuleOperations.java][sample_notificationRule] - Contains samples for following scenarios:
-  * Create or Update a Notification Rule
-  * Get a Notification Rule
-  * List Notification Rules
-  * Delete a Notification Rule
-
 
 ### Long Running Operations Samples
 
@@ -79,5 +57,3 @@ try {
 [sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ListOperationsAsync.java
 [sample_longRunning]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/LongRunningOperations.java
 [sample_longRunningAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/LongRunningOperationsAsync.java
-[sample_trigger]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/TriggerOperations.java
-[sample_notificationRule]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/NotificationRuleOperations.java

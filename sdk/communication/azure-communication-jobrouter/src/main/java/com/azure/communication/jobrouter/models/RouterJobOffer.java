@@ -5,49 +5,49 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * An offer of a job to a worker.
  */
 @Immutable
-public final class RouterJobOffer implements JsonSerializable<RouterJobOffer> {
+public final class RouterJobOffer {
 
     /*
      * Id of an offer.
      */
     @Generated
+    @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
     private String offerId;
 
     /*
      * Id of the job.
      */
     @Generated
-    private final String jobId;
+    @JsonProperty(value = "jobId")
+    private String jobId;
 
     /*
      * The capacity cost consumed by the job offer.
      */
     @Generated
-    private final int capacityCost;
+    @JsonProperty(value = "capacityCost")
+    private int capacityCost;
 
     /*
      * Timestamp when the offer was created in UTC.
      */
     @Generated
+    @JsonProperty(value = "offeredAt")
     private OffsetDateTime offeredAt;
 
     /*
      * Timestamp when the offer will expire in UTC.
      */
     @Generated
+    @JsonProperty(value = "expiresAt")
     private OffsetDateTime expiresAt;
 
     /**
@@ -101,73 +101,15 @@ public final class RouterJobOffer implements JsonSerializable<RouterJobOffer> {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("jobId", this.jobId);
-        jsonWriter.writeIntField("capacityCost", this.capacityCost);
-        jsonWriter.writeStringField("offeredAt",
-            this.offeredAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.offeredAt));
-        jsonWriter.writeStringField("expiresAt",
-            this.expiresAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresAt));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RouterJobOffer from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RouterJobOffer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RouterJobOffer.
-     */
-    @Generated
-    public static RouterJobOffer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String offerId = null;
-            String jobId = null;
-            int capacityCost = 0;
-            OffsetDateTime offeredAt = null;
-            OffsetDateTime expiresAt = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("offerId".equals(fieldName)) {
-                    offerId = reader.getString();
-                } else if ("jobId".equals(fieldName)) {
-                    jobId = reader.getString();
-                } else if ("capacityCost".equals(fieldName)) {
-                    capacityCost = reader.getInt();
-                } else if ("offeredAt".equals(fieldName)) {
-                    offeredAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("expiresAt".equals(fieldName)) {
-                    expiresAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            RouterJobOffer deserializedRouterJobOffer = new RouterJobOffer(jobId, capacityCost);
-            deserializedRouterJobOffer.offerId = offerId;
-            deserializedRouterJobOffer.offeredAt = offeredAt;
-            deserializedRouterJobOffer.expiresAt = expiresAt;
-            return deserializedRouterJobOffer;
-        });
-    }
-
-    /**
      * Creates an instance of RouterJobOffer class.
      *
      * @param jobId the jobId value to set.
      * @param capacityCost the capacityCost value to set.
      */
     @Generated
-    private RouterJobOffer(String jobId, int capacityCost) {
+    @JsonCreator
+    private RouterJobOffer(@JsonProperty(value = "jobId") String jobId,
+        @JsonProperty(value = "capacityCost") int capacityCost) {
         this.jobId = jobId;
         this.capacityCost = capacityCost;
     }

@@ -305,14 +305,6 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -411,13 +403,6 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document model.
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -495,14 +480,6 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -728,14 +705,6 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -804,13 +773,6 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document classifier.
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * </table>
      *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

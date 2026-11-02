@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,25 +18,21 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
     /*
      * Enumeration of supported Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.LANGUAGE_DETECTION;
 
     /*
      * The analysisInput property.
      */
-    @Generated
     private LanguageDetectionAnalysisInput analysisInput;
 
     /*
      * Supported parameters for a Language Detection task.
      */
-    @Generated
     private LanguageDetectionTaskParameters parameters;
 
     /**
      * Creates an instance of AnalyzeTextLanguageDetectionInput class.
      */
-    @Generated
     public AnalyzeTextLanguageDetectionInput() {
     }
 
@@ -46,7 +41,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextTaskKind getKind() {
         return this.kind;
@@ -57,7 +51,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * 
      * @return the analysisInput value.
      */
-    @Generated
     public LanguageDetectionAnalysisInput getAnalysisInput() {
         return this.analysisInput;
     }
@@ -68,7 +61,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextLanguageDetectionInput object itself.
      */
-    @Generated
     public AnalyzeTextLanguageDetectionInput setAnalysisInput(LanguageDetectionAnalysisInput analysisInput) {
         this.analysisInput = analysisInput;
         return this;
@@ -79,7 +71,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * 
      * @return the parameters value.
      */
-    @Generated
     public LanguageDetectionTaskParameters getParameters() {
         return this.parameters;
     }
@@ -90,7 +81,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * @param parameters the parameters value to set.
      * @return the AnalyzeTextLanguageDetectionInput object itself.
      */
-    @Generated
     public AnalyzeTextLanguageDetectionInput setParameters(LanguageDetectionTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -99,7 +89,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,7 +106,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextLanguageDetectionInput.
      */
-    @Generated
     public static AnalyzeTextLanguageDetectionInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextLanguageDetectionInput deserializedAnalyzeTextLanguageDetectionInput

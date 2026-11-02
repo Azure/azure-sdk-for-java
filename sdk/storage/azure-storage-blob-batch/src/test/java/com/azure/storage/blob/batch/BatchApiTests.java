@@ -28,7 +28,6 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -121,7 +120,6 @@ public class BatchApiTests extends BlobBatchTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
-    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setBlobAccessTierSmart() {
         String containerName = generateContainerName();
         String blobName1 = generateBlobName();

@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,28 +20,24 @@ public final class MetricFeedbackList implements JsonSerializable<MetricFeedback
     /*
      * The @nextLink property.
      */
-    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
-    @Generated
     private List<MetricFeedback> value;
 
     /**
      * Creates an instance of MetricFeedbackList class.
      */
-    @Generated
     public MetricFeedbackList() {
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -52,15 +47,10 @@ public final class MetricFeedbackList implements JsonSerializable<MetricFeedback
      * 
      * @return the value value.
      */
-    @Generated
     public List<MetricFeedback> getValue() {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,7 +65,6 @@ public final class MetricFeedbackList implements JsonSerializable<MetricFeedback
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricFeedbackList.
      */
-    @Generated
     public static MetricFeedbackList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricFeedbackList deserializedMetricFeedbackList = new MetricFeedbackList();

@@ -2579,7 +2579,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void uploadStreamAccessTierSmart() {
         bc = ccAsync.getBlobAsyncClient(generateBlobName());
         BlobParallelUploadOptions options

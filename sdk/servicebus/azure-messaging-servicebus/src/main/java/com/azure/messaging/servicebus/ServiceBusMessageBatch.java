@@ -7,7 +7,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.codec.DroppingWritableBuffer;
@@ -33,15 +32,9 @@ public final class ServiceBusMessageBatch {
     private int sizeInBytes;
     private final ServiceBusTracer tracer;
     private final boolean isV2;
-    private final Context parentContext;
 
     ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider,
         ServiceBusTracer tracer, MessageSerializer serializer) {
-        this(isV2, maxMessageSize, contextProvider, tracer, serializer, Context.NONE);
-    }
-
-    ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider,
-        ServiceBusTracer tracer, MessageSerializer serializer, Context parentContext) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
@@ -50,7 +43,6 @@ public final class ServiceBusMessageBatch {
         this.eventBytes = isV2 ? new byte[0] : new byte[maxMessageSize];
         this.tracer = tracer;
         this.isV2 = isV2;
-        this.parentContext = parentContext;
     }
 
     /**
@@ -99,7 +91,7 @@ public final class ServiceBusMessageBatch {
         if (serviceBusMessage == null) {
             throw LOGGER.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
-        tracer.reportMessageSpan(serviceBusMessage, parentContext);
+        tracer.reportMessageSpan(serviceBusMessage);
 
         final int size;
         try {
