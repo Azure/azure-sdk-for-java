@@ -209,11 +209,24 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * authentication per builder instance.
      */
     private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        return buildInnerClient(syncTokenPolicy, false);
+    }
+
+    ConfigurationClientImpl buildFeatureFlagInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        return buildInnerClient(syncTokenPolicy, true);
+    }
+
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy, boolean featureFlags) {
         String endpointLocal = endpoint;
         ConfigurationClientCredentials credentialsLocal = null;
         TokenCredential tokenCredentialLocal = null;
         // validate the authentication setup
-        if (tokenCredential == null && connectionString == null) {
+        if (featureFlags && pipeline != null) {
+            if (endpointLocal == null && connectionString != null) {
+                endpointLocal = new ConfigurationClientCredentials(connectionString).getBaseUri();
+            }
+            Objects.requireNonNull(endpointLocal, "'Endpoint' is required and can not be null.");
+        } else if (tokenCredential == null && connectionString == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'tokenCredential' and 'connectionString' "
                 + "both can not be null. Set one authentication before creating client."));
         } else if (tokenCredential != null && connectionString != null) {
@@ -233,16 +246,20 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         // Service version
         ConfigurationServiceVersion serviceVersion
             = (version != null) ? version : ConfigurationServiceVersion.getLatest();
+        if (featureFlags && serviceVersion != ConfigurationServiceVersion.V2026_05_01_PREVIEW) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Feature flag resources require API version 2026-05-01-preview or later."));
+        }
         // Don't share the default auto-created pipeline between App Configuration client instances.
         HttpPipeline buildPipeline = (pipeline == null)
-            ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
+            ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal, featureFlags)
             : pipeline;
 
         return new ConfigurationClientImpl(buildPipeline, endpointLocal, serviceVersion);
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
-        ConfigurationClientCredentials credentials, TokenCredential tokenCredential) {
+        ConfigurationClientCredentials credentials, TokenCredential tokenCredential, boolean featureFlags) {
         // Global Env configuration store
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -262,7 +279,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        policies.add(ADD_HEADERS_POLICY);
+        policies.add(featureFlags
+            ? new AddHeadersPolicy(new HttpHeaders().set("x-ms-return-client-request-id", "true"))
+            : ADD_HEADERS_POLICY);
 
         // Add query parameter reordering policy
         policies.add(new QueryParamPolicy());

@@ -4,6 +4,8 @@
 package com.azure.data.appconfiguration.implementation;
 
 import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.data.appconfiguration.ConfigurationServiceVersion;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
@@ -449,22 +453,58 @@ public final class ImplBridge {
 
     public static PagedIterable<SettingLabel> getLabels(ConfigurationClientImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields, Context context) {
+        return getLabels(service, nameFilter, syncToken, acceptDatetime, fields, context, "kv");
+    }
+
+    public static PagedIterable<SettingLabel> getLabels(ConfigurationClientImpl service, String nameFilter,
+        String syncToken, String acceptDatetime, List<SettingLabelFields> fields, Context context,
+        String resourceType) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, context);
+        addLabelResourceType(service, options, resourceType);
         return new PagedIterable<>(() -> remap(() -> toLabelPage(service.getLabelsSinglePage(options))),
-            nextLink -> remap(() -> toLabelPage(
-                service.getLabelsNextSinglePage(nextLink, nextPageOptions(null, null, null, context)))));
+            nextLink -> remap(() -> {
+                RequestOptions nextOptions = nextPageOptions(acceptDatetime, null, null, context);
+                addLabelResourceType(service, nextOptions, resourceType);
+                return toLabelPage(service.getLabelsNextSinglePage(nextLink, nextOptions));
+            }));
     }
 
     public static PagedFlux<SettingLabel> getLabelsAsync(ConfigurationClientImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields) {
+        return getLabelsAsync(service, nameFilter, syncToken, acceptDatetime, fields, "kv");
+    }
+
+    public static PagedFlux<SettingLabel> getLabelsAsync(ConfigurationClientImpl service, String nameFilter,
+        String syncToken, String acceptDatetime, List<SettingLabelFields> fields, String resourceType) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, Context.NONE);
-        return new PagedFlux<>(
-            () -> service.getLabelsSinglePageAsync(options)
-                .onErrorMap(HttpResponseException.class, ImplBridge::remap)
-                .map(ImplBridge::toLabelPage),
-            nextLink -> service.getLabelsNextSinglePageAsync(nextLink, new RequestOptions())
-                .onErrorMap(HttpResponseException.class, ImplBridge::remap)
-                .map(ImplBridge::toLabelPage));
+        addLabelResourceType(service, options, resourceType);
+        return new PagedFlux<>(() -> service.getLabelsSinglePageAsync(options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toLabelPage), nextLink -> {
+                RequestOptions nextOptions = nextPageOptions(acceptDatetime, null, null, Context.NONE);
+                addLabelResourceType(service, nextOptions, resourceType);
+                return service.getLabelsNextSinglePageAsync(nextLink, nextOptions)
+                    .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+                    .map(ImplBridge::toLabelPage);
+            });
+    }
+
+    private static void addLabelResourceType(ConfigurationClientImpl service, RequestOptions options,
+        String resourceType) {
+        if (service.getServiceVersion() != ConfigurationServiceVersion.V2026_05_01_PREVIEW) {
+            return;
+        }
+        options.addRequestCallback(request -> {
+            Iterator<Map.Entry<String, String>> parameters
+                = CoreUtils.parseQueryParameters(request.getUrl().getQuery());
+            while (parameters.hasNext()) {
+                if ("resourceType".equalsIgnoreCase(parameters.next().getKey())) {
+                    return;
+                }
+            }
+            String url = request.getUrl().toString();
+            request.setUrl(url + (url.contains("?") ? "&" : "?") + "resourceType=" + resourceType);
+        });
     }
 
     private static PagedResponse<SettingLabel> toLabelPage(PagedResponse<BinaryData> page) {
