@@ -12,19 +12,19 @@ import java.util.Collection;
  */
 public final class PrivateEndpointProvisioningState extends ExpandableStringEnum<PrivateEndpointProvisioningState> {
     /**
-     * Provisioning Created.
+     * Approving.
      */
-    public static final PrivateEndpointProvisioningState CREATED = fromString("Created");
+    public static final PrivateEndpointProvisioningState APPROVING = fromString("Approving");
 
     /**
-     * Provisioning InProgress.
+     * Ready.
      */
-    public static final PrivateEndpointProvisioningState IN_PROGRESS = fromString("InProgress");
+    public static final PrivateEndpointProvisioningState READY = fromString("Ready");
 
     /**
-     * Provisioning Succeeded.
+     * Dropping.
      */
-    public static final PrivateEndpointProvisioningState SUCCEEDED = fromString("Succeeded");
+    public static final PrivateEndpointProvisioningState DROPPING = fromString("Dropping");
 
     /**
      * Failed.
@@ -32,9 +32,9 @@ public final class PrivateEndpointProvisioningState extends ExpandableStringEnum
     public static final PrivateEndpointProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Provisioning Canceled.
+     * Rejecting.
      */
-    public static final PrivateEndpointProvisioningState CANCELED = fromString("Canceled");
+    public static final PrivateEndpointProvisioningState REJECTING = fromString("Rejecting");
 
     /**
      * Creates a new instance of PrivateEndpointProvisioningState value.
