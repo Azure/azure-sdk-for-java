@@ -21,6 +21,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -102,7 +103,9 @@ class GitHubActionsCredentialTest {
         http.oidcBody = "{\"value\":\"response-secret-sentinel\"}";
         ClientAuthenticationException error = assertThrows(ClientAuthenticationException.class,
             () -> credentialBuilder(http).build().getTokenSync(new TokenRequestContext().addScopes(SCOPE)));
-        assertTrue(error.getMessage().contains(Integer.toString(status)));
+        assertEquals(
+            "GitHubActionsCredential: Authentication Failed. OIDC request returned status code " + status + ".",
+            error.getMessage());
         assertFalse(error.getMessage().contains("response-secret-sentinel"));
         assertNull(error.getCause());
         assertEquals(0, http.tokenForms.size());
@@ -110,27 +113,33 @@ class GitHubActionsCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-        strings = {
-            "",
-            "null",
-            "[]",
-            "{}",
-            "{\"value\":null}",
-            "{\"value\":42}",
-            "{\"value\":true}",
-            "{\"value\":{}}",
-            "{\"value\":[]}",
-            "{\"value\":\"\"}",
-            "response-secret-sentinel",
-            "{\"value\":\"response-secret-sentinel\"",
-            "{\"value\":\"response-secret-sentinel\"} trailing" })
-    void rejectsInvalidResponsesWithoutDisclosingAssertions(String body) {
+    @CsvSource(
+        delimiter = '|',
+        value = {
+            "|Received null token from OIDC request.",
+            "''|Received null token from OIDC request.",
+            "'   '|Failed to parse OIDC response.",
+            "null|\"value\" field not detected in the response.",
+            "[]|\"value\" field not detected in the response.",
+            "true|\"value\" field not detected in the response.",
+            "42|\"value\" field not detected in the response.",
+            "{}|\"value\" field not detected in the response.",
+            "{\"value\":null}|\"value\" field not detected in the response.",
+            "{\"value\":42}|\"value\" field not detected in the response.",
+            "{\"value\":true}|\"value\" field not detected in the response.",
+            "{\"value\":{}}|\"value\" field not detected in the response.",
+            "{\"value\":[]}|\"value\" field not detected in the response.",
+            "{\"value\":\"\"}|\"value\" field not detected in the response.",
+            "response-secret-sentinel|Failed to parse OIDC response.",
+            "{\"value\":\"response-secret-sentinel\"|Failed to parse OIDC response.",
+            "{\"value\":\"response-secret-sentinel\"} {}|Failed to parse OIDC response.",
+            "{\"value\":\"response-secret-sentinel\"} trailing|Failed to parse OIDC response." })
+    void rejectsInvalidResponsesWithoutDisclosingAssertions(String body, String reason) {
         FakeHttpClient http = new FakeHttpClient();
         http.oidcBody = body;
         ClientAuthenticationException error = assertThrows(ClientAuthenticationException.class,
             () -> credentialBuilder(http).build().getTokenSync(new TokenRequestContext().addScopes(SCOPE)));
-        assertFalse(error.getMessage().contains("response-secret-sentinel"));
+        assertEquals("GitHubActionsCredential: Authentication Failed. " + reason, error.getMessage());
         StringWriter diagnostics = new StringWriter();
         error.printStackTrace(new PrintWriter(diagnostics));
         assertFalse(diagnostics.toString().contains("response-secret-sentinel"));
@@ -143,9 +152,37 @@ class GitHubActionsCredentialTest {
         FakeHttpClient http = new FakeHttpClient();
         http.oidcStatus = 401;
         StepVerifier.create(credentialBuilder(http).build().getToken(new TokenRequestContext().addScopes(SCOPE)))
-            .expectError(ClientAuthenticationException.class)
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof ClientAuthenticationException);
+                assertEquals("GitHubActionsCredential: Authentication Failed. OIDC request returned status code 401.",
+                    error.getMessage());
+            })
             .verify(TIMEOUT);
         assertEquals(0, http.tokenForms.size());
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = '|',
+        value = {
+            "|Received null token from OIDC request.",
+            "''|Received null token from OIDC request.",
+            "null|\"value\" field not detected in the response.",
+            "response-secret-sentinel|Failed to parse OIDC response." })
+    void asyncInvalidResponseRetainsAuthenticationException(String body, String reason) {
+        FakeHttpClient http = new FakeHttpClient();
+        http.oidcBody = body;
+        StepVerifier.create(credentialBuilder(http).build().getToken(new TokenRequestContext().addScopes(SCOPE)))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof ClientAuthenticationException);
+                assertEquals("GitHubActionsCredential: Authentication Failed. " + reason, error.getMessage());
+                StringWriter diagnostics = new StringWriter();
+                error.printStackTrace(new PrintWriter(diagnostics));
+                assertFalse(diagnostics.toString().contains("response-secret-sentinel"));
+            })
+            .verify(TIMEOUT);
+        assertEquals(0, http.tokenForms.size());
+        assertEquals(http.oidcRequests.get(), http.closedResponses.get());
     }
 
     @ParameterizedTest
@@ -341,7 +378,7 @@ class GitHubActionsCredentialTest {
                     request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
                 AtomicBoolean closed = new AtomicBoolean();
                 return new MockHttpResponse(request, oidcStatus, jsonHeaders(),
-                    oidcBody.getBytes(StandardCharsets.UTF_8)) {
+                    oidcBody == null ? null : oidcBody.getBytes(StandardCharsets.UTF_8)) {
                     @Override
                     public void close() {
                         if (closed.compareAndSet(false, true)) {

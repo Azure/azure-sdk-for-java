@@ -12,6 +12,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -65,8 +66,8 @@ public class GitHubActionsCredential implements TokenCredential {
                     .setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + requestToken);
                 try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
                     if (response.getStatusCode() != 200) {
-                        throw authenticationError(
-                            "GitHub OIDC request returned status code " + response.getStatusCode() + ".", response);
+                        throw authenticationError("OIDC request returned status code " + response.getStatusCode() + ".",
+                            response);
                     }
                     return readAssertion(response);
                 }
@@ -132,30 +133,49 @@ public class GitHubActionsCredential implements TokenCredential {
     }
 
     private static String readAssertion(HttpResponse response) {
-        try (JsonReader reader = JsonProviders.createReader(response.getBodyAsBinaryData().toString())) {
-            String assertion = reader.readObject(objectReader -> {
-                String value = null;
-                while (objectReader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = objectReader.getFieldName();
-                    objectReader.nextToken();
-                    if ("value".equals(fieldName)) {
-                        if (objectReader.currentToken() != JsonToken.STRING) {
-                            throw authenticationError("GitHub OIDC response must contain a string 'value'.", response);
+        BinaryData body = response.getBodyAsBinaryData();
+        String text = body == null ? null : body.toString();
+        if (CoreUtils.isNullOrEmpty(text)) {
+            throw authenticationError("Received null token from OIDC request.", response);
+        }
+        try (JsonReader reader = JsonProviders.createReader(text)) {
+            JsonToken token = reader.nextToken();
+            if (token == JsonToken.END_DOCUMENT) {
+                throw authenticationError("Failed to parse OIDC response.", response);
+            }
+            String assertion = null;
+            if (token == JsonToken.START_OBJECT) {
+                assertion = reader.readObject(objectReader -> {
+                    String value = null;
+                    while (objectReader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = objectReader.getFieldName();
+                        objectReader.nextToken();
+                        if ("value".equals(fieldName)) {
+                            if (objectReader.currentToken() == JsonToken.STRING) {
+                                value = objectReader.getString();
+                            } else {
+                                value = null;
+                                objectReader.skipChildren();
+                            }
+                        } else {
+                            objectReader.skipChildren();
                         }
-                        value = objectReader.getString();
-                    } else {
-                        objectReader.skipChildren();
                     }
-                }
-                return value;
-            });
-            if (CoreUtils.isNullOrEmpty(assertion) || reader.nextToken() != JsonToken.END_DOCUMENT) {
-                throw authenticationError("GitHub OIDC response must contain a nonempty string 'value'.", response);
+                    return value;
+                });
+            } else {
+                reader.skipChildren();
+            }
+            if (reader.nextToken() != JsonToken.END_DOCUMENT) {
+                throw authenticationError("Failed to parse OIDC response.", response);
+            }
+            if (CoreUtils.isNullOrEmpty(assertion)) {
+                throw authenticationError("\"value\" field not detected in the response.", response);
             }
             return assertion;
         } catch (IOException | IllegalStateException e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                "GitHubActionsCredential authentication failed. Invalid GitHub OIDC response.", response,
+                "GitHubActionsCredential: Authentication Failed. Failed to parse OIDC response.", response,
                 sanitizedCause(e)));
         }
     }
@@ -173,6 +193,6 @@ public class GitHubActionsCredential implements TokenCredential {
 
     private static RuntimeException authenticationError(String message, HttpResponse response) {
         return LOGGER.logExceptionAsError(
-            new ClientAuthenticationException("GitHubActionsCredential authentication failed. " + message, response));
+            new ClientAuthenticationException("GitHubActionsCredential: Authentication Failed. " + message, response));
     }
 }

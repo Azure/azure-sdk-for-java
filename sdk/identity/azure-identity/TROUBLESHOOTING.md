@@ -327,7 +327,9 @@ constructing an unconfigured credential does not defer failure to a manually com
 | Invalid runner request URL | The configured URL is not an absolute HTTPS URL, or contains user information or a fragment. | Use the URL supplied by the GitHub Actions runner. |
 | Unsupported authority host | There is no supported audience mapping for the authority. | Use one of the [documented cloud authorities](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticate-github-actions-workflows). Custom audiences and authorities are not supported. |
 | GitHub OIDC HTTP 401/403 | GitHub rejected the runner request. | Check the job's OIDC permissions and ensure the request variables belong to the current workflow step. |
-| Invalid GitHub assertion response | The response is not HTTP 200 with a nonempty string `value`. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. Do not log the response body; it can contain an assertion. |
+| `Received null token from OIDC request.` | The GitHub OIDC response body is missing or empty. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. |
+| `"value" field not detected in the response.` | The JSON response does not contain a nonempty string `value`. | Check that the request reaches the GitHub OIDC endpoint. Do not log the response body; it can contain an assertion. |
+| `Failed to parse OIDC response.` | The response contains malformed JSON or trailing content. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. Do not log the response body. |
 | Entra reports no matching federated identity record | The presented issuer, subject, or audience does not match the app's federation configuration. | Match the actual claims for the repository/ref, including immutable subject IDs when applicable, and the audience derived from the authority host. |
 
 See [GitHub's Azure OIDC setup guide](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure)

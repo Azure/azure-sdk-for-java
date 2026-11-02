@@ -20,6 +20,7 @@
 
 ### Other Changes
 
+- Aligned `GitHubActionsCredential` OIDC response error messages with Azure Identity for JavaScript.
 - Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
 
 #### Dependency Updates
