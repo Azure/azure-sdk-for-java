@@ -15,20 +15,21 @@ public final class ProviderMonitorSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProviderMonitorSettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Created\"},\"location\":\"ozycy\",\"tags\":{\"bsfledynojpziu\":\"yhgfsetzle\",\"tnhqsycl\":\"fbzkk\"},\"id\":\"selpkpbaf\",\"name\":\"afhlbyl\",\"type\":\"cbevxrhyzdfw\"}")
+            "{\"properties\":{\"provisioningState\":\"Running\"},\"location\":\"tbqctqjfgx\",\"tags\":{\"gdaqqilzd\":\"etgzdgvpy\",\"wjoe\":\"d\",\"fjqq\":\"xngucaifpaurwwgi\",\"yziakeciqchxrtu\":\"cdmkxwxdcvjw\"},\"id\":\"cdsiwdfmmpzhzzwv\",\"name\":\"wrgyngy\",\"type\":\"grpxncakiqaondjr\"}")
             .toObject(ProviderMonitorSettingInner.class);
-        Assertions.assertEquals("ozycy", model.location());
-        Assertions.assertEquals("yhgfsetzle", model.tags().get("bsfledynojpziu"));
+        Assertions.assertEquals("tbqctqjfgx", model.location());
+        Assertions.assertEquals("etgzdgvpy", model.tags().get("gdaqqilzd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProviderMonitorSettingInner model = new ProviderMonitorSettingInner().withLocation("ozycy")
-            .withTags(mapOf("bsfledynojpziu", "yhgfsetzle", "tnhqsycl", "fbzkk"))
+        ProviderMonitorSettingInner model = new ProviderMonitorSettingInner().withLocation("tbqctqjfgx")
+            .withTags(mapOf("gdaqqilzd", "etgzdgvpy", "wjoe", "d", "fjqq", "xngucaifpaurwwgi", "yziakeciqchxrtu",
+                "cdmkxwxdcvjw"))
             .withProperties(new ProviderMonitorSettingProperties());
         model = BinaryData.fromObject(model).toObject(ProviderMonitorSettingInner.class);
-        Assertions.assertEquals("ozycy", model.location());
-        Assertions.assertEquals("yhgfsetzle", model.tags().get("bsfledynojpziu"));
+        Assertions.assertEquals("tbqctqjfgx", model.location());
+        Assertions.assertEquals("etgzdgvpy", model.tags().get("gdaqqilzd"));
     }
 
     // Use "Map.of" if available

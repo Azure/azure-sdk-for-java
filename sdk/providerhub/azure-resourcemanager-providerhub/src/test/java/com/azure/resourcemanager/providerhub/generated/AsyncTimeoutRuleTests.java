@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AsyncTimeoutRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AsyncTimeoutRule model = BinaryData.fromString("{\"actionName\":\"n\",\"timeout\":\"gketwzhhzjhf\"}")
+        AsyncTimeoutRule model = BinaryData.fromString("{\"actionName\":\"swhvhczznvfbycj\",\"timeout\":\"jww\"}")
             .toObject(AsyncTimeoutRule.class);
-        Assertions.assertEquals("n", model.actionName());
-        Assertions.assertEquals("gketwzhhzjhf", model.timeout());
+        Assertions.assertEquals("swhvhczznvfbycj", model.actionName());
+        Assertions.assertEquals("jww", model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsyncTimeoutRule model = new AsyncTimeoutRule().withActionName("n").withTimeout("gketwzhhzjhf");
+        AsyncTimeoutRule model = new AsyncTimeoutRule().withActionName("swhvhczznvfbycj").withTimeout("jww");
         model = BinaryData.fromObject(model).toObject(AsyncTimeoutRule.class);
-        Assertions.assertEquals("n", model.actionName());
-        Assertions.assertEquals("gketwzhhzjhf", model.timeout());
+        Assertions.assertEquals("swhvhczznvfbycj", model.actionName());
+        Assertions.assertEquals("jww", model.timeout());
     }
 }

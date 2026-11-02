@@ -27,7 +27,8 @@ public final class CustomRolloutsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.customRollouts().deleteByResourceGroupWithResponse("u", "fupetasvv", com.azure.core.util.Context.NONE);
+        manager.customRollouts()
+            .deleteByResourceGroupWithResponse("qfmefgvqcpdwj", "quxweyslandkd", com.azure.core.util.Context.NONE);
 
     }
 }

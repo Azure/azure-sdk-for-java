@@ -59,6 +59,11 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     private String rolloutId;
 
     /*
+     * Orchestration metadata associated with the rollout.
+     */
+    private RolloutOrchestrationMetadata rolloutOrchestrationMetadata;
+
+    /*
      * The manifest checkin specification.
      */
     private ManifestCheckinSpecification manifestCheckinSpecification;
@@ -235,6 +240,27 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
+     * Get the rolloutOrchestrationMetadata property: Orchestration metadata associated with the rollout.
+     * 
+     * @return the rolloutOrchestrationMetadata value.
+     */
+    public RolloutOrchestrationMetadata rolloutOrchestrationMetadata() {
+        return this.rolloutOrchestrationMetadata;
+    }
+
+    /**
+     * Set the rolloutOrchestrationMetadata property: Orchestration metadata associated with the rollout.
+     * 
+     * @param rolloutOrchestrationMetadata the rolloutOrchestrationMetadata value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification
+        withRolloutOrchestrationMetadata(RolloutOrchestrationMetadata rolloutOrchestrationMetadata) {
+        this.rolloutOrchestrationMetadata = rolloutOrchestrationMetadata;
+        return this;
+    }
+
+    /**
      * Get the manifestCheckinSpecification property: The manifest checkin specification.
      * 
      * @return the manifestCheckinSpecification value.
@@ -273,6 +299,9 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+        if (rolloutOrchestrationMetadata() != null) {
+            rolloutOrchestrationMetadata().validate();
+        }
         if (manifestCheckinSpecification() != null) {
             manifestCheckinSpecification().validate();
         }
@@ -294,6 +323,7 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
         jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("rolloutId", this.rolloutId);
+        jsonWriter.writeJsonField("rolloutOrchestrationMetadata", this.rolloutOrchestrationMetadata);
         jsonWriter.writeJsonField("manifestCheckinSpecification", this.manifestCheckinSpecification);
         return jsonWriter.writeEndObject();
     }
@@ -336,6 +366,9 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
                     deserializedCustomRolloutSpecification.resourceTypeRegistrations = resourceTypeRegistrations;
                 } else if ("rolloutId".equals(fieldName)) {
                     deserializedCustomRolloutSpecification.rolloutId = reader.getString();
+                } else if ("rolloutOrchestrationMetadata".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.rolloutOrchestrationMetadata
+                        = RolloutOrchestrationMetadata.fromJson(reader);
                 } else if ("manifestCheckinSpecification".equals(fieldName)) {
                     deserializedCustomRolloutSpecification.manifestCheckinSpecification
                         = ManifestCheckinSpecification.fromJson(reader);

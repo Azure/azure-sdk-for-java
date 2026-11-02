@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ResourceTypeRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Delete.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_Delete.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Delete.

@@ -14,28 +14,28 @@ public final class ResourceTypeManagedResourceGroupConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeManagedResourceGroupConfiguration model = BinaryData.fromString(
-            "{\"enabled\":true,\"resourceGroupLocationOverride\":\"xtjjfzqlqhycav\",\"applicationIds\":[\"gxdbeesmie\",\"nlrariaawiuagy\"],\"denyAssignmentConfiguration\":{\"enabled\":false,\"notActions\":[\"lyr\",\"giagtcojo\",\"qwogfnzjvus\"]}}")
+            "{\"enabled\":false,\"resourceGroupLocationOverride\":\"jhlnymzotqyryu\",\"applicationIds\":[\"mqqvxmvwfgtay\",\"onsupeujlz\",\"nh\"],\"denyAssignmentConfiguration\":{\"enabled\":false,\"notActions\":[\"nzoibgsxgnx\",\"yqo\",\"mpqoxw\",\"o\"]}}")
             .toObject(ResourceTypeManagedResourceGroupConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("xtjjfzqlqhycav", model.resourceGroupLocationOverride());
-        Assertions.assertEquals("gxdbeesmie", model.applicationIds().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("jhlnymzotqyryu", model.resourceGroupLocationOverride());
+        Assertions.assertEquals("mqqvxmvwfgtay", model.applicationIds().get(0));
         Assertions.assertFalse(model.denyAssignmentConfiguration().enabled());
-        Assertions.assertEquals("lyr", model.denyAssignmentConfiguration().notActions().get(0));
+        Assertions.assertEquals("nzoibgsxgnx", model.denyAssignmentConfiguration().notActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeManagedResourceGroupConfiguration model = new ResourceTypeManagedResourceGroupConfiguration()
-            .withEnabled(true)
-            .withResourceGroupLocationOverride("xtjjfzqlqhycav")
-            .withApplicationIds(Arrays.asList("gxdbeesmie", "nlrariaawiuagy"))
+            .withEnabled(false)
+            .withResourceGroupLocationOverride("jhlnymzotqyryu")
+            .withApplicationIds(Arrays.asList("mqqvxmvwfgtay", "onsupeujlz", "nh"))
             .withDenyAssignmentConfiguration(new ManagedResourceGroupDenyAssignmentConfiguration().withEnabled(false)
-                .withNotActions(Arrays.asList("lyr", "giagtcojo", "qwogfnzjvus")));
+                .withNotActions(Arrays.asList("nzoibgsxgnx", "yqo", "mpqoxw", "o")));
         model = BinaryData.fromObject(model).toObject(ResourceTypeManagedResourceGroupConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("xtjjfzqlqhycav", model.resourceGroupLocationOverride());
-        Assertions.assertEquals("gxdbeesmie", model.applicationIds().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("jhlnymzotqyryu", model.resourceGroupLocationOverride());
+        Assertions.assertEquals("mqqvxmvwfgtay", model.applicationIds().get(0));
         Assertions.assertFalse(model.denyAssignmentConfiguration().enabled());
-        Assertions.assertEquals("lyr", model.denyAssignmentConfiguration().notActions().get(0));
+        Assertions.assertEquals("nzoibgsxgnx", model.denyAssignmentConfiguration().notActions().get(0));
     }
 }

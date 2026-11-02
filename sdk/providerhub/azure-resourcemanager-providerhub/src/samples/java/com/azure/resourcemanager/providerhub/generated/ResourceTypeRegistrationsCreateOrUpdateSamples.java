@@ -18,6 +18,7 @@ import com.azure.resourcemanager.providerhub.models.FilterOption;
 import com.azure.resourcemanager.providerhub.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.providerhub.models.LegacyDisallowedCondition;
 import com.azure.resourcemanager.providerhub.models.LegacyOperation;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
 import com.azure.resourcemanager.providerhub.models.LinkedAction;
 import com.azure.resourcemanager.providerhub.models.LinkedOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedOperationRule;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.providerhub.models.Regionality;
 import com.azure.resourcemanager.providerhub.models.ResourceAccessPolicy;
 import com.azure.resourcemanager.providerhub.models.ResourceConcurrencyControlOption;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpoint;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesAvailabilityZoneRule;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesCapacityRule;
@@ -53,6 +55,7 @@ import com.azure.resourcemanager.providerhub.models.RoutingType;
 import com.azure.resourcemanager.providerhub.models.SkipNotifications;
 import com.azure.resourcemanager.providerhub.models.SupportedOperations;
 import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
+import com.azure.resourcemanager.providerhub.models.SwaggerSpecificationLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentCapabilities;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightNotifications;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightOptions;
@@ -70,7 +73,7 @@ import java.util.Map;
  */
 public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_CreateOrUpdate.
@@ -93,7 +96,9 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                 .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
                     .withApiVersions(Arrays.asList("2020-06-01-preview"))
                     .withSwaggerSpecFolderUri(
-                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
+                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")
+                    .withLifecycleInfo(
+                        new SwaggerSpecificationLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))))
                 .withThrottlingRules(Arrays.asList(new ThrottlingRule()
                     .withAction("Microsoft.Foo/checkNameAvailability/write")
                     .withMetrics(Arrays.asList(new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
@@ -108,6 +113,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                             .withRequiredZoneNames(Arrays.asList("Zone"))
                             .withRedirectMapId("test"))))
                 .withWriteLock(new WriteLockConfiguration().withState(WriteLockState.ENABLED))
+                .withLifecycleInfo(new ResourceTypeLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))
                 .withResourceConcurrencyControlOptions(
                     mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
                         "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
@@ -144,7 +150,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectResourceTypeRegistrations_CreateOrUpdate.json.

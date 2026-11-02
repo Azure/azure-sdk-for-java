@@ -14,24 +14,23 @@ public final class SkuZoneDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuZoneDetail model = BinaryData.fromString(
-            "{\"name\":[\"lcecfeh\",\"waoaguhi\",\"qllizstac\",\"jvhrweft\"],\"capabilities\":[{\"name\":\"ejpmvssehaepwa\",\"value\":\"cxtczhupeukn\"},{\"name\":\"jduyyespydjfb\",\"value\":\"c\"},{\"name\":\"v\",\"value\":\"hulrtywikdmhla\"},{\"name\":\"uflgbhgauacdixm\",\"value\":\"ufr\"}]}")
+            "{\"name\":[\"ehchk\",\"ufmpqumqyjgy\"],\"capabilities\":[{\"name\":\"lod\",\"value\":\"aeuzanh\"},{\"name\":\"fnhsenwphp\",\"value\":\"fngq\"},{\"name\":\"clid\",\"value\":\"tujwjju\"},{\"name\":\"wbeqrkuor\",\"value\":\"tssruqnmdvhazc\"}]}")
             .toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("lcecfeh", model.name().get(0));
-        Assertions.assertEquals("ejpmvssehaepwa", model.capabilities().get(0).name());
-        Assertions.assertEquals("cxtczhupeukn", model.capabilities().get(0).value());
+        Assertions.assertEquals("ehchk", model.name().get(0));
+        Assertions.assertEquals("lod", model.capabilities().get(0).name());
+        Assertions.assertEquals("aeuzanh", model.capabilities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuZoneDetail model = new SkuZoneDetail()
-            .withName(Arrays.asList("lcecfeh", "waoaguhi", "qllizstac", "jvhrweft"))
-            .withCapabilities(Arrays.asList(new SkuCapability().withName("ejpmvssehaepwa").withValue("cxtczhupeukn"),
-                new SkuCapability().withName("jduyyespydjfb").withValue("c"),
-                new SkuCapability().withName("v").withValue("hulrtywikdmhla"),
-                new SkuCapability().withName("uflgbhgauacdixm").withValue("ufr")));
+        SkuZoneDetail model = new SkuZoneDetail().withName(Arrays.asList("ehchk", "ufmpqumqyjgy"))
+            .withCapabilities(Arrays.asList(new SkuCapability().withName("lod").withValue("aeuzanh"),
+                new SkuCapability().withName("fnhsenwphp").withValue("fngq"),
+                new SkuCapability().withName("clid").withValue("tujwjju"),
+                new SkuCapability().withName("wbeqrkuor").withValue("tssruqnmdvhazc")));
         model = BinaryData.fromObject(model).toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("lcecfeh", model.name().get(0));
-        Assertions.assertEquals("ejpmvssehaepwa", model.capabilities().get(0).name());
-        Assertions.assertEquals("cxtczhupeukn", model.capabilities().get(0).value());
+        Assertions.assertEquals("ehchk", model.name().get(0));
+        Assertions.assertEquals("lod", model.capabilities().get(0).name());
+        Assertions.assertEquals("aeuzanh", model.capabilities().get(0).value());
     }
 }

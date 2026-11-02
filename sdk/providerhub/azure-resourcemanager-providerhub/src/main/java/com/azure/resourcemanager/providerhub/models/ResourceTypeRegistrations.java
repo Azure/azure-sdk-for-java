@@ -7,6 +7,7 @@ package com.azure.resourcemanager.providerhub.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
 
 /**
  * Resource collection API of ResourceTypeRegistrations.
@@ -82,6 +83,94 @@ public interface ResourceTypeRegistrations {
      * @return the list of the resource types for the given provider as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace, Context context);
+
+    /**
+     * Gets a nested resource type details in the given subscription and provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a nested resource type details in the given subscription and provider along with {@link Response}.
+     */
+    Response<ResourceTypeRegistration> getNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, Context context);
+
+    /**
+     * Gets a nested resource type details in the given subscription and provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a nested resource type details in the given subscription and provider.
+     */
+    ResourceTypeRegistration getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     */
+    ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     */
+    ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties, Context context);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        Context context);
 
     /**
      * Gets a resource type details in the given subscription and provider.

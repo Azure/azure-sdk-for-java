@@ -13,17 +13,17 @@ public final class ResourceTypeRegistrationPropertiesResourceQueryManagementTest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceQueryManagement model
-            = BinaryData.fromString("{\"filterOption\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"filterOption\":\"EnableSubscriptionFilterOnTenant\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceQueryManagement.class);
-        Assertions.assertEquals(FilterOption.NOT_SPECIFIED, model.filterOption());
+        Assertions.assertEquals(FilterOption.ENABLE_SUBSCRIPTION_FILTER_ON_TENANT, model.filterOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceQueryManagement model
             = new ResourceTypeRegistrationPropertiesResourceQueryManagement()
-                .withFilterOption(FilterOption.NOT_SPECIFIED);
+                .withFilterOption(FilterOption.ENABLE_SUBSCRIPTION_FILTER_ON_TENANT);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceQueryManagement.class);
-        Assertions.assertEquals(FilterOption.NOT_SPECIFIED, model.filterOption());
+        Assertions.assertEquals(FilterOption.ENABLE_SUBSCRIPTION_FILTER_ON_TENANT, model.filterOption());
     }
 }

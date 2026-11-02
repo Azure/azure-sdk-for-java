@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_Get.json
+     * x-ms-original-file: 2026-10-01/Skus_Get.json
      */
     /**
      * Sample code: Skus_Get.

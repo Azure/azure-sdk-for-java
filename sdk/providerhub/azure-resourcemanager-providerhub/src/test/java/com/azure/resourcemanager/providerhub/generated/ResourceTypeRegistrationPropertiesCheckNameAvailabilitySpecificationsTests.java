@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData.fromString(
-            "{\"enableDefaultValidation\":false,\"resourceTypesWithCustomValidation\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"]}")
+        ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData
+            .fromString("{\"enableDefaultValidation\":false,\"resourceTypesWithCustomValidation\":[\"mkqscaz\"]}")
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
         Assertions.assertFalse(model.enableDefaultValidation());
-        Assertions.assertEquals("udaspavehh", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertEquals("mkqscaz", model.resourceTypesWithCustomValidation().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -24,10 +24,10 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model
             = new ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications()
                 .withEnableDefaultValidation(false)
-                .withResourceTypesWithCustomValidation(Arrays.asList("udaspavehh", "vkbunzozudh", "xg", "moy"));
+                .withResourceTypesWithCustomValidation(Arrays.asList("mkqscaz"));
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
         Assertions.assertFalse(model.enableDefaultValidation());
-        Assertions.assertEquals("udaspavehh", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertEquals("mkqscaz", model.resourceTypesWithCustomValidation().get(0));
     }
 }

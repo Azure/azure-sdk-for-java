@@ -12,9 +12,9 @@ public final class ResourceTypeRegistrationPropertiesResourceMovePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceMovePolicy model = BinaryData.fromString(
-            "{\"validationRequired\":true,\"crossResourceGroupMoveEnabled\":false,\"crossSubscriptionMoveEnabled\":false}")
+            "{\"validationRequired\":false,\"crossResourceGroupMoveEnabled\":false,\"crossSubscriptionMoveEnabled\":false}")
             .toObject(ResourceTypeRegistrationPropertiesResourceMovePolicy.class);
-        Assertions.assertTrue(model.validationRequired());
+        Assertions.assertFalse(model.validationRequired());
         Assertions.assertFalse(model.crossResourceGroupMoveEnabled());
         Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }
@@ -22,11 +22,11 @@ public final class ResourceTypeRegistrationPropertiesResourceMovePolicyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceMovePolicy model
-            = new ResourceTypeRegistrationPropertiesResourceMovePolicy().withValidationRequired(true)
+            = new ResourceTypeRegistrationPropertiesResourceMovePolicy().withValidationRequired(false)
                 .withCrossResourceGroupMoveEnabled(false)
                 .withCrossSubscriptionMoveEnabled(false);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceMovePolicy.class);
-        Assertions.assertTrue(model.validationRequired());
+        Assertions.assertFalse(model.validationRequired());
         Assertions.assertFalse(model.crossResourceGroupMoveEnabled());
         Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }

@@ -51,6 +51,11 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
      */
     private Boolean enablePresetResourceTypes;
 
+    /*
+     * The resource provider lifecycle information.
+     */
+    private ResourceProviderLifecycleInfo lifecycleInfo;
+
     /**
      * Creates an instance of ProviderRegistrationProperties class.
      */
@@ -192,6 +197,26 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
      */
     public ProviderRegistrationProperties withEnablePresetResourceTypes(Boolean enablePresetResourceTypes) {
         this.enablePresetResourceTypes = enablePresetResourceTypes;
+        return this;
+    }
+
+    /**
+     * Get the lifecycleInfo property: The resource provider lifecycle information.
+     * 
+     * @return the lifecycleInfo value.
+     */
+    public ResourceProviderLifecycleInfo lifecycleInfo() {
+        return this.lifecycleInfo;
+    }
+
+    /**
+     * Set the lifecycleInfo property: The resource provider lifecycle information.
+     * 
+     * @param lifecycleInfo the lifecycleInfo value to set.
+     * @return the ProviderRegistrationProperties object itself.
+     */
+    public ProviderRegistrationProperties withLifecycleInfo(ResourceProviderLifecycleInfo lifecycleInfo) {
+        this.lifecycleInfo = lifecycleInfo;
         return this;
     }
 
@@ -498,6 +523,9 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
         if (tokenAuthConfiguration() != null) {
             tokenAuthConfiguration().validate();
         }
+        if (lifecycleInfo() != null) {
+            lifecycleInfo().validate();
+        }
         if (providerAuthentication() != null) {
             providerAuthentication().validate();
         }
@@ -606,6 +634,7 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
         jsonWriter.writeJsonField("tokenAuthConfiguration", this.tokenAuthConfiguration);
         jsonWriter.writeStringField("oboSubscriptionId", this.oboSubscriptionId);
         jsonWriter.writeBooleanField("enablePresetResourceTypes", this.enablePresetResourceTypes);
+        jsonWriter.writeJsonField("lifecycleInfo", this.lifecycleInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -739,6 +768,9 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
                 } else if ("enablePresetResourceTypes".equals(fieldName)) {
                     deserializedProviderRegistrationProperties.enablePresetResourceTypes
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleInfo".equals(fieldName)) {
+                    deserializedProviderRegistrationProperties.lifecycleInfo
+                        = ResourceProviderLifecycleInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

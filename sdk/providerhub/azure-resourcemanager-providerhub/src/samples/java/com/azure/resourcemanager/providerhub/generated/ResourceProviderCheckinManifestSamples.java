@@ -11,7 +11,7 @@ import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
  */
 public final class ResourceProviderCheckinManifestSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CheckinManifest.json
+     * x-ms-original-file: 2026-10-01/CheckinManifest.json
      */
     /**
      * Sample code: CheckinManifest.
@@ -21,7 +21,10 @@ public final class ResourceProviderCheckinManifestSamples {
     public static void checkinManifest(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.resourceProviders()
             .checkinManifestWithResponse("Microsoft.Contoso",
-                new CheckinManifestParams().withEnvironment("Prod").withBaselineArmManifestLocation("EastUS2EUAP"),
+                new CheckinManifestParams().withEnvironment("Prod")
+                    .withBaselineArmManifestLocation("EastUS2EUAP")
+                    .withSwaggerUri("https://github.com/Azure/azure-rest-api-specs/pull/123456")
+                    .withCheckinComment("Add endpoint registration support"),
                 com.azure.core.util.Context.NONE);
     }
 }

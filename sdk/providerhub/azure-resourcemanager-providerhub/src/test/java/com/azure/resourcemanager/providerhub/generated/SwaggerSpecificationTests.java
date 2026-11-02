@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
 import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
+import com.azure.resourcemanager.providerhub.models.SwaggerSpecificationLifecycleInfo;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SwaggerSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerSpecification model
-            = BinaryData.fromString("{\"apiVersions\":[\"qyuvvfonkp\",\"hqyikvy\"],\"swaggerSpecFolderUri\":\"uyav\"}")
-                .toObject(SwaggerSpecification.class);
-        Assertions.assertEquals("qyuvvfonkp", model.apiVersions().get(0));
-        Assertions.assertEquals("uyav", model.swaggerSpecFolderUri());
+        SwaggerSpecification model = BinaryData.fromString(
+            "{\"apiVersions\":[\"yfu\",\"fzsvtuikzh\",\"jqg\",\"cfhmlrqryxyn\"],\"swaggerSpecFolderUri\":\"zrdpsovwxznptgoe\",\"lifecycleInfo\":{\"lifecycleStage\":\"InDevelopment\"}}")
+            .toObject(SwaggerSpecification.class);
+        Assertions.assertEquals("yfu", model.apiVersions().get(0));
+        Assertions.assertEquals("zrdpsovwxznptgoe", model.swaggerSpecFolderUri());
+        Assertions.assertEquals(LifecycleStage.IN_DEVELOPMENT, model.lifecycleInfo().lifecycleStage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerSpecification model = new SwaggerSpecification().withApiVersions(Arrays.asList("qyuvvfonkp", "hqyikvy"))
-            .withSwaggerSpecFolderUri("uyav");
+        SwaggerSpecification model
+            = new SwaggerSpecification().withApiVersions(Arrays.asList("yfu", "fzsvtuikzh", "jqg", "cfhmlrqryxyn"))
+                .withSwaggerSpecFolderUri("zrdpsovwxznptgoe")
+                .withLifecycleInfo(
+                    new SwaggerSpecificationLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT));
         model = BinaryData.fromObject(model).toObject(SwaggerSpecification.class);
-        Assertions.assertEquals("qyuvvfonkp", model.apiVersions().get(0));
-        Assertions.assertEquals("uyav", model.swaggerSpecFolderUri());
+        Assertions.assertEquals("yfu", model.apiVersions().get(0));
+        Assertions.assertEquals("zrdpsovwxznptgoe", model.swaggerSpecFolderUri());
+        Assertions.assertEquals(LifecycleStage.IN_DEVELOPMENT, model.lifecycleInfo().lifecycleStage());
     }
 }

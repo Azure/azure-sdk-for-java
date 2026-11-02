@@ -14,18 +14,18 @@ public final class TemplateDeploymentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TemplateDeploymentOptions model
-            = BinaryData.fromString("{\"preflightSupported\":false,\"preflightOptions\":[\"None\"]}")
+            = BinaryData.fromString("{\"preflightSupported\":true,\"preflightOptions\":[\"None\",\"None\"]}")
                 .toObject(TemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TemplateDeploymentOptions model = new TemplateDeploymentOptions().withPreflightSupported(false)
-            .withPreflightOptions(Arrays.asList(PreflightOption.NONE));
+        TemplateDeploymentOptions model = new TemplateDeploymentOptions().withPreflightSupported(true)
+            .withPreflightOptions(Arrays.asList(PreflightOption.NONE, PreflightOption.NONE));
         model = BinaryData.fromObject(model).toObject(TemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
     }
 }

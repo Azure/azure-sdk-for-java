@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupOneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne model
-            = BinaryData.fromString("{\"waitDuration\":\"PT212H46M17S\",\"regions\":[\"vcwwyyurmochppr\",\"rsnm\"]}")
-                .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("vcwwyyurmochppr", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT212H46M17S"), model.waitDuration());
+        DefaultRolloutSpecificationRestOfTheWorldGroupOne model = BinaryData
+            .fromString("{\"waitDuration\":\"PT11H53M32S\",\"regions\":[\"zolxrzvhqjwtr\",\"tgvgzp\",\"rrkolawjmjs\"]}")
+            .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
+        Assertions.assertEquals("zolxrzvhqjwtr", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT11H53M32S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupOne model
             = new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                .withRegions(Arrays.asList("vcwwyyurmochppr", "rsnm"))
-                .withWaitDuration(Duration.parse("PT212H46M17S"));
+                .withRegions(Arrays.asList("zolxrzvhqjwtr", "tgvgzp", "rrkolawjmjs"))
+                .withWaitDuration(Duration.parse("PT11H53M32S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("vcwwyyurmochppr", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT212H46M17S"), model.waitDuration());
+        Assertions.assertEquals("zolxrzvhqjwtr", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT11H53M32S"), model.waitDuration());
     }
 }
