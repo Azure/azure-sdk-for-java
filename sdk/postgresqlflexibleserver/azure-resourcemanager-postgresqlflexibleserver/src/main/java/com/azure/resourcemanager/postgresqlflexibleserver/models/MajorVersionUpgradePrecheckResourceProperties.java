@@ -39,7 +39,7 @@ public final class MajorVersionUpgradePrecheckResourceProperties
     /*
      * The target PostgreSQL major version for the upgrade.
      */
-    private PostgresMajorVersion targetVersion;
+    private String targetVersion;
 
     /*
      * Array of policy validation details.
@@ -84,7 +84,7 @@ public final class MajorVersionUpgradePrecheckResourceProperties
      * 
      * @return the targetVersion value.
      */
-    public PostgresMajorVersion targetVersion() {
+    public String targetVersion() {
         return this.targetVersion;
     }
 
@@ -107,7 +107,7 @@ public final class MajorVersionUpgradePrecheckResourceProperties
             this.createTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createTime));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("precheckResult", this.precheckResult);
-        jsonWriter.writeStringField("targetVersion", this.targetVersion == null ? null : this.targetVersion.toString());
+        jsonWriter.writeStringField("targetVersion", this.targetVersion);
         jsonWriter.writeArrayField("policyDetails", this.policyDetails, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -138,8 +138,7 @@ public final class MajorVersionUpgradePrecheckResourceProperties
                     deserializedMajorVersionUpgradePrecheckResourceProperties.precheckResult
                         = PrecheckResult.fromJson(reader);
                 } else if ("targetVersion".equals(fieldName)) {
-                    deserializedMajorVersionUpgradePrecheckResourceProperties.targetVersion
-                        = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedMajorVersionUpgradePrecheckResourceProperties.targetVersion = reader.getString();
                 } else if ("policyDetails".equals(fieldName)) {
                     List<PolicyDetail> policyDetails = reader.readArray(reader1 -> PolicyDetail.fromJson(reader1));
                     deserializedMajorVersionUpgradePrecheckResourceProperties.policyDetails = policyDetails;

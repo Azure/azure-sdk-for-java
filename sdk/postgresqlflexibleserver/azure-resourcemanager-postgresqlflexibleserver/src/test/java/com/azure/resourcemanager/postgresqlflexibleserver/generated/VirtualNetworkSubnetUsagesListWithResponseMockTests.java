@@ -21,7 +21,7 @@ public final class VirtualNetworkSubnetUsagesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"m\",\"usage\":3742774999158275735},{\"subnetName\":\"ozfnkfexlvx\",\"usage\":3396422124507291497},{\"subnetName\":\"zvoaikna\",\"usage\":5916569228093212039}],\"location\":\"iguyxlykwphv\",\"subscriptionId\":\"cwxhmpej\"}";
+            = "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"fwushcdpkupn\",\"usage\":6778968687143087952},{\"subnetName\":\"fbpkuw\",\"usage\":8109596496234453109},{\"subnetName\":\"jfizfavkjzwfbc\",\"usage\":771809816865473045}],\"location\":\"mfzsbf\",\"subscriptionId\":\"rzx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class VirtualNetworkSubnetUsagesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkSubnetUsageModel response = manager.virtualNetworkSubnetUsages()
-            .listWithResponse("y", new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("nu"),
+            .listWithResponse("fdb",
+                new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("bztensvkzykjtj"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

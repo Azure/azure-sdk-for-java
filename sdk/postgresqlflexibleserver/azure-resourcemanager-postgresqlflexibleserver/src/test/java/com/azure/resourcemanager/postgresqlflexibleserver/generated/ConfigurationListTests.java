@@ -12,10 +12,10 @@ public final class ConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"osggbhc\",\"description\":\"fwdsj\",\"defaultValue\":\"aljutiiswac\",\"dataType\":\"Numeric\",\"allowedValues\":\"k\",\"source\":\"ewkfvhqcrai\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"flrwd\",\"documentationLink\":\"dlxyjrxs\"},\"id\":\"afcnih\",\"name\":\"wqapnedgfbcvk\",\"type\":\"vq\"},{\"properties\":{\"value\":\"eqdcv\",\"description\":\"hvoodsotbobzd\",\"defaultValue\":\"cjwvn\",\"dataType\":\"Enumeration\",\"allowedValues\":\"wmgxcxrsl\",\"source\":\"utwu\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"wniyqsluicpd\",\"documentationLink\":\"kzzlvmbmpaxmodf\"},\"id\":\"efyw\",\"name\":\"bpfvm\",\"type\":\"yhrfouyftaakcpw\"}],\"nextLink\":\"zvqtmnubexkp\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"zzewkfvhqcrai\",\"description\":\"pnppfuf\",\"defaultValue\":\"wdmhdlxyjrxs\",\"dataType\":\"Integer\",\"allowedValues\":\"cnihgwqapnedgfbc\",\"source\":\"cvqvpkeqdcv\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"otbobzdopcj\",\"documentationLink\":\"nhdldwmgxcx\"},\"id\":\"lpmutwuoegrpkhj\",\"name\":\"niyqslui\",\"type\":\"pdggkzzlvm\"}],\"nextLink\":\"paxmodfvuefywsb\"}")
             .toObject(ConfigurationList.class);
-        Assertions.assertEquals("osggbhc", model.value().get(0).value());
-        Assertions.assertEquals("ewkfvhqcrai", model.value().get(0).source());
-        Assertions.assertEquals("zvqtmnubexkp", model.nextLink());
+        Assertions.assertEquals("zzewkfvhqcrai", model.value().get(0).value());
+        Assertions.assertEquals("cvqvpkeqdcv", model.value().get(0).source());
+        Assertions.assertEquals("paxmodfvuefywsb", model.nextLink());
     }
 }

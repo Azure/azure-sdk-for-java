@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class BackupsLongTermRetentionsCheckPrerequisitesWithResponseMockTests {
     @Test
     public void testCheckPrerequisitesWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"numberOfContainers\":1961781327}}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":1824341053}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class BackupsLongTermRetentionsCheckPrerequisitesWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LtrPreBackupResponse response = manager.backupsLongTermRetentions()
-            .checkPrerequisitesWithResponse("nmbscbbx", "gdhxi",
-                new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("d")),
+            .checkPrerequisitesWithResponse("mvanbwzo", "mnrxxbsojkl",
+                new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("nhmdptysprqs")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1961781327, response.numberOfContainers());
+        Assertions.assertEquals(1824341053, response.numberOfContainers());
     }
 }

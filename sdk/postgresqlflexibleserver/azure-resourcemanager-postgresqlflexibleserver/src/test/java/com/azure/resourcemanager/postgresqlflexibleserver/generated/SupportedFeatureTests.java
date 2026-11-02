@@ -10,7 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.SupportedFeatur
 public final class SupportedFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedFeature model
-            = BinaryData.fromString("{\"name\":\"n\",\"status\":\"Enabled\"}").toObject(SupportedFeature.class);
+        SupportedFeature model = BinaryData.fromString("{\"name\":\"gaehvvibrxjjst\",\"status\":\"Enabled\"}")
+            .toObject(SupportedFeature.class);
     }
 }

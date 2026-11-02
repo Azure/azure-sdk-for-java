@@ -12,8 +12,8 @@ public final class QuotaUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"name\":{\"value\":\"j\",\"localizedValue\":\"cvbmqzb\"},\"limit\":1217844899495018315,\"unit\":\"jrnwxacev\",\"currentValue\":3621469567957484158,\"id\":\"yxoaf\"},{\"name\":{\"value\":\"qltfaey\",\"localizedValue\":\"nm\"},\"limit\":3765841685495474303,\"unit\":\"r\",\"currentValue\":6212930626984689307,\"id\":\"ypoq\"},{\"name\":{\"value\":\"lqhykprlpyz\",\"localizedValue\":\"ciqdsme\"},\"limit\":4627205265824000180,\"unit\":\"fuxtyasiibmiybnn\",\"currentValue\":8674518560231481251,\"id\":\"ljhnmgixhcmav\"}],\"nextLink\":\"foudor\"}")
+            "{\"value\":[{\"name\":{\"value\":\"nmmaxrizkzob\",\"localizedValue\":\"pxl\"},\"limit\":3557811767170936371,\"unit\":\"lxieixynllxecwcr\",\"currentValue\":7901820677225280471,\"id\":\"lhc\"},{\"name\":{\"value\":\"u\",\"localizedValue\":\"fdwfmvigorqj\"},\"limit\":3198803383031032547,\"unit\":\"raglk\",\"currentValue\":5023526867462227147,\"id\":\"qjujeickpzvcp\"},{\"name\":{\"value\":\"xelnwc\",\"localizedValue\":\"yjede\"},\"limit\":6984855935225199348,\"unit\":\"mkqscaz\",\"currentValue\":3494695317807035352,\"id\":\"z\"}],\"nextLink\":\"uamwabzxrvxc\"}")
             .toObject(QuotaUsageList.class);
-        Assertions.assertEquals("foudor", model.nextLink());
+        Assertions.assertEquals("uamwabzxrvxc", model.nextLink());
     }
 }

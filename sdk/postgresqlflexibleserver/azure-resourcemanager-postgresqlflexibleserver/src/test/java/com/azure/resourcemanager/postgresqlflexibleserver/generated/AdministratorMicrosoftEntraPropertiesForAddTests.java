@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraPropertiesForAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model = BinaryData
-            .fromString("{\"principalType\":\"Unknown\",\"principalName\":\"zcjaesgvvsccy\",\"tenantId\":\"g\"}")
+            .fromString("{\"principalType\":\"Group\",\"principalName\":\"vyqia\",\"tenantId\":\"zwpcnpwzcjaesg\"}")
             .toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
-        Assertions.assertEquals("zcjaesgvvsccy", model.principalName());
-        Assertions.assertEquals("g", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vyqia", model.principalName());
+        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model
-            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.UNKNOWN)
-                .withPrincipalName("zcjaesgvvsccy")
-                .withTenantId("g");
+            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.GROUP)
+                .withPrincipalName("vyqia")
+                .withTenantId("zwpcnpwzcjaesg");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
-        Assertions.assertEquals("zcjaesgvvsccy", model.principalName());
-        Assertions.assertEquals("g", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vyqia", model.principalName());
+        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
     }
 }

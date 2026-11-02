@@ -35,7 +35,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapabilitiesByS
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapturedLogsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DbAgentsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MaintenanceEventsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MajorVersionUpgradePrechecksClient;
@@ -306,20 +305,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
-     * The DbAgentsClient object to access its operations.
-     */
-    private final DbAgentsClient dbAgents;
-
-    /**
-     * Gets the DbAgentsClient object to access its operations.
-     * 
-     * @return the DbAgentsClient object.
-     */
-    public DbAgentsClient getDbAgents() {
-        return this.dbAgents;
-    }
-
-    /**
      * The AdministratorsMicrosoftEntrasClient object to access its operations.
      */
     private final AdministratorsMicrosoftEntrasClient administratorsMicrosoftEntras;
@@ -532,7 +517,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01-preview";
+        this.apiVersion = "2026-10-01";
         this.operations = new OperationsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);
         this.servers = new ServersClientImpl(this);
@@ -544,7 +529,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.virtualEndpoints = new VirtualEndpointsClientImpl(this);
         this.maintenanceEvents = new MaintenanceEventsClientImpl(this);
         this.majorVersionUpgradePrechecks = new MajorVersionUpgradePrechecksClientImpl(this);
-        this.dbAgents = new DbAgentsClientImpl(this);
         this.administratorsMicrosoftEntras = new AdministratorsMicrosoftEntrasClientImpl(this);
         this.capabilitiesByServers = new CapabilitiesByServersClientImpl(this);
         this.capturedLogs = new CapturedLogsClientImpl(this);

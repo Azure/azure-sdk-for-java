@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UpgradeSequence;
 import org.junit.jupiter.api.Assertions;
 
 public final class UpgradeSequenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradeSequence model = BinaryData.fromString("{\"sourceVersion\":\"13\",\"targetVersion\":\"15\"}")
-            .toObject(UpgradeSequence.class);
-        Assertions.assertEquals(PostgresMajorVersion.ONE_THREE, model.sourceVersion());
-        Assertions.assertEquals(PostgresMajorVersion.ONE_FIVE, model.targetVersion());
+        UpgradeSequence model
+            = BinaryData.fromString("{\"sourceVersion\":\"yowqkdwytisibir\",\"targetVersion\":\"pikpz\"}")
+                .toObject(UpgradeSequence.class);
+        Assertions.assertEquals("yowqkdwytisibir", model.sourceVersion());
+        Assertions.assertEquals("pikpz", model.targetVersion());
     }
 }

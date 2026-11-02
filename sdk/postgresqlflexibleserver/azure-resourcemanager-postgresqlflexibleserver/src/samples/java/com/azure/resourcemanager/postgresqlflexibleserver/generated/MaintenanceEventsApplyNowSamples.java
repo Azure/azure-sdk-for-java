@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MaintenanceEventsApplyNowSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/MaintenanceEventsApplyNow.json
+     * x-ms-original-file: 2026-10-01/MaintenanceEventsApplyNow.json
      */
     /**
      * Sample code: Apply maintenance immediately for a server.

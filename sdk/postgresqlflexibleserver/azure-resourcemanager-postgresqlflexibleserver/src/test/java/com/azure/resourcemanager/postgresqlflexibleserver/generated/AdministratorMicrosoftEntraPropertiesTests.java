@@ -13,11 +13,11 @@ public final class AdministratorMicrosoftEntraPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraProperties model = BinaryData.fromString(
-            "{\"principalType\":\"Group\",\"principalName\":\"ingamvp\",\"objectId\":\"o\",\"tenantId\":\"qzudphq\"}")
+            "{\"principalType\":\"Group\",\"principalName\":\"kndxdigrjgu\",\"objectId\":\"zdmsyqtfi\",\"tenantId\":\"hbotzingamvppho\"}")
             .toObject(AdministratorMicrosoftEntraProperties.class);
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
-        Assertions.assertEquals("ingamvp", model.principalName());
-        Assertions.assertEquals("o", model.objectId());
-        Assertions.assertEquals("qzudphq", model.tenantId());
+        Assertions.assertEquals("kndxdigrjgu", model.principalName());
+        Assertions.assertEquals("zdmsyqtfi", model.objectId());
+        Assertions.assertEquals("hbotzingamvppho", model.tenantId());
     }
 }
