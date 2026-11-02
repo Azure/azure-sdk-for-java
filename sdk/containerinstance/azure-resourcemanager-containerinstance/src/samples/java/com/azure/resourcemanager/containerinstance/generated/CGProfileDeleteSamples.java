@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class CGProfileDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesDelete.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupProfilesDelete.json
      */
     /**
      * Sample code: ContainerGroupProfilesDelete.
