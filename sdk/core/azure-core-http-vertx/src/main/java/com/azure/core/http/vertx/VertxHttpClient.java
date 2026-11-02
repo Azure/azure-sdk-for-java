@@ -54,6 +54,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.core.http.vertx.implementation.VertxUtils.resetRequest;
 
@@ -66,6 +67,8 @@ class VertxHttpClient implements HttpClient {
     // How long to wait for an interim 100 Continue before sending the body anyway, matching the defaults used by
     // other HTTP stacks. RFC 9110 requires a client not to wait indefinitely.
     private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
+    // Vert.x timer IDs are never negative.
+    private static final long NO_TIMER = -1;
 
     private static final ReflectiveInvoker REQUEST_WRITE_HEAD;
     static {
@@ -280,12 +283,12 @@ class VertxHttpClient implements HttpClient {
             // A service may ignore the expectation entirely and wait for the body, so the request cannot depend on
             // the interim response arriving. RFC 9110 allows the content to be sent after a short wait.
             io.vertx.core.Context vertxContext = Vertx.currentContext();
-            Long fallbackTimerId = vertxContext == null
-                ? null
-                : vertxContext.owner().setTimer(EXPECT_CONTINUE_TIMEOUT.toMillis(), ignored -> writeOnce.run());
+            Vertx vertx = vertxContext == null ? null : vertxContext.owner();
+            AtomicLong fallbackTimerId = new AtomicLong(NO_TIMER);
             Runnable cancelFallback = () -> {
-                if (fallbackTimerId != null && vertxContext != null) {
-                    vertxContext.owner().cancelTimer(fallbackTimerId);
+                long timerId = fallbackTimerId.get();
+                if (timerId != NO_TIMER && vertx != null) {
+                    vertx.cancelTimer(timerId);
                 }
             };
 
@@ -293,16 +296,28 @@ class VertxHttpClient implements HttpClient {
             // failed, there is nothing left to send. Claim the write so neither the fallback nor a late interim
             // response can subscribe the body onto a finished request.
             promise.future().onComplete(ignored -> {
-                cancelFallback.run();
                 bodyWritten.set(true);
+                cancelFallback.run();
             });
 
             vertxRequest.continueHandler(ignored -> {
-                cancelFallback.run();
                 writeOnce.run();
+                cancelFallback.run();
             });
             long headerWrite = writeWatcher.start();
-            writeHead(vertxRequest).onSuccess(ignored -> writeWatcher.pause(headerWrite)).onFailure(promise::tryFail);
+            writeHead(vertxRequest).onSuccess(ignored -> {
+                writeWatcher.pause(headerWrite);
+                // Start the wait only once the headers are written, so the service gets the full wait to answer
+                // regardless of how long the headers took to reach the wire.
+                if (vertx != null && !bodyWritten.get()) {
+                    fallbackTimerId.set(vertx.setTimer(EXPECT_CONTINUE_TIMEOUT.toMillis(), id -> writeOnce.run()));
+                    // The exchange may have finished, or the service may have answered, while the timer was being
+                    // set, in which case nothing remains to cancel it.
+                    if (bodyWritten.get()) {
+                        cancelFallback.run();
+                    }
+                }
+            }).onFailure(promise::tryFail);
         } else {
             writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, writeWatcher);
         }
