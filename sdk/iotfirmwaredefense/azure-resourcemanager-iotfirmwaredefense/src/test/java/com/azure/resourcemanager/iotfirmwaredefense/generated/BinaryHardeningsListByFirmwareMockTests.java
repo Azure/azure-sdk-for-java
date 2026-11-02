@@ -23,7 +23,7 @@ public final class BinaryHardeningsListByFirmwareMockTests {
     @Test
     public void testListByFirmware() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"binaryHardeningId\":\"smond\",\"securityHardeningFeatures\":{\"noExecute\":true,\"positionIndependentExecutable\":true,\"relocationReadOnly\":true,\"canary\":false,\"stripped\":true},\"executableArchitecture\":\"pkwhojvpa\",\"filePath\":\"gxysmocmbqfqvm\",\"executableClass\":\"x86\",\"runpath\":\"zapvhelx\",\"rpath\":\"glyatddckcbcuej\",\"provisioningState\":\"Analyzing\"},\"id\":\"ciqibrhosx\",\"name\":\"dqrhzoymib\",\"type\":\"rq\"}]}";
+            = "{\"value\":[{\"properties\":{\"binaryHardeningId\":\"ae\",\"securityHardeningFeatures\":{\"noExecute\":false,\"positionIndependentExecutable\":false,\"relocationReadOnly\":true,\"canary\":true,\"stripped\":true},\"executableArchitecture\":\"qzpiyyl\",\"filePath\":\"lnswhcc\",\"executableClass\":\"x86\",\"runpath\":\"aivwitqscywu\",\"rpath\":\"woluhczbwemhair\",\"provisioningState\":\"Pending\"},\"id\":\"z\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class BinaryHardeningsListByFirmwareMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BinaryHardeningResource> response = manager.binaryHardenings()
-            .listByFirmware("yhrfouyftaakcpw", "yzvqt", "nubexk", com.azure.core.util.Context.NONE);
+            .listByFirmware("bminrfdwoyuhhzi", "iefozbhdmsml", "zqhof", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("smond", response.iterator().next().binaryHardeningId());
-        Assertions.assertTrue(response.iterator().next().securityHardeningFeatures().noExecute());
-        Assertions.assertTrue(response.iterator().next().securityHardeningFeatures().positionIndependentExecutable());
+        Assertions.assertEquals("ae", response.iterator().next().binaryHardeningId());
+        Assertions.assertFalse(response.iterator().next().securityHardeningFeatures().noExecute());
+        Assertions.assertFalse(response.iterator().next().securityHardeningFeatures().positionIndependentExecutable());
         Assertions.assertTrue(response.iterator().next().securityHardeningFeatures().relocationReadOnly());
-        Assertions.assertFalse(response.iterator().next().securityHardeningFeatures().canary());
+        Assertions.assertTrue(response.iterator().next().securityHardeningFeatures().canary());
         Assertions.assertTrue(response.iterator().next().securityHardeningFeatures().stripped());
-        Assertions.assertEquals("pkwhojvpa", response.iterator().next().executableArchitecture());
-        Assertions.assertEquals("gxysmocmbqfqvm", response.iterator().next().filePath());
+        Assertions.assertEquals("qzpiyyl", response.iterator().next().executableArchitecture());
+        Assertions.assertEquals("lnswhcc", response.iterator().next().filePath());
         Assertions.assertEquals(ExecutableClass.X86, response.iterator().next().executableClass());
-        Assertions.assertEquals("zapvhelx", response.iterator().next().runpath());
-        Assertions.assertEquals("glyatddckcbcuej", response.iterator().next().rpath());
+        Assertions.assertEquals("aivwitqscywu", response.iterator().next().runpath());
+        Assertions.assertEquals("woluhczbwemhair", response.iterator().next().rpath());
     }
 }

@@ -25,7 +25,7 @@ public final class WorkspacesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"sku\":{\"name\":\"hfwdsjnkaljutiis\",\"tier\":\"Standard\",\"size\":\"fgdkzzew\",\"family\":\"vhqcrail\",\"capacity\":70247298},\"location\":\"pfuflrw\",\"tags\":{\"gafcnihgwqapnedg\":\"dlxyjrxs\",\"cvdrhvoodsot\":\"bcvkcvqvpkeq\",\"wmgxcxrsl\":\"obzdopcjwvnhdl\",\"rpkhjwn\":\"mutwuoe\"},\"id\":\"yqsluic\",\"name\":\"dggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"vexztvbtqgs\",\"tier\":\"Basic\",\"size\":\"yzkoowtlmngu\",\"family\":\"wqaldsyu\",\"capacity\":1074129183},\"location\":\"erqf\",\"tags\":{\"utwpfhp\":\"yznkby\",\"tdlmkkzevd\":\"gmhrskdsnfdsdoak\",\"gvbbejdcng\":\"hewpusdsttwv\"},\"id\":\"qmoa\",\"name\":\"ufgmjzrwrdg\",\"type\":\"twaenuuzko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,24 +35,25 @@ public final class WorkspacesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workspace response = manager.workspaces()
-            .define("tmuwlauwzi")
-            .withRegion("xe")
-            .withExistingResourceGroup("l")
-            .withTags(mapOf("glkfg", "zbtbhj", "dyhtozfikdowwquu", "hdneuelfph"))
-            .withSku(new Sku().withName("gcj")
-                .withTier(SkuTier.FREE)
-                .withSize("muvp")
-                .withFamily("tdum")
-                .withCapacity(95905507))
+            .define("a")
+            .withRegion("rvtp")
+            .withExistingResourceGroup("dsg")
+            .withTags(mapOf("ndo", "jmqlgkfb", "jitcjedftwwaez", "ongbjcnt", "i", "ojvdcpzfoqo", "oxciqopidoamcio",
+                "ybxarzgszu"))
+            .withSku(new Sku().withName("grauwjuetaebur")
+                .withTier(SkuTier.BASIC)
+                .withSize("ovsm")
+                .withFamily("xwabmqoe")
+                .withCapacity(1641212216))
             .create();
 
-        Assertions.assertEquals("pfuflrw", response.location());
-        Assertions.assertEquals("dlxyjrxs", response.tags().get("gafcnihgwqapnedg"));
-        Assertions.assertEquals("hfwdsjnkaljutiis", response.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals("fgdkzzew", response.sku().size());
-        Assertions.assertEquals("vhqcrail", response.sku().family());
-        Assertions.assertEquals(70247298, response.sku().capacity());
+        Assertions.assertEquals("erqf", response.location());
+        Assertions.assertEquals("yznkby", response.tags().get("utwpfhp"));
+        Assertions.assertEquals("vexztvbtqgs", response.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
+        Assertions.assertEquals("yzkoowtlmngu", response.sku().size());
+        Assertions.assertEquals("wqaldsyu", response.sku().family());
+        Assertions.assertEquals(1074129183, response.sku().capacity());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,7 @@ public final class SummaryResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SummaryResourceProperties model = BinaryData
-            .fromString("{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Extracting\"}")
+            .fromString("{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Succeeded\"}")
             .toObject(SummaryResourceProperties.class);
     }
 }

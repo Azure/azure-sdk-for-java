@@ -105,6 +105,14 @@ public class SummaryResourceProperties implements JsonSerializable<SummaryResour
                     return CryptoCertificateSummaryResource.fromJson(readerToUse.reset());
                 } else if ("CryptoKey".equals(discriminatorValue)) {
                     return CryptoKeySummaryResource.fromJson(readerToUse.reset());
+                } else if ("CVE".equals(discriminatorValue)) {
+                    return CveSummaryResource.fromJson(readerToUse.reset());
+                } else if ("SBOM".equals(discriminatorValue)) {
+                    return SbomSummaryResource.fromJson(readerToUse.reset());
+                } else if ("PasswordHash".equals(discriminatorValue)) {
+                    return PasswordHashSummaryResource.fromJson(readerToUse.reset());
+                } else if ("UnsafeFunctionCalls".equals(discriminatorValue)) {
+                    return UnsafeFunctionCallsSummaryResource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

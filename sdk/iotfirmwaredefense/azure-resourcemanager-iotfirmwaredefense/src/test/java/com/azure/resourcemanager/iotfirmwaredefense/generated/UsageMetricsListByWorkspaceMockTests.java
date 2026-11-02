@@ -21,7 +21,7 @@ public final class UsageMetricsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":8341703790132949746,\"totalFirmwareCount\":4327719867716518141,\"provisioningState\":\"Extracting\"},\"id\":\"sexnevfdnw\",\"name\":\"wmewzsyy\",\"type\":\"euzsoi\"}]}";
+            = "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":882899193030330530,\"totalFirmwareCount\":7555109980359143051,\"provisioningState\":\"Pending\"},\"id\":\"cxzbfvoowvr\",\"name\":\"mtg\",\"type\":\"qp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class UsageMetricsListByWorkspaceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<UsageMetric> response
-            = manager.usageMetrics().listByWorkspace("byxbaaabjy", "ayffim", com.azure.core.util.Context.NONE);
+        PagedIterable<UsageMetric> response = manager.usageMetrics()
+            .listByWorkspace("xexccbdreaxhcexd", "rvqahqkghtpwi", com.azure.core.util.Context.NONE);
 
     }
 }
