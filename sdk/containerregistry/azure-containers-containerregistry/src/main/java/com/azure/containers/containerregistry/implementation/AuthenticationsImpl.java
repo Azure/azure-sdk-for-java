@@ -26,23 +26,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Authentications.
- */
+/** An instance of this class provides access to all the operations defined in Authentications. */
 public final class AuthenticationsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final AuthenticationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureContainerRegistryImpl client;
 
     /**
      * Initializes an instance of AuthenticationsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AuthenticationsImpl(AzureContainerRegistryImpl client) {
@@ -56,7 +50,7 @@ public final class AuthenticationsImpl {
      * to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureContainerRegistryAuthentications")
+    @ServiceInterface(name = "AzureContainerRegist")
     public interface AuthenticationsService {
         // @Multipart not supported by RestProxy
         @Post("/oauth2/exchange")
@@ -99,7 +93,7 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -114,13 +108,14 @@ public final class AuthenticationsImpl {
     public Mono<Response<AcrRefreshToken>> exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(
         PostContentSchemaGrantType grantType, String serviceParam, String tenant, String refreshToken,
         String accessToken) {
-        return FluxUtil.withContext(context -> exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(grantType,
-            serviceParam, tenant, refreshToken, accessToken, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.exchangeAadAccessTokenForAcrRefreshToken(this.client.getUrl(),
+            this.client.getApiVersion(), grantType, serviceParam, tenant, refreshToken, accessToken, accept, context));
     }
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -143,7 +138,7 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -163,7 +158,7 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -184,7 +179,7 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -207,7 +202,7 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange AAD tokens for an ACR refresh Token.
-     * 
+     *
      * @param grantType Can take a value of access_token_refresh_token, or access_token, or refresh_token.
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param tenant AAD tenant associated to the AAD credentials.
@@ -227,10 +222,10 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,16 +236,17 @@ public final class AuthenticationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(String serviceParam,
         String scope, String refreshToken, TokenGrantType grantType) {
-        return FluxUtil.withContext(context -> exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam,
-            scope, refreshToken, grantType, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.exchangeAcrRefreshTokenForAcrAccessToken(this.client.getUrl(),
+            this.client.getApiVersion(), serviceParam, scope, refreshToken, grantType, accept, context));
     }
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @param context The context to associate with this operation.
@@ -269,10 +265,10 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,10 +285,10 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @param context The context to associate with this operation.
@@ -310,10 +306,10 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @param context The context to associate with this operation.
@@ -332,10 +328,10 @@ public final class AuthenticationsImpl {
 
     /**
      * Exchange ACR Refresh token for an ACR Access Token.
-     * 
+     *
      * @param serviceParam Indicates the name of your Azure container registry.
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     * requests. You obtained this from the Www-Authenticate response header from the challenge.
+     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
      * @param grantType Grant type is expected to be refresh_token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -58,8 +58,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -89,8 +89,8 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
 
     public static final String SUPPORTED_MANIFEST_TYPES
-        = "*/*," + ManifestMediaType.OCI_IMAGE_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST
-            + ",application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.list.v2+json"
+        = "*/*" + "," + ManifestMediaType.OCI_IMAGE_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST
+            + ",application/vnd.oci.image.index.v1+json" + ",application/vnd.docker.distribution.manifest.list.v2+json"
             + ",application/vnd.cncf.oras.artifact.manifest.v1+json";
 
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
@@ -252,7 +252,7 @@ public final class UtilsImpl {
         String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             throw LOGGER
-                .logExceptionAsError(new ServiceResponseException("Response does not include 'Content-Length' header"));
+                .logExceptionAsError(new ServiceResponseException("Response does not include `Content-Length` header"));
         }
 
         try {
@@ -434,6 +434,17 @@ public final class UtilsImpl {
         return artifactTagProperties;
     }
 
+    public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
+        String responseHeaderDigest = headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+        if (!requestedDigest.equals(responseHeaderDigest)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("responseDigest", responseHeaderDigest)
+                .log(new ServiceResponseException(
+                    "The digest in the response header does not match the expected digest."));
+        }
+    }
+
     public static <H, T> String getLocation(ResponseBase<H, T> response) {
         String locationHeader = response.getHeaders().getValue(HttpHeaderName.LOCATION);
         // The location header returned in the nextLink for upload chunk operations starts with a '/'
@@ -480,9 +491,9 @@ public final class UtilsImpl {
 
     public static String formatFullyQualifiedReference(String endpoint, String repositoryName, String tagOrDigest) {
         try {
-            URI endpointUri = new URI(endpoint);
-            return endpointUri.getHost() + "/" + repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
-        } catch (URISyntaxException ex) {
+            URL endpointUrl = new URL(endpoint);
+            return endpointUrl.getHost() + "/" + repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
+        } catch (MalformedURLException ex) {
             // This will not happen.
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
