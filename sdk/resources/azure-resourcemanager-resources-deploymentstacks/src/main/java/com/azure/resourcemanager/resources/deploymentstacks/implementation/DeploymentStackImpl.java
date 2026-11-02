@@ -132,6 +132,16 @@ public final class DeploymentStackImpl implements DeploymentStack, DeploymentSta
         this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
             "deploymentStackName");
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
     }
 
     public DeploymentStack refresh() {

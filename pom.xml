@@ -12,6 +12,7 @@
     <module>common/perf-test-core</module>
     <module>sdk/advisor</module>
     <module>sdk/ai</module>
+    <module>sdk/aiinfraoptimization</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>

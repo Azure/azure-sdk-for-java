@@ -20,9 +20,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider;
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -30,7 +33,10 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -43,6 +49,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -54,21 +61,34 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.ReadWriteSpan;
+import io.opentelemetry.sdk.trace.ReadableSpan;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.data.SpanData;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -77,9 +97,12 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.DEFAULT_MAX_BATCH_SIZE_BYTES;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -562,6 +585,187 @@ class ServiceBusSenderAsyncClientTest {
         verify(tracer1, times(4)).start(eq("ServiceBus.message"), any(StartSpanOptions.class), any(Context.class));
         verify(tracer1, times(1)).start(eq("ServiceBus.send"), any(StartSpanOptions.class), any(Context.class));
         verify(tracer1, times(5)).end(isNull(), isNull(), any(Context.class));
+    }
+
+    @ParameterizedTest
+    @MethodSource("forwardingCases")
+    void asyncProcessorForwardingPreservesTraceParent(String sendKind, boolean schedulerHop, boolean isV2)
+        throws Exception {
+        final RecordingSpanProcessor spanProcessor = new RecordingSpanProcessor();
+        try (SdkTracerProvider provider = SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build()) {
+            final Tracer tracer = new OpenTelemetryTracerProvider().createTracer("azure-messaging-servicebus", "test",
+                "Microsoft.ServiceBus", new OpenTelemetryTracingOptions()
+                    .setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(provider).build()));
+            final ServiceBusSenderInstrumentation instrumentation
+                = new ServiceBusSenderInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME);
+            arrangeIfV2(isV2);
+            sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+                retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+            when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
+                eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink).publishOn(Schedulers.boundedElastic()));
+            when(sendLink.getLinkSize()).thenReturn(Mono.just(1024 * 1024));
+            when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(1024 * 1024));
+            when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+            final ServiceBusReceivedMessage incoming = new ServiceBusReceivedMessage(BinaryData.fromString("input"));
+            incoming.getApplicationProperties()
+                .put("traceparent", "00-0123456789abcdef0123456789abcdef-0123456789abcdef-01");
+            final ServiceBusMessage outgoing = new ServiceBusMessage("forwarded");
+            final ServiceBusReceiverAsyncClient receiver = mock(ServiceBusReceiverAsyncClient.class);
+            when(receiver.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+            when(receiver.getEntityPath()).thenReturn(ENTITY_NAME);
+            when(receiver.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(tracer, null,
+                NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR));
+            when(receiver.receiveMessagesWithContextForAsyncProcessor())
+                .thenReturn(Flux.just(new ServiceBusMessageContext(incoming)).concatWith(Flux.never()));
+            final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder
+                = mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+            when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(receiver);
+            final AtomicReference<Throwable> handlerError = new AtomicReference<>();
+            final AtomicReference<io.opentelemetry.api.trace.SpanContext> ambient = new AtomicReference<>();
+            final ServiceBusProcessorAsyncClient processor
+                = new ServiceBusProcessorAsyncClient(receiverBuilder, ENTITY_NAME, null, null, context -> {
+                    final Mono<Void> send;
+                    if ("single".equals(sendKind)) {
+                        send = sender.sendMessage(outgoing);
+                    } else if ("iterable".equals(sendKind)) {
+                        send = sender.sendMessages(Collections.singletonList(outgoing));
+                    } else {
+                        send = sender.createMessageBatch().flatMap(batch -> {
+                            if (!batch.tryAddMessage(outgoing)) {
+                                return Mono.error(new IllegalStateException("Forwarded message did not fit"));
+                            }
+                            return sender.sendMessages(batch);
+                        });
+                    }
+                    final Mono<Void> forwarding = Mono.defer(() -> {
+                        ambient.set(Span.current().getSpanContext());
+                        return send;
+                    });
+                    return schedulerHop ? Mono.delay(Duration.ofMillis(1)).then(forwarding) : forwarding;
+                }, error -> {
+                    handlerError.set(error.getException());
+                    return Mono.empty();
+                }, new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1)
+                    .setDisableAutoComplete(true)
+                    .setDrainTimeout(Duration.ofSeconds(5)));
+            try {
+                processor.start().block(DEFAULT_TIMEOUT);
+                assertTrue(spanProcessor.processed.await(10, TimeUnit.SECONDS));
+                assertNull(handlerError.get());
+                assertNotNull(ambient.get());
+                assertFalse(ambient.get().isValid(), "SDK-only tracing must not leak a thread-local process scope");
+                final List<SpanData> process = spanProcessor.spans.stream()
+                    .filter(span -> "ServiceBus.process".equals(span.getName()))
+                    .collect(Collectors.toList());
+                final List<SpanData> send = spanProcessor.spans.stream()
+                    .filter(span -> "ServiceBus.send".equals(span.getName()))
+                    .collect(Collectors.toList());
+                final List<SpanData> messageSpans = spanProcessor.spans.stream()
+                    .filter(span -> "ServiceBus.message".equals(span.getName()))
+                    .collect(Collectors.toList());
+                assertEquals(1, process.size());
+                assertEquals(1, send.size());
+                assertEquals(1, messageSpans.size());
+                final SpanData parent = process.get(0);
+                assertEquals("0123456789abcdef0123456789abcdef", parent.getTraceId());
+                assertAll("Forwarding ancestry",
+                    () -> assertEquals(parent.getTraceId(), send.get(0).getTraceId(), "Send trace"),
+                    () -> assertEquals(parent.getSpanId(), send.get(0).getParentSpanId(), "Send parent"),
+                    () -> assertEquals(parent.getTraceId(), messageSpans.get(0).getTraceId(), "Message trace"),
+                    () -> assertEquals(parent.getSpanId(), messageSpans.get(0).getParentSpanId(), "Message parent"),
+                    () -> assertTrue(outgoing.getApplicationProperties()
+                        .get("traceparent")
+                        .toString()
+                        .startsWith("00-" + parent.getTraceId()), "Injected message context"));
+            } finally {
+                processor.close();
+                sender.close();
+            }
+        }
+    }
+
+    private static Stream<Arguments> forwardingCases() {
+        return Stream.of("single", "iterable", "batch")
+            .flatMap(kind -> Stream.of(false, true)
+                .flatMap(hop -> selectStack().map(isV2 -> Arguments.of(kind, hop, isV2))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("callerContextCases")
+    @SuppressWarnings("try")
+    void sendPreservesCallerAndMessageContext(String parentKind, boolean isV2) {
+        final RecordingSpanProcessor spanProcessor = new RecordingSpanProcessor();
+        try (SdkTracerProvider provider = SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build()) {
+            final OpenTelemetrySdk telemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
+            final Tracer tracer = new OpenTelemetryTracerProvider().createTracer("azure-messaging-servicebus", "test",
+                "Microsoft.ServiceBus", new OpenTelemetryTracingOptions().setOpenTelemetry(telemetry));
+            arrangeIfV2(isV2);
+            sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+                retryOptions, new ServiceBusSenderInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME), serializer,
+                onClientClose, null, CLIENT_IDENTIFIER);
+            when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
+                eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink).publishOn(Schedulers.boundedElastic()));
+            when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+            final io.opentelemetry.api.trace.Tracer applicationTracer = telemetry.getTracer("application");
+            final Span ambient = applicationTracer.spanBuilder("ambient-parent").startSpan();
+            final Span reactorParent = applicationTracer.spanBuilder("reactor-parent").startSpan();
+            final Span messageParent = applicationTracer.spanBuilder("message-parent").startSpan();
+            final ServiceBusMessage outgoing = new ServiceBusMessage("caller-context");
+            if ("message".equals(parentKind)) {
+                outgoing.addContext(PARENT_TRACE_CONTEXT_KEY,
+                    io.opentelemetry.context.Context.root().with(messageParent));
+            } else if ("traceparent".equals(parentKind)) {
+                outgoing.getApplicationProperties()
+                    .put("traceparent", "00-0123456789abcdef0123456789abcdef-0123456789abcdef-01");
+            }
+            final Span expectedSendParent = "ambient".equals(parentKind) ? ambient : reactorParent;
+            final Span expectedMessageParent = "message".equals(parentKind) ? messageParent : expectedSendParent;
+            try (io.opentelemetry.context.Scope scope = ambient.makeCurrent()) {
+                Mono<Void> send = sender.sendMessage(outgoing);
+                if (!"ambient".equals(parentKind)) {
+                    send = send.contextWrite(FluxUtil.toReactorContext(new Context(PARENT_TRACE_CONTEXT_KEY,
+                        io.opentelemetry.context.Context.root().with(reactorParent))));
+                }
+                send.block(DEFAULT_TIMEOUT);
+                final Object originalTraceparent = outgoing.getApplicationProperties().get("traceparent");
+                send.block(DEFAULT_TIMEOUT);
+                assertEquals(originalTraceparent, outgoing.getApplicationProperties().get("traceparent"),
+                    "Resubscription must not replace an already traced message");
+
+                final List<SpanData> sends = spanProcessor.spans.stream()
+                    .filter(span -> "ServiceBus.send".equals(span.getName()))
+                    .collect(Collectors.toList());
+                final List<SpanData> messageSpans = spanProcessor.spans.stream()
+                    .filter(span -> "ServiceBus.message".equals(span.getName()))
+                    .collect(Collectors.toList());
+                assertEquals(2, sends.size(), "Each subscription needs exactly one send span");
+                for (SpanData span : sends) {
+                    assertEquals(expectedSendParent.getSpanContext().getTraceId(), span.getTraceId());
+                    assertEquals(expectedSendParent.getSpanContext().getSpanId(), span.getParentSpanId());
+                }
+                if ("traceparent".equals(parentKind)) {
+                    assertTrue(messageSpans.isEmpty(), "A user traceparent must not create another message span");
+                    assertEquals("00-0123456789abcdef0123456789abcdef-0123456789abcdef-01", originalTraceparent);
+                } else {
+                    assertEquals(1, messageSpans.size(), "Resubscription must not duplicate the producer span");
+                    assertEquals(expectedMessageParent.getSpanContext().getTraceId(), messageSpans.get(0).getTraceId());
+                    assertEquals(expectedMessageParent.getSpanContext().getSpanId(),
+                        messageSpans.get(0).getParentSpanId());
+                }
+            } finally {
+                sender.close();
+                ambient.end();
+                reactorParent.end();
+                messageParent.end();
+            }
+        }
+    }
+
+    private static Stream<Arguments> callerContextCases() {
+        return Stream.of("ambient", "reactor", "message", "traceparent")
+            .flatMap(kind -> selectStack().map(isV2 -> Arguments.of(kind, isV2)));
     }
 
     @ParameterizedTest
@@ -1475,8 +1679,35 @@ class ServiceBusSenderAsyncClientTest {
         final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
             = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_NAME,
                 new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE,
-            new ConnectionCacheWrapper(connectionCache), retryOptions, DEFAULT_INSTRUMENTATION, serializer,
-            onClientClose, null, CLIENT_IDENTIFIER);
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+    }
+
+    private static final class RecordingSpanProcessor implements SpanProcessor {
+        private final ConcurrentLinkedQueue<SpanData> spans = new ConcurrentLinkedQueue<>();
+        private final CountDownLatch processed = new CountDownLatch(1);
+
+        @Override
+        public void onStart(io.opentelemetry.context.Context parent, ReadWriteSpan span) {
+        }
+
+        @Override
+        public boolean isStartRequired() {
+            return false;
+        }
+
+        @Override
+        public void onEnd(ReadableSpan span) {
+            spans.add(span.toSpanData());
+            if ("ServiceBus.process".equals(span.getName())) {
+                processed.countDown();
+            }
+        }
+
+        @Override
+        public boolean isEndRequired() {
+            return true;
+        }
     }
 }
