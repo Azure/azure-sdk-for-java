@@ -10,22 +10,21 @@ package com.azure.ai.contentsafety.generated;
 
 import com.azure.ai.contentsafety.BlocklistClient;
 import com.azure.ai.contentsafety.BlocklistClientBuilder;
-import com.azure.ai.contentsafety.ContentProvenanceClient;
-import com.azure.ai.contentsafety.ContentProvenanceClientBuilder;
 import com.azure.ai.contentsafety.ContentSafetyClient;
 import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.OffsetDateTime;
+import reactor.core.publisher.Mono;
 
 class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
-
-    protected ContentProvenanceClient contentProvenanceClient;
 
     protected BlocklistClient blocklistClient;
 
@@ -33,10 +32,11 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         ContentSafetyClientBuilder contentSafetyClientbuilder = new ContentSafetyClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            contentSafetyClientbuilder.credential(new MockTokenCredential());
+            contentSafetyClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             contentSafetyClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -45,26 +45,13 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         contentSafetyClient = contentSafetyClientbuilder.buildClient();
 
-        ContentProvenanceClientBuilder contentProvenanceClientbuilder = new ContentProvenanceClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            contentProvenanceClientbuilder.credential(new MockTokenCredential());
-        } else if (getTestMode() == TestMode.RECORD) {
-            contentProvenanceClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            contentProvenanceClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        contentProvenanceClient = contentProvenanceClientbuilder.buildClient();
-
         BlocklistClientBuilder blocklistClientbuilder
             = new BlocklistClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            blocklistClientbuilder.credential(new MockTokenCredential());
+            blocklistClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             blocklistClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
