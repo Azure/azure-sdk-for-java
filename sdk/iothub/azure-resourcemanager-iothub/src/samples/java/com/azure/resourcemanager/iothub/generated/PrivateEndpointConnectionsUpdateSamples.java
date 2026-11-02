@@ -14,7 +14,7 @@ import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatu
  */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/iothub_updateprivateendpointconnection.json
+     * x-ms-original-file: 2026-11-01/iothub_updateprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.

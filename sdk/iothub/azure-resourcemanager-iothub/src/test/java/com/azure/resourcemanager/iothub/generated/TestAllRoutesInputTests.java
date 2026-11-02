@@ -18,29 +18,29 @@ public final class TestAllRoutesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesInput model = BinaryData.fromString(
-            "{\"routingSource\":\"DeviceLifecycleEvents\",\"message\":{\"body\":\"xc\",\"appProperties\":{\"uvwbhsqfs\":\"fovasr\",\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"systemProperties\":{\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"}},\"twin\":{\"tags\":\"\\\"dataduhavhqlkt\\\"\",\"properties\":{\"desired\":\"\\\"dataaqolbgycduiertg\\\"\",\"reported\":\"\\\"datay\\\"\"}}}")
+            "{\"routingSource\":\"Invalid\",\"message\":{\"body\":\"lwn\",\"appProperties\":{\"wzbtdhxu\":\"jdauwhvy\",\"veual\":\"znbmpowuwprzq\",\"wsrtjriplrbpbe\":\"pjmkhfxobbc\"},\"systemProperties\":{\"wxzvlvqhjkb\":\"hfgblc\"}},\"twin\":{\"tags\":\"\\\"databtn\\\"\",\"properties\":{\"desired\":\"\\\"dataebwwaloayqc\\\"\",\"reported\":\"\\\"datartzju\\\"\"}}}")
             .toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.routingSource());
-        Assertions.assertEquals("xc", model.message().body());
-        Assertions.assertEquals("fovasr", model.message().appProperties().get("uvwbhsqfs"));
-        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
+        Assertions.assertEquals(RoutingSource.INVALID, model.routingSource());
+        Assertions.assertEquals("lwn", model.message().body());
+        Assertions.assertEquals("jdauwhvy", model.message().appProperties().get("wzbtdhxu"));
+        Assertions.assertEquals("hfgblc", model.message().systemProperties().get("wxzvlvqhjkb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
-            .withMessage(new RoutingMessage().withBody("xc")
-                .withAppProperties(mapOf("uvwbhsqfs", "fovasr", "bsrfbj", "bcgjbirxbp", "otftpvjzbexilz", "dtws",
-                    "qtaruoujmkcjhwq", "nfqqnvwp"))
-                .withSystemProperties(mapOf("bnw", "r", "enq", "ewgdrjervn", "ndoygmifthnzdnd", "eh", "nayqi", "l")))
-            .withTwin(new RoutingTwin().withTags("\"dataduhavhqlkt\"")
+        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.INVALID)
+            .withMessage(new RoutingMessage().withBody("lwn")
+                .withAppProperties(
+                    mapOf("wzbtdhxu", "jdauwhvy", "veual", "znbmpowuwprzq", "wsrtjriplrbpbe", "pjmkhfxobbc"))
+                .withSystemProperties(mapOf("wxzvlvqhjkb", "hfgblc")))
+            .withTwin(new RoutingTwin().withTags("\"databtn\"")
                 .withProperties(
-                    new RoutingTwinProperties().withDesired("\"dataaqolbgycduiertg\"").withReported("\"datay\"")));
+                    new RoutingTwinProperties().withDesired("\"dataebwwaloayqc\"").withReported("\"datartzju\"")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.routingSource());
-        Assertions.assertEquals("xc", model.message().body());
-        Assertions.assertEquals("fovasr", model.message().appProperties().get("uvwbhsqfs"));
-        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
+        Assertions.assertEquals(RoutingSource.INVALID, model.routingSource());
+        Assertions.assertEquals("lwn", model.message().body());
+        Assertions.assertEquals("jdauwhvy", model.message().appProperties().get("wzbtdhxu"));
+        Assertions.assertEquals("hfgblc", model.message().systemProperties().get("wxzvlvqhjkb"));
     }
 
     // Use "Map.of" if available

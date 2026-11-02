@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInputsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInputs model = BinaryData.fromString("{\"name\":\"dvwvgpio\"}").toObject(OperationInputs.class);
-        Assertions.assertEquals("dvwvgpio", model.name());
+        OperationInputs model = BinaryData.fromString("{\"name\":\"zoymibmrqyibahw\"}").toObject(OperationInputs.class);
+        Assertions.assertEquals("zoymibmrqyibahw", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInputs model = new OperationInputs().withName("dvwvgpio");
+        OperationInputs model = new OperationInputs().withName("zoymibmrqyibahw");
         model = BinaryData.fromObject(model).toObject(OperationInputs.class);
-        Assertions.assertEquals("dvwvgpio", model.name());
+        Assertions.assertEquals("zoymibmrqyibahw", model.name());
     }
 }
