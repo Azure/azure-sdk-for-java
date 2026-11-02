@@ -23,7 +23,7 @@ public final class ConnectionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"pniyujviyl\",\"connectionStatus\":\"Disconnected\",\"privateLinkServiceId\":\"hfssnrb\",\"privateEndpointName\":\"efr\",\"privateEndpointResourceId\":\"sgaojfmwncot\",\"jobList\":[\"hirctymoxoftpipi\"],\"provisioningState\":\"Deleting\"},\"id\":\"uh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"}";
+            = "{\"properties\":{\"description\":\"pgpqchiszepnnb\",\"connectionStatus\":\"Disconnected\",\"privateLinkServiceId\":\"xgibbda\",\"privateEndpointName\":\"onfo\",\"privateEndpointResourceId\":\"uors\",\"jobList\":[\"kwbqplhlvnuu\",\"pzlrphw\"],\"provisioningState\":\"Failed\"},\"id\":\"dweyuqdunv\",\"name\":\"nnrwrbiork\",\"type\":\"alywjhhgdn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ConnectionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Connection response = manager.connections()
-            .define("ikyzirtxdy")
-            .withExistingStorageMover("ybycnunvj", "rtkfawnopq")
-            .withProperties(new ConnectionProperties().withDescription("zejntps")
-                .withPrivateLinkServiceId("ioilqukrydxtq")
-                .withJobList(Arrays.asList("jzhpjbibgjmfx", "mv", "cluyovwxnbkf")))
+            .define("v")
+            .withExistingStorageMover("ewzcjznmwcp", "guaadraufactkahz")
+            .withProperties(new ConnectionProperties().withDescription("j")
+                .withPrivateLinkServiceId("xxpshneeku")
+                .withJobList(Arrays.asList("sutujba")))
             .create();
 
-        Assertions.assertEquals("pniyujviyl", response.properties().description());
-        Assertions.assertEquals("hfssnrb", response.properties().privateLinkServiceId());
-        Assertions.assertEquals("hirctymoxoftpipi", response.properties().jobList().get(0));
+        Assertions.assertEquals("pgpqchiszepnnb", response.properties().description());
+        Assertions.assertEquals("xgibbda", response.properties().privateLinkServiceId());
+        Assertions.assertEquals("kwbqplhlvnuu", response.properties().jobList().get(0));
     }
 }
