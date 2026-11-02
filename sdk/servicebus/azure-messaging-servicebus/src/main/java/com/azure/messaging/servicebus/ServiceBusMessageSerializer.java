@@ -40,20 +40,15 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
-import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.Declare;
 import org.apache.qpid.proton.amqp.transaction.Discharge;
-import org.apache.qpid.proton.codec.AMQPDefinedTypes;
-import org.apache.qpid.proton.codec.DecoderImpl;
-import org.apache.qpid.proton.codec.EncoderImpl;
 import org.apache.qpid.proton.message.Message;
 
 import java.lang.reflect.Array;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -416,52 +411,19 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return messageList;
     }
 
+    /**
+     * Decodes raw AMQP message bytes with the same Proton call a receive link uses, then maps the result with the
+     * receive-path mapping.
+     */
     ServiceBusReceivedMessage deserializeMessage(byte[] encodedMessage) {
-        AmqpMessageValidator.validate(encodedMessage);
-        final DecoderImpl decoder = new DecoderImpl();
-        AMQPDefinedTypes.registerAllTypes(decoder, new EncoderImpl(decoder));
-        final ByteBuffer buffer = ByteBuffer.wrap(encodedMessage);
-        decoder.setByteBuffer(buffer);
         final Message message = Proton.message();
-        int previousSection = -1;
-        while (buffer.hasRemaining()) {
-            final Object section = decoder.readObject();
-            final int sectionOrder;
-            if (section instanceof Header) {
-                sectionOrder = 0;
-                message.setHeader((Header) section);
-            } else if (section instanceof DeliveryAnnotations) {
-                sectionOrder = 1;
-                message.setDeliveryAnnotations((DeliveryAnnotations) section);
-            } else if (section instanceof MessageAnnotations) {
-                sectionOrder = 2;
-                message.setMessageAnnotations((MessageAnnotations) section);
-            } else if (section instanceof Properties) {
-                sectionOrder = 3;
-                message.setProperties((Properties) section);
-            } else if (section instanceof ApplicationProperties) {
-                sectionOrder = 4;
-                message.setApplicationProperties((ApplicationProperties) section);
-            } else if (section instanceof Data || section instanceof AmqpSequence || section instanceof AmqpValue) {
-                sectionOrder = 5;
-                if (section instanceof AmqpValue && ((AmqpValue) section).getValue() == null) {
-                    throw LOGGER
-                        .logExceptionAsError(new IllegalArgumentException("Null AMQP value bodies are not supported."));
-                }
-                message.setBody((Section) section);
-            } else if (section instanceof Footer) {
-                sectionOrder = 6;
-                message.setFooter((Footer) section);
-            } else {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("The encoded message contains an invalid AMQP message section."));
-            }
-            // Proton's Message.decode may consume a second body section without retaining it.
-            if (sectionOrder <= previousSection) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Repeated or out-of-order AMQP message sections are not supported."));
-            }
-            previousSection = sectionOrder;
+        // Proton signals malformed input with several unchecked exception types, so translate them in one place.
+        // The mapping below stays outside the try block so mapper defects are not reported as bad input.
+        try {
+            message.decode(encodedMessage, 0, encodedMessage.length);
+        } catch (RuntimeException exception) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'encodedMessage' is not a valid AMQP 1.0 message.", exception));
         }
         return deserializeMessage(message);
     }
@@ -472,8 +434,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (body != null) {
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
-                amqpMessageBody = AmqpMessageBody.fromData(Arrays.copyOfRange(messageData.getArray(),
-                    messageData.getArrayOffset(), messageData.getArrayOffset() + messageData.getLength()));
+                amqpMessageBody = AmqpMessageBody.fromData(messageData.getArray());
             } else if (body instanceof AmqpValue) {
                 amqpMessageBody = AmqpMessageBody.fromValue(((AmqpValue) body).getValue());
             } else if (body instanceof AmqpSequence) {
@@ -563,9 +524,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         brokeredProperties.setSubject(amqpMessage.getSubject());
         brokeredProperties.setGroupId(amqpMessage.getGroupId());
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
-        brokeredProperties.setGroupSequence(amqpProperties == null || amqpProperties.getGroupSequence() == null
-            ? null
-            : amqpProperties.getGroupSequence().longValue());
+        brokeredProperties.setGroupSequence(amqpMessage.getGroupSequence());
         brokeredProperties.setUserId(amqpMessage.getUserId());
 
         // DeliveryAnnotations
