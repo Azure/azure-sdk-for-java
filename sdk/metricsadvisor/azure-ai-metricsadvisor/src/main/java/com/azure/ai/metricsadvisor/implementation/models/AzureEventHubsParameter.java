@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
     /*
      * The connection string of this Azure Event Hubs
      */
-    @Generated
     private String connectionString;
 
     /*
      * The consumer group to be used in this data feed
      */
-    @Generated
     private String consumerGroup;
 
     /**
      * Creates an instance of AzureEventHubsParameter class.
      */
-    @Generated
     public AzureEventHubsParameter() {
     }
 
@@ -41,7 +37,6 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -52,7 +47,6 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
      * @param connectionString the connectionString value to set.
      * @return the AzureEventHubsParameter object itself.
      */
-    @Generated
     public AzureEventHubsParameter setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -63,7 +57,6 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
      * 
      * @return the consumerGroup value.
      */
-    @Generated
     public String getConsumerGroup() {
         return this.consumerGroup;
     }
@@ -74,16 +67,11 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
      * @param consumerGroup the consumerGroup value to set.
      * @return the AzureEventHubsParameter object itself.
      */
-    @Generated
     public AzureEventHubsParameter setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +89,6 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureEventHubsParameter.
      */
-    @Generated
     public static AzureEventHubsParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureEventHubsParameter deserializedAzureEventHubsParameter = new AzureEventHubsParameter();

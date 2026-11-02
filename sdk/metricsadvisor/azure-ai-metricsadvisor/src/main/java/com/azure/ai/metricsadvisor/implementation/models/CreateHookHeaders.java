@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,7 +16,6 @@ public final class CreateHookHeaders {
     /*
      * The Location property.
      */
-    @Generated
     private String location;
 
     // HttpHeaders containing the raw property values.
@@ -35,7 +33,6 @@ public final class CreateHookHeaders {
      * 
      * @return the location value.
      */
-    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -46,7 +43,6 @@ public final class CreateHookHeaders {
      * @param location the location value to set.
      * @return the CreateHookHeaders object itself.
      */
-    @Generated
     public CreateHookHeaders setLocation(String location) {
         this.location = location;
         return this;

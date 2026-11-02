@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,25 +21,21 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
     /*
      * start time
      */
-    @Generated
     private OffsetDateTime startTime;
 
     /*
      * end time
      */
-    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The filter property.
      */
-    @Generated
     private DetectionAnomalyFilterCondition filter;
 
     /**
      * Creates an instance of DetectionAnomalyResultQuery class.
      */
-    @Generated
     public DetectionAnomalyResultQuery() {
     }
 
@@ -50,7 +44,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * 
      * @return the startTime value.
      */
-    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -61,7 +54,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * @param startTime the startTime value to set.
      * @return the DetectionAnomalyResultQuery object itself.
      */
-    @Generated
     public DetectionAnomalyResultQuery setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -72,7 +64,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * 
      * @return the endTime value.
      */
-    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -83,7 +74,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * @param endTime the endTime value to set.
      * @return the DetectionAnomalyResultQuery object itself.
      */
-    @Generated
     public DetectionAnomalyResultQuery setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -94,7 +84,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * 
      * @return the filter value.
      */
-    @Generated
     public DetectionAnomalyFilterCondition getFilter() {
         return this.filter;
     }
@@ -105,16 +94,11 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * @param filter the filter value to set.
      * @return the DetectionAnomalyResultQuery object itself.
      */
-    @Generated
     public DetectionAnomalyResultQuery setFilter(DetectionAnomalyFilterCondition filter) {
         this.filter = filter;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,7 +119,6 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DetectionAnomalyResultQuery.
      */
-    @Generated
     public static DetectionAnomalyResultQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DetectionAnomalyResultQuery deserializedDetectionAnomalyResultQuery = new DetectionAnomalyResultQuery();
@@ -144,11 +127,11 @@ public final class DetectionAnomalyResultQuery implements JsonSerializable<Detec
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedDetectionAnomalyResultQuery.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedDetectionAnomalyResultQuery.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedDetectionAnomalyResultQuery.endTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedDetectionAnomalyResultQuery.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("filter".equals(fieldName)) {
                     deserializedDetectionAnomalyResultQuery.filter = DetectionAnomalyFilterCondition.fromJson(reader);
                 } else {

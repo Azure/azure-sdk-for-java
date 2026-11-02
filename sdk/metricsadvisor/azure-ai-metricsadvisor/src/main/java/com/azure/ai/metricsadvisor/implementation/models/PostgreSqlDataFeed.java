@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,33 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class PostgreSqlDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.POSTGRE_SQL;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private SqlSourceParameter dataSourceParameter;
 
     /**
      * Creates an instance of PostgreSqlDataFeed class.
      */
-    @Generated
     public PostgreSqlDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -56,7 +35,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -67,7 +45,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the PostgreSqlDataFeed object itself.
      */
-    @Generated
     public PostgreSqlDataFeed setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -76,7 +53,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -86,7 +62,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -96,7 +71,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
@@ -106,7 +80,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
@@ -116,7 +89,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
@@ -126,7 +98,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
@@ -136,7 +107,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -146,7 +116,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -156,7 +125,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -166,7 +134,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -176,7 +143,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -186,7 +152,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -196,7 +161,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -206,7 +170,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -216,7 +179,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -226,7 +188,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -236,7 +197,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -246,7 +206,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -256,7 +215,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -266,7 +224,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -276,7 +233,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -286,7 +242,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -296,7 +251,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -306,20 +260,17 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PostgreSqlDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.POSTGRE_SQL == null ? null : DataSourceType.POSTGRE_SQL.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -350,8 +301,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -361,10 +310,10 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of PostgreSqlDataFeed if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PostgreSqlDataFeed.
      */
-    @Generated
     public static PostgreSqlDataFeed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PostgreSqlDataFeed deserializedPostgreSqlDataFeed = new PostgreSqlDataFeed();
@@ -372,7 +321,14 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"PostgreSql".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'PostgreSql'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -380,8 +336,8 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedPostgreSqlDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed
                         .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
@@ -433,8 +389,8 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                 } else if ("status".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setCreatedTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -444,8 +400,6 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                     deserializedPostgreSqlDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.dataSourceParameter = SqlSourceParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

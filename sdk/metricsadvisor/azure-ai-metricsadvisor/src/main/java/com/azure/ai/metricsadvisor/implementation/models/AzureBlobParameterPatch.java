@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
     /*
      * The connection string of this Azure Blob
      */
-    @Generated
     private String connectionString;
 
     /*
      * The container name in this Azure Blob
      */
-    @Generated
     private String container;
 
     /*
      * The path template in this container
      */
-    @Generated
     private String blobTemplate;
 
     /**
      * Creates an instance of AzureBlobParameterPatch class.
      */
-    @Generated
     public AzureBlobParameterPatch() {
     }
 
@@ -47,7 +42,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -58,7 +52,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * @param connectionString the connectionString value to set.
      * @return the AzureBlobParameterPatch object itself.
      */
-    @Generated
     public AzureBlobParameterPatch setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -69,7 +62,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * 
      * @return the container value.
      */
-    @Generated
     public String getContainer() {
         return this.container;
     }
@@ -80,7 +72,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * @param container the container value to set.
      * @return the AzureBlobParameterPatch object itself.
      */
-    @Generated
     public AzureBlobParameterPatch setContainer(String container) {
         this.container = container;
         return this;
@@ -91,7 +82,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * 
      * @return the blobTemplate value.
      */
-    @Generated
     public String getBlobTemplate() {
         return this.blobTemplate;
     }
@@ -102,16 +92,11 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * @param blobTemplate the blobTemplate value to set.
      * @return the AzureBlobParameterPatch object itself.
      */
-    @Generated
     public AzureBlobParameterPatch setBlobTemplate(String blobTemplate) {
         this.blobTemplate = blobTemplate;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +114,6 @@ public final class AzureBlobParameterPatch implements JsonSerializable<AzureBlob
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureBlobParameterPatch.
      */
-    @Generated
     public static AzureBlobParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobParameterPatch deserializedAzureBlobParameterPatch = new AzureBlobParameterPatch();

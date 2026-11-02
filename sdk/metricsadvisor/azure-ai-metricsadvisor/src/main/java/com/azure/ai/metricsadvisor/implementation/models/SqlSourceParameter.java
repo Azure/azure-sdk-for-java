@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
     /*
      * The connection string of this database
      */
-    @Generated
     private String connectionString;
 
     /*
      * The script to query this database
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of SqlSourceParameter class.
      */
-    @Generated
     public SqlSourceParameter() {
     }
 
@@ -41,7 +37,6 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -52,7 +47,6 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
      * @param connectionString the connectionString value to set.
      * @return the SqlSourceParameter object itself.
      */
-    @Generated
     public SqlSourceParameter setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -63,7 +57,6 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -74,16 +67,11 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
      * @param query the query value to set.
      * @return the SqlSourceParameter object itself.
      */
-    @Generated
     public SqlSourceParameter setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +89,6 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlSourceParameter.
      */
-    @Generated
     public static SqlSourceParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlSourceParameter deserializedSqlSourceParameter = new SqlSourceParameter();
