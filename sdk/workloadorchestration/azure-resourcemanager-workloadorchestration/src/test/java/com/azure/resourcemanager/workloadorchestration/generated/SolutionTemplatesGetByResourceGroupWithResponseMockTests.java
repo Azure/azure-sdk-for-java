@@ -22,7 +22,7 @@ public final class SolutionTemplatesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"l\",\"capabilities\":[\"qqa\",\"dmkxwxdcvjwcy\",\"iakeciqc\"],\"latestVersion\":\"rtui\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Initialized\"},\"eTag\":\"mpzhzzwvywrgyngy\",\"location\":\"rpxncaki\",\"tags\":{\"lmf\":\"ndjrkclamggl\",\"ykglt\":\"jdoq\",\"tlgflwfgz\":\"gxhqfgqkayejs\"},\"id\":\"iucijjcea\",\"name\":\"lijjjrtvam\",\"type\":\"a\"}";
+            = "{\"properties\":{\"uniqueIdentifier\":\"lxrkgjnmzpasla\",\"description\":\"xjfiuofpieid\",\"capabilities\":[\"vssqywjopackyhy\"],\"latestVersion\":\"ikmfn\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Initialized\"},\"eTag\":\"j\",\"location\":\"izwgsoriobijeiyd\",\"tags\":{\"ybriop\":\"ynhbokayrg\",\"igsioctqkm\":\"weoftnorw\",\"xvzfffhtjnwos\":\"ja\",\"zqfcwrriomxee\":\"tfjxtvlx\"},\"id\":\"wyhjmbjiqegmxdbs\",\"name\":\"hc\",\"type\":\"hpyvdkgdet\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class SolutionTemplatesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTemplate response = manager.solutionTemplates()
-            .getByResourceGroupWithResponse("aqqilzdcduwjoed", "ngucaifpaurww", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pspfeylqlo", "vvujex", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rpxncaki", response.location());
-        Assertions.assertEquals("ndjrkclamggl", response.tags().get("lmf"));
-        Assertions.assertEquals("l", response.properties().description());
-        Assertions.assertEquals("qqa", response.properties().capabilities().get(0));
+        Assertions.assertEquals("izwgsoriobijeiyd", response.location());
+        Assertions.assertEquals("ynhbokayrg", response.tags().get("ybriop"));
+        Assertions.assertEquals("xjfiuofpieid", response.properties().description());
+        Assertions.assertEquals("vssqywjopackyhy", response.properties().capabilities().get(0));
         Assertions.assertEquals(ResourceState.ACTIVE, response.properties().state());
         Assertions.assertTrue(response.properties().enableExternalValidation());
     }

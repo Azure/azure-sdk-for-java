@@ -276,6 +276,48 @@ public interface ConfigTemplate {
     ConfigTemplate refresh(Context context);
 
     /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void linkToHierarchies(HierarchySelector body);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void linkToHierarchies(HierarchySelector body, Context context);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void unLinkFromHierarchies(HierarchySelector body);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void unLinkFromHierarchies(HierarchySelector body, Context context);
+
+    /**
      * Create or update a Config Template Version Resource with the specified UpdateType.
      * 
      * @param body The content of the action request.

@@ -22,7 +22,7 @@ public final class SchemasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"currentVersion\":\"xliohrdddt\",\"provisioningState\":\"Canceled\"},\"eTag\":\"ba\",\"location\":\"cbb\",\"tags\":{\"zb\":\"cyknapqofyuicd\"},\"id\":\"ybww\",\"name\":\"bdvibidmhmwffpl\",\"type\":\"muvapc\"}]}";
+            = "{\"value\":[{\"properties\":{\"currentVersion\":\"nwoqartwy\",\"provisioningState\":\"InProgress\"},\"eTag\":\"l\",\"location\":\"vatdavuqmcbymsf\",\"tags\":{\"imioyo\":\"lquvjezcjumvp\",\"clibbfqpsp\":\"glkmiqwnnr\"},\"id\":\"ladydgnhautwu\",\"name\":\"exzgpmnmabedd\",\"type\":\"ilwgdfpfqfpcvstc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class SchemasListMockTests {
 
         PagedIterable<Schema> response = manager.schemas().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cbb", response.iterator().next().location());
-        Assertions.assertEquals("cyknapqofyuicd", response.iterator().next().tags().get("zb"));
+        Assertions.assertEquals("vatdavuqmcbymsf", response.iterator().next().location());
+        Assertions.assertEquals("lquvjezcjumvp", response.iterator().next().tags().get("imioyo"));
     }
 }

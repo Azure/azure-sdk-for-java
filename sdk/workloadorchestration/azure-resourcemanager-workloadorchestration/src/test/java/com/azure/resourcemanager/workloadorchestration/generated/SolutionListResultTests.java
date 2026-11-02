@@ -13,10 +13,10 @@ public final class SolutionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"solutionTemplateId\":\"ntuji\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"ed\",\"latestConfigRevision\":\"twwaezkojvdcpzf\",\"isConfigured\":true}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"cybxa\",\"type\":\"EdgeZone\"},\"eTag\":\"szufoxciqopidoa\",\"id\":\"iodhkhazxkhnz\",\"name\":\"onlwntoeg\",\"type\":\"kdwbwhkszz\"},{\"properties\":{\"solutionTemplateId\":\"vexztvbtqgs\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"oyzko\",\"latestConfigRevision\":\"wtl\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"guxawqaldsyuuxi\",\"latestConfigRevision\":\"erqf\",\"isConfigured\":false}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"nkbykutwpfhp\",\"type\":\"CustomLocation\"},\"eTag\":\"hrskdsnfd\",\"id\":\"oakgtdlmkkzev\",\"name\":\"l\",\"type\":\"ewpusdsttwvogvb\"},{\"properties\":{\"solutionTemplateId\":\"dcngqqmoakufgmj\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"rdgrtw\",\"latestConfigRevision\":\"enuuzkopbm\",\"isConfigured\":false}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"woyuhhziuief\",\"type\":\"EdgeZone\"},\"eTag\":\"hdmsmlmzqhoftrm\",\"id\":\"qu\",\"name\":\"ah\",\"type\":\"icslfaoq\"}],\"nextLink\":\"iyylhalnswhccsp\"}")
+            "{\"value\":[{\"properties\":{\"solutionTemplateId\":\"iaa\",\"displayName\":\"uagydwqfbylyrf\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"gtcojocqwo\",\"latestConfigRevision\":\"fnzjvusfzldm\",\"isConfigured\":true}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"lfsbtkadpysow\",\"type\":\"CustomLocation\"},\"eTag\":\"gkbugrjqct\",\"id\":\"cmisofie\",\"name\":\"pe\",\"type\":\"ojyqdhcuplcplcw\"}],\"nextLink\":\"ihih\"}")
             .toObject(SolutionListResult.class);
-        Assertions.assertEquals("cybxa", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("iyylhalnswhccsp", model.nextLink());
+        Assertions.assertEquals("lfsbtkadpysow", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ihih", model.nextLink());
     }
 }

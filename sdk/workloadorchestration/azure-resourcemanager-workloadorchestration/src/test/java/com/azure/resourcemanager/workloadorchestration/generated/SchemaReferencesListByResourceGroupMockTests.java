@@ -22,7 +22,7 @@ public final class SchemaReferencesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"schemaId\":\"qodkadppyibngql\",\"provisioningState\":\"Deleting\"},\"eTag\":\"rxwhydtlu\",\"id\":\"adswz\",\"name\":\"nuyemlowuo\",\"type\":\"hlxlnwyrmou\"}]}";
+            = "{\"value\":[{\"properties\":{\"schemaId\":\"np\",\"provisioningState\":\"Initialized\"},\"eTag\":\"qtyyqiprcltungb\",\"id\":\"ljckmiigz\",\"name\":\"kuckgkdskswtiiq\",\"type\":\"cqikclsm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class SchemaReferencesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SchemaReference> response
-            = manager.schemaReferences().listByResourceGroup("mehllizhceu", com.azure.core.util.Context.NONE);
+            = manager.schemaReferences().listByResourceGroup("okljm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qodkadppyibngql", response.iterator().next().properties().schemaId());
+        Assertions.assertEquals("np", response.iterator().next().properties().schemaId());
     }
 }

@@ -24,7 +24,7 @@ public final class SolutionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionTemplateId\":\"lss\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"omevtfycn\",\"latestConfigRevision\":\"bvgjcodkkgj\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"ytssikiz\",\"latestConfigRevision\":\"cufqbvntnrgmqs\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"hcekxgnlykm\",\"latestConfigRevision\":\"cpwzv\",\"isConfigured\":true}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qdtiwlwxlb\",\"type\":\"EdgeZone\"},\"eTag\":\"qba\",\"id\":\"icqchygtv\",\"name\":\"byjanep\",\"type\":\"bdpkxyqvgx\"}";
+            = "{\"properties\":{\"solutionTemplateId\":\"et\",\"displayName\":\"flwtjdt\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"e\",\"latestConfigRevision\":\"ooy\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"uxdtzcq\",\"latestConfigRevision\":\"psdudgco\",\"isConfigured\":true}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"hxlantolaml\",\"type\":\"EdgeZone\"},\"eTag\":\"uxkqllczipvwdt\",\"id\":\"kzdqiqdlratrkwxo\",\"name\":\"uwxsuykznhrfgsl\",\"type\":\"lhpryjfzihuio\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,14 @@ public final class SolutionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Solution response = manager.solutions()
-            .define("lbnwtpcpahp")
-            .withExistingTarget("uyu", "atvlmbjwcolbm")
+            .define("pcjycb")
+            .withExistingTarget("woxfaxdtnqifbsa", "roiauesugmo")
             .withProperties(new SolutionProperties())
-            .withExtendedLocation(new ExtendedLocation().withName("kaobrl").withType(ExtendedLocationType.EDGE_ZONE))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("oduifvulxfa").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("qdtiwlwxlb", response.extendedLocation().name());
+        Assertions.assertEquals("hxlantolaml", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

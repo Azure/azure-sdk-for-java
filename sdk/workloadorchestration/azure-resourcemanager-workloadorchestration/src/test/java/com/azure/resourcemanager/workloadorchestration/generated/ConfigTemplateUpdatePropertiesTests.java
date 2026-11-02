@@ -12,14 +12,14 @@ public final class ConfigTemplateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateUpdateProperties model
-            = BinaryData.fromString("{\"description\":\"nowc\"}").toObject(ConfigTemplateUpdateProperties.class);
-        Assertions.assertEquals("nowc", model.description());
+            = BinaryData.fromString("{\"description\":\"pli\"}").toObject(ConfigTemplateUpdateProperties.class);
+        Assertions.assertEquals("pli", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateUpdateProperties model = new ConfigTemplateUpdateProperties().withDescription("nowc");
+        ConfigTemplateUpdateProperties model = new ConfigTemplateUpdateProperties().withDescription("pli");
         model = BinaryData.fromObject(model).toObject(ConfigTemplateUpdateProperties.class);
-        Assertions.assertEquals("nowc", model.description());
+        Assertions.assertEquals("pli", model.description());
     }
 }

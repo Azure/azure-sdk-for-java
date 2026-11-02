@@ -13,7 +13,6 @@ import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationMana
 import com.azure.resourcemanager.workloadorchestration.models.DynamicSchemaVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,7 @@ public final class DynamicSchemaVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"ymvqdbpbhfckdvez\",\"provisioningState\":\"Initialized\"},\"eTag\":\"sbzhd\",\"id\":\"b\",\"name\":\"nqfblhkalehpava\",\"type\":\"ugiqjtiogqg\"}";
+            = "{\"properties\":{\"value\":\"\\\"dataqpdwad\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"tldsvczdjiahuq\",\"id\":\"jzucwwm\",\"name\":\"jjqhddwvm\",\"type\":\"xiy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +30,8 @@ public final class DynamicSchemaVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchemaVersion response = manager.dynamicSchemaVersions()
-            .getWithResponse("iryky", "ndzfqivjreuyk", "bmnwa", "ltbxoeeonqlnfw", com.azure.core.util.Context.NONE)
+            .getWithResponse("ppwooaj", "yyjmjjxiz", "pxhn", "lslekcttgzkj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ymvqdbpbhfckdvez", response.properties().value());
     }
 }

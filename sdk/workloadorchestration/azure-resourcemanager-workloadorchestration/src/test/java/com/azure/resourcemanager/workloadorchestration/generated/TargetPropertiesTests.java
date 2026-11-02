@@ -7,6 +7,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import com.azure.resourcemanager.workloadorchestration.models.TargetProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,34 +17,38 @@ public final class TargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetProperties model = BinaryData.fromString(
-            "{\"description\":\"nalaulppg\",\"displayName\":\"dtpnapnyiropuhp\",\"contextId\":\"gvpgy\",\"targetSpecification\":{},\"capabilities\":[\"git\",\"medjvcslynqwwncw\"],\"hierarchyLevel\":\"zhxgktrmgucn\",\"status\":{\"lastModified\":\"2021-09-22T11:03:56Z\",\"deployed\":1588610928,\"expectedRunningJobId\":1950925712,\"runningJobId\":1409884239,\"status\":\"tfdygpfqb\",\"statusDetails\":\"ceopzfqrhhuaopp\",\"generation\":1290719044,\"targetStatuses\":[{\"name\":\"ol\",\"status\":\"ahzxctobgbk\",\"componentStatuses\":[{\"name\":\"zpostmgrcfbu\",\"status\":\"mfqjhhkxbp\"},{\"name\":\"ymjhxxjyngudivkr\",\"status\":\"wbxqzvszjfau\"},{\"name\":\"fdxxivetvtcqaqtd\",\"status\":\"mcbxvwvxysl\"},{\"name\":\"hsfxoblytkb\",\"status\":\"pe\"}]},{\"name\":\"wfbkrvrns\",\"status\":\"hqjohxcrsbfova\",\"componentStatuses\":[{\"name\":\"v\",\"status\":\"hsqfsubcgjbirxbp\"}]},{\"name\":\"srfbjfdtwss\",\"status\":\"ftpvjzbexil\",\"componentStatuses\":[{\"name\":\"qqnvwpmq\",\"status\":\"ruoujmk\"},{\"name\":\"hwqytj\",\"status\":\"bnw\"}]}]},\"solutionScope\":\"wgdrjervnaenqp\",\"state\":\"inactive\",\"provisioningState\":\"Deleting\"}")
+            "{\"description\":\"syqtfi\",\"displayName\":\"whbotzingamv\",\"contextId\":\"phoszqz\",\"targetSpecification\":{\"ynwcvtbv\":\"\\\"datahqamvdkf\\\"\",\"pcnp\":\"\\\"dataayhmtnvyqiatkz\\\"\",\"jguq\":\"\\\"datazcjaesgvvsccy\\\"\",\"lvdnkfx\":\"\\\"datahwyg\\\"\"},\"capabilities\":[\"emdwzrmuhapfc\",\"dpsqx\",\"vpsvuoymgcce\"],\"hierarchyLevel\":\"vezrypqlmfeo\",\"status\":{\"lastModified\":\"2021-10-17T10:06:59Z\",\"deployed\":262427692,\"expectedRunningJobId\":553153301,\"runningJobId\":359384916,\"status\":\"opgxedkowepb\",\"statusDetails\":\"cr\",\"generation\":1952723756,\"targetStatuses\":[{\"name\":\"snjvcdwxlpqekftn\",\"status\":\"tjsyin\",\"componentStatuses\":[{\"name\":\"atmtdhtmdvy\",\"status\":\"ikdgszywkbir\"}]},{\"name\":\"uzhlhkjoqrv\",\"status\":\"aatjinrvgoupmfi\",\"componentStatuses\":[{\"name\":\"gjio\",\"status\":\"vrwxkv\"},{\"name\":\"k\",\"status\":\"lqwjygvjayvblm\"},{\"name\":\"k\",\"status\":\"hbxvvyhgsopbyrqu\"}]},{\"name\":\"g\",\"status\":\"vwz\",\"componentStatuses\":[{\"name\":\"lmctlpd\",\"status\":\"itvgbmhrixkwm\"},{\"name\":\"jejveg\",\"status\":\"bpnaixexccbdre\"},{\"name\":\"hcexdrrvqa\",\"status\":\"kghtpwijnh\"}]},{\"name\":\"svfycxzbfv\",\"status\":\"wvrvmtg\",\"componentStatuses\":[{\"name\":\"y\",\"status\":\"tronzmyhgfi\"},{\"name\":\"sxkm\",\"status\":\"a\"},{\"name\":\"rrjreafxtsgu\",\"status\":\"jglikkxwslolb\"},{\"name\":\"vuzlm\",\"status\":\"elfk\"}]}]},\"solutionScope\":\"plcrpwjxeznoig\",\"state\":\"inactive\",\"provisioningState\":\"Failed\"}")
             .toObject(TargetProperties.class);
-        Assertions.assertEquals("nalaulppg", model.description());
-        Assertions.assertEquals("dtpnapnyiropuhp", model.displayName());
-        Assertions.assertEquals("gvpgy", model.contextId());
-        Assertions.assertEquals("git", model.capabilities().get(0));
-        Assertions.assertEquals("zhxgktrmgucn", model.hierarchyLevel());
-        Assertions.assertEquals("wgdrjervnaenqp", model.solutionScope());
+        Assertions.assertEquals("syqtfi", model.description());
+        Assertions.assertEquals("whbotzingamv", model.displayName());
+        Assertions.assertEquals("phoszqz", model.contextId());
+        Assertions.assertEquals("emdwzrmuhapfc", model.capabilities().get(0));
+        Assertions.assertEquals("vezrypqlmfeo", model.hierarchyLevel());
+        Assertions.assertEquals("plcrpwjxeznoig", model.solutionScope());
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetProperties model = new TargetProperties().withDescription("nalaulppg")
-            .withDisplayName("dtpnapnyiropuhp")
-            .withContextId("gvpgy")
-            .withTargetSpecification(mapOf())
-            .withCapabilities(Arrays.asList("git", "medjvcslynqwwncw"))
-            .withHierarchyLevel("zhxgktrmgucn")
-            .withSolutionScope("wgdrjervnaenqp")
+        TargetProperties model = new TargetProperties().withDescription("syqtfi")
+            .withDisplayName("whbotzingamv")
+            .withContextId("phoszqz")
+            .withTargetSpecification(
+                mapOf("ynwcvtbv", BinaryData.fromBytes("\"datahqamvdkf\"".getBytes(StandardCharsets.UTF_8)), "pcnp",
+                    BinaryData.fromBytes("\"dataayhmtnvyqiatkz\"".getBytes(StandardCharsets.UTF_8)), "jguq",
+                    BinaryData.fromBytes("\"datazcjaesgvvsccy\"".getBytes(StandardCharsets.UTF_8)), "lvdnkfx",
+                    BinaryData.fromBytes("\"datahwyg\"".getBytes(StandardCharsets.UTF_8))))
+            .withCapabilities(Arrays.asList("emdwzrmuhapfc", "dpsqx", "vpsvuoymgcce"))
+            .withHierarchyLevel("vezrypqlmfeo")
+            .withSolutionScope("plcrpwjxeznoig")
             .withState(ResourceState.INACTIVE);
         model = BinaryData.fromObject(model).toObject(TargetProperties.class);
-        Assertions.assertEquals("nalaulppg", model.description());
-        Assertions.assertEquals("dtpnapnyiropuhp", model.displayName());
-        Assertions.assertEquals("gvpgy", model.contextId());
-        Assertions.assertEquals("git", model.capabilities().get(0));
-        Assertions.assertEquals("zhxgktrmgucn", model.hierarchyLevel());
-        Assertions.assertEquals("wgdrjervnaenqp", model.solutionScope());
+        Assertions.assertEquals("syqtfi", model.description());
+        Assertions.assertEquals("whbotzingamv", model.displayName());
+        Assertions.assertEquals("phoszqz", model.contextId());
+        Assertions.assertEquals("emdwzrmuhapfc", model.capabilities().get(0));
+        Assertions.assertEquals("vezrypqlmfeo", model.hierarchyLevel());
+        Assertions.assertEquals("plcrpwjxeznoig", model.solutionScope());
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 

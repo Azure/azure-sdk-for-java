@@ -10,7 +10,8 @@ import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdatePr
 public final class DiagnosticUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticUpdateProperties model = BinaryData.fromString("{}").toObject(DiagnosticUpdateProperties.class);
+        DiagnosticUpdateProperties model = BinaryData.fromString("{\"provisioningState\":\"InProgress\"}")
+            .toObject(DiagnosticUpdateProperties.class);
     }
 
     @org.junit.jupiter.api.Test

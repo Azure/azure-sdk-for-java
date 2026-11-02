@@ -7,6 +7,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.OrchestratorType;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersionProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,19 +16,19 @@ public final class SolutionTemplateVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionProperties model = BinaryData.fromString(
-            "{\"configurations\":\"zrncsdt\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"InProgress\"}")
+            "{\"configurations\":\"\\\"datauwivkxoy\\\"\",\"specification\":{\"vcpwpgclrc\":\"\\\"datanbixxrti\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"ValidatedWithoutSchema\",\"provisioningState\":\"Deleting\"}")
             .toObject(SolutionTemplateVersionProperties.class);
-        Assertions.assertEquals("zrncsdt", model.configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateVersionProperties model = new SolutionTemplateVersionProperties().withConfigurations("zrncsdt")
-            .withSpecification(mapOf())
+        SolutionTemplateVersionProperties model = new SolutionTemplateVersionProperties()
+            .withConfigurations(BinaryData.fromBytes("\"datauwivkxoy\"".getBytes(StandardCharsets.UTF_8)))
+            .withSpecification(
+                mapOf("vcpwpgclrc", BinaryData.fromBytes("\"datanbixxrti\"".getBytes(StandardCharsets.UTF_8))))
             .withOrchestratorType(OrchestratorType.TO);
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionProperties.class);
-        Assertions.assertEquals("zrncsdt", model.configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.orchestratorType());
     }
 

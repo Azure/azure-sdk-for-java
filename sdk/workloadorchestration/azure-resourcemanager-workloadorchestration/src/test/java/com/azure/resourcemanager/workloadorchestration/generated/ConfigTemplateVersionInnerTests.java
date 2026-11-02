@@ -7,22 +7,21 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersionProperties;
-import org.junit.jupiter.api.Assertions;
+import java.nio.charset.StandardCharsets;
 
 public final class ConfigTemplateVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurations\":\"zkvyklx\",\"provisioningState\":\"Failed\"},\"eTag\":\"affmmfblcqc\",\"id\":\"bgq\",\"name\":\"brta\",\"type\":\"metttwgd\"}")
+            "{\"properties\":{\"configurations\":\"\\\"dataasunwqrjzfrgq\\\"\",\"provisioningState\":\"InProgress\"},\"eTag\":\"cmbuocnjrohmbpy\",\"id\":\"xameblydyvkfkm\",\"name\":\"ocxnehvsmtodl\",\"type\":\"pyapucygvoav\"}")
             .toObject(ConfigTemplateVersionInner.class);
-        Assertions.assertEquals("zkvyklx", model.properties().configurations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateVersionInner model = new ConfigTemplateVersionInner()
-            .withProperties(new ConfigTemplateVersionProperties().withConfigurations("zkvyklx"));
+        ConfigTemplateVersionInner model
+            = new ConfigTemplateVersionInner().withProperties(new ConfigTemplateVersionProperties()
+                .withConfigurations(BinaryData.fromBytes("\"dataasunwqrjzfrgq\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateVersionInner.class);
-        Assertions.assertEquals("zkvyklx", model.properties().configurations());
     }
 }

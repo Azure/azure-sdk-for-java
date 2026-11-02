@@ -12,7 +12,7 @@ public final class ResolvedConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResolvedConfigurationInner model
-            = BinaryData.fromString("{\"configuration\":\"dmjsjqb\"}").toObject(ResolvedConfigurationInner.class);
-        Assertions.assertEquals("dmjsjqb", model.configuration());
+            = BinaryData.fromString("{\"configuration\":\"kuvsjcswsm\"}").toObject(ResolvedConfigurationInner.class);
+        Assertions.assertEquals("kuvsjcswsm", model.configuration());
     }
 }

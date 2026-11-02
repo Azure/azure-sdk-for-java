@@ -14,18 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticUpdate model = BinaryData.fromString(
-            "{\"properties\":{},\"tags\":{\"qwztcmwqkc\":\"afzvaylptrs\",\"kjexfdeqvhp\":\"cxwaxfewz\",\"zjrgyww\":\"ylkkshkbffmbm\"}}")
+        DiagnosticUpdate model = BinaryData
+            .fromString("{\"properties\":{\"provisioningState\":\"Failed\"},\"tags\":{\"skieca\":\"ygywe\"}}")
             .toObject(DiagnosticUpdate.class);
-        Assertions.assertEquals("afzvaylptrs", model.tags().get("qwztcmwqkc"));
+        Assertions.assertEquals("ygywe", model.tags().get("skieca"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticUpdate model = new DiagnosticUpdate().withProperties(new DiagnosticUpdateProperties())
-            .withTags(mapOf("qwztcmwqkc", "afzvaylptrs", "kjexfdeqvhp", "cxwaxfewz", "zjrgyww", "ylkkshkbffmbm"));
+            .withTags(mapOf("skieca", "ygywe"));
         model = BinaryData.fromObject(model).toObject(DiagnosticUpdate.class);
-        Assertions.assertEquals("afzvaylptrs", model.tags().get("qwztcmwqkc"));
+        Assertions.assertEquals("ygywe", model.tags().get("skieca"));
     }
 
     // Use "Map.of" if available
