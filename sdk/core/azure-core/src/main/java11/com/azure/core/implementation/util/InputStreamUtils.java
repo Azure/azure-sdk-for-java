@@ -29,8 +29,9 @@ public final class InputStreamUtils {
      */
     public static byte[] readAllBytes(InputStream inputStream, Long length) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+        // ByteArrayInputStream.readAllBytes bypasses read overrides in subclasses.
         // Keep generic buffering: newer JDK defaults can allocate larger temporary buffers for small streams.
-        return inputStream instanceof ByteArrayInputStream
+        return inputStream.getClass() == ByteArrayInputStream.class
             || inputStream instanceof FileInputStream
             || inputStream instanceof ByteBufferInputStream
                 ? inputStream.readAllBytes()

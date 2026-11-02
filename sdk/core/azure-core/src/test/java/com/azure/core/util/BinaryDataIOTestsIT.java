@@ -64,11 +64,11 @@ public class BinaryDataIOTestsIT extends BinaryDataIOTests {
     }
 
     @Test
-    public void usesSpecializedReadsWithoutHoldingTheInputMonitorDuringWrites() throws IOException {
+    public void byteArrayInputStreamSubclassesUsePortableOperations() throws IOException {
         byte[] expected = payload(35);
         BulkInputStream input = new BulkInputStream(expected);
         assertArrayEquals(expected, BinaryData.fromStream(input).toBytes());
-        assertTrue(input.bulkRead);
+        assertFalse(input.bulkRead);
         input = new BulkInputStream(expected);
         ByteArrayOutputStream output = new MonitorCheckingOutputStream(input);
         BinaryData.fromStream(input).writeTo(output);

@@ -42,6 +42,21 @@ public class BinaryDataIOTests {
         assertFalse(input.closed);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 1025, 32785 })
+    public void materializationHonorsByteArrayInputStreamReadOverrides(int size) throws IOException {
+        byte[] bytes = payload(size);
+        byte[] expected = bytes.clone();
+        for (int i = 0; i < expected.length; i++) {
+            expected[i] ^= 0xff;
+        }
+
+        try (InputStream input = new TransformingInputStream(bytes)) {
+            assertArrayEquals(expected, BinaryData.fromStream(input).toBytes());
+            assertEquals(-1, input.read());
+        }
+    }
+
     @Test
     public void transferDoesNotTruncateTheLengthHintOrCloseStreams() throws IOException {
         byte[] expected = payload(1025);
@@ -233,6 +248,27 @@ public class BinaryDataIOTests {
             assertEquals(buffer.capacity(), buffer.limit());
             buffer.reset();
             assertEquals(position, buffer.position());
+        }
+    }
+
+    private static final class TransformingInputStream extends ByteArrayInputStream {
+        private TransformingInputStream(byte[] bytes) {
+            super(bytes);
+        }
+
+        @Override
+        public synchronized int read() {
+            int value = super.read();
+            return value == -1 ? -1 : ~value & 0xff;
+        }
+
+        @Override
+        public synchronized int read(byte[] bytes, int offset, int length) {
+            int read = super.read(bytes, offset, length);
+            for (int i = 0; i < read; i++) {
+                bytes[offset + i] ^= 0xff;
+            }
+            return read;
         }
     }
 

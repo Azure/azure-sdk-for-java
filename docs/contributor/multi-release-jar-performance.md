@@ -29,6 +29,8 @@ here.
 ### Behavior and Performance Guardrails
 
 - Bulk reads consume the remaining content; a supplied content-length hint does not truncate the stream.
+- Bulk reads use `ByteArrayInputStream.readAllBytes()` only for exact `ByteArrayInputStream` instances. Subclasses
+  retain portable reads so overridden `read` methods are honored.
 - Caching, replayability, stream ownership, and source-buffer positions and marks are preserved.
 - `ByteArrayInputStream.transferTo()` is deliberately avoided during output writes because it holds the input
   monitor while writing to the destination. The implementation uses bounded buffering instead.
