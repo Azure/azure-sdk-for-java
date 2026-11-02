@@ -1,14 +1,49 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-10-26)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. Azure Arc API reference for managing connected machines, machine extensions, run commands, gateways, licenses, license profiles, private link scopes, and related HybridCompute resources. Package api-version 2026-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.VmApplicationInstanceViewAction` was added
 
-### Bugs Fixed
+* `models.VmApplication$DefinitionStages` was added
 
-### Other Changes
+* `models.VmApplicationInstanceView` was added
+
+* `models.VmApplication$Definition` was added
+
+* `models.VmApplicationUpdate` was added
+
+* `models.VmApplication$Update` was added
+
+* `models.VmApplicationProperties` was added
+
+* `models.VmApplicationUpdateProperties` was added
+
+* `models.VmApplications` was added
+
+* `models.VmApplication$UpdateStages` was added
+
+* `models.VmApplication` was added
+
+#### `models.Machine$Update` was modified
+
+* `withClientPublicKey(java.lang.String)` was added
+
+#### `models.IdentityKeyStore` was modified
+
+* `TPM_TRANSITION` was added
+
+#### `models.MachineUpdate` was modified
+
+* `clientPublicKey()` was added
+* `withClientPublicKey(java.lang.String)` was added
+
+#### `HybridComputeManager` was modified
+
+* `vmApplications()` was added
 
 ## 1.1.0 (2026-07-25)
 

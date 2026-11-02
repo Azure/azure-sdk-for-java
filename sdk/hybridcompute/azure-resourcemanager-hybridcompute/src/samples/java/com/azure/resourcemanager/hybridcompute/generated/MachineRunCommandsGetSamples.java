@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class MachineRunCommandsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15/runCommand/RunCommands_Get.json
+     * x-ms-original-file: 2026-09-01/runCommand/RunCommands_Get.json
      */
     /**
      * Sample code: Get a Run Command.

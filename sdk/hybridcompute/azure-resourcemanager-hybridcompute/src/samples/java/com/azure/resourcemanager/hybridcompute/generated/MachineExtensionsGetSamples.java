@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class MachineExtensionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15/extension/Extension_Get.json
+     * x-ms-original-file: 2026-09-01/extension/Extension_Get.json
      */
     /**
      * Sample code: GET Machine Extension.

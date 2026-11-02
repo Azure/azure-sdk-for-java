@@ -14,14 +14,14 @@ public final class HybridComputePrivateLinkScopeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridComputePrivateLinkScopeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"dyvvjskgfmocwahp\",\"privateLinkScopeId\":\"atjeaahh\",\"privateEndpointConnections\":[{\"id\":\"na\",\"name\":\"ybbjjidjksyx\",\"type\":\"xvxevblbjednljla\",\"properties\":{}},{\"id\":\"aulx\",\"name\":\"smjbnkppxyn\",\"type\":\"lsvxeizz\",\"properties\":{}},{\"id\":\"lnsrmffe\",\"name\":\"xcktpiymerteeamm\",\"type\":\"iekkkzddrtkgdojb\",\"properties\":{}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datarefdee\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"uij\",\"tags\":{\"wprtu\":\"xs\"},\"id\":\"wsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"hrraiouaubrj\",\"privateLinkScopeId\":\"oq\",\"privateEndpointConnections\":[{\"id\":\"jrngif\",\"name\":\"z\",\"type\":\"sccbiuimzd\",\"properties\":{}},{\"id\":\"dfqwmkyoq\",\"name\":\"dvruzslzojhpctf\",\"type\":\"dxotng\",\"properties\":{}},{\"id\":\"ugeyzihgrkyuiza\",\"name\":\"nmfpp\",\"type\":\"jee\",\"properties\":{}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datasgzfczbg\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"},{\"serviceExtensionType\":\"\\\"databeglqg\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]},\"location\":\"i\",\"tags\":{\"nkrrf\":\"nlu\",\"mq\":\"eeebtijvacv\",\"nw\":\"bqqxlaj\"},\"id\":\"acevehjkuyx\",\"name\":\"afgaoqlt\",\"type\":\"aeylinm\"},{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"r\",\"privateLinkScopeId\":\"hriypoqeyhlqhy\",\"privateEndpointConnections\":[{\"id\":\"pyznuciqd\",\"name\":\"ex\",\"type\":\"tdfuxt\",\"properties\":{}},{\"id\":\"iibmi\",\"name\":\"nnust\",\"type\":\"ljhnmgixhcmav\",\"properties\":{}},{\"id\":\"oudorhcgyyp\",\"name\":\"twypundmbxh\",\"type\":\"cmjkavlgorbmftpm\",\"properties\":{}},{\"id\":\"fjltfvnzcyjtotp\",\"name\":\"pvpbdbzqgqqiheds\",\"type\":\"wthmkyib\",\"properties\":{}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datasgqcwdho\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"},{\"serviceExtensionType\":\"\\\"datamcdzsufcohdxbz\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"uapcvhdbevwqqxe\",\"tags\":{\"eqocljmygvk\":\"onqzinkfkbgbzbow\"},\"id\":\"qkjjeokbz\",\"name\":\"fezrx\",\"type\":\"czurtlei\"}],\"nextLink\":\"xbkwv\"}")
             .toObject(HybridComputePrivateLinkScopeListResult.class);
-        Assertions.assertEquals("uij", model.value().get(0).location());
-        Assertions.assertEquals("xs", model.value().get(0).tags().get("wprtu"));
+        Assertions.assertEquals("i", model.value().get(0).location());
+        Assertions.assertEquals("nlu", model.value().get(0).tags().get("nkrrf"));
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
             model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
+        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.ENABLED,
             model.value().get(0).properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals("xbkwv", model.nextLink());
     }
 }
