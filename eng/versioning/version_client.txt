@@ -525,6 +525,7 @@ com.azure.resourcemanager:azure-resourcemanager-resources-deployments;1.0.0;1.1.
 com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources-templatespecs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-workloadmanager;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-koreaiartemis;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatetrafficmanager;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datatransfer;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-aiinfraoptimization;1.0.0-beta.1;1.0.0-beta.2
