@@ -11,9 +11,11 @@ import java.util.Collection;
  * Defines values returned by the service on a download to hint the client towards a more optimal download strategy.
  */
 public final class DownloadHint extends ExpandableStringEnum<DownloadHint> {
+    // TODO: Restore manual getLayout guidance when getLayout is made public.
     /**
-     * Indicates that the client should retrieve the blob's layout and route subsequent range downloads to the
-     * optimal endpoint for each range.
+     * Indicates that the service has data-locality layout information for this blob. When
+     * {@link com.azure.storage.common.LayoutAwareRouting#ENABLED} is set on supported download options, the SDK uses
+     * the layout to route range downloads to the optimal endpoint automatically.
      */
     public static final DownloadHint LAYOUT = fromString("layout");
 
