@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class QueuesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleGet.json
      */
     /**
      * Sample code: QueueAuthorizationRuleGet.
