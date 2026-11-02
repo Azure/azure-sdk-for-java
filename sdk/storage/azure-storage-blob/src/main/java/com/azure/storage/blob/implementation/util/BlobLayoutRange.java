@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRange;
 
 import java.net.URI;
 
+// TODO: Move back to com.azure.storage.blob.models when getLayout is made public.
 /**
  * Represents a range in a blob layout.
  */

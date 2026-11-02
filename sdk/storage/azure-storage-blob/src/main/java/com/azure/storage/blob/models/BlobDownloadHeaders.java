@@ -1046,10 +1046,8 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the xMsDownloadHint property: A hint from the service that the client should call
-     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
-     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
-     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     * Get the xMsDownloadHint property: A hint from the service that the client should retrieve
+     * the blob's layout and route subsequent range downloads to the optimal endpoint.
      *
      * @return the downloadHint value.
      */
@@ -1060,10 +1058,8 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Set the xMsDownloadHint property: A hint from the service that the client should call
-     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
-     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
-     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     * Set the xMsDownloadHint property: A hint from the service that the client should retrieve
+     * the blob's layout and route subsequent range downloads to the optimal endpoint.
      *
      * @param downloadHint the xMsDownloadHint value to set.
      * @return the BlobDownloadHeaders object itself.

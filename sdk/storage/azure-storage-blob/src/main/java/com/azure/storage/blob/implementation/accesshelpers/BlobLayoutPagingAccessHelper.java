@@ -5,8 +5,8 @@ package com.azure.storage.blob.implementation.accesshelpers;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.paging.PageRetriever;
-import com.azure.storage.blob.models.BlobLayoutRange;
-import com.azure.storage.blob.options.BlobGetLayoutOptions;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
+import com.azure.storage.blob.implementation.util.BlobGetLayoutOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 
 import java.util.Objects;

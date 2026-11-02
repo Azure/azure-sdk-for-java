@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRange;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.models.BlobLayoutRange;
 
 import java.net.URI;
 import java.util.List;

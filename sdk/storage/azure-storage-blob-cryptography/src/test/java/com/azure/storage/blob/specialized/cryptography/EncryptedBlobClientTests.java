@@ -18,9 +18,9 @@ import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 // TODO: Re-enable when getLayout is made public.
-// import com.azure.storage.blob.models.BlobLayoutRange;
+// import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.options.BlobGetLayoutOptions;
+import com.azure.storage.blob.implementation.util.BlobGetLayoutOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
