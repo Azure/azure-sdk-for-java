@@ -1,19 +1,5 @@
 # Release History
 
-## 12.37.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
-  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
-  position was not 0 and the buffer was larger than the block size.
-
-### Other Changes
-
 ## 12.36.0 (2026-10-07)
 
 ### Features Added
@@ -51,16 +37,6 @@
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
-
-## 12.35.2 (2026-10-06)
-
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
-- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
-- Upgraded `azure-storage-internal-avro` from `12.20.1` to version `12.20.2`.
-- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 
 ## 12.35.1 (2026-08-18)
 
