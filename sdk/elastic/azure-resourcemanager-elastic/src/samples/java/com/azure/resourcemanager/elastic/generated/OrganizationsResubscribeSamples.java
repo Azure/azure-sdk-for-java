@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class OrganizationsResubscribeSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_Resubscribe.json
+     * x-ms-original-file: 2026-03-15-preview/Organizations_Resubscribe.json
      */
     /**
      * Sample code: Organizations_Resubscribe.

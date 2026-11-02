@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class VMIngestionDetailsSamples {
     /*
-     * x-ms-original-file: 2025-06-01/VMIngestion_Details.json
+     * x-ms-original-file: 2026-03-15-preview/VMIngestion_Details.json
      */
     /**
      * Sample code: VMIngestion_Details.
