@@ -161,6 +161,37 @@ public interface JobDefinitions {
         String jobDefinitionName);
 
     /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run along with {@link Response}.
+     */
+    Response<JobRunResourceId> reconcileJobWithResponse(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context);
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run.
+     */
+    JobRunResourceId reconcileJob(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName);
+
+    /**
      * Gets a Job Definition resource.
      * 
      * @param id the resource ID.
