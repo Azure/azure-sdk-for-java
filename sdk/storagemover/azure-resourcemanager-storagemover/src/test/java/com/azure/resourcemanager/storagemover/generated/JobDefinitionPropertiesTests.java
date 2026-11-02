@@ -22,72 +22,90 @@ public final class JobDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobDefinitionProperties model = BinaryData.fromString(
-            "{\"description\":\"oskg\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"uimjmvx\",\"sourceResourceId\":\"duugidyjr\",\"sourceSubpath\":\"byao\",\"targetName\":\"v\",\"targetResourceId\":\"csonpclhoco\",\"targetSubpath\":\"lkevle\",\"latestJobRunName\":\"zfbuhf\",\"latestJobRunResourceId\":\"faxkffeii\",\"latestJobRunStatus\":\"CancelRequested\",\"agentName\":\"m\",\"agentResourceId\":\"yvshxmz\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{\"properties\":{\"name\":\"gigr\",\"sourceEndpointResourceId\":\"burvjxxjnspy\",\"awsS3BucketId\":\"tko\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"ou\",\"targetEndpointResourceId\":\"vudwtiukbldng\",\"azureStorageAccountResourceId\":\"ocipazyxoeg\",\"azureStorageBlobContainerName\":\"g\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"iucgygevqzn\",\"sourceEndpointResourceId\":\"pmr\",\"awsS3BucketId\":\"izcdrqjsd\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"nfyhx\",\"targetEndpointResourceId\":\"oejzi\",\"azureStorageAccountResourceId\":\"ifsjttgzfbishcb\",\"azureStorageBlobContainerName\":\"ajdeyeamdphaga\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"uxwgipwho\",\"sourceEndpointResourceId\":\"wkgshwa\",\"awsS3BucketId\":\"ixzbinjeputtmryw\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"oqftiyqzrnkcq\",\"targetEndpointResourceId\":\"xlwhzlsicoh\",\"azureStorageAccountResourceId\":\"qnwvlrya\",\"azureStorageBlobContainerName\":\"hheunmmqhgyx\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"noc\",\"sourceEndpointResourceId\":\"oklyaxuconuq\",\"awsS3BucketId\":\"fkbey\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"rmjmwvvjektc\",\"targetEndpointResourceId\":\"enhwlrs\",\"azureStorageAccountResourceId\":\"rzpwvlqdqgbiq\",\"azureStorageBlobContainerName\":\"ihkaetcktvfc\"}}}]},\"provisioningState\":\"Failed\",\"connections\":[\"kymuctqhjfbebr\",\"cxerf\",\"wutttxfvjrbi\",\"phxepcyvahf\"],\"schedule\":{\"frequency\":\"None\",\"isActive\":false,\"executionTime\":{\"hour\":1238878906,\"minute\":0},\"startDate\":\"2021-01-04T05:40:41Z\",\"daysOfWeek\":[\"dokgjl\",\"yoxgvcltbgsnc\"],\"daysOfMonth\":[1555368773,630804167],\"cronExpression\":\"zz\",\"endDate\":\"2021-12-06T11:52:19Z\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":true}")
+            "{\"description\":\"xzko\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Additive\",\"sourceName\":\"koklya\",\"sourceResourceId\":\"conuqszfkbeype\",\"sourceSubpath\":\"mjmwvvjektcx\",\"targetName\":\"enhwlrs\",\"targetResourceId\":\"rzpwvlqdqgbiq\",\"targetSubpath\":\"ihkaetcktvfc\",\"latestJobRunName\":\"fsnkymuctq\",\"latestJobRunResourceId\":\"fbebrjcxer\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"tttxfvjrb\",\"agentResourceId\":\"phxepcyvahf\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{\"properties\":{\"name\":\"xjvuujqgidokg\",\"sourceEndpointResourceId\":\"jyoxgvclt\",\"awsS3BucketId\":\"sncghkjeszz\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"jhtxfvgxbfsmxne\",\"targetEndpointResourceId\":\"pvecxgodeb\",\"azureStorageAccountResourceId\":\"kk\",\"azureStorageBlobContainerName\":\"mpukgriw\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"lfbxzpuzycisp\",\"sourceEndpointResourceId\":\"zahmgkbrpyydhibn\",\"awsS3BucketId\":\"qkpikadrgvtqagnb\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"hijggme\",\"targetEndpointResourceId\":\"siarbutrcvpn\",\"azureStorageAccountResourceId\":\"zmhjrunmp\",\"azureStorageBlobContainerName\":\"tdbhrbnla\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"myskpbhenbtkcxy\",\"sourceEndpointResourceId\":\"y\",\"awsS3BucketId\":\"rsyn\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"dybyxczfclhaa\",\"targetEndpointResourceId\":\"babphlwrqlfk\",\"azureStorageAccountResourceId\":\"thsu\",\"azureStorageBlobContainerName\":\"cmnyyazttb\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"rq\",\"sourceEndpointResourceId\":\"edckzywbiexzfey\",\"awsS3BucketId\":\"axibxujw\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"walm\",\"targetEndpointResourceId\":\"yoxa\",\"azureStorageAccountResourceId\":\"dkzjancuxrh\",\"azureStorageBlobContainerName\":\"bavxbniwdjswzt\"}}}]},\"provisioningState\":\"Succeeded\",\"connections\":[\"nxytxh\",\"zxbzpfzabglc\",\"hxw\"],\"schedule\":{\"frequency\":\"Hourly\",\"isActive\":true,\"executionTime\":{\"hour\":1945421242,\"minute\":0},\"startDate\":\"2021-04-06T10:17:39Z\",\"daysOfWeek\":[\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"],\"daysOfMonth\":[1737094412,301968900,1462188439,538990219],\"cronExpression\":\"zkd\",\"endDate\":\"2021-10-06T03:42:02Z\",\"repeatInterval\":\"vlopwiyighx\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":false,\"isCrossTenantJob\":true,\"crossTenantEndpointTenantId\":\"uebbaumnyqup\",\"crossTenantEndpointResourceId\":\"eojnabc\",\"syncMode\":\"smtxpsieb\",\"moverSyncedUntil\":\"2021-06-30T11:17:19Z\"}")
             .toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("oskg", model.description());
+        Assertions.assertEquals("xzko", model.description());
         Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, model.jobType());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("uimjmvx", model.sourceName());
-        Assertions.assertEquals("byao", model.sourceSubpath());
-        Assertions.assertEquals("v", model.targetName());
-        Assertions.assertEquals("lkevle", model.targetSubpath());
-        Assertions.assertEquals("m", model.agentName());
-        Assertions.assertEquals("kymuctqhjfbebr", model.connections().get(0));
-        Assertions.assertEquals(Frequency.NONE, model.schedule().frequency());
-        Assertions.assertFalse(model.schedule().isActive());
-        Assertions.assertEquals(1238878906, model.schedule().executionTime().hour());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("koklya", model.sourceName());
+        Assertions.assertEquals("mjmwvvjektcx", model.sourceSubpath());
+        Assertions.assertEquals("enhwlrs", model.targetName());
+        Assertions.assertEquals("ihkaetcktvfc", model.targetSubpath());
+        Assertions.assertEquals("tttxfvjrb", model.agentName());
+        Assertions.assertEquals("nxytxh", model.connections().get(0));
+        Assertions.assertEquals(Frequency.HOURLY, model.schedule().frequency());
+        Assertions.assertTrue(model.schedule().isActive());
+        Assertions.assertEquals(1945421242, model.schedule().executionTime().hour());
         Assertions.assertEquals(Minute.ZERO, model.schedule().executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T05:40:41Z"), model.schedule().startDate());
-        Assertions.assertEquals("dokgjl", model.schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(1555368773, model.schedule().daysOfMonth().get(0));
-        Assertions.assertEquals("zz", model.schedule().cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T11:52:19Z"), model.schedule().endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T10:17:39Z"), model.schedule().startDate());
+        Assertions.assertEquals("zbhvgyuguosv", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1737094412, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("zkd", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T03:42:02Z"), model.schedule().endDate());
+        Assertions.assertEquals("vlopwiyighx", model.schedule().repeatInterval());
         Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
-        Assertions.assertTrue(model.preservePermissions());
+        Assertions.assertFalse(model.preservePermissions());
+        Assertions.assertTrue(model.isCrossTenantJob());
+        Assertions.assertEquals("uebbaumnyqup", model.crossTenantEndpointTenantId());
+        Assertions.assertEquals("eojnabc", model.crossTenantEndpointResourceId());
+        Assertions.assertEquals("smtxpsieb", model.syncMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T11:17:19Z"), model.moverSyncedUntil());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionProperties model = new JobDefinitionProperties().withDescription("oskg")
+        JobDefinitionProperties model = new JobDefinitionProperties().withDescription("xzko")
             .withJobType(JobType.ON_PREM_TO_CLOUD)
-            .withCopyMode(CopyMode.MIRROR)
-            .withSourceName("uimjmvx")
-            .withSourceSubpath("byao")
-            .withTargetName("v")
-            .withTargetSubpath("lkevle")
-            .withAgentName("m")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withSourceName("koklya")
+            .withSourceSubpath("mjmwvvjektcx")
+            .withTargetName("enhwlrs")
+            .withTargetSubpath("ihkaetcktvfc")
+            .withAgentName("tttxfvjrb")
             .withSourceTargetMap(new JobDefinitionPropertiesSourceTargetMap())
-            .withConnections(Arrays.asList("kymuctqhjfbebr", "cxerf", "wutttxfvjrbi", "phxepcyvahf"))
-            .withSchedule(new ScheduleInfo().withFrequency(Frequency.NONE)
-                .withIsActive(false)
-                .withExecutionTime(new SchedulerTime().withHour(1238878906).withMinute(Minute.ZERO))
-                .withStartDate(OffsetDateTime.parse("2021-01-04T05:40:41Z"))
-                .withDaysOfWeek(Arrays.asList("dokgjl", "yoxgvcltbgsnc"))
-                .withDaysOfMonth(Arrays.asList(1555368773, 630804167))
-                .withCronExpression("zz")
-                .withEndDate(OffsetDateTime.parse("2021-12-06T11:52:19Z")))
+            .withConnections(Arrays.asList("nxytxh", "zxbzpfzabglc", "hxw"))
+            .withSchedule(new ScheduleInfo().withFrequency(Frequency.HOURLY)
+                .withIsActive(true)
+                .withExecutionTime(new SchedulerTime().withHour(1945421242).withMinute(Minute.ZERO))
+                .withStartDate(OffsetDateTime.parse("2021-04-06T10:17:39Z"))
+                .withDaysOfWeek(Arrays.asList("zbhvgyuguosv", "kfssxqukkf", "l"))
+                .withDaysOfMonth(Arrays.asList(1737094412, 301968900, 1462188439, 538990219))
+                .withCronExpression("zkd")
+                .withEndDate(OffsetDateTime.parse("2021-10-06T03:42:02Z"))
+                .withRepeatInterval("vlopwiyighx"))
             .withDataIntegrityValidation(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5)
-            .withPreservePermissions(true);
+            .withPreservePermissions(false)
+            .withIsCrossTenantJob(true)
+            .withCrossTenantEndpointTenantId("uebbaumnyqup")
+            .withCrossTenantEndpointResourceId("eojnabc")
+            .withSyncMode("smtxpsieb")
+            .withMoverSyncedUntil(OffsetDateTime.parse("2021-06-30T11:17:19Z"));
         model = BinaryData.fromObject(model).toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("oskg", model.description());
+        Assertions.assertEquals("xzko", model.description());
         Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, model.jobType());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("uimjmvx", model.sourceName());
-        Assertions.assertEquals("byao", model.sourceSubpath());
-        Assertions.assertEquals("v", model.targetName());
-        Assertions.assertEquals("lkevle", model.targetSubpath());
-        Assertions.assertEquals("m", model.agentName());
-        Assertions.assertEquals("kymuctqhjfbebr", model.connections().get(0));
-        Assertions.assertEquals(Frequency.NONE, model.schedule().frequency());
-        Assertions.assertFalse(model.schedule().isActive());
-        Assertions.assertEquals(1238878906, model.schedule().executionTime().hour());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("koklya", model.sourceName());
+        Assertions.assertEquals("mjmwvvjektcx", model.sourceSubpath());
+        Assertions.assertEquals("enhwlrs", model.targetName());
+        Assertions.assertEquals("ihkaetcktvfc", model.targetSubpath());
+        Assertions.assertEquals("tttxfvjrb", model.agentName());
+        Assertions.assertEquals("nxytxh", model.connections().get(0));
+        Assertions.assertEquals(Frequency.HOURLY, model.schedule().frequency());
+        Assertions.assertTrue(model.schedule().isActive());
+        Assertions.assertEquals(1945421242, model.schedule().executionTime().hour());
         Assertions.assertEquals(Minute.ZERO, model.schedule().executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T05:40:41Z"), model.schedule().startDate());
-        Assertions.assertEquals("dokgjl", model.schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(1555368773, model.schedule().daysOfMonth().get(0));
-        Assertions.assertEquals("zz", model.schedule().cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T11:52:19Z"), model.schedule().endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T10:17:39Z"), model.schedule().startDate());
+        Assertions.assertEquals("zbhvgyuguosv", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1737094412, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("zkd", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T03:42:02Z"), model.schedule().endDate());
+        Assertions.assertEquals("vlopwiyighx", model.schedule().repeatInterval());
         Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
-        Assertions.assertTrue(model.preservePermissions());
+        Assertions.assertFalse(model.preservePermissions());
+        Assertions.assertTrue(model.isCrossTenantJob());
+        Assertions.assertEquals("uebbaumnyqup", model.crossTenantEndpointTenantId());
+        Assertions.assertEquals("eojnabc", model.crossTenantEndpointResourceId());
+        Assertions.assertEquals("smtxpsieb", model.syncMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T11:17:19Z"), model.moverSyncedUntil());
     }
 }

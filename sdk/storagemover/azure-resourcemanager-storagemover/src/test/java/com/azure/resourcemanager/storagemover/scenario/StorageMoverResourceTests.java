@@ -31,7 +31,7 @@ public class StorageMoverResourceTests extends StorageMoverManagementTestBase {
 
         StorageMover created = storageMoverManager.storageMovers()
             .define(name)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .withTags(tags)
             .create();
@@ -64,7 +64,7 @@ public class StorageMoverResourceTests extends StorageMoverManagementTestBase {
 
         storageMoverManager.storageMovers()
             .define(storageMoverName)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
 
@@ -90,7 +90,7 @@ public class StorageMoverResourceTests extends StorageMoverManagementTestBase {
 
         storageMoverManager.storageMovers()
             .define(storageMoverName)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
 
@@ -114,11 +114,11 @@ public class StorageMoverResourceTests extends StorageMoverManagementTestBase {
         // present or absent as expected.)
         StorageMover sm = storageMoverManager.storageMovers()
             .define(name)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
         Assertions.assertEquals(name, sm.name());
-        Assertions.assertEquals(DEFAULT_REGION.name(), sm.location());
+        Assertions.assertEquals(defaultRegion.name(), sm.location());
 
         // Step 2: PATCH description.
         sm = sm.refresh().update().withDescription("This is an updated storage mover").apply();
@@ -141,7 +141,7 @@ public class StorageMoverResourceTests extends StorageMoverManagementTestBase {
         // user-supplied tags is present.
         sm = storageMoverManager.storageMovers()
             .define(name)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .withTags(Collections.singletonMap("tag3", "val3"))
             .create();
