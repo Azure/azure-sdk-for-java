@@ -28,7 +28,7 @@ public final class SummaryLogsOperationsStopWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.summaryLogsOperations()
-            .stopWithResponse("eqtoyrpl", "xlaj", "llpquevhamfo", com.azure.core.util.Context.NONE);
+            .stopWithResponse("pvti", "tzbpdbollgry", "qiuasigrows", com.azure.core.util.Context.NONE);
 
     }
 }

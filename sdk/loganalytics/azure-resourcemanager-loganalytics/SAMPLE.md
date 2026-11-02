@@ -139,6 +139,7 @@
 
 - [GetPurgeStatus](#workspacepurge_getpurgestatus)
 - [Purge](#workspacepurge_purge)
+- [PurgeLakeData](#workspacepurge_purgelakedata)
 
 ## Workspaces
 
@@ -161,7 +162,7 @@
  */
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesAvailableServiceTiers.json
+     * x-ms-original-file: 2026-03-01/WorkspacesAvailableServiceTiers.json
      */
     /**
      * Sample code: AvailableServiceTiers.
@@ -188,7 +189,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersCreate.json
+     * x-ms-original-file: 2026-03-01/ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
@@ -227,7 +228,7 @@ public final class ClustersCreateOrUpdateSamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersDelete.json
+     * x-ms-original-file: 2026-03-01/ClustersDelete.json
      */
     /**
      * Sample code: ClustersDelete.
@@ -248,7 +249,7 @@ public final class ClustersDeleteSamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersGet.json
+     * x-ms-original-file: 2026-03-01/ClustersGet.json
      */
     /**
      * Sample code: ClustersGet.
@@ -270,7 +271,7 @@ public final class ClustersGetByResourceGroupSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersSubscriptionList.json
+     * x-ms-original-file: 2026-03-01/ClustersSubscriptionList.json
      */
     /**
      * Sample code: ClustersSubscriptionList.
@@ -291,7 +292,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01/ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.
@@ -322,7 +323,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersUpdate.json
+     * x-ms-original-file: 2026-03-01/ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
@@ -371,7 +372,7 @@ import java.util.Arrays;
  */
 public final class DataExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportCreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.
@@ -398,7 +399,7 @@ public final class DataExportsCreateOrUpdateSamples {
  */
 public final class DataExportsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportDelete.json
+     * x-ms-original-file: 2026-03-01/DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.
@@ -420,7 +421,7 @@ public final class DataExportsDeleteSamples {
  */
 public final class DataExportsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportGet.json
+     * x-ms-original-file: 2026-03-01/DataExportGet.json
      */
     /**
      * Sample code: DataExportGet.
@@ -441,7 +442,7 @@ public final class DataExportsGetSamples {
  */
 public final class DataExportsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/DataExportListByWorkspace.json
      */
     /**
      * Sample code: DataExportGet.
@@ -467,7 +468,7 @@ import java.io.IOException;
  */
 public final class DataSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesCreate.json
+     * x-ms-original-file: 2026-03-01/DataSourcesCreate.json
      */
     /**
      * Sample code: DataSourcesCreate.
@@ -497,7 +498,7 @@ public final class DataSourcesCreateOrUpdateSamples {
  */
 public final class DataSourcesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesDelete.json
+     * x-ms-original-file: 2026-03-01/DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.
@@ -519,7 +520,7 @@ public final class DataSourcesDeleteSamples {
  */
 public final class DataSourcesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesGet.json
+     * x-ms-original-file: 2026-03-01/DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.
@@ -541,7 +542,7 @@ public final class DataSourcesGetSamples {
  */
 public final class DataSourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/DataSourcesListByWorkspace.json
      */
     /**
      * Sample code: DataSourcesListByWorkspace.
@@ -564,7 +565,7 @@ public final class DataSourcesListByWorkspaceSamples {
  */
 public final class DeletedWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesSubscriptionList.json
+     * x-ms-original-file: 2026-03-01/WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -585,7 +586,7 @@ public final class DeletedWorkspacesListSamples {
  */
 public final class DeletedWorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesListByResourceGroupForDeleted.json
+     * x-ms-original-file: 2026-03-01/WorkspacesListByResourceGroupForDeleted.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -606,7 +607,7 @@ public final class DeletedWorkspacesListByResourceGroupSamples {
  */
 public final class GatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesGatewaysDelete.json
+     * x-ms-original-file: 2026-03-01/WorkspacesGatewaysDelete.json
      */
     /**
      * Sample code: DeleteGateways.
@@ -629,7 +630,7 @@ public final class GatewaysDeleteSamples {
  */
 public final class IntelligencePacksDisableSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesDisableIntelligencePack.json
+     * x-ms-original-file: 2026-03-01/WorkspacesDisableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksDisable.
@@ -651,7 +652,7 @@ public final class IntelligencePacksDisableSamples {
  */
 public final class IntelligencePacksEnableSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesEnableIntelligencePack.json
+     * x-ms-original-file: 2026-03-01/WorkspacesEnableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksEnable.
@@ -673,7 +674,7 @@ public final class IntelligencePacksEnableSamples {
  */
 public final class IntelligencePacksListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesListIntelligencePacks.json
+     * x-ms-original-file: 2026-03-01/WorkspacesListIntelligencePacks.json
      */
     /**
      * Sample code: IntelligencePacksList.
@@ -694,7 +695,7 @@ public final class IntelligencePacksListSamples {
  */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedServicesCreate.json
+     * x-ms-original-file: 2026-03-01/LinkedServicesCreate.json
      */
     /**
      * Sample code: LinkedServicesCreate.
@@ -720,7 +721,7 @@ public final class LinkedServicesCreateOrUpdateSamples {
  */
 public final class LinkedServicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedServicesDelete.json
+     * x-ms-original-file: 2026-03-01/LinkedServicesDelete.json
      */
     /**
      * Sample code: LinkedServicesDelete.
@@ -741,7 +742,7 @@ public final class LinkedServicesDeleteSamples {
  */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedServicesGet.json
+     * x-ms-original-file: 2026-03-01/LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.
@@ -762,7 +763,7 @@ public final class LinkedServicesGetSamples {
  */
 public final class LinkedServicesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedServicesListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/LinkedServicesListByWorkspace.json
      */
     /**
      * Sample code: LinkedServicesListByWorkspace.
@@ -787,7 +788,7 @@ import java.util.Arrays;
  */
 public final class LinkedStorageAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsCreate.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsCreate.json
      */
     /**
      * Sample code: LinkedStorageAccountsCreate.
@@ -816,7 +817,7 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
  */
 public final class LinkedStorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsDelete.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: LinkedStorageAccountsDelete.
@@ -841,7 +842,7 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
  */
 public final class LinkedStorageAccountsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsGet.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsGet.json
      */
     /**
      * Sample code: LinkedStorageAccountsGet.
@@ -864,7 +865,7 @@ public final class LinkedStorageAccountsGetSamples {
  */
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsListByWorkspace.json
      */
     /**
      * Sample code: Gets list of linked storage accounts on a workspace.
@@ -887,7 +888,7 @@ public final class LinkedStorageAccountsListByWorkspaceSamples {
  */
 public final class ManagementGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesListManagementGroups.json
+     * x-ms-original-file: 2026-03-01/WorkspacesListManagementGroups.json
      */
     /**
      * Sample code: WorkspacesListManagementGroups.
@@ -909,7 +910,7 @@ public final class ManagementGroupsListSamples {
  */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/OperationStatusesGet.json
+     * x-ms-original-file: 2026-03-01/OperationStatusesGet.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -931,7 +932,7 @@ public final class OperationStatusesGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/OperationsListByTenant.json
+     * x-ms-original-file: 2026-03-01/OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -952,7 +953,7 @@ public final class OperationsListSamples {
  */
 public final class QueriesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesDelete.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesDelete.json
      */
     /**
      * Sample code: QueryDelete.
@@ -975,7 +976,7 @@ public final class QueriesDeleteSamples {
  */
 public final class QueriesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesGet.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesGet.json
      */
     /**
      * Sample code: QueryGet.
@@ -998,7 +999,7 @@ public final class QueriesGetSamples {
  */
 public final class QueriesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesList.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesList.json
      */
     /**
      * Sample code: QueryList.
@@ -1024,7 +1025,7 @@ import java.util.Map;
  */
 public final class QueriesPutSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesPut.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesPut.json
      */
     /**
      * Sample code: QueryPut.
@@ -1072,7 +1073,7 @@ import java.util.Map;
  */
 public final class QueriesSearchSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesSearch.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesSearch.json
      */
     /**
      * Sample code: QuerySearch.
@@ -1117,7 +1118,7 @@ import java.util.Map;
  */
 public final class QueriesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesUpdate.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesUpdate.json
      */
     /**
      * Sample code: QueryPatch.
@@ -1164,7 +1165,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksCreate.json
+     * x-ms-original-file: 2026-03-01/QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
@@ -1180,7 +1181,7 @@ public final class QueryPacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksUpdate.json
+     * x-ms-original-file: 2026-03-01/QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.
@@ -1222,7 +1223,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksCreateNoName.json
+     * x-ms-original-file: 2026-03-01/QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
@@ -1236,7 +1237,7 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackUpdateNoName.json
+     * x-ms-original-file: 2026-03-01/QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.
@@ -1272,7 +1273,7 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
  */
 public final class QueryPacksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksDelete.json
+     * x-ms-original-file: 2026-03-01/QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.
@@ -1294,7 +1295,7 @@ public final class QueryPacksDeleteSamples {
  */
 public final class QueryPacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksGet.json
+     * x-ms-original-file: 2026-03-01/QueryPacksGet.json
      */
     /**
      * Sample code: QueryPackGet.
@@ -1316,7 +1317,7 @@ public final class QueryPacksGetByResourceGroupSamples {
  */
 public final class QueryPacksListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksList.json
+     * x-ms-original-file: 2026-03-01/QueryPacksList.json
      */
     /**
      * Sample code: QueryPacksList.
@@ -1337,7 +1338,7 @@ public final class QueryPacksListSamples {
  */
 public final class QueryPacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01/QueryPacksListByResourceGroup.json
      */
     /**
      * Sample code: QueryPackListByResourceGroup.
@@ -1363,7 +1364,7 @@ import java.util.Map;
  */
 public final class QueryPacksUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksUpdateTagsOnly.json
+     * x-ms-original-file: 2026-03-01/QueryPacksUpdateTagsOnly.json
      */
     /**
      * Sample code: QueryPackUpdateTagsOnly.
@@ -1402,7 +1403,7 @@ import java.util.Arrays;
  */
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesSavedSearchesCreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.
@@ -1433,7 +1434,7 @@ public final class SavedSearchesCreateOrUpdateSamples {
  */
 public final class SavedSearchesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesDeleteSavedSearches.json
+     * x-ms-original-file: 2026-03-01/WorkspacesDeleteSavedSearches.json
      */
     /**
      * Sample code: SavedSearchesDelete.
@@ -1456,7 +1457,7 @@ public final class SavedSearchesDeleteSamples {
  */
 public final class SavedSearchesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesSavedSearchesGet.json
+     * x-ms-original-file: 2026-03-01/WorkspacesSavedSearchesGet.json
      */
     /**
      * Sample code: SavedSearchesGet.
@@ -1479,7 +1480,7 @@ public final class SavedSearchesGetSamples {
  */
 public final class SavedSearchesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SavedSearchesListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/SavedSearchesListByWorkspace.json
      */
     /**
      * Sample code: SavedSearchesList.
@@ -1500,7 +1501,7 @@ public final class SavedSearchesListByWorkspaceSamples {
  */
 public final class SchemaGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SavedSearchesGetSchema.json
+     * x-ms-original-file: 2026-03-01/SavedSearchesGetSchema.json
      */
     /**
      * Sample code: WorkspacesGetSchema.
@@ -1521,7 +1522,7 @@ public final class SchemaGetSamples {
  */
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesGetSharedKeys.json
+     * x-ms-original-file: 2026-03-01/WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.
@@ -1542,7 +1543,7 @@ public final class SharedKeysOperationGetSharedKeysSamples {
  */
 public final class SharedKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesRegenerateSharedKeys.json
+     * x-ms-original-file: 2026-03-01/WorkspacesRegenerateSharedKeys.json
      */
     /**
      * Sample code: RegenerateSharedKeys.
@@ -1566,7 +1567,7 @@ import java.util.Arrays;
  */
 public final class StorageInsightConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageInsightsCreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/StorageInsightsCreateOrUpdate.json
      */
     /**
      * Sample code: StorageInsightsCreate.
@@ -1595,7 +1596,7 @@ public final class StorageInsightConfigsCreateOrUpdateSamples {
  */
 public final class StorageInsightConfigsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageInsightsDelete.json
+     * x-ms-original-file: 2026-03-01/StorageInsightsDelete.json
      */
     /**
      * Sample code: StorageInsightsDelete.
@@ -1617,7 +1618,7 @@ public final class StorageInsightConfigsDeleteSamples {
  */
 public final class StorageInsightConfigsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageInsightsGet.json
+     * x-ms-original-file: 2026-03-01/StorageInsightsGet.json
      */
     /**
      * Sample code: StorageInsightsGet.
@@ -1639,7 +1640,7 @@ public final class StorageInsightConfigsGetSamples {
  */
 public final class StorageInsightConfigsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageInsightsListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/StorageInsightsListByWorkspace.json
      */
     /**
      * Sample code: StorageInsightsList.
@@ -1658,14 +1659,19 @@ public final class StorageInsightConfigsListByWorkspaceSamples {
 ```java
 import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentity;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentityType;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsUserIdentityProperties;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for SummaryLogsOperation CreateOrUpdate.
  */
 public final class SummaryLogsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsUpsert.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsUpsert.json
      */
     /**
      * Sample code: SummaryLogsUpsert.
@@ -1676,6 +1682,10 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
         manager.summaryLogsOperations()
             .define("summarylogs1")
             .withExistingWorkspace("oiautorest6685", "oiautorest6685")
+            .withIdentity(new SummaryLogsIdentity().withType(SummaryLogsIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                    new SummaryLogsUserIdentityProperties())))
             .withRuleType(RuleTypeEnum.USER)
             .withRuleDefinition(new RuleDefinition().withQuery("MyTable_CL")
                 .withBinSize(180)
@@ -1683,6 +1693,18 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
                 .withBinStartTime(OffsetDateTime.parse("2020-02-03T04:05:06Z"))
                 .withDestinationTable("MyDestinationTable_CL"))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1695,7 +1717,7 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
  */
 public final class SummaryLogsOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsDelete.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsDelete.json
      */
     /**
      * Sample code: SummaryLogsDelete.
@@ -1717,7 +1739,7 @@ public final class SummaryLogsOperationDeleteSamples {
  */
 public final class SummaryLogsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsGet.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsGet.json
      */
     /**
      * Sample code: SummaryLogsGet.
@@ -1739,7 +1761,7 @@ public final class SummaryLogsOperationGetSamples {
  */
 public final class SummaryLogsOperationListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsList.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsList.json
      */
     /**
      * Sample code: SummaryLogsListByWorkspace.
@@ -1765,7 +1787,7 @@ import java.time.OffsetDateTime;
  */
 public final class SummaryLogsOperationRetryBinSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsRetryBin.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsRetryBin.json
      */
     /**
      * Sample code: SummaryLogsRetryBin.
@@ -1790,7 +1812,7 @@ public final class SummaryLogsOperationRetryBinSamples {
  */
 public final class SummaryLogsOperationStartSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsStart.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsStart.json
      */
     /**
      * Sample code: SummaryLogsStart.
@@ -1812,7 +1834,7 @@ public final class SummaryLogsOperationStartSamples {
  */
 public final class SummaryLogsOperationStopSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsStop.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsStop.json
      */
     /**
      * Sample code: SummaryLogsStop.
@@ -1834,7 +1856,7 @@ public final class SummaryLogsOperationStopSamples {
  */
 public final class TablesCancelSearchSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesSearchCancel.json
+     * x-ms-original-file: 2026-03-01/TablesSearchCancel.json
      */
     /**
      * Sample code: TablesSearchCancel.
@@ -1862,7 +1884,7 @@ import java.util.Arrays;
  */
 public final class TablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesUpsertForTable.json
+     * x-ms-original-file: 2026-03-01/TablesUpsertForTable.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -1890,7 +1912,7 @@ public final class TablesCreateOrUpdateSamples {
  */
 public final class TablesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesDelete.json
+     * x-ms-original-file: 2026-03-01/TablesDelete.json
      */
     /**
      * Sample code: TablesDelete.
@@ -1911,7 +1933,7 @@ public final class TablesDeleteSamples {
  */
 public final class TablesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesGet.json
+     * x-ms-original-file: 2026-03-01/TablesGet.json
      */
     /**
      * Sample code: TablesGet.
@@ -1933,7 +1955,7 @@ public final class TablesGetSamples {
  */
 public final class TablesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesList.json
+     * x-ms-original-file: 2026-03-01/TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
@@ -1954,7 +1976,7 @@ public final class TablesListByWorkspaceSamples {
  */
 public final class TablesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesMigrate.json
+     * x-ms-original-file: 2026-03-01/TablesMigrate.json
      */
     /**
      * Sample code: TablesMigrate.
@@ -1982,7 +2004,7 @@ import java.util.Arrays;
  */
 public final class TablesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesUpsert.json
+     * x-ms-original-file: 2026-03-01/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -2011,7 +2033,7 @@ public final class TablesUpdateSamples {
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesListUsages.json
+     * x-ms-original-file: 2026-03-01/WorkspacesListUsages.json
      */
     /**
      * Sample code: UsagesList.
@@ -2032,7 +2054,7 @@ public final class UsagesListSamples {
  */
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurgeOperation.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeOperation.json
      */
     /**
      * Sample code: WorkspacePurgeOperation.
@@ -2043,6 +2065,21 @@ public final class WorkspacePurgeGetPurgeStatusSamples {
         manager.workspacePurges()
             .getPurgeStatusWithResponse("OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74",
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeLakeDataOperation.json
+     */
+    /**
+     * Sample code: WorkspacePurgeLakeDataOperation.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void
+        workspacePurgeLakeDataOperation(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspacePurges()
+            .getPurgeStatusWithResponse("OIAutoRest5123", "aztest5048",
+                "purgelakedata-7d7cf277-9113-4ab3-8359-d0364b74d01d", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2059,7 +2096,7 @@ import java.util.Arrays;
  */
 public final class WorkspacePurgePurgeSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurgeResourceId.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeResourceId.json
      */
     /**
      * Sample code: WorkspacePurgeResourceId.
@@ -2077,7 +2114,7 @@ public final class WorkspacePurgePurgeSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurge.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurge.json
      */
     /**
      * Sample code: WorkspacePurge.
@@ -2096,6 +2133,37 @@ public final class WorkspacePurgePurgeSamples {
 }
 ```
 
+### WorkspacePurge_PurgeLakeData
+
+```java
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeLakeDataBody;
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeLakeDataTimeRange;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for WorkspacePurge PurgeLakeData.
+ */
+public final class WorkspacePurgePurgeLakeDataSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeLakeData.json
+     */
+    /**
+     * Sample code: WorkspacesPurgeLakeData.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void workspacesPurgeLakeData(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspacePurges()
+            .purgeLakeData("OIAutoRest5123", "aztest5048",
+                new WorkspacePurgeLakeDataBody().withTable("AuxiliaryLogs_CL")
+                    .withTimeRange(new WorkspacePurgeLakeDataTimeRange()
+                        .withStartTime(OffsetDateTime.parse("2026-03-01T00:00:00Z"))
+                        .withEndTime(OffsetDateTime.parse("2026-03-02T00:00:00Z"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Workspaces_CreateOrUpdate
 
 ```java
@@ -2109,7 +2177,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesCreate.json
+     * x-ms-original-file: 2026-03-01/WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
@@ -2149,7 +2217,7 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesDelete.json
+     * x-ms-original-file: 2026-03-01/WorkspacesDelete.json
      */
     /**
      * Sample code: WorkspacesDelete.
@@ -2170,7 +2238,7 @@ public final class WorkspacesDeleteSamples {
  */
 public final class WorkspacesFailbackSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesFailback.json
+     * x-ms-original-file: 2026-03-01/WorkspacesFailback.json
      */
     /**
      * Sample code: WorkspacesFailover.
@@ -2191,7 +2259,7 @@ public final class WorkspacesFailbackSamples {
  */
 public final class WorkspacesFailoverSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesFailover.json
+     * x-ms-original-file: 2026-03-01/WorkspacesFailover.json
      */
     /**
      * Sample code: WorkspacesFailover.
@@ -2212,7 +2280,7 @@ public final class WorkspacesFailoverSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesGet.json
+     * x-ms-original-file: 2026-03-01/WorkspacesGet.json
      */
     /**
      * Sample code: WorkspaceGet.
@@ -2234,7 +2302,7 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesGetNspSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_Get.json
+     * x-ms-original-file: 2026-03-01/NSPForWorkspaces_Get.json
      */
     /**
      * Sample code: Get NSP config by name for Scheduled Query Rule.
@@ -2258,7 +2326,7 @@ public final class WorkspacesGetNspSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesSubscriptionListForWorkSpace.json
+     * x-ms-original-file: 2026-03-01/WorkspacesSubscriptionListForWorkSpace.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -2279,7 +2347,7 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01/WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -2300,7 +2368,7 @@ public final class WorkspacesListByResourceGroupSamples {
  */
 public final class WorkspacesListNspSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_List.json
+     * x-ms-original-file: 2026-03-01/NSPForWorkspaces_List.json
      */
     /**
      * Sample code: List NSP configs by Scheduled Query Rule.
@@ -2322,7 +2390,7 @@ public final class WorkspacesListNspSamples {
  */
 public final class WorkspacesReconcileNspSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_Reconcile.json
+     * x-ms-original-file: 2026-03-01/NSPForWorkspaces_Reconcile.json
      */
     /**
      * Sample code: Reconcile NSP config for Scheduled Query Rule.
@@ -2350,7 +2418,7 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesUpdate.json
+     * x-ms-original-file: 2026-03-01/WorkspacesUpdate.json
      */
     /**
      * Sample code: WorkspacesPatch.

@@ -23,7 +23,7 @@ public final class SavedSearchesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"category\":\"nu\",\"displayName\":\"tggmuwdchozfnkfe\",\"query\":\"lv\",\"functionAlias\":\"oakizvoai\",\"functionParameters\":\"a\",\"version\":5916569228093212039,\"tags\":[{\"name\":\"guyxlyk\",\"value\":\"phvxz\"},{\"name\":\"wxh\",\"value\":\"pejtl\"},{\"name\":\"exaonwivkcq\",\"value\":\"rxhxkn\"}]},\"etag\":\"crmmkyupijuby\",\"id\":\"fkak\",\"name\":\"qfrkemyildudxj\",\"type\":\"sco\"}";
+            = "{\"properties\":{\"category\":\"sfuztlvtmv\",\"displayName\":\"gbwidqlvh\",\"query\":\"koveof\",\"functionAlias\":\"rvjfnmjmvlw\",\"functionParameters\":\"giblkujrllf\",\"version\":5678275731917697237,\"tags\":[{\"name\":\"puuyjucejik\",\"value\":\"oeo\"}]},\"etag\":\"tzejetjklnt\",\"id\":\"yjuzkdb\",\"name\":\"zolxrzvhqjwtr\",\"type\":\"tgvgzp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,29 +33,26 @@ public final class SavedSearchesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SavedSearch response = manager.savedSearches()
-            .define("iyoypsuhbrnnhj")
-            .withExistingWorkspace("rsxkr", "lbjazejww")
-            .withCategory("sqwjhqkbiwetpozy")
-            .withDisplayName("yqiq")
-            .withQuery("hgf")
-            .withTags(Arrays.asList(new Tag().withName("ziu").withValue("fbzkk"),
-                new Tag().withName("tnhqsycl").withValue("selpkpbaf"),
-                new Tag().withName("afhlbyl").withValue("cbevxrhyzdfw"),
-                new Tag().withName("sofpltd").withValue("mairrh")))
-            .withEtag("fnrac")
-            .withFunctionAlias("tzlexbs")
-            .withFunctionParameters("e")
-            .withVersion(1155806277619986871L)
+            .define("diw")
+            .withExistingWorkspace("hqo", "oihiqak")
+            .withCategory("brkwpzdqt")
+            .withDisplayName("hcspo")
+            .withQuery("aqa")
+            .withTags(Arrays.asList(new Tag().withName("nt").withValue("batzviqsows")))
+            .withEtag("el")
+            .withFunctionAlias("ipietgbe")
+            .withFunctionParameters("fulbmoichdl")
+            .withVersion(2320024637229879794L)
             .create();
 
-        Assertions.assertEquals("crmmkyupijuby", response.etag());
-        Assertions.assertEquals("nu", response.category());
-        Assertions.assertEquals("tggmuwdchozfnkfe", response.displayName());
-        Assertions.assertEquals("lv", response.query());
-        Assertions.assertEquals("oakizvoai", response.functionAlias());
-        Assertions.assertEquals("a", response.functionParameters());
-        Assertions.assertEquals(5916569228093212039L, response.version());
-        Assertions.assertEquals("guyxlyk", response.tags().get(0).name());
-        Assertions.assertEquals("phvxz", response.tags().get(0).value());
+        Assertions.assertEquals("tzejetjklnt", response.etag());
+        Assertions.assertEquals("sfuztlvtmv", response.category());
+        Assertions.assertEquals("gbwidqlvh", response.displayName());
+        Assertions.assertEquals("koveof", response.query());
+        Assertions.assertEquals("rvjfnmjmvlw", response.functionAlias());
+        Assertions.assertEquals("giblkujrllf", response.functionParameters());
+        Assertions.assertEquals(5678275731917697237L, response.version());
+        Assertions.assertEquals("puuyjucejik", response.tags().get(0).name());
+        Assertions.assertEquals("oeo", response.tags().get(0).value());
     }
 }

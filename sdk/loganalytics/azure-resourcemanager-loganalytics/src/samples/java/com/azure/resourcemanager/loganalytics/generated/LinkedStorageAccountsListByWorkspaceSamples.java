@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsListByWorkspace.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsListByWorkspace.json
      */
     /**
      * Sample code: Gets list of linked storage accounts on a workspace.

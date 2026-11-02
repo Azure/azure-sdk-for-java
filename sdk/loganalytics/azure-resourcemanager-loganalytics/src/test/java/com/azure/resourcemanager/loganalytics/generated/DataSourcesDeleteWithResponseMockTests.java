@@ -28,7 +28,7 @@ public final class DataSourcesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.dataSources()
-            .deleteWithResponse("piaccxnafb", "qroohtu", "vmaonurjt", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("innixjawrtmjfj", "yccxlzhcox", "vnekhenlusfnrdtj", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -28,7 +28,7 @@ public final class SavedSearchesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.savedSearches()
-            .deleteWithResponse("tkschgcgqyhl", "seyqrhvyeldotjv", "kwiswskukjtas", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("d", "saoafcluqvox", "ycjimryvwgcwwpbm", com.azure.core.util.Context.NONE);
 
     }
 }
