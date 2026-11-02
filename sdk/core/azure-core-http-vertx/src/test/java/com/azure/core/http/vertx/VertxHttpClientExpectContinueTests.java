@@ -8,17 +8,23 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.RequestOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Disposable;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -26,15 +32,20 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_DEFAULTS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests that the client honours {@code Expect: 100-continue} on the wire: the headers are sent, the body is withheld
@@ -46,13 +57,8 @@ public class VertxHttpClientExpectContinueTests {
     private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(30);
     // Keep this below the server's 500 ms settle window and the one-second continue fallback.
     private static final Duration WRITE_TIMEOUT = Duration.ofMillis(250);
-
-    // Longer than the one-second continue fallback, so a fallback started before the header write would elapse
-    // while the headers are still waiting to be written.
-    private static final Duration HEADER_READ_DELAY = Duration.ofMillis(1500);
-    private static final int SMALL_SOCKET_BUFFER = 8 * 1024;
-    // Far larger than the socket buffers on both ends, so the header write cannot complete until the server reads.
-    private static final int LARGE_HEADER_LENGTH = 4 * 1024 * 1024;
+    // Mirrors the client's wait for 100 Continue before sending the body anyway.
+    private static final Duration EXPECT_CONTINUE_FALLBACK = Duration.ofSeconds(1);
 
     @ParameterizedTest
     @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })
@@ -101,32 +107,53 @@ public class VertxHttpClientExpectContinueTests {
 
     @Test
     public void fallbackWaitStartsOnceTheHeadersAreWritten() throws Exception {
-        // The fallback must give the service its full wait to answer after the headers have been written, not count
-        // time the headers spent waiting to reach the wire. Headers far larger than the socket buffers, which the
-        // server does not start reading until the fallback would already have elapsed, keep the header write pending.
-        // Were the wait to start before the header write, the body would be queued right behind the headers and
-        // arrive before the server could answer the expectation.
-        try (ExpectContinueServer server
-            = new ExpectContinueServer(true, 0, HEADER_READ_DELAY.toMillis(), SMALL_SOCKET_BUFFER)) {
-            server.start();
+        // The service must get the full fallback wait to answer after the headers are written, regardless of how long
+        // the header write takes. Driven through a mocked request so the header write is completed on demand.
+        Vertx vertx = Vertx.vertx();
+        try {
+            MockedRequest request = new MockedRequest();
+            Disposable exchange = request.send(vertx);
 
-            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
-            request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
-            request.getHeaders().set(HttpHeaderName.fromString("x-ms-padding"), largeHeaderValue());
+            // Hold the header write well past the fallback; no body may be written while it is pending.
+            Thread.sleep(EXPECT_CONTINUE_FALLBACK.toMillis() * 2);
+            assertEquals(0, request.bodyWrites.get(),
+                "the fallback elapsed while the headers were still being written");
 
-            HttpClient client = new VertxHttpClientBuilder()
-                .httpClientOptions(new HttpClientOptions().setSendBufferSize(SMALL_SOCKET_BUFFER))
-                .responseTimeout(RESPONSE_TIMEOUT)
-                .build();
-            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
+            request.headerWrite.complete();
 
-            assertNotNull(response, "the request did not complete");
-            assertEquals(201, response.getStatusCode());
-            assertTrue(server.awaitRequest(), "the request never reached the server");
-
-            assertEquals(0, server.bodyBytesBeforeContinue,
+            // Timers never fire early, so the fallback cannot have elapsed this soon after the header write.
+            Thread.sleep(EXPECT_CONTINUE_FALLBACK.toMillis() / 2);
+            assertEquals(0, request.bodyWrites.get(),
                 "the body was sent before the service had its full wait to answer the expectation");
-            assertEquals(BODY.length, server.bodyBytesAfterContinue, "the body was not delivered after 100 Continue");
+
+            assertTrue(request.bodyWritten.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS),
+                "the body was never sent once the fallback elapsed");
+            exchange.dispose();
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    public void continueBeforeTheHeaderWriteCompletesWritesTheBodyOnce() throws Exception {
+        // If 100 Continue is handled before the header write is reported complete, the body has already been sent and
+        // no fallback may be started to send it again.
+        Vertx vertx = Vertx.vertx();
+        try {
+            MockedRequest request = new MockedRequest();
+            Disposable exchange = request.send(vertx);
+
+            request.continueHandler.get().handle(null);
+            assertEquals(1, request.bodyWrites.get(), "100 Continue did not send the body");
+
+            request.headerWrite.complete();
+
+            // Outlast a fallback that might have been started by the header write.
+            Thread.sleep(EXPECT_CONTINUE_FALLBACK.toMillis() * 2);
+            assertEquals(1, request.bodyWrites.get(), "the body was written more than once");
+            exchange.dispose();
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
         }
     }
 
@@ -173,10 +200,80 @@ public class VertxHttpClientExpectContinueTests {
         }
     }
 
-    private static String largeHeaderValue() {
-        char[] value = new char[LARGE_HEADER_LENGTH];
-        Arrays.fill(value, 'a');
-        return new String(value);
+    /**
+     * A Vert.x request whose header write completes only when the test says so, recording the body writes. Sent
+     * through a {@link VertxHttpClient} wrapping a mocked Vert.x client, on a Vert.x context so the client can use
+     * Vert.x timers.
+     */
+    private static final class MockedRequest {
+        private final Promise<Void> headerWrite = Promise.promise();
+        private final AtomicReference<Handler<Void>> continueHandler = new AtomicReference<>();
+        private final AtomicInteger bodyWrites = new AtomicInteger();
+        private final CountDownLatch bodyWritten = new CountDownLatch(1);
+        private final CountDownLatch headersSent = new CountDownLatch(1);
+        private final HttpClientRequest request;
+
+        @SuppressWarnings("unchecked")
+        MockedRequest() {
+            request = mock(HttpClientRequest.class, invocation -> {
+                switch (invocation.getMethod().getName()) {
+                    // sendHead on Vert.x 4.5 and 5.0, writeHead on 5.1 and later.
+                    case "sendHead":
+                    case "writeHead":
+                        headersSent.countDown();
+                        return headerWrite.future();
+
+                    case "continueHandler":
+                        continueHandler.set(invocation.getArgument(0));
+                        return null;
+
+                    case "end":
+                        bodyWrites.incrementAndGet();
+                        bodyWritten.countDown();
+                        return Future.succeededFuture();
+
+                    case "response":
+                        // The exchange is never answered; the test ends it by disposing the subscription.
+                        return Promise.promise().future();
+
+                    case "version":
+                        return HttpVersion.HTTP_1_1;
+
+                    case "reset":
+                        return invocation.getMethod().getReturnType() == boolean.class
+                            ? true
+                            : Future.succeededFuture();
+
+                    default:
+                        return RETURNS_DEFAULTS.answer(invocation);
+                }
+            });
+        }
+
+        Disposable send(Vertx vertx) throws Exception {
+            io.vertx.core.http.HttpClient vertxClient = mock(io.vertx.core.http.HttpClient.class);
+            when(vertxClient.request(any(RequestOptions.class))).thenReturn(Future.succeededFuture(request));
+            HttpClient client = new VertxHttpClient(vertxClient, new HttpClientOptions(), Duration.ZERO);
+
+            HttpRequest azureRequest
+                = new HttpRequest(HttpMethod.PUT, "http://localhost/expect-continue").setBody(BODY);
+            azureRequest.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+
+            AtomicReference<Disposable> exchange = new AtomicReference<>();
+            vertx.runOnContext(ignored -> exchange.set(client.send(azureRequest).subscribe(null, error -> {
+            })));
+
+            assertTrue(headersSent.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS),
+                "the client never wrote the headers");
+            assertNotNull(continueHandler.get(), "the client did not register a continue handler");
+            assertEquals(0, bodyWrites.get(), "the body was written before the headers");
+            return () -> {
+                Disposable disposable = exchange.get();
+                if (disposable != null) {
+                    disposable.dispose();
+                }
+            };
+        }
     }
 
     /**
@@ -200,7 +297,6 @@ public class VertxHttpClientExpectContinueTests {
 
         private final boolean sendContinue;
         private final int rejectWithStatus;
-        private final long headerReadDelayMillis;
 
         ExpectContinueServer() throws IOException {
             this(true, 0);
@@ -211,24 +307,9 @@ public class VertxHttpClientExpectContinueTests {
         }
 
         ExpectContinueServer(boolean sendContinue, int rejectWithStatus) throws IOException {
-            this(sendContinue, rejectWithStatus, 0, 0);
-        }
-
-        /*
-         * A positive headerReadDelayMillis holds off reading the request until that long after the connection is
-         * accepted, and a positive receiveBufferSize shrinks the receive buffer of accepted connections.
-         */
-        ExpectContinueServer(boolean sendContinue, int rejectWithStatus, long headerReadDelayMillis,
-            int receiveBufferSize) throws IOException {
-            this.serverSocket = new ServerSocket();
-            if (receiveBufferSize > 0) {
-                // Must be set before binding to apply to accepted connections.
-                serverSocket.setReceiveBufferSize(receiveBufferSize);
-            }
-            serverSocket.bind(new InetSocketAddress(0));
+            this.serverSocket = new ServerSocket(0);
             this.sendContinue = sendContinue;
             this.rejectWithStatus = rejectWithStatus;
-            this.headerReadDelayMillis = headerReadDelayMillis;
         }
 
         URL url() throws IOException {
@@ -248,14 +329,8 @@ public class VertxHttpClientExpectContinueTests {
         private void serve() {
             try (Socket socket = serverSocket.accept()) {
                 socket.setTcpNoDelay(true);
-                // Buffered so the headers can be read a byte at a time cheaply. Body bytes buffered along with them
-                // are still counted, as the body reads below drain this buffer first.
-                InputStream in = new BufferedInputStream(socket.getInputStream());
+                InputStream in = socket.getInputStream();
                 OutputStream out = socket.getOutputStream();
-
-                if (headerReadDelayMillis > 0) {
-                    Thread.sleep(headerReadDelayMillis);
-                }
 
                 int contentLength = readHeaders(in);
 
@@ -284,7 +359,7 @@ public class VertxHttpClientExpectContinueTests {
 
                 out.write("HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n".getBytes(StandardCharsets.UTF_8));
                 out.flush();
-            } catch (IOException | InterruptedException ex) {
+            } catch (IOException ex) {
                 // Leave the recorded values as they are; the test assertions report the failure.
             } finally {
                 requestHandled.countDown();
