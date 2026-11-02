@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0 (2026-11-02)
+## 4.9.1 (2026-11-02)
 
 ### Other Changes
 

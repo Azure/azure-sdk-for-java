@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="58" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-11-02" time="14:36:47">
+  <environment user="jairmyree" user-domain="" clr-version="10.0.14" nunit-version="2.5.8.0" cwd="/home/jairmyree/Repositories/Azure/azure-sdk-for-java" os-version="6.18.33.2-microsoft-standard-WSL2" machine-name="LAPTOP-7V3668CR" platform="Linux" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="1.6313" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/patch-mergeback-helpers.tests.ps1" executed="True" result="Success" success="True" time="0.7802" asserts="0" description="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/patch-mergeback-helpers.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="ConvertTo-ComparableVersion" executed="True" result="Success" success="True" time="0.1427" asserts="0" description="ConvertTo-ComparableVersion">
+            <results>
+              <test-suite type="ParameterizedTest" name="ConvertTo-ComparableVersion.sets LabelVersion to &lt;Expected&gt; for &lt;Version&gt;" executed="True" result="Success" success="True" time="0.0978" asserts="0" description="sets LabelVersion to &lt;Expected&gt; for &lt;Version&gt;">
+                <results>
+                  <test-case description="sets LabelVersion to 2 for 1.0.0-beta.2" name="ConvertTo-ComparableVersion.sets LabelVersion to 2 for 1.0.0-beta.2" time="0.0881" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="sets LabelVersion to 0 for 1.0.0-beta" name="ConvertTo-ComparableVersion.sets LabelVersion to 0 for 1.0.0-beta" time="0.0057" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="sets LabelVersion to 0 for 1.0.0" name="ConvertTo-ComparableVersion.sets LabelVersion to 0 for 1.0.0" time="0.004" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Compare-PatchVersion" executed="True" result="Success" success="True" time="0.1715" asserts="0" description="Compare-PatchVersion">
+            <results>
+              <test-case description="compares label versions numerically" name="Compare-PatchVersion.compares label versions numerically" time="0.0195" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="orders minor releases after older patches and same-minor prereleases" name="Compare-PatchVersion.orders minor releases after older patches and same-minor prereleases" time="0.0058" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Patch changelog manifest" executed="True" result="Success" success="True" time="0.3113" asserts="0" description="Patch changelog manifest">
+            <results>
+              <test-case description="accepts the legacy inline metadata format" name="Patch changelog manifest.accepts the legacy inline metadata format" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="rejects content outside manifest entry blocks" name="Patch changelog manifest.rejects content outside manifest entry blocks" time="0.0394" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="rejects duplicate artifacts" name="Patch changelog manifest.rejects duplicate artifacts" time="0.0098" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="Patch changelog manifest.round-trips multiple exact changelog entries including &lt;Version&gt;" executed="True" result="Success" success="True" time="0.0695" asserts="0" description="round-trips multiple exact changelog entries including &lt;Version&gt;">
+                <results>
+                  <test-case description="round-trips multiple exact changelog entries including 2.0.3" name="Patch changelog manifest.round-trips multiple exact changelog entries including 2.0.3" time="0.0633" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="round-trips multiple exact changelog entries including 2.1.0" name="Patch changelog manifest.round-trips multiple exact changelog entries including 2.1.0" time="0.0061" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Resolve-PatchDependencyVersions" executed="True" result="Success" success="True" time="0.3356" asserts="0" description="Resolve-PatchDependencyVersions">
+            <results>
+              <test-case description="uses the most recent previously released dependency version" name="Resolve-PatchDependencyVersions.uses the most recent previously released dependency version" time="0.0171" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="leaves dependencies without prior upgrade history unchanged" name="Resolve-PatchDependencyVersions.leaves dependencies without prior upgrade history unchanged" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Update-VersionClientForPatch" executed="True" result="Success" success="True" time="0.4467" asserts="0" description="Update-VersionClientForPatch">
+            <results>
+              <test-case description="does not downgrade a newer dependency version on main" name="Update-VersionClientForPatch.does not downgrade a newer dependency version on main" time="0.006" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="does not downgrade a newer minor dependency version on main" name="Update-VersionClientForPatch.does not downgrade a newer minor dependency version on main" time="0.0162" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="does not modify unlisted artifacts" name="Update-VersionClientForPatch.does not modify unlisted artifacts" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="fails when a manifest artifact is missing from version_client.txt" name="Update-VersionClientForPatch.fails when a manifest artifact is missing from version_client.txt" time="0.0086" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="preserves an inline comment when updating an entry" name="Update-VersionClientForPatch.preserves an inline comment when updating an entry" time="0.0204" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="Update-VersionClientForPatch.promotes released version &lt;Version&gt; and preserves the main current version" executed="True" result="Success" success="True" time="0.0432" asserts="0" description="promotes released version &lt;Version&gt; and preserves the main current version">
+                <results>
+                  <test-case description="promotes released version 1.0.1 and preserves the main current version" name="Update-VersionClientForPatch.promotes released version 1.0.1 and preserves the main current version" time="0.0378" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="promotes released version 1.1.0 and preserves the main current version" name="Update-VersionClientForPatch.promotes released version 1.1.0 and preserves the main current version" time="0.0055" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Add-PatchChangelogEntry" executed="True" result="Success" success="True" time="0.4992" asserts="0" description="Add-PatchChangelogEntry">
+            <results>
+              <test-case description="inserts after newer prerelease entries and before older releases" name="Add-PatchChangelogEntry.inserts after newer prerelease entries and before older releases" time="0.0203" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="inserts a minor release before same-minor prereleases and older stable entries" name="Add-PatchChangelogEntry.inserts a minor release before same-minor prereleases and older stable entries" time="0.0144" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="is idempotent when the exact entry is already present" name="Add-PatchChangelogEntry.is idempotent when the exact entry is already present" time="0.0072" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="rejects conflicting content for an existing patch version" name="Add-PatchChangelogEntry.rejects conflicting content for an existing patch version" time="0.0064" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/patchhelpers.tests.ps1" executed="True" result="Success" success="True" time="0.8511" asserts="0" description="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/patchhelpers.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="FindArtifactsThatNeedPatching" executed="True" result="Success" success="True" time="0.4095" asserts="0" description="FindArtifactsThatNeedPatching">
+            <results>
+              <test-case description="Single artifact with no dependencies — no patch" name="FindArtifactsThatNeedPatching.Single artifact with no dependencies — no patch" time="0.0309" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Outdated dependency triggers patch" name="FindArtifactsThatNeedPatching.Outdated dependency triggers patch" time="0.0227" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Up-to-date dependency — no patch" name="FindArtifactsThatNeedPatching.Up-to-date dependency — no patch" time="0.0079" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Cascading patches through dependency chain" name="FindArtifactsThatNeedPatching.Cascading patches through dependency chain" time="0.0056" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="External dependency version difference is ignored (no false positive)" name="FindArtifactsThatNeedPatching.External dependency version difference is ignored (no false positive)" time="0.123" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Released azure-core missing from patch list triggers dependent patch" name="FindArtifactsThatNeedPatching.Released azure-core missing from patch list triggers dependent patch" time="0.0952" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Released azure-identity missing from patch list triggers dependent patch" name="FindArtifactsThatNeedPatching.Released azure-identity missing from patch list triggers dependent patch" time="0.0152" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Missing Azure dependency without Maven GA version is ignored" name="FindArtifactsThatNeedPatching.Missing Azure dependency without Maven GA version is ignored" time="0.0156" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Caches Maven lookup for missing dependency shared by multiple artifacts" name="FindArtifactsThatNeedPatching.Caches Maven lookup for missing dependency shared by multiple artifacts" time="0.0315" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Independent release of a dependency triggers dependent patch (seeding loop regression)" name="FindArtifactsThatNeedPatching.Independent release of a dependency triggers dependent patch (seeding loop regression)" time="0.0112" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Dependency with no sibling dependents still triggers patch (containerinstance scenario)" name="FindArtifactsThatNeedPatching.Dependency with no sibling dependents still triggers patch (containerinstance scenario)" time="0.0097" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Diamond dependency — all paths detected" name="FindArtifactsThatNeedPatching.Diamond dependency — all paths detected" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Multiple outdated deps — patch version computed once" name="FindArtifactsThatNeedPatching.Multiple outdated deps — patch version computed once" time="0.0056" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Unordered hashtable: cascading still works when iteration order is non-deterministic" name="FindArtifactsThatNeedPatching.Unordered hashtable: cascading still works when iteration order is non-deterministic" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Handles out-of-order: dependent listed before its dependency (checkpointstore scenario)" name="FindArtifactsThatNeedPatching.Handles out-of-order: dependent listed before its dependency (checkpointstore scenario)" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="GetPatchVersion" executed="True" result="Success" success="True" time="0.43" asserts="0" description="GetPatchVersion">
+            <results>
+              <test-case description="Bumps the patch version (1.0.0 → 1.0.1)" name="GetPatchVersion.Bumps the patch version (1.0.0 → 1.0.1)" time="0.0035" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Bumps an existing patch version (12.24.1 → 12.24.2)" name="GetPatchVersion.Bumps an existing patch version (12.24.1 → 12.24.2)" time="0.0028" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Keeps patch mode when the minor switch is explicitly false" name="GetPatchVersion.Keeps patch mode when the minor switch is explicitly false" time="0.0042" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="GetPatchVersion.Bumps &lt;Version&gt; to minor release &lt;Expected&gt;" executed="True" result="Success" success="True" time="0.0058" asserts="0" description="Bumps &lt;Version&gt; to minor release &lt;Expected&gt;">
+                <results>
+                  <test-case description="Bumps 1.0.0 to minor release 1.1.0" name="GetPatchVersion.Bumps 1.0.0 to minor release 1.1.0" time="0.0032" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Bumps 12.24.7 to minor release 12.25.0" name="GetPatchVersion.Bumps 12.24.7 to minor release 12.25.0" time="0.0027" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="FindArtifactsThatNeedPatching with minor versions" executed="True" result="Success" success="True" time="0.5206" asserts="0" description="FindArtifactsThatNeedPatching with minor versions">
+            <results>
+              <test-case description="Leaves aligned packages and external dependencies unselected" name="FindArtifactsThatNeedPatching with minor versions.Leaves aligned packages and external dependencies unselected" time="0.0418" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Uses minor targets when an Azure dependency is resolved outside the patch list" name="FindArtifactsThatNeedPatching with minor versions.Uses minor targets when an Azure dependency is resolved outside the patch list" time="0.0214" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="FindArtifactsThatNeedPatching with minor versions.Cascades minor targets in either artifact order" executed="True" result="Success" success="True" time="0.0225" asserts="0" description="Cascades minor targets in either artifact order">
+                <results>
+                  <test-case description="Cascades minor targets in either artifact order" name="FindArtifactsThatNeedPatching with minor versions.Cascades minor targets in either artifact order(False)" time="0.0152" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Cascades minor targets in either artifact order" name="FindArtifactsThatNeedPatching with minor versions.Cascades minor targets in either artifact order(True)" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="GetResolvedDependencyVersions" executed="True" result="Success" success="True" time="0.6237" asserts="0" description="GetResolvedDependencyVersions">
+            <results>
+              <test-case description="Uses qualified minor release overrides without crossing group IDs" name="GetResolvedDependencyVersions.Uses qualified minor release overrides without crossing group IDs" time="0.0174" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Uses pom.xml GA version for dependency marker deps" name="GetResolvedDependencyVersions.Uses pom.xml GA version for dependency marker deps" time="0.0093" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Substitutes beta pom version with version_client.txt column 2 (GA)" name="GetResolvedDependencyVersions.Substitutes beta pom version with version_client.txt column 2 (GA)" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="PatchVersionOverrides take precedence over pom and version_client.txt" name="GetResolvedDependencyVersions.PatchVersionOverrides take precedence over pom and version_client.txt" time="0.0089" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="PatchVersionOverrides also override beta pom versions" name="GetResolvedDependencyVersions.PatchVersionOverrides also override beta pom versions" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Falls back to pom.xml version for external dependencies not in version_client.txt" name="GetResolvedDependencyVersions.Falls back to pom.xml version for external dependencies not in version_client.txt" time="0.0082" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Excludes test-scoped dependencies" name="GetResolvedDependencyVersions.Excludes test-scoped dependencies" time="0.0078" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Skips comment and empty lines in version_client.txt" name="GetResolvedDependencyVersions.Skips comment and empty lines in version_client.txt" time="0.0124" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Handles duplicate artifactId with different groupIds (com.azure vs com.azure.v2)" name="GetResolvedDependencyVersions.Handles duplicate artifactId with different groupIds (com.azure vs com.azure.v2)" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="GetTopologicalSort" executed="True" result="Success" success="True" time="0.6522" asserts="0" description="GetTopologicalSort">
+            <results>
+              <test-case description="Linear chain returns correct order" name="GetTopologicalSort.Linear chain returns correct order" time="0.0186" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Independent artifacts are each returned" name="GetTopologicalSort.Independent artifacts are each returned" time="0.0057" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

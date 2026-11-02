@@ -1,6 +1,6 @@
 # Release History
 
-## 7.19.0 (2026-11-02)
+## 7.19.1 (2026-11-02)
 
 ### Other Changes
 
