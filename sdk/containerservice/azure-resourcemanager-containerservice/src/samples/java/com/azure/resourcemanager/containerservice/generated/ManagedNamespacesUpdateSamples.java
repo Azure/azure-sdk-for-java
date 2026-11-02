@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedNamespacesUpdateTags.json
+     * x-ms-original-file: 2026-08-01/ManagedNamespacesUpdateTags.json
      */
     /**
      * Sample code: Update Managed Namespace Tags.
