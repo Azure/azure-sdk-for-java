@@ -21,6 +21,11 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
      */
     private EnablementState enablementStatus;
 
+    /*
+     * Optional error message if the service is in Failed state.
+     */
+    private ErrorDetails errorDetails;
+
     /**
      * Creates an instance of UpdateManagerInformation class.
      */
@@ -37,6 +42,15 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
     }
 
     /**
+     * Get the errorDetails property: Optional error message if the service is in Failed state.
+     * 
+     * @return the errorDetails value.
+     */
+    public ErrorDetails errorDetails() {
+        return this.errorDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -44,6 +58,7 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("enablementStatus",
             this.enablementStatus == null ? null : this.enablementStatus.toString());
+        jsonWriter.writeJsonField("errorDetails", this.errorDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,6 +81,8 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedUpdateManagerInformation.enablementStatus
                         = EnablementState.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedUpdateManagerInformation.errorDetails = ErrorDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
