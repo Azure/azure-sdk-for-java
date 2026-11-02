@@ -33,7 +33,7 @@ public final class AzureCacheForRedisMigrationProperties extends MigrationProper
     private boolean switchDns;
 
     /*
-     * Sets whether the data is migrated from source to target or not. This property must be true during the preview.
+     * Sets whether the data is migrated from source to target or not. Set this property to true to skip data migration.
      */
     private boolean skipDataMigration;
 
@@ -105,8 +105,8 @@ public final class AzureCacheForRedisMigrationProperties extends MigrationProper
     }
 
     /**
-     * Get the skipDataMigration property: Sets whether the data is migrated from source to target or not. This property
-     * must be true during the preview.
+     * Get the skipDataMigration property: Sets whether the data is migrated from source to target or not. Set this
+     * property to true to skip data migration.
      * 
      * @return the skipDataMigration value.
      */
@@ -115,8 +115,8 @@ public final class AzureCacheForRedisMigrationProperties extends MigrationProper
     }
 
     /**
-     * Set the skipDataMigration property: Sets whether the data is migrated from source to target or not. This property
-     * must be true during the preview.
+     * Set the skipDataMigration property: Sets whether the data is migrated from source to target or not. Set this
+     * property to true to skip data migration.
      * 
      * @param skipDataMigration the skipDataMigration value to set.
      * @return the AzureCacheForRedisMigrationProperties object itself.
@@ -195,6 +195,9 @@ public final class AzureCacheForRedisMigrationProperties extends MigrationProper
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("lastModifiedTime".equals(fieldName)) {
                     deserializedAzureCacheForRedisMigrationProperties.withLastModifiedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("rollbackEligibleUntil".equals(fieldName)) {
+                    deserializedAzureCacheForRedisMigrationProperties.withRollbackEligibleUntil(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("sourceResourceId".equals(fieldName)) {
                     deserializedAzureCacheForRedisMigrationProperties.sourceResourceId = reader.getString();

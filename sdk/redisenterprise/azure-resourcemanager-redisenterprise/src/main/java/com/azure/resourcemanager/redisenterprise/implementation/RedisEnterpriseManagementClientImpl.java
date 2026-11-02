@@ -27,6 +27,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.redisenterprise.fluent.AccessPolicyAssignmentsClient;
+import com.azure.resourcemanager.redisenterprise.fluent.ClustersClient;
 import com.azure.resourcemanager.redisenterprise.fluent.DatabasesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.MigrationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsClient;
@@ -148,6 +149,20 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
     }
 
     /**
+     * The ClustersClient object to access its operations.
+     */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /**
      * The DatabasesClient object to access its operations.
      */
     private final DatabasesClient databases;
@@ -262,8 +277,9 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01-preview";
+        this.apiVersion = "2026-09-01";
         this.operations = new OperationsClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);

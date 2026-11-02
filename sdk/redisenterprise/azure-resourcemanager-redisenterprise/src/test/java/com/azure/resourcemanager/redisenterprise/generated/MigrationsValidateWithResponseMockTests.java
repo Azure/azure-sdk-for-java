@@ -22,7 +22,7 @@ public final class MigrationsValidateWithResponseMockTests {
     @Test
     public void testValidateWithResponse() throws Exception {
         String responseStr
-            = "{\"isValid\":false,\"errors\":[{\"disparities\":[{\"category\":\"b\",\"message\":\"e\"},{\"category\":\"dawkzbali\",\"message\":\"urqhaka\"}]},{\"disparities\":[{\"category\":\"ashsfwxos\",\"message\":\"w\"},{\"category\":\"xcug\",\"message\":\"cjooxdjebwpucwwf\"},{\"category\":\"ovbvmeueciv\",\"message\":\"hzceuojgjrwjue\"}]},{\"disparities\":[{\"category\":\"twm\",\"message\":\"dytdxwitx\"},{\"category\":\"rjaw\",\"message\":\"qwgxhniskx\"}]}],\"warnings\":[{\"disparities\":[{\"category\":\"y\",\"message\":\"gklwn\"}]},{\"disparities\":[{\"category\":\"hjdauwhvylwz\",\"message\":\"tdhxujznbmpowuwp\"},{\"category\":\"zqlveualupjmkhf\",\"message\":\"obbc\"}]},{\"disparities\":[{\"category\":\"s\",\"message\":\"tjrip\"},{\"category\":\"rbpbewtghfgblcg\",\"message\":\"xzvlvqhjkbegib\"},{\"category\":\"nmxiebwwaloayqc\",\"message\":\"wrtz\"},{\"category\":\"uzgwyzmhtx\",\"message\":\"ngmtsavjcb\"}]},{\"disparities\":[{\"category\":\"xqpsrknftguv\",\"message\":\"iuhprwmdyvxqta\"},{\"category\":\"riwwroy\",\"message\":\"bexrmcq\"},{\"category\":\"bycnojvkn\",\"message\":\"e\"},{\"category\":\"qsgzvahapj\",\"message\":\"zhpvgqzcjrvxd\"}]}]}";
+            = "{\"isValid\":true,\"errors\":[{\"disparities\":[{\"category\":\"bnbbeldawkz\",\"message\":\"ali\"}]}],\"warnings\":[{\"disparities\":[{\"category\":\"hakauhashsf\",\"message\":\"xosow\"},{\"category\":\"xcug\",\"message\":\"cjooxdjebwpucwwf\"},{\"category\":\"ovbvmeueciv\",\"message\":\"hzceuojgjrwjue\"}]},{\"disparities\":[{\"category\":\"twm\",\"message\":\"dytdxwitx\"},{\"category\":\"rjaw\",\"message\":\"qwgxhniskx\"}]},{\"disparities\":[{\"category\":\"kpycgklwndnhjd\",\"message\":\"uwhvylwzbtdhxujz\"},{\"category\":\"bm\",\"message\":\"ow\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,15 @@ public final class MigrationsValidateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationValidationResponse response = manager.migrations()
-            .validateWithResponse("ualaexqpvfadmw", "rcrgvx",
-                new MigrationValidationRequest().withSourceResourceId("vgomz")
-                    .withSkipDataMigration(false)
-                    .withForceMigrate(true),
+            .validateWithResponse("aex", "pvfadmwsrcr",
+                new MigrationValidationRequest().withSourceResourceId("vxpvgomz").withSkipDataMigration(false),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.isValid());
-        Assertions.assertEquals("b", response.errors().get(0).disparities().get(0).category());
-        Assertions.assertEquals("e", response.errors().get(0).disparities().get(0).message());
-        Assertions.assertEquals("y", response.warnings().get(0).disparities().get(0).category());
-        Assertions.assertEquals("gklwn", response.warnings().get(0).disparities().get(0).message());
+        Assertions.assertTrue(response.isValid());
+        Assertions.assertEquals("bnbbeldawkz", response.errors().get(0).disparities().get(0).category());
+        Assertions.assertEquals("ali", response.errors().get(0).disparities().get(0).message());
+        Assertions.assertEquals("hakauhashsf", response.warnings().get(0).disparities().get(0).category());
+        Assertions.assertEquals("xosow", response.warnings().get(0).disparities().get(0).message());
     }
 }

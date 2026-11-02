@@ -17,7 +17,7 @@ import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
  */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate Clustering on No Cluster Cache.
@@ -38,7 +38,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesUpdate.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate.

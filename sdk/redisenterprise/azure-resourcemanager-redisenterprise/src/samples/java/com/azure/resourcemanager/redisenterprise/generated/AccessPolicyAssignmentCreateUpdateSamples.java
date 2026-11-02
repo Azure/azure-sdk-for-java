@@ -11,27 +11,7 @@ import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPr
  */
 public final class AccessPolicyAssignmentCreateUpdateSamples {
     /*
-     * x-ms-original-file:
-     * 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
-     */
-    /**
-     * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.
-     * 
-     * @param manager Entry point to RedisEnterpriseManager.
-     */
-    public static void redisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString(
-        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.accessPolicyAssignments()
-            .define("defaultTestEntraApp1")
-            .withExistingDatabase("rg1", "cache1", "default")
-            .withAccessPolicyName("default")
-            .withAccessString("+@read ~cache:*")
-            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("6497c918-11ad-41e7-1b0f-7c518a87d0b0"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdate.

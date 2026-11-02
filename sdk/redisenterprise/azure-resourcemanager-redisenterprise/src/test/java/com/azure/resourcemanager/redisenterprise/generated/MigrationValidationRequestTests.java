@@ -11,22 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationValidationRequest model = BinaryData
-            .fromString("{\"sourceResourceId\":\"rlkhbzhfepgzgq\",\"skipDataMigration\":false,\"forceMigrate\":true}")
-            .toObject(MigrationValidationRequest.class);
-        Assertions.assertEquals("rlkhbzhfepgzgq", model.sourceResourceId());
+        MigrationValidationRequest model
+            = BinaryData.fromString("{\"sourceResourceId\":\"oodqxhcrm\",\"skipDataMigration\":false}")
+                .toObject(MigrationValidationRequest.class);
+        Assertions.assertEquals("oodqxhcrm", model.sourceResourceId());
         Assertions.assertFalse(model.skipDataMigration());
-        Assertions.assertTrue(model.forceMigrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationValidationRequest model = new MigrationValidationRequest().withSourceResourceId("rlkhbzhfepgzgq")
-            .withSkipDataMigration(false)
-            .withForceMigrate(true);
+        MigrationValidationRequest model
+            = new MigrationValidationRequest().withSourceResourceId("oodqxhcrm").withSkipDataMigration(false);
         model = BinaryData.fromObject(model).toObject(MigrationValidationRequest.class);
-        Assertions.assertEquals("rlkhbzhfepgzgq", model.sourceResourceId());
+        Assertions.assertEquals("oodqxhcrm", model.sourceResourceId());
         Assertions.assertFalse(model.skipDataMigration());
-        Assertions.assertTrue(model.forceMigrate());
     }
 }

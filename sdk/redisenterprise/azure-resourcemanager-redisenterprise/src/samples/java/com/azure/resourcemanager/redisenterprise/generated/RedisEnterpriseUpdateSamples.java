@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseUpdate.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.

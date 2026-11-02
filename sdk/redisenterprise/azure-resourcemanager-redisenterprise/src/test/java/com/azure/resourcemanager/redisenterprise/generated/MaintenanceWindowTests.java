@@ -15,24 +15,24 @@ public final class MaintenanceWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceWindow model = BinaryData.fromString(
-            "{\"type\":\"Weekly\",\"duration\":\"cgyncocpecf\",\"startHourUtc\":80244831,\"schedule\":{\"dayOfWeek\":\"Monday\"}}")
+            "{\"type\":\"Weekly\",\"duration\":\"giotkftutqxlngx\",\"startHourUtc\":1915071310,\"schedule\":{\"dayOfWeek\":\"Wednesday\"}}")
             .toObject(MaintenanceWindow.class);
         Assertions.assertEquals(MaintenanceWindowType.WEEKLY, model.type());
-        Assertions.assertEquals("cgyncocpecf", model.duration());
-        Assertions.assertEquals(80244831, model.startHourUtc());
-        Assertions.assertEquals(MaintenanceDayOfWeek.MONDAY, model.schedule().dayOfWeek());
+        Assertions.assertEquals("giotkftutqxlngx", model.duration());
+        Assertions.assertEquals(1915071310, model.startHourUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeek.WEDNESDAY, model.schedule().dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceWindow model = new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
-            .withDuration("cgyncocpecf")
-            .withStartHourUtc(80244831)
-            .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.MONDAY));
+            .withDuration("giotkftutqxlngx")
+            .withStartHourUtc(1915071310)
+            .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY));
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
         Assertions.assertEquals(MaintenanceWindowType.WEEKLY, model.type());
-        Assertions.assertEquals("cgyncocpecf", model.duration());
-        Assertions.assertEquals(80244831, model.startHourUtc());
-        Assertions.assertEquals(MaintenanceDayOfWeek.MONDAY, model.schedule().dayOfWeek());
+        Assertions.assertEquals("giotkftutqxlngx", model.duration());
+        Assertions.assertEquals(1915071310, model.startHourUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeek.WEDNESDAY, model.schedule().dayOfWeek());
     }
 }

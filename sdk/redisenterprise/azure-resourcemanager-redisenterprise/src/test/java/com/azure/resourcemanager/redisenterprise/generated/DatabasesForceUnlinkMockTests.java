@@ -30,8 +30,9 @@ public final class DatabasesForceUnlinkMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databases()
-            .forceUnlink("hibnuqqkpika", "rgvtqag", "buynhijggm",
-                new ForceUnlinkParameters().withIds(Arrays.asList("fsiarbutr")), com.azure.core.util.Context.NONE);
+            .forceUnlink("ec", "godebfqkkrbmpu", "gr",
+                new ForceUnlinkParameters().withIds(Arrays.asList("flz", "fbxzpuzycisp", "qzahmgkbrp", "y")),
+                com.azure.core.util.Context.NONE);
 
     }
 }

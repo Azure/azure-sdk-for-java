@@ -13,6 +13,7 @@ import com.azure.resourcemanager.redisenterprise.fluent.MigrationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationValidationResponseInner;
 import com.azure.resourcemanager.redisenterprise.models.Migration;
+import com.azure.resourcemanager.redisenterprise.models.MigrationUndoRequest;
 import com.azure.resourcemanager.redisenterprise.models.MigrationValidationRequest;
 import com.azure.resourcemanager.redisenterprise.models.MigrationValidationResponse;
 import com.azure.resourcemanager.redisenterprise.models.Migrations;
@@ -73,12 +74,20 @@ public final class MigrationsImpl implements Migrations {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
     }
 
-    public void cancel(String resourceGroupName, String clusterName) {
-        this.serviceClient().cancel(resourceGroupName, clusterName);
+    public void undo(String resourceGroupName, String clusterName) {
+        this.serviceClient().undo(resourceGroupName, clusterName);
     }
 
-    public void cancel(String resourceGroupName, String clusterName, Context context) {
-        this.serviceClient().cancel(resourceGroupName, clusterName, context);
+    public void undo(String resourceGroupName, String clusterName, MigrationUndoRequest body, Context context) {
+        this.serviceClient().undo(resourceGroupName, clusterName, body, context);
+    }
+
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
+        this.serviceClient().unlinkMigratedEndpoint(resourceGroupName, clusterName);
+    }
+
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().unlinkMigratedEndpoint(resourceGroupName, clusterName, context);
     }
 
     public Response<MigrationValidationResponse> validateWithResponse(String resourceGroupName, String clusterName,

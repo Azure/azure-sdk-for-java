@@ -17,35 +17,27 @@ public final class MaintenanceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceConfiguration model = BinaryData.fromString(
-            "{\"maintenanceWindows\":[{\"type\":\"Weekly\",\"duration\":\"owskanyktz\",\"startHourUtc\":159488471,\"schedule\":{\"dayOfWeek\":\"Wednesday\"}},{\"type\":\"Weekly\",\"duration\":\"wgqyw\",\"startHourUtc\":23718852,\"schedule\":{\"dayOfWeek\":\"Sunday\"}},{\"type\":\"Weekly\",\"duration\":\"ynhz\",\"startHourUtc\":299078768,\"schedule\":{\"dayOfWeek\":\"Monday\"}}]}")
+            "{\"maintenanceWindows\":[{\"type\":\"Weekly\",\"duration\":\"uhrzayvvt\",\"startHourUtc\":1432651590,\"schedule\":{\"dayOfWeek\":\"Saturday\"}}]}")
             .toObject(MaintenanceConfiguration.class);
         Assertions.assertEquals(MaintenanceWindowType.WEEKLY, model.maintenanceWindows().get(0).type());
-        Assertions.assertEquals("owskanyktz", model.maintenanceWindows().get(0).duration());
-        Assertions.assertEquals(159488471, model.maintenanceWindows().get(0).startHourUtc());
-        Assertions.assertEquals(MaintenanceDayOfWeek.WEDNESDAY,
+        Assertions.assertEquals("uhrzayvvt", model.maintenanceWindows().get(0).duration());
+        Assertions.assertEquals(1432651590, model.maintenanceWindows().get(0).startHourUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeek.SATURDAY,
             model.maintenanceWindows().get(0).schedule().dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceConfiguration model = new MaintenanceConfiguration().withMaintenanceWindows(Arrays.asList(
-            new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
-                .withDuration("owskanyktz")
-                .withStartHourUtc(159488471)
-                .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)),
-            new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
-                .withDuration("wgqyw")
-                .withStartHourUtc(23718852)
-                .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.SUNDAY)),
-            new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
-                .withDuration("ynhz")
-                .withStartHourUtc(299078768)
-                .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.MONDAY))));
+        MaintenanceConfiguration model = new MaintenanceConfiguration()
+            .withMaintenanceWindows(Arrays.asList(new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                .withDuration("uhrzayvvt")
+                .withStartHourUtc(1432651590)
+                .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.SATURDAY))));
         model = BinaryData.fromObject(model).toObject(MaintenanceConfiguration.class);
         Assertions.assertEquals(MaintenanceWindowType.WEEKLY, model.maintenanceWindows().get(0).type());
-        Assertions.assertEquals("owskanyktz", model.maintenanceWindows().get(0).duration());
-        Assertions.assertEquals(159488471, model.maintenanceWindows().get(0).startHourUtc());
-        Assertions.assertEquals(MaintenanceDayOfWeek.WEDNESDAY,
+        Assertions.assertEquals("uhrzayvvt", model.maintenanceWindows().get(0).duration());
+        Assertions.assertEquals(1432651590, model.maintenanceWindows().get(0).startHourUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeek.SATURDAY,
             model.maintenanceWindows().get(0).schedule().dayOfWeek());
     }
 }

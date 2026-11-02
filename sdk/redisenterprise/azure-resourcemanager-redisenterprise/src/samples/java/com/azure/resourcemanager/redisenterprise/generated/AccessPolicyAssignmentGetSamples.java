@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class AccessPolicyAssignmentGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentGet.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentGet.
@@ -17,21 +17,6 @@ public final class AccessPolicyAssignmentGetSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseAccessPolicyAssignmentGet(
-        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.accessPolicyAssignments()
-            .getWithResponse("rg1", "cache1", "default", "accessPolicyAssignmentName1",
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
-     */
-    /**
-     * Sample code: RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.
-     * 
-     * @param manager Entry point to RedisEnterpriseManager.
-     */
-    public static void redisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.accessPolicyAssignments()
             .getWithResponse("rg1", "cache1", "default", "accessPolicyAssignmentName1",

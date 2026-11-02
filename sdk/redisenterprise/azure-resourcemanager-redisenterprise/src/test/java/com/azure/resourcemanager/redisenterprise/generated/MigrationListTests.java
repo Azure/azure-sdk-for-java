@@ -12,8 +12,8 @@ public final class MigrationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"hwxmnteiwa\",\"provisioningState\":\"Cancelled\",\"statusDetails\":\"mijcmmxdcufufs\",\"creationTime\":\"2021-09-11T09:48:37Z\",\"lastModifiedTime\":\"2021-06-29T04:41:21Z\"},\"id\":\"nsez\",\"name\":\"xtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"},{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"nrosfqpte\",\"provisioningState\":\"Cancelled\",\"statusDetails\":\"vypyqrimzinpv\",\"creationTime\":\"2021-02-26T16:18Z\",\"lastModifiedTime\":\"2021-08-28T07:05:13Z\"},\"id\":\"rsoodqxhcrmnoh\",\"name\":\"t\",\"type\":\"kwh\"},{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"ifiyipjxsqwpgrj\",\"provisioningState\":\"CancellationFailed\",\"statusDetails\":\"rcjxvsnbyxqabn\",\"creationTime\":\"2021-06-16T16:14:14Z\",\"lastModifiedTime\":\"2020-12-28T20:56:17Z\"},\"id\":\"shurzafbljjgpbto\",\"name\":\"c\",\"type\":\"mkljavb\"}],\"nextLink\":\"dtqajzyulpkudj\"}")
+            "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"jcmmxdcufufsrp\",\"provisioningState\":\"Unlinking\",\"statusDetails\":\"dnsezcxtbzs\",\"creationTime\":\"2020-12-30T00:10:11Z\",\"lastModifiedTime\":\"2021-11-28T01:00:18Z\",\"rollbackEligibleUntil\":\"2021-07-30T05:58:48Z\"},\"id\":\"wmdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}],\"nextLink\":\"wjdk\"}")
             .toObject(MigrationList.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.nextLink());
+        Assertions.assertEquals("wjdk", model.nextLink());
     }
 }

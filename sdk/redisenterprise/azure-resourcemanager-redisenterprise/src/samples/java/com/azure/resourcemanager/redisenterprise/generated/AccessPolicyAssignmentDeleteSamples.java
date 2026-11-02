@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class AccessPolicyAssignmentDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentDelete.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentDelete.
