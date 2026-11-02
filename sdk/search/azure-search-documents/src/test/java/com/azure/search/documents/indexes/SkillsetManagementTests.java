@@ -10,7 +10,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.CognitiveServicesAccount;
-import com.azure.search.documents.indexes.models.CognitiveServicesAccountKey;
+import com.azure.search.documents.indexes.models.AIServicesAccountIdentity;
 import com.azure.search.documents.indexes.models.ConditionalSkill;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
@@ -1493,12 +1493,6 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     private CognitiveServicesAccount createAIFoundryCognitiveServicesAccount() {
-        String aiFoundryKey = System.getenv("AI_FOUNDRY_KEY");
-
-        if (aiFoundryKey != null && !aiFoundryKey.isEmpty()) {
-            return new CognitiveServicesAccountKey(aiFoundryKey);
-        } else {
-            return new DefaultCognitiveServicesAccount();
-        }
+        return new AIServicesAccountIdentity(AI_SERVICES_ENDPOINT);
     }
 }

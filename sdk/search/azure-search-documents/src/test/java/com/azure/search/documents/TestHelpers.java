@@ -15,14 +15,11 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -428,45 +425,23 @@ public final class TestHelpers {
      * @return The appropriate token credential
      */
     public static TokenCredential getTestTokenCredential() {
-        if (testMode == TestMode.LIVE) {
-            TokenCredential pipelineCredential = tryGetPipelineCredential();
-            if (pipelineCredential != null) {
-                return pipelineCredential;
-            }
-            return new AzureCliCredentialBuilder().build();
-        } else if (testMode == TestMode.RECORD) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new MockTokenCredential();
-        }
+        return createTestTokenCredential(testMode, Configuration.getGlobalConfiguration().clone());
     }
 
-    /**
-     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
-     * Azure DevOps. If not, returns null.
-     *
-     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
-     */
-    @SuppressWarnings("deprecation")
-    private static TokenCredential tryGetPipelineCredential() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
-
-        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
-            || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(tenantId)
-            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
-            return null;
+    static TokenCredential createTestTokenCredential(TestMode mode, Configuration configuration) {
+        if (mode == TestMode.PLAYBACK) {
+            return new MockTokenCredential();
         }
-
-        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-            .clientId(clientId)
-            .tenantId(tenantId)
-            .serviceConnectionId(serviceConnectionId)
-            .build();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        if (serviceConnectionId != null && !serviceConnectionId.isEmpty()) {
+            return new AzurePipelinesCredentialBuilder().configuration(configuration)
+                .serviceConnectionId(serviceConnectionId)
+                .clientId(configuration.get("AZURESUBSCRIPTION_CLIENT_ID"))
+                .tenantId(configuration.get("AZURESUBSCRIPTION_TENANT_ID"))
+                .systemAccessToken(configuration.get("SYSTEM_ACCESSTOKEN"))
+                .build();
+        }
+        return new AzureCliCredentialBuilder().configuration(configuration).build();
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {

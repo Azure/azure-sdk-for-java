@@ -52,16 +52,6 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
     }
 
     /**
-     * Get the docUrl property: The document URL for the reference.
-     *
-     * @return the docUrl value.
-     */
-    @Generated
-    public String getDocUrl() {
-        return this.docUrl;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -144,5 +134,15 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
     @Generated
     public String getCitationUrl() {
         return this.citationUrl;
+    }
+
+    /**
+     * Get the docUrl property: The document URL for the reference.
+     *
+     * @return the docUrl value.
+     */
+    @Generated
+    public String getDocumentUrl() {
+        return this.docUrl;
     }
 }

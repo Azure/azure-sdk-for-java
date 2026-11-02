@@ -10,6 +10,7 @@ import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchAlias;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class ListIndexesExample {
         String prefix = "sample-paged-index-" + UUID.randomUUID().toString().replace("-", "");
         List<String> expectedNames = Arrays.asList(prefix + "-one", prefix + "-two");
         List<String> createdNames = new ArrayList<>();
+        List<String> createdAliases = new ArrayList<>();
 
         try {
             expectedNames.forEach(name -> {
@@ -57,7 +59,23 @@ public class ListIndexesExample {
             List<PagedResponse<SearchIndex>> asyncPages
                 = indexAsyncClient.listIndexes(requestOptions).byPage().collectList().block();
             verifyPages("reactive", expectedNames, asyncPages);
+
+            String continuation = syncPages.get(0).getContinuationToken();
+            indexClient.listIndexes(new RequestOptions()).iterableByPage(continuation)
+                .forEach(page -> System.out.println("Resumed page: " + page.getValue().get(0).getName()));
+            indexClient.listIndexesWithSelectedProperties(Arrays.asList("name", "description"),
+                new RequestOptions().addQueryParam("search", prefix).addQueryParam("searchType", "prefix")
+                    .addQueryParam("pageSize", "1"))
+                .forEach(index -> System.out.println("Selected index name: " + index.getName()));
+
+            String aliasName = prefix + "-alias";
+            indexClient.createAlias(new SearchAlias(aliasName, expectedNames.get(0)));
+            createdAliases.add(aliasName);
+            indexClient.listAliases(new RequestOptions().addQueryParam("search", prefix)
+                .addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1"))
+                .forEach(alias -> System.out.println("Alias: " + alias.getName()));
         } finally {
+            createdAliases.forEach(indexClient::deleteAlias);
             createdNames.forEach(indexClient::deleteIndex);
         }
     }

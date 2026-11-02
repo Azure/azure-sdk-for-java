@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -33,6 +34,7 @@ public final class SearchUtils {
             .setHighlightPostTag(options.getHighlightPostTag())
             .setHighlightPreTag(options.getHighlightPreTag())
             .setMinimumCoverage(options.getMinimumCoverage())
+            .setMoreLikeThis(options.getMoreLikeThis())
             .setOrderBy(options.getOrderBy())
             .setQueryType(options.getQueryType())
             .setScoringStatistics(options.getScoringStatistics())
@@ -64,7 +66,20 @@ public final class SearchUtils {
      * @return The updated {@link RequestOptions}.
      */
     public static RequestOptions addSearchHeaders(RequestOptions requestOptions, SearchOptions searchOptions) {
-
+        if (searchOptions == null) {
+            return requestOptions;
+        }
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        if (searchOptions.getQuerySourceAuthorization() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                searchOptions.getQuerySourceAuthorization());
+        }
+        if (searchOptions.isEnableElevatedRead() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                searchOptions.isEnableElevatedRead().toString());
+        }
         return requestOptions;
     }
 
