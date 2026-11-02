@@ -251,6 +251,7 @@
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
     <module>sdk/sitemanager</module>
+    <module>sdk/sovereign</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
