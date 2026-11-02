@@ -95,8 +95,8 @@ public final class ServiceBusReceivedMessage {
      * data bodies.</p>
      *
      * <p>The returned message is not associated with a receiver link. When {@code lockToken} is provided, a receiver's
-     * settlement methods such as {@code complete} try to settle by that lock token, and the service decides whether the
-     * lock can be settled from that client. Without a lock token, settlement throws
+     * settlement methods such as {@code complete} try to settle by that lock token, and settlement fails if the lock
+     * cannot be settled from that receiver. Without a lock token, settlement fails with
      * {@link UnsupportedOperationException}, as it does for a peeked message.</p>
      *
      * <!-- src_embed com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage -->
