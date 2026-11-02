@@ -14,21 +14,21 @@ public final class IPConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IPConfiguration model = BinaryData.fromString(
-            "{\"name\":\"udxorrqn\",\"properties\":{\"gateway\":\"czvyifq\",\"prefixLength\":\"kdvjsll\",\"privateIPAddress\":\"vvdfwatkpnpul\",\"subnet\":{\"id\":\"bczw\"}}}")
+            "{\"name\":\"smx\",\"properties\":{\"gateway\":\"mpvecxgodebfqk\",\"prefixLength\":\"bmpukgriwflz\",\"privateIPAddress\":\"bxzpuzycisp\",\"subnet\":{\"id\":\"ahmgkbrp\"}}}")
             .toObject(IPConfiguration.class);
-        Assertions.assertEquals("udxorrqn", model.name());
-        Assertions.assertEquals("vvdfwatkpnpul", model.properties().privateIPAddress());
-        Assertions.assertEquals("bczw", model.properties().subnet().id());
+        Assertions.assertEquals("smx", model.name());
+        Assertions.assertEquals("bxzpuzycisp", model.properties().privateIPAddress());
+        Assertions.assertEquals("ahmgkbrp", model.properties().subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IPConfiguration model = new IPConfiguration().withName("udxorrqn")
-            .withProperties(new IPConfigurationProperties().withPrivateIPAddress("vvdfwatkpnpul")
-                .withSubnet(new LogicalNetworkArmReference().withId("bczw")));
+        IPConfiguration model = new IPConfiguration().withName("smx")
+            .withProperties(new IPConfigurationProperties().withPrivateIPAddress("bxzpuzycisp")
+                .withSubnet(new LogicalNetworkArmReference().withId("ahmgkbrp")));
         model = BinaryData.fromObject(model).toObject(IPConfiguration.class);
-        Assertions.assertEquals("udxorrqn", model.name());
-        Assertions.assertEquals("vvdfwatkpnpul", model.properties().privateIPAddress());
-        Assertions.assertEquals("bczw", model.properties().subnet().id());
+        Assertions.assertEquals("smx", model.name());
+        Assertions.assertEquals("bxzpuzycisp", model.properties().privateIPAddress());
+        Assertions.assertEquals("ahmgkbrp", model.properties().subnet().id());
     }
 }

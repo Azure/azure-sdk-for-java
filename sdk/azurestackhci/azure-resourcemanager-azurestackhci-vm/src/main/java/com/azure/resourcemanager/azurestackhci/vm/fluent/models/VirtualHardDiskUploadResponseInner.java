@@ -18,7 +18,7 @@ import java.io.IOException;
 @Immutable
 public final class VirtualHardDiskUploadResponseInner implements JsonSerializable<VirtualHardDiskUploadResponseInner> {
     /*
-     * The ARM ID for a Virtual Hard Disk.
+     * The Azure Resource ID for a Virtual Hard Disk.
      */
     private String virtualHardDiskId;
 
@@ -34,7 +34,7 @@ public final class VirtualHardDiskUploadResponseInner implements JsonSerializabl
     }
 
     /**
-     * Get the virtualHardDiskId property: The ARM ID for a Virtual Hard Disk.
+     * Get the virtualHardDiskId property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @return the virtualHardDiskId value.
      */

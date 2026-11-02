@@ -25,7 +25,7 @@ public final class SecurityRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"csnjvcdwxlpqekft\",\"protocol\":\"Tcp\",\"sourceAddressPrefixes\":[\"jsyingwfqatm\",\"dhtmdvypgikd\"],\"destinationAddressPrefixes\":[\"ywkbirryuzhlhkjo\",\"rvqqaatj\"],\"sourcePortRanges\":[\"vgoup\"],\"destinationPortRanges\":[\"ib\",\"ggjioolvr\"],\"access\":\"Allow\",\"priority\":1483667739,\"direction\":\"Inbound\",\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"llqwjygvjayvblmh\",\"type\":\"CustomLocation\"},\"id\":\"hbxvvyhgsopbyrqu\",\"name\":\"egxuvwzf\",\"type\":\"nhlmctlpdng\"}";
+            = "{\"properties\":{\"description\":\"wthmkyib\",\"protocol\":\"Tcp\",\"sourceAddressPrefixes\":[\"hsgqc\",\"dhohsdtmcdzsuf\"],\"destinationAddressPrefixes\":[\"dxbzlmcmuap\",\"vhdbevwqqxey\"],\"sourcePortRanges\":[\"nqzi\",\"kfkbgbzbowxeqocl\",\"mygvkzqkj\",\"eokbze\"],\"destinationPortRanges\":[\"rx\",\"czurtlei\",\"q\"],\"access\":\"Allow\",\"priority\":796775151,\"direction\":\"Inbound\",\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"zvd\",\"type\":\"CustomLocation\"},\"id\":\"ixz\",\"name\":\"q\",\"type\":\"noda\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,19 @@ public final class SecurityRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityRule response = manager.securityRules()
-            .getWithResponse("feo", "erqwkyhkobopg", "edkowepbqpcrfk", com.azure.core.util.Context.NONE)
+            .getWithResponse("zcyjtot", "vopvp", "dbzqgqqihed", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("csnjvcdwxlpqekft", response.properties().description());
+        Assertions.assertEquals("wthmkyib", response.properties().description());
         Assertions.assertEquals(SecurityRuleProtocol.TCP, response.properties().protocol());
-        Assertions.assertEquals("jsyingwfqatm", response.properties().sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("ywkbirryuzhlhkjo", response.properties().destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("vgoup", response.properties().sourcePortRanges().get(0));
-        Assertions.assertEquals("ib", response.properties().destinationPortRanges().get(0));
+        Assertions.assertEquals("hsgqc", response.properties().sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("dxbzlmcmuap", response.properties().destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("nqzi", response.properties().sourcePortRanges().get(0));
+        Assertions.assertEquals("rx", response.properties().destinationPortRanges().get(0));
         Assertions.assertEquals(SecurityRuleAccess.ALLOW, response.properties().access());
-        Assertions.assertEquals(1483667739, response.properties().priority());
+        Assertions.assertEquals(796775151, response.properties().priority());
         Assertions.assertEquals(SecurityRuleDirection.INBOUND, response.properties().direction());
-        Assertions.assertEquals("llqwjygvjayvblmh", response.extendedLocation().name());
+        Assertions.assertEquals("zvd", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProfileUpdate model
-            = BinaryData.fromString("{\"dataDisks\":[{\"id\":\"tmuwlauwzi\"}]}").toObject(StorageProfileUpdate.class);
-        Assertions.assertEquals("tmuwlauwzi", model.dataDisks().get(0).id());
+        StorageProfileUpdate model = BinaryData
+            .fromString("{\"dataDisks\":[{\"id\":\"qmzqalkrmnjijpx\"},{\"id\":\"q\"},{\"id\":\"dfnbyxbaaabjyv\"}]}")
+            .toObject(StorageProfileUpdate.class);
+        Assertions.assertEquals("qmzqalkrmnjijpx", model.dataDisks().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProfileUpdate model = new StorageProfileUpdate()
-            .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId("tmuwlauwzi")));
+        StorageProfileUpdate model = new StorageProfileUpdate().withDataDisks(Arrays.asList(
+            new VirtualHardDiskArmReference().withId("qmzqalkrmnjijpx"), new VirtualHardDiskArmReference().withId("q"),
+            new VirtualHardDiskArmReference().withId("dfnbyxbaaabjyv")));
         model = BinaryData.fromObject(model).toObject(StorageProfileUpdate.class);
-        Assertions.assertEquals("tmuwlauwzi", model.dataDisks().get(0).id());
+        Assertions.assertEquals("qmzqalkrmnjijpx", model.dataDisks().get(0).id());
     }
 }

@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ARM ID for a Network Interface.
+ * The Azure Resource ID for a Network Interface.
  */
 @Fluent
 public final class NetworkInterfaceArmReference implements JsonSerializable<NetworkInterfaceArmReference> {
     /*
-     * The ARM ID for a Network Interface.
+     * The Azure Resource ID for a Network Interface.
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class NetworkInterfaceArmReference implements JsonSerializable<Netw
     }
 
     /**
-     * Get the id property: The ARM ID for a Network Interface.
+     * Get the id property: The Azure Resource ID for a Network Interface.
      * 
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class NetworkInterfaceArmReference implements JsonSerializable<Netw
     }
 
     /**
-     * Set the id property: The ARM ID for a Network Interface.
+     * Set the id property: The Azure Resource ID for a Network Interface.
      * 
      * @param id the id value to set.
      * @return the NetworkInterfaceArmReference object itself.

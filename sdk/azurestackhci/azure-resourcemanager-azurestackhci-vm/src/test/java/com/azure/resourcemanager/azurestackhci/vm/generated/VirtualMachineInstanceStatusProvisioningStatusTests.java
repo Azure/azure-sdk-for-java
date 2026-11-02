@@ -13,9 +13,9 @@ public final class VirtualMachineInstanceStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstanceStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"vetvt\",\"status\":\"InProgress\"}")
+            = BinaryData.fromString("{\"operationId\":\"ynkedyatrwyhqmib\",\"status\":\"Succeeded\"}")
                 .toObject(VirtualMachineInstanceStatusProvisioningStatus.class);
-        Assertions.assertEquals("vetvt", model.operationId());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.status());
+        Assertions.assertEquals("ynkedyatrwyhqmib", model.operationId());
+        Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

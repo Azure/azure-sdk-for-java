@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageArmReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageArmReference model = BinaryData.fromString("{\"id\":\"hxg\"}").toObject(ImageArmReference.class);
-        Assertions.assertEquals("hxg", model.id());
+        ImageArmReference model = BinaryData.fromString("{\"id\":\"eqnovvqfovl\"}").toObject(ImageArmReference.class);
+        Assertions.assertEquals("eqnovvqfovl", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageArmReference model = new ImageArmReference().withId("hxg");
+        ImageArmReference model = new ImageArmReference().withId("eqnovvqfovl");
         model = BinaryData.fromObject(model).toObject(ImageArmReference.class);
-        Assertions.assertEquals("hxg", model.id());
+        Assertions.assertEquals("eqnovvqfovl", model.id());
     }
 }

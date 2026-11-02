@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ARM ID for a Logical Network.
+ * The Azure Resource ID for a Logical Network.
  */
 @Fluent
 public final class LogicalNetworkArmReference implements JsonSerializable<LogicalNetworkArmReference> {
     /*
-     * The ARM ID for a Logical Network.
+     * The Azure Resource ID for a Logical Network.
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class LogicalNetworkArmReference implements JsonSerializable<Logica
     }
 
     /**
-     * Get the id property: The ARM ID for a Logical Network.
+     * Get the id property: The Azure Resource ID for a Logical Network.
      * 
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class LogicalNetworkArmReference implements JsonSerializable<Logica
     }
 
     /**
-     * Set the id property: The ARM ID for a Logical Network.
+     * Set the id property: The Azure Resource ID for a Logical Network.
      * 
      * @param id the id value to set.
      * @return the LogicalNetworkArmReference object itself.

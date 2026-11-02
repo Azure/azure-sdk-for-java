@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualHardDisksUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualHardDisksUpdateProperties model = BinaryData.fromString("{\"diskSizeGB\":3600138171272863845}")
+        VirtualHardDisksUpdateProperties model = BinaryData.fromString("{\"diskSizeGB\":8524134273016778092}")
             .toObject(VirtualHardDisksUpdateProperties.class);
-        Assertions.assertEquals(3600138171272863845L, model.diskSizeGB());
+        Assertions.assertEquals(8524134273016778092L, model.diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualHardDisksUpdateProperties model
-            = new VirtualHardDisksUpdateProperties().withDiskSizeGB(3600138171272863845L);
+            = new VirtualHardDisksUpdateProperties().withDiskSizeGB(8524134273016778092L);
         model = BinaryData.fromObject(model).toObject(VirtualHardDisksUpdateProperties.class);
-        Assertions.assertEquals(3600138171272863845L, model.diskSizeGB());
+        Assertions.assertEquals(8524134273016778092L, model.diskSizeGB());
     }
 }

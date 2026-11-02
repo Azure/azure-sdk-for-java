@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.vm.models.IPPool;
 import com.azure.resourcemanager.azurestackhci.vm.models.IpAllocationMethodEnum;
 import com.azure.resourcemanager.azurestackhci.vm.models.NetworkSecurityGroupArmReference;
+import com.azure.resourcemanager.azurestackhci.vm.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.azurestackhci.vm.models.RouteTable;
 import com.azure.resourcemanager.azurestackhci.vm.models.SubnetIpConfigurationReference;
 import java.io.IOException;
@@ -61,6 +62,11 @@ public final class SubnetProperties implements JsonSerializable<SubnetProperties
      * Vlan to use for the subnet
      */
     private Integer vlan;
+
+    /*
+     * Provisioning state of the subnet resource.
+     */
+    private ProvisioningStateEnum provisioningState;
 
     /**
      * Creates an instance of SubnetProperties class.
@@ -234,6 +240,15 @@ public final class SubnetProperties implements JsonSerializable<SubnetProperties
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the subnet resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningStateEnum provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -290,6 +305,9 @@ public final class SubnetProperties implements JsonSerializable<SubnetProperties
                     deserializedSubnetProperties.ipPools = ipPools;
                 } else if ("vlan".equals(fieldName)) {
                     deserializedSubnetProperties.vlan = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSubnetProperties.provisioningState
+                        = ProvisioningStateEnum.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

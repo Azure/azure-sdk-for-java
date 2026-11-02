@@ -14,11 +14,11 @@ public final class VirtualMachineInstancePropertiesHardwareProfileVirtualMachine
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU model = BinaryData
             .fromString(
-                "{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":7440682274969203666,\"gpuName\":\"zbbtdzumveek\"}")
+                "{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":4327896689449869677,\"gpuName\":\"vypomgkopkwho\"}")
             .toObject(VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU.class);
         Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP, model.assignmentType());
-        Assertions.assertEquals(7440682274969203666L, model.partitionSizeMB());
-        Assertions.assertEquals("zbbtdzumveek", model.gpuName());
+        Assertions.assertEquals(4327896689449869677L, model.partitionSizeMB());
+        Assertions.assertEquals("vypomgkopkwho", model.gpuName());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,12 +26,12 @@ public final class VirtualMachineInstancePropertiesHardwareProfileVirtualMachine
         VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU model
             = new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
                 .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                .withPartitionSizeMB(7440682274969203666L)
-                .withGpuName("zbbtdzumveek");
+                .withPartitionSizeMB(4327896689449869677L)
+                .withGpuName("vypomgkopkwho");
         model = BinaryData.fromObject(model)
             .toObject(VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU.class);
         Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP, model.assignmentType());
-        Assertions.assertEquals(7440682274969203666L, model.partitionSizeMB());
-        Assertions.assertEquals("zbbtdzumveek", model.gpuName());
+        Assertions.assertEquals(4327896689449869677L, model.partitionSizeMB());
+        Assertions.assertEquals("vypomgkopkwho", model.gpuName());
     }
 }

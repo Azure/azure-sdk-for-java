@@ -11,7 +11,7 @@ public final class AttestationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttestationStatusInner model = BinaryData.fromString(
-            "{\"properties\":{\"attestSecureBootEnabled\":\"Disabled\",\"attestationCertValidated\":\"Unknown\",\"bootIntegrityValidated\":\"Valid\",\"linuxKernelVersion\":\"opcjwvnhd\",\"healthStatus\":\"Unhealthy\",\"timestamp\":\"gx\",\"errorMessage\":\"rslpmutwuoeg\",\"provisioningState\":\"Failed\",\"attestHardwarePlatform\":\"SEVSNP\",\"attestDiskSecurityEncryptionType\":\"NonPersistedTPM\"},\"id\":\"yqsluic\",\"name\":\"dggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}")
+            "{\"properties\":{\"attestSecureBootEnabled\":\"Unknown\",\"attestationCertValidated\":\"Invalid\",\"bootIntegrityValidated\":\"Valid\",\"linuxKernelVersion\":\"saznqntoruds\",\"healthStatus\":\"Pending\",\"timestamp\":\"mkycgra\",\"errorMessage\":\"juetaebur\",\"provisioningState\":\"Canceled\",\"attestHardwarePlatform\":\"SEVSNP\",\"attestDiskSecurityEncryptionType\":\"NonPersistedTPM\"},\"id\":\"zlxwabmqoefkifr\",\"name\":\"tpuqujmq\",\"type\":\"gkfbtndoaong\"}")
             .toObject(AttestationStatusInner.class);
     }
 }
