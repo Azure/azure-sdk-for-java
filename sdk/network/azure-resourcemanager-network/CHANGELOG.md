@@ -1,15 +1,5 @@
 # Release History
 
-## 2.63.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.62.0 (2026-10-09)
 
 - Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.
