@@ -33,6 +33,7 @@ import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -105,6 +106,33 @@ public class BlobByteBufferVariantUploadTests {
         assertEquals(6, httpClient.getStagedBlockCount());
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
         sources.forEach(ByteBufferState::assertNoBytesChanged);
+    }
+
+    @ParameterizedTest
+    @MethodSource("mixedSizedBuffersSupplier")
+    public void partitionedUploadSendsOnlyExposedBytesOfMixedSizedBuffers(UploadMethod method,
+        TestByteBufferVariant oversizedVariant) {
+        int oversizedLength = 2 * BLOCK_SIZE + 100;
+        byte[] content = randomBytes(700 + oversizedLength + 300);
+        // The middle buffer must split, while staged blocks also span differently positioned source buffers.
+        List<ByteBufferState> sources = Arrays.asList(
+            TestByteBufferVariant.POSITIONED.wrap(Arrays.copyOfRange(content, 0, 700)),
+            oversizedVariant.wrap(Arrays.copyOfRange(content, 700, 700 + oversizedLength)),
+            TestByteBufferVariant.READ_ONLY.wrap(Arrays.copyOfRange(content, 700 + oversizedLength, content.length)));
+        List<ByteBuffer> buffers = new ArrayList<>();
+        sources.forEach(source -> buffers.add(source.getBuffer()));
+        RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
+
+        upload(method, httpClient, buffers, content.length);
+
+        assertEquals(4, httpClient.getStagedBlockCount());
+        TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
+    }
+
+    private static Stream<Arguments> mixedSizedBuffersSupplier() {
+        return Stream.of(UploadMethod.values())
+            .flatMap(method -> Stream.of(TestByteBufferVariant.values()).map(variant -> Arguments.of(method, variant)));
     }
 
     /*

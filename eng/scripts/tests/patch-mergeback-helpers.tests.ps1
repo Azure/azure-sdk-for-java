@@ -53,16 +53,26 @@ Describe 'Compare-PatchVersion' -Tag 'UnitTest' {
     It 'compares label versions numerically' {
         Compare-PatchVersion -Left '1.0.0-beta.2' -Right '1.0.0-beta.10' | Should -BeLessThan 0
     }
+
+    It 'orders minor releases after older patches and same-minor prereleases' {
+        Compare-PatchVersion -Left '1.1.0' -Right '1.0.9' | Should -BeGreaterThan 0
+        Compare-PatchVersion -Left '1.1.0' -Right '1.1.0-beta.3' | Should -BeGreaterThan 0
+    }
 }
 
 Describe 'Patch changelog manifest' -Tag 'UnitTest' {
-    It 'round-trips multiple exact changelog entries' {
+    It 'round-trips multiple exact changelog entries including <Version>' -TestCases @(
+        @{ Version = '2.0.3' }
+        @{ Version = '2.1.0' }
+    ) {
+        param($Version)
+
         $entries = @(
             (New-TestPatchEntry),
             (New-TestPatchEntry `
                 -Artifact 'com.azure:azure-example-two' `
                 -Path 'sdk/example/azure-example-two/CHANGELOG.md' `
-                -Version '2.0.3')
+                -Version $Version)
         )
 
         $manifest = New-PatchChangelogContent -Entries $entries
@@ -75,7 +85,7 @@ Describe 'Patch changelog manifest' -Tag 'UnitTest' {
         $parsed.Count | Should -Be 2
         $manifest | Should -Match '<!-- PATCH-CHANGELOG-ENTRY -->\r?\n\{"artifact":'
         $parsedByArtifact['com.azure:azure-example'].Content | Should -Match '^## 1\.0\.1 \(2026-09-10\)'
-        $parsedByArtifact['com.azure:azure-example-two'].Version | Should -Be '2.0.3'
+        $parsedByArtifact['com.azure:azure-example-two'].Version | Should -Be $Version
     }
 
     It 'accepts the legacy inline metadata format' {
@@ -153,12 +163,17 @@ Describe 'Resolve-PatchDependencyVersions' -Tag 'UnitTest' {
 }
 
 Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
-    It 'promotes the patch version and preserves the main current version' {
+    It 'promotes released version <Version> and preserves the main current version' -TestCases @(
+        @{ Version = '1.0.1' }
+        @{ Version = '1.1.0' }
+    ) {
+        param($Version)
+
         $result = @(Update-TestVersionClient `
             -Lines @('com.azure:azure-example;1.0.0;1.1.0-beta.3') `
-            -Entries @((New-TestPatchEntry)))
+            -Entries @((New-TestPatchEntry -Version $Version)))
 
-        $result | Should -Be @('com.azure:azure-example;1.0.1;1.1.0-beta.3')
+        $result | Should -Be @("com.azure:azure-example;$Version;1.1.0-beta.3")
     }
 
     It 'does not downgrade a newer dependency version on main' {
@@ -167,6 +182,14 @@ Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
             -Entries @((New-TestPatchEntry)))
 
         $result | Should -Be @('com.azure:azure-example;1.0.2;1.1.0-beta.3')
+    }
+
+    It 'does not downgrade a newer minor dependency version on main' {
+        $result = @(Update-TestVersionClient `
+            -Lines @('com.azure:azure-example;1.2.0;1.3.0-beta.1') `
+            -Entries @((New-TestPatchEntry -Version '1.1.0')))
+
+        $result | Should -Be @('com.azure:azure-example;1.2.0;1.3.0-beta.1')
     }
 
     It 'does not modify unlisted artifacts' {
@@ -223,6 +246,16 @@ Stable release.
         $result.IndexOf('## 1.1.0-beta.1') | Should -BeLessThan $result.IndexOf('## 1.0.1')
         $result.IndexOf('## 1.0.1') | Should -BeLessThan $result.IndexOf('## 1.0.0')
         $result | Should -Match '## 1\.1\.0-beta\.2 \(Unreleased\)'
+    }
+
+    It 'inserts a minor release before same-minor prereleases and older stable entries' {
+        $entry = New-TestPatchEntry -Version '1.1.0'
+        $result = Add-PatchChangelogEntry -Content $script:mainChangelog -Entry $entry
+
+        $result.IndexOf('## 1.1.0 (') | Should -BeLessThan $result.IndexOf('## 1.1.0-beta.2')
+        $result.IndexOf('## 1.1.0-beta.1') | Should -BeLessThan $result.IndexOf('## 1.0.0')
+        $result | Should -Match '## 1\.1\.0-beta\.2 \(Unreleased\)'
+        Add-PatchChangelogEntry -Content $result -Entry $entry | Should -BeExactly $result
     }
 
     It 'is idempotent when the exact entry is already present' {
