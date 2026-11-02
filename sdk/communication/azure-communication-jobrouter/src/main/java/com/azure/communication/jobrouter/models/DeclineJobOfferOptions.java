@@ -5,20 +5,15 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Request payload for declining offers.
  */
 @Fluent
-public final class DeclineJobOfferOptions implements JsonSerializable<DeclineJobOfferOptions> {
+public final class DeclineJobOfferOptions {
 
     /*
      * If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job
@@ -27,10 +22,11 @@ public final class DeclineJobOfferOptions implements JsonSerializable<DeclineJob
      * for the job at that time.
      */
     @Generated
+    @JsonProperty(value = "retryOfferAt")
     private OffsetDateTime retryOfferAt;
 
     /**
-     * Creates an instance of DeclineJobOfferOptions class.
+     * Creates an instance of DeclineJobOfferOptionsInternal class.
      */
     @Generated
     public DeclineJobOfferOptions() {
@@ -38,9 +34,9 @@ public final class DeclineJobOfferOptions implements JsonSerializable<DeclineJob
 
     /**
      * Get the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to
-     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time is
-     * provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that declined
-     * the job will also be eligible for the job at that time.
+     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time
+     * is provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that
+     * declined the job will also be eligible for the job at that time.
      *
      * @return the retryOfferAt value.
      */
@@ -51,54 +47,16 @@ public final class DeclineJobOfferOptions implements JsonSerializable<DeclineJob
 
     /**
      * Set the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to
-     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time is
-     * provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that declined
-     * the job will also be eligible for the job at that time.
+     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time
+     * is provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that
+     * declined the job will also be eligible for the job at that time.
      *
      * @param retryOfferAt the retryOfferAt value to set.
-     * @return the DeclineJobOfferOptions object itself.
+     * @return the DeclineJobOfferOptionsInternal object itself.
      */
     @Generated
     public DeclineJobOfferOptions setRetryOfferAt(OffsetDateTime retryOfferAt) {
         this.retryOfferAt = retryOfferAt;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("retryOfferAt",
-            this.retryOfferAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retryOfferAt));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DeclineJobOfferOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DeclineJobOfferOptions if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DeclineJobOfferOptions.
-     */
-    @Generated
-    public static DeclineJobOfferOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DeclineJobOfferOptions deserializedDeclineJobOfferOptions = new DeclineJobOfferOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("retryOfferAt".equals(fieldName)) {
-                    deserializedDeclineJobOfferOptions.retryOfferAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedDeclineJobOfferOptions;
-        });
     }
 }
