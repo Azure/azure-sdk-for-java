@@ -124,8 +124,9 @@ public class VectorSearchQueryTest extends TestSuiteBase {
     /**
      * The first document operation from the client under test queries a fresh container with all four
      * embedding types. Distinct vectors make missing projections or queries against the wrong path observable.
+     * The timeout includes container creation, readiness polling, and document seeding.
      */
-    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT * 2)
     public void testVectorSearchAcrossEmbeddingTypes() {
         String containerId = "vecSearch_" + UUID.randomUUID();
         CosmosAsyncContainer container = createVectorContainer(containerId);
