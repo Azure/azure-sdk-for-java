@@ -9,7 +9,7 @@ package com.azure.resourcemanager.playwright.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-08-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

@@ -54,6 +54,14 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
      */
     private String storageUri;
 
+    /*
+     * The ARM resource ID of the virtual network subnet to inject the workspace into for private network connectivity.
+     * This is of the form
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetwork}/subnets/{subnet}'. This value cannot be changed after the workspace is created.
+     */
+    private String subnetId;
+
     /**
      * Creates an instance of PlaywrightWorkspaceProperties class.
      */
@@ -178,6 +186,32 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
+     * Get the subnetId property: The ARM resource ID of the virtual network subnet to inject the workspace into for
+     * private network connectivity. This is of the form
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Network/virtualNetworks/{virtualNetwork}/subnets/{subnet}'.
+     * This value cannot be changed after the workspace is created.
+     * 
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.subnetId;
+    }
+
+    /**
+     * Set the subnetId property: The ARM resource ID of the virtual network subnet to inject the workspace into for
+     * private network connectivity. This is of the form
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Network/virtualNetworks/{virtualNetwork}/subnets/{subnet}'.
+     * This value cannot be changed after the workspace is created.
+     * 
+     * @param subnetId the subnetId value to set.
+     * @return the PlaywrightWorkspaceProperties object itself.
+     */
+    public PlaywrightWorkspaceProperties withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -188,6 +222,7 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
         jsonWriter.writeStringField("localAuth", this.localAuth == null ? null : this.localAuth.toString());
         jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
         jsonWriter.writeStringField("storageUri", this.storageUri);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
         return jsonWriter.writeEndObject();
     }
 
@@ -225,6 +260,8 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
                         = EnablementStatus.fromString(reader.getString());
                 } else if ("storageUri".equals(fieldName)) {
                     deserializedPlaywrightWorkspaceProperties.storageUri = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceProperties.subnetId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

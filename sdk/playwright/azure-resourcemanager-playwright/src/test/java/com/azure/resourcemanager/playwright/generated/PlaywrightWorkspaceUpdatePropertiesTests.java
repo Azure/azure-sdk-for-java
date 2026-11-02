@@ -13,25 +13,25 @@ public final class PlaywrightWorkspaceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceUpdateProperties model = BinaryData.fromString(
-            "{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"reporting\":\"Disabled\",\"storageUri\":\"ljofxqeofjaeqjh\"}")
+            "{\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"reporting\":\"Disabled\",\"storageUri\":\"wclxxwrl\"}")
             .toObject(PlaywrightWorkspaceUpdateProperties.class);
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
-        Assertions.assertEquals("ljofxqeofjaeqjh", model.storageUri());
+        Assertions.assertEquals("wclxxwrl", model.storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlaywrightWorkspaceUpdateProperties model
-            = new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+            = new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
                 .withLocalAuth(EnablementStatus.ENABLED)
                 .withReporting(EnablementStatus.DISABLED)
-                .withStorageUri("ljofxqeofjaeqjh");
+                .withStorageUri("wclxxwrl");
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceUpdateProperties.class);
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
-        Assertions.assertEquals("ljofxqeofjaeqjh", model.storageUri());
+        Assertions.assertEquals("wclxxwrl", model.storageUri());
     }
 }
