@@ -58,7 +58,7 @@ Then include the direct dependency in the `dependencies` section without the ver
 
 If you want to take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-monitor-query-logs;current})
+[//]: # ({x-version-update-start;com.azure:azure-monitor-query;current})
 
 ```xml
 <dependency>
@@ -85,7 +85,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -434,7 +434,7 @@ comments.
 [package]: https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/README.md
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-logs/src
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#log-queries-and-language
 
 [cla]: https://cla.microsoft.com
