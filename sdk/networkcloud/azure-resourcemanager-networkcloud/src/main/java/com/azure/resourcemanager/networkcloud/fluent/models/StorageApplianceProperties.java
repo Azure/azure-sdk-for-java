@@ -37,11 +37,6 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     private String rackId;
 
     /*
-     * The SKU for the storage appliance.
-     */
-    private String storageApplianceSkuId;
-
-    /*
      * The slot the storage appliance is in the rack based on the BOM configuration.
      */
     private long rackSlot;
@@ -50,6 +45,11 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
      * The serial number for the storage appliance.
      */
     private String serialNumber;
+
+    /*
+     * The SKU for the storage appliance.
+     */
+    private String storageApplianceSkuId;
 
     /*
      * The CA certificate information issued by the platform for connecting to TLS interfaces for the storage appliance.
@@ -182,26 +182,6 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
-     * 
-     * @return the storageApplianceSkuId value.
-     */
-    public String storageApplianceSkuId() {
-        return this.storageApplianceSkuId;
-    }
-
-    /**
-     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
-     * 
-     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
-     * @return the StorageApplianceProperties object itself.
-     */
-    public StorageApplianceProperties withStorageApplianceSkuId(String storageApplianceSkuId) {
-        this.storageApplianceSkuId = storageApplianceSkuId;
-        return this;
-    }
-
-    /**
      * Get the rackSlot property: The slot the storage appliance is in the rack based on the BOM configuration.
      * 
      * @return the rackSlot value.
@@ -238,6 +218,26 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
      */
     public StorageApplianceProperties withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+        return this;
+    }
+
+    /**
+     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    public String storageApplianceSkuId() {
+        return this.storageApplianceSkuId;
+    }
+
+    /**
+     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @return the StorageApplianceProperties object itself.
+     */
+    public StorageApplianceProperties withStorageApplianceSkuId(String storageApplianceSkuId) {
+        this.storageApplianceSkuId = storageApplianceSkuId;
         return this;
     }
 
@@ -397,9 +397,9 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("administratorCredentials", this.administratorCredentials);
         jsonWriter.writeStringField("rackId", this.rackId);
-        jsonWriter.writeStringField("storageApplianceSkuId", this.storageApplianceSkuId);
         jsonWriter.writeLongField("rackSlot", this.rackSlot);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("storageApplianceSkuId", this.storageApplianceSkuId);
         return jsonWriter.writeEndObject();
     }
 
@@ -424,12 +424,12 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
                         = AdministrativeCredentials.fromJson(reader);
                 } else if ("rackId".equals(fieldName)) {
                     deserializedStorageApplianceProperties.rackId = reader.getString();
-                } else if ("storageApplianceSkuId".equals(fieldName)) {
-                    deserializedStorageApplianceProperties.storageApplianceSkuId = reader.getString();
                 } else if ("rackSlot".equals(fieldName)) {
                     deserializedStorageApplianceProperties.rackSlot = reader.getLong();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedStorageApplianceProperties.serialNumber = reader.getString();
+                } else if ("storageApplianceSkuId".equals(fieldName)) {
+                    deserializedStorageApplianceProperties.storageApplianceSkuId = reader.getString();
                 } else if ("caCertificate".equals(fieldName)) {
                     deserializedStorageApplianceProperties.caCertificate = CertificateInfo.fromJson(reader);
                 } else if ("capacity".equals(fieldName)) {

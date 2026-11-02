@@ -14,19 +14,19 @@ public final class RuntimeProtectionConfigurationPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeProtectionConfigurationPatch model
-            = BinaryData.fromString("{\"definitionUpdateMode\":\"None\",\"enforcementLevel\":\"OnDemand\"}")
+            = BinaryData.fromString("{\"definitionUpdateMode\":\"Automatic\",\"enforcementLevel\":\"Passive\"}")
                 .toObject(RuntimeProtectionConfigurationPatch.class);
-        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.NONE, model.definitionUpdateMode());
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.ON_DEMAND, model.enforcementLevel());
+        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC, model.definitionUpdateMode());
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.PASSIVE, model.enforcementLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeProtectionConfigurationPatch model = new RuntimeProtectionConfigurationPatch()
-            .withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.NONE)
-            .withEnforcementLevel(RuntimeProtectionEnforcementLevel.ON_DEMAND);
+            .withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC)
+            .withEnforcementLevel(RuntimeProtectionEnforcementLevel.PASSIVE);
         model = BinaryData.fromObject(model).toObject(RuntimeProtectionConfigurationPatch.class);
-        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.NONE, model.definitionUpdateMode());
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.ON_DEMAND, model.enforcementLevel());
+        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC, model.definitionUpdateMode());
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.PASSIVE, model.enforcementLevel());
     }
 }

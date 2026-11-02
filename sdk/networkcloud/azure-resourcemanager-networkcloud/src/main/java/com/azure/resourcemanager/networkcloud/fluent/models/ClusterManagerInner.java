@@ -352,6 +352,33 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
+     * Get the rolloutRing property: The relative ordering group used to apply software updates to associated clusters.
+     * The minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change over
+     * time.
+     * 
+     * @return the rolloutRing value.
+     */
+    public Integer rolloutRing() {
+        return this.innerProperties() == null ? null : this.innerProperties().rolloutRing();
+    }
+
+    /**
+     * Set the rolloutRing property: The relative ordering group used to apply software updates to associated clusters.
+     * The minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change over
+     * time.
+     * 
+     * @param rolloutRing the rolloutRing value to set.
+     * @return the ClusterManagerInner object itself.
+     */
+    public ClusterManagerInner withRolloutRing(Integer rolloutRing) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterManagerProperties();
+        }
+        this.innerProperties().withRolloutRing(rolloutRing);
+        return this;
+    }
+
+    /**
      * Get the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
