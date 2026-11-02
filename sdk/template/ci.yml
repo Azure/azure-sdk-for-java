@@ -40,6 +40,13 @@ pr:
       - sdk/template/azure-template-perf/pom.xml
 
 parameters:
+  # Template-only pilot; keep the raw ID for validation by the shared completion script.
+  # Requires azure-sdk-tools PRs #17119/#17131 published and #17189 synced into eng/common.
+  # Do not copy this parameter or its relay to another service until the pilot is validated.
+  - name: ReleasePlanId
+    displayName: 'Release plan ID (0 uses the existing lookup)'
+    type: string
+    default: '0'
   - name: release_dependsonlivetests
     displayName: 'Release depends on live tests'
     type: boolean
@@ -82,6 +89,7 @@ extends:
     ${{ if eq(parameters.AutoApproveRelease, true) }}:
       PublicPublishEnvironment: none
     ServiceDirectory: template
+    ReleasePlanId: ${{ parameters.ReleasePlanId }}
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true
