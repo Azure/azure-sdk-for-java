@@ -32,6 +32,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
@@ -425,6 +426,24 @@ public class ContainerSessionProviderCacheTests {
 
         assertEquals(1, sessionCaches().size());
         assertTrue(sessionCaches().containsKey(ACCOUNT_NAME + "/trigger"));
+    }
+
+    @Test
+    public void evictionSweepRemovesExpiredEntriesWhenSessionsEmitOnAnotherThread() {
+        httpClient.enqueueResponse(CONTAINER_A,
+            request -> Mono.just(buildResponse(request, FIRST_TOKEN, now().plusMinutes(1)))
+                .publishOn(Schedulers.boundedElastic()));
+        httpClient.enqueueResponse(CONTAINER_B,
+            request -> Mono.just(buildResponse(request, SECOND_TOKEN, now().plusMinutes(1)))
+                .publishOn(Schedulers.boundedElastic()));
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(SECOND_TOKEN, provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
+        clock.advance(Duration.ofMinutes(1));
+
+        enqueueSessionResponse("trigger", "trigger-token", now().plusMinutes(20));
+        assertEquals("trigger-token", provider.getSession(contextFor("trigger")).getSessionToken());
+
+        assertEquals(1, sessionCaches().size());
     }
 
     @ParameterizedTest

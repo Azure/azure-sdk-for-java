@@ -86,9 +86,11 @@ final class ContainerSessionProvider extends SessionProvider {
             SessionAcquirer acquirer = requireAcquirer(context);
             // Reserve under the map's per-key lock, before subscribing outside it. Shield the reservation as well
             // as the shared acquisition from cancellation, including cancellation before the supplier is subscribed.
+            // Release eagerly, before the value is signaled downstream, so a caller returning from block() cannot
+            // race with a release still pending on the emitting thread.
             return Mono
                 .using(() -> reserveCache(container, acquirer.getAccountName(), context),
-                    ContainerSessionCache::getSessionAsync, ContainerSessionCache::release, false)
+                    ContainerSessionCache::getSessionAsync, ContainerSessionCache::release, true)
                 .cache();
         });
     }
@@ -260,7 +262,7 @@ final class ContainerSessionProvider extends SessionProvider {
                         });
                 }
                 return acquisition.doOnNext(value -> expiration = value.getExpiresAt());
-            }, ContainerSessionCache::release, false), SessionCredential::getExpiresAt, clock);
+            }, ContainerSessionCache::release, true), SessionCredential::getExpiresAt, clock);
         }
 
         private ContainerSessionCache retain() {
