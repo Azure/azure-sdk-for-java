@@ -12,7 +12,6 @@ import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointI
 import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobLayoutRanges;
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
-import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.policy.DataLocalityPolicy;
 import org.junit.jupiter.api.Test;

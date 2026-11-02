@@ -25,7 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper;
-import com.azure.storage.blob.models.BlobLayoutRange;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -43,7 +43,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -56,7 +56,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -183,7 +183,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A paged reactive response emitting the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
+    PagedFlux<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return PagedFlux.create(() -> {
             Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>> provider = BlobLayoutPagingAccessHelper
                 .getPageRetrieverProvider(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
@@ -1493,7 +1493,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
             Context context = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, null);
-            context = StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
+            // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+            // context = StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
 
             return blockBlobAsyncClient.downloadStreamWithResponse(Transforms.toBlobDownloadStreamOptions(finalOptions))
                 .contextWrite(FluxUtil.toReactorContext(context))

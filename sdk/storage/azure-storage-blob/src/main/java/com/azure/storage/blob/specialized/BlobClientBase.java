@@ -64,7 +64,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
-import com.azure.storage.blob.models.BlobLayoutRange;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -88,7 +88,7 @@ import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.options.BlobGetLayoutOptions;
+import com.azure.storage.blob.implementation.util.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -1345,7 +1345,8 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         options = options == null ? new BlobDownloadStreamOptions() : options;
-        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1451,7 +1452,8 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
         Context context) {
         options = options == null ? new BlobDownloadContentOptions() : options;
-        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1873,7 +1875,7 @@ public class BlobClientBase {
      * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
+    PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
         return getLayout(options, Context.NONE);
     }
 
@@ -1889,7 +1891,7 @@ public class BlobClientBase {
      * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
+    PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 

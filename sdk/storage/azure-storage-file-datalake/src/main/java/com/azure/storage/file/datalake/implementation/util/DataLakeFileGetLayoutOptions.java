@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.options;
+package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
 
+// TODO: Move back to com.azure.storage.file.datalake.options when getLayout is made public.
 /**
  * Extended options that may be passed when getting the layout of a file.
  */

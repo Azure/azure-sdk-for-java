@@ -19,7 +19,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobLayoutRange;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
@@ -44,7 +44,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
-import com.azure.storage.blob.options.BlobGetLayoutOptions;
+import com.azure.storage.blob.implementation.util.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -61,7 +61,7 @@ import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -100,7 +100,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
@@ -312,8 +312,9 @@ class Transforms {
         return new BlobDownloadStreamOptions().setRange(toBlobRange(options.getRange()))
             .setDownloadRetryOptions(toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
-            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5())
-            .setDataLocalityEndpoint(options.getDataLocalityEndpoint());
+            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // .setDataLocalityEndpoint(options.getDataLocalityEndpoint());
     }
 
     static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(

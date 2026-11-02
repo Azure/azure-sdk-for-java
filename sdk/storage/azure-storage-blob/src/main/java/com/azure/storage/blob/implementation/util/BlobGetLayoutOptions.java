@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.options;
+package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
+// TODO: Move back to com.azure.storage.blob.options when getLayout is made public.
 /**
  * Extended options that may be passed when getting the layout of a blob.
  */

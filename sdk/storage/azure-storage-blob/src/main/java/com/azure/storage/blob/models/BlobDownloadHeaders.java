@@ -1045,11 +1045,11 @@ public final class BlobDownloadHeaders {
         return this;
     }
 
+    // TODO: Restore manual getLayout guidance when getLayout is made public.
     /**
-     * Get the xMsDownloadHint property: A hint from the service that the client should call
-     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
-     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
-     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     * Get the xMsDownloadHint property: A hint from the service that data-locality layout information is available
+     * for this blob. When {@link com.azure.storage.common.LayoutAwareRouting#ENABLED} is set on supported download
+     * options, the SDK uses the layout to route range downloads to the optimal endpoint automatically.
      *
      * @return the downloadHint value.
      */
@@ -1059,11 +1059,11 @@ public final class BlobDownloadHeaders {
         return downloadHint == null ? null : DownloadHint.fromString(downloadHint);
     }
 
+    // TODO: Restore manual getLayout guidance when getLayout is made public.
     /**
-     * Set the xMsDownloadHint property: A hint from the service that the client should call
-     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
-     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
-     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     * Set the xMsDownloadHint property: A hint from the service that data-locality layout information is available
+     * for this blob. When {@link com.azure.storage.common.LayoutAwareRouting#ENABLED} is set on supported download
+     * options, the SDK uses the layout to route range downloads to the optimal endpoint automatically.
      *
      * @param downloadHint the xMsDownloadHint value to set.
      * @return the BlobDownloadHeaders object itself.

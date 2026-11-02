@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.common.implementation.Constants;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

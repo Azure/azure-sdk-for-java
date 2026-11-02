@@ -4,7 +4,6 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRange;
-import com.azure.storage.blob.models.BlobLayoutRange;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

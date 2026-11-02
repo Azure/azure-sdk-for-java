@@ -40,7 +40,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -54,7 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -169,7 +169,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A paged response containing the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
+    PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 
@@ -1139,8 +1139,10 @@ public class DataLakeFileClient extends DataLakePathClient {
         Context context) {
         FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
         Context upnContext = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, context);
-        Context finalContext
-            = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+        // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
+        // Context finalContext
+        //     = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+        Context finalContext = upnContext;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
             BlobDownloadResponse response = blockBlobClient.downloadStreamWithResponse(stream,
