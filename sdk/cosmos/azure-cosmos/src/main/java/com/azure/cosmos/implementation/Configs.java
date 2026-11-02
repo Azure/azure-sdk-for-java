@@ -269,6 +269,11 @@ public class Configs {
     private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE = "COSMOS_MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
     public static final int DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = 1000;
 
+    private static final String HYBRID_SEARCH_USE_COMPETITION_RANKING =
+        "COSMOS.HYBRID_SEARCH_USE_COMPETITION_RANKING";
+    private static final String HYBRID_SEARCH_USE_COMPETITION_RANKING_VARIABLE =
+        "AZURE_COSMOS_HYBRID_SEARCH_USE_COMPETITION_RANKING";
+
     private static final String AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = "COSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY";
 
     private static final boolean DEFAULT_AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = false;
@@ -1246,6 +1251,11 @@ public class Configs {
             return Integer.parseInt(valueFromSystemVariable);
         }
         return DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
+    }
+
+    public static boolean isHybridSearchCompetitionRankingEnabled() {
+        return Boolean.parseBoolean(System.getProperty(HYBRID_SEARCH_USE_COMPETITION_RANKING,
+            firstNonNull(emptyToNull(System.getenv(HYBRID_SEARCH_USE_COMPETITION_RANKING_VARIABLE)), "false")));
     }
 
     public static boolean getAzureCosmosNonStreamingOrderByDisabled() {
