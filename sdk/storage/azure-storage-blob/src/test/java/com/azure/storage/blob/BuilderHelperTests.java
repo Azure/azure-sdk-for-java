@@ -95,7 +95,7 @@ public class BuilderHelperTests {
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
     private static final String CREATE_SESSION_RESPONSE_BODY
         = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<CreateSessionResult><Id>session-id</Id><Expiration>"
-            + OffsetDateTime.now().plusHours(1).format(java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME)
+            + new DateTimeRfc1123(OffsetDateTime.now().plusHours(1))
             + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
             + "<SessionToken>session-token</SessionToken>"
             + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"

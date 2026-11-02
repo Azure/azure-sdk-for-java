@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
@@ -28,7 +27,6 @@ import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -195,23 +193,13 @@ public class ContainerSessionApiTests extends BlobTestBase {
     }
 
     private HttpPipeline createOAuthPipeline(AtomicInteger policyInvocationCount, AtomicReference<String> requestPath) {
-        String testName = testContextManager.getTestName();
+        HttpPipelinePolicy loggingPolicy = createSessionResponseLoggingPolicy();
         HttpPipelinePolicy policy = (context, next) -> {
             policyInvocationCount.incrementAndGet();
             if (requestPath != null) {
                 requestPath.set(context.getHttpRequest().getUrl().getPath());
             }
-            // Log the request IDs so a failing live run can be correlated with service-side logs.
-            String clientRequestId
-                = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-            return next.process()
-                .doOnNext(response -> LOGGER.atInfo()
-                    .addKeyValue("test", testName)
-                    .addKeyValue("statusCode", response.getStatusCode())
-                    .addKeyValue("x-ms-client-request-id", clientRequestId)
-                    .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))
-                    .addKeyValue("x-ms-error-code", response.getHeaderValue(ERROR_CODE_HEADER_NAME))
-                    .log("CreateSession response"));
+            return loggingPolicy.process(context, next);
         };
 
         BlobServiceClientBuilder builder
