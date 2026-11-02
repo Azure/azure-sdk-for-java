@@ -18,6 +18,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -438,6 +440,46 @@ class FeatureFlagClientTest {
         PagedFlux<FeatureFlag> async = builder.buildAsyncClient().listFeatureFlags(selector);
         async.collectList().block();
         async.collectList().block();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void interleavedIteratorsHaveIndependentPageConditions(boolean revisions) {
+        String path = revisions ? "/ff-revisions" : "/ff";
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient httpClient = request -> Mono.fromSupplier(() -> {
+            requests.incrementAndGet();
+            assertEquals(path, request.getUrl().getPath());
+            String query = request.getUrl().getQuery();
+            int page = query.contains("after=page2") ? 2 : query.contains("after=page1") ? 1 : 0;
+            assertEquals("\"page" + page + "\"", request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH));
+            String nextLink = page < 2
+                ? ",\"@nextLink\":\"" + path + "?api-version=2026-05-01-preview&after=page" + (page + 1) + "\""
+                : "";
+            return response(request, 200,
+                "{\"items\":[{\"name\":\"page" + page + "\",\"enabled\":true}]" + nextLink + "}");
+        });
+        FeatureFlagClient client = new FeatureFlagClientBuilder().endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
+            .httpClient(new AssertingHttpClientBuilder(httpClient).assertSync().build())
+            .buildClient();
+        FeatureFlagSelector selector
+            = new FeatureFlagSelector().setMatchConditions(Arrays.asList(new MatchConditions().setIfNoneMatch("page0"),
+                new MatchConditions().setIfNoneMatch("page1"), new MatchConditions().setIfNoneMatch("page2")));
+        PagedIterable<FeatureFlag> flags
+            = revisions ? client.listFeatureFlagRevisions(selector) : client.listFeatureFlags(selector);
+        assertEquals(0, requests.get());
+        Iterator<PagedResponse<FeatureFlag>> first = flags.iterableByPage().iterator();
+        Iterator<PagedResponse<FeatureFlag>> second = flags.iterableByPage().iterator();
+        for (int page = 0; page < 3; page++) {
+            assertTrue(first.hasNext());
+            assertEquals("page" + page, first.next().getValue().get(0).getName());
+            assertTrue(second.hasNext());
+            assertEquals("page" + page, second.next().getValue().get(0).getName());
+        }
+        assertFalse(first.hasNext());
+        assertFalse(second.hasNext());
+        assertEquals(6, requests.get());
     }
 
     @ParameterizedTest

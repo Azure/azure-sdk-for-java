@@ -118,11 +118,12 @@ public final class FeatureFlagSupport {
 
     public static PagedIterable<FeatureFlag> list(ConfigurationClientImpl client, FeatureFlagSelector selector,
         boolean revisions, Context context) {
-        AtomicInteger pageIndex = new AtomicInteger();
-        return new PagedIterable<>(() -> {
-            pageIndex.set(0);
-            return getPage(client, selector, revisions, null, pageIndex.getAndIncrement(), context);
-        }, nextLink -> getPage(client, selector, revisions, nextLink, pageIndex.getAndIncrement(), context));
+        return new PagedIterable<>(PagedFlux.create(() -> {
+            AtomicInteger pageIndex = new AtomicInteger();
+            // Scope state to each traversal while retaining synchronous page retrieval.
+            return (nextLink, pageSize) -> Mono.fromCallable(
+                () -> getPage(client, selector, revisions, nextLink, pageIndex.getAndIncrement(), context)).flux();
+        }));
     }
 
     public static PagedFlux<FeatureFlag> listAsync(ConfigurationClientImpl client, FeatureFlagSelector selector,
