@@ -35,7 +35,9 @@ final class TestUtils {
         Configuration config = Configuration.getGlobalConfiguration();
 
         ChainedTokenCredentialBuilder builder
-            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build());
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -57,9 +59,7 @@ final class TestUtils {
             builder.addLast(trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic()));
         }
 
-        builder.addLast(new AzurePowerShellCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
 
         return builder.build();
     }
