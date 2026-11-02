@@ -5,8 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,19 +21,16 @@ public class TaskState implements JsonSerializable<TaskState> {
     /*
      * The lastUpdateDateTime property.
      */
-    @Generated
     private OffsetDateTime lastUpdateDateTime;
 
     /*
      * The status property.
      */
-    @Generated
     private State status;
 
     /**
      * Creates an instance of TaskState class.
      */
-    @Generated
     public TaskState() {
     }
 
@@ -44,7 +39,6 @@ public class TaskState implements JsonSerializable<TaskState> {
      * 
      * @return the lastUpdateDateTime value.
      */
-    @Generated
     public OffsetDateTime getLastUpdateDateTime() {
         return this.lastUpdateDateTime;
     }
@@ -55,7 +49,6 @@ public class TaskState implements JsonSerializable<TaskState> {
      * @param lastUpdateDateTime the lastUpdateDateTime value to set.
      * @return the TaskState object itself.
      */
-    @Generated
     public TaskState setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         this.lastUpdateDateTime = lastUpdateDateTime;
         return this;
@@ -66,7 +59,6 @@ public class TaskState implements JsonSerializable<TaskState> {
      * 
      * @return the status value.
      */
-    @Generated
     public State getStatus() {
         return this.status;
     }
@@ -77,7 +69,6 @@ public class TaskState implements JsonSerializable<TaskState> {
      * @param status the status value to set.
      * @return the TaskState object itself.
      */
-    @Generated
     public TaskState setStatus(State status) {
         this.status = status;
         return this;
@@ -86,7 +77,6 @@ public class TaskState implements JsonSerializable<TaskState> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,7 +97,6 @@ public class TaskState implements JsonSerializable<TaskState> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TaskState.
      */
-    @Generated
     public static TaskState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TaskState deserializedTaskState = new TaskState();
@@ -116,8 +105,8 @@ public class TaskState implements JsonSerializable<TaskState> {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedTaskState.lastUpdateDateTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTaskState.lastUpdateDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedTaskState.status = State.fromString(reader.getString());
                 } else {

@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,13 +19,11 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /*
      * A list of abstractive summaries.
      */
-    @Generated
     private List<AbstractiveSummary> summaries;
 
     /**
      * Creates an instance of AbstractiveSummaryDocumentResult class.
      */
-    @Generated
     public AbstractiveSummaryDocumentResult() {
     }
 
@@ -35,7 +32,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
      * 
      * @return the summaries value.
      */
-    @Generated
     public List<AbstractiveSummary> getSummaries() {
         return this.summaries;
     }
@@ -46,7 +42,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
      * @param summaries the summaries value to set.
      * @return the AbstractiveSummaryDocumentResult object itself.
      */
-    @Generated
     public AbstractiveSummaryDocumentResult setSummaries(List<AbstractiveSummary> summaries) {
         this.summaries = summaries;
         return this;
@@ -55,7 +50,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AbstractiveSummaryDocumentResult setId(String id) {
         super.setId(id);
@@ -65,7 +59,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AbstractiveSummaryDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -75,7 +68,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AbstractiveSummaryDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -85,7 +77,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +96,6 @@ public final class AbstractiveSummaryDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummaryDocumentResult.
      */
-    @Generated
     public static AbstractiveSummaryDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummaryDocumentResult deserializedAbstractiveSummaryDocumentResult

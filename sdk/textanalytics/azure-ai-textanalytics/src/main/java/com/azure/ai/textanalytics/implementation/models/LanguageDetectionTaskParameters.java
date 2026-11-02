@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,14 +18,12 @@ public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameter
     /**
      * Creates an instance of LanguageDetectionTaskParameters class.
      */
-    @Generated
     public LanguageDetectionTaskParameters() {
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public LanguageDetectionTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -36,7 +33,6 @@ public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameter
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public LanguageDetectionTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -46,7 +42,6 @@ public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameter
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -63,7 +58,6 @@ public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameter
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LanguageDetectionTaskParameters.
      */
-    @Generated
     public static LanguageDetectionTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LanguageDetectionTaskParameters deserializedLanguageDetectionTaskParameters

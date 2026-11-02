@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,25 +22,21 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
     /*
      * Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc.
      */
-    @Generated
     private HealthcareEntityRelationType relationType;
 
     /*
      * Confidence score between 0 and 1 of the extracted relation.
      */
-    @Generated
     private Double confidenceScore;
 
     /*
      * The entities in the relation.
      */
-    @Generated
     private List<HealthcareRelationEntity> entities;
 
     /**
      * Creates an instance of HealthcareRelation class.
      */
-    @Generated
     public HealthcareRelation() {
     }
 
@@ -51,7 +46,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * 
      * @return the relationType value.
      */
-    @Generated
     public HealthcareEntityRelationType getRelationType() {
         return this.relationType;
     }
@@ -63,7 +57,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * @param relationType the relationType value to set.
      * @return the HealthcareRelation object itself.
      */
-    @Generated
     public HealthcareRelation setRelationType(HealthcareEntityRelationType relationType) {
         this.relationType = relationType;
         return this;
@@ -74,7 +67,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * 
      * @return the confidenceScore value.
      */
-    @Generated
     public Double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -85,7 +77,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * @param confidenceScore the confidenceScore value to set.
      * @return the HealthcareRelation object itself.
      */
-    @Generated
     public HealthcareRelation setConfidenceScore(Double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -96,7 +87,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * 
      * @return the entities value.
      */
-    @Generated
     public List<HealthcareRelationEntity> getEntities() {
         return this.entities;
     }
@@ -107,7 +97,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * @param entities the entities value to set.
      * @return the HealthcareRelation object itself.
      */
-    @Generated
     public HealthcareRelation setEntities(List<HealthcareRelationEntity> entities) {
         this.entities = entities;
         return this;
@@ -116,7 +105,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,7 +123,6 @@ public final class HealthcareRelation implements JsonSerializable<HealthcareRela
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareRelation.
      */
-    @Generated
     public static HealthcareRelation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareRelation deserializedHealthcareRelation = new HealthcareRelation();
