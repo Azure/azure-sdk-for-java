@@ -12,8 +12,8 @@ public final class FileShareUsageDataResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareUsageDataResponseInner model
-            = BinaryData.fromString("{\"properties\":{\"liveShares\":{\"fileShareCount\":1948903121}}}")
+            = BinaryData.fromString("{\"properties\":{\"liveShares\":{\"fileShareCount\":133898645}}}")
                 .toObject(FileShareUsageDataResponseInner.class);
-        Assertions.assertEquals(1948903121, model.properties().liveShares().fileShareCount());
+        Assertions.assertEquals(133898645, model.properties().liveShares().fileShareCount());
     }
 }

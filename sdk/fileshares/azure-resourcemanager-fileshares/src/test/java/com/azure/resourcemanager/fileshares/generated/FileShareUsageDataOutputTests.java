@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FileShareUsageDataOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileShareUsageDataOutput model = BinaryData.fromString("{\"liveShares\":{\"fileShareCount\":891101767}}")
+        FileShareUsageDataOutput model = BinaryData.fromString("{\"liveShares\":{\"fileShareCount\":45967354}}")
             .toObject(FileShareUsageDataOutput.class);
-        Assertions.assertEquals(891101767, model.liveShares().fileShareCount());
+        Assertions.assertEquals(45967354, model.liveShares().fileShareCount());
     }
 }

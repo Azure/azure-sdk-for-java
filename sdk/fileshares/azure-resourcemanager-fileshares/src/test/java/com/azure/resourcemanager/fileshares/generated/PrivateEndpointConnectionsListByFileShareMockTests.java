@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByFileShareMockTests {
     @Test
     public void testListByFileShare() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"kcbcue\"],\"privateEndpoint\":{\"id\":\"xgc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"rhos\",\"actionsRequired\":\"dqrhzoymib\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"ood\"],\"privateEndpoint\":{\"id\":\"bobzdopcjwvnhd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gx\",\"actionsRequired\":\"rslpmutwuoeg\"},\"provisioningState\":\"Creating\"},\"id\":\"jw\",\"name\":\"iyq\",\"type\":\"luicpdggkzzlvmbm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByFileShareMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByFileShare("xozap", "helxprglya", com.azure.core.util.Context.NONE);
+            .listByFileShare("pnedgf", "cvkcvqvpkeqdcv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rhos",
+        Assertions.assertEquals("gx",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dqrhzoymib",
+        Assertions.assertEquals("rslpmutwuoeg",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

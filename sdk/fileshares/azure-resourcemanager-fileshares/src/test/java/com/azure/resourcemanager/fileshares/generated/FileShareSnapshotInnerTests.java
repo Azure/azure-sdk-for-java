@@ -15,19 +15,20 @@ public final class FileShareSnapshotInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareSnapshotInner model = BinaryData.fromString(
-            "{\"properties\":{\"snapshotTime\":\"tutqxlngxlefgug\",\"initiatorId\":\"krxd\",\"metadata\":{\"hzrvqd\":\"dt\"}},\"id\":\"bhj\",\"name\":\"big\",\"type\":\"h\"}")
+            "{\"properties\":{\"snapshotTime\":\"kexxppof\",\"initiatorId\":\"axcfjpgddtocjjx\",\"metadata\":{\"bqe\":\"mouexhdzx\",\"eic\":\"jnxqbzvddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\"}},\"id\":\"yeicxmqciwqvhk\",\"name\":\"ixuigdtopbobj\",\"type\":\"ghmewuam\"}")
             .toObject(FileShareSnapshotInner.class);
-        Assertions.assertEquals("krxd", model.properties().initiatorId());
-        Assertions.assertEquals("dt", model.properties().metadata().get("hzrvqd"));
+        Assertions.assertEquals("axcfjpgddtocjjx", model.properties().initiatorId());
+        Assertions.assertEquals("mouexhdzx", model.properties().metadata().get("bqe"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileShareSnapshotInner model = new FileShareSnapshotInner().withProperties(
-            new FileShareSnapshotProperties().withInitiatorId("krxd").withMetadata(mapOf("hzrvqd", "dt")));
+        FileShareSnapshotInner model = new FileShareSnapshotInner()
+            .withProperties(new FileShareSnapshotProperties().withInitiatorId("axcfjpgddtocjjx")
+                .withMetadata(mapOf("bqe", "mouexhdzx", "eic", "jnxqbzvddntwn", "cyddglmjthjqk", "twnpzaoqvuhrhcf")));
         model = BinaryData.fromObject(model).toObject(FileShareSnapshotInner.class);
-        Assertions.assertEquals("krxd", model.properties().initiatorId());
-        Assertions.assertEquals("dt", model.properties().metadata().get("hzrvqd"));
+        Assertions.assertEquals("axcfjpgddtocjjx", model.properties().initiatorId());
+        Assertions.assertEquals("mouexhdzx", model.properties().metadata().get("bqe"));
     }
 
     // Use "Map.of" if available

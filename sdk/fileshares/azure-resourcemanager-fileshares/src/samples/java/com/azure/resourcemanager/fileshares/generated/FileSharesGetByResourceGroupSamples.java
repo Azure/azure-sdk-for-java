@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fileshares.generated;
  */
 public final class FileSharesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_Get_MaximumSet.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityRequest;
  */
 public final class FileSharesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_CheckNameAvailability_MaximumSet.
@@ -27,7 +27,7 @@ public final class FileSharesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShares_CheckNameAvailability_MinimumSet.

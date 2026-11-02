@@ -10,7 +10,12 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fileshares.FileSharesManager;
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareLimitsResponse;
+import com.azure.resourcemanager.fileshares.models.FileShareOfferInput;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +26,7 @@ public final class InformationalOperationsGetLimitsWithResponseMockTests {
     @Test
     public void testGetLimitsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"limits\":{\"maxFileShares\":1701061135,\"maxFileShareSnapshots\":1258366887,\"maxFileShareSubnets\":393734239,\"maxFileSharePrivateEndpointConnections\":649477703,\"minProvisionedStorageGiB\":943919605,\"maxProvisionedStorageGiB\":60814629,\"minProvisionedIOPerSec\":1383619855,\"maxProvisionedIOPerSec\":800082776,\"minProvisionedThroughputMiBPerSec\":1193557953,\"maxProvisionedThroughputMiBPerSec\":1475281926},\"provisioningConstants\":{\"baseIOPerSec\":1582782062,\"scalarIOPerSec\":43.367403188188604,\"baseThroughputMiBPerSec\":138973043,\"scalarThroughputMiBPerSec\":51.562118966524096,\"guardrailIOPerSecScalar\":26.700803678719577,\"guardrailThroughputScalar\":62.63083190962946}}}";
+            = "{\"properties\":{\"limits\":{\"maxFileShares\":372192429,\"maxFileShareSnapshots\":921402224,\"maxFileShareSubnets\":670592534,\"maxFileSharePrivateEndpointConnections\":143823433,\"minProvisionedStorageGiB\":1813369281,\"maxProvisionedStorageGiB\":209864806,\"minProvisionedIOPerSec\":1291535699,\"maxProvisionedIOPerSec\":407342571,\"minProvisionedThroughputMiBPerSec\":1147743130,\"maxProvisionedThroughputMiBPerSec\":98779693},\"provisioningConstants\":{\"baseIOPerSec\":1136277704,\"scalarIOPerSec\":93.94025609740328,\"baseThroughputMiBPerSec\":738915892,\"scalarThroughputMiBPerSec\":94.56387544596132,\"guardrailIOPerSecScalar\":68.14707388261593,\"guardrailThroughputScalar\":24.10503643156865}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,27 +36,31 @@ public final class InformationalOperationsGetLimitsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileShareLimitsResponse response = manager.informationalOperations()
-            .getLimitsWithResponse("cvqvpkeqdcv", com.azure.core.util.Context.NONE)
+            .getLimitsWithResponse("byyntwlrbqt",
+                new FileShareLimitsRequest().withProperties(new FileShareOfferInput().withProtocol(Protocol.NFS)
+                    .withMediaTier(MediaTier.HDD)
+                    .withScaleMode(ScaleMode.COMPATIBILITY)),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1701061135, response.properties().limits().maxFileShares());
-        Assertions.assertEquals(1258366887, response.properties().limits().maxFileShareSnapshots());
-        Assertions.assertEquals(393734239, response.properties().limits().maxFileShareSubnets());
-        Assertions.assertEquals(649477703, response.properties().limits().maxFileSharePrivateEndpointConnections());
-        Assertions.assertEquals(943919605, response.properties().limits().minProvisionedStorageGiB());
-        Assertions.assertEquals(60814629, response.properties().limits().maxProvisionedStorageGiB());
-        Assertions.assertEquals(1383619855, response.properties().limits().minProvisionedIOPerSec());
-        Assertions.assertEquals(800082776, response.properties().limits().maxProvisionedIOPerSec());
-        Assertions.assertEquals(1193557953, response.properties().limits().minProvisionedThroughputMiBPerSec());
-        Assertions.assertEquals(1475281926, response.properties().limits().maxProvisionedThroughputMiBPerSec());
-        Assertions.assertEquals(1582782062, response.properties().provisioningConstants().baseIOPerSec());
-        Assertions.assertEquals(43.367403188188604, response.properties().provisioningConstants().scalarIOPerSec());
-        Assertions.assertEquals(138973043, response.properties().provisioningConstants().baseThroughputMiBPerSec());
-        Assertions.assertEquals(51.562118966524096,
+        Assertions.assertEquals(372192429, response.properties().limits().maxFileShares());
+        Assertions.assertEquals(921402224, response.properties().limits().maxFileShareSnapshots());
+        Assertions.assertEquals(670592534, response.properties().limits().maxFileShareSubnets());
+        Assertions.assertEquals(143823433, response.properties().limits().maxFileSharePrivateEndpointConnections());
+        Assertions.assertEquals(1813369281, response.properties().limits().minProvisionedStorageGiB());
+        Assertions.assertEquals(209864806, response.properties().limits().maxProvisionedStorageGiB());
+        Assertions.assertEquals(1291535699, response.properties().limits().minProvisionedIOPerSec());
+        Assertions.assertEquals(407342571, response.properties().limits().maxProvisionedIOPerSec());
+        Assertions.assertEquals(1147743130, response.properties().limits().minProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(98779693, response.properties().limits().maxProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(1136277704, response.properties().provisioningConstants().baseIOPerSec());
+        Assertions.assertEquals(93.94025609740328, response.properties().provisioningConstants().scalarIOPerSec());
+        Assertions.assertEquals(738915892, response.properties().provisioningConstants().baseThroughputMiBPerSec());
+        Assertions.assertEquals(94.56387544596132,
             response.properties().provisioningConstants().scalarThroughputMiBPerSec());
-        Assertions.assertEquals(26.700803678719577,
+        Assertions.assertEquals(68.14707388261593,
             response.properties().provisioningConstants().guardrailIOPerSecScalar());
-        Assertions.assertEquals(62.63083190962946,
+        Assertions.assertEquals(24.10503643156865,
             response.properties().provisioningConstants().guardrailThroughputScalar());
     }
 }

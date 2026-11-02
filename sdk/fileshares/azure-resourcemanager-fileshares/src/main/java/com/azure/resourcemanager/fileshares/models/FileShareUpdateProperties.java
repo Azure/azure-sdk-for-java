@@ -47,6 +47,11 @@ public final class FileShareUpdateProperties implements JsonSerializable<FileSha
      */
     private PublicNetworkAccess publicNetworkAccess;
 
+    /*
+     * Encryption settings for the file share.
+     */
+    private FileShareEncryption encryption;
+
     /**
      * Creates an instance of FileShareUpdateProperties class.
      */
@@ -180,6 +185,26 @@ public final class FileShareUpdateProperties implements JsonSerializable<FileSha
     }
 
     /**
+     * Get the encryption property: Encryption settings for the file share.
+     * 
+     * @return the encryption value.
+     */
+    public FileShareEncryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption settings for the file share.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the FileShareUpdateProperties object itself.
+     */
+    public FileShareUpdateProperties withEncryption(FileShareEncryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -192,6 +217,7 @@ public final class FileShareUpdateProperties implements JsonSerializable<FileSha
         jsonWriter.writeJsonField("publicAccessProperties", this.publicAccessProperties);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -227,6 +253,8 @@ public final class FileShareUpdateProperties implements JsonSerializable<FileSha
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedFileShareUpdateProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedFileShareUpdateProperties.encryption = FileShareEncryption.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -6,13 +6,16 @@ package com.azure.resourcemanager.fileshares.generated;
 
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationInput;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 
 /**
  * Samples for InformationalOperations GetProvisioningRecommendation.
  */
 public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MaximumSet.
@@ -24,12 +27,15 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()
-                    .withProperties(new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(7)),
+                    .withProperties(new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(7)
+                        .withProtocol(Protocol.NFS)
+                        .withMediaTier(MediaTier.HDD)
+                        .withScaleMode(ScaleMode.SCALE)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MinimumSet.

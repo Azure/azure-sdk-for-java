@@ -12,10 +12,10 @@ public final class FileShareSnapshotListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareSnapshotListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"snapshotTime\":\"ea\",\"initiatorId\":\"ipheoflokeyyien\",\"metadata\":{\"jumasx\":\"lwtgrhpdj\",\"qyeg\":\"zj\",\"hejjz\":\"alhbx\"}},\"id\":\"dudgwdslfhot\",\"name\":\"mcy\",\"type\":\"pwlbjnpg\"}],\"nextLink\":\"ftadehxnltyfs\"}")
+            "{\"value\":[{\"properties\":{\"snapshotTime\":\"onq\",\"initiatorId\":\"kvlrxnj\",\"metadata\":{\"enjbdlwtgrhp\":\"eipheoflokeyy\",\"umasxazjpq\":\"jp\"}},\"id\":\"gual\",\"name\":\"b\",\"type\":\"xhejjzzvdud\"},{\"properties\":{\"snapshotTime\":\"slfhotwm\",\"initiatorId\":\"npwlbjnpg\",\"metadata\":{\"suesnzw\":\"tadehxnltyfsopp\",\"avo\":\"ej\",\"vudwx\":\"xzdmohctb\",\"gujjugwdkcglh\":\"ndnvo\"}},\"id\":\"azjdyggd\",\"name\":\"jixhbk\",\"type\":\"ofqweykhmenevfye\"},{\"properties\":{\"snapshotTime\":\"hybcibv\",\"initiatorId\":\"dcsi\",\"metadata\":{\"tehfiqscjeypvh\":\"naamde\",\"kqsleyyvxy\":\"zrkgqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\"}},\"id\":\"noae\",\"name\":\"pfhyhl\",\"type\":\"rpmopjmc\"}],\"nextLink\":\"tuo\"}")
             .toObject(FileShareSnapshotListResult.class);
-        Assertions.assertEquals("ipheoflokeyyien", model.value().get(0).properties().initiatorId());
-        Assertions.assertEquals("lwtgrhpdj", model.value().get(0).properties().metadata().get("jumasx"));
-        Assertions.assertEquals("ftadehxnltyfs", model.nextLink());
+        Assertions.assertEquals("kvlrxnj", model.value().get(0).properties().initiatorId());
+        Assertions.assertEquals("eipheoflokeyy", model.value().get(0).properties().metadata().get("enjbdlwtgrhp"));
+        Assertions.assertEquals("tuo", model.nextLink());
     }
 }

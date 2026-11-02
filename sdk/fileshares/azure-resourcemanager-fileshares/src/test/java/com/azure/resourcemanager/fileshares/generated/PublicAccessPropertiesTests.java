@@ -13,16 +13,16 @@ public final class PublicAccessPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicAccessProperties model
-            = BinaryData.fromString("{\"allowedSubnets\":[\"jkjlxofpdvhpfx\",\"ypininm\",\"yhuybbkpod\"]}")
+            = BinaryData.fromString("{\"allowedSubnets\":[\"wfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\"]}")
                 .toObject(PublicAccessProperties.class);
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.allowedSubnets().get(0));
+        Assertions.assertEquals("wfzitonpeqfpjk", model.allowedSubnets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicAccessProperties model
-            = new PublicAccessProperties().withAllowedSubnets(Arrays.asList("jkjlxofpdvhpfx", "ypininm", "yhuybbkpod"));
+        PublicAccessProperties model = new PublicAccessProperties()
+            .withAllowedSubnets(Arrays.asList("wfzitonpeqfpjk", "lxofpdvhpfxxypin", "nmayhuybb"));
         model = BinaryData.fromObject(model).toObject(PublicAccessProperties.class);
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.allowedSubnets().get(0));
+        Assertions.assertEquals("wfzitonpeqfpjk", model.allowedSubnets().get(0));
     }
 }
