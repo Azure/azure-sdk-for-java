@@ -1,6 +1,6 @@
 # Release History
 
-## 12.36.1 (2026-10-29)
+## 12.36.1 (2026-11-02)
 
 ### Bugs Fixed
 - Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from

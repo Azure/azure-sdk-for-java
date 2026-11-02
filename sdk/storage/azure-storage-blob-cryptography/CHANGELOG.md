@@ -1,6 +1,6 @@
 # Release History
 
-## 12.35.1 (2026-10-29)
+## 12.35.1 (2026-11-02)
 
 ### Bugs Fixed
 - Fixed a bug where `EncryptedBlobClient` and `EncryptedBlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
