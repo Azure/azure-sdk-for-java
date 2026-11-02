@@ -9,11 +9,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import com.azure.resourcemanager.netapp.models.VolumePatchNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
 import java.io.IOException;
@@ -66,6 +69,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Specifies if default quota is enabled for the volume.
      */
     private Boolean isDefaultQuotaEnabled;
+
+    /*
+     * Async Directory Delete configuration for the volume.
+     */
+    private AsyncDirectoryDelete asyncDirectoryDelete;
 
     /*
      * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
@@ -129,6 +137,16 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
     private SmbNonBrowsable smbNonBrowsable;
+
+    /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    private SmbOplocks smbOplocks;
+
+    /*
+     * Geographic namespace properties for this volume.
+     */
+    private VolumePatchNamespaceProperties geoNamespaceProperties;
 
     /**
      * Creates an instance of VolumePatchProperties class.
@@ -291,6 +309,26 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      */
     public VolumePatchProperties withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled) {
         this.isDefaultQuotaEnabled = isDefaultQuotaEnabled;
+        return this;
+    }
+
+    /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.asyncDirectoryDelete;
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        this.asyncDirectoryDelete = asyncDirectoryDelete;
         return this;
     }
 
@@ -533,6 +571,48 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
+        return this;
+    }
+
+    /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumePatchNamespaceProperties geoNamespaceProperties() {
+        return this.geoNamespaceProperties;
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties) {
+        this.geoNamespaceProperties = geoNamespaceProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -543,6 +623,12 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         }
         if (dataProtection() != null) {
             dataProtection().validate();
+        }
+        if (asyncDirectoryDelete() != null) {
+            asyncDirectoryDelete().validate();
+        }
+        if (geoNamespaceProperties() != null) {
+            geoNamespaceProperties().validate();
         }
     }
 
@@ -560,6 +646,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
         jsonWriter.writeJsonField("dataProtection", this.dataProtection);
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
+        jsonWriter.writeJsonField("asyncDirectoryDelete", this.asyncDirectoryDelete);
         jsonWriter.writeNumberField("defaultUserQuotaInKiBs", this.defaultUserQuotaInKiBs);
         jsonWriter.writeNumberField("defaultGroupQuotaInKiBs", this.defaultGroupQuotaInKiBs);
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
@@ -574,6 +661,8 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
             this.smbAccessBasedEnumeration == null ? null : this.smbAccessBasedEnumeration.toString());
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
+        jsonWriter.writeJsonField("geoNamespaceProperties", this.geoNamespaceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -609,6 +698,8 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                 } else if ("isDefaultQuotaEnabled".equals(fieldName)) {
                     deserializedVolumePatchProperties.isDefaultQuotaEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("asyncDirectoryDelete".equals(fieldName)) {
+                    deserializedVolumePatchProperties.asyncDirectoryDelete = AsyncDirectoryDelete.fromJson(reader);
                 } else if ("defaultUserQuotaInKiBs".equals(fieldName)) {
                     deserializedVolumePatchProperties.defaultUserQuotaInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("defaultGroupQuotaInKiBs".equals(fieldName)) {
@@ -633,6 +724,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                         = SmbAccessBasedEnumeration.fromString(reader.getString());
                 } else if ("smbNonBrowsable".equals(fieldName)) {
                     deserializedVolumePatchProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedVolumePatchProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
+                } else if ("geoNamespaceProperties".equals(fieldName)) {
+                    deserializedVolumePatchProperties.geoNamespaceProperties
+                        = VolumePatchNamespaceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

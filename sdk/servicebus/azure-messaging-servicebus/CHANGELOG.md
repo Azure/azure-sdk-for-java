@@ -4,13 +4,19 @@
 
 ### Features Added
 
+- Added `ServiceBusProcessorAsyncClient`, an asynchronous processor whose message and error handlers return a
+  `reactor.core.publisher.Mono` instead of running as blocking `Consumer` callbacks. It provides the same
+  push-based, auto-recovering, concurrency-managed message pump as `ServiceBusProcessorClient` for applications that
+  perform I/O-bound work reactively in the handler. Build it via `ServiceBusClientBuilder.processorAsync()` and
+  `ServiceBusClientBuilder.sessionProcessorAsync()`. ([#46564](https://github.com/Azure/azure-sdk-for-java/issues/46564))
+- Added `ServiceBusReceivedMessageAsyncContext` with reactive complete, abandon, defer, and dead-letter operations.
+  Async processor shutdown stops receiving before draining accepted handlers, and processing spans track the handler's
+  reactive lifetime.
 - Added `ServiceBusReceivedMessage.fromAmqpMessage(BinaryData, String)` to decode an AMQP 1.0 message and a separately supplied lock token for integrations such as Azure Functions bindings.
 
 ### Breaking Changes
 
 ### Bugs Fixed
-
-- Preserved an absent AMQP group sequence as null when deserializing received messages.
 
 ### Other Changes
 

@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `EncryptedBlobClient` and `EncryptedBlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` also encrypted and uploaded the bytes before a buffer's position, when that position was
+  not 0 and the buffer was larger than the authenticated region size.
+
 ### Other Changes
 
 ## 12.35.0 (2026-10-07)

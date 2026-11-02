@@ -97,6 +97,32 @@ public class VertxHttpClientTimeoutTests {
     }
 
     @Test
+    public void cancelledResponseBodyReleasesConnection() throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            HttpClient client = server.client(Duration.ZERO);
+            try (HttpResponse response = client.send(server.request("/buffered")).block(TEST_TIMEOUT)) {
+                assertNotNull(response);
+                StepVerifier.create(response.getBody().take(1))
+                    .expectNextCount(1)
+                    .expectComplete()
+                    .verify(TEST_TIMEOUT);
+                assertFastRequestSucceeds(client, server);
+            }
+        }
+    }
+
+    @Test
+    public void closingUnconsumedResponseReleasesConnection() throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            HttpClient client = server.client(Duration.ZERO);
+            HttpResponse response = client.send(server.request("/buffered")).block(TEST_TIMEOUT);
+            assertNotNull(response);
+            response.close();
+            assertFastRequestSucceeds(client, server);
+        }
+    }
+
+    @Test
     public void cancelledUploadCancelsBodyAndReleasesConnection() throws Exception {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
             CompletableFuture<Void> cancelled = new CompletableFuture<>();

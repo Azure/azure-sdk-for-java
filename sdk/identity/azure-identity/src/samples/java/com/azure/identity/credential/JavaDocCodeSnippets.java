@@ -278,6 +278,17 @@ public final class JavaDocCodeSnippets {
     }
 
     /**
+     * Creates a workload identity credential using the AKS webhook's identity binding configuration.
+     */
+    public void workloadIdentityBindingCodeSnippets() {
+        // BEGIN: readme-sample-workloadidentitybinding
+        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
+            .enableAzureProxy()
+            .build();
+        // END: readme-sample-workloadidentitybinding
+    }
+
+    /**
      * Method to insert code snippets for {@link AzureDeveloperCliCredential}
      */
     public void azureDeveloperCliCredentialCodeSnippets() {

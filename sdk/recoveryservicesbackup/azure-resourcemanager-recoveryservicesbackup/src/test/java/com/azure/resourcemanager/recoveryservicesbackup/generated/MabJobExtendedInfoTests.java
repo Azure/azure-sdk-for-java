@@ -14,14 +14,14 @@ public final class MabJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"hpwpgddeimawzovg\",\"startTime\":\"2021-01-30T08:36:14Z\",\"endTime\":\"2021-01-03T22:32:44Z\",\"duration\":\"PT99H14M36S\",\"status\":\"cjc\"}],\"propertyBag\":{\"wcoml\":\"bwsnsqow\"},\"dynamicErrorMessage\":\"ytwvczcswkacve\"}")
+            "{\"tasksList\":[{\"taskId\":\"xzcmjhngxno\",\"startTime\":\"2021-11-07T12:11:11Z\",\"endTime\":\"2021-11-30T21:38:03Z\",\"duration\":\"PT214H55M32S\",\"status\":\"jevhdlmydidw\"},{\"taskId\":\"pfwwt\",\"startTime\":\"2021-05-13T01:39:31Z\",\"endTime\":\"2020-12-22T04:54:50Z\",\"duration\":\"PT159H5M10S\",\"status\":\"hmwcdbck\"}],\"propertyBag\":{\"jzrbhtmeplv\":\"kxkxhnegk\",\"pgsn\":\"kaobrl\",\"a\":\"agnchjhgemuowaky\"},\"dynamicErrorMessage\":\"jymxcgqt\"}")
             .toObject(MabJobExtendedInfo.class);
-        Assertions.assertEquals("hpwpgddeimawzovg", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T08:36:14Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T22:32:44Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT99H14M36S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("cjc", model.tasksList().get(0).status());
-        Assertions.assertEquals("bwsnsqow", model.propertyBag().get("wcoml"));
-        Assertions.assertEquals("ytwvczcswkacve", model.dynamicErrorMessage());
+        Assertions.assertEquals("xzcmjhngxno", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T12:11:11Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T21:38:03Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT214H55M32S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("jevhdlmydidw", model.tasksList().get(0).status());
+        Assertions.assertEquals("kxkxhnegk", model.propertyBag().get("jzrbhtmeplv"));
+        Assertions.assertEquals("jymxcgqt", model.dynamicErrorMessage());
     }
 }

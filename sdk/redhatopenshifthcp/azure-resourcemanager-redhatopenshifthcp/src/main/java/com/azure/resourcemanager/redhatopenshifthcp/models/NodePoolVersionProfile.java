@@ -26,6 +26,9 @@ public final class NodePoolVersionProfile implements JsonSerializable<NodePoolVe
      * Each version belongs to only a single set.
      * 
      * If not specified, the default value is 'stable'.
+     * 
+     * This property is intended to be updateable, but that support is not yet
+     * complete. Until then, changing this value after node pool creation is rejected.
      */
     private String channelGroup;
 
@@ -61,6 +64,9 @@ public final class NodePoolVersionProfile implements JsonSerializable<NodePoolVe
      * 
      * If not specified, the default value is 'stable'.
      * 
+     * This property is intended to be updateable, but that support is not yet
+     * complete. Until then, changing this value after node pool creation is rejected.
+     * 
      * @return the channelGroup value.
      */
     public String channelGroup() {
@@ -72,6 +78,9 @@ public final class NodePoolVersionProfile implements JsonSerializable<NodePoolVe
      * Each version belongs to only a single set.
      * 
      * If not specified, the default value is 'stable'.
+     * 
+     * This property is intended to be updateable, but that support is not yet
+     * complete. Until then, changing this value after node pool creation is rejected.
      * 
      * @param channelGroup the channelGroup value to set.
      * @return the NodePoolVersionProfile object itself.

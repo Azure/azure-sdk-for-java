@@ -3,6 +3,7 @@
 
 package com.azure.v2.core.implementation;
 
+import com.azure.v2.core.credentials.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
 
 import java.time.OffsetDateTime;

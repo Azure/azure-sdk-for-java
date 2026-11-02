@@ -61,6 +61,11 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
      */
     private String servicePlacementTimeLimit;
 
+    /*
+     * The current deployment or provisioning state, which only appears in the response
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of StatefulServiceProperties class.
      */
@@ -228,6 +233,17 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -391,7 +407,7 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
                     List<ScalingPolicy> scalingPolicies = reader.readArray(reader1 -> ScalingPolicy.fromJson(reader1));
                     deserializedStatefulServiceProperties.withScalingPolicies(scalingPolicies);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatefulServiceProperties.withProvisioningState(reader.getString());
+                    deserializedStatefulServiceProperties.provisioningState = reader.getString();
                 } else if ("servicePackageActivationMode".equals(fieldName)) {
                     deserializedStatefulServiceProperties
                         .withServicePackageActivationMode(ServicePackageActivationMode.fromString(reader.getString()));

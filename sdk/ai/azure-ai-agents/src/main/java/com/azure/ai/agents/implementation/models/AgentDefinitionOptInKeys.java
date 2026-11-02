@@ -41,7 +41,12 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value Skills=V1Preview.
      */
-    SKILLS_V1_PREVIEW("Skills=V1Preview");
+    SKILLS_V1_PREVIEW("Skills=V1Preview"),
+
+    /**
+     * The Microsoft Copilot V1 preview feature opt-in.
+     */
+    MICROSOFT_COPILOT_V1_PREVIEW("MicrosoftCopilot=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

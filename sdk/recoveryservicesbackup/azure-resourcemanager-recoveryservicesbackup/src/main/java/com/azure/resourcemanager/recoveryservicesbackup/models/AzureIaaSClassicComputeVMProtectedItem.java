@@ -108,6 +108,16 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
      * {@inheritDoc}
      */
     @Override
+    public AzureIaaSClassicComputeVMProtectedItem
+        withExistingBasicVMProtection(ExistingBasicVMProtection existingBasicVMProtection) {
+        super.withExistingBasicVMProtection(existingBasicVMProtection);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AzureIaaSClassicComputeVMProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -286,6 +296,8 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
         jsonWriter.writeStringField("lastBackupStatus", lastBackupStatus());
         jsonWriter.writeJsonField("extendedInfo", extendedInfo());
         jsonWriter.writeJsonField("extendedProperties", extendedProperties());
+        jsonWriter.writeStringField("existingBasicVMProtection",
+            existingBasicVMProtection() == null ? null : existingBasicVMProtection().toString());
         jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
         return jsonWriter.writeEndObject();
     }
@@ -393,6 +405,9 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
                 } else if ("extendedProperties".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem
                         .withExtendedProperties(ExtendedProperties.fromJson(reader));
+                } else if ("existingBasicVMProtection".equals(fieldName)) {
+                    deserializedAzureIaaSClassicComputeVMProtectedItem
+                        .withExistingBasicVMProtection(ExistingBasicVMProtection.fromString(reader.getString()));
                 } else if ("policyType".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem.withPolicyType(reader.getString());
                 } else if ("protectedItemType".equals(fieldName)) {

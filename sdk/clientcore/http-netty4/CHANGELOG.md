@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
 - Fixed response and read timeouts not being enforced when the write timeout is disabled.
 
 ### Other Changes

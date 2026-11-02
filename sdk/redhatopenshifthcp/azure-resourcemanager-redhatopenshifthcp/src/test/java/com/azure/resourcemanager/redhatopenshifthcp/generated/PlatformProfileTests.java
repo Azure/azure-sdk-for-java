@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redhatopenshifthcp.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.redhatopenshifthcp.models.ContainerRegistryProfile;
 import com.azure.resourcemanager.redhatopenshifthcp.models.OperatorsAuthenticationProfile;
 import com.azure.resourcemanager.redhatopenshifthcp.models.OutboundType;
 import com.azure.resourcemanager.redhatopenshifthcp.models.PlatformProfile;
@@ -17,7 +18,7 @@ public final class PlatformProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlatformProfile model = BinaryData.fromString(
-            "{\"managedResourceGroup\":\"svqwhbmdgbbjfd\",\"subnetId\":\"gmbmbexppbh\",\"vnetIntegrationSubnetId\":\"q\",\"outboundType\":\"LoadBalancer\",\"networkSecurityGroupId\":\"lfp\",\"operatorsAuthentication\":{\"userAssignedIdentities\":{\"controlPlaneOperators\":{\"lgbquxig\":\"s\",\"rkujy\":\"yjgzjaoyfhrtxiln\",\"rlyxwjkcprbnw\":\"vlejuvfqa\"},\"dataPlaneOperators\":{\"ysszdnrujqguh\":\"gjvtbv\",\"prwzwbnguitnwui\":\"uouq\"},\"serviceManagedIdentity\":\"gazxuf\"}},\"issuerUrl\":\"zuckyfi\"}")
+            "{\"managedResourceGroup\":\"svqwhbmdgbbjfd\",\"subnetId\":\"gmbmbexppbh\",\"vnetIntegrationSubnetId\":\"q\",\"outboundType\":\"LoadBalancer\",\"networkSecurityGroupId\":\"lfp\",\"operatorsAuthentication\":{\"userAssignedIdentities\":{\"controlPlaneOperators\":{\"lgbquxig\":\"s\",\"rkujy\":\"yjgzjaoyfhrtxiln\",\"rlyxwjkcprbnw\":\"vlejuvfqa\"},\"dataPlaneOperators\":{\"ysszdnrujqguh\":\"gjvtbv\",\"prwzwbnguitnwui\":\"uouq\"},\"serviceManagedIdentity\":\"gazxuf\"}},\"containerRegistry\":{\"managedIdentity\":\"ckyfih\"},\"issuerUrl\":\"fidfvzw\"}")
             .toObject(PlatformProfile.class);
         Assertions.assertEquals("svqwhbmdgbbjfd", model.managedResourceGroup());
         Assertions.assertEquals("gmbmbexppbh", model.subnetId());
@@ -30,6 +31,7 @@ public final class PlatformProfileTests {
             model.operatorsAuthentication().userAssignedIdentities().dataPlaneOperators().get("ysszdnrujqguh"));
         Assertions.assertEquals("gazxuf",
             model.operatorsAuthentication().userAssignedIdentities().serviceManagedIdentity());
+        Assertions.assertEquals("ckyfih", model.containerRegistry().managedIdentity());
     }
 
     @org.junit.jupiter.api.Test
@@ -44,7 +46,8 @@ public final class PlatformProfileTests {
                     .withControlPlaneOperators(
                         mapOf("lgbquxig", "s", "rkujy", "yjgzjaoyfhrtxiln", "rlyxwjkcprbnw", "vlejuvfqa"))
                     .withDataPlaneOperators(mapOf("ysszdnrujqguh", "gjvtbv", "prwzwbnguitnwui", "uouq"))
-                    .withServiceManagedIdentity("gazxuf")));
+                    .withServiceManagedIdentity("gazxuf")))
+            .withContainerRegistry(new ContainerRegistryProfile().withManagedIdentity("ckyfih"));
         model = BinaryData.fromObject(model).toObject(PlatformProfile.class);
         Assertions.assertEquals("svqwhbmdgbbjfd", model.managedResourceGroup());
         Assertions.assertEquals("gmbmbexppbh", model.subnetId());
@@ -57,6 +60,7 @@ public final class PlatformProfileTests {
             model.operatorsAuthentication().userAssignedIdentities().dataPlaneOperators().get("ysszdnrujqguh"));
         Assertions.assertEquals("gazxuf",
             model.operatorsAuthentication().userAssignedIdentities().serviceManagedIdentity());
+        Assertions.assertEquals("ckyfih", model.containerRegistry().managedIdentity());
     }
 
     // Use "Map.of" if available
