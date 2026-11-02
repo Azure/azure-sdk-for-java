@@ -12,6 +12,9 @@ import java.util.Collection;
  * The input-audio transcription model identifier. This is a model name, not a Foundry deployment name. Mirrors the
  * transcription models supported by the managed
  * voice backend, covering the OpenAI Realtime transcription models plus the Azure and MAI models.
+ * `azure-speech-streaming` is supported for cascaded text-model conversations only (not realtime speech-to-speech
+ * models), requires a nonempty `language` such as `en-US` (comma-separated locales are supported), and supports
+ * `custom_speech`, `phrase_list`, and `profanity_filter`.
  * Additional values may be added over time.
  */
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -102,4 +105,12 @@ public final class VoiceAgentInputTranscriptionModel extends ExpandableStringEnu
     public static Collection<VoiceAgentInputTranscriptionModel> values() {
         return values(VoiceAgentInputTranscriptionModel.class);
     }
+
+    /**
+     * Azure AI Speech streaming transcription for cascaded text-model conversations only. Requires a nonempty
+     * `language`, such as `en-US`; comma-separated locales are supported. Supports `custom_speech`, `phrase_list`, and
+     * `profanity_filter`. Not supported with realtime speech-to-speech models.
+     */
+    @Generated
+    public static final VoiceAgentInputTranscriptionModel AZURE_SPEECH_STREAMING = fromString("azure-speech-streaming");
 }

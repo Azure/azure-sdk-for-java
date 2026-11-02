@@ -46,6 +46,7 @@ public class JdkHttpClientTimeoutTests {
 
     @BeforeAll
     public static void startServer() {
+        // Timed-out requests can leave sleeping handlers; keep workers available for subsequent timeout probes.
         server = new LocalTestServer((request, response, requestBody) -> {
             if ("/slow-headers".equals(request.getServletPath())) {
                 sleep();
@@ -60,7 +61,7 @@ public class JdkHttpClientTimeoutTests {
                 sleep();
             }
             response.getHttpOutput().write('k');
-        });
+        }, 32);
         server.start();
     }
 

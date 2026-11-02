@@ -19,7 +19,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.services.blocking.ConversationService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -106,7 +105,6 @@ public class AgentsTests extends ClientTestBase {
         client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
     }
 
-    @Disabled("Disabled due to service errors (api-version + responses endpoint).")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -114,49 +112,54 @@ public class AgentsTests extends ClientTestBase {
         ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
+        String agentName = testResourceNamer.randomName("prompt-agent-", 32);
 
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition(agentModel);
 
-        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME, promptAgentDefinition);
+        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(agentName, promptAgentDefinition);
 
-        AgentReference agentReference = new AgentReference(createdAgent.getName());
-        agentReference.setVersion(createdAgent.getVersion());
+        try {
+            assertNotNull(createdAgent);
+            assertNotNull(createdAgent.getId());
+            assertEquals(agentName, createdAgent.getName());
 
-        Conversation conversation = conversationService.create();
+            AgentReference agentReference = new AgentReference(createdAgent.getName());
+            agentReference.setVersion(createdAgent.getVersion());
 
-        List<ResponseInputItem> inputItems = new ArrayList<>();
-        inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-            .role(EasyInputMessage.Role.SYSTEM)
-            .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
-            .build()));
-        inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-            .role(EasyInputMessage.Role.USER)
-            .content("Could you help me decide what clothes to wear today?")
-            .build()));
+            Conversation conversation = conversationService.create();
+            try {
+                List<ResponseInputItem> inputItems = new ArrayList<>();
+                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                    .type(EasyInputMessage.Type.MESSAGE)
+                    .role(EasyInputMessage.Role.SYSTEM)
+                    .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
+                    .build()));
+                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                    .type(EasyInputMessage.Type.MESSAGE)
+                    .role(EasyInputMessage.Role.USER)
+                    .content("Could you help me decide what clothes to wear today?")
+                    .build()));
 
-        Response response
-            = responsesClient.createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder().conversation(conversation.id()).inputOfResponse(inputItems));
-
-        assertNotNull(createdAgent);
-        assertNotNull(createdAgent.getId());
-        assertEquals(AGENT_NAME, createdAgent.getName());
-
-        assertNotNull(response);
-        assertTrue(response.id().startsWith("resp"));
-        assertTrue(response.status().isPresent());
-        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-        assertFalse(response.output().isEmpty());
-
-        assertFalse(response.output().isEmpty());
-        assertTrue(response.output().get(0).isMessage());
-        assertFalse(response.output().get(0).asMessage().content().isEmpty());
-
-        // Clean up
-        agentsClient.deleteAgent(createdAgent.getId());
-        conversationService.delete(conversation.id());
-        // Deleting response causes a 500
-        responsesClient.getResponseService().delete(response.id());
+                Response response = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder().conversation(conversation.id()).inputOfResponse(inputItems));
+                try {
+                    assertNotNull(response);
+                    assertTrue(response.id().startsWith("resp"));
+                    assertTrue(response.status().isPresent());
+                    assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                    assertFalse(response.output().isEmpty());
+                    assertTrue(response.output().get(0).isMessage());
+                    assertFalse(response.output().get(0).asMessage().content().isEmpty());
+                } finally {
+                    responsesClient.getResponseService().delete(response.id());
+                }
+            } finally {
+                conversationService.delete(conversation.id());
+            }
+        } finally {
+            agentsClient.deleteAgent(agentName);
+        }
     }
     //
     //    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

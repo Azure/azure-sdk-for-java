@@ -156,12 +156,16 @@ function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$
   return $mavenArtifactInfo
 }
 
-# Get patch version for a given release version.
-function GetPatchVersion([String]$ReleaseVersion) {
+# Get the next dependency-update release version; patch is the default.
+function GetPatchVersion([String]$ReleaseVersion, [switch]$IncrementMinorVersion) {
   $ParsedSemver = [AzureEngSemanticVersion]::new($ReleaseVersion)
   if (!$ParsedSemver) {
     LogError "Unexpected release version:$($ReleaseVersion).Exiting..."
     exit 1
+  }
+
+  if ($IncrementMinorVersion) {
+    return "$($ParsedSemver.Major).$($ParsedSemver.Minor + 1).0"
   }
 
   return "$($ParsedSemver.Major).$($ParsedSemver.Minor).$($ParsedSemver.Patch + 1)"
@@ -396,9 +400,9 @@ function GitCommit($Message) {
 }
 
 # Generate patches for given artifact patch infos.
-function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
+function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}, [switch]$IncrementMinorVersion) {
   foreach ($patchInfo in $ArtifactPatchInfos) {
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides -IncrementMinorVersion:$IncrementMinorVersion
   }
 
   #TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
@@ -416,7 +420,7 @@ function GetCurrentBranchName() {
    3. Updating the changelog and readme's to update the dependency information.
    4. Committing these changes.
 #>
-function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
+function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}, [switch]$IncrementMinorVersion) {
   $artifactId = $PatchInfo.ArtifactId
   $releaseVersion = $PatchInfo.LatestGAOrPatchVersion
   $serviceDirectoryName = $PatchInfo.ServiceDirectoryName
@@ -468,12 +472,12 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     }
 
     $releaseVersion = $mavenArtifactInfo.LatestGAOrPatchVersion
-    Write-Output "Found the latest GA/Patch version $releaseVersion. Using this to prepare the patch."
+    Write-Output "Found the latest stable version $releaseVersion. Using this to prepare the dependency-update release."
   }
 
   if (!$patchVersion) {
-    $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
-    Write-Output "PatchVersion is: $patchVersion"
+    $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion -IncrementMinorVersion:$IncrementMinorVersion
+    Write-Output "Release version is: $patchVersion"
   }
 
   $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
@@ -554,7 +558,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
 
   $content = GetChangeLogEntryForPatch -NewDependencyNameToVersion $newDependenciesToVersion -OldDependencyNameToVersion $oldDependencyNameToVersion
   UpdateChangeLogEntry -ChangeLogPath $changelogPath -PatchVersion $patchVersion -ArtifactId $artifactId -Content $content
-  GitCommit -Message "Prepare $artifactId for $patchVersion patch release."
+  GitCommit -Message "Prepare $artifactId for $patchVersion dependency-update release."
   Write-Output "Pushing changes to the upstream branch: $RemoteName/$BranchName"
 
   if (!$PatchInfo.PipelineName) {
@@ -565,5 +569,5 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     Write-Output "Could not calculate the pipeline name, will not trigger a run."
   }
 
-  Write-Output "Sources prepared for the patch release for $artifactId."
+  Write-Output "Sources prepared for the dependency-update release for $artifactId."
 }

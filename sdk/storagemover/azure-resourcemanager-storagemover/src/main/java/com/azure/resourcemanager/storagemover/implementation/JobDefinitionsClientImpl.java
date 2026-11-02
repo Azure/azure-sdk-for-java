@@ -226,6 +226,28 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/reconcileJob")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobRunResourceIdInner>> reconcileJob(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
+            @PathParam("jobDefinitionName") String jobDefinitionName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/reconcileJob")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<JobRunResourceIdInner> reconcileJobSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
+            @PathParam("jobDefinitionName") String jobDefinitionName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -969,6 +991,89 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
         String jobDefinitionName) {
         return stopJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<JobRunResourceIdInner>> reconcileJobWithResponseAsync(String resourceGroupName,
+        String storageMoverName, String projectName, String jobDefinitionName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.reconcileJob(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<JobRunResourceIdInner> reconcileJobAsync(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName) {
+        return reconcileJobWithResponseAsync(resourceGroupName, storageMoverName, projectName, jobDefinitionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JobRunResourceIdInner> reconcileJobWithResponse(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context) {
+        final String accept = "application/json";
+        return service.reconcileJobSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+            accept, context);
+    }
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobRunResourceIdInner reconcileJob(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName) {
+        return reconcileJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+            Context.NONE).getValue();
     }
 
     /**

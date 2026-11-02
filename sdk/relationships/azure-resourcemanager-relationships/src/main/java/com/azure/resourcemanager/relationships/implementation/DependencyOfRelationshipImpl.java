@@ -100,6 +100,11 @@ public final class DependencyOfRelationshipImpl
             "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
         this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
+        if (this.name == null) {
+            this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Relationships/dependencyOf/{name}",
+                "name");
+        }
     }
 
     public DependencyOfRelationship refresh() {

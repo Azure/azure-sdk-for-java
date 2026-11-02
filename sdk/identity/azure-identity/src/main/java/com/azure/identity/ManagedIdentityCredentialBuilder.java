@@ -73,7 +73,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the client ID of a user-assigned or system-assigned managed identity.
+     * Specifies the client ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *
@@ -86,7 +87,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the resource ID of a user-assigned or system-assigned managed identity.
+     * Specifies the resource ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *
@@ -99,7 +101,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the object ID of a user-assigned or system-assigned managed identity.
+     * Specifies the object ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *

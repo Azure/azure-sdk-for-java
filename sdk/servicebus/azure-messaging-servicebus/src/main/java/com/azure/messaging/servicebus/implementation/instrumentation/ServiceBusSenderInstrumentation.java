@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation.instrumentation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -36,9 +37,9 @@ public final class ServiceBusSenderInstrumentation {
         }
 
         if (tracer.isEnabled()) {
-            return Mono.defer(() -> {
+            return FluxUtil.withContext(context -> {
                 Context span
-                    = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch, Context.NONE);
+                    = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch, context);
                 return publisher.doOnEach(signal -> {
                     meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
                     tracer.endSpan(signal.getThrowable(), span, null);

@@ -147,6 +147,15 @@ public final class PolicyDefinitionImpl
         this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
             "policyDefinitionName");
+        if (this.policyDefinitionName == null) {
+            this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}", "policyDefinitionName");
+        }
+        if (this.policyDefinitionName == null) {
+            this.policyDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
+                "policyDefinitionName");
+        }
     }
 
     public PolicyDefinition refresh() {

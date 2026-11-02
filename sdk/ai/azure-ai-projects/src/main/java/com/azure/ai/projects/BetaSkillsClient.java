@@ -625,8 +625,10 @@ public final class BetaSkillsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a skill.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
+        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)

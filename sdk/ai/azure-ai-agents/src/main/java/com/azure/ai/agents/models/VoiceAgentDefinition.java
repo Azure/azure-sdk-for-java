@@ -550,6 +550,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
+        jsonWriter.writeJsonField("soundscape", this.soundscape);
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         if (this.maxOutputTokens != null) {
@@ -604,6 +605,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                     deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.audio = VoiceAgentAudioConfiguration.fromJson(reader);
+                } else if ("soundscape".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.soundscape = VoiceAgentSoundscapeConfiguration.fromJson(reader);
                 } else if ("output_modalities".equals(fieldName)) {
                     List<VoiceOutputModality> outputModalities
                         = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
@@ -887,6 +890,43 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentDefinition setSubagentConfiguration(VoiceAgentSubagentConfiguration subagentConfiguration) {
         this.subagentConfiguration = subagentConfiguration;
+        return this;
+    }
+
+    /*
+     * Optional background ambience and event cues, stored with the agent version and separate from the audio
+     * configuration. Currently rendered only for telephony calls, not browser WebRTC or direct voice WebSocket
+     * sessions. Omit this property to disable all auxiliary audio. Persisted conversation recordings do not include the
+     * soundscape mix.
+     */
+    @Generated
+    private VoiceAgentSoundscapeConfiguration soundscape;
+
+    /**
+     * Get the soundscape property: Optional background ambience and event cues, stored with the agent version and
+     * separate from the audio configuration. Currently rendered only for telephony calls, not browser WebRTC or direct
+     * voice WebSocket sessions. Omit this property to disable all auxiliary audio. Persisted conversation recordings do
+     * not include the soundscape mix.
+     *
+     * @return the soundscape value.
+     */
+    @Generated
+    public VoiceAgentSoundscapeConfiguration getSoundscape() {
+        return this.soundscape;
+    }
+
+    /**
+     * Set the soundscape property: Optional background ambience and event cues, stored with the agent version and
+     * separate from the audio configuration. Currently rendered only for telephony calls, not browser WebRTC or direct
+     * voice WebSocket sessions. Omit this property to disable all auxiliary audio. Persisted conversation recordings do
+     * not include the soundscape mix.
+     *
+     * @param soundscape the soundscape value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSoundscape(VoiceAgentSoundscapeConfiguration soundscape) {
+        this.soundscape = soundscape;
         return this;
     }
 }

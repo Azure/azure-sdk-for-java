@@ -119,10 +119,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the client ID of user assigned or system assigned identity, when this credential is running
+     * Specifies the client ID of a user-assigned managed identity, when this credential is running
      * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used. If neither is set, the default value is null and will only work with system assigned
-     * managed identities and not user assigned managed identities.
+     * will be used as the client ID. If neither managedIdentityClientId nor managedIdentityResourceId is set and
+     * AZURE_CLIENT_ID is unset, the system-assigned managed identity is used.
      *
      * Only one of managedIdentityClientId and managedIdentityResourceId can be specified.
      *
@@ -149,10 +149,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
-     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used. If neither is set, the default value is null and will only work with system assigned
-     * managed identities and not user assigned managed identities.
+     * Specifies the resource ID of a user-assigned managed identity, when this credential is running
+     * in an environment with managed identities. If managedIdentityClientId is unset, the value in the
+     * AZURE_CLIENT_ID environment variable will be used as the client ID. If neither managedIdentityClientId nor
+     * managedIdentityResourceId is set and AZURE_CLIENT_ID is unset, the system-assigned managed identity is used.
      *
      * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
      *

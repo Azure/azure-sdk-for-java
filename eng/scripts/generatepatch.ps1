@@ -5,7 +5,7 @@
 
 <#
 .SYNOPSIS
-This script will generate a patch release for a given artifact or service directory.
+This script will generate a dependency-update release for a given artifact or service directory.
 
 .DESCRIPTION
 This script will do a number of things when ran:
@@ -32,6 +32,10 @@ Optional: Whether the commited changes should be pushed to the remote branch or 
 .PARAMETER GroupId
 Optional: The groupId of the artifact. The default value is com.azure
 
+.PARAMETER IncrementMinorVersion
+Optional: Increment the minor version of the latest stable release and reset the patch to zero.
+By default, only the patch version is incremented.
+
 .EXAMPLE
 PS> ./eng/scripts/Generate-Patch.ps1 -ArtifactId azure-mixedreality-remoterendering
 This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
@@ -55,7 +59,8 @@ param(
   # iteration mutates pom.xml files via update_versions.py, then passes that original value here so
   # GeneratePatch's reset gate ($currentPomFileVersion -ne $releaseVersion) sees the true pre-patch
   # version and the source-reset block executes as expected.
-  [string]$CurrentPomFileVersion
+  [string]$CurrentPomFileVersion,
+  [switch]$IncrementMinorVersion
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -114,7 +119,7 @@ foreach ($artifactId in $ArtifactIds) {
     if (-not [string]::IsNullOrWhiteSpace($CurrentPomFileVersion)) {
         $patchInfo.CurrentPomFileVersion = $CurrentPomFileVersion
     }
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides -IncrementMinorVersion:$IncrementMinorVersion
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 

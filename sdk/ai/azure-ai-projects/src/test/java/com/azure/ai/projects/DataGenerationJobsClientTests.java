@@ -56,7 +56,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @Timeout(value = 20, unit = TimeUnit.MINUTES)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    @Disabled("TODO: re-record")
+    @Disabled("Service returns HTTP 409 unexpectedEntityState when deleting completed data generation jobs.")
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
@@ -74,45 +74,50 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
                 .poll()
                 .getValue();
 
-        job = waitForDataGenerationJob(datasetsClient, job.getId(), 5, 180);
-        if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
-            ApiError error = job.getError();
-            String message = error == null ? "<no error message>" : error.getMessage();
-            Assertions
-                .fail(String.format("Job `%s` ended with status `%s`: %s", job.getId(), job.getStatus(), message));
+        try {
+            job = waitForDataGenerationJob(datasetsClient, job.getId(), 5, 180);
+            if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
+                ApiError error = job.getError();
+                String message = error == null ? "<no error message>" : error.getMessage();
+                Assertions
+                    .fail(String.format("Job `%s` ended with status `%s`: %s", job.getId(), job.getStatus(), message));
+            }
+
+            DatasetDataGenerationJobOutput output = DataGenerationJobWithEvaluationSample.findDatasetOutput(job);
+            DatasetVersion dataset = datasetsClient.getDatasetVersion(output.getName(), output.getVersion());
+            Assertions.assertNotNull(dataset);
+            Assertions.assertNotNull(dataset.getId());
+
+            EvalCreateResponse eval
+                = openAIClient.evals().create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName));
+            try {
+                Assertions.assertNotNull(eval);
+
+                RunCreateResponse evalRun = openAIClient.evals()
+                    .runs()
+                    .create(DataGenerationJobWithEvaluationSample.createEvaluationRunParams(eval.id(), dataset.getId(),
+                        modelName));
+                Assertions.assertNotNull(evalRun);
+
+                RunRetrieveResponse completedRun = waitForEvaluationRun(openAIClient, eval.id(), evalRun.id(), 5, 180);
+                Assertions.assertEquals("completed", completedRun.status());
+                Assertions.assertNotNull(completedRun.resultCounts());
+
+                int outputItemCount = 0;
+                for (OutputItemListResponse ignored : openAIClient.evals()
+                    .runs()
+                    .outputItems()
+                    .list(OutputItemListParams.builder().evalId(eval.id()).runId(evalRun.id()).build())
+                    .autoPager()) {
+                    outputItemCount++;
+                }
+                Assertions.assertTrue(outputItemCount > 0);
+            } finally {
+                openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
+            }
+        } finally {
+            datasetsClient.deleteGenerationJob(job.getId());
         }
-
-        DatasetDataGenerationJobOutput output = DataGenerationJobWithEvaluationSample.findDatasetOutput(job);
-        DatasetVersion dataset = datasetsClient.getDatasetVersion(output.getName(), output.getVersion());
-        Assertions.assertNotNull(dataset);
-        Assertions.assertNotNull(dataset.getId());
-
-        EvalCreateResponse eval
-            = openAIClient.evals().create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName));
-        Assertions.assertNotNull(eval);
-
-        RunCreateResponse evalRun = openAIClient.evals()
-            .runs()
-            .create(
-                DataGenerationJobWithEvaluationSample.createEvaluationRunParams(eval.id(), dataset.getId(), modelName));
-        Assertions.assertNotNull(evalRun);
-
-        RunRetrieveResponse completedRun = waitForEvaluationRun(openAIClient, eval.id(), evalRun.id(), 5, 180);
-        Assertions.assertEquals("completed", completedRun.status());
-        Assertions.assertNotNull(completedRun.resultCounts());
-
-        int outputItemCount = 0;
-        for (OutputItemListResponse ignored : openAIClient.evals()
-            .runs()
-            .outputItems()
-            .list(OutputItemListParams.builder().evalId(eval.id()).runId(evalRun.id()).build())
-            .autoPager()) {
-            outputItemCount++;
-        }
-        Assertions.assertTrue(outputItemCount > 0);
-
-        openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
-        datasetsClient.deleteGenerationJob(job.getId());
     }
 
     private DataGenerationJob waitForDataGenerationJob(DatasetsClient datasetsClient, String jobId,

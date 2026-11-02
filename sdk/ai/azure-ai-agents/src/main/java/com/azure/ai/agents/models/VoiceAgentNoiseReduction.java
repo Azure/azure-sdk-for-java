@@ -13,14 +13,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Input audio noise reduction configuration.
+ * Input audio noise reduction configuration. `azure_deep_noise_suppression_headset` and
+ * `azure_personal_noise_suppression` are modes for local voice activity detection that
+ * enhance detection audio without changing the audio used for recognition.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentNoiseReduction implements JsonSerializable<VoiceAgentNoiseReduction> {
 
     /*
-     * The noise reduction mode.
+     * The noise reduction mode. `azure_deep_noise_suppression_headset` provides
+     * headset-optimized noise suppression for local voice activity detection, optimized for
+     * low-sample-rate audio including 8 kHz telephony audio without changing recognition audio (not
+     * restricted to headset devices). `azure_personal_noise_suppression` starts with headset
+     * suppression for local voice activity detection and personalizes detection after automatic speaker
+     * enrollment while keeping recognition audio unchanged and keeping headset suppression active when
+     * personalization is unavailable.
      */
     @Generated
     private final VoiceAgentNoiseReductionType type;
@@ -36,7 +44,13 @@ public final class VoiceAgentNoiseReduction implements JsonSerializable<VoiceAge
     }
 
     /**
-     * Get the type property: The noise reduction mode.
+     * Get the type property: The noise reduction mode. `azure_deep_noise_suppression_headset` provides
+     * headset-optimized noise suppression for local voice activity detection, optimized for
+     * low-sample-rate audio including 8 kHz telephony audio without changing recognition audio (not
+     * restricted to headset devices). `azure_personal_noise_suppression` starts with headset
+     * suppression for local voice activity detection and personalizes detection after automatic speaker
+     * enrollment while keeping recognition audio unchanged and keeping headset suppression active when
+     * personalization is unavailable.
      *
      * @return the type value.
      */
