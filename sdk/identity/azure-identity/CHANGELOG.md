@@ -1,5 +1,15 @@
 # Release History
 
+## 1.20.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.19.0 (2026-10-29)
 
 ### Features Added
@@ -11,6 +21,10 @@
 - Fixed `OnBehalfOfCredential` token cache lookup to remain bound to the configured user assertion, preventing a cached token acquired for one user from being returned for another user with matching scopes. ([#50618](https://github.com/Azure/azure-sdk-for-java/pull/50618))
 
 ### Other Changes
+
+- Updated credential builder documentation to clarify that providing managed identity ID options select a user-assigned identity, while omitting them selects the system-assigned identity. ([#51021](https://github.com/Azure/azure-sdk-for-java/pull/51021))
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 - Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
@@ -55,10 +69,6 @@ The updates below only denote differences between this release and previous 1.19
 - Upgraded `azure-core` from `1.59.1` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.7` to version `1.16.8`.
 - Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
-
-#### Dependency Updates
-
-- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
 
 ## 1.18.6 (2026-08-31)
 
