@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_UpdateAdministrativeState.json
      */
     /**
      * Sample code: InternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.

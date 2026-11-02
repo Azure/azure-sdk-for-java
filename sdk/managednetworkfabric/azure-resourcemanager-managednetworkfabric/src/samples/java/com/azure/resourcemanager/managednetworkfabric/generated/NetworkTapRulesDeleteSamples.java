@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkTapRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTapRules_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTapRules_Delete.json
      */
     /**
      * Sample code: NetworkTapRules_Delete_MaximumSet_Gen.

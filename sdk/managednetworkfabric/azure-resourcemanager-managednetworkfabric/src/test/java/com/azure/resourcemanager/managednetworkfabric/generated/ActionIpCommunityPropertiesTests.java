@@ -14,22 +14,22 @@ public final class ActionIpCommunityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionIpCommunityProperties model = BinaryData.fromString(
-            "{\"add\":{\"ipCommunityIds\":[\"urskuffudbk\",\"unngjoasnzlaw\",\"wqsni\"]},\"delete\":{\"ipCommunityIds\":[\"qzurvukszkmxbh\"]},\"set\":{\"ipCommunityIds\":[\"ae\"]}}")
+            "{\"add\":{\"ipCommunityIds\":[\"blqivc\",\"uqfpzjz\",\"bpcwtwtrchkcmru\"]},\"delete\":{\"ipCommunityIds\":[\"sqsqmiekxip\",\"qchf\"]},\"set\":{\"ipCommunityIds\":[\"kvjjlbajc\",\"rzyqokbgumuejx\"]}}")
             .toObject(ActionIpCommunityProperties.class);
-        Assertions.assertEquals("urskuffudbk", model.add().ipCommunityIds().get(0));
-        Assertions.assertEquals("qzurvukszkmxbh", model.delete().ipCommunityIds().get(0));
-        Assertions.assertEquals("ae", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("blqivc", model.add().ipCommunityIds().get(0));
+        Assertions.assertEquals("sqsqmiekxip", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("kvjjlbajc", model.set().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionIpCommunityProperties model = new ActionIpCommunityProperties()
-            .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("urskuffudbk", "unngjoasnzlaw", "wqsni")))
-            .withDelete(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("qzurvukszkmxbh")))
-            .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ae")));
+            .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("blqivc", "uqfpzjz", "bpcwtwtrchkcmru")))
+            .withDelete(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("sqsqmiekxip", "qchf")))
+            .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("kvjjlbajc", "rzyqokbgumuejx")));
         model = BinaryData.fromObject(model).toObject(ActionIpCommunityProperties.class);
-        Assertions.assertEquals("urskuffudbk", model.add().ipCommunityIds().get(0));
-        Assertions.assertEquals("qzurvukszkmxbh", model.delete().ipCommunityIds().get(0));
-        Assertions.assertEquals("ae", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("blqivc", model.add().ipCommunityIds().get(0));
+        Assertions.assertEquals("sqsqmiekxip", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("kvjjlbajc", model.set().ipCommunityIds().get(0));
     }
 }

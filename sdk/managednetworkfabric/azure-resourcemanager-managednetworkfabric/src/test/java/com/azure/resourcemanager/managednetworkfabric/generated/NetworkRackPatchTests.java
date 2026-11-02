@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRackPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRackPatch model = BinaryData.fromString(
-            "{\"tags\":{\"jogcphivfhrmte\":\"edogzougxbxx\",\"usrjzhdtrsyfezf\":\"fdvdoeary\",\"jdzyyrwnmwtq\":\"my\",\"fphfxaqjyihjcww\":\"ljknnkynkstdtfwh\"}}")
-            .toObject(NetworkRackPatch.class);
-        Assertions.assertEquals("edogzougxbxx", model.tags().get("jogcphivfhrmte"));
+        NetworkRackPatch model
+            = BinaryData.fromString("{\"tags\":{\"jwblxphtoz\":\"iyrxowvhufcmu\"}}").toObject(NetworkRackPatch.class);
+        Assertions.assertEquals("iyrxowvhufcmu", model.tags().get("jwblxphtoz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackPatch model = new NetworkRackPatch().withTags(mapOf("jogcphivfhrmte", "edogzougxbxx",
-            "usrjzhdtrsyfezf", "fdvdoeary", "jdzyyrwnmwtq", "my", "fphfxaqjyihjcww", "ljknnkynkstdtfwh"));
+        NetworkRackPatch model = new NetworkRackPatch().withTags(mapOf("jwblxphtoz", "iyrxowvhufcmu"));
         model = BinaryData.fromObject(model).toObject(NetworkRackPatch.class);
-        Assertions.assertEquals("edogzougxbxx", model.tags().get("jogcphivfhrmte"));
+        Assertions.assertEquals("iyrxowvhufcmu", model.tags().get("jwblxphtoz"));
     }
 
     // Use "Map.of" if available

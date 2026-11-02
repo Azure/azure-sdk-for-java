@@ -14,17 +14,17 @@ public final class NetworkDeviceSkusListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDeviceSkusListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"model\":\"tvdhqnufbxwe\",\"manufacturer\":\"bntojovfny\",\"supportedVersions\":[{\"version\":\"uihaouwud\",\"vendorOsVersion\":\"aorhjkehwvumo\",\"vendorFirmwareVersion\":\"ircamqprlo\",\"isDefault\":\"False\"},{\"version\":\"ejcvjkjyczcmta\",\"vendorOsVersion\":\"lajdyoljeqyxq\",\"vendorFirmwareVersion\":\"zsizzhra\",\"isDefault\":\"True\"},{\"version\":\"kjymgqbgcxh\",\"vendorOsVersion\":\"xgzxlermkmer\",\"vendorFirmwareVersion\":\"skirhn\",\"isDefault\":\"False\"},{\"version\":\"cbkfukd\",\"vendorOsVersion\":\"qnv\",\"vendorFirmwareVersion\":\"dydshk\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"CE\",\"NPB\"],\"interfaces\":[{\"identifier\":\"zizznyu\",\"interfaceType\":\"qz\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"fyjfd\",\"name\":\"qiyv\",\"type\":\"djokgwesym\"},{\"properties\":{\"model\":\"qh\",\"manufacturer\":\"p\",\"supportedVersions\":[{\"version\":\"ejtznxlue\",\"vendorOsVersion\":\"jqbbgsimwejlw\",\"vendorFirmwareVersion\":\"bpjzobdwbcpraswk\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"Management\",\"Management\",\"NPB\",\"Management\"],\"interfaces\":[{\"identifier\":\"fatgawphnski\",\"interfaceType\":\"wgtqcume\",\"supportedConnectorTypes\":[{},{},{},{}]},{\"identifier\":\"q\",\"interfaceType\":\"qbdiuycsbskowkr\",\"supportedConnectorTypes\":[{},{},{}]},{\"identifier\":\"rb\",\"interfaceType\":\"tmqowiuasfgqg\",\"supportedConnectorTypes\":[{},{},{}]},{\"identifier\":\"faimqvdruozk\",\"interfaceType\":\"fpeoehgfmq\",\"supportedConnectorTypes\":[{}]}],\"provisioningState\":\"Updating\"},\"id\":\"vlzjx\",\"name\":\"lhpevasyntvzjyie\",\"type\":\"bqrvvbqv\"},{\"properties\":{\"model\":\"nmpecqxgiqasifub\",\"manufacturer\":\"nstlpwqpjn\",\"supportedVersions\":[{\"version\":\"tupsvyouweu\",\"vendorOsVersion\":\"xfwkz\",\"vendorFirmwareVersion\":\"msfb\",\"isDefault\":\"False\"},{\"version\":\"lznfhkqytkztado\",\"vendorOsVersion\":\"fzdgjfcycrsvloy\",\"vendorFirmwareVersion\":\"igqkzjuqwqa\",\"isDefault\":\"True\"},{\"version\":\"x\",\"vendorOsVersion\":\"xhyoip\",\"vendorFirmwareVersion\":\"dbgsosc\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"ToR\",\"Management\",\"CE\",\"Management\"],\"interfaces\":[{\"identifier\":\"fkbpjn\",\"interfaceType\":\"ekwwnthropmdudsy\",\"supportedConnectorTypes\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"ktjhffe\",\"name\":\"q\",\"type\":\"oqyouergagh\"}],\"nextLink\":\"zxkpyehhfdyld\"}")
+            "{\"value\":[{\"properties\":{\"model\":\"iggq\",\"manufacturer\":\"eqfcbuulpy\",\"supportedVersions\":[{\"version\":\"jfshtujcyo\",\"vendorOsVersion\":\"gimwdcsklkqnqv\",\"vendorFirmwareVersion\":\"xn\",\"isDefault\":\"True\"}],\"supportedRoleTypes\":[\"CE\",\"Management\"],\"interfaces\":[{\"identifier\":\"wimbzayspzvr\",\"interfaceType\":\"tvfphmdzxplgtpvd\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"zmgschnzrsbkkzov\",\"interfaceType\":\"dmnfmfws\",\"supportedConnectorTypes\":[{}]},{\"identifier\":\"fuwori\",\"interfaceType\":\"ovzwdehkkm\",\"supportedConnectorTypes\":[{},{}]}],\"provisioningState\":\"Deleting\"},\"id\":\"anyrvaprtgelgwe\",\"name\":\"ikfyaqandm\",\"type\":\"mnqoqjum\"}],\"nextLink\":\"sfbpbvzop\"}")
             .toObject(NetworkDeviceSkusListResult.class);
-        Assertions.assertEquals("tvdhqnufbxwe", model.value().get(0).model());
-        Assertions.assertEquals("bntojovfny", model.value().get(0).manufacturer());
-        Assertions.assertEquals("uihaouwud", model.value().get(0).supportedVersions().get(0).version());
-        Assertions.assertEquals("aorhjkehwvumo", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("ircamqprlo", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.value().get(0).supportedVersions().get(0).isDefault());
+        Assertions.assertEquals("iggq", model.value().get(0).model());
+        Assertions.assertEquals("eqfcbuulpy", model.value().get(0).manufacturer());
+        Assertions.assertEquals("jfshtujcyo", model.value().get(0).supportedVersions().get(0).version());
+        Assertions.assertEquals("gimwdcsklkqnqv", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("xn", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.value().get(0).supportedVersions().get(0).isDefault());
         Assertions.assertEquals(NetworkDeviceRoleName.CE, model.value().get(0).supportedRoleTypes().get(0));
-        Assertions.assertEquals("zizznyu", model.value().get(0).interfaces().get(0).identifier());
-        Assertions.assertEquals("qz", model.value().get(0).interfaces().get(0).interfaceType());
-        Assertions.assertEquals("zxkpyehhfdyld", model.nextLink());
+        Assertions.assertEquals("wimbzayspzvr", model.value().get(0).interfaces().get(0).identifier());
+        Assertions.assertEquals("tvfphmdzxplgtpvd", model.value().get(0).interfaces().get(0).interfaceType());
+        Assertions.assertEquals("sfbpbvzop", model.nextLink());
     }
 }

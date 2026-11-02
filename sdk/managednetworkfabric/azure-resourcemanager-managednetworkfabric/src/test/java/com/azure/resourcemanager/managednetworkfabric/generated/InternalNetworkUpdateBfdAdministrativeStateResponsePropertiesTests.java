@@ -13,11 +13,11 @@ public final class InternalNetworkUpdateBfdAdministrativeStateResponseProperties
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkUpdateBfdAdministrativeStateResponseProperties model = BinaryData.fromString(
-            "{\"neighborAddressAdministrativeStatus\":[{\"neighborAddress\":\"iybxvgnzuzpb\",\"administrativeState\":\"Enabled\",\"error\":\"scpiuz\"},{\"neighborAddress\":\"unhdimjuk\",\"administrativeState\":\"Enabled\",\"error\":\"kaugpucdocfqplwg\"}]}")
+            "{\"neighborAddressAdministrativeStatus\":[{\"neighborAddress\":\"iuwkirkskwzts\",\"administrativeState\":\"MAT\",\"error\":\"ygow\"},{\"neighborAddress\":\"cq\",\"administrativeState\":\"RMA\",\"error\":\"kg\"},{\"neighborAddress\":\"dgzyybzoxlvoc\",\"administrativeState\":\"Enabled\",\"error\":\"xxheigmlilwzghjh\"}]}")
             .toObject(InternalNetworkUpdateBfdAdministrativeStateResponseProperties.class);
-        Assertions.assertEquals("iybxvgnzuzpb", model.neighborAddressAdministrativeStatus().get(0).neighborAddress());
-        Assertions.assertEquals(BfdAdministrativeState.ENABLED,
+        Assertions.assertEquals("iuwkirkskwzts", model.neighborAddressAdministrativeStatus().get(0).neighborAddress());
+        Assertions.assertEquals(BfdAdministrativeState.MAT,
             model.neighborAddressAdministrativeStatus().get(0).administrativeState());
-        Assertions.assertEquals("scpiuz", model.neighborAddressAdministrativeStatus().get(0).error());
+        Assertions.assertEquals("ygow", model.neighborAddressAdministrativeStatus().get(0).error());
     }
 }

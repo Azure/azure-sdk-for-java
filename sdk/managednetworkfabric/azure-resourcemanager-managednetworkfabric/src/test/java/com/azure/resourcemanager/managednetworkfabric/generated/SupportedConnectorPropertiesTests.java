@@ -12,9 +12,9 @@ public final class SupportedConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedConnectorProperties model
-            = BinaryData.fromString("{\"connectorType\":\"bgzancoinmphymcq\",\"maxSpeedInMbps\":978970547}")
+            = BinaryData.fromString("{\"connectorType\":\"gndj\",\"maxSpeedInMbps\":1307301482}")
                 .toObject(SupportedConnectorProperties.class);
-        Assertions.assertEquals("bgzancoinmphymcq", model.connectorType());
-        Assertions.assertEquals(978970547, model.maxSpeedInMbps());
+        Assertions.assertEquals("gndj", model.connectorType());
+        Assertions.assertEquals(1307301482, model.maxSpeedInMbps());
     }
 }

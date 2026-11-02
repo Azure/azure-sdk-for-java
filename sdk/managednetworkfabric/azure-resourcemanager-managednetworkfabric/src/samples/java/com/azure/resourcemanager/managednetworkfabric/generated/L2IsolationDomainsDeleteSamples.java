@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class L2IsolationDomainsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/L2IsolationDomains_Delete.json
      */
     /**
      * Sample code: L2IsolationDomains_Delete_MaximumSet_Gen.

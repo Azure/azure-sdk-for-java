@@ -7,6 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBroker;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public final class NetworkPacketBrokersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkPacketBrokers_Update.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Update_MaximumSet_Gen.
@@ -31,6 +32,8 @@ public final class NetworkPacketBrokersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withProperties(new NetworkPacketBrokerPatchProperties().withSourceNetworkTapRuleId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"))
             .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
             .apply();

@@ -23,7 +23,7 @@ public final class InternetGatewayRulesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"izdoysmzgbogdjw\"],\"condition\":\"Or\",\"destinationAddressList\":[\"pd\",\"uotk\",\"kbp\"],\"sourceAddressList\":[\"pbnkcwauylkbdsk\",\"pyfrtlukafq\"],\"headerAddressList\":[{\"headerName\":\"m\",\"addressList\":[\"yuxxeike\",\"npw\",\"nhqafuvvys\"]},{\"headerName\":\"jkxgfmesxjeqqfy\",\"addressList\":[\"kxtanlvoorv\",\"hdncq\"]},{\"headerName\":\"wtpssgqlnolspv\",\"addressList\":[\"egxlzd\",\"atptzkmfvdrkcw\",\"smnwsffia\"]}]},\"lastOperation\":{\"details\":\"frzzxirxxkmozkd\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"kivvpyznjwmd\",\"uzn\",\"jbzzwsesqy\"],\"annotation\":\"tvofgx\"},\"location\":\"hsxc\",\"tags\":{\"bxynkubwkdihs\":\"xcmepkpx\",\"wetwwjv\":\"nbyi\"},\"id\":\"ycygcvgebf\",\"name\":\"ityantecv\",\"type\":\"tkgopdjqnsicucq\"}";
+            = "{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"j\",\"iueaibq\",\"bizbwxuypc\"],\"condition\":\"Or\",\"destinationAddressList\":[\"lxtclveqdqt\",\"shwlwjxrym\"],\"sourceAddressList\":[\"gh\",\"cmqdlkkwbdek\",\"vdulmka\"],\"headerAddressList\":[{\"headerName\":\"bssatpialrqh\",\"addressList\":[\"xccfgf\",\"ozaiyvrex\"]}]},\"lastOperation\":{\"details\":\"zrikno\"},\"provisioningState\":\"Failed\",\"internetGatewayIds\":[\"ywwumbusnawb\",\"cljkhmsobua\",\"okiclrmmudvo\",\"t\"],\"annotation\":\"c\"},\"location\":\"kwznwttliz\",\"tags\":{\"ogdjwuybcppdvuo\":\"smzg\",\"kcwauylkbdskrp\":\"kvkbpmkupb\",\"zylemp\":\"frtlukaf\"},\"id\":\"hyuxxeike\",\"name\":\"npw\",\"type\":\"nhqafuvvys\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class InternetGatewayRulesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InternetGatewayRule response = manager.internetGatewayRules()
-            .getByResourceGroupWithResponse("t", "scidkwzn", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("iniyoizuww", "crigbjbelnqalbs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hsxc", response.location());
-        Assertions.assertEquals("xcmepkpx", response.tags().get("bxynkubwkdihs"));
+        Assertions.assertEquals("kwznwttliz", response.location());
+        Assertions.assertEquals("smzg", response.tags().get("ogdjwuybcppdvuo"));
         Assertions.assertEquals(Action.DENY, response.ruleProperties().action());
-        Assertions.assertEquals("izdoysmzgbogdjw", response.ruleProperties().addressList().get(0));
+        Assertions.assertEquals("j", response.ruleProperties().addressList().get(0));
         Assertions.assertEquals(RuleCondition.OR, response.ruleProperties().condition());
-        Assertions.assertEquals("pd", response.ruleProperties().destinationAddressList().get(0));
-        Assertions.assertEquals("pbnkcwauylkbdsk", response.ruleProperties().sourceAddressList().get(0));
-        Assertions.assertEquals("m", response.ruleProperties().headerAddressList().get(0).headerName());
-        Assertions.assertEquals("yuxxeike", response.ruleProperties().headerAddressList().get(0).addressList().get(0));
-        Assertions.assertEquals("tvofgx", response.annotation());
+        Assertions.assertEquals("lxtclveqdqt", response.ruleProperties().destinationAddressList().get(0));
+        Assertions.assertEquals("gh", response.ruleProperties().sourceAddressList().get(0));
+        Assertions.assertEquals("bssatpialrqh", response.ruleProperties().headerAddressList().get(0).headerName());
+        Assertions.assertEquals("xccfgf", response.ruleProperties().headerAddressList().get(0).addressList().get(0));
+        Assertions.assertEquals("c", response.annotation());
     }
 }

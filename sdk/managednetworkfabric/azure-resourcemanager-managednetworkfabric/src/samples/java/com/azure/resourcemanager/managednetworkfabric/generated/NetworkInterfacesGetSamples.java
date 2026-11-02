@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkInterfacesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkInterfaces_Get.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkInterfaces_Get.json
      */
     /**
      * Sample code: NetworkInterfaces_Get_MaximumSet_Gen.

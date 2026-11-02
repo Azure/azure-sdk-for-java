@@ -24,7 +24,7 @@ public final class NetworkDeviceSkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"model\":\"zfyg\",\"manufacturer\":\"fafca\",\"supportedVersions\":[{\"version\":\"lieqdwocufcshqf\",\"vendorOsVersion\":\"c\",\"vendorFirmwareVersion\":\"fofwqdroqk\",\"isDefault\":\"True\"},{\"version\":\"lbkzctqbvntl\",\"vendorOsVersion\":\"gj\",\"vendorFirmwareVersion\":\"xqoydyislepdbsi\",\"isDefault\":\"True\"}],\"supportedRoleTypes\":[\"CE\",\"CE\",\"TS\",\"TS\"],\"interfaces\":[{\"identifier\":\"ytbjbm\",\"interfaceType\":\"mtxbi\",\"supportedConnectorTypes\":[{}]},{\"identifier\":\"g\",\"interfaceType\":\"otvocjk\",\"supportedConnectorTypes\":[{}]},{\"identifier\":\"wyvtrs\",\"interfaceType\":\"dmtfnbv\",\"supportedConnectorTypes\":[{}]}],\"provisioningState\":\"Updating\"},\"id\":\"miqbdi\",\"name\":\"hjxcdhpdlxwsfdd\",\"type\":\"qpfynt\"}]}";
+            = "{\"value\":[{\"properties\":{\"model\":\"hmwfoummdomv\",\"manufacturer\":\"tpyqalwlirapqhsi\",\"supportedVersions\":[{\"version\":\"fnoczefg\",\"vendorOsVersion\":\"xejjnti\",\"vendorFirmwareVersion\":\"xzeiudo\",\"isDefault\":\"True\"},{\"version\":\"rbroeomufaz\",\"vendorOsVersion\":\"wzbew\",\"vendorFirmwareVersion\":\"sspe\",\"isDefault\":\"True\"}],\"supportedRoleTypes\":[\"Management\"],\"interfaces\":[{\"identifier\":\"oucjzbovuvmdzdqt\",\"interfaceType\":\"guajsrdecbowkh\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Deleting\"},\"id\":\"pdnnsujx\",\"name\":\"ueqljzkhn\",\"type\":\"aeykueat\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,17 @@ public final class NetworkDeviceSkusListMockTests {
 
         PagedIterable<NetworkDeviceSku> response = manager.networkDeviceSkus().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zfyg", response.iterator().next().model());
-        Assertions.assertEquals("fafca", response.iterator().next().manufacturer());
-        Assertions.assertEquals("lieqdwocufcshqf", response.iterator().next().supportedVersions().get(0).version());
-        Assertions.assertEquals("c", response.iterator().next().supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("fofwqdroqk",
+        Assertions.assertEquals("hmwfoummdomv", response.iterator().next().model());
+        Assertions.assertEquals("tpyqalwlirapqhsi", response.iterator().next().manufacturer());
+        Assertions.assertEquals("fnoczefg", response.iterator().next().supportedVersions().get(0).version());
+        Assertions.assertEquals("xejjnti", response.iterator().next().supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("xzeiudo",
             response.iterator().next().supportedVersions().get(0).vendorFirmwareVersion());
         Assertions.assertEquals(BooleanEnumProperty.TRUE,
             response.iterator().next().supportedVersions().get(0).isDefault());
-        Assertions.assertEquals(NetworkDeviceRoleName.CE, response.iterator().next().supportedRoleTypes().get(0));
-        Assertions.assertEquals("ytbjbm", response.iterator().next().interfaces().get(0).identifier());
-        Assertions.assertEquals("mtxbi", response.iterator().next().interfaces().get(0).interfaceType());
+        Assertions.assertEquals(NetworkDeviceRoleName.MANAGEMENT,
+            response.iterator().next().supportedRoleTypes().get(0));
+        Assertions.assertEquals("oucjzbovuvmdzdqt", response.iterator().next().interfaces().get(0).identifier());
+        Assertions.assertEquals("guajsrdecbowkh", response.iterator().next().interfaces().get(0).interfaceType());
     }
 }

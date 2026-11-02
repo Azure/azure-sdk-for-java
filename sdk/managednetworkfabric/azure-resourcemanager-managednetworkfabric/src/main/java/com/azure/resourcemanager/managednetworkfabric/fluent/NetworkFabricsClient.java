@@ -23,13 +23,14 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricRotatePasswordsResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ViewDeviceConfigurationOperationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.CommitBatchStatusRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.CommitConfigurationRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.DiscardCommitBatchRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockRequest;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.RefreshConfigurationRequestProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
@@ -480,6 +481,7 @@ public interface NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -487,8 +489,9 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginRefreshConfiguration(String resourceGroupName, String networkFabricName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRefreshConfiguration(
+        String resourceGroupName, String networkFabricName, RefreshConfigurationRequestProperties body,
+        Context context);
 
     /**
      * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
@@ -508,6 +511,7 @@ public interface NetworkFabricsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -516,7 +520,7 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner refreshConfiguration(String resourceGroupName, String networkFabricName,
-        Context context);
+        RefreshConfigurationRequestProperties body, Context context);
 
     /**
      * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
@@ -662,7 +666,7 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkFabricName,
             ValidateConfigurationProperties body);
 
@@ -679,7 +683,7 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkFabricName,
             ValidateConfigurationProperties body, Context context);
 
@@ -695,7 +699,7 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body);
 
     /**
@@ -711,7 +715,7 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body, Context context);
 
     /**

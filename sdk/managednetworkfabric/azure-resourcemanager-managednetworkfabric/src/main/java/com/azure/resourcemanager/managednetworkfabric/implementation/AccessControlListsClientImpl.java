@@ -38,7 +38,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsC
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.implementation.models.AccessControlListsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -1488,13 +1488,13 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    private PollerFlux<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfigurationAsync(String resourceGroupName, String accessControlListName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateConfigurationWithResponseAsync(resourceGroupName, accessControlListName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
-            ValidateConfigurationResponseInner.class, this.client.getContext());
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            mono, this.client.getHttpPipeline(), ValidateConfigurationResponseV2Inner.class,
+            ValidateConfigurationResponseV2Inner.class, this.client.getContext());
     }
 
     /**
@@ -1508,11 +1508,12 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String accessControlListName) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, accessControlListName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class,
+            Context.NONE);
     }
 
     /**
@@ -1527,12 +1528,12 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String accessControlListName, Context context) {
         Response<BinaryData> response
             = validateConfigurationWithResponse(resourceGroupName, accessControlListName, context);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, context);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class, context);
     }
 
     /**
@@ -1546,7 +1547,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+    private Mono<ValidateConfigurationResponseV2Inner> validateConfigurationAsync(String resourceGroupName,
         String accessControlListName) {
         return beginValidateConfigurationAsync(resourceGroupName, accessControlListName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1563,7 +1564,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
         String accessControlListName) {
         return beginValidateConfiguration(resourceGroupName, accessControlListName).getFinalResult();
     }
@@ -1580,7 +1581,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
         String accessControlListName, Context context) {
         return beginValidateConfiguration(resourceGroupName, accessControlListName, context).getFinalResult();
     }

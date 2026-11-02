@@ -22,7 +22,7 @@ public final class NetworkFabricSkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"SingleRack\",\"maxComputeRacks\":1197175774,\"maximumServerCount\":1820484156,\"supportedVersions\":[\"majgczpdiod\",\"tjylimzvj\",\"jh\",\"t\"],\"details\":\"cwmabehr\",\"provisioningState\":\"Failed\"},\"id\":\"zwtghzvhzrxcaes\",\"name\":\"xoavlwwpvjrnjwvc\",\"type\":\"arqlceflgsndur\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"SingleRack\",\"maxComputeRacks\":2117118008,\"maximumServerCount\":1394848740,\"supportedVersions\":[\"yebwgesov\",\"vjxnsorsolarhlyh\"],\"details\":\"isnfa\",\"provisioningState\":\"Canceled\"},\"id\":\"oafpyilojw\",\"name\":\"zarywtauskishhm\",\"type\":\"ypg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class NetworkFabricSkusListMockTests {
 
         PagedIterable<NetworkFabricSku> response = manager.networkFabricSkus().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1197175774, response.iterator().next().maxComputeRacks());
-        Assertions.assertEquals(1820484156, response.iterator().next().maximumServerCount());
+        Assertions.assertEquals(2117118008, response.iterator().next().maxComputeRacks());
+        Assertions.assertEquals(1394848740, response.iterator().next().maximumServerCount());
     }
 }

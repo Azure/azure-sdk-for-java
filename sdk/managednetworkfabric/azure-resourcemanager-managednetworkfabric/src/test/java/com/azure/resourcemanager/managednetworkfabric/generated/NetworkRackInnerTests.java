@@ -15,29 +15,29 @@ public final class NetworkRackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkRackInner model = BinaryData.fromString(
-            "{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"wsicvwqzoc\",\"networkDevices\":[\"hennmsgpywdib\",\"gvnrgalvwrhr\",\"ibrbknuubxc\",\"ojtu\"],\"lastOperation\":{\"details\":\"vnpyeevffifujgtd\"},\"provisioningState\":\"Updating\",\"configurationState\":\"Provisioning\",\"annotation\":\"efc\"},\"location\":\"bpchrtc\",\"tags\":{\"djlgkuirxxeuwii\":\"cujyznvyrj\",\"dviw\":\"rcvnfg\",\"xbvxgx\":\"ohktxagfujdbqjny\",\"asfeooq\":\"q\"},\"id\":\"tpvev\",\"name\":\"arp\",\"type\":\"klqlii\"}")
+            "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"mucjiuh\",\"networkDevices\":[\"vehyklel\",\"qdvpqfbxgycudusd\"],\"lastOperation\":{\"details\":\"qlefnohey\"},\"provisioningState\":\"Canceled\",\"configurationState\":\"Provisioned\",\"annotation\":\"yllre\"},\"location\":\"nj\",\"tags\":{\"wxhqhgkh\":\"msfwtwrsvevcneq\",\"t\":\"bzvulqevvjncpmy\",\"fbcyjrtalqeebud\":\"gdmvghcmixmlwkf\"},\"id\":\"yimooaezkto\",\"name\":\"sgoihlqwbyw\",\"type\":\"azbaeeekfztvn\"}")
             .toObject(NetworkRackInner.class);
-        Assertions.assertEquals("bpchrtc", model.location());
-        Assertions.assertEquals("cujyznvyrj", model.tags().get("djlgkuirxxeuwii"));
-        Assertions.assertEquals(NetworkRackType.COMBINED, model.networkRackType());
-        Assertions.assertEquals("wsicvwqzoc", model.networkFabricId());
-        Assertions.assertEquals("efc", model.annotation());
+        Assertions.assertEquals("nj", model.location());
+        Assertions.assertEquals("msfwtwrsvevcneq", model.tags().get("wxhqhgkh"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
+        Assertions.assertEquals("mucjiuh", model.networkFabricId());
+        Assertions.assertEquals("yllre", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackInner model = new NetworkRackInner().withLocation("bpchrtc")
+        NetworkRackInner model = new NetworkRackInner().withLocation("nj")
             .withTags(
-                mapOf("djlgkuirxxeuwii", "cujyznvyrj", "dviw", "rcvnfg", "xbvxgx", "ohktxagfujdbqjny", "asfeooq", "q"))
-            .withNetworkRackType(NetworkRackType.COMBINED)
-            .withNetworkFabricId("wsicvwqzoc")
-            .withAnnotation("efc");
+                mapOf("wxhqhgkh", "msfwtwrsvevcneq", "t", "bzvulqevvjncpmy", "fbcyjrtalqeebud", "gdmvghcmixmlwkf"))
+            .withNetworkRackType(NetworkRackType.AGGREGATE)
+            .withNetworkFabricId("mucjiuh")
+            .withAnnotation("yllre");
         model = BinaryData.fromObject(model).toObject(NetworkRackInner.class);
-        Assertions.assertEquals("bpchrtc", model.location());
-        Assertions.assertEquals("cujyznvyrj", model.tags().get("djlgkuirxxeuwii"));
-        Assertions.assertEquals(NetworkRackType.COMBINED, model.networkRackType());
-        Assertions.assertEquals("wsicvwqzoc", model.networkFabricId());
-        Assertions.assertEquals("efc", model.annotation());
+        Assertions.assertEquals("nj", model.location());
+        Assertions.assertEquals("msfwtwrsvevcneq", model.tags().get("wxhqhgkh"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
+        Assertions.assertEquals("mucjiuh", model.networkFabricId());
+        Assertions.assertEquals("yllre", model.annotation());
     }
 
     // Use "Map.of" if available

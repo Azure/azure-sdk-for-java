@@ -13,10 +13,10 @@ public final class CommitBatchStatusResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitBatchStatusResponseProperties model = BinaryData.fromString(
-            "{\"commitBatchId\":\"qqxuhvz\",\"commitBatchState\":\"Processing\",\"commitBatchDetails\":{\"failedDevices\":[\"szxacdwukokgoojj\",\"uktubcmunhgbtzv\",\"xvs\",\"cuufkrfn\"]}}")
+            "{\"commitBatchId\":\"jqpulmwqg\",\"commitBatchState\":\"Succeeded\",\"commitBatchDetails\":{\"failedDevices\":[\"wxzfvvzucq\",\"gu\"]}}")
             .toObject(CommitBatchStatusResponseProperties.class);
-        Assertions.assertEquals("qqxuhvz", model.commitBatchId());
-        Assertions.assertEquals(CommitBatchState.PROCESSING, model.commitBatchState());
-        Assertions.assertEquals("szxacdwukokgoojj", model.commitBatchDetails().failedDevices().get(0));
+        Assertions.assertEquals("jqpulmwqg", model.commitBatchId());
+        Assertions.assertEquals(CommitBatchState.SUCCEEDED, model.commitBatchState());
+        Assertions.assertEquals("wxzfvvzucq", model.commitBatchDetails().failedDevices().get(0));
     }
 }

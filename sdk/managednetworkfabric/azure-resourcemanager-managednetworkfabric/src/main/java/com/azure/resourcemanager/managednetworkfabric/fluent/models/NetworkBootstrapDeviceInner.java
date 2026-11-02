@@ -13,8 +13,11 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -216,6 +219,29 @@ public final class NetworkBootstrapDeviceInner extends Resource {
     }
 
     /**
+     * Get the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @return the controlPlaneAcls value.
+     */
+    public List<String> controlPlaneAcls() {
+        return this.innerProperties() == null ? null : this.innerProperties().controlPlaneAcls();
+    }
+
+    /**
+     * Set the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @param controlPlaneAcls the controlPlaneAcls value to set.
+     * @return the NetworkBootstrapDeviceInner object itself.
+     */
+    public NetworkBootstrapDeviceInner withControlPlaneAcls(List<String> controlPlaneAcls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkBootstrapDeviceProperties();
+        }
+        this.innerProperties().withControlPlaneAcls(controlPlaneAcls);
+        return this;
+    }
+
+    /**
      * Get the version property: Current version of the device as defined in SKU.
      * 
      * @return the version value.
@@ -326,6 +352,25 @@ public final class NetworkBootstrapDeviceInner extends Resource {
      */
     public ConfigurationState configurationState() {
         return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the operationalState property: Operational state of networkBootstrapDevice indicating if the device is
+     * reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
+    }
+
+    /**
+     * Get the secretRotationStatus property: Secret rotation status for the terminal server's secrets.
+     * 
+     * @return the secretRotationStatus value.
+     */
+    public List<SecretRotationStatus> secretRotationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretRotationStatus();
     }
 
     /**

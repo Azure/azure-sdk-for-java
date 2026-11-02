@@ -14,16 +14,16 @@ public final class IpCommunitiesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunitiesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"annotation\":\"qumoeno\",\"networkFabricId\":\"aienhqhsknd\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":718676955727293096,\"wellKnownCommunities\":[\"LocalAS\",\"NoAdvertise\",\"GShut\"],\"communityMembers\":[\"wf\"]},{\"action\":\"Deny\",\"sequenceNumber\":1577811503950676558,\"wellKnownCommunities\":[\"NoAdvertise\",\"GShut\",\"NoAdvertise\"],\"communityMembers\":[\"xivcnrlyxnu\"]},{\"action\":\"Permit\",\"sequenceNumber\":7723827571808099593,\"wellKnownCommunities\":[\"Internet\",\"LocalAS\",\"LocalAS\"],\"communityMembers\":[\"pat\"]}],\"lastOperation\":{\"details\":\"sdtcjbctvivuzqym\"},\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\"},\"location\":\"it\",\"tags\":{\"mxeatkdbmwnrdjy\":\"zvbrzcdbanfzndsc\"},\"id\":\"bqbnaomhjrmkuh\",\"name\":\"axljal\",\"type\":\"i\"},{\"properties\":{\"annotation\":\"jmobca\",\"networkFabricId\":\"de\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":2348526307879631032,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"gvaknokzwjjzrl\",\"ixldzyyfy\",\"pqsixymmp\"]},{\"action\":\"Deny\",\"sequenceNumber\":7630612268508981016,\"wellKnownCommunities\":[\"LocalAS\",\"NoExport\"],\"communityMembers\":[\"uvsmbms\",\"zoyovwzdbpq\",\"ybe\",\"gvmxnok\"]}],\"lastOperation\":{\"details\":\"lubses\"},\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"hunlpirykycnd\",\"tags\":{\"bmnwa\":\"ivjreuyk\"},\"id\":\"ltbxoeeonqlnfw\",\"name\":\"y\",\"type\":\"mvqdbpbhfckdvez\"}],\"nextLink\":\"cssbzhddu\"}")
+            "{\"value\":[{\"properties\":{\"annotation\":\"teyxeyguq\",\"networkFabricId\":\"ijiitns\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7459709007018933203,\"wellKnownCommunities\":[\"NoExport\",\"NoExport\"],\"communityMembers\":[\"ijwai\",\"fanraybfu\"]},{\"action\":\"Deny\",\"sequenceNumber\":62185905537223135,\"wellKnownCommunities\":[\"NoAdvertise\",\"Internet\",\"GShut\",\"NoExport\"],\"communityMembers\":[\"h\",\"dkygywezski\",\"ca\"]},{\"action\":\"Deny\",\"sequenceNumber\":8417146566901983849,\"wellKnownCommunities\":[\"NoExport\",\"LocalAS\"],\"communityMembers\":[\"vdsmaklixq\"]},{\"action\":\"Permit\",\"sequenceNumber\":5555373368038300415,\"wellKnownCommunities\":[\"NoAdvertise\",\"LocalAS\",\"NoExport\",\"GShut\"],\"communityMembers\":[\"awoijp\",\"dtblxpk\",\"wjdjodqhykin\",\"n\"]}],\"lastOperation\":{\"details\":\"ehllizhceum\"},\"configurationState\":\"PendingAdministrativeUpdate\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"UnderMaintenance\"},\"location\":\"pyi\",\"tags\":{\"vadswzs\":\"qladywrxwhydtlu\",\"owuowh\":\"uyem\",\"zkltrfowtdvrfmv\":\"xlnwyrmouvblgmo\",\"vjdrqcrjidhftuk\":\"ih\"},\"id\":\"hdxlw\",\"name\":\"ojbf\",\"type\":\"zd\"}],\"nextLink\":\"njyixh\"}")
             .toObject(IpCommunitiesListResult.class);
-        Assertions.assertEquals("it", model.value().get(0).location());
-        Assertions.assertEquals("zvbrzcdbanfzndsc", model.value().get(0).tags().get("mxeatkdbmwnrdjy"));
-        Assertions.assertEquals("qumoeno", model.value().get(0).annotation());
-        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).ipCommunityRules().get(0).action());
-        Assertions.assertEquals(718676955727293096L, model.value().get(0).ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS,
+        Assertions.assertEquals("pyi", model.value().get(0).location());
+        Assertions.assertEquals("qladywrxwhydtlu", model.value().get(0).tags().get("vadswzs"));
+        Assertions.assertEquals("teyxeyguq", model.value().get(0).annotation());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).ipCommunityRules().get(0).action());
+        Assertions.assertEquals(7459709007018933203L, model.value().get(0).ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_EXPORT,
             model.value().get(0).ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("wf", model.value().get(0).ipCommunityRules().get(0).communityMembers().get(0));
-        Assertions.assertEquals("cssbzhddu", model.nextLink());
+        Assertions.assertEquals("ijwai", model.value().get(0).ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("njyixh", model.nextLink());
     }
 }

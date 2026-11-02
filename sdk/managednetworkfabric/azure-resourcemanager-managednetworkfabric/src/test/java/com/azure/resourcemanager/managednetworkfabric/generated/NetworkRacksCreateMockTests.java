@@ -24,7 +24,7 @@ public final class NetworkRacksCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"t\",\"networkDevices\":[\"edlmfw\",\"b\"],\"lastOperation\":{\"details\":\"we\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Provisioning\",\"annotation\":\"sxidazslwhuyik\"},\"location\":\"cilinbuokp\",\"tags\":{\"hqrdvqvalo\":\"rheiplzms\"},\"id\":\"u\",\"name\":\"woigofumbpmzed\",\"type\":\"fjgklmyomav\"}";
+            = "{\"properties\":{\"networkRackType\":\"Compute\",\"networkFabricId\":\"ecqyzdyzilo\",\"networkDevices\":[\"btnhiaqegj\",\"hyvnqbhclbbk\",\"oqzzyrovvna\",\"xmjmhclhcqcjn\"],\"lastOperation\":{\"details\":\"bwqgs\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Accepted\",\"annotation\":\"lrjggvydtjebbacs\"},\"location\":\"rzts\",\"tags\":{\"tfekbsly\":\"xbkxwhsfhecp\",\"vzltbgwjaepjmkr\":\"mlgsghcnyb\",\"zoqjbnfaxcdcmqej\":\"zogs\",\"ltugobscpt\":\"sirotj\"},\"id\":\"kgqyuvhlpmjpzgjn\",\"name\":\"ifoznfdboumpks\",\"type\":\"kdjpfsmdg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,20 +34,21 @@ public final class NetworkRacksCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkRack response = manager.networkRacks()
-            .define("gbmzdnyrmolmae")
-            .withRegion("s")
-            .withExistingResourceGroup("lmdosiyzfdcczk")
-            .withNetworkFabricId("umckcbsakoucss")
-            .withTags(mapOf("emlozjyovrllv", "vpagwohkromzs", "ez", "bgkgjp", "nan", "hflgpsal"))
-            .withNetworkRackType(NetworkRackType.AGGREGATE)
-            .withAnnotation("pvwx")
+            .define("xofqjninrskq")
+            .withRegion("vpys")
+            .withExistingResourceGroup("cmeuuuajiotl")
+            .withNetworkFabricId("tiuveazuciwbi")
+            .withTags(mapOf("qsjxfmhi", "eblkgupgns", "ktqgtjffct", "artvkhu", "fztrvonbtnnwamk", "eotzgko",
+                "wotlpsswoslqmftk", "gyskmhdwsbznjnge"))
+            .withNetworkRackType(NetworkRackType.COMBINED)
+            .withAnnotation("oso")
             .create();
 
-        Assertions.assertEquals("cilinbuokp", response.location());
-        Assertions.assertEquals("rheiplzms", response.tags().get("hqrdvqvalo"));
-        Assertions.assertEquals(NetworkRackType.COMBINED, response.networkRackType());
-        Assertions.assertEquals("t", response.networkFabricId());
-        Assertions.assertEquals("sxidazslwhuyik", response.annotation());
+        Assertions.assertEquals("rzts", response.location());
+        Assertions.assertEquals("xbkxwhsfhecp", response.tags().get("tfekbsly"));
+        Assertions.assertEquals(NetworkRackType.COMPUTE, response.networkRackType());
+        Assertions.assertEquals("ecqyzdyzilo", response.networkFabricId());
+        Assertions.assertEquals("lrjggvydtjebbacs", response.annotation());
     }
 
     // Use "Map.of" if available

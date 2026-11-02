@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NeighborGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NeighborGroups_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/NeighborGroups_Delete.json
      */
     /**
      * Sample code: NeighborGroups_Delete_MaximumSet_Gen.

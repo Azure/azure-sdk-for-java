@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceRoCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceRoCommand model = BinaryData.fromString("{\"command\":\"poqzucfz\"}").toObject(DeviceRoCommand.class);
-        Assertions.assertEquals("poqzucfz", model.command());
+        DeviceRoCommand model = BinaryData.fromString("{\"command\":\"hydv\"}").toObject(DeviceRoCommand.class);
+        Assertions.assertEquals("hydv", model.command());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceRoCommand model = new DeviceRoCommand().withCommand("poqzucfz");
+        DeviceRoCommand model = new DeviceRoCommand().withCommand("hydv");
         model = BinaryData.fromObject(model).toObject(DeviceRoCommand.class);
-        Assertions.assertEquals("poqzucfz", model.command());
+        Assertions.assertEquals("hydv", model.command());
     }
 }

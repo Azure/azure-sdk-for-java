@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/ExternalNetworks_Create.json
+     * x-ms-original-file: 2026-01-15-preview/ExternalNetworks_Create.json
      */
     /**
      * Sample code: ExternalNetworks_Create_MaximumSet_Gen.

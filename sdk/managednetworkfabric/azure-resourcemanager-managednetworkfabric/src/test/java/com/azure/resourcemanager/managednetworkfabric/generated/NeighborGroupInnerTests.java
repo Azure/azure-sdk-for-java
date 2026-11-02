@@ -19,34 +19,33 @@ public final class NeighborGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeighborGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"snxfbxu\",\"destination\":{\"ipv4Addresses\":[\"pdr\",\"zyvbsuadulpodk\",\"x\",\"f\"],\"ipv6Addresses\":[\"zh\",\"hjdqltdeluqr\"]},\"networkTapIds\":[\"dhfztlra\",\"srkgz\",\"yh\"],\"networkTapRuleIds\":[\"kuwpzqxlcw\",\"akfe\",\"jvxfaqufqizjvppw\"],\"networkFabricIds\":[\"jeyyjmjjxizxp\"],\"lastOperation\":{\"details\":\"zls\"},\"provisioningState\":\"Accepted\",\"configurationState\":\"Rejected\"},\"identity\":{\"principalId\":\"zkjtyqpdwadeg\",\"tenantId\":\"tldsvczdjiahuq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ookyfoz\":{\"principalId\":\"cwwmejjqh\",\"clientId\":\"wvmqxi\"},\"swqi\":{\"principalId\":\"nzxbyp\",\"clientId\":\"pgaixwrgrkkderf\"},\"cqbsudzpgchzpg\":{\"principalId\":\"epwoggg\",\"clientId\":\"wnxhtf\"}}},\"location\":\"umjdjxhzghg\",\"tags\":{\"mxjdnaju\":\"ynrceqavfdbdf\",\"loqd\":\"pjyyqmkwlhvc\",\"uxxrwzobuzms\":\"jk\"},\"id\":\"g\",\"name\":\"mtdtkwppthuzd\",\"type\":\"rmimrljdpoqfxyem\"}")
+            "{\"properties\":{\"annotation\":\"yaaknyukibxiglhp\",\"destination\":{\"ipv4Addresses\":[\"xqtejpiilhvt\",\"z\",\"agjjn\"],\"ipv6Addresses\":[\"ylhyyx\",\"f\"]},\"networkTapIds\":[\"vqzrwtrd\",\"s\",\"nvqeon\",\"gnwxl\"],\"networkTapRuleIds\":[\"zyohxpthc\",\"opvkvtwfves\",\"bpbokhmml\",\"dyarnggcjfwblq\"],\"networkFabricIds\":[\"asmcolmugpyvaos\",\"kluwz\",\"eygzvtyevjhu\",\"nobguqisqsqkpdmi\"],\"lastOperation\":{\"details\":\"pnml\"},\"provisioningState\":\"Failed\",\"configurationState\":\"Provisioning\",\"administrativeState\":\"UnderMaintenance\"},\"identity\":{\"principalId\":\"cvqdvrdmvxyrxd\",\"tenantId\":\"vqojbxaotcgbz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dawsxmrsz\":{\"principalId\":\"lef\",\"clientId\":\"oyidoxznvgvdtmuu\"}}},\"location\":\"nimx\",\"tags\":{\"mnb\":\"erxrzutylcurza\",\"bjmbnvynfaooeac\":\"qaeht\"},\"id\":\"edcgl\",\"name\":\"kakddidahzllrqm\",\"type\":\"lpbyxroiduyq\"}")
             .toObject(NeighborGroupInner.class);
-        Assertions.assertEquals("umjdjxhzghg", model.location());
-        Assertions.assertEquals("ynrceqavfdbdf", model.tags().get("mxjdnaju"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("snxfbxu", model.annotation());
-        Assertions.assertEquals("pdr", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("zh", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("nimx", model.location());
+        Assertions.assertEquals("erxrzutylcurza", model.tags().get("mnb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("yaaknyukibxiglhp", model.annotation());
+        Assertions.assertEquals("xqtejpiilhvt", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("ylhyyx", model.destination().ipv6Addresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupInner model = new NeighborGroupInner().withLocation("umjdjxhzghg")
-            .withTags(mapOf("mxjdnaju", "ynrceqavfdbdf", "loqd", "pjyyqmkwlhvc", "uxxrwzobuzms", "jk"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ookyfoz", new UserAssignedIdentity(), "swqi",
-                    new UserAssignedIdentity(), "cqbsudzpgchzpg", new UserAssignedIdentity())))
-            .withAnnotation("snxfbxu")
+        NeighborGroupInner model = new NeighborGroupInner().withLocation("nimx")
+            .withTags(mapOf("mnb", "erxrzutylcurza", "bjmbnvynfaooeac", "qaeht"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("dawsxmrsz", new UserAssignedIdentity())))
+            .withAnnotation("yaaknyukibxiglhp")
             .withDestination(
-                new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("pdr", "zyvbsuadulpodk", "x", "f"))
-                    .withIpv6Addresses(Arrays.asList("zh", "hjdqltdeluqr")));
+                new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("xqtejpiilhvt", "z", "agjjn"))
+                    .withIpv6Addresses(Arrays.asList("ylhyyx", "f")));
         model = BinaryData.fromObject(model).toObject(NeighborGroupInner.class);
-        Assertions.assertEquals("umjdjxhzghg", model.location());
-        Assertions.assertEquals("ynrceqavfdbdf", model.tags().get("mxjdnaju"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("snxfbxu", model.annotation());
-        Assertions.assertEquals("pdr", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("zh", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("nimx", model.location());
+        Assertions.assertEquals("erxrzutylcurza", model.tags().get("mnb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("yaaknyukibxiglhp", model.annotation());
+        Assertions.assertEquals("xqtejpiilhvt", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("ylhyyx", model.destination().ipv6Addresses().get(0));
     }
 
     // Use "Map.of" if available

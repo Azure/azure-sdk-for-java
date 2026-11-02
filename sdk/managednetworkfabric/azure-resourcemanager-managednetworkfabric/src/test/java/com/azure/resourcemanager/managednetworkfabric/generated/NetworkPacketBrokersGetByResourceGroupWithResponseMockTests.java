@@ -22,7 +22,7 @@ public final class NetworkPacketBrokersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"networkFabricId\":\"nkkxoicb\",\"networkDeviceIds\":[\"fv\",\"tbocqhvtp\",\"vppvgrigjegr\"],\"sourceInterfaceIds\":[\"oqbzrclar\",\"tfmfkuvybemo\"],\"networkTapIds\":[\"shqvkuqkzvzqh\",\"z\"],\"neighborGroupIds\":[\"nvtdbeani\",\"ozjrc\",\"aq\"],\"lastOperation\":{\"details\":\"almzpfylqevwwvz\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Provisioning\"},\"identity\":{\"principalId\":\"ropzgjleec\",\"tenantId\":\"bhqkvbins\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bpatwbb\":{\"principalId\":\"egoupdqeflvd\",\"clientId\":\"qcqlexobeekzy\"},\"y\":{\"principalId\":\"dfl\",\"clientId\":\"wohlcahhf\"},\"uzeeb\":{\"principalId\":\"dhitavgayuspz\",\"clientId\":\"vibp\"},\"lhsxeasxs\":{\"principalId\":\"fepwkhruzzwgb\",\"clientId\":\"zivfoyqv\"}}},\"location\":\"uvvscbpkmohd\",\"tags\":{\"uzvmorsyirf\":\"rqyib\"},\"id\":\"xazuboigorwpbbjz\",\"name\":\"vaqoilgkznn\",\"type\":\"pvjwegoviceqyraj\"}";
+            = "{\"properties\":{\"networkFabricId\":\"kf\",\"networkDeviceIds\":[\"scndbklsc\",\"kafaqqipvnvdz\",\"sssncghgi\",\"qkotxodbxzhadm\"],\"sourceInterfaceIds\":[\"nootcyyupa\",\"d\"],\"networkTapIds\":[\"hnzkmjoybyogwjr\",\"snryk\",\"hxawohsj\",\"wxphnlw\"],\"neighborGroupIds\":[\"vrixcveser\"],\"sourceNetworkTapRuleId\":\"lhcjgjuopvkrmspk\",\"lastOperation\":{\"details\":\"dmbxfy\"},\"provisioningState\":\"Accepted\",\"configurationState\":\"DeferredControl\"},\"identity\":{\"principalId\":\"fyvkxgoxsv\",\"tenantId\":\"ucuxwnoj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ngguucp\":{\"principalId\":\"mbnfvygtt\",\"clientId\":\"fjalpsycvcksz\"}}},\"location\":\"sxnujwffthbzii\",\"tags\":{\"c\":\"lbcc\",\"bdevjrbgcdx\":\"au\"},\"id\":\"gsteeksbksvvyvo\",\"name\":\"bvvuqwljmzpyuk\",\"type\":\"w\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class NetworkPacketBrokersGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkPacketBroker response = manager.networkPacketBrokers()
-            .getByResourceGroupWithResponse("hhtttyhypid", "jjjfcysk", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("hljtkuyvytfuq", "stqbxpyfawkjei", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uvvscbpkmohd", response.location());
-        Assertions.assertEquals("rqyib", response.tags().get("uzvmorsyirf"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("nkkxoicb", response.networkFabricId());
+        Assertions.assertEquals("sxnujwffthbzii", response.location());
+        Assertions.assertEquals("lbcc", response.tags().get("c"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("kf", response.networkFabricId());
+        Assertions.assertEquals("lhcjgjuopvkrmspk", response.sourceNetworkTapRuleId());
     }
 }

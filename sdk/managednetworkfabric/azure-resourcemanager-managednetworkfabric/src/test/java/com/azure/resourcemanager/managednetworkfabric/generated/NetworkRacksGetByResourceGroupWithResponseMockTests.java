@@ -22,7 +22,7 @@ public final class NetworkRacksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"jpfsmdgrhd\",\"networkDevices\":[\"ehhqxyj\",\"bkwvrrptbls\"],\"lastOperation\":{\"details\":\"kzgryfxwwqbey\"},\"provisioningState\":\"Accepted\",\"configurationState\":\"Succeeded\",\"annotation\":\"jieskuim\"},\"location\":\"iyicxnxcimalvz\",\"tags\":{\"ifbi\":\"npaesraire\",\"ev\":\"ljhgqqjmfrm\",\"lg\":\"cbrmmweeuyohjhpx\"},\"id\":\"urmlirnadqeqf\",\"name\":\"zcxvpo\",\"type\":\"rtk\"}";
+            = "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"xttobosjxbnyt\",\"networkDevices\":[\"ruditumyycvtya\",\"lyimhspj\",\"hivxblqvwhjgtbh\",\"eoutqo\"],\"lastOperation\":{\"details\":\"tqibqbougcwzgdfd\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"CommitStageFailed\",\"annotation\":\"kgezulnntpbarej\"},\"location\":\"hlxoljbpoeoywykh\",\"tags\":{\"xlsypwu\":\"whrivvzrccyf\",\"upvidzhjcppq\":\"eearbbxaneviqk\",\"xup\":\"gbpcenirjhd\"},\"id\":\"btlharjbakp\",\"name\":\"suugcngd\",\"type\":\"lvdenhguvaimko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class NetworkRacksGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkRack response = manager.networkRacks()
-            .getByResourceGroupWithResponse("kgqyuvhlpmjpzgjn", "ifoznfdboumpks", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("cinwij", "eyxt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iyicxnxcimalvz", response.location());
-        Assertions.assertEquals("npaesraire", response.tags().get("ifbi"));
+        Assertions.assertEquals("hlxoljbpoeoywykh", response.location());
+        Assertions.assertEquals("whrivvzrccyf", response.tags().get("xlsypwu"));
         Assertions.assertEquals(NetworkRackType.AGGREGATE, response.networkRackType());
-        Assertions.assertEquals("jpfsmdgrhd", response.networkFabricId());
-        Assertions.assertEquals("jieskuim", response.annotation());
+        Assertions.assertEquals("xttobosjxbnyt", response.networkFabricId());
+        Assertions.assertEquals("kgezulnntpbarej", response.annotation());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.DeviceRwCommand;
  */
 public final class NetworkDevicesRunRwCommandSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_RunRwCommand.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_RunRwCommand.json
      */
     /**
      * Sample code: NetworkDevices_RunRwCommand_MaximumSet_Gen.

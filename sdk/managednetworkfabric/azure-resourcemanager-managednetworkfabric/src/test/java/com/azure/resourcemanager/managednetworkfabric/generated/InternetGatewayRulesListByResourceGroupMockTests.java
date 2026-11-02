@@ -24,7 +24,7 @@ public final class InternetGatewayRulesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"jjlypwgwbycfamui\",\"isppygothisir\",\"hbogxwngpymye\",\"pusozaoutjliwbn\"],\"condition\":\"Or\",\"destinationAddressList\":[\"zjoyyptnokd\"],\"sourceAddressList\":[\"kzeowizvjejzxkf\",\"zqwkxxbo\",\"uvkkcowgnwhldc\"],\"headerAddressList\":[{\"headerName\":\"huqmdyn\",\"addressList\":[\"lcvlmrvhedrbzzb\",\"yag\",\"xwcndkdlxdlh\"]}]},\"lastOperation\":{\"details\":\"zcjawkyxo\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"qus\",\"xiaj\",\"crsdgtj\"],\"annotation\":\"opnccaxtp\"},\"location\":\"szehij\",\"tags\":{\"hjmg\":\"feabzjp\",\"xymfqmvnhsf\":\"ceqaklsfxlrx\",\"dptsp\":\"xtusbjxpuok\",\"asjwnwnj\":\"gtplonalpwaulkwu\"},\"id\":\"rnfgtmupblhnxq\",\"name\":\"zzikxufuwcajy\",\"type\":\"zlku\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"xjeqqfynvckxtan\"],\"condition\":\"Or\",\"destinationAddressList\":[\"vzhdncqcuwt\",\"ssgq\"],\"sourceAddressList\":[\"lspvxpiegxl\",\"dvatptzkmfvdrkcw\",\"smnwsffia\",\"fd\"],\"headerAddressList\":[{\"headerName\":\"xir\",\"addressList\":[\"mozkdqz\",\"rhkivvpyzn\",\"wm\"]},{\"headerName\":\"uzn\",\"addressList\":[\"zzwsesqy\",\"ktvofgxorhsxcs\",\"axcme\",\"kpxt\"]}]},\"lastOperation\":{\"details\":\"nkubwkd\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"byi\"],\"annotation\":\"etwwjvxycygcv\"},\"location\":\"bfeitya\",\"tags\":{\"pd\":\"cvttkg\",\"icucqtecie\":\"qn\",\"zhjjlypwgwbycfam\":\"scx\",\"irhhbogxw\":\"ikisppygothi\"},\"id\":\"gpymyerpusozaou\",\"name\":\"jliwbnwdkgb\",\"type\":\"joy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +34,20 @@ public final class InternetGatewayRulesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<InternetGatewayRule> response
-            = manager.internetGatewayRules().listByResourceGroup("eciexsc", com.azure.core.util.Context.NONE);
+            = manager.internetGatewayRules().listByResourceGroup("hjkxg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("szehij", response.iterator().next().location());
-        Assertions.assertEquals("feabzjp", response.iterator().next().tags().get("hjmg"));
-        Assertions.assertEquals(Action.ALLOW, response.iterator().next().ruleProperties().action());
-        Assertions.assertEquals("jjlypwgwbycfamui", response.iterator().next().ruleProperties().addressList().get(0));
+        Assertions.assertEquals("bfeitya", response.iterator().next().location());
+        Assertions.assertEquals("cvttkg", response.iterator().next().tags().get("pd"));
+        Assertions.assertEquals(Action.DENY, response.iterator().next().ruleProperties().action());
+        Assertions.assertEquals("xjeqqfynvckxtan", response.iterator().next().ruleProperties().addressList().get(0));
         Assertions.assertEquals(RuleCondition.OR, response.iterator().next().ruleProperties().condition());
-        Assertions.assertEquals("zjoyyptnokd",
+        Assertions.assertEquals("vzhdncqcuwt",
             response.iterator().next().ruleProperties().destinationAddressList().get(0));
-        Assertions.assertEquals("kzeowizvjejzxkf",
-            response.iterator().next().ruleProperties().sourceAddressList().get(0));
-        Assertions.assertEquals("huqmdyn",
+        Assertions.assertEquals("lspvxpiegxl", response.iterator().next().ruleProperties().sourceAddressList().get(0));
+        Assertions.assertEquals("xir",
             response.iterator().next().ruleProperties().headerAddressList().get(0).headerName());
-        Assertions.assertEquals("lcvlmrvhedrbzzb",
+        Assertions.assertEquals("mozkdqz",
             response.iterator().next().ruleProperties().headerAddressList().get(0).addressList().get(0));
-        Assertions.assertEquals("opnccaxtp", response.iterator().next().annotation());
+        Assertions.assertEquals("etwwjvxycygcv", response.iterator().next().annotation());
     }
 }

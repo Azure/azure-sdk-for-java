@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class IpCommunitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/IpCommunities_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/IpCommunities_Delete.json
      */
     /**
      * Sample code: IpCommunities_Delete_MaximumSet_Gen.

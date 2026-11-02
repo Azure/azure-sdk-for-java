@@ -17,6 +17,11 @@ import java.util.Map;
 @Fluent
 public final class NetworkPacketBrokerPatch extends TagsUpdate {
     /*
+     * NetworkPacketBroker patch properties.
+     */
+    private NetworkPacketBrokerPatchProperties properties;
+
+    /*
      * The managed service identities assigned to this resource.
      */
     private ManagedServiceIdentityPatch identity;
@@ -25,6 +30,26 @@ public final class NetworkPacketBrokerPatch extends TagsUpdate {
      * Creates an instance of NetworkPacketBrokerPatch class.
      */
     public NetworkPacketBrokerPatch() {
+    }
+
+    /**
+     * Get the properties property: NetworkPacketBroker patch properties.
+     * 
+     * @return the properties value.
+     */
+    public NetworkPacketBrokerPatchProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: NetworkPacketBroker patch properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the NetworkPacketBrokerPatch object itself.
+     */
+    public NetworkPacketBrokerPatch withProperties(NetworkPacketBrokerPatchProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -63,6 +88,7 @@ public final class NetworkPacketBrokerPatch extends TagsUpdate {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -85,6 +111,9 @@ public final class NetworkPacketBrokerPatch extends TagsUpdate {
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNetworkPacketBrokerPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkPacketBrokerPatch.properties
+                        = NetworkPacketBrokerPatchProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedNetworkPacketBrokerPatch.identity = ManagedServiceIdentityPatch.fromJson(reader);
                 } else {

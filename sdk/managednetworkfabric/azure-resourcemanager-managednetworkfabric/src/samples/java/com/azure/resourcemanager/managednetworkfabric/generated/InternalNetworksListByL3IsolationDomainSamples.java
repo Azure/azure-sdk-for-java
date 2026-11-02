@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class InternalNetworksListByL3IsolationDomainSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_ListByL3IsolationDomain.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_ListByL3IsolationDomain.json
      */
     /**
      * Sample code: InternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.

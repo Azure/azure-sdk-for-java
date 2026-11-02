@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkDevicesResyncCertificatesSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncCertificates.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_ResyncCertificates.json
      */
     /**
      * Sample code: Successful certificate resync.
@@ -22,7 +22,7 @@ public final class NetworkDevicesResyncCertificatesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncCertificates_Error.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_ResyncCertificates_Error.json
      */
     /**
      * Sample code: Error while performing certificate resync.

@@ -26,7 +26,7 @@ public final class NetworkMonitorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"lkgzczjwizrulrk\",\"stationName\":\"ldttggc\",\"stationIp\":\"mkpobenaahdjnmy\",\"stationPort\":1522172955,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":76390565,\"probeInterval\":1049683223,\"probeCount\":795609687},\"stationNetwork\":\"bv\",\"monitoredNetworks\":[\"hpphjimoecqpqk\",\"nvsu\",\"izxdlrjspx\"],\"exportPolicy\":\"Post-Policy\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"Post-Policy\"]},\"monitoredAddressFamilies\":[\"All\",\"ipv4Unicast\",\"All\"]},\"lastOperation\":{\"details\":\"dsftmllc\"},\"configurationState\":\"Accepted\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"annotation\":\"g\"},\"location\":\"cforuwqbendz\",\"tags\":{\"qqsvofocppph\":\"scbsttjdioevif\",\"xsofsirit\":\"vduuzpiooac\",\"nouxevizzcjnf\":\"qqpynr\",\"numpna\":\"ubctwnfnq\"},\"id\":\"fpkleieafpvbslly\",\"name\":\"riad\",\"type\":\"nbofeucctppbgzf\"}]}";
+            = "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"xpwxabvxwoagoe\",\"stationName\":\"lszd\",\"stationIp\":\"xozkmvbzuily\",\"stationPort\":1176971227,\"stationConnectionMode\":\"Active\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":913176702,\"probeInterval\":252027638,\"probeCount\":842213432},\"stationNetwork\":\"wdmgrfhvewgvw\",\"monitoredNetworks\":[\"okqpfh\",\"wbpj\",\"oyzyd\",\"yszthpnwzpkisefy\"],\"exportPolicy\":\"All\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"All\"]},\"monitoredAddressFamilies\":[\"vpnIpv4\",\"vpnIpv4\",\"All\",\"All\"]},\"lastOperation\":{\"details\":\"qkasxiczv\"},\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\",\"annotation\":\"exbksafnecwyrtl\"},\"location\":\"jye\",\"tags\":{\"iwiaqrc\":\"gpszwvooxieyyww\",\"w\":\"fybktbviaqvzzszc\"},\"id\":\"rxo\",\"name\":\"vygdefpy\",\"type\":\"twwaxx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,31 +37,29 @@ public final class NetworkMonitorsListMockTests {
 
         PagedIterable<NetworkMonitor> response = manager.networkMonitors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cforuwqbendz", response.iterator().next().location());
-        Assertions.assertEquals("scbsttjdioevif", response.iterator().next().tags().get("qqsvofocppph"));
-        Assertions.assertEquals(StationConfigurationState.ENABLED,
+        Assertions.assertEquals("jye", response.iterator().next().location());
+        Assertions.assertEquals("gpszwvooxieyyww", response.iterator().next().tags().get("iwiaqrc"));
+        Assertions.assertEquals(StationConfigurationState.DISABLED,
             response.iterator().next().bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("lkgzczjwizrulrk", response.iterator().next().bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("ldttggc", response.iterator().next().bmpConfiguration().stationName());
-        Assertions.assertEquals("mkpobenaahdjnmy", response.iterator().next().bmpConfiguration().stationIp());
-        Assertions.assertEquals(1522172955, response.iterator().next().bmpConfiguration().stationPort());
-        Assertions.assertEquals(StationConnectionMode.PASSIVE,
+        Assertions.assertEquals("xpwxabvxwoagoe", response.iterator().next().bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("lszd", response.iterator().next().bmpConfiguration().stationName());
+        Assertions.assertEquals("xozkmvbzuily", response.iterator().next().bmpConfiguration().stationIp());
+        Assertions.assertEquals(1176971227, response.iterator().next().bmpConfiguration().stationPort());
+        Assertions.assertEquals(StationConnectionMode.ACTIVE,
             response.iterator().next().bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(76390565,
+        Assertions.assertEquals(913176702,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(1049683223,
+        Assertions.assertEquals(252027638,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(795609687,
+        Assertions.assertEquals(842213432,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("bv", response.iterator().next().bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("hpphjimoecqpqk",
-            response.iterator().next().bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.POST_POLICY,
-            response.iterator().next().bmpConfiguration().exportPolicy());
+        Assertions.assertEquals("wdmgrfhvewgvw", response.iterator().next().bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("okqpfh", response.iterator().next().bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.ALL, response.iterator().next().bmpConfiguration().exportPolicy());
         Assertions.assertEquals(BmpExportPolicy.ALL,
             response.iterator().next().bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.ALL,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.VPN_IPV4,
             response.iterator().next().bmpConfiguration().monitoredAddressFamilies().get(0));
-        Assertions.assertEquals("g", response.iterator().next().annotation());
+        Assertions.assertEquals("exbksafnecwyrtl", response.iterator().next().annotation());
     }
 }

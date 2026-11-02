@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkDevicesResyncPasswordsSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncPasswords.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_ResyncPasswords.json
      */
     /**
      * Sample code: Successful password resync.
@@ -22,7 +22,7 @@ public final class NetworkDevicesResyncPasswordsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncPasswords_Error.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_ResyncPasswords_Error.json
      */
     /**
      * Sample code: Error while performing password resync.

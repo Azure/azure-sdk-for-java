@@ -40,7 +40,7 @@ public final class AccessControlListsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"dzpx\",\"configurationType\":\"Inline\",\"aclsUrl\":\"qlvbkzai\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"iviniyoizuwwzc\",\"sequenceNumber\":3424445099708255376,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{}]}],\"lastSyncedTime\":\"2020-12-25T11:24:20Z\",\"aclType\":\"Management\",\"deviceRole\":\"ManagementSwitch\",\"globalAccessControlListActions\":{\"enableCount\":\"True\"},\"lastOperation\":{\"details\":\"ypcuri\"},\"networkFabricIds\":[\"xtclveqdqtzsh\",\"lwjxrymiysgh\",\"cmqdlkkwbdek\"],\"controlPlaneAclConfiguration\":[{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{},{},{},{}]},{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{}]},{\"ipAddressType\":\"IPv6\",\"matchConfigurations\":[{},{},{}]}],\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\"},\"location\":\"qhwcxx\",\"tags\":{\"tpzriknoscl\":\"gfvozaiyvrex\"},\"id\":\"jywwumbusnawbnc\",\"name\":\"jkhmsobua\",\"type\":\"okiclrmmudvo\"}";
+            = "{\"properties\":{\"annotation\":\"kzmsyezxifjuvhuo\",\"configurationType\":\"Inline\",\"aclsUrl\":\"twvkuhtdxd\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"eknmc\",\"sequenceNumber\":8990421826507555871,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"htkkcc\",\"sequenceNumber\":2320454956467510593,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"yafa\",\"sequenceNumber\":5762601024359305198,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{},{}]}],\"lastSyncedTime\":\"2021-10-25T18:27:29Z\",\"aclType\":\"ControlPlaneAcl\",\"deviceRole\":\"NPB\",\"globalAccessControlListActions\":{\"enableCount\":\"True\"},\"lastOperation\":{\"details\":\"ncdrchuewxliq\"},\"networkFabricIds\":[\"nqjoe\",\"cjcglv\",\"bctitexrbalv\"],\"controlPlaneAclConfiguration\":[{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{},{}]},{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{},{},{},{}]}],\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"rqlazfjltckbjvd\",\"tags\":{\"tde\":\"fv\"},\"id\":\"fdz\",\"name\":\"xalkqlvbkzaiyrn\",\"type\":\"woi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -49,65 +49,65 @@ public final class AccessControlListsCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AccessControlList response
-            = manager.accessControlLists()
-                .define("ewgglq")
-                .withRegion("yafa")
-                .withExistingResourceGroup("qlyoor")
-                .withConfigurationType(ConfigurationType.INLINE)
-                .withTags(mapOf("ctilbxn", "lvtiploaws", "ohvdbncdrchue", "ynjtudfhpelza", "lvobctitexrbalv",
-                    "xliqcbonqjoekcjc", "pdyrqlazfjl", "fdqilprqhxfqk"))
-                .withAnnotation("ykckyhxuzn")
-                .withAclsUrl("iadj")
-                .withDefaultAction(CommunityActionTypes.PERMIT)
-                .withMatchConfigurations(
-                    Arrays.asList(
-                        new AccessControlListMatchConfiguration().withMatchConfigurationName("lcd")
-                            .withSequenceNumber(2236492543838566009L)
-                            .withIpAddressType(IpAddressType.IPV6)
-                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
-                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition(),
-                                new AccessControlListMatchCondition()))
-                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction(),
-                                new AccessControlListAction())),
-                        new AccessControlListMatchConfiguration().withMatchConfigurationName("ygmtbiv")
-                            .withSequenceNumber(2231968140941111534L)
-                            .withIpAddressType(IpAddressType.IPV4)
-                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
-                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
-                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction()))))
-                .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
-                    .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
-                        new IpGroupProperties(), new IpGroupProperties()))
-                    .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
-                        new VlanGroupProperties(), new VlanGroupProperties()))
-                    .withPortGroups(Arrays.asList(new PortGroupProperties()))))
-                .withAclType(AclType.CP)
-                .withDeviceRole(DeviceRole.MANAGEMENT_SWITCH)
-                .withGlobalAccessControlListActions(
-                    new GlobalAccessControlListActionProperties().withEnableCount(BooleanEnumProperty.TRUE))
-                .withControlPlaneAclConfiguration(Arrays.asList(
-                    new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV6)
-                        .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties(),
-                            new ControlPlaneAclMatchConfigurationProperties(),
-                            new ControlPlaneAclMatchConfigurationProperties())),
-                    new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV4)
-                        .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties())),
-                    new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV6)
-                        .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties()))))
-                .create();
+        AccessControlList response = manager.accessControlLists()
+            .define("lj")
+            .withRegion("qwlbeqc")
+            .withExistingResourceGroup("vnfyfyftkvzb")
+            .withConfigurationType(ConfigurationType.INLINE)
+            .withTags(mapOf("gkoci", "cgropuqgis", "gglqijykckyhxu", "ikqlyoorme", "lcd", "nbcpiadjslvxs", "ivpzjnrw",
+                "bibfviacghygmt"))
+            .withAnnotation("iumagfyinmajj")
+            .withAclsUrl("gtwfk")
+            .withDefaultAction(CommunityActionTypes.DENY)
+            .withMatchConfigurations(
+                Arrays.asList(new AccessControlListMatchConfiguration().withMatchConfigurationName("kbebuafbddm")
+                    .withSequenceNumber(8883823392151997997L)
+                    .withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()))
+                    .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction()))))
+            .withDynamicMatchConfigurations(Arrays.asList(
+                new CommonDynamicMatchConfiguration()
+                    .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                    .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                    .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                        new PortGroupProperties(), new PortGroupProperties())),
+                new CommonDynamicMatchConfiguration()
+                    .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                    .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
+                    .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties()))))
+            .withAclType(AclType.MANAGEMENT)
+            .withDeviceRole(DeviceRole.CE)
+            .withGlobalAccessControlListActions(
+                new GlobalAccessControlListActionProperties().withEnableCount(BooleanEnumProperty.TRUE))
+            .withControlPlaneAclConfiguration(Arrays.asList(
+                new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties())),
+                new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV6)
+                    .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties())),
+                new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties(),
+                        new ControlPlaneAclMatchConfigurationProperties())),
+                new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV6)
+                    .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties()))))
+            .create();
 
-        Assertions.assertEquals("qhwcxx", response.location());
-        Assertions.assertEquals("gfvozaiyvrex", response.tags().get("tpzriknoscl"));
-        Assertions.assertEquals("dzpx", response.annotation());
+        Assertions.assertEquals("rqlazfjltckbjvd", response.location());
+        Assertions.assertEquals("fv", response.tags().get("tde"));
+        Assertions.assertEquals("kzmsyezxifjuvhuo", response.annotation());
         Assertions.assertEquals(ConfigurationType.INLINE, response.configurationType());
-        Assertions.assertEquals("qlvbkzai", response.aclsUrl());
+        Assertions.assertEquals("twvkuhtdxd", response.aclsUrl());
         Assertions.assertEquals(CommunityActionTypes.DENY, response.defaultAction());
-        Assertions.assertEquals("iviniyoizuwwzc", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(3424445099708255376L, response.matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals(AclType.MANAGEMENT, response.aclType());
-        Assertions.assertEquals(DeviceRole.MANAGEMENT_SWITCH, response.deviceRole());
+        Assertions.assertEquals("eknmc", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(8990421826507555871L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals(AclType.CONTROL_PLANE_ACL, response.aclType());
+        Assertions.assertEquals(DeviceRole.NPB, response.deviceRole());
         Assertions.assertEquals(BooleanEnumProperty.TRUE, response.globalAccessControlListActions().enableCount());
         Assertions.assertEquals(IpAddressType.IPV4, response.controlPlaneAclConfiguration().get(0).ipAddressType());
     }

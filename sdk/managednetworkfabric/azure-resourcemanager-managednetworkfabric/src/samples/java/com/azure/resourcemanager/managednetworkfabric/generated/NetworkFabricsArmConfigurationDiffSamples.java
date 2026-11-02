@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsArmConfigurationDiffSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ArmConfigurationDiff.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ArmConfigurationDiff.json
      */
     /**
      * Sample code: NetworkFabrics_ArmConfigurationDiff_MaximumSet.

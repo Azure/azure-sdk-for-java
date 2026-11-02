@@ -14,20 +14,20 @@ public final class InternetGatewayPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewayPatch model = BinaryData.fromString(
-            "{\"properties\":{\"internetGatewayRuleId\":\"vqqugdrftbcv\"},\"tags\":{\"quowtljvfwhrea\":\"e\",\"ulmdgglm\":\"khyxvrqtvbcz\",\"ngpszngafpg\":\"pjpfseykgs\"}}")
+            "{\"properties\":{\"internetGatewayRuleId\":\"zjd\"},\"tags\":{\"xjeaoqaqbzgyh\":\"jb\",\"v\":\"w\",\"e\":\"atbwbqam\",\"pkcvmwf\":\"liys\"}}")
             .toObject(InternetGatewayPatch.class);
-        Assertions.assertEquals("e", model.tags().get("quowtljvfwhrea"));
-        Assertions.assertEquals("vqqugdrftbcv", model.internetGatewayRuleId());
+        Assertions.assertEquals("jb", model.tags().get("xjeaoqaqbzgyh"));
+        Assertions.assertEquals("zjd", model.internetGatewayRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternetGatewayPatch model = new InternetGatewayPatch()
-            .withTags(mapOf("quowtljvfwhrea", "e", "ulmdgglm", "khyxvrqtvbcz", "ngpszngafpg", "pjpfseykgs"))
-            .withInternetGatewayRuleId("vqqugdrftbcv");
+            .withTags(mapOf("xjeaoqaqbzgyh", "jb", "v", "w", "e", "atbwbqam", "pkcvmwf", "liys"))
+            .withInternetGatewayRuleId("zjd");
         model = BinaryData.fromObject(model).toObject(InternetGatewayPatch.class);
-        Assertions.assertEquals("e", model.tags().get("quowtljvfwhrea"));
-        Assertions.assertEquals("vqqugdrftbcv", model.internetGatewayRuleId());
+        Assertions.assertEquals("jb", model.tags().get("xjeaoqaqbzgyh"));
+        Assertions.assertEquals("zjd", model.internetGatewayRuleId());
     }
 
     // Use "Map.of" if available

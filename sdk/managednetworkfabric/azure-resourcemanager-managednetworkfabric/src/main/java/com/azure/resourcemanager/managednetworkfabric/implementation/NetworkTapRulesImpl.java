@@ -13,13 +13,13 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkTapRulesClie
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleResyncResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRule;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleResyncResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRules;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 
 public final class NetworkTapRulesImpl implements NetworkTapRules {
     private static final ClientLogger LOGGER = new ClientLogger(NetworkTapRulesImpl.class);
@@ -120,22 +120,22 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName) {
-        ValidateConfigurationResponseInner inner
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkTapRuleName) {
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, networkTapRuleName);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkTapRuleName,
         Context context) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, networkTapRuleName, context);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }

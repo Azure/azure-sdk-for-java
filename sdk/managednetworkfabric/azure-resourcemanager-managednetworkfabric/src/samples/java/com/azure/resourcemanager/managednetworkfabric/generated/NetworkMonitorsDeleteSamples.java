@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkMonitorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkMonitors_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkMonitors_Delete.json
      */
     /**
      * Sample code: NetworkMonitors_Delete_MaximumSet.

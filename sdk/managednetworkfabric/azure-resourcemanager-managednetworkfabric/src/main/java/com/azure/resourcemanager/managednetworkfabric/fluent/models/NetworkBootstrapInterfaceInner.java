@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.io.IOException;
 
@@ -227,6 +228,16 @@ public final class NetworkBootstrapInterfaceInner extends ProxyResource {
         }
         this.innerProperties().withSerialNumber(serialNumber);
         return this;
+    }
+
+    /**
+     * Get the operationalState property: Operational state of networkBootstrapInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
     }
 
     /**
