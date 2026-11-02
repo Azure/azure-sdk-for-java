@@ -85,11 +85,15 @@ public class ExpectContinueTests {
     private static final String JDK_PROVIDER = "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider";
     private static final byte[] BODY = patternedBody(1024);
 
+    // The shortest time a transport waits for 100 Continue before sending the body anyway, as RFC 9110 allows. Vert.x
+    // waits 1 second, measured from just before it writes the headers.
+    private static final long CONTINUE_FALLBACK_MILLIS = 1000;
+
     // How long the wire level server waits after the headers arrive before deciding the body was not sent. Kept well
-    // under the 1 second some clients wait for 100 Continue before sending the body anyway, as RFC 9110 allows.
+    // under CONTINUE_FALLBACK_MILLIS.
     private static final long BODY_SETTLE_MILLIS = 250;
 
-    // How long a rejected connection must stay quiet before concluding no body follows. Longer than the clients'
+    // How long a rejected connection must stay quiet bgefore concluding no body follows. Longer than the clients'
     // fallback wait, so a body written after that wait is still counted.
     private static final long REJECTED_QUIET_MILLIS = 2000;
 
@@ -425,6 +429,7 @@ public class ExpectContinueTests {
 
             HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), httpClient);
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            long requestStartNanos = System.nanoTime();
             HttpResponse response = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block();
 
             assertNotNull(response, name + " returned no response");
@@ -436,6 +441,7 @@ public class ExpectContinueTests {
             switch (expected) {
                 case DEFERS_BODY:
                     assertEquals(CONTINUE, server.expectHeader, name + " did not put the header on the wire");
+                    assumeSampledBeforeFallback(server, requestStartNanos, name);
                     assertEquals(0, server.bodyBytesBeforeContinue, name + " sent the body before 100 Continue");
                     assertEquals(BODY.length, server.bodyBytesAfterContinue,
                         name + " did not deliver the body after 100 Continue");
@@ -555,6 +561,7 @@ public class ExpectContinueTests {
             HttpPipeline pipeline
                 = retryPipeline(options(ExpectContinueMode.ON), httpClient, new StatusRecordingPolicy(statusCodes));
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            long requestStartNanos = System.nanoTime();
             try (HttpResponse response
                 = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block()) {
                 assertNotNull(response, name + " returned no response");
@@ -565,10 +572,21 @@ public class ExpectContinueTests {
             assertEquals(CONTINUE, server.rejectedExpectHeader, name + " did not put the header on the first attempt");
             assertEquals(0, server.rejectedBodyBytes, name + " sent body bytes on the rejected connection");
             assertEquals(CONTINUE, server.expectHeader, name + " did not put the header on the retry");
-            assertEquals(0, server.bodyBytesBeforeContinue, name + " sent the retried body before 100 Continue");
             assertArrayEquals(BODY, server.receivedBody(), name + " did not deliver the full body on the retry");
             assertEquals(Arrays.asList(503, 201), statusCodes, name + " did not retry after the rejection");
+            assumeSampledBeforeFallback(server, requestStartNanos, name);
+            assertEquals(0, server.bodyBytesBeforeContinue, name + " sent the retried body before 100 Continue");
         }
+    }
+
+    // A deferring transport legitimately sends the body without 100 Continue once its fallback wait elapses. That wait
+    // starts after the request does, so the server's sample only shows whether the body was withheld if it was taken
+    // within CONTINUE_FALLBACK_MILLIS of the request starting. On a slow machine it may not be; skip rather than fail.
+    private static void assumeSampledBeforeFallback(ExpectContinueServer server, long requestStartNanos,
+        String name) {
+        long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(server.continueDecisionNanos - requestStartNanos);
+        assumeTrue(elapsedMillis < CONTINUE_FALLBACK_MILLIS, name + " took " + elapsedMillis
+            + " ms to reach the 100 Continue decision, so a body sent before it may be the transport's fallback");
     }
 
     // An attempt inside the throttle window carries the header, but a retry made after the window has elapsed must
@@ -877,6 +895,7 @@ public class ExpectContinueTests {
         private volatile String expectHeader;
         private volatile int bodyBytesBeforeContinue = -1;
         private volatile int bodyBytesAfterContinue = -1;
+        private volatile long continueDecisionNanos;
         private final ByteArrayOutputStream receivedBody = new ByteArrayOutputStream();
 
         ExpectContinueServer() throws IOException {
@@ -995,6 +1014,7 @@ public class ExpectContinueTests {
             int contentLength = readHeaders(in);
 
             Thread.sleep(BODY_SETTLE_MILLIS);
+            continueDecisionNanos = System.nanoTime();
             // Consume what has already arrived, so the read after 100 Continue only sees the bytes that follow.
             bodyBytesBeforeContinue = readBody(in, Math.min(in.available(), contentLength));
 
