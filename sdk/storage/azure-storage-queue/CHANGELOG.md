@@ -1,5 +1,12 @@
 # Release History
 
+## 12.32.2 (2026-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.36.1` to version `12.36.2`.
+
 ## 12.32.1 (2026-11-02)
 
 ### Other Changes
