@@ -491,7 +491,7 @@ public final class ImplBridge {
 
     private static void addLabelResourceType(ConfigurationClientImpl service, RequestOptions options,
         String resourceType) {
-        if (service.getServiceVersion() != ConfigurationServiceVersion.V2026_05_01_PREVIEW) {
+        if (service.getServiceVersion().compareTo(ConfigurationServiceVersion.V2026_05_01_PREVIEW) < 0) {
             return;
         }
         options.addRequestCallback(request -> {

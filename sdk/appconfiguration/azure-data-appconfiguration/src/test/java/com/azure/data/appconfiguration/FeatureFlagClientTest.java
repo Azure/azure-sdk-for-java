@@ -43,6 +43,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
@@ -440,6 +441,53 @@ class FeatureFlagClientTest {
         PagedFlux<FeatureFlag> async = builder.buildAsyncClient().listFeatureFlags(selector);
         async.collectList().block();
         async.collectList().block();
+    }
+
+    @ParameterizedTest
+    @EnumSource(ConfigurationServiceVersion.class)
+    void serviceVersionGatesFeatureFlagsAndLabelResourceTypes(ConfigurationServiceVersion version) {
+        boolean supportsFeatureFlags = version != ConfigurationServiceVersion.V1_0
+            && version != ConfigurationServiceVersion.V2023_10_01
+            && version != ConfigurationServiceVersion.V2023_11_01;
+        for (boolean async : new boolean[] { false, true }) {
+            FeatureFlagClientBuilder featureBuilder = builder(request -> {
+                assertTrue(request.getUrl().getQuery().contains("api-version=" + version.getVersion()));
+                assertTrue(request.getUrl().getQuery().contains("resourcetype=ff"));
+                return response(request, 200, "{\"items\":[]}");
+            }).serviceVersion(version);
+            if (supportsFeatureFlags) {
+                if (async) {
+                    featureBuilder.buildAsyncClient().listLabels().collectList().block();
+                } else {
+                    featureBuilder.buildClient().listLabels().stream().count();
+                }
+            } else {
+                assertThrows(IllegalArgumentException.class, featureBuilder::buildClient);
+                assertThrows(IllegalArgumentException.class, featureBuilder::buildAsyncClient);
+            }
+
+            AtomicInteger requests = new AtomicInteger();
+            HttpClient httpClient = request -> Mono.fromSupplier(() -> {
+                assertTrue(request.getUrl().getQuery().contains("api-version=" + version.getVersion()));
+                assertEquals(supportsFeatureFlags, request.getUrl().getQuery().contains("resourcetype=kv"));
+                if (requests.getAndIncrement() == 0) {
+                    return response(request, 200, "{\"items\":[{\"name\":\"first\"}],"
+                        + "\"@nextLink\":\"/labels?api-version=" + version.getVersion() + "&after=next\"}");
+                }
+                assertTrue(request.getUrl().getQuery().contains("after=next"));
+                return response(request, 200, "{\"items\":[{\"name\":\"second\"}]}");
+            });
+            ConfigurationClientBuilder configurationBuilder = new ConfigurationClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIAL)
+                .serviceVersion(version)
+                .httpClient(httpClient);
+            if (async) {
+                assertEquals(2, configurationBuilder.buildAsyncClient().listLabels().count().block());
+            } else {
+                assertEquals(2, configurationBuilder.buildClient().listLabels().stream().count());
+            }
+            assertEquals(2, requests.get());
+        }
     }
 
     @ParameterizedTest

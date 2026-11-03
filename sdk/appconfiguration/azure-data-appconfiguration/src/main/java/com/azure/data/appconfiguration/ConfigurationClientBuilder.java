@@ -246,7 +246,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         // Service version
         ConfigurationServiceVersion serviceVersion
             = (version != null) ? version : ConfigurationServiceVersion.getLatest();
-        if (featureFlags && serviceVersion != ConfigurationServiceVersion.V2026_05_01_PREVIEW) {
+        if (featureFlags && serviceVersion.compareTo(ConfigurationServiceVersion.V2026_05_01_PREVIEW) < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Feature flag resources require API version 2026-05-01-preview or later."));
         }

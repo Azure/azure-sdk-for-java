@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.FeatureFlag;
 import com.azure.data.appconfiguration.models.FeatureFlagSelector;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 /**
@@ -17,10 +18,11 @@ public class FeatureFlagResourceSample {
      * @param args unused.
      */
     public static void main(String[] args) {
-        String connectionString = System.getenv("AZURE_APP_CONFIG_CONNECTION_STRING");
+        String endpoint = System.getenv("AZURE_APP_CONFIG_ENDPOINT");
         // BEGIN: readme-sample-featureFlagResources
         FeatureFlagClient client = new FeatureFlagClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         FeatureFlag created = client.addFeatureFlag(new FeatureFlag("MyFeature", true).setLabel("production"));
@@ -39,12 +41,13 @@ public class FeatureFlagResourceSample {
 
     /**
      * Creates a nonblocking sequence that writes, reads, and deletes a dedicated feature flag.
-     * @param connectionString the App Configuration connection string.
+     * @param endpoint the App Configuration endpoint.
      * @return the sequence; subscribe to execute it and handle any errors.
      */
-    public Mono<Void> runAsync(String connectionString) {
+    public Mono<Void> runAsync(String endpoint) {
         FeatureFlagAsyncClient client = new FeatureFlagClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         return client.setFeatureFlag(new FeatureFlag("MyAsyncFeature", true))
             .flatMap(flag -> client.getFeatureFlag(flag.getName()))
@@ -54,12 +57,13 @@ public class FeatureFlagResourceSample {
 
     /**
      * Illustrates asynchronous client construction and subscription.
-     * @param connectionString the App Configuration connection string.
+     * @param endpoint the App Configuration endpoint.
      */
-    public void asyncSnippet(String connectionString) {
+    public void asyncSnippet(String endpoint) {
         // BEGIN: readme-sample-featureFlagResourcesAsync
         FeatureFlagAsyncClient client = new FeatureFlagClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         client.setFeatureFlag(new FeatureFlag("MyAsyncFeature", true))

@@ -260,9 +260,15 @@ These resources are **separate** from `FeatureFlagConfigurationSetting` instance
 Use the feature flag name directly, without the `.appconfig.featureflag/` key prefix. Neither client converts or
 redirects operations between these resource types. Existing feature flag setting APIs continue to use key-values.
 
+The following examples use Microsoft Entra ID authentication with `DefaultAzureCredential` from [azure-identity][azure_identity].
+Set `endpoint` to your App Configuration store endpoint, and assign the **App Configuration Data Owner** role
+to the identity running these read/write examples. When running the sample's `main` method, set the
+`AZURE_APP_CONFIG_ENDPOINT` environment variable.
+
 ```java readme-sample-featureFlagResources
 FeatureFlagClient client = new FeatureFlagClientBuilder()
-    .connectionString(connectionString)
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
 FeatureFlag created = client.addFeatureFlag(new FeatureFlag("MyFeature", true).setLabel("production"));
@@ -296,7 +302,8 @@ Build an asynchronous client with `FeatureFlagClientBuilder.buildAsyncClient()`:
 
 ```java readme-sample-featureFlagResourcesAsync
 FeatureFlagAsyncClient client = new FeatureFlagClientBuilder()
-    .connectionString(connectionString)
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
 client.setFeatureFlag(new FeatureFlag("MyAsyncFeature", true))
@@ -306,7 +313,7 @@ client.setFeatureFlag(new FeatureFlag("MyAsyncFeature", true))
 ```
 
 `FeatureFlagClient.listLabels` always selects dedicated feature flag labels (`resourceType=ff`).
-`ConfigurationClient.listLabels` selects key-value labels (`resourceType=kv` on the preview API); asynchronous
+`ConfigurationClient.listLabels` selects key-value labels (`resourceType=kv` on API version `2026-05-01-preview` and later); asynchronous
 clients follow the same rules. See the [feature flag resource sample](src/samples/java/com/azure/data/appconfiguration/FeatureFlagResourceSample.java).
 
 ### Create a Configuration Client
@@ -685,4 +692,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
-
