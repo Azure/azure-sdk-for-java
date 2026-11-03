@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added preview voice-agent post-call delivery configuration for Event Grid and routine destinations.
+
 ### Breaking Changes
 
 ### Bugs Fixed
