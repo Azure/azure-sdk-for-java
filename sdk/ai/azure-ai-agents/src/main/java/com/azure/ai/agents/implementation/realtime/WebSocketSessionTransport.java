@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.implementation.realtime;
 
-import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -51,30 +50,24 @@ import okio.ByteString;
 public final class WebSocketSessionTransport<T> implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionTransport.class);
     private final URI websocketUri;
-    private final VoiceAgentWebSocketConnectionOptions options;
-    private final EventDecoder<T> decoder;
+    private final WebSocketTransportOptions options;
+    private final WebSocketEventDecoder<T> decoder;
     private final OkHttpClient httpClient;
     private final BlockingQueue<EventSignal<T>> events;
     private final int receiveBufferCapacity;
     private final CountDownLatch handshakeCompleted = new CountDownLatch(1);
     private final CountDownLatch closeCompleted = new CountDownLatch(1);
     private final AtomicReference<Throwable> connectionError = new AtomicReference<>();
-    private final AtomicBoolean handshakeSucceeded = new AtomicBoolean();
     private final AtomicBoolean receiveClaimed = new AtomicBoolean();
-    private final AtomicBoolean open = new AtomicBoolean();
-    private final AtomicBoolean closed = new AtomicBoolean();
+    private final AtomicReference<WebSocketSessionState> state
+        = new AtomicReference<>(WebSocketSessionState.CONNECTING);
     private final AtomicBoolean clientShutdown = new AtomicBoolean();
     private volatile WebSocket webSocket;
     private volatile Integer closeCode;
     private volatile String closeReason;
 
-    @FunctionalInterface
-    public interface EventDecoder<T> {
-        T decode(String json) throws IOException;
-    }
-
     private WebSocketSessionTransport(VoiceAgentWebSocketClientConfiguration configuration, URI websocketUri,
-        VoiceAgentWebSocketConnectionOptions options, EventDecoder<T> decoder) {
+        WebSocketTransportOptions options, WebSocketEventDecoder<T> decoder) {
         this.options = options;
         this.decoder = Objects.requireNonNull(decoder, "'decoder' cannot be null.");
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
@@ -99,8 +92,8 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     }
 
     public static <T> WebSocketSessionTransport<T> connect(VoiceAgentWebSocketClientConfiguration configuration,
-        URI websocketUri, VoiceAgentWebSocketConnectionOptions options, String subprotocol,
-        Function<String, HttpHeaders> headersFactory, EventDecoder<T> decoder) {
+        URI websocketUri, WebSocketTransportOptions options, String subprotocol,
+        Function<String, HttpHeaders> headersFactory, WebSocketEventDecoder<T> decoder) {
         WebSocketSessionTransport<T> session
             = new WebSocketSessionTransport<>(configuration, websocketUri, options, decoder);
         try {
@@ -121,7 +114,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     }
 
     public boolean isOpen() {
-        return open.get() && !closed.get();
+        return state.get() == WebSocketSessionState.OPEN;
     }
 
     public Integer getCloseCode() {
@@ -177,11 +170,10 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
 
     public void close(int code, String reason) {
         VoiceAgentWebSocketUtils.validateClose(code, reason);
-        if (!closed.compareAndSet(false, true)) {
+        if (!state.compareAndSet(WebSocketSessionState.OPEN, WebSocketSessionState.CLOSING)) {
             shutdownHttpClient();
             return;
         }
-        open.set(false);
         if (!webSocket.close(code, reason)) {
             webSocket.cancel();
             closeCompleted.countDown();
@@ -194,6 +186,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
             Thread.currentThread().interrupt();
             webSocket.cancel();
         } finally {
+            state.set(WebSocketSessionState.CLOSED);
             signal(EventSignal.complete());
             shutdownHttpClient();
         }
@@ -211,9 +204,6 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
             webSocket.cancel();
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Interrupted while opening the voice-agent WebSocket session.", error));
-        }
-        if (handshakeSucceeded.get()) {
-            return;
         }
         Throwable error = connectionError.get();
         if (error instanceof RuntimeException) {
@@ -234,9 +224,10 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
                 response.close();
             }
         }
-        connectionError.compareAndSet(null, mapped);
-        open.set(false);
-        closed.set(true);
+        WebSocketSessionState previous = state.getAndSet(WebSocketSessionState.CLOSED);
+        if (previous == WebSocketSessionState.CONNECTING) {
+            connectionError.compareAndSet(null, mapped);
+        }
         handshakeCompleted.countDown();
         signal(EventSignal.error(mapped));
         closeCompleted.countDown();
@@ -282,8 +273,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
             if (current != null) {
                 current.cancel();
             }
-            open.set(false);
-            closed.set(true);
+            state.set(WebSocketSessionState.CLOSED);
             shutdownHttpClient();
         }
     }
@@ -296,7 +286,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     }
 
     public static OkHttpClient createHttpClient(VoiceAgentWebSocketClientConfiguration configuration,
-        VoiceAgentWebSocketConnectionOptions options) {
+        WebSocketTransportOptions options) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(options.getHandshakeTimeout().toMillis(), TimeUnit.MILLISECONDS)
             .readTimeout(0, TimeUnit.MILLISECONDS)
@@ -322,7 +312,8 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
                     @Override
                     public void connectFailed(URI uri, SocketAddress address, IOException error) {
                         LOGGER.atVerbose()
-                            .addKeyValue("uri", uri)
+                            .addKeyValue("host", uri.getHost())
+                            .addKeyValue("path", uri.getPath())
                             .addKeyValue("proxyAddress", address)
                             .log("Failed to connect through the configured proxy.");
                     }
@@ -342,8 +333,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     private final class Listener extends WebSocketListener {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            handshakeSucceeded.set(true);
-            open.set(true);
+            state.compareAndSet(WebSocketSessionState.CONNECTING, WebSocketSessionState.OPEN);
             handshakeCompleted.countDown();
         }
 
@@ -399,8 +389,11 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         public void onClosed(WebSocket webSocket, int code, String reason) {
             closeCode = code;
             closeReason = reason;
-            open.set(false);
-            closed.set(true);
+            WebSocketSessionState previous = state.getAndSet(WebSocketSessionState.CLOSED);
+            if (previous == WebSocketSessionState.CONNECTING) {
+                connectionError.compareAndSet(null,
+                    new IllegalStateException("The WebSocket closed before the handshake completed."));
+            }
             signal(EventSignal.complete());
             handshakeCompleted.countDown();
             closeCompleted.countDown();

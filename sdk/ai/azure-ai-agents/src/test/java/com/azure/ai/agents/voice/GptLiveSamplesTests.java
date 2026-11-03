@@ -1272,6 +1272,8 @@ public class GptLiveSamplesTests {
         assertEquals("Hello", command.get("content"));
         assertTrue(command.containsKey("delegation_id"));
         assertEquals(null, command.get("delegation_id"));
+        assertEquals(command, data.toObject(Map.class));
+        assertEquals(command, GptLiveFunctionToolSample.object(BinaryData.fromBytes(data.toBytes())));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try (com.azure.json.JsonWriter writer = com.azure.json.JsonProviders.createWriter(output)) {
             data.writeTo(writer);

@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.implementation.realtime;
 
-import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport.ReceivedEvent;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -51,13 +50,13 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionAsyncTransport.class);
     private static final int MAX_OUTSTANDING_SENDS = 256;
     private final VoiceAgentWebSocketClientConfiguration configuration;
-    private final VoiceAgentWebSocketConnectionOptions options;
+    private final WebSocketTransportOptions options;
     private final HttpClient httpClient;
     private final URI websocketUri;
     private final String subprotocol;
     private final Function<String, HttpHeaders> headersFactory;
-    private final WebSocketSessionTransport.EventDecoder<T> decoder;
-    private final AtomicReference<State> state = new AtomicReference<>(State.NEW);
+    private final WebSocketEventDecoder<T> decoder;
+    private final AtomicReference<WebSocketSessionState> state = new AtomicReference<>(WebSocketSessionState.NEW);
     private final AtomicReference<Channel> channel = new AtomicReference<>();
     private final AtomicReference<WebsocketOutbound> outbound = new AtomicReference<>();
     private final AtomicReference<Disposable> connectionOperation = new AtomicReference<>();
@@ -73,10 +72,10 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     private volatile String closeReason;
 
     public WebSocketSessionAsyncTransport(VoiceAgentWebSocketClientConfiguration configuration, URI websocketUri,
-        VoiceAgentWebSocketConnectionOptions options, HttpClient httpClient, String subprotocol,
-        Function<String, HttpHeaders> headersFactory, WebSocketSessionTransport.EventDecoder<T> decoder) {
+        WebSocketTransportOptions options, HttpClient httpClient, String subprotocol,
+        Function<String, HttpHeaders> headersFactory, WebSocketEventDecoder<T> decoder) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
-        this.options = options == null ? new VoiceAgentWebSocketConnectionOptions() : options;
+        this.options = Objects.requireNonNull(options, "'options' cannot be null.");
         this.eventQueue = new ArrayBlockingQueue<>(this.options.getReceiveBufferCapacity());
         this.events = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -88,7 +87,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
 
     public Mono<Void> connect() {
         return Mono.defer(() -> {
-            if (!state.compareAndSet(State.NEW, State.CONNECTING)) {
+            if (!state.compareAndSet(WebSocketSessionState.NEW, WebSocketSessionState.CONNECTING)) {
                 return Mono.error(new IllegalStateException("The voice-agent session has already been started."));
             }
             return configuration.getCredential()
@@ -111,7 +110,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
 
     public boolean isOpen() {
         Channel current = channel.get();
-        return state.get() == State.OPEN && current != null && current.isActive();
+        return state.get() == WebSocketSessionState.OPEN && current != null && current.isActive();
     }
 
     public Integer getCloseCode() {
@@ -170,13 +169,13 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
             return existing;
         }
         Mono<Void> created = Mono.defer(() -> {
-            State current = state.get();
-            if (current == State.CLOSED || current == State.NEW) {
-                state.set(State.CLOSED);
+            WebSocketSessionState current = state.get();
+            if (current == WebSocketSessionState.CLOSED || current == WebSocketSessionState.NEW) {
+                state.set(WebSocketSessionState.CLOSED);
                 events.tryEmitComplete();
                 return Mono.empty();
             }
-            state.set(State.CLOSING);
+            state.set(WebSocketSessionState.CLOSING);
             WebsocketOutbound currentOutbound = outbound.get();
             Channel currentChannel = channel.get();
             Mono<Void> graceful = currentOutbound == null ? Mono.empty() : currentOutbound.sendClose(code, reason);
@@ -229,7 +228,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     private Mono<Void> handleConnection(WebsocketInbound inbound, WebsocketOutbound outbound) {
         this.outbound.set(outbound);
         inbound.withConnection(connection -> channel.set(connection.channel()));
-        state.set(State.OPEN);
+        state.set(WebSocketSessionState.OPEN);
         ready.tryEmitEmpty();
         inbound.receiveCloseStatus().subscribe(status -> {
             closeCode = status.code();
@@ -294,8 +293,8 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
 
     private void terminateWithError(Throwable error) {
         Throwable mappedError = mapHandshakeError(error);
-        State previous = state.getAndSet(State.CLOSED);
-        if (previous == State.CLOSED) {
+        WebSocketSessionState previous = state.getAndSet(WebSocketSessionState.CLOSED);
+        if (previous == WebSocketSessionState.CLOSED) {
             return;
         }
         ready.tryEmitError(mappedError);
@@ -335,11 +334,11 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     }
 
     private void terminateNormally() {
-        State previous = state.getAndSet(State.CLOSED);
-        if (previous == State.CLOSED) {
+        WebSocketSessionState previous = state.getAndSet(WebSocketSessionState.CLOSED);
+        if (previous == WebSocketSessionState.CLOSED) {
             return;
         }
-        if (previous == State.CONNECTING) {
+        if (previous == WebSocketSessionState.CONNECTING) {
             ready.tryEmitError(new IllegalStateException("The WebSocket closed before the handshake completed."));
         }
         events.tryEmitComplete();
@@ -360,7 +359,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
 
     private Channel requireOpenChannel() {
         Channel current = channel.get();
-        if (state.get() != State.OPEN || current == null || !current.isActive()) {
+        if (state.get() != WebSocketSessionState.OPEN || current == null || !current.isActive()) {
             throw LOGGER
                 .logExceptionAsError(new IllegalStateException("The voice-agent WebSocket session is not open."));
         }
@@ -397,7 +396,4 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
         });
     }
 
-    private enum State {
-        NEW, CONNECTING, OPEN, CLOSING, CLOSED
-    }
 }

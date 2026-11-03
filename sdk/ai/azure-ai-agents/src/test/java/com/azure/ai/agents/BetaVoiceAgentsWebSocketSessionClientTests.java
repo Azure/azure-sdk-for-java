@@ -6,15 +6,20 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
+import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
+import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.HttpHeaders;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -53,8 +58,8 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
             "v1", "test-user-agent", null, proxyOptions);
-        OkHttpClient client
-            = WebSocketSessionTransport.createHttpClient(configuration, new VoiceAgentWebSocketConnectionOptions());
+        OkHttpClient client = WebSocketSessionTransport.createHttpClient(configuration,
+            new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()));
 
         List<Proxy> bypassed = client.proxySelector().select(URI.create("https://LOCALHOST/session"));
         List<Proxy> proxied = client.proxySelector().select(URI.create("https://example.com/session"));
@@ -71,7 +76,8 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
 
         IllegalStateException actual = assertThrows(IllegalStateException.class,
             () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
-                new VoiceAgentWebSocketConnectionOptions(), null, token -> new HttpHeaders(), json -> json));
+                new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()), null,
+                token -> new HttpHeaders(), json -> json));
 
         assertSame(failure, actual);
     }
@@ -84,13 +90,95 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
             "v1", "test-user-agent", null, null);
 
-        IllegalStateException actual
-            = assertThrows(IllegalStateException.class, () -> WebSocketSessionTransport.connect(configuration,
-                URI.create("wss://localhost/session"), new VoiceAgentWebSocketConnectionOptions(), null, token -> {
+        IllegalStateException actual = assertThrows(IllegalStateException.class,
+            () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
+                new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()), null, token -> {
                     throw failure;
                 }, json -> json));
 
         assertSame(failure, actual);
+    }
+
+    @Test
+    public void liveOptionsAndTransportSnapshotAreIndependent() {
+        Consumer<Throwable> handler = error -> {
+        };
+        VoiceAgentLiveWebSocketConnectionOptions options
+            = new VoiceAgentLiveWebSocketConnectionOptions().setReceiveBufferCapacity(17)
+                .setMaxMessageSize(4096)
+                .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.DROP_OLDEST)
+                .setMalformedEventHandler(handler)
+                .setHandshakeTimeout(Duration.ofSeconds(2))
+                .setCloseTimeout(Duration.ofSeconds(3))
+                .setStoreEnabled(true)
+                .setAgentVersionOverride("version-1")
+                .setStructuredInputs("{\"name\":\"value\"}");
+        VoiceAgentLiveWebSocketConnectionOptions copy = new VoiceAgentLiveWebSocketConnectionOptions(options);
+        WebSocketTransportOptions snapshot = new WebSocketTransportOptions(options);
+        options.setReceiveBufferCapacity(1)
+            .setMaxMessageSize(1)
+            .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR)
+            .setMalformedEventHandler(null)
+            .setHandshakeTimeout(Duration.ofSeconds(10))
+            .setCloseTimeout(Duration.ofSeconds(10))
+            .setStoreEnabled(false)
+            .setAgentVersionOverride(null)
+            .setStructuredInputs(null);
+
+        assertTransportSnapshot(snapshot, handler);
+        assertTransportSnapshot(new WebSocketTransportOptions(copy), handler);
+        assertEquals(true, copy.isStoreEnabled());
+        assertEquals("version-1", copy.getAgentVersionOverride());
+        assertEquals("{\"name\":\"value\"}", copy.getStructuredInputs());
+    }
+
+    @Test
+    public void realtimeTransportSnapshotIsIndependent() {
+        Consumer<Throwable> handler = error -> {
+        };
+        VoiceAgentWebSocketConnectionOptions options
+            = new VoiceAgentWebSocketConnectionOptions().setReceiveBufferCapacity(17)
+                .setMaxMessageSize(4096)
+                .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.DROP_OLDEST)
+                .setMalformedEventHandler(handler)
+                .setHandshakeTimeout(Duration.ofSeconds(2))
+                .setCloseTimeout(Duration.ofSeconds(3));
+        WebSocketTransportOptions snapshot = new WebSocketTransportOptions(options);
+        options.setReceiveBufferCapacity(1)
+            .setMaxMessageSize(1)
+            .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR)
+            .setMalformedEventHandler(null)
+            .setHandshakeTimeout(Duration.ofSeconds(10))
+            .setCloseTimeout(Duration.ofSeconds(10));
+
+        assertTransportSnapshot(snapshot, handler);
+    }
+
+    @Test
+    public void liveOptionsValidateTransportSettings() {
+        VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketConnectionOptions();
+        assertEquals(256, options.getReceiveBufferCapacity());
+        assertEquals(32 * 1024 * 1024, options.getMaxMessageSize());
+        assertEquals(VoiceAgentWebSocketOverflowStrategy.ERROR, options.getOverflowStrategy());
+        assertEquals(Duration.ofSeconds(30), options.getHandshakeTimeout());
+        assertEquals(Duration.ofSeconds(10), options.getCloseTimeout());
+        assertThrows(IllegalArgumentException.class, () -> options.setReceiveBufferCapacity(0));
+        assertThrows(IllegalArgumentException.class, () -> options.setReceiveBufferCapacity(65537));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxMessageSize(0));
+        assertThrows(NullPointerException.class, () -> options.setOverflowStrategy(null));
+        assertThrows(IllegalArgumentException.class, () -> options.setHandshakeTimeout(null));
+        assertThrows(IllegalArgumentException.class, () -> options.setHandshakeTimeout(Duration.ZERO));
+        assertThrows(IllegalArgumentException.class, () -> options.setCloseTimeout(Duration.ofSeconds(-1)));
+        assertThrows(NullPointerException.class, () -> new VoiceAgentLiveWebSocketConnectionOptions(null));
+    }
+
+    private static void assertTransportSnapshot(WebSocketTransportOptions snapshot, Consumer<Throwable> handler) {
+        assertEquals(17, snapshot.getReceiveBufferCapacity());
+        assertEquals(4096, snapshot.getMaxMessageSize());
+        assertEquals(VoiceAgentWebSocketOverflowStrategy.DROP_OLDEST, snapshot.getOverflowStrategy());
+        assertSame(handler, snapshot.getMalformedEventHandler());
+        assertEquals(Duration.ofSeconds(2), snapshot.getHandshakeTimeout());
+        assertEquals(Duration.ofSeconds(3), snapshot.getCloseTimeout());
     }
 
     private static String queryParameter(URI uri, String name) {

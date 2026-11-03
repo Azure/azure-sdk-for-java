@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
+import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -51,8 +52,8 @@ public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCl
         VoiceAgentWebSocketConnectionOptions sessionOptions
             = options == null ? new VoiceAgentWebSocketConnectionOptions() : options;
         transport = new WebSocketSessionAsyncTransport<>(configuration,
-            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, sessionOptions), sessionOptions,
-            httpClient, VoiceAgentWebSocketUtils.SUBPROTOCOL,
+            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, sessionOptions),
+            new WebSocketTransportOptions(sessionOptions), httpClient, VoiceAgentWebSocketUtils.SUBPROTOCOL,
             token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, sessionOptions, token),
             VoiceAgentWebSocketUtils::deserializeEvent);
     }

@@ -72,19 +72,6 @@ public final class VoiceAgentWebSocketUtils {
     private VoiceAgentWebSocketUtils() {
     }
 
-    public static VoiceAgentWebSocketConnectionOptions liveOptions(VoiceAgentLiveWebSocketConnectionOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return new VoiceAgentWebSocketConnectionOptions().setReceiveBufferCapacity(options.getReceiveBufferCapacity())
-            .setMaxMessageSize(options.getMaxMessageSize())
-            .setOverflowStrategy(options.getOverflowStrategy())
-            .setMalformedEventHandler(options.getMalformedEventHandler())
-            .setHandshakeTimeout(options.getHandshakeTimeout())
-            .setCloseTimeout(options.getCloseTimeout())
-            .setStoreEnabled(options.isStoreEnabled())
-            .setAgentVersionOverride(options.getAgentVersionOverride())
-            .setStructuredInputs(options.getStructuredInputs());
-    }
-
     public static BinaryData deserializeRawEvent(String json) {
         BinaryData event = BinaryData.fromString(json);
         validateEvent(event);
@@ -118,8 +105,9 @@ public final class VoiceAgentWebSocketUtils {
 
     public static URI buildWebSocketUri(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
-        UrlBuilder url = buildSessionUrl(configuration, agentName, "", options);
-        VoiceAgentTransport transport = options.getTransportType();
+        UrlBuilder url = buildSessionUrl(configuration, agentName, "", options.isStoreEnabled(),
+            options.getAgentVersionOverride());
+    VoiceAgentTransport transport = options.getTransportType();
         url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
         if (options.getAgentSessionId() != null) {
             url.setQueryParameter("agent_session_id", encode(options.getAgentSessionId()));
@@ -128,8 +116,9 @@ public final class VoiceAgentWebSocketUtils {
     }
 
     public static URI buildLiveWebSocketUri(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
-        VoiceAgentWebSocketConnectionOptions options) {
-        UrlBuilder url = buildSessionUrl(configuration, agentName, "/live/sessions", options);
+        VoiceAgentLiveWebSocketConnectionOptions options) {
+        UrlBuilder url = buildSessionUrl(configuration, agentName, "/live/sessions", options.isStoreEnabled(),
+            options.getAgentVersionOverride());
         if (options.getStructuredInputs() != null) {
             url.setQueryParameter("structured_inputs", encode(options.getStructuredInputs()));
         }
@@ -137,10 +126,13 @@ public final class VoiceAgentWebSocketUtils {
     }
 
     private static UrlBuilder buildSessionUrl(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
-        String suffix, VoiceAgentWebSocketConnectionOptions options) {
+        String suffix, Boolean store, String agentVersionOverride) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         if (agentName.isEmpty()) {
             throw new IllegalArgumentException("'agentName' cannot be empty.");
+        }
+        if (!suffix.isEmpty() && !suffix.startsWith("/")) {
+            throw new IllegalArgumentException("A voice-agent route suffix must start with '/'.");
         }
         URI endpoint = configuration.getEndpoint();
         String scheme;
@@ -161,11 +153,11 @@ public final class VoiceAgentWebSocketUtils {
         UrlBuilder url = UrlBuilder.parse(baseUri.toString());
         url.setQueryParameter("api-version", encode(configuration.getApiVersion()));
         url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
-        if (options.isStoreEnabled() != null) {
-            url.setQueryParameter("store", options.isStoreEnabled().toString());
+        if (store != null) {
+            url.setQueryParameter("store", store.toString());
         }
-        if (options.getAgentVersionOverride() != null) {
-            url.setQueryParameter("x-agent-version-override", encode(options.getAgentVersionOverride()));
+        if (agentVersionOverride != null) {
+            url.setQueryParameter("x-agent-version-override", encode(agentVersionOverride));
         }
         return url;
     }

@@ -1129,20 +1129,26 @@ variants, but typed serialization need not preserve the original JSON formatting
 The existing samples named `VoiceAgentLive*ConversationSample` above demonstrate live connections using the
 **Realtime** protocol; use the separate GPT Live clients for `VoiceAgentLiveDefinition` agents.
 
-For example, with a connected synchronous Live session configured for Responses delegation:
+For example, configure and open a synchronous Live session for an agent using Responses delegation:
 
-```java
-import com.openai.models.live.ClientEvent;
-import com.openai.models.live.ResponseCreateEvent;
-import com.openai.models.live.ServerEvent;
-
-for (ServerEvent event : session.receiveEvents()) {
-    if (event.isSessionStarted()) {
-        session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
-    } else if (event.isSessionOutputTranscriptDelta()) {
-        System.out.print(event.asSessionOutputTranscriptDelta().delta());
-    } else if (event.isSessionClosed() || event.isErrorEvent()) {
-        break;
+```java readme-sample-com.azure.ai.agents.live_connection_options
+BetaVoiceAgentsLiveWebSocketClient liveClient = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient();
+VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketConnectionOptions()
+    .setReceiveBufferCapacity(512)
+    .setMaxMessageSize(8 * 1024 * 1024)
+    .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR)
+    .setHandshakeTimeout(Duration.ofSeconds(30))
+    .setCloseTimeout(Duration.ofSeconds(10))
+    .setStoreEnabled(false);
+try (BetaVoiceAgentsLiveWebSocketSessionClient session = liveClient.openWebSocketSession(agentName, options)) {
+    for (ServerEvent event : session.receiveEvents()) {
+        if (event.isSessionStarted()) {
+            session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
+        } else if (event.isSessionOutputTranscriptDelta()) {
+            System.out.print(event.asSessionOutputTranscriptDelta().delta());
+        } else if (event.isSessionClosed() || event.isErrorEvent()) {
+            break;
+        }
     }
 }
 ```

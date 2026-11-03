@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.SessionLogEvent;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.util.BinaryData;
@@ -25,8 +26,36 @@ import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ResponseCreateEvent;
+import com.openai.models.live.ServerEvent;
+import java.time.Duration;
 
 public final class ReadmeSamples {
+    public void liveConnectionOptions(AgentsClientBuilder builder, String agentName) {
+        // BEGIN: readme-sample-com.azure.ai.agents.live_connection_options
+        BetaVoiceAgentsLiveWebSocketClient liveClient = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient();
+        VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketConnectionOptions()
+            .setReceiveBufferCapacity(512)
+            .setMaxMessageSize(8 * 1024 * 1024)
+            .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR)
+            .setHandshakeTimeout(Duration.ofSeconds(30))
+            .setCloseTimeout(Duration.ofSeconds(10))
+            .setStoreEnabled(false);
+        try (BetaVoiceAgentsLiveWebSocketSessionClient session = liveClient.openWebSocketSession(agentName, options)) {
+            for (ServerEvent event : session.receiveEvents()) {
+                if (event.isSessionStarted()) {
+                    session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
+                } else if (event.isSessionOutputTranscriptDelta()) {
+                    System.out.print(event.asSessionOutputTranscriptDelta().delta());
+                } else if (event.isSessionClosed() || event.isErrorEvent()) {
+                    break;
+                }
+            }
+        }
+        // END: readme-sample-com.azure.ai.agents.live_connection_options
+    }
+
     public void realtimeForwardCompatibility(BetaVoiceAgentsWebSocketClient realtimeClient, String agentName) {
         // BEGIN: com.azure.ai.agents.realtime_forward_compatibility
         VoiceAgentWebSocketConnectionOptions options

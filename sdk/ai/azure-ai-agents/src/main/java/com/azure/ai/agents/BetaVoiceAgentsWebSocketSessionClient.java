@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
+import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -45,8 +46,8 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
     static BetaVoiceAgentsWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
         String agentName, VoiceAgentWebSocketConnectionOptions options) {
         return new BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
-            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options), options,
-            VoiceAgentWebSocketUtils.SUBPROTOCOL,
+            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options),
+            new WebSocketTransportOptions(options), VoiceAgentWebSocketUtils.SUBPROTOCOL,
             token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token),
             VoiceAgentWebSocketUtils::deserializeEvent));
     }

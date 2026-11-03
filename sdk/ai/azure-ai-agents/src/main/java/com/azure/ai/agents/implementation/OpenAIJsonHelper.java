@@ -4,6 +4,8 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -16,15 +18,52 @@ import com.openai.core.ObjectMappers;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 public final class OpenAIJsonHelper {
 
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIJsonHelper.class);
     private static final ObjectMapper OPENAI_MODEL_MAPPER = ObjectMappers.jsonMapper();
+
+    private static final JsonSerializer OPENAI_MODEL_SERIALIZER = new JsonSerializer() {
+        @Override
+        public <T> T deserialize(InputStream stream, com.azure.core.util.serializer.TypeReference<T> typeReference) {
+            try {
+                return OPENAI_MODEL_MAPPER.readValue(stream,
+                    OPENAI_MODEL_MAPPER.constructType(typeReference.getJavaType()));
+            } catch (IOException error) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(error));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream,
+            com.azure.core.util.serializer.TypeReference<T> typeReference) {
+            return Mono.fromCallable(() -> deserialize(stream, typeReference));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                stream.write(OPENAI_MODEL_MAPPER.writeValueAsBytes(value));
+            } catch (IOException error) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(error));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    };
 
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
@@ -114,7 +153,7 @@ public final class OpenAIJsonHelper {
         }
         try {
             String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
-            return BinaryData.fromObject(OPENAI_MODEL_MAPPER.readTree(json));
+            return BinaryData.fromObject(OPENAI_MODEL_MAPPER.readTree(json), OPENAI_MODEL_SERIALIZER);
         } catch (IOException e) {
             throw new RuntimeException("Failed to convert OpenAI type to BinaryData", e);
         }

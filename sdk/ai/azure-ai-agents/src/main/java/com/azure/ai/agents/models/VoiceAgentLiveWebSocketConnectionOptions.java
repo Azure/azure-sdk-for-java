@@ -5,6 +5,7 @@ package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -16,11 +17,19 @@ import java.util.function.Consumer;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 @Fluent
 public final class VoiceAgentLiveWebSocketConnectionOptions {
-    private final VoiceAgentWebSocketConnectionOptions options;
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentLiveWebSocketConnectionOptions.class);
+    private int receiveBufferCapacity = 256;
+    private int maxMessageSize = 32 * 1024 * 1024;
+    private VoiceAgentWebSocketOverflowStrategy overflowStrategy = VoiceAgentWebSocketOverflowStrategy.ERROR;
+    private Consumer<Throwable> malformedEventHandler;
+    private Duration handshakeTimeout = Duration.ofSeconds(30);
+    private Duration closeTimeout = Duration.ofSeconds(10);
+    private Boolean store;
+    private String agentVersionOverride;
+    private String structuredInputs;
 
     /** Creates options with a 30-second handshake timeout and a 256-event receive buffer. */
     public VoiceAgentLiveWebSocketConnectionOptions() {
-        options = new VoiceAgentWebSocketConnectionOptions();
     }
 
     /**
@@ -28,8 +37,16 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @param source the options to copy.
      */
     public VoiceAgentLiveWebSocketConnectionOptions(VoiceAgentLiveWebSocketConnectionOptions source) {
-        options = new VoiceAgentWebSocketConnectionOptions(
-            Objects.requireNonNull(source, "'source' cannot be null.").options);
+        Objects.requireNonNull(source, "'source' cannot be null.");
+        this.receiveBufferCapacity = source.receiveBufferCapacity;
+        this.maxMessageSize = source.maxMessageSize;
+        this.overflowStrategy = source.overflowStrategy;
+        this.malformedEventHandler = source.malformedEventHandler;
+        this.handshakeTimeout = source.handshakeTimeout;
+        this.closeTimeout = source.closeTimeout;
+        this.store = source.store;
+        this.agentVersionOverride = source.agentVersionOverride;
+        this.structuredInputs = source.structuredInputs;
     }
 
     /**
@@ -37,7 +54,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the maximum queued events, default 256.
      */
     public int getReceiveBufferCapacity() {
-        return options.getReceiveBufferCapacity();
+        return receiveBufferCapacity;
     }
 
     /**
@@ -47,7 +64,11 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @throws IllegalArgumentException if the capacity is outside the supported range.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setReceiveBufferCapacity(int capacity) {
-        options.setReceiveBufferCapacity(capacity);
+        if (capacity < 1 || capacity > 65536) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Receive capacity must be between 1 and 65536."));
+        }
+        this.receiveBufferCapacity = capacity;
         return this;
     }
 
@@ -56,7 +77,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the size in bytes, default 32 MiB.
      */
     public int getMaxMessageSize() {
-        return options.getMaxMessageSize();
+        return maxMessageSize;
     }
 
     /**
@@ -66,7 +87,10 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @throws IllegalArgumentException if the size is not positive.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setMaxMessageSize(int bytes) {
-        options.setMaxMessageSize(bytes);
+        if (bytes <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Message size must be positive."));
+        }
+        this.maxMessageSize = bytes;
         return this;
     }
 
@@ -75,7 +99,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the strategy, default ERROR.
      */
     public VoiceAgentWebSocketOverflowStrategy getOverflowStrategy() {
-        return options.getOverflowStrategy();
+        return overflowStrategy;
     }
 
     /**
@@ -84,7 +108,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy strategy) {
-        options.setOverflowStrategy(strategy);
+        this.overflowStrategy = Objects.requireNonNull(strategy, "'strategy' cannot be null.");
         return this;
     }
 
@@ -93,7 +117,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the callback, or null to terminate the session.
      */
     public Consumer<Throwable> getMalformedEventHandler() {
-        return options.getMalformedEventHandler();
+        return malformedEventHandler;
     }
 
     /**
@@ -103,7 +127,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setMalformedEventHandler(Consumer<Throwable> handler) {
-        options.setMalformedEventHandler(handler);
+        this.malformedEventHandler = handler;
         return this;
     }
 
@@ -112,7 +136,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the timeout, default 30 seconds.
      */
     public Duration getHandshakeTimeout() {
-        return options.getHandshakeTimeout();
+        return handshakeTimeout;
     }
 
     /**
@@ -122,7 +146,8 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @throws IllegalArgumentException if the timeout is not positive.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setHandshakeTimeout(Duration timeout) {
-        options.setHandshakeTimeout(timeout);
+        validatePositive(timeout, "handshakeTimeout");
+        this.handshakeTimeout = timeout;
         return this;
     }
 
@@ -131,7 +156,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the timeout, default 10 seconds.
      */
     public Duration getCloseTimeout() {
-        return options.getCloseTimeout();
+        return closeTimeout;
     }
 
     /**
@@ -141,7 +166,8 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @throws IllegalArgumentException if the timeout is not positive.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setCloseTimeout(Duration timeout) {
-        options.setCloseTimeout(timeout);
+        validatePositive(timeout, "closeTimeout");
+        this.closeTimeout = timeout;
         return this;
     }
 
@@ -150,7 +176,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the override, or null to use the persisted agent configuration.
      */
     public Boolean isStoreEnabled() {
-        return options.isStoreEnabled();
+        return store;
     }
 
     /**
@@ -159,7 +185,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setStoreEnabled(Boolean store) {
-        options.setStoreEnabled(store);
+        this.store = store;
         return this;
     }
 
@@ -168,7 +194,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the version override, or null.
      */
     public String getAgentVersionOverride() {
-        return options.getAgentVersionOverride();
+        return agentVersionOverride;
     }
 
     /**
@@ -177,7 +203,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setAgentVersionOverride(String version) {
-        options.setAgentVersionOverride(version);
+        this.agentVersionOverride = version;
         return this;
     }
 
@@ -186,7 +212,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return the JSON inputs, or null.
      */
     public String getStructuredInputs() {
-        return options.getStructuredInputs();
+        return structuredInputs;
     }
 
     /**
@@ -196,7 +222,13 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentLiveWebSocketConnectionOptions setStructuredInputs(String inputs) {
-        options.setStructuredInputs(inputs);
+        this.structuredInputs = inputs;
         return this;
+    }
+
+    private static void validatePositive(Duration duration, String name) {
+        if (duration == null || duration.isZero() || duration.isNegative()) {
+            throw new IllegalArgumentException("'" + name + "' must be positive.");
+        }
     }
 }

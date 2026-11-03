@@ -21,7 +21,7 @@
   `buildBetaVoiceAgentsLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
   using `BinaryData`, separately from the Realtime protocol clients.
 - Added typed GPT Live sends through `sendEvent(com.openai.models.live.ClientEvent)` and typed receives through
-  `receiveTypedEvents()`, retaining the raw JSON APIs. The synchronous client also supports per-event receive timeouts.
+  `receiveEvents()`, retaining the raw JSON APIs. The synchronous client also supports per-event receive timeouts.
   Live transports use native OpenAI `ServerEvent` models while retaining original JSON for raw receivers.
   Live and Realtime clients select their own routes and headers without a shared protocol-mode flag.
 - Added synchronous/asynchronous persisted GPT Live conversation history and audio-download examples with offline tests.
@@ -82,6 +82,9 @@
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.
 - Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
   structured inputs, and response structured inputs through `BinaryData`.
+- Fixed OpenAI model JSON conversion to use an explicit Jackson serializer, preserving explicit nulls without
+  depending on the application's Azure JSON serializer provider.
+- Removed query values from WebSocket proxy-failure diagnostics to avoid logging structured inputs.
 - Updated the synchronous live text sample to replace an existing sample agent on a creation conflict and
   delete the replacement on exit, including when the conversation fails.
 

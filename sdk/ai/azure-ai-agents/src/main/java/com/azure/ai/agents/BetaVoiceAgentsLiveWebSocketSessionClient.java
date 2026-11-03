@@ -92,6 +92,8 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Sends a typed native Live command. Foundry supplies {@code session.start}; clients must not send it.
+     * This method enqueues the event; returning does not mean the frame has been written to the network.
+     * Later network failures surface through the receive stream and session lifecycle.
      * @param event the command to send.
      * @throws IllegalStateException if the session cannot accept the event.
      */
@@ -114,6 +116,8 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
     /**
      * Sends a native Live JSON event. Foundry supplies {@code session.start}; clients must not send it.
      * The service validates native command semantics, including delegation restrictions.
+     * This method enqueues the event; returning does not mean the frame has been written to the network.
+     * Later network failures surface through the receive stream and session lifecycle.
      * @param event the complete JSON object.
      * @throws IllegalArgumentException if the event is not a JSON object.
      * @throws IllegalStateException if the session cannot accept the event.
