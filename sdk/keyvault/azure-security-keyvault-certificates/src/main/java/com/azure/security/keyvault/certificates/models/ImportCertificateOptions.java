@@ -33,7 +33,7 @@ public final class ImportCertificateOptions {
     private Boolean enabled;
 
     /**
-     * The policy which governs the lifecycle of the imported certificate and it's properties when it is rotated.
+     * The policy which governs the lifecycle of the imported certificate and its properties when it is rotated.
      */
     private CertificatePolicy policy;
 

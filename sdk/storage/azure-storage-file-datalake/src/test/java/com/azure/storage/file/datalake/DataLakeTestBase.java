@@ -585,7 +585,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
      *
      * @param pc The path on which to acquire a lease.
      * @param leaseID The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or null.
-     * @return The actual lease id of the path if recievedLeaseID is passed, otherwise whatever was passed will be
+     * @return The actual lease id of the path if receivedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     protected String setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
