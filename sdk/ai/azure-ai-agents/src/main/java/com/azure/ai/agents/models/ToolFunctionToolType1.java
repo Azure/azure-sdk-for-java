@@ -4,9 +4,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for VoiceAgentFunctionToolType1.
+ * Defines values for ToolFunctionToolType1.
  */
-enum VoiceAgentFunctionToolType1 {
+enum ToolFunctionToolType1 {
 
     /**
      * Enum value function.
@@ -14,26 +14,26 @@ enum VoiceAgentFunctionToolType1 {
     FUNCTION("function");
 
     /**
-     * The actual serialized value for a VoiceAgentFunctionToolType1 instance.
+     * The actual serialized value for a ToolFunctionToolType1 instance.
      */
     private final String value;
 
-    VoiceAgentFunctionToolType1(String value) {
+    ToolFunctionToolType1(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a VoiceAgentFunctionToolType1 instance.
+     * Parses a serialized value to a ToolFunctionToolType1 instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed VoiceAgentFunctionToolType1 object, or null if unable to parse.
+     * @return the parsed ToolFunctionToolType1 object, or null if unable to parse.
      */
-    public static VoiceAgentFunctionToolType1 fromString(String value) {
+    public static ToolFunctionToolType1 fromString(String value) {
         if (value == null) {
             return null;
         }
-        VoiceAgentFunctionToolType1[] items = VoiceAgentFunctionToolType1.values();
-        for (VoiceAgentFunctionToolType1 item : items) {
+        ToolFunctionToolType1[] items = ToolFunctionToolType1.values();
+        for (ToolFunctionToolType1 item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
