@@ -4,6 +4,7 @@ package io.clientcore.linting.extensions.checkstyle.filters;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  * The following violations are ignored:
  *
  * <ul>
- *     <li>ExternalDependencyExposed checks in implementation code</li>
+ *     <li>Public API type violations in implementation code</li>
  *     <li>Missing Javadoc comments in implementation, sample, and test code</li>
  *     <li>Star imports in test code</li>
  *     <li>Nested blocks in test code</li>
@@ -38,13 +39,20 @@ public class SdkCheckFilter implements Filter {
     // The package name prefix for SDK Checkstyle checks
     private static final String SDK_CHECK_START = "io.clientcore.linting.extensions.checkstyle.checks.";
 
-    // The ExternalDependencyExposed SDK Checkstyle check
-    private static final String EXTERNAL_DEPENDENCY_EXPOSED = SDK_CHECK_START + "ExternalDependencyExposed";
-
     /**
      * Creates a new instance of {@link SdkCheckFilter}.
      */
     public SdkCheckFilter() {
+    }
+
+    /**
+     * Determines whether a file is test, shared-test, or sample Java source.
+     *
+     * @param fileName the source file path, using either platform's separators.
+     * @return whether SDK checks normally do not apply to this source file.
+     */
+    public static boolean isSampleOrTestFile(String fileName) {
+        return fileName != null && SAMPLE_OR_TEST_FILE_PATTERN.matcher(fileName).matches();
     }
 
     @Override
@@ -75,8 +83,8 @@ public class SdkCheckFilter implements Filter {
             // Ignore nested blocks in test code
             return true;
         } else if (violation.startsWith(SDK_CHECK_START)) {
-            // Ignore SDK Checkstyle checks in sample and test code
-            return true;
+            // StepVerifier is specifically a test check and must not be discarded with production SDK checks.
+            return !isTestFile || !violation.equals(SDK_CHECK_START + "StepVerifierCheck");
         } else if (violation.contains("LineLength")) {
             // Ignore line length in sample and test code
             return true;
@@ -98,6 +106,6 @@ public class SdkCheckFilter implements Filter {
 
         String violation = event.getViolation().getSourceName();
 
-        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED) || violation.toLowerCase().contains("javadoc");
+        return PublicApiTypeCheck.class.getName().equals(violation) || violation.toLowerCase().contains("javadoc");
     }
 }

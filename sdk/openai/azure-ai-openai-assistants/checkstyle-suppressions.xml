@@ -14,6 +14,6 @@
   <suppress files="com.azure.ai.openai.assistants.models.UploadFileRequest.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.ai.openai.assistants.AssistantsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.openai.assistants.AssistantsClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.ai.openai.assistants.implementation.streaming.StreamTypeFactory.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.ai.openai.assistants.implementation.streaming.StreamTypeFactory.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

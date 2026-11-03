@@ -5,18 +5,22 @@ package io.clientcore.linting.extensions.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck.THROW_LOGGER_EXCEPTION_MESSAGE;
+import static io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck.THROW_LOGGER_EXCEPTION_MESSAGE;
 
-public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
+public class AzureCoreExceptionPolicyTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(ThrowFromClientLoggerCheck.class));
+        DefaultConfiguration check = createModuleConfig(ExceptionHandlingCheck.class);
+        check.addProperty("loggingApi", "azure-core");
+        check.addProperty("checkCaughtExceptionCause", "false");
+        checker = createChecker(check);
     }
 
     @AfterEach

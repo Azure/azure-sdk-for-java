@@ -47,8 +47,7 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\]autoconfigure[/\\]monitor[/\\]*"/>
 
   <!-- Suppress external dependency Checkstyle on Event Hubs Stress Test packages as it use spring framework and may directly use external dependencies -->
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.messaging.eventhubs.stress.*\.java"/>
+  <suppress files="com.azure.messaging.eventhubs.stress.*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
   <suppress checks="MissingJavadocMethod" files="com.azure.messaging.eventhubs.stress.*\.java"/>
 
   <!-- Suppress warnings for KeyEncryptionKey and LocalCrypto client as it is a specialized client and doesn't follow the guidelines completely -->
@@ -62,8 +61,7 @@
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.redis.*" />
 
   <!-- Suppress external dependency Checkstyle on Service Bus Stress Test packages as it use spring framework and may directly use external dependencies -->
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.messaging.servicebus.stress.*\.java"/>
+  <suppress files="com.azure.messaging.servicebus.stress.*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
   <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>
 
   <!-- Logger class suppression -->
@@ -86,21 +84,17 @@
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck" files="[/\\]azure-cosmos-test[/\\]"/>
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.cosmos.CosmosResponseDiagnostics"/>
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition
-            |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath
-            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/>
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
-            files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
+  <suppress files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition             |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath             |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="com.azure.cosmos.JsonSerializable" />
+  <suppress files="com.azure.cosmos.JsonSerializable" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />  <!-- exposes logger from slf4j-->
   <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
-  <suppress
-      checks="io.clientcore.linting.extensions.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
-      files="com.azure.cosmos.ClientSideRequestStatistics"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.ClientSideRequestStatistics" />
+  <suppress files="com.azure.cosmos.ClientSideRequestStatistics" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
   <suppress checks="(ConstantName|EnforceFinalFields)" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="[/\\]azure-cosmos-kafka-connect[/\\]"/>
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSourceConnector"/>
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSinkConnector"/>
+  <suppress files="com.azure.cosmos.kafka.connect.CosmosSourceConnector" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
+  <suppress files="com.azure.cosmos.kafka.connect.CosmosSinkConnector" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
@@ -125,14 +119,15 @@
   <!-- The constant name is public static. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>
 
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.(eventhubs|servicebus|storage.queue).core.properties.*"/>
+  <suppress files="com.azure.spring.messaging.(eventhubs|servicebus|storage.queue).core.properties.*" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|UseCaughtExceptionCauseCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*" />
+  <suppress files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <suppress files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
 
   <!-- Suppress package name warning: b2c is the product name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
@@ -153,18 +148,21 @@
   <!-- ### end: Spring related suppression -->
 
   <!-- Suppress checks for Core Perf package. -->
-  <suppress checks="(ExternalDependencyExposed|GoodLogging|Javadoc|ThrowFromClientLoggerCheck)" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="(GoodLogging|Javadoc)" files=".*[/\\]azure-core-perf[/\\].*\.java" />
+  <suppress files=".*[/\\]azure-core-perf[/\\].*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
+  <suppress files=".*[/\\]azure-core-perf[/\\].*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 
   <!-- Suppress checks for stress packages. -->
-  <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-template-stress[/\\].*\.java"/>
-  <suppress checks="(EnforceFinalFields|IllegalImport|ThrowFromClientLogger)" files="com.azure.*.stress"/>
+  <suppress files=".*[/\\]azure-template-stress[/\\].*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
+  <suppress checks="(EnforceFinalFields|IllegalImport)" files="com.azure.*.stress" />
+  <suppress files="com.azure.*.stress" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 
   <!-- The build tool plugin checkstyle exceptions -->
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)"
-            files="com.azure.sdk.build.tool.*\.java"/>
+  <suppress files="com.azure.sdk.build.tool.*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
+  <suppress files="com.azure.sdk.build.tool.*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
 
-  <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
+  <suppress files=".*[/\\]http-stress[/\\].*\.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
 
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.DenyListedWordsCheck"
             files="com.azure.resourcemanager.oep.fluent.OpenEnergyPlatformManagementServiceAPIs.java"/>

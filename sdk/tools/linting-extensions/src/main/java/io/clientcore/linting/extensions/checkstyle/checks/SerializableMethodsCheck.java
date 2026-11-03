@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -13,12 +12,13 @@ import java.util.List;
 /**
  * Verifies that classes implementing JsonSerializable or XmlSerializable provide a static fromJson or fromXml method.
  */
-public class SerializableMethodsCheck extends AbstractCheck {
+public class SerializableMethodsCheck extends SdkCheck {
     static final String ERR_NO_FROM_JSON = "Class implementing JsonSerializable must provide a static fromJson method.";
     static final String ERR_NO_FROM_XML = "Class implementing XmlSerializable must provide a static fromXml method.";
 
     private List<TypeSnapshot> snapshotArchive;
 
+    /** Creates a check for the static deserialization methods required by serialization interfaces. */
     public SerializableMethodsCheck() {
     }
 
@@ -39,11 +39,15 @@ public class SerializableMethodsCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST rootNode) {
-        snapshotArchive = new ArrayList<>();
+        super.beginTree(rootNode);
+        snapshotArchive = isIgnoredSource() ? null : new ArrayList<>();
     }
 
     @Override
     public void visitToken(DetailAST currentNode) {
+        if (isIgnoredSource()) {
+            return;
+        }
         int tokenKind = currentNode.getType();
 
         if (tokenKind == TokenTypes.CLASS_DEF) {
@@ -56,14 +60,13 @@ public class SerializableMethodsCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST currentNode) {
-        if (currentNode.getType() == TokenTypes.CLASS_DEF) {
+        if (!isIgnoredSource() && currentNode.getType() == TokenTypes.CLASS_DEF) {
             performSnapshotAudit(currentNode);
         }
     }
 
     private TypeSnapshot captureTypeSnapshot(DetailAST classNode) {
         TypeSnapshot snapshot = new TypeSnapshot();
-        snapshot.classNode = classNode;
 
         // Check if the class is abstract - skip validation for abstract types
         snapshot.isAbstract = isAbstractType(classNode);
@@ -107,7 +110,8 @@ public class SerializableMethodsCheck extends AbstractCheck {
 
         TypeSnapshot latestSnapshot = snapshotArchive.get(snapshotArchive.size() - 1);
 
-        if (!latestSnapshot.implementsJsonSerializable && !latestSnapshot.implementsXmlSerializable) {
+        if (latestSnapshot.isAbstract
+            || (!latestSnapshot.implementsJsonSerializable && !latestSnapshot.implementsXmlSerializable)) {
             return;
         }
 
@@ -117,6 +121,9 @@ public class SerializableMethodsCheck extends AbstractCheck {
         }
 
         String methodLabel = nameNode.getText();
+        if (!"fromJson".equals(methodLabel) && !"fromXml".equals(methodLabel)) {
+            return;
+        }
         boolean markedStatic = probeForStaticMarker(methodNode);
 
         latestSnapshot.digestMethod(methodLabel, markedStatic);
@@ -154,9 +161,7 @@ public class SerializableMethodsCheck extends AbstractCheck {
     }
 
     private static class TypeSnapshot {
-        DetailAST classNode;
         boolean isAbstract;
-        boolean extendsAnotherType;
         boolean implementsJsonSerializable;
         boolean implementsXmlSerializable;
         boolean observedFromJson;

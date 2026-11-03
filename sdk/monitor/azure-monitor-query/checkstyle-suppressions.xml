@@ -8,5 +8,5 @@
   <suppress files="com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPIBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.monitor.query.implementation.metricsdefinitions.AzureMonitorMetricsDefinitionsAPIBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.monitor.query.implementation.logs.AzureLogAnalyticsBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.monitor.query.implementation.logs.AzureLogAnalyticsBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

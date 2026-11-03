@@ -57,12 +57,17 @@ public class StepVerifierCheck extends AbstractCheck {
     }
 
     @Override
+    public void beginTree(DetailAST rootAST) {
+        hasStaticImport = false;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         if (ast.getType() == TokenTypes.STATIC_IMPORT) {
             // Compare if the static import is for StepVerifier.setDefaultTimeout
             hasStaticImport
-                = FULLY_QUALIFIED.equals(FullIdent.createFullIdent(ast.getFirstChild().getNextSibling()).getText());
-        } else {
+                |= FULLY_QUALIFIED.equals(FullIdent.createFullIdent(ast.getFirstChild().getNextSibling()).getText());
+        } else if (SET_DEFAULT_TIMEOUT.equals(SdkCheckUtils.getCalledMethodName(ast))) {
             // Compare the method call against StepVerifier.setDefaultTimeout or setDefaultTimeout if there is a static
             // import for StepVerifier.setDefaultTimeout
             FullIdent fullIdent = FullIdent.createFullIdentBelow(ast);

@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -38,7 +37,7 @@ import java.util.Queue;
  * {@code loggerName} (required): The case-insensitive name of the logger instance. Defined in the checkstyle.xml config
  * file. If left empty, an exception will be thrown by the check.
  */
-public class GoodLoggingCheck extends AbstractCheck {
+public class GoodLoggingCheck extends SdkCheck {
     private static final int[] REQUIRED_TOKENS = new int[] {
         TokenTypes.IMPORT,
         TokenTypes.INTERFACE_DEF,
@@ -128,6 +127,9 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST rootAST) {
+        super.beginTree(rootAST);
+        hasClientLoggerImported = false;
+        classNameDeque.clear();
         List<String> missingConfig = new ArrayList<>(3);
 
         if (fullyQualifiedLoggerName == null || fullyQualifiedLoggerName.isEmpty()) {
@@ -153,6 +155,9 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST ast) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (ast.getType() == TokenTypes.CLASS_DEF
             || ast.getType() == TokenTypes.INTERFACE_DEF
             || ast.getType() == TokenTypes.ENUM_DEF) {
@@ -162,6 +167,9 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
+        if (isIgnoredSource()) {
+            return;
+        }
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
                 final String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
@@ -192,6 +200,13 @@ public class GoodLoggingCheck extends AbstractCheck {
             case TokenTypes.METHOD_CALL:
                 final DetailAST dotToken = ast.findFirstToken(TokenTypes.DOT);
                 if (dotToken == null) {
+                    return;
+                }
+                DetailAST receiver = dotToken.getFirstChild();
+                if (receiver == null
+                    || receiver.getType() != TokenTypes.DOT
+                    || receiver.getFirstChild().getType() != TokenTypes.IDENT
+                    || !"System".equals(receiver.getFirstChild().getText())) {
                     return;
                 }
                 final String methodCallName = FullIdent.createFullIdentBelow(dotToken).getText();

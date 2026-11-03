@@ -139,7 +139,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatTelemetryPipelineListener.java" checks="RegexpSinglelineCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString.java" checks="VisibilityModifierCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TrieImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.DefaultHeartBeatPropertyProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.AggregatingLogger.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
@@ -160,15 +160,14 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeatHttpPipelinePolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsClientImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionStringBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseCoordinatorInitDataBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataFetcher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulsePingSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.AzureMetadataService.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataFetcher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionStringBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseCoordinatorInitDataBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataFetcher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulsePingSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.AzureMetadataService.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

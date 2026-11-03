@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -13,7 +12,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  *     <li>The {@code name} property should be non-empty.</li>
  * </ul>
  */
-public class ServiceInterfaceCheck extends AbstractCheck {
+public class ServiceInterfaceCheck extends SdkCheck {
 
     /**
      * Creates a new instance of {@link ServiceInterfaceCheck}.
@@ -38,7 +37,7 @@ public class ServiceInterfaceCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        if (token.getType() == TokenTypes.INTERFACE_DEF) {
+        if (!isIgnoredSource() && token.getType() == TokenTypes.INTERFACE_DEF) {
             checkServiceInterface(token);
         }
     }
@@ -109,6 +108,6 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         String nameValue = nameValueToken.getText();
 
         // remove the beginning and ending double quote
-        return nameValue.replaceAll("^\"|\"$", "");
+        return nameValue.substring(1, nameValue.length() - 1);
     }
 }

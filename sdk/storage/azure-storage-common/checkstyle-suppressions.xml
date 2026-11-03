@@ -8,5 +8,5 @@
   <suppress files="com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.common.implementation.connectionstring.StorageConnectionString.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
-  <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

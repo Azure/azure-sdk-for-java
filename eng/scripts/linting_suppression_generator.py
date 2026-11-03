@@ -22,6 +22,7 @@ import os
 import subprocess
 from typing import Dict, List, Set, Tuple
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import quoteattr
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -125,7 +126,8 @@ def generate_checkstyle_suppression_file(project_folder: str):
         for violation in sorted(violations.items(), key=lambda x: x[0]):
             files = sorted(violation[1])
             for file in files:
-                checkstyle_suppressions.write(f'  <suppress files="{file}" checks="{violation[0]}" />\n')
+                checkstyle_suppressions.write(
+                    f'  <suppress files={quoteattr(file)} checks={quoteattr(violation[0])} />\n')
 
         checkstyle_suppressions.write('</suppressions>\n')
 

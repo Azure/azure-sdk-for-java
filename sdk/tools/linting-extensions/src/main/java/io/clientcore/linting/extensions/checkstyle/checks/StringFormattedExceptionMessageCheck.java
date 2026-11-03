@@ -3,25 +3,17 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Checks that the message provided to "logger.throwableAt*().log" is static (not created using String.format).
  */
-public class StringFormattedExceptionMessageCheck extends AbstractCheck {
+public class StringFormattedExceptionMessageCheck extends SdkCheck {
     static final String ERROR_MESSAGE = "Short message passed to \"logger.throwableAt*().log\" should be static. "
         + "Provide dynamic components using the \"addKeyValue(key, value)\" method instead. "
         + "See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-v2.md#logging-best-practices for more details.";
-    private static final List<String> THROWABLE_AT_LOGGING_METHODS
-        = Arrays.asList(".throwableAtError", ".throwableAtWarning");
-
-    private static final String LOG_METHOD_NAME = ".log";
     private static final String STRING_FORMAT_METHOD_NAME = "String.format";
 
     /**
@@ -47,42 +39,25 @@ public class StringFormattedExceptionMessageCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        String name = FullIdent.createFullIdentBelow(token).getText();
-        if (THROWABLE_AT_LOGGING_METHODS.stream().anyMatch(name::endsWith)) {
-            DetailAST logMethodCall = token.getParent().getParent();
-            if (logMethodCall == null || logMethodCall.getType() != TokenTypes.METHOD_CALL) {
-                return;
+        if (isIgnoredSource() || SdkCheckUtils.findThrowableLoggingEvent(token) == null) {
+            return;
+        }
+        DetailAST arguments = token.findFirstToken(TokenTypes.ELIST);
+        DetailAST message = arguments == null ? null : arguments.findFirstToken(TokenTypes.EXPR);
+        if (message == null || message.getFirstChild() == null) {
+            return;
+        }
+
+        DetailAST firstParam = message.getFirstChild();
+        if (firstParam.getType() == TokenTypes.METHOD_CALL
+            && "format".equals(SdkCheckUtils.getCalledMethodName(firstParam))) {
+            if (FullIdent.createFullIdentBelow(firstParam).getText().endsWith(STRING_FORMAT_METHOD_NAME)) {
+                log(message, ERROR_MESSAGE);
             }
-
-            String nextName = FullIdent.createFullIdentBelow(logMethodCall).getText();
-            if (nextName.endsWith(LOG_METHOD_NAME)) {
-                DetailAST elist = logMethodCall.findFirstToken(TokenTypes.ELIST);
-                if (elist == null) {
-                    return;
-                }
-
-                // first param of `log()` method
-                DetailAST logExpr = elist.findFirstToken(TokenTypes.EXPR);
-                if (logExpr == null) {
-                    return;
-                }
-
-                DetailAST firstParam = logExpr.getFirstChild();
-                // flag String.format
-                if (firstParam.getType() == TokenTypes.METHOD_CALL) {
-                    String logFirstArgMethod = FullIdent.createFullIdentBelow(logExpr.getFirstChild()).getText();
-                    if (logFirstArgMethod.endsWith(STRING_FORMAT_METHOD_NAME)) {
-                        log(logExpr, ERROR_MESSAGE);
-                    }
-                } else if (firstParam.getType() == TokenTypes.PLUS) {
-                    // flag if dynamic, i.e. a combination of string literal and ident
-                    DetailAST firstIdent = logExpr.getFirstChild().findFirstToken(TokenTypes.IDENT);
-                    DetailAST firstLiteral = logExpr.getFirstChild().findFirstToken(TokenTypes.STRING_LITERAL);
-                    if (firstIdent != null && firstLiteral != null) {
-                        log(firstParam, ERROR_MESSAGE);
-                    }
-                }
-            }
+        } else if (firstParam.getType() == TokenTypes.PLUS
+            && firstParam.findFirstToken(TokenTypes.IDENT) != null
+            && firstParam.findFirstToken(TokenTypes.STRING_LITERAL) != null) {
+            log(firstParam, ERROR_MESSAGE);
         }
     }
 }

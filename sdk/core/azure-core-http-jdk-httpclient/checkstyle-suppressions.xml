@@ -4,5 +4,5 @@
 
 <suppressions>
   <suppress files="com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.core.http.jdk.httpclient.implementation.InputStreamWithReadTimeout.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.core.http.jdk.httpclient.implementation.InputStreamWithReadTimeout.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>
