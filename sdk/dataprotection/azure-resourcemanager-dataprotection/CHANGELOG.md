@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.2 (2026-10-15)
+## 1.7.0-beta.2 (2026-11-03)
 
 - Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2026-08-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -68,19 +68,19 @@
 
 #### `DataProtectionManager` was modified
 
-* `restoresFromDppCrossTenantVaults()` was added
-* `backupInstanceOperationResultFromDppCrossTenantVaults()` was added
-* `recoveryPointsFromDppCrossTenantVaults()` was added
-* `dppCrossTenantVaultMappings()` was added
-* `recoveryPointFromDppCrossTenantVaults()` was added
-* `backupInstanceOperationStatusFromDppCrossTenantVaults()` was added
 * `backupInstanceFromDppCrossTenantVaults()` was added
-* `backupInstancesFromDppCrossTenantVaults()` was added
-* `validateRestoreFromDppCrossTenantVaults()` was added
-* `dppCrossTenantVaultMappingStatus()` was added
+* `backupInstanceOperationStatusFromDppCrossTenantVaults()` was added
+* `recoveryPointFromDppCrossTenantVaults()` was added
 * `backupJobsFromDppCrossTenantVaults()` was added
-* `jobFromDppCrossTenantVaults()` was added
+* `restoresFromDppCrossTenantVaults()` was added
+* `validateRestoreFromDppCrossTenantVaults()` was added
+* `recoveryPointsFromDppCrossTenantVaults()` was added
+* `backupInstancesFromDppCrossTenantVaults()` was added
+* `dppCrossTenantVaultMappingStatus()` was added
+* `backupInstanceOperationResultFromDppCrossTenantVaults()` was added
+* `dppCrossTenantVaultMappings()` was added
 * `restorableTimeRangesFromDppCrossTenantVaults()` was added
+* `jobFromDppCrossTenantVaults()` was added
 
 ## 1.7.0-beta.1 (2026-09-28)
 
