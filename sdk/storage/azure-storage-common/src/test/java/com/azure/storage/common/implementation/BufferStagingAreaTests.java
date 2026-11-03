@@ -3,6 +3,8 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.test.utils.TestUtils;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -173,5 +175,64 @@ public class BufferStagingAreaTests {
         return Stream.of(Arguments.of(4 * Constants.KB, 4 * Constants.MB), Arguments.of(Constants.KB, 4 * Constants.MB),
             Arguments.of(25, Constants.KB), Arguments.of(2 * Constants.KB, 4 * Constants.MB),
             Arguments.of(10 * Constants.KB, 4 * Constants.MB));
+    }
+
+    /*
+     * Staging must not modify the caller's buffers, not even their position or limit. Otherwise staging the same
+     * buffers again, such as when an upload is retried by re-subscribing to its source, skips the bytes consumed the
+     * first time.
+     */
+    @ParameterizedTest
+    @MethodSource("stagingDoesNotModifyCallerBuffersSupplier")
+    public void stagingDoesNotModifyCallerBuffers(int stagingSize, int pieceLength) {
+        byte[] content = new byte[10 * stagingSize + 3];
+        ThreadLocalRandom.current().nextBytes(content);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, pieceLength);
+
+        TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
+
+        sources.forEach(ByteBufferState::assertUnchanged);
+    }
+
+    @ParameterizedTest
+    @MethodSource("stagingDoesNotModifyCallerBuffersSupplier")
+    public void stagingSameBuffersAgainProducesSameContent(int stagingSize, int pieceLength) {
+        byte[] content = new byte[10 * stagingSize + 3];
+        ThreadLocalRandom.current().nextBytes(content);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, pieceLength);
+
+        TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
+        TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
+    }
+
+    private static Stream<Arguments> stagingDoesNotModifyCallerBuffersSupplier() {
+        return Stream.of(
+            // staging size | piece length
+            Arguments.of(100, 37), // Several pieces per staged buffer, crossing staged buffer boundaries.
+            Arguments.of(100, 70), // Each piece overflows the partly filled staged buffer.
+            Arguments.of(100, 100), // Pieces exactly the staged buffer size.
+            Arguments.of(100, 250)); // Pieces larger than the staged buffer size.
+    }
+
+    /*
+     * Stages the buffers with a new staging area and returns the content of the staged buffers, in order.
+     */
+    private static byte[] stage(int stagingSize, List<ByteBufferState> sources) {
+        BufferStagingArea stagingArea = new BufferStagingArea(stagingSize, stagingSize);
+        List<ByteBuffer> staged = Flux.fromIterable(sources)
+            .map(ByteBufferState::getBuffer)
+            .flatMapSequential(stagingArea::write, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
+            .concatMap(BufferAggregator::asFlux)
+            .collectList()
+            .block();
+        assertNotNull(staged);
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        for (ByteBuffer buffer : staged) {
+            byte[] bytes = new byte[buffer.remaining()];
+            buffer.duplicate().get(bytes);
+            content.write(bytes, 0, bytes.length);
+        }
+        return content.toByteArray();
     }
 }

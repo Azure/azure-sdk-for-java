@@ -14,6 +14,10 @@
 
 ### Other Changes
 
+- Encrypted uploads no longer change the position of the caller's buffers. Previously, the buffers could be
+  left partially read, so uploading the same buffers again, such as by subscribing to the upload again to retry it,
+  encrypted and uploaded incomplete content.
+
 ## 12.35.0 (2026-10-07)
 
 ### Features Added

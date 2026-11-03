@@ -73,7 +73,10 @@ class EncryptorV1 extends Encryptor {
 
             int encryptedBytes;
             try {
-                encryptedBytes = cipher.update(plainTextBuffer, encryptedTextBuffer);
+                // Encrypt from a duplicate, because Cipher.update advances the position of its input, and the caller's
+                // buffer must not be modified. Otherwise encrypting the same buffer again, such as when an upload is
+                // retried by subscribing to its source again, would encrypt incomplete data.
+                encryptedBytes = cipher.update(plainTextBuffer.duplicate(), encryptedTextBuffer);
             } catch (ShortBufferException e) {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
