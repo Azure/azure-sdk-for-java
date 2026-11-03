@@ -4,6 +4,9 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
+import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
@@ -49,7 +52,12 @@ public final class BetaVoiceAgentsWebSocketClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return BetaVoiceAgentsWebSocketSessionClient.connect(configuration, agentName,
-            new VoiceAgentWebSocketConnectionOptions(options));
+        VoiceAgentWebSocketConnectionOptions snapshot = new VoiceAgentWebSocketConnectionOptions(options);
+        return new BetaVoiceAgentsWebSocketSessionClient(
+            WebSocketSessionTransport.connect(configuration,
+                VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, snapshot),
+                new WebSocketTransportOptions(snapshot), VoiceAgentWebSocketUtils.SUBPROTOCOL,
+                token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, snapshot, token)),
+            snapshot.getMalformedEventHandler());
     }
 }

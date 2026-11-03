@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.implementation.realtime;
 
-import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport.ReceivedEvent;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -43,10 +42,9 @@ import reactor.netty.http.websocket.WebsocketOutbound;
 import reactor.netty.transport.ProxyProvider;
 
 /**
- * Shared asynchronous WebSocket connection and I/O. Protocol clients supply the incoming message decoder.
- * @param <T> the decoded message type.
+ * Shared asynchronous WebSocket connection and raw message I/O.
  */
-public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
+public final class WebSocketSessionAsyncTransport implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionAsyncTransport.class);
     private static final int MAX_OUTSTANDING_SENDS = 256;
     private final VoiceAgentWebSocketClientConfiguration configuration;
@@ -55,7 +53,6 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     private final URI websocketUri;
     private final String subprotocol;
     private final Function<String, HttpHeaders> headersFactory;
-    private final WebSocketEventDecoder<T> decoder;
     private final AtomicReference<WebSocketSessionState> state = new AtomicReference<>(WebSocketSessionState.NEW);
     private final AtomicReference<Channel> channel = new AtomicReference<>();
     private final AtomicReference<WebsocketOutbound> outbound = new AtomicReference<>();
@@ -63,8 +60,8 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
     private final AtomicReference<Disposable> lifecycle = new AtomicReference<>();
     private final AtomicBoolean receiveClaimed = new AtomicBoolean();
     private final Semaphore sendPermits = new Semaphore(MAX_OUTSTANDING_SENDS);
-    private final Queue<ReceivedEvent<T>> eventQueue;
-    private final Sinks.Many<ReceivedEvent<T>> events;
+    private final Queue<BinaryData> eventQueue;
+    private final Sinks.Many<BinaryData> events;
     private final Sinks.One<Void> ready = Sinks.one();
     private final Sinks.One<Void> closeSignal = Sinks.one();
     private final AtomicReference<Mono<Void>> closeOperation = new AtomicReference<>();
@@ -73,7 +70,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
 
     public WebSocketSessionAsyncTransport(VoiceAgentWebSocketClientConfiguration configuration, URI websocketUri,
         WebSocketTransportOptions options, HttpClient httpClient, String subprotocol,
-        Function<String, HttpHeaders> headersFactory, WebSocketEventDecoder<T> decoder) {
+        Function<String, HttpHeaders> headersFactory) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         this.options = Objects.requireNonNull(options, "'options' cannot be null.");
         this.eventQueue = new ArrayBlockingQueue<>(this.options.getReceiveBufferCapacity());
@@ -82,7 +79,6 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
         this.websocketUri = Objects.requireNonNull(websocketUri, "'websocketUri' cannot be null.");
         this.subprotocol = subprotocol;
         this.headersFactory = Objects.requireNonNull(headersFactory, "'headersFactory' cannot be null.");
-        this.decoder = Objects.requireNonNull(decoder, "'decoder' cannot be null.");
     }
 
     public Mono<Void> connect() {
@@ -121,15 +117,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
         return closeReason;
     }
 
-    public Flux<T> receiveEvents() {
-        return receiveMessages().map(ReceivedEvent::getEvent);
-    }
-
-    public Flux<BinaryData> receiveRawEvents() {
-        return receiveMessages().map(ReceivedEvent::getRawEvent);
-    }
-
-    private Flux<ReceivedEvent<T>> receiveMessages() {
+    public Flux<BinaryData> receiveEvents() {
         return Flux.defer(() -> receiveClaimed.compareAndSet(false, true)
             ? events.asFlux()
             : Flux.error(new IllegalStateException("Only one receiveEvents subscriber is supported per session.")));
@@ -247,7 +235,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
                 byte[] bytes = new byte[frame.content().readableBytes()];
                 frame.content().getBytes(frame.content().readerIndex(), bytes);
                 String json = VoiceAgentWebSocketUtils.decodeEvent(bytes);
-                ReceivedEvent<T> event = new ReceivedEvent<>(decoder.decode(json), BinaryData.fromString(json));
+                BinaryData event = BinaryData.fromString(json);
                 Sinks.EmitResult result = events.tryEmitNext(event);
                 if (result == Sinks.EmitResult.FAIL_OVERFLOW || result == Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER) {
                     switch (options.getOverflowStrategy()) {
@@ -276,7 +264,7 @@ public final class WebSocketSessionAsyncTransport<T> implements AutoCloseable {
                         failure = callbackError;
                     }
                 }
-                closeWithProtocolError(1007, "Invalid JSON event", failure);
+                closeWithProtocolError(1007, "Invalid UTF-8 message", failure);
             }
         }
     }

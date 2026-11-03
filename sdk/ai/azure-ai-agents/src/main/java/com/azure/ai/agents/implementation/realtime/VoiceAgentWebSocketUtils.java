@@ -14,7 +14,9 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -27,9 +29,77 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.Consumer;
+import reactor.core.publisher.Flux;
 
 public final class VoiceAgentWebSocketUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketUtils.class);
+
+    public static <T> IterableStream<T> decodeEvents(IterableStream<BinaryData> messages,
+        WebSocketEventDecoder<T> decoder, Consumer<Throwable> malformedEventHandler, Runnable closeOnError) {
+        return IterableStream.of(() -> new Iterator<T>() {
+            private final Iterator<BinaryData> source = messages.iterator();
+            private T next;
+            private boolean terminated;
+
+            @Override
+            public boolean hasNext() {
+                while (next == null && !terminated && source.hasNext()) {
+                    BinaryData message = source.next();
+                    try {
+                        next = decodeEvent(message, decoder, malformedEventHandler);
+                    } catch (RuntimeException error) {
+                        terminated = true;
+                        closeOnError.run();
+                        throw LOGGER.logExceptionAsError(error);
+                    }
+                }
+                return next != null;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw LOGGER.logExceptionAsError(new NoSuchElementException());
+                }
+                T event = next;
+                next = null;
+                return event;
+            }
+        });
+    }
+
+    public static <T> Flux<T> decodeEvents(Flux<BinaryData> messages, WebSocketEventDecoder<T> decoder,
+        Consumer<Throwable> malformedEventHandler, Runnable closeOnError) {
+        return messages.handle((message, sink) -> {
+            try {
+                T event = decodeEvent(message, decoder, malformedEventHandler);
+                if (event != null) {
+                    sink.next(event);
+                }
+            } catch (RuntimeException error) {
+                closeOnError.run();
+                sink.error(error);
+            }
+        });
+    }
+
+    private static <T> T decodeEvent(BinaryData message, WebSocketEventDecoder<T> decoder,
+        Consumer<Throwable> malformedEventHandler) {
+        try {
+            return decoder.decode(message.toString());
+        } catch (IOException | RuntimeException error) {
+            if (malformedEventHandler != null) {
+                malformedEventHandler.accept(error);
+                return null;
+            }
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid JSON event.", error));
+        }
+    }
+
     public static String decodeEvent(byte[] bytes) throws CharacterCodingException {
         return StandardCharsets.UTF_8.newDecoder()
             .onMalformedInput(CodingErrorAction.REPORT)

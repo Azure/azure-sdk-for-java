@@ -3,10 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
-import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -20,7 +18,6 @@ import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
 import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
-import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
@@ -28,9 +25,9 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Consumer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
@@ -40,26 +37,13 @@ import reactor.netty.http.client.HttpClient;
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
-    private final WebSocketSessionAsyncTransport<RealtimeServerEvent> transport;
+    private final WebSocketSessionAsyncTransport transport;
+    private final Consumer<Throwable> malformedEventHandler;
 
-    BetaVoiceAgentsWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
-        VoiceAgentWebSocketConnectionOptions options) {
-        this(configuration, agentName, options, HttpClient.create());
-    }
-
-    BetaVoiceAgentsWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
-        VoiceAgentWebSocketConnectionOptions options, HttpClient httpClient) {
-        VoiceAgentWebSocketConnectionOptions sessionOptions
-            = options == null ? new VoiceAgentWebSocketConnectionOptions() : options;
-        transport = new WebSocketSessionAsyncTransport<>(configuration,
-            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, sessionOptions),
-            new WebSocketTransportOptions(sessionOptions), httpClient, VoiceAgentWebSocketUtils.SUBPROTOCOL,
-            token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, sessionOptions, token),
-            VoiceAgentWebSocketUtils::deserializeEvent);
-    }
-
-    Mono<Void> connect() {
-        return transport.connect();
+    BetaVoiceAgentsWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport transport,
+        Consumer<Throwable> malformedEventHandler) {
+        this.transport = transport;
+        this.malformedEventHandler = malformedEventHandler;
     }
 
     /**
@@ -104,7 +88,9 @@ public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCl
      * @return the server event stream.
      */
     public Flux<RealtimeServerEvent> receiveEvents() {
-        return transport.receiveEvents();
+        return VoiceAgentWebSocketUtils.decodeEvents(transport.receiveEvents(),
+            VoiceAgentWebSocketUtils::deserializeEvent, malformedEventHandler,
+            () -> transport.closeAsync(1007, "Invalid JSON event").subscribe());
     }
 
     /**

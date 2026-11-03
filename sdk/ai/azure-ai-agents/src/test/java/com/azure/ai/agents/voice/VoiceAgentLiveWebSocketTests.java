@@ -166,6 +166,45 @@ public class VoiceAgentLiveWebSocketTests {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void rawReceptionDoesNotRequireTypedDecoding(boolean async) {
+        String message = "not-json";
+        String unusualPayload = "{\"type\":\"session.started\",\"session\":7}";
+        AtomicInteger malformed = new AtomicInteger();
+        VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketConnectionOptions()
+            .setMalformedEventHandler(error -> malformed.incrementAndGet());
+        server = VoiceAgentWebSocketSessionTests.tlsServer()
+            .host("localhost")
+            .port(0)
+            .handle((request, response) -> response.sendWebsocket((inbound,
+                outbound) -> outbound.sendString(Flux.just(message, unusualPayload)).then(inbound.receive().then())))
+            .bindNow();
+        if (async) {
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
+                .openWebSocketSession("agent", options)
+                .block(TIMEOUT);
+            assertNotNull(session);
+            try {
+                StepVerifier.create(session.receiveRawEvents().take(2))
+                    .assertNext(event -> assertEquals(message, event.toString()))
+                    .assertNext(event -> assertEquals(unusualPayload, event.toString()))
+                    .verifyComplete();
+            } finally {
+                session.closeAsync().block(TIMEOUT);
+            }
+        } else {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", options)) {
+                Iterator<BinaryData> events = session.receiveRawEvents(TIMEOUT).iterator();
+                assertEquals(message, events.next().toString());
+                assertEquals(unusualPayload, events.next().toString());
+            }
+        }
+        assertEquals(0, malformed.get());
+    }
+
     @Test
     public void asyncNativeEventsAreLosslessAndSessionIsBidirectional() {
         List<String> sent = new CopyOnWriteArrayList<>();
@@ -381,7 +420,7 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveRawEvents())
+                StepVerifier.create(session.receiveEvents())
                     .expectError(IllegalArgumentException.class)
                     .verify(TIMEOUT);
             } finally {
@@ -390,8 +429,7 @@ public class VoiceAgentLiveWebSocketTests {
         } else {
             try (BetaVoiceAgentsLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent")) {
-                assertThrows(IllegalArgumentException.class,
-                    () -> session.receiveRawEvents(TIMEOUT).iterator().hasNext());
+                assertThrows(IllegalArgumentException.class, () -> session.receiveEvents(TIMEOUT).iterator().hasNext());
             }
         }
     }
@@ -422,6 +460,46 @@ public class VoiceAgentLiveWebSocketTests {
         assertEquals(TIMEOUT, copy.getCloseTimeout());
         assertEquals("1", copy.getAgentVersionOverride());
         assertEquals("{\"name\":\"value\"}", copy.getStructuredInputs());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void throwingMalformedEventCallbackTerminatesTypedReception(boolean async) {
+        IllegalStateException failure = new IllegalStateException("Malformed event callback failed.");
+        VoiceAgentLiveWebSocketConnectionOptions options
+            = new VoiceAgentLiveWebSocketConnectionOptions().setMalformedEventHandler(error -> {
+                throw failure;
+            });
+        server
+            = VoiceAgentWebSocketSessionTests.tlsServer()
+                .host("localhost")
+                .port(0)
+                .handle((request, response) -> response.sendWebsocket((inbound,
+                    outbound) -> outbound.sendString(Flux.just("not-json", STARTED)).then(inbound.receive().then())))
+                .bindNow();
+        if (async) {
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
+                .openWebSocketSession("agent", options)
+                .block(TIMEOUT);
+            assertNotNull(session);
+            try {
+                StepVerifier.create(session.receiveEvents())
+                    .expectErrorMatches(error -> error == failure)
+                    .verify(TIMEOUT);
+                assertFalse(session.isOpen());
+            } finally {
+                session.closeAsync().block(TIMEOUT);
+            }
+        } else {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", options)) {
+                Iterator<ServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
+                assertEquals(failure, assertThrows(IllegalStateException.class, events::hasNext));
+                assertFalse(events.hasNext());
+                assertFalse(session.isOpen());
+            }
+        }
     }
 
     @ParameterizedTest
@@ -473,8 +551,8 @@ public class VoiceAgentLiveWebSocketTests {
         server = VoiceAgentWebSocketSessionTests.tlsServer()
             .host("localhost")
             .port(0)
-            .handle((request, response) -> response.sendWebsocket(
-                (inbound, outbound) -> outbound.sendString(Flux.just("[]", STARTED)).then(inbound.receive().then())))
+            .handle((request, response) -> response.sendWebsocket((inbound,
+                outbound) -> outbound.sendString(Flux.just("[]", "not-json", STARTED)).then(inbound.receive().then())))
             .bindNow();
         if (async) {
             BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
@@ -483,8 +561,8 @@ public class VoiceAgentLiveWebSocketTests {
                 .block(TIMEOUT);
             assertNotNull(session);
             try {
-                StepVerifier.create(session.receiveRawEvents().map(BinaryData::toString))
-                    .expectNext(STARTED)
+                StepVerifier.create(session.receiveEvents())
+                    .assertNext(VoiceAgentLiveWebSocketTests::assertStartedEvent)
                     .thenCancel()
                     .verify(TIMEOUT);
             } finally {
@@ -493,10 +571,10 @@ public class VoiceAgentLiveWebSocketTests {
         } else {
             try (BetaVoiceAgentsLiveWebSocketSessionClient session
                 = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", options)) {
-                assertEquals(STARTED, session.receiveRawEvents(TIMEOUT).iterator().next().toString());
+                assertStartedEvent(session.receiveEvents(TIMEOUT).iterator().next());
             }
         }
-        assertEquals(1, malformed.get());
+        assertEquals(2, malformed.get());
     }
 
     @ParameterizedTest

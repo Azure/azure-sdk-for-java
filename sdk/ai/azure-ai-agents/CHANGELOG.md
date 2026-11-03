@@ -22,7 +22,8 @@
   using `BinaryData`, separately from the Realtime protocol clients.
 - Added typed GPT Live sends through `sendEvent(com.openai.models.live.ClientEvent)` and typed receives through
   `receiveEvents()`, retaining the raw JSON APIs. The synchronous client also supports per-event receive timeouts.
-  Live transports use native OpenAI `ServerEvent` models while retaining original JSON for raw receivers.
+  Live session clients decode native OpenAI `ServerEvent` models; shared transports buffer only raw messages.
+  Raw receivers do not depend on JSON parsing or typed decoding succeeding.
   Live and Realtime clients select their own routes and headers without a shared protocol-mode flag.
 - Added synchronous/asynchronous persisted GPT Live conversation history and audio-download examples with offline tests.
 - Added opt-in persistence to the GPT Live text and microphone/speaker samples using `FOUNDRY_GPT_LIVE_STORE` (default `false`),

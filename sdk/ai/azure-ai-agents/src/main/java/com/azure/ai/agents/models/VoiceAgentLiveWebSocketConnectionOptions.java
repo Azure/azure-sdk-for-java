@@ -121,7 +121,9 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
     }
 
     /**
-     * Sets a callback to report and skip malformed events. It runs on the receive thread and must not block.
+    * Sets a callback to report and skip malformed events. It runs while receiving events and must not block.
+    * JSON decoding failures are reported only by typed receivers; raw receivers do not parse JSON.
+    * Invalid UTF-8 is reported by the transport for either receiver type.
      * If the callback throws, the session terminates. Transport errors and oversized messages are not skipped.
      * @param handler the callback, or null to terminate on malformed events.
      * @return this options instance.

@@ -4,10 +4,14 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
+import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.Objects;
 
@@ -46,9 +50,14 @@ public final class BetaVoiceAgentsWebSocketAsyncClient {
         Objects.requireNonNull(options, "'options' cannot be null.");
         VoiceAgentWebSocketConnectionOptions optionsSnapshot = new VoiceAgentWebSocketConnectionOptions(options);
         return Mono.defer(() -> {
-            BetaVoiceAgentsWebSocketSessionAsyncClient session
-                = new BetaVoiceAgentsWebSocketSessionAsyncClient(configuration, agentName, optionsSnapshot);
-            return session.connect().thenReturn(session);
+            WebSocketSessionAsyncTransport transport = new WebSocketSessionAsyncTransport(configuration,
+                VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, optionsSnapshot),
+                new WebSocketTransportOptions(optionsSnapshot), HttpClient.create(),
+                VoiceAgentWebSocketUtils.SUBPROTOCOL,
+                token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, optionsSnapshot, token));
+            return transport.connect()
+                .thenReturn(new BetaVoiceAgentsWebSocketSessionAsyncClient(transport,
+                    optionsSnapshot.getMalformedEventHandler()));
         });
     }
 }

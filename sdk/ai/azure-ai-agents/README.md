@@ -1155,8 +1155,9 @@ try (BetaVoiceAgentsLiveWebSocketSessionClient session = liveClient.openWebSocke
 
 Send only native Live commands valid for the configured delegation mode, whether typed or raw.
 In particular, `response.item.create` and `response.create` are Responses-delegation-only commands.
-Service `error` events arrive as events for the application to inspect; transport and malformed JSON
-errors fail the receive stream unless a malformed-event callback was explicitly configured.
+Service `error` events arrive as events for the application to inspect. Typed receivers decode JSON and
+fail on malformed events unless a malformed-event callback was explicitly configured. Raw receivers do not
+parse JSON or construct typed models; transport size limits and UTF-8 validation still apply.
 
 Configure timeouts, bounded receive capacity, overflow handling, message size, persistence, agent version,
 and structured inputs with `VoiceAgentLiveWebSocketConnectionOptions`. Structured inputs are passed as

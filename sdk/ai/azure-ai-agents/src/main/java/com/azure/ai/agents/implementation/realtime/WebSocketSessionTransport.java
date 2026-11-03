@@ -45,15 +45,13 @@ import okio.ByteString;
 
 /**
  * Shared blocking WebSocket connection and I/O, independent of the asynchronous transport.
- * @param <T> the decoded message type.
  */
-public final class WebSocketSessionTransport<T> implements AutoCloseable {
+public final class WebSocketSessionTransport implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionTransport.class);
     private final URI websocketUri;
     private final WebSocketTransportOptions options;
-    private final WebSocketEventDecoder<T> decoder;
     private final OkHttpClient httpClient;
-    private final BlockingQueue<EventSignal<T>> events;
+    private final BlockingQueue<EventSignal> events;
     private final int receiveBufferCapacity;
     private final CountDownLatch handshakeCompleted = new CountDownLatch(1);
     private final CountDownLatch closeCompleted = new CountDownLatch(1);
@@ -67,9 +65,8 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     private volatile String closeReason;
 
     private WebSocketSessionTransport(VoiceAgentWebSocketClientConfiguration configuration, URI websocketUri,
-        WebSocketTransportOptions options, WebSocketEventDecoder<T> decoder) {
+        WebSocketTransportOptions options) {
         this.options = options;
-        this.decoder = Objects.requireNonNull(decoder, "'decoder' cannot be null.");
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
         this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = Objects.requireNonNull(websocketUri, "'websocketUri' cannot be null.");
@@ -91,11 +88,10 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         this.webSocket = httpClient.newWebSocket(request.build(), new Listener());
     }
 
-    public static <T> WebSocketSessionTransport<T> connect(VoiceAgentWebSocketClientConfiguration configuration,
+    public static WebSocketSessionTransport connect(VoiceAgentWebSocketClientConfiguration configuration,
         URI websocketUri, WebSocketTransportOptions options, String subprotocol,
-        Function<String, HttpHeaders> headersFactory, WebSocketEventDecoder<T> decoder) {
-        WebSocketSessionTransport<T> session
-            = new WebSocketSessionTransport<>(configuration, websocketUri, options, decoder);
+        Function<String, HttpHeaders> headersFactory) {
+        WebSocketSessionTransport session = new WebSocketSessionTransport(configuration, websocketUri, options);
         try {
             session.open(configuration, subprotocol, headersFactory);
             session.awaitHandshake();
@@ -125,15 +121,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         return closeReason;
     }
 
-    public IterableStream<T> receiveEvents(Duration timeout) {
-        return receiveMessages(timeout, ReceivedEvent::getEvent);
-    }
-
-    public IterableStream<BinaryData> receiveRawEvents(Duration timeout) {
-        return receiveMessages(timeout, ReceivedEvent::getRawEvent);
-    }
-
-    private <R> IterableStream<R> receiveMessages(Duration timeout, Function<ReceivedEvent<T>, R> mapper) {
+    public IterableStream<BinaryData> receiveEvents(Duration timeout) {
         if (timeout != null && (timeout.isZero() || timeout.isNegative())) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Receive timeout must be positive."));
         }
@@ -147,7 +135,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("The receiveEvents stream may only be iterated once."));
             }
-            return new EventIterator<>(events, timeout, mapper);
+            return new EventIterator(events, timeout);
         });
     }
 
@@ -252,7 +240,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         }
     }
 
-    private synchronized void signal(EventSignal<T> signal) {
+    private synchronized void signal(EventSignal signal) {
         if (signal.event != null && events.size() >= receiveBufferCapacity) {
             switch (options.getOverflowStrategy()) {
                 case DROP_LATEST:
@@ -344,11 +332,7 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
                 webSocket.close(1009, "Message too large");
                 return;
             }
-            try {
-                signal(EventSignal.event(new ReceivedEvent<>(decoder.decode(text), BinaryData.fromString(text))));
-            } catch (IOException | RuntimeException error) {
-                malformedEvent(webSocket, error);
-            }
+            signal(EventSignal.event(BinaryData.fromString(text)));
         }
 
         @Override
@@ -374,8 +358,8 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
                     error = callbackError;
                 }
             }
-            fail(new IllegalArgumentException("Invalid JSON event.", error), null);
-            webSocket.close(1007, "Invalid JSON event");
+            fail(new IllegalArgumentException("Invalid UTF-8 message.", error), null);
+            webSocket.close(1007, "Invalid UTF-8 message");
         }
 
         @Override
@@ -406,59 +390,38 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         }
     }
 
-    static final class ReceivedEvent<T> {
-        private final T event;
-        private final BinaryData rawEvent;
-
-        ReceivedEvent(T event, BinaryData rawEvent) {
-            this.event = event;
-            this.rawEvent = rawEvent;
-        }
-
-        T getEvent() {
-            return event;
-        }
-
-        BinaryData getRawEvent() {
-            return rawEvent;
-        }
-    }
-
-    private static final class EventSignal<T> {
-        private final ReceivedEvent<T> event;
+    private static final class EventSignal {
+        private final BinaryData event;
         private final Throwable error;
         private final boolean complete;
 
-        private EventSignal(ReceivedEvent<T> event, Throwable error, boolean complete) {
+        private EventSignal(BinaryData event, Throwable error, boolean complete) {
             this.event = event;
             this.error = error;
             this.complete = complete;
         }
 
-        private static <T> EventSignal<T> event(ReceivedEvent<T> event) {
-            return new EventSignal<>(event, null, false);
+        private static EventSignal event(BinaryData event) {
+            return new EventSignal(event, null, false);
         }
 
-        private static <T> EventSignal<T> error(Throwable error) {
-            return new EventSignal<>(null, error, false);
+        private static EventSignal error(Throwable error) {
+            return new EventSignal(null, error, false);
         }
 
-        private static <T> EventSignal<T> complete() {
-            return new EventSignal<>(null, null, true);
+        private static EventSignal complete() {
+            return new EventSignal(null, null, true);
         }
     }
 
-    private static final class EventIterator<T, R> implements Iterator<R> {
-        private final BlockingQueue<EventSignal<T>> events;
+    private static final class EventIterator implements Iterator<BinaryData> {
+        private final BlockingQueue<EventSignal> events;
         private final Duration timeout;
-        private final Function<ReceivedEvent<T>, R> mapper;
-        private EventSignal<T> next;
+        private EventSignal next;
 
-        private EventIterator(BlockingQueue<EventSignal<T>> events, Duration timeout,
-            Function<ReceivedEvent<T>, R> mapper) {
+        private EventIterator(BlockingQueue<EventSignal> events, Duration timeout) {
             this.events = events;
             this.timeout = timeout;
-            this.mapper = mapper;
         }
 
         @Override
@@ -487,13 +450,13 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
         }
 
         @Override
-        public R next() {
+        public BinaryData next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            ReceivedEvent<T> event = next.event;
+            BinaryData event = next.event;
             next = null;
-            return mapper.apply(event);
+            return event;
         }
     }
 }

@@ -7,11 +7,9 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConf
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
 import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
-import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
-import com.openai.models.live.ServerEvent;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -50,12 +48,13 @@ public final class BetaVoiceAgentsLiveWebSocketAsyncClient {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         VoiceAgentLiveWebSocketConnectionOptions snapshot = new VoiceAgentLiveWebSocketConnectionOptions(options);
         return Mono.defer(() -> {
-            WebSocketSessionAsyncTransport<ServerEvent> transport = new WebSocketSessionAsyncTransport<>(configuration,
+            WebSocketSessionAsyncTransport transport = new WebSocketSessionAsyncTransport(configuration,
                 VoiceAgentWebSocketUtils.buildLiveWebSocketUri(configuration, agentName, snapshot),
                 new WebSocketTransportOptions(snapshot), HttpClient.create(), null,
-                token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token), json -> OpenAIJsonHelper
-                    .fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json), ServerEvent.class));
-            return transport.connect().thenReturn(new BetaVoiceAgentsLiveWebSocketSessionAsyncClient(transport));
+                token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token));
+            return transport.connect()
+                .thenReturn(
+                    new BetaVoiceAgentsLiveWebSocketSessionAsyncClient(transport, snapshot.getMalformedEventHandler()));
         });
     }
 }

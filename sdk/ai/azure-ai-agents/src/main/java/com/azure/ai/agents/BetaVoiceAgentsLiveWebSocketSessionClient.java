@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.util.BinaryData;
@@ -12,6 +13,7 @@ import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * A synchronous bidirectional native GPT Live session.
@@ -22,10 +24,13 @@ import java.util.Objects;
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoCloseable {
-    private final WebSocketSessionTransport<ServerEvent> transport;
+    private final WebSocketSessionTransport transport;
+    private final Consumer<Throwable> malformedEventHandler;
 
-    BetaVoiceAgentsLiveWebSocketSessionClient(WebSocketSessionTransport<ServerEvent> transport) {
+    BetaVoiceAgentsLiveWebSocketSessionClient(WebSocketSessionTransport transport,
+        Consumer<Throwable> malformedEventHandler) {
         this.transport = transport;
+        this.malformedEventHandler = malformedEventHandler;
     }
 
     /**
@@ -62,8 +67,8 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Receives native Live server events in wire order, including unknown events.
-     * Service {@code error} events are delivered as JSON; transport and malformed JSON errors terminate iteration.
-     * @return the single-consumer stream of complete JSON events.
+     * Messages are not parsed or validated as JSON. Transport errors terminate iteration.
+     * @return the single-consumer stream of raw messages.
      * @throws IllegalStateException if the receive stream was already claimed.
      */
     public IterableStream<BinaryData> receiveRawEvents() {
@@ -80,14 +85,17 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Receives typed native Live events with a timeout per wait. Timeouts leave the session open.
-    * Use {@link #receiveRawEvents(Duration)} when the original JSON representation is needed.
+     * Use {@link #receiveRawEvents(Duration)} when the original JSON representation is needed.
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer typed event stream.
      * @throws IllegalArgumentException if the timeout is zero or negative.
      * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
      */
     public IterableStream<ServerEvent> receiveEvents(Duration timeout) {
-        return transport.receiveEvents(timeout);
+        return VoiceAgentWebSocketUtils.decodeEvents(
+            transport.receiveEvents(timeout), json -> OpenAIJsonHelper
+                .fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json), ServerEvent.class),
+            malformedEventHandler, () -> transport.close(1007, "Invalid JSON event"));
     }
 
     /**
@@ -103,14 +111,15 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
     }
 
     /**
-     * Receives native Live events with a timeout per wait. Timeouts leave the session open so iteration can resume.
+     * Receives raw Live messages without JSON decoding, with a timeout per wait.
+     * Timeouts leave the session open so iteration can resume.
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer event stream.
      * @throws IllegalArgumentException if the timeout is zero or negative.
      * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
      */
     public IterableStream<BinaryData> receiveRawEvents(Duration timeout) {
-        return transport.receiveRawEvents(timeout);
+        return transport.receiveEvents(timeout);
     }
 
     /**

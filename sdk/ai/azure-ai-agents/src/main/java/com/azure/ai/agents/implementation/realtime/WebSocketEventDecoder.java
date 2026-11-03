@@ -6,7 +6,7 @@ package com.azure.ai.agents.implementation.realtime;
 import java.io.IOException;
 
 /**
- * Decodes a protocol event received by either WebSocket transport.
+ * Decodes a raw message in a protocol session client.
  * @param <T> the decoded event type.
  */
 @FunctionalInterface

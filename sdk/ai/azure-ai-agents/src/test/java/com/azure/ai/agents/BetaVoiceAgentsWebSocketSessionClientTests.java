@@ -77,7 +77,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         IllegalStateException actual = assertThrows(IllegalStateException.class,
             () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
                 new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()), null,
-                token -> new HttpHeaders(), json -> json));
+                token -> new HttpHeaders()));
 
         assertSame(failure, actual);
     }
@@ -94,7 +94,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
             () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
                 new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()), null, token -> {
                     throw failure;
-                }, json -> json));
+                }));
 
         assertSame(failure, actual);
     }

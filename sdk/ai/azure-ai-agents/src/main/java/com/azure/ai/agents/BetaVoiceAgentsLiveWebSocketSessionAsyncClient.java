@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.util.AsyncCloseable;
@@ -11,6 +12,7 @@ import com.azure.core.util.BinaryData;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
 import java.util.Objects;
+import java.util.function.Consumer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,10 +25,13 @@ import reactor.core.publisher.Mono;
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
-    private final WebSocketSessionAsyncTransport<ServerEvent> transport;
+    private final WebSocketSessionAsyncTransport transport;
+    private final Consumer<Throwable> malformedEventHandler;
 
-    BetaVoiceAgentsLiveWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport<ServerEvent> transport) {
+    BetaVoiceAgentsLiveWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport transport,
+        Consumer<Throwable> malformedEventHandler) {
         this.transport = transport;
+        this.malformedEventHandler = malformedEventHandler;
     }
 
     /**
@@ -63,20 +68,23 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Receives native Live server events in wire order, including unknown events.
-     * Service {@code error} events are delivered as JSON; transport and malformed JSON errors terminate the stream.
-     * @return the single-subscriber stream of complete JSON events.
+     * Messages are not parsed or validated as JSON. Transport errors terminate the stream.
+     * @return the single-subscriber stream of raw messages.
      */
     public Flux<BinaryData> receiveRawEvents() {
-        return transport.receiveRawEvents();
+        return transport.receiveEvents();
     }
 
     /**
      * Receives typed native Live server events. Typed and raw receivers share the single-subscriber limit.
-    * Use {@link #receiveRawEvents()} when the original JSON representation is needed.
+     * Use {@link #receiveRawEvents()} when the original JSON representation is needed.
      * @return the typed server event stream.
      */
     public Flux<ServerEvent> receiveEvents() {
-        return transport.receiveEvents();
+        return VoiceAgentWebSocketUtils.decodeEvents(transport.receiveEvents(),
+            json -> OpenAIJsonHelper.fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json),
+                ServerEvent.class),
+            malformedEventHandler, () -> transport.closeAsync(1007, "Invalid JSON event").subscribe());
     }
 
     /**

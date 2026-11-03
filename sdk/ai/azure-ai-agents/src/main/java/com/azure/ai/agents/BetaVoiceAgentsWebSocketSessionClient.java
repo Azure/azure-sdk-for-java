@@ -3,10 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
-import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -20,7 +18,6 @@ import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
 import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
-import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.util.BinaryData;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
 import com.azure.core.util.IterableStream;
@@ -30,6 +27,7 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * A synchronous bidirectional realtime session connected to a Foundry voice agent.
@@ -37,19 +35,13 @@ import java.util.Objects;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentsWebSocketSessionClient.class);
-    private final WebSocketSessionTransport<RealtimeServerEvent> transport;
+    private final WebSocketSessionTransport transport;
+    private final Consumer<Throwable> malformedEventHandler;
 
-    private BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport<RealtimeServerEvent> transport) {
+    BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport transport,
+        Consumer<Throwable> malformedEventHandler) {
         this.transport = transport;
-    }
-
-    static BetaVoiceAgentsWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
-        String agentName, VoiceAgentWebSocketConnectionOptions options) {
-        return new BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
-            VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options),
-            new WebSocketTransportOptions(options), VoiceAgentWebSocketUtils.SUBPROTOCOL,
-            token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token),
-            VoiceAgentWebSocketUtils::deserializeEvent));
+        this.malformedEventHandler = malformedEventHandler;
     }
 
     /**
@@ -106,7 +98,9 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
      * @throws IllegalStateException if another receiver exists or a wait times out (with a TimeoutException cause).
      */
     public IterableStream<RealtimeServerEvent> receiveEvents(Duration timeout) {
-        return transport.receiveEvents(timeout);
+        return VoiceAgentWebSocketUtils.decodeEvents(transport.receiveEvents(timeout),
+            VoiceAgentWebSocketUtils::deserializeEvent, malformedEventHandler,
+            () -> transport.close(1007, "Invalid JSON event"));
     }
 
     /**
