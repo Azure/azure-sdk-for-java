@@ -11,6 +11,18 @@
 - Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 
+## 12.32.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
+
 ## 12.32.0 (2026-10-07)
 
 ### Features Added

@@ -10,6 +10,14 @@
 - Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
 - Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
+## 12.32.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.36.1`.
+
 
 ## 12.32.0 (2026-10-07)
 
