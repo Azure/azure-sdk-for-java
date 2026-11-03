@@ -4,10 +4,10 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
@@ -105,18 +105,18 @@ public class VoiceAgentLiveWebSocketTests {
                 .setAgentVersionOverride("version 1")
                 .setStructuredInputs(inputs);
         if (async) {
-            Mono<BetaVoiceAgentLiveWebSocketSessionAsyncClient> connection = builder.beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            Mono<BetaVoiceAgentsLiveWebSocketSessionAsyncClient> connection = builder.beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent /name", options);
             options.setStoreEnabled(false).setAgentVersionOverride("changed").setStructuredInputs("{}");
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = connection.block(TIMEOUT);
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = connection.block(TIMEOUT);
             assertNotNull(session);
             assertTrue(session.isOpen());
             session.closeAsync().block(TIMEOUT);
             assertFalse(session.isOpen());
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session = builder.beta()
-                .buildBetaVoiceAgentLiveWebSocketClient()
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session = builder.beta()
+                .buildBetaVoiceAgentsLiveWebSocketClient()
                 .openWebSocketSession("agent /name", options)) {
                 assertTrue(session.isOpen());
             }
@@ -144,8 +144,8 @@ public class VoiceAgentLiveWebSocketTests {
     public void syncNativeEventsAreLosslessAndSessionIsBidirectional() {
         List<String> sent = new CopyOnWriteArrayList<>();
         startEchoServer(sent);
-        BetaVoiceAgentLiveWebSocketSessionClient session
-            = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent");
+        BetaVoiceAgentsLiveWebSocketSessionClient session
+            = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent");
         try {
             Iterator<BinaryData> events = session.receiveRawEvents(TIMEOUT).iterator();
             assertEquals(STARTED, events.next().toString());
@@ -170,8 +170,8 @@ public class VoiceAgentLiveWebSocketTests {
     public void asyncNativeEventsAreLosslessAndSessionIsBidirectional() {
         List<String> sent = new CopyOnWriteArrayList<>();
         startEchoServer(sent);
-        BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-            .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+        BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+            .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
             .openWebSocketSession("agent")
             .block(TIMEOUT);
         assertNotNull(session);
@@ -218,27 +218,27 @@ public class VoiceAgentLiveWebSocketTests {
         VoiceAgentWebSocketConnectionOptions realtimeOptions
             = new VoiceAgentWebSocketConnectionOptions().setStructuredInputs(inputs);
         if (async) {
-            try (BetaVoiceAgentLiveWebSocketSessionAsyncClient live = builder.beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            try (BetaVoiceAgentsLiveWebSocketSessionAsyncClient live = builder.beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent", liveOptions)
                 .block(TIMEOUT)) {
                 assertNotNull(live);
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentWebSocketSessionAsyncClient realtime = builder.beta()
-                .buildBetaVoiceAgentWebSocketAsyncClient()
+            try (BetaVoiceAgentsWebSocketSessionAsyncClient realtime = builder.beta()
+                .buildBetaVoiceAgentsWebSocketAsyncClient()
                 .openWebSocketSession("agent", realtimeOptions)
                 .block(TIMEOUT)) {
                 assertNotNull(realtime);
                 assertTrue(realtime.isOpen());
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient live
-                = builder.beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", liveOptions)) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient live
+                = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", liveOptions)) {
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentWebSocketSessionClient realtime
-                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
+            try (BetaVoiceAgentsWebSocketSessionClient realtime
+                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
                 assertTrue(realtime.isOpen());
             }
         }
@@ -276,8 +276,8 @@ public class VoiceAgentLiveWebSocketTests {
             .build());
         String commandJson = OpenAIJsonHelper.toBinaryData(command).toString();
         if (async) {
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent")
                 .block(TIMEOUT);
             assertNotNull(session);
@@ -302,8 +302,8 @@ public class VoiceAgentLiveWebSocketTests {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session
-                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent")) {
                 assertThrows(NullPointerException.class, () -> session.sendEvent((ClientEvent) null));
                 assertThrows(IllegalArgumentException.class, () -> session.receiveEvents(Duration.ZERO));
                 Iterator<ServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
@@ -356,12 +356,12 @@ public class VoiceAgentLiveWebSocketTests {
             .bindNow();
         if (async) {
             StepVerifier
-                .create(builder().beta().buildBetaVoiceAgentLiveWebSocketAsyncClient().openWebSocketSession("missing"))
+                .create(builder().beta().buildBetaVoiceAgentsLiveWebSocketAsyncClient().openWebSocketSession("missing"))
                 .expectError(ResourceNotFoundException.class)
                 .verify(TIMEOUT);
         } else {
             assertThrows(ResourceNotFoundException.class,
-                () -> builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("missing"));
+                () -> builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("missing"));
         }
     }
 
@@ -375,8 +375,8 @@ public class VoiceAgentLiveWebSocketTests {
                 (inbound, outbound) -> outbound.sendString(Mono.just("[]")).then(inbound.receive().then())))
             .bindNow();
         if (async) {
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent")
                 .block(TIMEOUT);
             assertNotNull(session);
@@ -388,8 +388,8 @@ public class VoiceAgentLiveWebSocketTests {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session
-                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent")) {
                 assertThrows(IllegalArgumentException.class,
                     () -> session.receiveRawEvents(TIMEOUT).iterator().hasNext());
             }
@@ -435,8 +435,8 @@ public class VoiceAgentLiveWebSocketTests {
                     .then(outbound.sendClose(1000, "finished"))))
             .bindNow();
         if (async) {
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent")
                 .block(TIMEOUT);
             assertNotNull(session);
@@ -452,8 +452,8 @@ public class VoiceAgentLiveWebSocketTests {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session
-                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent")) {
                 Iterator<BinaryData> events = session.receiveRawEvents(TIMEOUT).iterator();
                 assertEquals(STARTED, events.next().toString());
                 assertFalse(events.hasNext());
@@ -477,8 +477,8 @@ public class VoiceAgentLiveWebSocketTests {
                 (inbound, outbound) -> outbound.sendString(Flux.just("[]", STARTED)).then(inbound.receive().then())))
             .bindNow();
         if (async) {
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent", options)
                 .block(TIMEOUT);
             assertNotNull(session);
@@ -491,8 +491,8 @@ public class VoiceAgentLiveWebSocketTests {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session
-                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", options)) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", options)) {
                 assertEquals(STARTED, session.receiveRawEvents(TIMEOUT).iterator().next().toString());
             }
         }
@@ -513,8 +513,8 @@ public class VoiceAgentLiveWebSocketTests {
                 (inbound, outbound) -> outbound.sendString(Mono.just(STARTED)).then(inbound.receive().then())))
             .bindNow();
         if (async) {
-            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
-                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent", options)
                 .block(TIMEOUT);
             assertNotNull(session);
@@ -524,8 +524,8 @@ public class VoiceAgentLiveWebSocketTests {
                 session.closeAsync().block(TIMEOUT);
             }
         } else {
-            try (BetaVoiceAgentLiveWebSocketSessionClient session
-                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", options)) {
+            try (BetaVoiceAgentsLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", options)) {
                 assertThrows(IllegalArgumentException.class,
                     () -> session.receiveRawEvents(TIMEOUT).iterator().hasNext());
             }
@@ -541,9 +541,9 @@ public class VoiceAgentLiveWebSocketTests {
             .httpClient(com.azure.core.http.HttpClient.createDefault());
         if (async) {
             assertThrows(IllegalStateException.class,
-                () -> builder.beta().buildBetaVoiceAgentLiveWebSocketAsyncClient());
+                () -> builder.beta().buildBetaVoiceAgentsLiveWebSocketAsyncClient());
         } else {
-            assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentLiveWebSocketClient());
+            assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentsLiveWebSocketClient());
         }
     }
 

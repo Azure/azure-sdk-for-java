@@ -27,14 +27,14 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
 
 public final class ReadmeSamples {
-    public void realtimeForwardCompatibility(BetaVoiceAgentWebSocketClient realtimeClient, String agentName) {
+    public void realtimeForwardCompatibility(BetaVoiceAgentsWebSocketClient realtimeClient, String agentName) {
         // BEGIN: com.azure.ai.agents.realtime_forward_compatibility
         VoiceAgentWebSocketConnectionOptions options
             = new VoiceAgentWebSocketConnectionOptions()
                 .setReceiveBufferCapacity(512)
                 .setMaxMessageSize(8 * 1024 * 1024)
                 .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-        try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+        try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
             session.sendEvent(BinaryData.fromString(
                 "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
             for (RealtimeServerEvent event : session.receiveEvents()) {

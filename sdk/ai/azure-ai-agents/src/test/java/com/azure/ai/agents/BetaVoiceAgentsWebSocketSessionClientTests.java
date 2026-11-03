@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.HttpHeaders;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
@@ -19,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BetaVoiceAgentWebSocketSessionClientTests {
+public class BetaVoiceAgentsWebSocketSessionClientTests {
     @Test
     public void connectionUriUsesSelectedTransport() {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
@@ -58,6 +61,36 @@ public class BetaVoiceAgentWebSocketSessionClientTests {
 
         assertEquals(Proxy.NO_PROXY, bypassed.get(0));
         assertEquals(new Proxy(Proxy.Type.HTTP, proxyAddress), proxied.get(0));
+    }
+
+    @Test
+    public void syncConnectionPreservesTokenFailure() {
+        IllegalStateException failure = new IllegalStateException("Token unavailable");
+        VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
+            URI.create("https://localhost"), request -> Mono.error(failure), "v1", "test-user-agent", null, null);
+
+        IllegalStateException actual = assertThrows(IllegalStateException.class,
+            () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
+                new VoiceAgentWebSocketConnectionOptions(), null, token -> new HttpHeaders(), json -> json));
+
+        assertSame(failure, actual);
+    }
+
+    @Test
+    public void syncConnectionPreservesHeaderInitializationFailure() {
+        IllegalStateException failure = new IllegalStateException("Headers unavailable");
+        VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
+            URI.create("https://localhost"),
+            request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
+            "v1", "test-user-agent", null, null);
+
+        IllegalStateException actual
+            = assertThrows(IllegalStateException.class, () -> WebSocketSessionTransport.connect(configuration,
+                URI.create("wss://localhost/session"), new VoiceAgentWebSocketConnectionOptions(), null, token -> {
+                    throw failure;
+                }, json -> json));
+
+        assertSame(failure, actual);
     }
 
     private static String queryParameter(URI uri, String name) {

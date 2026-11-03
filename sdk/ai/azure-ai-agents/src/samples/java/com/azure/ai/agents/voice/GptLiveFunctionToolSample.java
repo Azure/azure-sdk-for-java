@@ -3,17 +3,25 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.models.LiveFunctionToolInputParam;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ResponseItemCreateEvent;
+import com.openai.models.live.ServerEvent;
 import com.openai.models.responses.ResponseInputItem;
+import com.openai.models.responses.ResponseFunctionToolCall;
+import com.openai.models.responses.ResponseStreamEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * Executes a sample weather function requested by the GPT Live Responses backend.
@@ -59,46 +67,132 @@ public class GptLiveFunctionToolSample {
             .allowPreview(true);
         try (GptLiveSampleUtils.AgentResource agent
             = GptLiveSampleUtils.createAgent(builder, model, backendModel, "tools", true, keepAgent);
-            BetaVoiceAgentLiveWebSocketSessionClient session = agent.builder.beta()
-                .buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession(agent.name)) {
-            GptLiveSampleUtils.runToolConversation(session,
+            BetaVoiceAgentsLiveWebSocketSessionClient session = agent.builder.beta()
+                .buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession(agent.name)) {
+            runConversation(session,
                 Collections.singletonList(args.length == 0 ? "What is the weather in Seattle?" : args[0]),
                 GptLiveFunctionToolSample::toolResult);
         }
     }
 
-    static BinaryData weatherTool() {
-        Map<String, Object> schema = new LinkedHashMap<>();
-        schema.put("type", "object");
-        schema.put("properties", Collections.singletonMap("city", Collections.singletonMap("type", "string")));
-        schema.put("required", Collections.singletonList("city"));
-        schema.put("additionalProperties", false);
-        Map<String, Object> tool = new LinkedHashMap<>();
-        tool.put("type", "function");
-        tool.put("name", "get_weather");
-        tool.put("description", "Get simulated weather for a city. This sample returns demonstration data only.");
-        tool.put("parameters", schema);
-        tool.put("strict", true);
-        return BinaryData.fromObject(tool);
+    static void runConversation(BetaVoiceAgentsLiveWebSocketSessionClient session, List<String> prompts,
+        Function<ResponseFunctionToolCall, ClientEvent> toolHandler) {
+        Iterator<String> pending = prompts.iterator();
+        List<ClientEvent> results = new ArrayList<>();
+        boolean started = false;
+        boolean awaitingResponse = false;
+        boolean closing = false;
+        int continuations = 0;
+        for (ServerEvent event : session.receiveEvents(GptLiveSampleUtils.TIMEOUT)) {
+            GptLiveSampleUtils.printEvent(event);
+            boolean nextTurn = false;
+            if (event.isSessionStarted()) {
+                if (started) {
+                    throw new IllegalStateException("Duplicate session.started event.");
+                }
+                started = true;
+                nextTurn = true;
+            } else if (event.isResponseEvent()) {
+                ResponseStreamEvent response = GptLiveSampleUtils.backendEvent(event);
+                if (response.isOutputItemDone() && response.asOutputItemDone().item().isFunctionCall()) {
+                    ResponseFunctionToolCall call = response.asOutputItemDone().item().asFunctionCall();
+                    results.add(toolHandler.apply(call));
+                } else if (response.isCompleted()) {
+                    if (!started || !awaitingResponse || closing) {
+                        throw new IllegalStateException("Unexpected GPT Live response lifecycle event.");
+                    }
+                    if (!results.isEmpty()) {
+                        if (++continuations > 8) {
+                            throw new IllegalStateException("Sample tool continuation limit exceeded.");
+                        }
+                        for (ClientEvent result : results) {
+                            session.sendEvent(result);
+                        }
+                        results.clear();
+                        session.sendEvent(GptLiveSampleUtils.responseCreate());
+                    } else {
+                        continuations = 0;
+                        awaitingResponse = false;
+                        System.out.println();
+                        nextTurn = true;
+                    }
+                }
+            } else if (event.isSessionClosed()) {
+                String reason = event.asSessionClosed().reason().toString();
+                if (!(started && "remote_hangup".equals(reason))
+                    && !(closing && "close_requested".equals(reason))) {
+                    throw new IllegalStateException("GPT Live closed before all turns completed. Event: " + event
+                        + "; transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason());
+                }
+                System.out.println("Live session closed (" + reason + ").");
+                return;
+            }
+            if (nextTurn) {
+                if (pending.hasNext()) {
+                    String prompt = pending.next();
+                    System.out.println("You: " + prompt);
+                    System.out.print("Assistant: ");
+                    awaitingResponse = true;
+                    session.sendEvent(GptLiveSampleUtils.userMessage(prompt));
+                    session.sendEvent(GptLiveSampleUtils.responseCreate());
+                } else {
+                    closing = true;
+                    session.sendEvent(GptLiveSampleUtils.closeSession());
+                }
+            }
+        }
+        throw new IllegalStateException("GPT Live disconnected without session.closed.");
     }
 
-    static ClientEvent toolResult(Map<?, ?> call) {
-        if (!"get_weather".equals(GptLiveSampleUtils.string(call, "name"))) {
-            throw new IllegalArgumentException("Unsupported sample tool: " + call.get("name"));
+    static LiveFunctionToolInputParam weatherTool() {
+        Map<String, BinaryData> schema = new LinkedHashMap<>();
+        schema.put("type", BinaryData.fromObject("object"));
+        schema.put("properties", BinaryData.fromObject(
+            Collections.singletonMap("city", Collections.singletonMap("type", "string"))));
+        schema.put("required", BinaryData.fromObject(Collections.singletonList("city")));
+        schema.put("additionalProperties", BinaryData.fromObject(false));
+        return new LiveFunctionToolInputParam("get_weather")
+            .setDescription("Get simulated weather for a city. This sample returns demonstration data only.")
+            .setParameters(schema)
+            .setStrict(true);
+    }
+
+    static ClientEvent toolResult(ResponseFunctionToolCall call) {
+        if (!"get_weather".equals(call.name())) {
+            throw new IllegalArgumentException("Unsupported sample tool: " + call.name());
         }
-        Map<?, ?> arguments = GptLiveSampleUtils.object(
-            BinaryData.fromString(GptLiveSampleUtils.string(call, "arguments")));
+        Map<?, ?> arguments = object(
+            BinaryData.fromString(call.arguments()));
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("city", GptLiveSampleUtils.string(arguments, "city"));
+        result.put("city", string(arguments, "city"));
         result.put("condition", "sunny");
         result.put("temperature_f", 72);
         result.put("simulated", true);
         return ClientEvent.ofResponseItemCreate(ResponseItemCreateEvent.builder()
             .item(ResponseInputItem.FunctionCallOutput.builder()
-                .callId(GptLiveSampleUtils.string(call, "call_id"))
+                .callId(call.callId())
                 .output(BinaryData.fromObject(result).toString())
                 .build())
             .build());
+    }
+
+    static Map<?, ?> object(BinaryData data) {
+        return data.toObject(Map.class);
+    }
+
+    static Map<?, ?> object(Object value) {
+        if (!(value instanceof Map<?, ?>)) {
+            throw new IllegalArgumentException("Expected a native Live JSON object: " + value);
+        }
+        return (Map<?, ?>) value;
+    }
+
+    static String string(Map<?, ?> event, String field) {
+        Object value = event.get(field);
+        if (!(value instanceof String)) {
+            throw new IllegalArgumentException("Missing or invalid Live event field: " + field);
+        }
+        return (String) value;
     }
 
 }

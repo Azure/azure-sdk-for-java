@@ -70,8 +70,8 @@ The Agents client library has the following sub-clients which group the differen
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
-- `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
-- `BetaVoiceAgentLiveWebSocketClient` / `BetaVoiceAgentLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
+- `BetaVoiceAgentsWebSocketClient` / `BetaVoiceAgentsWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
 - `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
 - `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
 
@@ -198,8 +198,8 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 |---|---|
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,MicrosoftCopilot=V1Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
-| `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
-| `BetaVoiceAgentLiveWebSocketClient` / `BetaVoiceAgentLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsWebSocketClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
 
@@ -208,7 +208,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 ### Realtime voice-agent sessions
 
 Create and manage preview voice agents with `VoiceAgentDefinition` and an `AgentsClient` or `AgentsAsyncClient` built
-using `allowPreview(true)`. Use `BetaVoiceAgentWebSocketClient` or `BetaVoiceAgentWebSocketAsyncClient` to open a typed,
+using `allowPreview(true)`. Use `BetaVoiceAgentsWebSocketClient` or `BetaVoiceAgentsWebSocketAsyncClient` to open a typed,
 bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`,
 negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header
 automatically.
@@ -991,10 +991,10 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint);
 
-BetaVoiceAgentWebSocketClient realtimeClient
-    = builder.beta().buildBetaVoiceAgentWebSocketClient();
-BetaVoiceAgentWebSocketAsyncClient realtimeAsyncClient
-    = builder.beta().buildBetaVoiceAgentWebSocketAsyncClient();
+BetaVoiceAgentsWebSocketClient realtimeClient
+    = builder.beta().buildBetaVoiceAgentsWebSocketClient();
+BetaVoiceAgentsWebSocketAsyncClient realtimeAsyncClient
+    = builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient();
 ```
 
 #### Send a synchronous text turn
@@ -1023,7 +1023,7 @@ VoiceAgentWebSocketConnectionOptions options
         .setReceiveBufferCapacity(512)
         .setMaxMessageSize(8 * 1024 * 1024)
         .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
     session.sendEvent(BinaryData.fromString(
         "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
     for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -1044,7 +1044,7 @@ Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a c
 fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
-try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
+try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
     session.sendText("Hello! Tell me about the services you provide.");
     session.createResponse();
 
@@ -1080,9 +1080,9 @@ Mono.usingWhen(
         })
         .takeUntil(event -> event instanceof RealtimeResponseDoneEvent)
         .then(),
-    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
+    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync,
     (session, error) -> session.closeAsync(),
-    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync)
+    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync)
     .block();
 ```
 
@@ -1112,7 +1112,7 @@ The live audio example requires a Java Sound-compatible microphone and speaker. 
 ### GPT Live WebSocket examples (preview)
 
 GPT Live is a different wire protocol from Realtime. Create a persisted agent with `VoiceAgentLiveDefinition`,
-then use `BetaVoiceAgentLiveWebSocketClient` or `BetaVoiceAgentLiveWebSocketAsyncClient` to connect.
+then use `BetaVoiceAgentsLiveWebSocketClient` or `BetaVoiceAgentsLiveWebSocketAsyncClient` to connect.
 These clients use
 `wss://{project-endpoint}/agents/{agent_name}/endpoint/protocols/voice/live/sessions?api-version=v1`,
 send the `Foundry-Features: VoiceAgents=V1Preview` header, and **do not** negotiate the `realtime` WebSocket

@@ -442,11 +442,11 @@ public class FoundryFeaturesHeaderVerificationTest {
             .retryPolicy(new RetryPolicy());
 
         IllegalStateException syncError
-            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketClient());
+            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentsWebSocketClient());
         assertTrue(syncError.getMessage().contains("httpClient, pipeline, addPolicy, retryOptions, retryPolicy"));
 
-        IllegalStateException asyncError
-            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketAsyncClient());
+        IllegalStateException asyncError = assertThrows(IllegalStateException.class,
+            () -> builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient());
         assertEquals(syncError.getMessage(), asyncError.getMessage());
     }
 

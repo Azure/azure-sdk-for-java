@@ -7,8 +7,8 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentsWebSocketClient;
+import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -59,7 +59,7 @@ public class VoiceAgentLiveTextConversationSample {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaAgentsClient betaAgents = builder.beta().buildBetaAgentsClient();
-        BetaVoiceAgentWebSocketClient realtime = builder.beta().buildBetaVoiceAgentWebSocketClient();
+        BetaVoiceAgentsWebSocketClient realtime = builder.beta().buildBetaVoiceAgentsWebSocketClient();
         BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
 
         try (SampleAgent agent = createAgent(agents, betaAgents, agentName)) {
@@ -70,7 +70,7 @@ public class VoiceAgentLiveTextConversationSample {
             AtomicReference<String> conversationId = new AtomicReference<>();
             try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player
                     = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer();
-                BetaVoiceAgentWebSocketSessionClient session = realtime.openWebSocketSession(agentName);
+                BetaVoiceAgentsWebSocketSessionClient session = realtime.openWebSocketSession(agentName);
                 Scanner scanner = new Scanner(System.in)) {
                 AtomicReference<CompletableFuture<Void>> responseCompleted = new AtomicReference<>();
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
@@ -162,7 +162,7 @@ public class VoiceAgentLiveTextConversationSample {
         }
     }
 
-    private static boolean awaitResponse(BetaVoiceAgentWebSocketSessionClient session,
+    private static boolean awaitResponse(BetaVoiceAgentsWebSocketSessionClient session,
         CompletableFuture<Void> completion) {
         try {
             completion.get(RESPONSE_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);

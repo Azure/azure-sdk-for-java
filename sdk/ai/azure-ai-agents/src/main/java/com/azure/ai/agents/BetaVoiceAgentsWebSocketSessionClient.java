@@ -34,17 +34,17 @@ import java.util.Objects;
  * A synchronous bidirectional realtime session connected to a Foundry voice agent.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentWebSocketSessionClient.class);
+public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentsWebSocketSessionClient.class);
     private final WebSocketSessionTransport<RealtimeServerEvent> transport;
 
-    private BetaVoiceAgentWebSocketSessionClient(WebSocketSessionTransport<RealtimeServerEvent> transport) {
+    private BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport<RealtimeServerEvent> transport) {
         this.transport = transport;
     }
 
-    static BetaVoiceAgentWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
+    static BetaVoiceAgentsWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
         String agentName, VoiceAgentWebSocketConnectionOptions options) {
-        return new BetaVoiceAgentWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
+        return new BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
             VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options), options,
             VoiceAgentWebSocketUtils.SUBPROTOCOL,
             token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token),

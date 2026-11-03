@@ -22,10 +22,10 @@ import reactor.core.publisher.Mono;
  * Typed and raw receivers share one event subscriber. Close sessions when they are no longer needed.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentLiveWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
     private final WebSocketSessionAsyncTransport<ServerEvent> transport;
 
-    BetaVoiceAgentLiveWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport<ServerEvent> transport) {
+    BetaVoiceAgentsLiveWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport<ServerEvent> transport) {
         this.transport = transport;
     }
 

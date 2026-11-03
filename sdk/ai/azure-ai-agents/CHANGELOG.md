@@ -17,8 +17,8 @@
 - Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
   and audio.
 - Added preview synchronous and asynchronous GPT Live WebSocket clients through
-  `AgentsClientBuilder.beta().buildBetaVoiceAgentLiveWebSocketClient()` and
-  `buildBetaVoiceAgentLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
+  `AgentsClientBuilder.beta().buildBetaVoiceAgentsLiveWebSocketClient()` and
+  `buildBetaVoiceAgentsLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
   using `BinaryData`, separately from the Realtime protocol clients.
 - Added typed GPT Live sends through `sendEvent(com.openai.models.live.ClientEvent)` and typed receives through
   `receiveTypedEvents()`, retaining the raw JSON APIs. The synchronous client also supports per-event receive timeouts.
@@ -270,8 +270,8 @@
   subagents, persistence, avatars, and animation.
 - Added `createAgentFromPrompt` and `createAgentFromPromptWithResponse` to `BetaAgentsClient` and
   `BetaAgentsAsyncClient` for generating and creating agents from kind-specific high-level inputs.
-- Added preview `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`,
-  `BetaVoiceAgentWebSocketSessionClient`, and `BetaVoiceAgentWebSocketSessionAsyncClient` for authenticated realtime
+- Added preview `BetaVoiceAgentsWebSocketClient`, `BetaVoiceAgentsWebSocketAsyncClient`,
+  `BetaVoiceAgentsWebSocketSessionClient`, and `BetaVoiceAgentsWebSocketSessionAsyncClient` for authenticated realtime
   `wss://` sessions. The clients support typed and raw events, text and audio input, response cancellation,
   client-executed function results, persisted conversations, agent-version overrides, and the related realtime session,
   conversation-item, response, transcription, MCP, audio, avatar, and RTC event models.

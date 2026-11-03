@@ -34,19 +34,19 @@ import reactor.netty.http.client.HttpClient;
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
  *
- * <p>Instances are created by {@link BetaVoiceAgentWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
+ * <p>Instances are created by {@link BetaVoiceAgentsWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
  * subscriber to {@link #receiveEvents()}. Close the session when it is no longer needed.</p>
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
     private final WebSocketSessionAsyncTransport<RealtimeServerEvent> transport;
 
-    BetaVoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    BetaVoiceAgentsWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         this(configuration, agentName, options, HttpClient.create());
     }
 
-    BetaVoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    BetaVoiceAgentsWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options, HttpClient httpClient) {
         VoiceAgentWebSocketConnectionOptions sessionOptions
             = options == null ? new VoiceAgentWebSocketConnectionOptions() : options;

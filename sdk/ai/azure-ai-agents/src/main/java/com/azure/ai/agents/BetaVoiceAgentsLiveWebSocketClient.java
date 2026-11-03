@@ -21,11 +21,11 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentLiveWebSocketClient {
-    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentLiveWebSocketClient.class);
+public final class BetaVoiceAgentsLiveWebSocketClient {
+    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentsLiveWebSocketClient.class);
     private final VoiceAgentWebSocketClientConfiguration configuration;
 
-    BetaVoiceAgentLiveWebSocketClient(VoiceAgentWebSocketClientConfiguration configuration) {
+    BetaVoiceAgentsLiveWebSocketClient(VoiceAgentWebSocketClientConfiguration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
@@ -34,7 +34,7 @@ public final class BetaVoiceAgentLiveWebSocketClient {
      * @param agentName the Live voice agent name.
      * @return the connected session.
      */
-    public BetaVoiceAgentLiveWebSocketSessionClient openWebSocketSession(String agentName) {
+    public BetaVoiceAgentsLiveWebSocketSessionClient openWebSocketSession(String agentName) {
         return openWebSocketSession(agentName, new VoiceAgentLiveWebSocketConnectionOptions());
     }
 
@@ -46,14 +46,14 @@ public final class BetaVoiceAgentLiveWebSocketClient {
      * @return the connected session.
      * @throws IllegalArgumentException if the agent name is empty.
      */
-    public BetaVoiceAgentLiveWebSocketSessionClient openWebSocketSession(String agentName,
+    public BetaVoiceAgentsLiveWebSocketSessionClient openWebSocketSession(String agentName,
         VoiceAgentLiveWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         if (agentName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         VoiceAgentWebSocketConnectionOptions snapshot = VoiceAgentWebSocketUtils.liveOptions(options);
-        return new BetaVoiceAgentLiveWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
+        return new BetaVoiceAgentsLiveWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
             VoiceAgentWebSocketUtils.buildLiveWebSocketUri(configuration, agentName, snapshot), snapshot, null,
             token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token), json -> OpenAIJsonHelper
                 .fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json), ServerEvent.class)));

@@ -22,10 +22,10 @@ import reactor.netty.http.client.HttpClient;
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentLiveWebSocketAsyncClient {
+public final class BetaVoiceAgentsLiveWebSocketAsyncClient {
     private final VoiceAgentWebSocketClientConfiguration configuration;
 
-    BetaVoiceAgentLiveWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
+    BetaVoiceAgentsLiveWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
@@ -34,7 +34,7 @@ public final class BetaVoiceAgentLiveWebSocketAsyncClient {
      * @param agentName the Live voice agent name.
      * @return the connected session. Each subscription opens a new connection.
      */
-    public Mono<BetaVoiceAgentLiveWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
+    public Mono<BetaVoiceAgentsLiveWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
         return openWebSocketSession(agentName, new VoiceAgentLiveWebSocketConnectionOptions());
     }
 
@@ -45,7 +45,7 @@ public final class BetaVoiceAgentLiveWebSocketAsyncClient {
      * @param options the connection options, copied when this method is called.
      * @return the connected session. Each subscription opens a new connection.
      */
-    public Mono<BetaVoiceAgentLiveWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
+    public Mono<BetaVoiceAgentsLiveWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
         VoiceAgentLiveWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         VoiceAgentWebSocketConnectionOptions snapshot = VoiceAgentWebSocketUtils.liveOptions(options);
@@ -55,7 +55,7 @@ public final class BetaVoiceAgentLiveWebSocketAsyncClient {
                 HttpClient.create(), null, token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token),
                 json -> OpenAIJsonHelper.fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json),
                     ServerEvent.class));
-            return transport.connect().thenReturn(new BetaVoiceAgentLiveWebSocketSessionAsyncClient(transport));
+            return transport.connect().thenReturn(new BetaVoiceAgentsLiveWebSocketSessionAsyncClient(transport));
         });
     }
 }

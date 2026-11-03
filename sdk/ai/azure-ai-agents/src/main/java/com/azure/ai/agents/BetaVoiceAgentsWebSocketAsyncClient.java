@@ -16,10 +16,10 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentWebSocketAsyncClient {
+public final class BetaVoiceAgentsWebSocketAsyncClient {
     private final VoiceAgentWebSocketClientConfiguration configuration;
 
-    BetaVoiceAgentWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
+    BetaVoiceAgentsWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
@@ -29,7 +29,7 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * @param agentName the voice agent name.
      * @return a connected session.
      */
-    public Mono<BetaVoiceAgentWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
+    public Mono<BetaVoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
         return openWebSocketSession(agentName, new VoiceAgentWebSocketConnectionOptions());
     }
 
@@ -40,14 +40,14 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * @param options connection options.
      * @return a connected session.
      */
-    public Mono<BetaVoiceAgentWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
+    public Mono<BetaVoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         VoiceAgentWebSocketConnectionOptions optionsSnapshot = new VoiceAgentWebSocketConnectionOptions(options);
         return Mono.defer(() -> {
-            BetaVoiceAgentWebSocketSessionAsyncClient session
-                = new BetaVoiceAgentWebSocketSessionAsyncClient(configuration, agentName, optionsSnapshot);
+            BetaVoiceAgentsWebSocketSessionAsyncClient session
+                = new BetaVoiceAgentsWebSocketSessionAsyncClient(configuration, agentName, optionsSnapshot);
             return session.connect().thenReturn(session);
         });
     }

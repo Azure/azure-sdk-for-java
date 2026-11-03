@@ -21,10 +21,10 @@ import java.util.Objects;
  * Typed and raw receivers share one event iterator. Close sessions when they are no longer needed.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoCloseable {
+public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoCloseable {
     private final WebSocketSessionTransport<ServerEvent> transport;
 
-    BetaVoiceAgentLiveWebSocketSessionClient(WebSocketSessionTransport<ServerEvent> transport) {
+    BetaVoiceAgentsLiveWebSocketSessionClient(WebSocketSessionTransport<ServerEvent> transport) {
         this.transport = transport;
     }
 

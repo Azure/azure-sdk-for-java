@@ -74,17 +74,20 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     }
 
     private WebSocketSessionTransport(VoiceAgentWebSocketClientConfiguration configuration, URI websocketUri,
-        VoiceAgentWebSocketConnectionOptions options, String subprotocol, Function<String, HttpHeaders> headersFactory,
-        EventDecoder<T> decoder) {
+        VoiceAgentWebSocketConnectionOptions options, EventDecoder<T> decoder) {
         this.options = options;
         this.decoder = Objects.requireNonNull(decoder, "'decoder' cannot be null.");
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
         this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = Objects.requireNonNull(websocketUri, "'websocketUri' cannot be null.");
+        this.httpClient = createHttpClient(configuration, options);
+    }
+
+    private void open(VoiceAgentWebSocketClientConfiguration configuration, String subprotocol,
+        Function<String, HttpHeaders> headersFactory) {
         String token = configuration.getCredential()
             .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
             .getToken();
-        this.httpClient = createHttpClient(configuration, options);
         Request.Builder request = new Request.Builder().url(websocketUri.toString());
         if (subprotocol != null) {
             request.header("Sec-WebSocket-Protocol", subprotocol);
@@ -98,13 +101,16 @@ public final class WebSocketSessionTransport<T> implements AutoCloseable {
     public static <T> WebSocketSessionTransport<T> connect(VoiceAgentWebSocketClientConfiguration configuration,
         URI websocketUri, VoiceAgentWebSocketConnectionOptions options, String subprotocol,
         Function<String, HttpHeaders> headersFactory, EventDecoder<T> decoder) {
-        WebSocketSessionTransport<T> session = new WebSocketSessionTransport<>(configuration, websocketUri, options,
-            subprotocol, headersFactory, decoder);
+        WebSocketSessionTransport<T> session
+            = new WebSocketSessionTransport<>(configuration, websocketUri, options, decoder);
         try {
+            session.open(configuration, subprotocol, headersFactory);
             session.awaitHandshake();
             return session;
         } catch (RuntimeException error) {
-            session.webSocket.cancel();
+            if (session.webSocket != null) {
+                session.webSocket.cancel();
+            }
             session.shutdownHttpClient();
             throw error;
         }
