@@ -55,7 +55,7 @@ public final class SubscriptionsImpl {
      * The interface defining all the services for ServiceBusManagementClientSubscriptions to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "ServiceBusManagementClientSubscriptions")
     public interface SubscriptionsService {
         @Get("/{topicName}/subscriptions/{subscriptionName}")

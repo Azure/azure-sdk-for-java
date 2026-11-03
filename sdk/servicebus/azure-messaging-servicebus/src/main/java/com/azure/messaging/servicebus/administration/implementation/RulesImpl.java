@@ -54,7 +54,7 @@ public final class RulesImpl {
      * The interface defining all the services for ServiceBusManagementClientRules to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "ServiceBusManagementClientRules")
     public interface RulesService {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")

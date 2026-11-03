@@ -82,7 +82,8 @@ class AdministrationModelConverter {
 
     AdministrationModelConverter(ClientLogger logger, String serviceBusNamespace) {
         this.logger = logger;
-        this.serviceBusNamespace = serviceBusNamespace;
+        this.serviceBusNamespace
+            = serviceBusNamespace.contains("://") ? serviceBusNamespace : "https://" + serviceBusNamespace;
     }
 
     /**
@@ -420,9 +421,7 @@ class AdministrationModelConverter {
         } catch (MalformedURLException ex) {
             // Entity is not a URL, continue.
         }
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setScheme("https");
-        urlBuilder.setHost(serviceBusNamespace);
+        UrlBuilder urlBuilder = UrlBuilder.parse(serviceBusNamespace);
         urlBuilder.setPath(entity);
 
         try {
