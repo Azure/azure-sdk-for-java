@@ -597,7 +597,7 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -613,7 +613,7 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -629,7 +629,7 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +646,7 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

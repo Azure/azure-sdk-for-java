@@ -347,7 +347,6 @@ public final class SiteExtensionInfoProperties implements JsonSerializable<SiteE
             this.installedDateTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.installedDateTime));
-        jsonWriter.writeStringField("provisioningState", this.provisioningState);
         jsonWriter.writeStringField("comment", this.comment);
         return jsonWriter.writeEndObject();
     }

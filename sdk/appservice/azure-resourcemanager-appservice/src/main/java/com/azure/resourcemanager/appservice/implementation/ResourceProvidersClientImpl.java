@@ -1621,7 +1621,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1660,7 +1660,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1698,7 +1698,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1716,7 +1716,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1734,7 +1734,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

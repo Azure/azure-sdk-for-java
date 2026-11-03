@@ -20,7 +20,7 @@ public interface GetUsagesInLocationsClient {
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -35,7 +35,7 @@ public interface GetUsagesInLocationsClient {
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -50,7 +50,7 @@ public interface GetUsagesInLocationsClient {
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

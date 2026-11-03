@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appservice.models.AiIntegration;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
@@ -54,6 +55,11 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
      * app (takes the app offline).
      */
     private Boolean enabled;
+
+    /*
+     * <code>true</code> if site scoped certificates are enabled; otherwise, <code>false</code>.
+     */
+    private Boolean siteScopedCertificatesEnabled;
 
     /*
      * Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
@@ -106,6 +112,11 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
      * Configuration of the app.
      */
     private SiteConfigInner siteConfig;
+
+    /*
+     * AI integration configuration for the app.
+     */
+    private AiIntegration aiIntegration;
 
     /*
      * Azure Traffic Manager hostnames associated with the app. Read-only.
@@ -334,6 +345,28 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     }
 
     /**
+     * Get the siteScopedCertificatesEnabled property: &lt;code&gt;true&lt;/code&gt; if site scoped certificates are
+     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the siteScopedCertificatesEnabled value.
+     */
+    public Boolean siteScopedCertificatesEnabled() {
+        return this.siteScopedCertificatesEnabled;
+    }
+
+    /**
+     * Set the siteScopedCertificatesEnabled property: &lt;code&gt;true&lt;/code&gt; if site scoped certificates are
+     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param siteScopedCertificatesEnabled the siteScopedCertificatesEnabled value to set.
+     * @return the SitePatchResourcePropertiesInner object itself.
+     */
+    public SitePatchResourcePropertiesInner withSiteScopedCertificatesEnabled(Boolean siteScopedCertificatesEnabled) {
+        this.siteScopedCertificatesEnabled = siteScopedCertificatesEnabled;
+        return this;
+    }
+
+    /**
      * Get the enabledHostNames property: Enabled hostnames for the app.Hostnames need to be assigned (see HostNames)
      * AND enabled. Otherwise,
      * the app is not served on those hostnames.
@@ -501,6 +534,26 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
      */
     public SitePatchResourcePropertiesInner withSiteConfig(SiteConfigInner siteConfig) {
         this.siteConfig = siteConfig;
+        return this;
+    }
+
+    /**
+     * Get the aiIntegration property: AI integration configuration for the app.
+     * 
+     * @return the aiIntegration value.
+     */
+    public AiIntegration aiIntegration() {
+        return this.aiIntegration;
+    }
+
+    /**
+     * Set the aiIntegration property: AI integration configuration for the app.
+     * 
+     * @param aiIntegration the aiIntegration value to set.
+     * @return the SitePatchResourcePropertiesInner object itself.
+     */
+    public SitePatchResourcePropertiesInner withAiIntegration(AiIntegration aiIntegration) {
+        this.aiIntegration = aiIntegration;
         return this;
     }
 
@@ -1021,6 +1074,9 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
         if (siteConfig() != null) {
             siteConfig().validate();
         }
+        if (aiIntegration() != null) {
+            aiIntegration().validate();
+        }
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
         }
@@ -1039,6 +1095,7 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("siteScopedCertificatesEnabled", this.siteScopedCertificatesEnabled);
         jsonWriter.writeArrayField("hostNameSslStates", this.hostnameSslStates,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("serverFarmId", this.serverFarmId);
@@ -1047,6 +1104,7 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
         jsonWriter.writeBooleanField("hyperV", this.hyperV);
         jsonWriter.writeJsonField("dnsConfiguration", this.dnsConfiguration);
         jsonWriter.writeJsonField("siteConfig", this.siteConfig);
+        jsonWriter.writeJsonField("aiIntegration", this.aiIntegration);
         jsonWriter.writeBooleanField("scmSiteAlsoStopped", this.scmSiteAlsoStopped);
         jsonWriter.writeJsonField("hostingEnvironmentProfile", this.hostingEnvironmentProfile);
         jsonWriter.writeBooleanField("clientAffinityEnabled", this.clientAffinityEnabled);
@@ -1097,6 +1155,9 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
                     deserializedSitePatchResourcePropertiesInner.usageState = UsageState.fromString(reader.getString());
                 } else if ("enabled".equals(fieldName)) {
                     deserializedSitePatchResourcePropertiesInner.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("siteScopedCertificatesEnabled".equals(fieldName)) {
+                    deserializedSitePatchResourcePropertiesInner.siteScopedCertificatesEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enabledHostNames".equals(fieldName)) {
                     List<String> enabledHostNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedSitePatchResourcePropertiesInner.enabledHostNames = enabledHostNames;
@@ -1122,6 +1183,8 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
                     deserializedSitePatchResourcePropertiesInner.dnsConfiguration = SiteDnsConfig.fromJson(reader);
                 } else if ("siteConfig".equals(fieldName)) {
                     deserializedSitePatchResourcePropertiesInner.siteConfig = SiteConfigInner.fromJson(reader);
+                } else if ("aiIntegration".equals(fieldName)) {
+                    deserializedSitePatchResourcePropertiesInner.aiIntegration = AiIntegration.fromJson(reader);
                 } else if ("trafficManagerHostNames".equals(fieldName)) {
                     List<String> trafficManagerHostNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedSitePatchResourcePropertiesInner.trafficManagerHostNames = trafficManagerHostNames;

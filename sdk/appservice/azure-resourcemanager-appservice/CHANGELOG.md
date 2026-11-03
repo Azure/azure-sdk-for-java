@@ -1,14 +1,86 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.57.0 (2026-11-03)
+
+- Package api-version 2026-08-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.NspResourceAssociation` was added
 
-### Bugs Fixed
+* `models.AiIntegration` was added
 
-### Other Changes
+* `models.NspProfileAccessRuleGranularFeature` was added
+
+* `models.NspProfileAccessRuleProperties` was added
+
+* `models.ServerFarmSiloResourceAllocation` was added
+
+* `models.SiteSiloProperties` was added
+
+* `models.ServerFarmSiloVnetIntegration` was added
+
+* `models.SiloNetworkingOverride` was added
+
+* `models.NspProvisioningIssueProperties` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.StaticSitesOperationStatusProperties` was added
+
+* `models.AiGatewayTagsUpdate` was added
+
+* `models.PlatformReleaseChannel` was added
+
+* `models.NspProvisioningIssue` was added
+
+* `models.McpServerConfig` was added
+
+* `models.LastKnownGoodProperties` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.ManagedTrafficConfigProperties` was added
+
+* `models.ServerFarmSiloTagsUpdate` was added
+
+* `models.ServerFarmSiloSubnetIpAllocation` was added
+
+* `models.NspProfileAccessRule` was added
+
+* `models.ServerFarmSiloProperties` was added
+
+* `models.SiteSiloTagsUpdate` was added
+
+* `models.NspProfile` was added
+
+* `models.AiGatewayProperties` was added
+
+* `models.SiloFailOverMode` was added
+
+* `models.NspSubscription` was added
+
+* `models.SiloProvisioningState` was added
+
+* `models.EndpointTrafficConfig` was added
+
+* `models.McpSettings` was added
+
+* `models.SiteAuthInfo` was added
+
+#### `models.OutboundVnetRouting` was modified
+
+* `withManagedIdentityTraffic(java.lang.Boolean)` was added
+* `managedIdentityTraffic()` was added
+
+#### `models.TriggeredWebJobStatus` was modified
+
+* `RUNNING` was added
+* `ABORTED` was added
+
+#### `models.RuntimeName` was modified
+
+* `GO` was added
 
 ## 2.56.3 (2026-10-09)
 
