@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Improved Microsoft Entra ID authentication audience inference from the endpoint hostname, including sovereign cloud and staging endpoints. Explicitly configured audiences continue to override inference. Legacy `azconfig` endpoints now use the corresponding `azconfig` audience instead of an `appconfig` audience.
+
 ## 1.10.2 (2026-10-06)
 
 ### Other Changes

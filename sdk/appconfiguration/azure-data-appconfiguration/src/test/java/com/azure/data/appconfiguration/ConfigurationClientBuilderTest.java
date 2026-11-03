@@ -302,7 +302,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         String legacyEndpoint = "https://example1.azconfig.azure.us";
         String actualScope = (String) method.invoke(builder, legacyEndpoint);
-        assertEquals(expectedScope, actualScope);
+        assertEquals("https://azconfig.azure.us/.default", actualScope);
 
         String endpoint = "https://example1.appconfig.azure.us";
         actualScope = (String) method.invoke(builder, endpoint);
@@ -320,7 +320,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         String legacyEndpoint = "https://example1.azconfig.azure.com";
         String actualScope = (String) method.invoke(builder, legacyEndpoint);
-        assertEquals(expectedScope, actualScope);
+        assertEquals("https://azconfig.azure.com/.default", actualScope);
 
         String endpoint = "https://example1.appconfig.azure.com";
         actualScope = (String) method.invoke(builder, endpoint);
@@ -338,7 +338,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         String legacyEndpoint = "https://example1.azconfig.azure.cn";
         String actualScope = (String) method.invoke(builder, legacyEndpoint);
-        assertEquals(expectedScope, actualScope);
+        assertEquals("https://azconfig.azure.cn/.default", actualScope);
 
         String endpoint = "https://example1.appconfig.azure.cn";
         actualScope = (String) method.invoke(builder, endpoint);
