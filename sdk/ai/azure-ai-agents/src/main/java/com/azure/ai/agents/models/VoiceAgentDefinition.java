@@ -640,7 +640,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                     deserializedVoiceAgentDefinition.subagentConfiguration
                         = VoiceAgentSubagentConfiguration.fromJson(reader);
                 } else if ("post_call".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.postCall = VoiceAgentPostCallConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.postCall = VoiceAgentPostCallConfiguration.fromJson(reader);
                 } else if ("store".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -938,7 +938,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * destinations.
      */
     @Generated
-    private VoiceAgentPostCallConfig postCall;
+    private VoiceAgentPostCallConfiguration postCall;
 
     /**
      * Get the postCall property: Optional post-call delivery configuration. After each session ends, the service
@@ -947,7 +947,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the postCall value.
      */
     @Generated
-    public VoiceAgentPostCallConfig getPostCall() {
+    public VoiceAgentPostCallConfiguration getPostCall() {
         return this.postCall;
     }
 
@@ -959,7 +959,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the VoiceAgentDefinition object itself.
      */
     @Generated
-    public VoiceAgentDefinition setPostCall(VoiceAgentPostCallConfig postCall) {
+    public VoiceAgentDefinition setPostCall(VoiceAgentPostCallConfiguration postCall) {
         this.postCall = postCall;
         return this;
     }

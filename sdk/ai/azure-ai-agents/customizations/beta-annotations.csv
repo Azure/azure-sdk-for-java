@@ -284,7 +284,7 @@ class;com.azure.ai.agents.models.VoiceAgentMaxOutputTokens;Preview API. VoiceAge
 class;com.azure.ai.agents.models.VoiceAgentMcpTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReduction;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReductionType;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentPostCallConfig;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentPostCallConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentPostCallDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentPostCallDestinationType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentPostCallIncludeOption;Preview API. VoiceAgents=V1Preview;

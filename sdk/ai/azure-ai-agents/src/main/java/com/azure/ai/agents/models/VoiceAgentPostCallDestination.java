@@ -30,7 +30,7 @@ public class VoiceAgentPostCallDestination implements JsonSerializable<VoiceAgen
      * Creates an instance of VoiceAgentPostCallDestination class.
      */
     @Generated
-    public VoiceAgentPostCallDestination() {
+    protected VoiceAgentPostCallDestination() {
     }
 
     /**
