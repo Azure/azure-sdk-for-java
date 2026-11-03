@@ -15,11 +15,11 @@ public final class MongoDBDatabaseResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBDatabaseResource model = BinaryData.fromString(
-            "{\"id\":\"x\",\"restoreParameters\":{\"restoreSource\":\"dcgdzbenribca\",\"restoreTimestampInUtc\":\"2021-07-11T04:51:02Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
+            "{\"id\":\"dlpukhpyrne\",\"restoreParameters\":{\"restoreSource\":\"cpeogkhnmgbrou\",\"restoreTimestampInUtc\":\"2021-02-15T01:41:05Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
             .toObject(MongoDBDatabaseResource.class);
-        Assertions.assertEquals("x", model.id());
-        Assertions.assertEquals("dcgdzbenribca", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T04:51:02Z"),
+        Assertions.assertEquals("dlpukhpyrne", model.id());
+        Assertions.assertEquals("cpeogkhnmgbrou", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-15T01:41:05Z"),
             model.restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
@@ -27,15 +27,15 @@ public final class MongoDBDatabaseResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDBDatabaseResource model = new MongoDBDatabaseResource().withId("x")
-            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("dcgdzbenribca")
-                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-07-11T04:51:02Z"))
+        MongoDBDatabaseResource model = new MongoDBDatabaseResource().withId("dlpukhpyrne")
+            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("cpeogkhnmgbrou")
+                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-02-15T01:41:05Z"))
                 .withRestoreWithTtlDisabled(false))
             .withCreateMode(CreateMode.RESTORE);
         model = BinaryData.fromObject(model).toObject(MongoDBDatabaseResource.class);
-        Assertions.assertEquals("x", model.id());
-        Assertions.assertEquals("dcgdzbenribca", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T04:51:02Z"),
+        Assertions.assertEquals("dlpukhpyrne", model.id());
+        Assertions.assertEquals("cpeogkhnmgbrou", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-15T01:41:05Z"),
             model.restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.createMode());

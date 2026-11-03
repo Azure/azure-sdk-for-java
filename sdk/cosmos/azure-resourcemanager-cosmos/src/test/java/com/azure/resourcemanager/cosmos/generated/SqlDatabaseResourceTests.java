@@ -15,29 +15,29 @@ public final class SqlDatabaseResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseResource model = BinaryData.fromString(
-            "{\"id\":\"xedk\",\"restoreParameters\":{\"restoreSource\":\"pbqpcrfkbwccsn\",\"restoreTimestampInUtc\":\"2021-11-03T02:22:23Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"}")
+            "{\"id\":\"ivx\",\"restoreParameters\":{\"restoreSource\":\"elpcirelsfeaenwa\",\"restoreTimestampInUtc\":\"2021-05-30T10:47:11Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
             .toObject(SqlDatabaseResource.class);
-        Assertions.assertEquals("xedk", model.id());
-        Assertions.assertEquals("pbqpcrfkbwccsn", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T02:22:23Z"),
+        Assertions.assertEquals("ivx", model.id());
+        Assertions.assertEquals("elpcirelsfeaenwa", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T10:47:11Z"),
             model.restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
+        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlDatabaseResource model = new SqlDatabaseResource().withId("xedk")
-            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("pbqpcrfkbwccsn")
-                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-11-03T02:22:23Z"))
+        SqlDatabaseResource model = new SqlDatabaseResource().withId("ivx")
+            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("elpcirelsfeaenwa")
+                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-05-30T10:47:11Z"))
                 .withRestoreWithTtlDisabled(false))
-            .withCreateMode(CreateMode.DEFAULT);
+            .withCreateMode(CreateMode.RESTORE);
         model = BinaryData.fromObject(model).toObject(SqlDatabaseResource.class);
-        Assertions.assertEquals("xedk", model.id());
-        Assertions.assertEquals("pbqpcrfkbwccsn", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T02:22:23Z"),
+        Assertions.assertEquals("ivx", model.id());
+        Assertions.assertEquals("elpcirelsfeaenwa", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T10:47:11Z"),
             model.restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
+        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class TableResourcesUpdateTableThroughputSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/CosmosDBTableThroughputUpdate.json
+     * x-ms-original-file: 2026-07-15/CosmosDBTableThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBTableThroughputUpdate.

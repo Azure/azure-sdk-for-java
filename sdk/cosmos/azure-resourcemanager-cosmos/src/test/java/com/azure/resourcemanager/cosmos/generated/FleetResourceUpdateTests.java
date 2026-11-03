@@ -14,17 +14,17 @@ public final class FleetResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"pjkakrxifqnf\":\"aiwu\",\"guxcmmhip\":\"orxsqtzngxbsale\",\"itlynkwfsa\":\"vsk\",\"gb\":\"ng\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}")
+            "{\"tags\":{\"hpjlwyxedznmxrf\":\"eunokakz\",\"px\":\"mckewvmyif\"},\"properties\":{\"provisioningState\":\"Online\"}}")
             .toObject(FleetResourceUpdate.class);
-        Assertions.assertEquals("aiwu", model.tags().get("pjkakrxifqnf"));
+        Assertions.assertEquals("eunokakz", model.tags().get("hpjlwyxedznmxrf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetResourceUpdate model = new FleetResourceUpdate()
-            .withTags(mapOf("pjkakrxifqnf", "aiwu", "guxcmmhip", "orxsqtzngxbsale", "itlynkwfsa", "vsk", "gb", "ng"));
+        FleetResourceUpdate model
+            = new FleetResourceUpdate().withTags(mapOf("hpjlwyxedznmxrf", "eunokakz", "px", "mckewvmyif"));
         model = BinaryData.fromObject(model).toObject(FleetResourceUpdate.class);
-        Assertions.assertEquals("aiwu", model.tags().get("pjkakrxifqnf"));
+        Assertions.assertEquals("eunokakz", model.tags().get("hpjlwyxedznmxrf"));
     }
 
     // Use "Map.of" if available
