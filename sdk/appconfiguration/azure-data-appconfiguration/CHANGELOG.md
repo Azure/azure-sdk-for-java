@@ -14,6 +14,7 @@
 
 ### Other Changes
 
+- Improved Microsoft Entra ID authentication audience inference from the endpoint hostname, including sovereign cloud and staging endpoints. Explicitly configured audiences continue to override inference.
 - Updated to support `2026-05-01-preview`
 
 ## 1.10.1 (2026-08-18)

@@ -202,6 +202,8 @@ public final class FeatureFlagClientBuilder implements TokenCredentialTrait<Feat
 
     /**
      * Sets the Microsoft Entra audience. This does not affect shared-key authentication.
+     * By default, the audience is inferred from the endpoint hostname, falling back to the public Azure App
+     * Configuration audience for unrecognized hostnames. An explicitly configured audience overrides inference.
      * @param audience the audience.
      * @return this builder.
      */
