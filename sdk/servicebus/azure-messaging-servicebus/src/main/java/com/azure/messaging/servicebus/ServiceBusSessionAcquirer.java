@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -204,13 +205,16 @@ final class ServiceBusSessionAcquirer {
                     .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)))
                     // If the caller abandons the acquire before a session is established (e.g., the
                     // client-side timeout guard on the sync path, or a try-timeout on the retry path,
-                    // cancels the subscription), dispose the half-open receive link so it isn't leaked
+                    // cancels the subscription), asynchronously close the half-open receive link so it isn't leaked
                     // and any broker-side session lock is released. On success the link ownership
-                    // transfers to the Session, so dispose only on cancellation.
+                    // transfers to the Session, so close only on cancellation.
                     // https://github.com/Azure/azure-sdk-for-java/issues/49093
                     .doFinally(signalType -> {
                         if (signalType == SignalType.CANCEL) {
-                            link.dispose();
+                            MessageUtils.subscribe(link.closeAsync()
+                                .doOnError(error -> logger.atWarning()
+                                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                    .log("Failed to close link after cancelled session acquisition.", error)));
                         }
                     });
             });
