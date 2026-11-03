@@ -7,9 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -298,7 +296,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(buildEndpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -570,11 +568,8 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     }
 
     /**
-     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra ID. By default, the
-     * audience is inferred from the endpoint hostname, including sovereign cloud and staging endpoints. If the hostname
-     * is not recognized, the public Azure App Configuration audience is used. An explicitly configured audience
-     * overrides inference. The audience is not considered when using a shared key.
-     * See <a href="https://aka.ms/appconfig/client-token-audience">authentication token audiences</a> for details.
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra. The audience is not
+     * considered when using a shared key.
      *
      * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
      * @return The updated ConfigurationClientBuilder object.
@@ -591,27 +586,16 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @return The default scope for the given endpoint.
      */
     private String getDefaultScope(String endpoint) {
-        if (audience != null && !audience.toString().isEmpty()) {
-            return audience + "/.default";
-        }
-
-        final String hostname;
-        try {
-            hostname = new URL(endpoint).getHost().toLowerCase(Locale.ROOT);
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
-        }
-
-        if (hostname.endsWith(".appconfig-staging.azure.com")) {
-            return "https://appconfig-staging.azure.com/.default";
-        }
-
-        String[] labels = hostname.split("\\.");
-        for (int index = labels.length - 1; index >= 0; index--) {
-            if ("appconfig".equals(labels[index]) || "azconfig".equals(labels[index])) {
-                return "https://" + String.join(".", Arrays.copyOfRange(labels, index, labels.length)) + "/.default";
+        String defaultValue = "/.default";
+        if (audience == null || audience.toString().isEmpty()) {
+            if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
+                return ConfigurationAudience.AZURE_GOVERNMENT + defaultValue;
+            } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
+                return ConfigurationAudience.AZURE_CHINA + defaultValue;
+            } else {
+                return ConfigurationAudience.AZURE_PUBLIC_CLOUD + defaultValue;
             }
         }
-        return ConfigurationAudience.AZURE_PUBLIC_CLOUD + "/.default";
+        return audience + defaultValue;
     }
 }
