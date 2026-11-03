@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class AfdOriginsCreateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Create.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Create.json
      */
     /**
      * Sample code: AFDOrigins_Create.
@@ -34,7 +34,7 @@ public final class AfdOriginsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Create_OriginHostname.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Create_OriginHostname.json
      */
     /**
      * Sample code: AFDOrigins_Create_OriginHostname.
@@ -56,7 +56,7 @@ public final class AfdOriginsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_CreateWithIncomingHostHeaderValidation.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_CreateWithIncomingHostHeaderValidation.json
      */
     /**
      * Sample code: AFDOrigins_Create_IncomingHostHeaderValidation.
@@ -78,7 +78,7 @@ public final class AfdOriginsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Create_CustomCertificateSubject.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Create_CustomCertificateSubject.json
      */
     /**
      * Sample code: AFDOrigins_Create_CustomCertificateSubject.

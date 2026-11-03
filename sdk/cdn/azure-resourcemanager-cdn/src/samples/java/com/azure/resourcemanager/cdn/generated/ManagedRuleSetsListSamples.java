@@ -9,14 +9,14 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ManagedRuleSetsListSamples {
     /*
-     * x-ms-original-file: 2026-10-01/WafListManagedRuleSets.json
+     * x-ms-original-file: 2026-09-01-preview/WafListManagedRuleSets.json
      */
     /**
-     * Sample code: List Policies in a Resource Group.
+     * Sample code: WafListManagedRuleSets.
      * 
      * @param manager Entry point to CdnManager.
      */
-    public static void listPoliciesInAResourceGroup(com.azure.resourcemanager.cdn.CdnManager manager) {
+    public static void wafListManagedRuleSets(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient().getManagedRuleSets().list(com.azure.core.util.Context.NONE);
     }
 }

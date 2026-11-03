@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class RulesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/Rules_Update.json
+     * x-ms-original-file: 2026-09-01-preview/Rules_Update.json
      */
     /**
      * Sample code: Rules_Update.

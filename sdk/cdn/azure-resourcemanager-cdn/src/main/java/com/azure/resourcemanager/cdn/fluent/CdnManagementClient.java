@@ -121,6 +121,13 @@ public interface CdnManagementClient {
     SecurityPoliciesClient getSecurityPolicies();
 
     /**
+     * Gets the AuthPoliciesClient object to access its operations.
+     * 
+     * @return the AuthPoliciesClient object.
+     */
+    AuthPoliciesClient getAuthPolicies();
+
+    /**
      * Gets the SecretsClient object to access its operations.
      * 
      * @return the SecretsClient object.

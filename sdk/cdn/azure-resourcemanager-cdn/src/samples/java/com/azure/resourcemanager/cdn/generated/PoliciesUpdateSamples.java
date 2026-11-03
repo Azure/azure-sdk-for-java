@@ -13,14 +13,14 @@ import java.util.Map;
  */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/WafPatchPolicy.json
+     * x-ms-original-file: 2026-09-01-preview/WafPatchPolicy.json
      */
     /**
-     * Sample code: Creates specific policy.
+     * Sample code: WafPatchPolicy.
      * 
      * @param manager Entry point to CdnManager.
      */
-    public static void createsSpecificPolicy(com.azure.resourcemanager.cdn.CdnManager manager) {
+    public static void wafPatchPolicy(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getPolicies()
             .update("rg1", "MicrosoftCdnWafPolicy",

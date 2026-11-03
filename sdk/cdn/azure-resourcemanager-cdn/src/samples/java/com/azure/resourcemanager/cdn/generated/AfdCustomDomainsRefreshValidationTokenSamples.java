@@ -9,14 +9,14 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdCustomDomainsRefreshValidationTokenSamples {
     /*
-     * x-ms-original-file: 2026-10-01/AFDCustomDomains_RefreshValidationToken.json
+     * x-ms-original-file: 2026-09-01-preview/AFDCustomDomains_RefreshValidationToken.json
      */
     /**
-     * Sample code: AFDCustomDomains_Delete.
+     * Sample code: AFDCustomDomains_RefreshValidationToken.
      * 
      * @param manager Entry point to CdnManager.
      */
-    public static void aFDCustomDomainsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
+    public static void aFDCustomDomainsRefreshValidationToken(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getAfdCustomDomains()
             .refreshValidationToken("RG", "profile1", "domain1", com.azure.core.util.Context.NONE);

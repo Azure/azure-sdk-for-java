@@ -1,14 +1,60 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (2026-11-03)
+
+- Package api-version 2026-09-01-preview.
 
 ### Features Added
 
-### Breaking Changes
+* `models.AuthPolicyEntraIDConfig` was added
 
-### Bugs Fixed
+* `models.AfdRouteGrpcState` was added
 
-### Other Changes
+* `models.AuthPolicyRouteReference` was added
+
+* `models.AuthLocation` was added
+
+* `models.CapacityDistributionSettingsParameters` was added
+
+* `models.AuthPolicyAssociation` was added
+
+* `models.DistributionType` was added
+
+* `models.AuthPolicyConfig` was added
+
+* `models.AfdUrlSigningActionParameters` was added
+
+* `models.AuthPolicyProperties` was added
+
+* `models.AuthPolicyDomainReference` was added
+
+* `models.AuthPolicyConfigIdentityProvider` was added
+
+* `models.AuthPolicyUpdateParameters` was added
+
+* `models.AfdUrlSigningAction` was added
+
+* `models.AuthPolicyAction` was added
+
+* `models.TypeName` was added
+
+#### `models.LoadBalancingSettingsParameters` was modified
+
+* `capacityDistributionSettings()` was added
+* `withCapacityDistributionSettings(models.CapacityDistributionSettingsParameters)` was added
+
+#### `models.ProbeProtocol` was modified
+
+* `GRPC` was added
+
+#### `models.RouteUpdateParameters` was modified
+
+* `grpcState()` was added
+* `withGrpcState(models.AfdRouteGrpcState)` was added
+
+#### `models.DeliveryRuleActionValue` was modified
+
+* `AFD_URL_SIGNING` was added
 
 ## 2.54.0 (2026-10-23)
 

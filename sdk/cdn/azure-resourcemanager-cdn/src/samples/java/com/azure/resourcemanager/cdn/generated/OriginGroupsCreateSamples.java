@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class OriginGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/OriginGroups_Create.json
+     * x-ms-original-file: 2026-09-01-preview/OriginGroups_Create.json
      */
     /**
      * Sample code: OriginGroups_Create.
@@ -28,7 +28,7 @@ public final class OriginGroupsCreateSamples {
     public static void originGroupsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getOriginGroups()
-            .create("RG", "profile1", "endpoint1", "origingroup1", new OriginGroupInner()
+            .create("RG", "profile1", "endpoint1", "originGroup1", new OriginGroupInner()
                 .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/health.aspx")
                     .withProbeRequestType(HealthProbeRequestType.GET)
                     .withProbeProtocol(ProbeProtocol.HTTP)

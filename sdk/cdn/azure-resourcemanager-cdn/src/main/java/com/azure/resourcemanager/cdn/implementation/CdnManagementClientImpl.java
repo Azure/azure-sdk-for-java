@@ -30,6 +30,7 @@ import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginGroupsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
+import com.azure.resourcemanager.cdn.fluent.AuthPoliciesClient;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
@@ -278,6 +279,20 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
+     * The AuthPoliciesClient object to access its operations.
+     */
+    private final AuthPoliciesClient authPolicies;
+
+    /**
+     * Gets the AuthPoliciesClient object to access its operations.
+     * 
+     * @return the AuthPoliciesClient object.
+     */
+    public AuthPoliciesClient getAuthPolicies() {
+        return this.authPolicies;
+    }
+
+    /**
      * The SecretsClient object to access its operations.
      */
     private final SecretsClient secrets;
@@ -463,7 +478,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-01";
+        this.apiVersion = "2026-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.profiles = new ProfilesClientImpl(this);
         this.afdEndpoints = new AfdEndpointsClientImpl(this);
@@ -473,6 +488,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.ruleSets = new RuleSetsClientImpl(this);
         this.rules = new RulesClientImpl(this);
         this.securityPolicies = new SecurityPoliciesClientImpl(this);
+        this.authPolicies = new AuthPoliciesClientImpl(this);
         this.secrets = new SecretsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.origins = new OriginsClientImpl(this);

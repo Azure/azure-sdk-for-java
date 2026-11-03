@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class AfdOriginsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Update.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Update.json
      */
     /**
      * Sample code: AFDOrigins_Update.
@@ -33,7 +33,7 @@ public final class AfdOriginsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Update_CustomCertificateSubject.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Update_CustomCertificateSubject.json
      */
     /**
      * Sample code: AFDOrigins_Update_CustomCertificateSubject.
@@ -57,7 +57,7 @@ public final class AfdOriginsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/AFDOrigins_Update_OriginHostname.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOrigins_Update_OriginHostname.json
      */
     /**
      * Sample code: AFDOrigins_Update_OriginHostname.

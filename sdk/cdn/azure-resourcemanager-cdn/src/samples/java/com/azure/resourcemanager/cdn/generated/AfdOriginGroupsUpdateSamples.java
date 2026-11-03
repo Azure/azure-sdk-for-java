@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.models.AfdOriginGroupUpdateParameters;
+import com.azure.resourcemanager.cdn.models.CapacityDistributionSettingsParameters;
+import com.azure.resourcemanager.cdn.models.DistributionType;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.HealthProbeRequestType;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
@@ -18,7 +20,7 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
  */
 public final class AfdOriginGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/AFDOriginGroups_Update.json
+     * x-ms-original-file: 2026-09-01-preview/AFDOriginGroups_Update.json
      */
     /**
      * Sample code: AFDOriginGroups_Update.
@@ -31,7 +33,10 @@ public final class AfdOriginGroupsUpdateSamples {
             .update("RG", "profile1", "origingroup1", new AfdOriginGroupUpdateParameters()
                 .withLoadBalancingSettings(new LoadBalancingSettingsParameters().withSampleSize(3)
                     .withSuccessfulSamplesRequired(3)
-                    .withAdditionalLatencyInMilliseconds(1000))
+                    .withAdditionalLatencyInMilliseconds(1000)
+                    .withCapacityDistributionSettings(
+                        new CapacityDistributionSettingsParameters().withCapacityConsciousThreshold(80)
+                            .withDistributionType(DistributionType.STATIC_WEIGHTS)))
                 .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/path2")
                     .withProbeRequestType(HealthProbeRequestType.NOT_SET)
                     .withProbeProtocol(ProbeProtocol.NOT_SET)

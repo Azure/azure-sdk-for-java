@@ -31,6 +31,11 @@ public final class LoadBalancingSettingsParameters implements JsonSerializable<L
      */
     private Integer additionalLatencyInMilliseconds;
 
+    /*
+     * Capacity based round-robin load balancing settings
+     */
+    private CapacityDistributionSettingsParameters capacityDistributionSettings;
+
     /**
      * Creates an instance of LoadBalancingSettingsParameters class.
      */
@@ -101,11 +106,35 @@ public final class LoadBalancingSettingsParameters implements JsonSerializable<L
     }
 
     /**
+     * Get the capacityDistributionSettings property: Capacity based round-robin load balancing settings.
+     * 
+     * @return the capacityDistributionSettings value.
+     */
+    public CapacityDistributionSettingsParameters capacityDistributionSettings() {
+        return this.capacityDistributionSettings;
+    }
+
+    /**
+     * Set the capacityDistributionSettings property: Capacity based round-robin load balancing settings.
+     * 
+     * @param capacityDistributionSettings the capacityDistributionSettings value to set.
+     * @return the LoadBalancingSettingsParameters object itself.
+     */
+    public LoadBalancingSettingsParameters
+        withCapacityDistributionSettings(CapacityDistributionSettingsParameters capacityDistributionSettings) {
+        this.capacityDistributionSettings = capacityDistributionSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (capacityDistributionSettings() != null) {
+            capacityDistributionSettings().validate();
+        }
     }
 
     /**
@@ -117,6 +146,7 @@ public final class LoadBalancingSettingsParameters implements JsonSerializable<L
         jsonWriter.writeNumberField("sampleSize", this.sampleSize);
         jsonWriter.writeNumberField("successfulSamplesRequired", this.successfulSamplesRequired);
         jsonWriter.writeNumberField("additionalLatencyInMilliseconds", this.additionalLatencyInMilliseconds);
+        jsonWriter.writeJsonField("capacityDistributionSettings", this.capacityDistributionSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,6 +174,9 @@ public final class LoadBalancingSettingsParameters implements JsonSerializable<L
                 } else if ("additionalLatencyInMilliseconds".equals(fieldName)) {
                     deserializedLoadBalancingSettingsParameters.additionalLatencyInMilliseconds
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("capacityDistributionSettings".equals(fieldName)) {
+                    deserializedLoadBalancingSettingsParameters.capacityDistributionSettings
+                        = CapacityDistributionSettingsParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

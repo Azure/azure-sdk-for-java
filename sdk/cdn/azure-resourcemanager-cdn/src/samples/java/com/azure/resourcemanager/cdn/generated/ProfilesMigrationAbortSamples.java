@@ -9,14 +9,14 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ProfilesMigrationAbortSamples {
     /*
-     * x-ms-original-file: 2026-10-01/Profiles_MigrationAbort.json
+     * x-ms-original-file: 2026-09-01-preview/Profiles_MigrationAbort.json
      */
     /**
-     * Sample code: Profiles_CdnMigrationCommit.
+     * Sample code: Profiles_MigrationAbort.
      * 
      * @param manager Entry point to CdnManager.
      */
-    public static void profilesCdnMigrationCommit(com.azure.resourcemanager.cdn.CdnManager manager) {
+    public static void profilesMigrationAbort(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient().getProfiles().migrationAbort("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

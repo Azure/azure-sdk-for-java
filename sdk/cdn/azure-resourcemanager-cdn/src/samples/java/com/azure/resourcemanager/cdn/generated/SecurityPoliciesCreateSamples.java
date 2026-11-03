@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/SecurityPolicies_Create.json
+     * x-ms-original-file: 2026-09-01-preview/SecurityPolicies_Create.json
      */
     /**
      * Sample code: SecurityPolicies_Create.
@@ -34,7 +34,10 @@ public final class SecurityPoliciesCreateSamples {
                             "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
                             new ActivatedResourceReference().withId(
                                 "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
-                        .withPatternsToMatch(Arrays.asList("/*"))))),
+                        .withPatternsToMatch(Arrays.asList("/*"))
+                        .withRoutes(Arrays.asList(new ResourceReference().withId(
+                            "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1")))))
+                    .withIsProfileLevel(false)),
                 com.azure.core.util.Context.NONE);
     }
 }
