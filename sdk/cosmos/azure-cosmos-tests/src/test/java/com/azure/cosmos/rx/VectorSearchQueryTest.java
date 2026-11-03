@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -54,9 +55,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 /**
- * One query over all four embedding types, executed once per connection-mode CI lane.
- * The query lane uses Direct TCP; the HTTP/2 query lane hard-disables thin-client routing to exercise
- * Compute; the thinclient and thinclientEndpointProbe lanes exercise the proxy.
+ * One query over all four embedding types in the dedicated service-regression suite.
+ * The pipeline runs Direct TCP, Compute, and ThinClient in separate jobs against stage, or live on demand.
  * Routing flags are never changed in-process because they are evaluated lazily by every client.
  */
 public class VectorSearchQueryTest extends TestSuiteBase {
@@ -98,19 +98,27 @@ public class VectorSearchQueryTest extends TestSuiteBase {
         connectionMode = CosmosBridgeInternal.getConnectionPolicy(clientBuilder).getConnectionMode();
     }
 
-    @BeforeClass(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"service-regression"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         boolean gatewayHttp2 = connectionMode == ConnectionMode.GATEWAY && Configs.isHttp2Enabled();
         expectThinClient = gatewayHttp2 && !Boolean.FALSE.equals(Configs.isThinClientEnabled());
         requireComputeHttp2 = gatewayHttp2 && !expectThinClient;
 
         client = getClientBuilder().buildAsyncClient();
+        if (expectThinClient) {
+            assertThat(Configs.isThinClientQueryPlanEnabled())
+                .as("ThinClient service regression requires proxy query-plan routing")
+                .isTrue();
+            assertThat(BridgeInternal.getContextClient(client).getGlobalEndpointManager().hasThinClientReadLocations())
+                .as("ThinClient service regression requires advertised proxy endpoints; gateway fallback is not coverage")
+                .isTrue();
+        }
         setupClient = createDirectRxDocumentClient(
             ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true).buildAsyncClient();
         database = createTestDatabase(setupClient, "vector-query");
     }
 
-    @AfterClass(groups = {"query", "thinclient", "thinclientEndpointProbe"},
+    @AfterClass(groups = {"service-regression"},
         timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         try {
@@ -126,7 +134,7 @@ public class VectorSearchQueryTest extends TestSuiteBase {
      * embedding types. Distinct vectors make missing projections or queries against the wrong path observable.
      * The timeout includes container creation, control-plane retries, and document seeding.
      */
-    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT * 2)
+    @Test(groups = {"service-regression"}, timeOut = SETUP_TIMEOUT * 2)
     public void testVectorSearchAcrossEmbeddingTypes() {
         String containerId = "vecSearch_" + UUID.randomUUID();
         CosmosAsyncContainer container = createVectorContainer(containerId);
