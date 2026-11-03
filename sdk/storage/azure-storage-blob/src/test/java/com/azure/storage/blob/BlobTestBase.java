@@ -486,6 +486,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         builder.addPolicy(createSessionResponseLoggingPolicy());
+        builder.addPolicy(createLayoutResponseLoggingPolicy());
 
         if (policies != null) {
             for (HttpPipelinePolicy policy : policies) {
@@ -522,6 +523,36 @@ public class BlobTestBase extends TestProxyTestBase {
                     .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))
                     .addKeyValue("x-ms-error-code", response.getHeaderValue("x-ms-error-code"))
                     .log("CreateSession response"));
+        };
+    }
+
+    /**
+     * Creates a policy that logs the status and request IDs of GetLayout responses so a failing live run can be
+     * correlated with service-side logs.
+     *
+     * @return The policy.
+     */
+    protected HttpPipelinePolicy createLayoutResponseLoggingPolicy() {
+        String testName = testContextManager.getTestName();
+        return (context, next) -> {
+            HttpRequest request = context.getHttpRequest();
+            String query = request.getUrl().getQuery();
+            if (request.getHttpMethod() != HttpMethod.GET || query == null || !query.contains("comp=layout")) {
+                return next.process();
+            }
+
+            String clientRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+            String range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            return next.process()
+                .doOnNext(response -> LOGGER.atInfo()
+                    .addKeyValue("test", testName)
+                    .addKeyValue("statusCode", response.getStatusCode())
+                    .addKeyValue("x-ms-range", range)
+                    .addKeyValue("hasMarker", query.contains("marker="))
+                    .addKeyValue("x-ms-client-request-id", clientRequestId)
+                    .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))
+                    .addKeyValue("x-ms-error-code", response.getHeaderValue("x-ms-error-code"))
+                    .log("GetLayout response"));
         };
     }
 
@@ -591,6 +622,7 @@ public class BlobTestBase extends TestProxyTestBase {
             }
         }
 
+        builder.addPolicy(createLayoutResponseLoggingPolicy());
         instrument(builder);
 
         if (credential != null) {
