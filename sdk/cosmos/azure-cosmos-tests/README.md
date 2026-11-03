@@ -20,6 +20,12 @@ Setup uses a separate Direct client. The first document operation from the clien
 under test is this query, exercising deserialization of metadata containing all
 four types. Teardown deletes the database and its container.
 
+Only this test bypasses the shared query-based container-readiness probe and its
+feed-range warm-up. That probe would encounter the `float16` QueryPlan service bug
+before the query under test and report a readiness timeout instead. Container
+creation and policy read-back retain the control-plane retry helper; no fixed
+sleep is added.
+
 There are three logical connection-mode cases, not a type-by-mode matrix. The
 factory selects one client per existing CI lane, in separate JVMs:
 

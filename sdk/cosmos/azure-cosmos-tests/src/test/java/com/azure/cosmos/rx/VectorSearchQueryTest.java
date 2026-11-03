@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
+import com.azure.cosmos.CosmosTestResourceRegistry;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -18,7 +19,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosVectorDataType;
@@ -124,7 +124,7 @@ public class VectorSearchQueryTest extends TestSuiteBase {
     /**
      * The first document operation from the client under test queries a fresh container with all four
      * embedding types. Distinct vectors make missing projections or queries against the wrong path observable.
-     * The timeout includes container creation, readiness polling, and document seeding.
+     * The timeout includes container creation, control-plane retries, and document seeding.
      */
     @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT * 2)
     public void testVectorSearchAcrossEmbeddingTypes() {
@@ -210,8 +210,11 @@ public class VectorSearchQueryTest extends TestSuiteBase {
         indexingPolicy.setVectorIndexes(vectorIndexes);
         props.setIndexingPolicy(indexingPolicy);
 
-        CosmosAsyncContainer container = createCollection(database, props, new CosmosContainerRequestOptions());
-        CosmosContainerProperties actual = container.read().block().getProperties();
+        // A readiness query would hit the float16 QueryPlan bug before the query under test.
+        executeControlPlaneWithRetry(() -> database.createContainerIfNotExists(props).block());
+        CosmosTestResourceRegistry.registerContainer(database.getId(), containerId);
+        CosmosAsyncContainer container = database.getContainer(containerId);
+        CosmosContainerProperties actual = executeControlPlaneWithRetry(() -> container.read().block()).getProperties();
         assertThat(actual.getVectorEmbeddingPolicy()).isNotNull();
         assertThat(actual.getVectorEmbeddingPolicy().getVectorEmbeddings())
             .extracting(CosmosVectorEmbedding::getDataType).containsExactlyInAnyOrder(VECTOR_TYPES);
