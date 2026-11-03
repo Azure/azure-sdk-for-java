@@ -2,10 +2,6 @@
 
 ## 12.36.1 (2026-11-02)
 
-- Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
-  before a buffer's position, when that position was not 0 and the buffer was larger than the block size. This affected
-  both the sync and async clients.
-
 ### Other Changes
 
 #### Dependency Updates
