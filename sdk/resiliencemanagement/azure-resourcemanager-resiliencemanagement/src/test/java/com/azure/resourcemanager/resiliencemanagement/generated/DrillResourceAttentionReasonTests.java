@@ -14,11 +14,11 @@ public final class DrillResourceAttentionReasonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillResourceAttentionReason model = BinaryData.fromString(
-            "{\"faultRbacOnTargetResource\":\"Set\",\"runbookFaultRbacOnTargets\":\"Set\",\"monitoringRbacOnTargets\":\"Set\",\"resourceState\":[\"InDrillNotInServiceGroup\",\"InDrillNotInServiceGroup\"]}")
+            "{\"faultRbacOnTargetResource\":\"Set\",\"runbookFaultRbacOnTargets\":\"Set\",\"monitoringRbacOnTargets\":\"NotSet\",\"resourceState\":[\"InDrillNotInServiceGroup\"]}")
             .toObject(DrillResourceAttentionReason.class);
         Assertions.assertEquals(RBACState.SET, model.faultRbacOnTargetResource());
         Assertions.assertEquals(RBACState.SET, model.runbookFaultRbacOnTargets());
-        Assertions.assertEquals(RBACState.SET, model.monitoringRbacOnTargets());
+        Assertions.assertEquals(RBACState.NOT_SET, model.monitoringRbacOnTargets());
         Assertions.assertEquals(DrillResourceState.IN_DRILL_NOT_IN_SERVICE_GROUP, model.resourceState().get(0));
     }
 }

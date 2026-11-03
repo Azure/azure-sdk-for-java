@@ -22,6 +22,11 @@ public final class UnifiedResilienceItemResiliencyPosture
      */
     private UnifiedResilienceItemZonalResiliencyPosture zonalResiliency;
 
+    /*
+     * The regional resiliency section of the resiliency posture.
+     */
+    private UnifiedResilienceItemRegionalResiliencyPosture regionalResiliency;
+
     /**
      * Creates an instance of UnifiedResilienceItemResiliencyPosture class.
      */
@@ -38,12 +43,22 @@ public final class UnifiedResilienceItemResiliencyPosture
     }
 
     /**
+     * Get the regionalResiliency property: The regional resiliency section of the resiliency posture.
+     * 
+     * @return the regionalResiliency value.
+     */
+    public UnifiedResilienceItemRegionalResiliencyPosture regionalResiliency() {
+        return this.regionalResiliency;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
+        jsonWriter.writeJsonField("regionalResiliency", this.regionalResiliency);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,6 +82,9 @@ public final class UnifiedResilienceItemResiliencyPosture
                 if ("zonalResiliency".equals(fieldName)) {
                     deserializedUnifiedResilienceItemResiliencyPosture.zonalResiliency
                         = UnifiedResilienceItemZonalResiliencyPosture.fromJson(reader);
+                } else if ("regionalResiliency".equals(fieldName)) {
+                    deserializedUnifiedResilienceItemResiliencyPosture.regionalResiliency
+                        = UnifiedResilienceItemRegionalResiliencyPosture.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
