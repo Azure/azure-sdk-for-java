@@ -23,9 +23,12 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
+import com.azure.search.documents.implementation.models.GraphRequest;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.GraphOptions;
+import com.azure.search.documents.models.GraphQueryResult;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -231,7 +234,7 @@ public final class SearchAsyncClient {
                             + serviceClient.getServiceVersion()));
                 }
                 mono = searchWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
-                    requestOptions);
+                    SearchUtils.addSearchHeaders(requestOptions, options));
             }
             return mono.map(response -> new SearchPagedResponse(response, serviceClient.getServiceVersion())).flux();
         });
@@ -384,17 +387,21 @@ public final class SearchAsyncClient {
      *     highlightPostTag: String (Optional)
      *     highlightPreTag: String (Optional)
      *     minimumCoverage: Double (Optional)
+     *     moreLikeThis: String (Optional)
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
-     *     queryType: String(simple/full/semantic) (Optional)
+     *     queryType: String(simple/full/semantic/agentic) (Optional)
+     *     agenticOptions (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *     }
      *     scoringStatistics: String(local/global) (Optional)
      *     sessionId: String (Optional)
      *     scoringParameters (Optional): [
      *         String (Optional)
      *     ]
      *     scoringProfile: String (Optional)
-     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *     debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *     search: String (Optional)
      *     searchFields (Optional): [
      *         String (Optional)
@@ -430,6 +437,9 @@ public final class SearchAsyncClient {
      *             }
      *             filterOverride: String (Optional)
      *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -491,6 +501,19 @@ public final class SearchAsyncClient {
      *                 (recursive schema, see above)
      *             ]
      *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
      *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
@@ -504,17 +527,21 @@ public final class SearchAsyncClient {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
@@ -550,6 +577,9 @@ public final class SearchAsyncClient {
      *                 }
      *                 filterOverride: String (Optional)
      *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1056,5 +1086,203 @@ public final class SearchAsyncClient {
         }
         return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     gql: String (Required)
+     *     search: String (Optional)
+     *     filter: String (Optional)
+     *     vectorQueries (Optional): [
+     *          (Optional){
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             k: Integer (Optional)
+     *             fields: String (Optional)
+     *             exhaustive: Boolean (Optional)
+     *             oversampling: Double (Optional)
+     *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
+     *         }
+     *     ]
+     *     executionMode: String(execute/planOnly) (Optional)
+     *     explain (Optional): [
+     *         String(syntax/semanticIr/logicalPlan/optimizedLogicalPlan/physicalPlan/requestAttributions/full) (Optional)
+     *     ]
+     *     includeStatistics: Boolean (Optional)
+     *     includeDiagnostics: Boolean (Optional)
+     *     provenance (Optional): {
+     *         kind: String(ids/hydrate) (Required)
+     *         maxEvidencePerRow: Integer (Optional)
+     *         hydrateDocuments (Optional): {
+     *             select: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     &#64;odata.count: Long (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.graphProvenance (Optional): {
+     *                 kind: String(ids/hydrate) (Optional)
+     *                 evidenceCount (Optional): {
+     *                     value: Integer (Optional)
+     *                     relation: String(exact/lowerBound) (Optional)
+     *                 }
+     *                 evidence (Optional): [
+     *                      (Optional){
+     *                         edgeId: String (Optional)
+     *                         chunkId: String (Optional)
+     *                         parentId: String (Optional)
+     *                         confidence (Optional): {
+     *                             edge: Double (Optional)
+     *                             subject: Double (Optional)
+     *                             predicate: Double (Optional)
+     *                             object: Double (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.graphStats (Optional): {
+     *         executionMode: String(execute/planOnly) (Optional)
+     *         queryCount: Integer (Optional)
+     *         documentsFetched: Integer (Optional)
+     *         isEstimated: Boolean (Optional)
+     *         totalMs: Long (Optional)
+     *         searchMs: Long (Optional)
+     *         planningMs: Long (Optional)
+     *     }
+     *     &#64;search.graphDiagnostics (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             severity: String(error/warning/info) (Optional)
+     *             phase: String(parse/bind/validation/planning/execution) (Optional)
+     *             message: String (Optional)
+     *             span: String (Optional)
+     *             suggestions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     &#64;search.graphExplain (Optional): {
+     *          (Optional): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     &#64;search.graphProvenanceDocuments (Optional): {
+     *          (Optional): {
+     *             String (Required): {
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param graphRequest The graphRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a graph query's projected rows and optional execution information along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedGraphWithResponse(BinaryData graphRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.graphWithResponseAsync(graphRequest, requestOptions);
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     *
+     * @param options Options for graph API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a graph query's projected rows and optional execution information on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GraphQueryResult> graph(GraphOptions options) {
+        // Generated convenience method for hiddenGeneratedGraphWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String querySourceAuthorization = options.getQuerySourceAuthorization();
+        Boolean enableElevatedRead = options.isEnableElevatedRead();
+        GraphRequest graphRequestObj = new GraphRequest(options.getGql()).setSearch(options.getSearch())
+            .setFilter(options.getFilter())
+            .setVectorQueries(options.getVectorQueries())
+            .setExecutionMode(options.getExecutionMode())
+            .setExplain(options.getExplain())
+            .setIncludeStatistics(options.isIncludeStatistics())
+            .setIncludeDiagnostics(options.isIncludeDiagnostics())
+            .setProvenance(options.getProvenance());
+        BinaryData graphRequest = BinaryData.fromObject(graphRequestObj);
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (enableElevatedRead != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                String.valueOf(enableElevatedRead));
+        }
+        return hiddenGeneratedGraphWithResponse(graphRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(GraphQueryResult.class));
+    }
+
+    /**
+     * Executes a graph query and returns its HTTP response and diagnostics.
+     *
+     * @param options the graph query and diagnostic options.
+     * @param requestOptions the HTTP request options.
+     * @return the graph result together with the HTTP response.
+     * @throws NullPointerException if options is null.
+     */
+    public Mono<Response<GraphQueryResult>> graphWithResponse(GraphOptions options, RequestOptions requestOptions) {
+        return SearchUtils
+            .mapResponse(hiddenGeneratedGraphWithResponse(BinaryData.fromObject(SearchUtils.fromGraphOptions(options)),
+                SearchUtils.addGraphHeaders(requestOptions, options)), GraphQueryResult.class);
     }
 }

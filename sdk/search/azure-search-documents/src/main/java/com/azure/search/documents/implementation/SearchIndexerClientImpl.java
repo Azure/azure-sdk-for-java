@@ -165,8 +165,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
             RequestOptions requestOptions, Context context);
 
@@ -177,8 +177,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
             RequestOptions requestOptions, Context context);
 
@@ -188,8 +188,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -197,8 +197,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -207,8 +207,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -217,8 +217,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
@@ -226,7 +226,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataSourceConnections(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listDataSourceConnections(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -236,7 +236,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -271,8 +271,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
@@ -281,8 +281,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
         @ExpectedResponses({ 204 })
@@ -291,8 +291,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData indexerResync, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
@@ -302,7 +302,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resyncSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @PathParam("indexerName") String name,
+            @PathParam("indexerName") String name, @HeaderParam("Accept") String accept,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexerResync,
             RequestOptions requestOptions, Context context);
 
@@ -313,8 +313,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetDocuments(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
@@ -323,8 +323,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetDocumentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -333,8 +333,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -343,8 +343,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
@@ -353,8 +353,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
             RequestOptions requestOptions, Context context);
 
@@ -365,8 +365,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
             RequestOptions requestOptions, Context context);
 
@@ -376,8 +376,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
@@ -385,8 +385,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -395,8 +395,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -405,8 +405,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
@@ -414,7 +414,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getIndexers(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listIndexers(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -424,7 +424,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getIndexersSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listIndexersSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -457,8 +457,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexerStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
@@ -467,8 +467,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -477,8 +477,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
             RequestOptions requestOptions, Context context);
 
@@ -489,8 +489,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
             RequestOptions requestOptions, Context context);
 
@@ -500,8 +500,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 204, 404 })
@@ -509,8 +509,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -519,8 +519,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -529,8 +529,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets")
         @ExpectedResponses({ 200 })
@@ -538,7 +538,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkillsets(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSkillsets(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -548,7 +548,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillsetsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSkillsetsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -581,8 +581,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetSkills(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
 
         @Post("/skillsets('{skillsetName}')/search.resetskills")
@@ -592,8 +592,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetSkillsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -602,7 +602,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataSourceConnectionsNext(
+        Mono<Response<BinaryData>> listDataSourceConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -612,7 +612,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDataSourceConnectionsNextSync(
+        Response<BinaryData> listDataSourceConnectionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -622,7 +622,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getIndexersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listIndexersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -632,7 +632,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getIndexersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listIndexersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -642,7 +642,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkillsetsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listSkillsetsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -652,7 +652,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillsetsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSkillsetsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
@@ -696,7 +696,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -740,7 +740,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -781,7 +781,7 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, dataSource, requestOptions,
+            this.getServiceVersion().getVersion(), name, accept, prefer, contentType, dataSource, requestOptions,
             context));
     }
 
@@ -824,7 +824,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -868,7 +868,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -909,7 +909,7 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, dataSource, requestOptions, Context.NONE);
+            name, accept, prefer, contentType, dataSource, requestOptions, Context.NONE);
     }
 
     /**
@@ -937,7 +937,7 @@ public final class SearchIndexerClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -963,8 +963,8 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -989,7 +989,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1027,7 +1027,7 @@ public final class SearchIndexerClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1052,7 +1052,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1088,8 +1088,8 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1129,7 +1129,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1162,10 +1162,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDataSourceConnectionsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getDataSourceConnections(this.getEndpoint(),
+            .withContext(context -> service.listDataSourceConnections(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -1208,7 +1208,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1240,12 +1240,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDataSourceConnectionsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDataSourceConnectionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getDataSourceConnectionsSinglePageAsync(requestOptions),
-            nextLink -> getDataSourceConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listDataSourceConnectionsSinglePageAsync(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1285,7 +1285,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1317,9 +1317,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDataSourceConnectionsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDataSourceConnectionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getDataSourceConnectionsSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listDataSourceConnectionsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -1362,7 +1362,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1394,12 +1394,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getDataSourceConnections(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listDataSourceConnections(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getDataSourceConnectionsSinglePage(requestOptions),
-            nextLink -> getDataSourceConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listDataSourceConnectionsSinglePage(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1424,7 +1424,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1468,7 +1468,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1532,7 +1532,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1576,7 +1576,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1633,7 +1633,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> resetIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.resetIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1650,7 +1650,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1683,7 +1683,7 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, name, contentType, indexerResync, requestOptions, context));
+            name, accept, contentType, indexerResync, requestOptions, context));
     }
 
     /**
@@ -1713,7 +1713,7 @@ public final class SearchIndexerClientImpl {
     public Response<Void> resyncWithResponse(String name, BinaryData indexerResync, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name, contentType,
+        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept, contentType,
             indexerResync, requestOptions, Context.NONE);
     }
 
@@ -1768,7 +1768,7 @@ public final class SearchIndexerClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.resetDocuments(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -1821,7 +1821,7 @@ public final class SearchIndexerClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -1840,7 +1840,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> runIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.runIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1857,7 +1857,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1919,6 +1919,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2001,6 +2002,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2062,8 +2064,8 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
-            context -> service.createOrUpdateIndexer(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, indexer, requestOptions, context));
+            context -> service.createOrUpdateIndexer(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+                accept, prefer, contentType, indexer, requestOptions, context));
     }
 
     /**
@@ -2124,6 +2126,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2206,6 +2209,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2266,8 +2270,8 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, indexer, requestOptions, Context.NONE);
+        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, indexer, requestOptions, Context.NONE);
     }
 
     /**
@@ -2294,7 +2298,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> deleteIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2320,7 +2324,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2363,6 +2367,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2420,7 +2425,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2462,6 +2467,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2518,7 +2524,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2576,6 +2582,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2630,10 +2637,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getIndexersSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listIndexersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getIndexers(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listIndexers(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -2693,6 +2700,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2746,12 +2754,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getIndexersAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listIndexersAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getIndexersSinglePageAsync(requestOptions),
-            nextLink -> getIndexersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listIndexersSinglePageAsync(requestOptions),
+            nextLink -> listIndexersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2808,6 +2816,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2861,9 +2870,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getIndexersSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listIndexersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        Response<BinaryData> res = service.listIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -2923,6 +2932,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2976,12 +2986,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getIndexers(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listIndexers(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getIndexersSinglePage(requestOptions),
-            nextLink -> getIndexersNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listIndexersSinglePage(requestOptions),
+            nextLink -> listIndexersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3023,6 +3033,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3105,6 +3116,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3206,6 +3218,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3288,6 +3301,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3358,7 +3372,7 @@ public final class SearchIndexerClientImpl {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -3435,7 +3449,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getIndexerStatusWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexerStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3447,7 +3461,7 @@ public final class SearchIndexerClientImpl {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -3522,7 +3536,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -3805,8 +3819,8 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
-            context -> service.createOrUpdateSkillset(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, skillset, requestOptions, context));
+            context -> service.createOrUpdateSkillset(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+                accept, prefer, contentType, skillset, requestOptions, context));
     }
 
     /**
@@ -4087,8 +4101,8 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, skillset, requestOptions, Context.NONE);
+        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, skillset, requestOptions, Context.NONE);
     }
 
     /**
@@ -4115,7 +4129,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> deleteSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -4141,7 +4155,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSkillsetWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -4280,7 +4294,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -4417,7 +4431,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -4568,10 +4582,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSkillsetsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSkillsetsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getSkillsets(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listSkillsets(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -4723,12 +4737,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getSkillsetsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSkillsetsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getSkillsetsSinglePageAsync(requestOptions),
-            nextLink -> getSkillsetsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSkillsetsSinglePageAsync(requestOptions),
+            nextLink -> listSkillsetsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4877,9 +4891,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSkillsetsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSkillsetsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        Response<BinaryData> res = service.listSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -5031,12 +5045,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getSkillsets(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSkillsets(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getSkillsetsSinglePage(requestOptions),
-            nextLink -> getSkillsetsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSkillsetsSinglePage(requestOptions),
+            nextLink -> listSkillsetsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5589,7 +5603,7 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resetSkills(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, contentType, skillNames, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, contentType, skillNames, requestOptions, context));
     }
 
     /**
@@ -5619,7 +5633,7 @@ public final class SearchIndexerClientImpl {
     public Response<Void> resetSkillsWithResponse(String name, BinaryData skillNames, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             contentType, skillNames, requestOptions, Context.NONE);
     }
 
@@ -5645,7 +5659,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -5679,11 +5693,11 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDataSourceConnectionsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getDataSourceConnectionsNext(nextLink, this.getEndpoint(), accept,
+            .withContext(context -> service.listDataSourceConnectionsNext(nextLink, this.getEndpoint(), accept,
                 requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -5711,7 +5725,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -5744,10 +5758,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDataSourceConnectionsNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listDataSourceConnectionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getDataSourceConnectionsNextSync(nextLink, this.getEndpoint(), accept,
+        Response<BinaryData> res = service.listDataSourceConnectionsNextSync(nextLink, this.getEndpoint(), accept,
             requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -5792,6 +5806,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -5847,12 +5862,12 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getIndexersNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listIndexersNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getIndexersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listIndexersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -5896,6 +5911,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -5950,10 +5966,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getIndexersNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listIndexersNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getIndexersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listIndexersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -6091,12 +6107,12 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSkillsetsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSkillsetsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getSkillsetsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listSkillsetsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -6233,10 +6249,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSkillsetsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSkillsetsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getSkillsetsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSkillsetsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }

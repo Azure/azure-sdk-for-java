@@ -168,7 +168,9 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("searchIndex".equals(discriminatorValue)) {
+                if ("graphSearch".equals(discriminatorValue)) {
+                    return KnowledgeBaseGraphSearchActivityRecord.fromJson(readerToUse.reset());
+                } else if ("searchIndex".equals(discriminatorValue)) {
                     return KnowledgeBaseSearchIndexActivityRecord.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeBaseAzureBlobActivityRecord.fromJson(readerToUse.reset());

@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonSerializable;
+import com.azure.search.documents.implementation.models.GraphRequest;
+import com.azure.search.documents.models.GraphOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchRequest;
 import reactor.core.publisher.Mono;
@@ -15,6 +18,38 @@ import reactor.core.publisher.Mono;
  * Implementation utilities helper class.
  */
 public final class SearchUtils {
+    /**
+     * Converts public graph options into the wire request.
+     *
+     * @param options The graph options.
+     * @return The graph request.
+     * @throws NullPointerException if options is null.
+     */
+    public static GraphRequest fromGraphOptions(GraphOptions options) {
+        java.util.Objects.requireNonNull(options, "'options' cannot be null.");
+        return new GraphRequest(options.getGql()).setSearch(options.getSearch())
+            .setFilter(options.getFilter())
+            .setVectorQueries(options.getVectorQueries())
+            .setExecutionMode(options.getExecutionMode())
+            .setExplain(options.getExplain())
+            .setIncludeStatistics(options.isIncludeStatistics())
+            .setIncludeDiagnostics(options.isIncludeDiagnostics())
+            .setProvenance(options.getProvenance());
+    }
+
+    /**
+     * Adds graph authorization options to the HTTP request.
+     *
+     * @param requestOptions The HTTP request options.
+     * @param options The graph options.
+     * @return The updated request options.
+     */
+    public static RequestOptions addGraphHeaders(RequestOptions requestOptions, GraphOptions options) {
+        return addSearchHeaders(requestOptions,
+            new SearchOptions().setQuerySourceAuthorization(options.getQuerySourceAuthorization())
+                .setEnableElevatedRead(options.isEnableElevatedRead()));
+    }
+
     /**
      * Converts the public API {@link SearchOptions} into {@link SearchRequest}.
      *
@@ -53,7 +88,14 @@ public final class SearchUtils {
             .setAnswers(options.getAnswers())
             .setCaptions(options.getCaptions())
             .setVectorQueries(options.getVectorQueries())
-            .setVectorFilterMode(options.getVectorFilterMode());
+            .setVectorFilterMode(options.getVectorFilterMode())
+            .setQueryLanguage(options.getQueryLanguage())
+            .setQuerySpeller(options.getQuerySpeller())
+            .setQueryRewrites(options.getQueryRewrites())
+            .setSemanticFields(options.getSemanticFields())
+            .setHybridSearch(options.getHybridSearch())
+            .setMoreLikeThis(options.getMoreLikeThis())
+            .setAgenticOptions(options.getAgenticOptions());
     }
 
     /**
@@ -65,7 +107,19 @@ public final class SearchUtils {
      */
     public static RequestOptions addSearchHeaders(RequestOptions requestOptions, SearchOptions searchOptions) {
 
-        return requestOptions;
+        if (searchOptions == null) {
+            return requestOptions;
+        }
+        RequestOptions options = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (searchOptions.getQuerySourceAuthorization() != null) {
+            options.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                searchOptions.getQuerySourceAuthorization());
+        }
+        if (searchOptions.isEnableElevatedRead() != null) {
+            options.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                searchOptions.isEnableElevatedRead().toString());
+        }
+        return options;
     }
 
     /**

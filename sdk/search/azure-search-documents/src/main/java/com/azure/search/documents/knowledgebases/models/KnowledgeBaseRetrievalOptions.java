@@ -195,6 +195,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
         jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
         jsonWriter.writeArrayField("knowledgeSourceParams", this.knowledgeSourceParams,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("toolName", this.toolName);
         return jsonWriter.writeEndObject();
     }
 
@@ -246,6 +247,8 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
                     List<KnowledgeSourceParams> knowledgeSourceParams
                         = reader.readArray(reader1 -> KnowledgeSourceParams.fromJson(reader1));
                     deserializedKnowledgeBaseRetrievalOptions.knowledgeSourceParams = knowledgeSourceParams;
+                } else if ("toolName".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalOptions.toolName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -392,6 +395,34 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     @Generated
     public KnowledgeBaseRetrievalOptions setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
         this.outputMode = outputMode;
+        return this;
+    }
+
+    /*
+     * The tool to select. Omit for KB-wide retrieval.
+     */
+    @Generated
+    private String toolName;
+
+    /**
+     * Get the toolName property: The tool to select. Omit for KB-wide retrieval.
+     *
+     * @return the toolName value.
+     */
+    @Generated
+    public String getToolName() {
+        return this.toolName;
+    }
+
+    /**
+     * Set the toolName property: The tool to select. Omit for KB-wide retrieval.
+     *
+     * @param toolName the toolName value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions setToolName(String toolName) {
+        this.toolName = toolName;
         return this;
     }
 }

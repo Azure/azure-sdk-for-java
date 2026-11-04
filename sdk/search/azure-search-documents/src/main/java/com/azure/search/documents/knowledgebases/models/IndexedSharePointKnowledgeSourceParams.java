@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
-import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
 import java.io.IOException;
 
 /**
@@ -135,7 +134,6 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
         jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
         jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("queryHintOverrides", this.queryHintOverrides);
         return jsonWriter.writeEndObject();
     }
 
@@ -162,7 +160,6 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
             Integer maxOutputDocuments = null;
             Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.INDEXED_SHARE_POINT;
-            SearchIndexKnowledgeSourceQueryHints queryHintOverrides = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -188,8 +185,6 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
                     enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
-                } else if ("queryHintOverrides".equals(fieldName)) {
-                    queryHintOverrides = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -207,41 +202,8 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
             deserializedIndexedSharePointKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
             deserializedIndexedSharePointKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedIndexedSharePointKnowledgeSourceParams.kind = kind;
-            deserializedIndexedSharePointKnowledgeSourceParams.queryHintOverrides = queryHintOverrides;
             return deserializedIndexedSharePointKnowledgeSourceParams;
         });
-    }
-
-    /*
-     * Hints that guide query planning toward useful filters and boosts. If specified, this object replaces the complete
-     * set of query hints configured on the knowledge source.
-     */
-    @Generated
-    private SearchIndexKnowledgeSourceQueryHints queryHintOverrides;
-
-    /**
-     * Get the queryHintOverrides property: Hints that guide query planning toward useful filters and boosts. If
-     * specified, this object replaces the complete set of query hints configured on the knowledge source.
-     *
-     * @return the queryHintOverrides value.
-     */
-    @Generated
-    public SearchIndexKnowledgeSourceQueryHints getQueryHintOverrides() {
-        return this.queryHintOverrides;
-    }
-
-    /**
-     * Set the queryHintOverrides property: Hints that guide query planning toward useful filters and boosts. If
-     * specified, this object replaces the complete set of query hints configured on the knowledge source.
-     *
-     * @param queryHintOverrides the queryHintOverrides value to set.
-     * @return the IndexedSharePointKnowledgeSourceParams object itself.
-     */
-    @Generated
-    public IndexedSharePointKnowledgeSourceParams
-        setQueryHintOverrides(SearchIndexKnowledgeSourceQueryHints queryHintOverrides) {
-        this.queryHintOverrides = queryHintOverrides;
-        return this;
     }
 
     /**

@@ -138,4 +138,10 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
      */
     @Generated
     public static final KnowledgeBaseActivityRecordType INDEXED_SQL = fromString("indexedSql");
+
+    /**
+     * Graph retrieval over a graph-enabled knowledge source.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType GRAPH_SEARCH = fromString("graphSearch");
 }

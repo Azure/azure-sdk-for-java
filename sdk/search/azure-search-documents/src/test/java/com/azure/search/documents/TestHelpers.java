@@ -266,7 +266,7 @@ public final class TestHelpers {
 
     public static void verifyHttpResponseError(Throwable throwable, int statusCode, String expectedMessage) {
         HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable,
-            "Expected exception to be instanceof HttpResponseException");
+            () -> "Expected exception to be instanceof HttpResponseException. Actual exception: " + throwable);
         assertEquals(statusCode, ex.getResponse().getStatusCode());
 
         if (expectedMessage != null) {

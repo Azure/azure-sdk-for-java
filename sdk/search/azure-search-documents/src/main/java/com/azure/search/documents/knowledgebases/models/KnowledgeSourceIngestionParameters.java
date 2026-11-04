@@ -271,6 +271,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
         jsonWriter.writeStringField("networkAccessMode",
             this.networkAccessMode == null ? null : this.networkAccessMode.toString());
+        jsonWriter.writeJsonField("cache", this.cache);
         return jsonWriter.writeEndObject();
     }
 
@@ -322,6 +323,8 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                 } else if ("networkAccessMode".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.networkAccessMode
                         = KnowledgeSourceNetworkAccessMode.fromString(reader.getString());
+                } else if ("cache".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.cache = KnowledgeSourceCache.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -445,6 +448,40 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     @Generated
     public KnowledgeSourceIngestionParameters setNetworkAccessMode(KnowledgeSourceNetworkAccessMode networkAccessMode) {
         this.networkAccessMode = networkAccessMode;
+        return this;
+    }
+
+    /*
+     * Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage account with Blob and
+     * Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or its storage binding or
+     * identity changed.
+     */
+    @Generated
+    private KnowledgeSourceCache cache;
+
+    /**
+     * Get the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @return the cache value.
+     */
+    @Generated
+    public KnowledgeSourceCache getCache() {
+        return this.cache;
+    }
+
+    /**
+     * Set the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @param cache the cache value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setCache(KnowledgeSourceCache cache) {
+        this.cache = cache;
         return this;
     }
 }

@@ -210,6 +210,7 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("knowledgeSources", this.knowledgeSources,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("models", this.models, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
         jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
@@ -238,6 +239,7 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
         return jsonReader.readObject(reader -> {
             String name = null;
             List<KnowledgeSourceReference> knowledgeSources = null;
+            List<KnowledgeBaseTool> tools = null;
             List<KnowledgeBaseModel> models = null;
             KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
             KnowledgeRetrievalOutputMode outputMode = null;
@@ -256,6 +258,8 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
                     name = reader.getString();
                 } else if ("knowledgeSources".equals(fieldName)) {
                     knowledgeSources = reader.readArray(reader1 -> KnowledgeSourceReference.fromJson(reader1));
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> KnowledgeBaseTool.fromJson(reader1));
                 } else if ("models".equals(fieldName)) {
                     models = reader.readArray(reader1 -> KnowledgeBaseModel.fromJson(reader1));
                 } else if ("retrievalReasoningEffort".equals(fieldName)) {
@@ -283,6 +287,7 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
                 }
             }
             KnowledgeBase deserializedKnowledgeBase = new KnowledgeBase(name, knowledgeSources);
+            deserializedKnowledgeBase.tools = tools;
             deserializedKnowledgeBase.models = models;
             deserializedKnowledgeBase.retrievalReasoningEffort = retrievalReasoningEffort;
             deserializedKnowledgeBase.outputMode = outputMode;
@@ -496,6 +501,42 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     @Generated
     public KnowledgeBase setRetrieveDefaults(KnowledgeBaseRetrieveDefaults retrieveDefaults) {
         this.retrieveDefaults = retrieveDefaults;
+        return this;
+    }
+
+    /*
+     * Named retrieval tools, each limited to a subset of this knowledge base's sources. When configured, MCP advertises
+     * these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves from the full knowledge
+     * base. Omitting tools or supplying an empty array in this API version clears existing tools.
+     */
+    @Generated
+    private List<KnowledgeBaseTool> tools;
+
+    /**
+     * Get the tools property: Named retrieval tools, each limited to a subset of this knowledge base's sources. When
+     * configured, MCP advertises these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves
+     * from the full knowledge base. Omitting tools or supplying an empty array in this API version clears existing
+     * tools.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<KnowledgeBaseTool> getTools() {
+        return this.tools;
+    }
+
+    /**
+     * Set the tools property: Named retrieval tools, each limited to a subset of this knowledge base's sources. When
+     * configured, MCP advertises these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves
+     * from the full knowledge base. Omitting tools or supplying an empty array in this API version clears existing
+     * tools.
+     *
+     * @param tools the tools value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setTools(List<KnowledgeBaseTool> tools) {
+        this.tools = tools;
         return this;
     }
 }

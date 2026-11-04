@@ -176,7 +176,9 @@ public class KnowledgeBaseReference implements JsonSerializable<KnowledgeBaseRef
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("searchIndex".equals(discriminatorValue)) {
+                if ("graphSearch".equals(discriminatorValue)) {
+                    return KnowledgeBaseGraphSearchReference.fromJson(readerToUse.reset());
+                } else if ("searchIndex".equals(discriminatorValue)) {
                     return KnowledgeBaseSearchIndexReference.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeBaseAzureBlobReference.fromJson(readerToUse.reset());

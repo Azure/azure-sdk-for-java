@@ -58,6 +58,55 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+        preserveFileParameterOrder(indexes.getClass("SearchIndexClient"));
+        preserveFileParameterOrder(indexes.getClass("SearchIndexAsyncClient"));
+        for (boolean async : Arrays.asList(false, true)) {
+            String suffix = async ? "AsyncClient" : "Client";
+            repairListingConvenience(indexes.getClass("SearchIndex" + suffix), "SynonymMaps", "SynonymMap", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "DataSourceConnections",
+                "SearchIndexerDataSourceConnection", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "Indexers", "SearchIndexer", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "Skillsets", "SearchIndexerSkillset",
+                async);
+        }
+
+        addGraphResponseMethods(searchClient, false);
+        addGraphResponseMethods(searchAsyncClient, true);
+        preservePagedSearchAuthorization(searchClient);
+        preservePagedSearchAuthorization(searchAsyncClient);
+        preserveScoringFunctionCompatibility(
+            libraryCustomization.getPackage("com.azure.search.documents.indexes.models").getClass("ScoringFunction"));
+        libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+            .getClass("KnowledgeSourceFileIngestionOperation")
+            .customizeAst(ast -> {
+                ast.getClassByName("KnowledgeSourceFileIngestionOperation").ifPresent(clazz -> clazz
+                    .getFieldByName("kind").ifPresent(field -> {
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+                        field.getVariable(0).setName("KIND");
+                    }));
+                ast.findAll(com.github.javaparser.ast.expr.FieldAccessExpr.class).stream()
+                    .filter(access -> access.getScope().isThisExpr() && access.getNameAsString().equals("kind"))
+                    .forEach(access -> access
+                        .setScope(StaticJavaParser.parseExpression("KnowledgeSourceFileIngestionOperation"))
+                        .setName("KIND"));
+            });
+        for (String kind : Arrays.asList("Distance", "Freshness", "Magnitude", "Tag")) {
+            preserveScoringConstructor(
+                libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+                    .getClass(kind + "ScoringFunction"), kind);
+        }
+        libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+            .getClass("SearchIndexKnowledgeSourceFilterHint")
+            .customizeAst(ast -> ast.getClassByName("SearchIndexKnowledgeSourceFilterHint").ifPresent(clazz -> {
+                if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 2)) {
+                    clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                        "public SearchIndexKnowledgeSourceFilterHint(String field, List<String> fieldValues) {"
+                            + "this(field); setFieldValues(fieldValues); }"));
+                    clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                        .forEach(constructor -> constructor.setJavadocComment("Creates a filter hint with explicit values.\n"
+                            + "@param field the field to filter.\n@param fieldValues the allowed filter values."));
+                }
+            }));
 
         customizeKnowledgeBaseRetrievalStream(libraryCustomization, logger);
         customizeKnowledgeSourceStatusDurationParsing(
@@ -73,6 +122,164 @@ public class SearchCustomizations extends Customization {
         // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
         addNoArgConstructorToEncryptionKey(libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
             .getClass("SearchResourceEncryptionKey"));
+    }
+
+    private static void preservePagedSearchAuthorization(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> clazz
+            .getMethodsByName("search").forEach(method -> method
+                .findAll(com.github.javaparser.ast.expr.MethodCallExpr.class)
+                .stream()
+                .filter(call -> call.getNameAsString().equals("searchWithResponse")
+                    && call.getArguments().size() == 2
+                    && call.getArgument(1).toString().equals("requestOptions"))
+                .forEach(call -> call.setArgument(1,
+                    StaticJavaParser.parseExpression("SearchUtils.addSearchHeaders(requestOptions, options)"))))));
+    }
+
+    private static void repairListingConvenience(ClassCustomization customization, String operation, String model,
+        boolean async) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.ListingSearchType");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                String methodName = "get" + operation;
+                String serviceMethod = "list" + operation + (async ? "Async" : "");
+                String body = "{ RequestOptions requestOptions = new RequestOptions();"
+                    + "if (select != null) { requestOptions.addQueryParam(\"$select\", String.join(\",\", select), false); }"
+                    + "if (search != null) { requestOptions.addQueryParam(\"search\", search, false); }"
+                    + "if (pageSize != null) { requestOptions.addQueryParam(\"pageSize\", pageSize.toString(), false); }"
+                    + "if (searchType != null) { requestOptions.addQueryParam(\"searchType\", searchType.toString(), false); }"
+                    + "return serviceClient." + serviceMethod
+                    + "(requestOptions).mapPage(value -> value.toObject(" + model + ".class)); }";
+                if (clazz.getMethodsByName(methodName).stream()
+                    .noneMatch(method -> method.getParameters().size() == 4)) {
+                    clazz.addMember(StaticJavaParser.parseBodyDeclaration((async ? "PagedFlux<" : "PagedIterable<")
+                        + model + "> " + methodName
+                        + "(List<String> select, String search, Integer pageSize, ListingSearchType searchType) " + body));
+                } else {
+                    clazz.getMethodsByName(methodName).stream()
+                        .filter(method -> method.getParameters().size() == 4)
+                        .forEach(method -> method.setBody(StaticJavaParser.parseBlock(body)));
+                }
+            });
+        });
+    }
+
+    private static void preserveFileParameterOrder(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            for (MethodDeclaration method : clazz.getMethods()) {
+                if (method.isPublic() && method.getParameters().size() >= 2
+                    && method.getParameter(0).getNameAsString().equals("name")
+                    && (method.getNameAsString().equals("deleteKnowledgeSourceFile")
+                        || method.getNameAsString().equals("deleteKnowledgeSourceFileWithResponse")
+                        || method.getNameAsString().equals("updateKnowledgeSourceFile")
+                        || method.getNameAsString().equals("uploadKnowledgeSourceFile"))) {
+                    com.github.javaparser.ast.body.Parameter first = method.getParameter(0);
+                    method.getParameters().set(0, method.getParameter(1));
+                    method.getParameters().set(1, first);
+                    clazz.findAll(com.github.javaparser.ast.expr.MethodCallExpr.class).stream()
+                        .filter(call -> call.getNameAsString().equals(method.getNameAsString())
+                            && call.getArguments().size() >= 2
+                            && (!call.getScope().isPresent() || call.getScope().get().isThisExpr()))
+                        .forEach(call -> {
+                            com.github.javaparser.ast.expr.Expression argument = call.getArgument(0);
+                            call.getArguments().set(0, call.getArgument(1));
+                            call.getArguments().set(1, argument);
+                        });
+                }
+            }
+        }));
+    }
+
+    private static void preserveScoringConstructor(ClassCustomization customization, String kind) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 3
+                && constructor.getParameter(0).getType().asString().equals("String"))) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public " + kind + "ScoringFunction(String fieldName, double boost, " + kind
+                        + "ScoringParameters parameters) { this(boost, fieldName, parameters); }"));
+                clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 3
+                    && constructor.getParameter(0).getType().asString().equals("String"))
+                    .forEach(constructor -> constructor.setJavadocComment("Creates a field-based scoring function.\n"
+                        + "@param fieldName the field used as input.\n@param boost the score multiplier.\n"
+                        + "@param parameters the scoring parameters."));
+            }
+        }));
+    }
+
+    private static void addGraphResponseMethods(ClassCustomization customization, boolean async) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            String responseType = async ? "Mono<Response<GraphQueryResult>>" : "Response<GraphQueryResult>";
+            String converter = async ? "mapResponse" : "convertResponse";
+            if (clazz.getMethodsByName("graphWithResponse").isEmpty()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "public " + responseType
+                    + " graphWithResponse(GraphOptions options, RequestOptions requestOptions) {"
+                    + "return SearchUtils." + converter
+                    + "(hiddenGeneratedGraphWithResponse(BinaryData.fromObject(SearchUtils.fromGraphOptions(options)),"
+                    + "SearchUtils.addGraphHeaders(requestOptions, options)), GraphQueryResult.class); }"));
+            }
+            clazz.getMethodsByName("graphWithResponse")
+                .forEach(method -> method.getAllContainedComments().forEach(com.github.javaparser.ast.comments.Comment::remove));
+            clazz.getMethodsByName("graphWithResponse").forEach(method -> method.setJavadocComment(
+                "Executes a graph query and returns its HTTP response and diagnostics.\n"
+                    + "@param options the graph query and diagnostic options.\n"
+                    + "@param requestOptions the HTTP request options.\n"
+                    + "@return the graph result together with the HTTP response.\n"
+                    + "@throws NullPointerException if options is null."));
+        }));
+    }
+
+    private static void preserveScoringFunctionCompatibility(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            if (!clazz.getFieldByName("fieldName").isPresent()) {
+                clazz.addField(String.class, "fieldName", Modifier.Keyword.PRIVATE);
+                clazz.addField(double.class, "boost", Modifier.Keyword.PRIVATE);
+            }
+            if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 2)) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "public ScoringFunction(String fieldName, double boost) {"
+                    + "this.fieldName = fieldName; this.boost = boost; }"));
+            }
+            if (clazz.getMethodsByName("getFieldName").isEmpty()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public String getFieldName() { return this.fieldName; }"));
+            }
+            if (clazz.getMethodsByName("getBoost").isEmpty()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public double getBoost() { return this.boost; }"));
+            }
+            clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                .forEach(constructor -> constructor.getAllContainedComments()
+                    .forEach(com.github.javaparser.ast.comments.Comment::remove));
+            for (String getter : Arrays.asList("getFieldName", "getBoost")) {
+                clazz.getMethodsByName(getter).forEach(method -> method.getAllContainedComments()
+                    .forEach(com.github.javaparser.ast.comments.Comment::remove));
+            }
+            clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                .forEach(constructor -> constructor.setJavadocComment("Creates a field-based scoring function.\n"
+                    + "@param fieldName the field used as input.\n@param boost the score multiplier."));
+            clazz.getMethodsByName("getFieldName").forEach(method -> method.setJavadocComment(
+                "Gets the field used as input.\n@return the field name."));
+            clazz.getMethodsByName("getBoost").forEach(method -> method.setJavadocComment(
+                "Gets the score multiplier.\n@return the boost."));
+            clazz.getMethodsByName("toJson").stream()
+                .filter(method -> !method.getBody().get().toString().contains("this.fieldName"))
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                method.getBody().get().toString().replace("jsonWriter.writeStartObject();",
+                    "jsonWriter.writeStartObject(); if (this.fieldName != null) {"
+                        + "jsonWriter.writeStringField(\"fieldName\", this.fieldName);"
+                        + "jsonWriter.writeDoubleField(\"boost\", this.boost); }"))));
+            clazz.getMethodsByName("fromJsonKnownDiscriminator")
+                .stream()
+                .filter(method -> !method.getBody().get().toString().contains("deserializedScoringFunction.fieldName"))
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                    method.getBody().get().toString().replace("if (\"type\".equals(fieldName)) {",
+                        "if (\"fieldName\".equals(fieldName)) {"
+                            + "deserializedScoringFunction.fieldName = reader.getString();"
+                            + "} else if (\"boost\".equals(fieldName)) {"
+                            + "deserializedScoringFunction.boost = reader.getDouble();"
+                            + "} else if (\"type\".equals(fieldName)) {"))));
+        }));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -145,6 +352,37 @@ public class SearchCustomizations extends Customization {
             .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
                     "response.completed", true, false));
+        replaceStreamModel(customization, "KnowledgeBaseRetrievalStreamEvent", baseEventSource());
+        replaceStreamModel(customization, "KnowledgeBaseRetrievalStartedStreamEvent",
+            wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
+                "retrieval.started", false, false));
+        replaceStreamModel(customization, "KnowledgeBaseActivityStartedStreamEvent",
+            wrapperSource("KnowledgeBaseActivityStartedStreamEvent", "KnowledgeBaseActivityStartedEvent",
+                "activity.started", false, false));
+        replaceStreamModel(customization, "KnowledgeBaseActivityCompletedStreamEvent",
+            wrapperSource("KnowledgeBaseActivityCompletedStreamEvent", "KnowledgeBaseActivityRecord",
+                "activity.completed", false, false));
+        replaceStreamModel(customization, "KnowledgeBaseAnswerCompletedStreamEvent",
+            wrapperSource("KnowledgeBaseAnswerCompletedStreamEvent", "KnowledgeBaseAnswerCompletedEvent",
+                "answer.completed", false, false));
+        replaceStreamModel(customization, "KnowledgeBaseReferencesCompletedStreamEvent",
+            wrapperSource("KnowledgeBaseReferencesCompletedStreamEvent", "KnowledgeBaseReference",
+                "references.completed", false, true));
+        replaceStreamModel(customization, "KnowledgeBaseErrorStreamEvent",
+            wrapperSource("KnowledgeBaseErrorStreamEvent", "KnowledgeBaseStreamErrorEvent", "error", true, false));
+        replaceStreamModel(customization, "KnowledgeBaseResponseCompletedStreamEvent",
+            wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
+                "response.completed", true, false));
+    }
+
+    private static void replaceStreamModel(LibraryCustomization customization, String className, String source) {
+        customization.getPackage("com.azure.search.documents.knowledgebases.models")
+            .getClass(className)
+            .customizeAst(ast -> {
+                com.github.javaparser.ast.CompilationUnit replacement = StaticJavaParser.parse(source);
+                ast.setImports(replacement.getImports());
+                ast.setTypes(replacement.getTypes());
+            });
     }
 
     private static void customizeKnowledgeSourceStatusDurationParsing(ClassCustomization customization) {
@@ -437,10 +675,15 @@ public class SearchCustomizations extends Customization {
     private static void includeOldApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-            for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
+            for (String version : Arrays.asList("2026-04-01", "2025-09-01",
+                "2024-07-01", "2023-11-01", "2020-06-30")) {
                 String enumName = ("V" + version.replace("-", "_"));
-                entries.add(0, new EnumConstantDeclaration(enumName).addArgument(new StringLiteralExpr(version))
-                    .setJavadocComment("Enum value " + version + "."));
+                enumName = enumName.toUpperCase(java.util.Locale.ROOT);
+                final String name = enumName;
+                if (entries.stream().noneMatch(entry -> entry.getNameAsString().equals(name))) {
+                    entries.add(0, new EnumConstantDeclaration(enumName).addArgument(new StringLiteralExpr(version))
+                        .setJavadocComment("Enum value " + version + "."));
+                }
             }
 
             enumDeclaration.setEntries(entries);
@@ -450,7 +693,7 @@ public class SearchCustomizations extends Customization {
     private static void removeOldPreviewApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName())
             .ifPresent(enumDeclaration -> enumDeclaration.getEntries()
-                .removeIf(entry -> Arrays.asList("V2025_11_01_PREVIEW", "V2026_05_01_PREVIEW")
+                .removeIf(entry -> Arrays.asList("V2025_11_01_PREVIEW", "V2026_05_01_PREVIEW", "V2026_08_01_PREVIEW")
                     .contains(entry.getNameAsString()))));
     }
 

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.AgenticSearchOptions;
 import com.azure.search.documents.models.HybridSearch;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
@@ -955,11 +956,13 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
         jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
         jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
+        jsonWriter.writeStringField("moreLikeThis", this.moreLikeThis);
         if (this.orderBy != null) {
             jsonWriter.writeStringField("orderby",
                 this.orderBy.stream().map(element -> element == null ? "" : element).collect(Collectors.joining(",")));
         }
         jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeJsonField("agenticOptions", this.agenticOptions);
         jsonWriter.writeStringField("scoringStatistics",
             this.scoringStatistics == null ? null : this.scoringStatistics.toString());
         jsonWriter.writeStringField("sessionId", this.sessionId);
@@ -1040,6 +1043,8 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                     deserializedSearchPostRequest.highlightPreTag = reader.getString();
                 } else if ("minimumCoverage".equals(fieldName)) {
                     deserializedSearchPostRequest.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                } else if ("moreLikeThis".equals(fieldName)) {
+                    deserializedSearchPostRequest.moreLikeThis = reader.getString();
                 } else if ("orderby".equals(fieldName)) {
                     List<String> orderBy = reader.getNullable(nonNullReader -> {
                         String orderByEncodedAsString = nonNullReader.getString();
@@ -1050,6 +1055,8 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                     deserializedSearchPostRequest.orderBy = orderBy;
                 } else if ("queryType".equals(fieldName)) {
                     deserializedSearchPostRequest.queryType = QueryType.fromString(reader.getString());
+                } else if ("agenticOptions".equals(fieldName)) {
+                    deserializedSearchPostRequest.agenticOptions = AgenticSearchOptions.fromJson(reader);
                 } else if ("scoringStatistics".equals(fieldName)) {
                     deserializedSearchPostRequest.scoringStatistics = ScoringStatistics.fromString(reader.getString());
                 } else if ("sessionId".equals(fieldName)) {
@@ -1269,6 +1276,68 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     @Generated
     public SearchPostRequest setHybridSearch(HybridSearch hybridSearch) {
         this.hybridSearch = hybridSearch;
+        return this;
+    }
+
+    /*
+     * The key of the document to use as the basis for finding similar documents. This parameter cannot be used together
+     * with search text.
+     */
+    @Generated
+    private String moreLikeThis;
+
+    /*
+     * Request-scoped runtime options when queryType is set to 'agentic'. Not supported with other query modes. Use the
+     * existing debug selector for diagnostics.
+     */
+    @Generated
+    private AgenticSearchOptions agenticOptions;
+
+    /**
+     * Get the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @return the moreLikeThis value.
+     */
+    @Generated
+    public String getMoreLikeThis() {
+        return this.moreLikeThis;
+    }
+
+    /**
+     * Set the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @param moreLikeThis the moreLikeThis value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setMoreLikeThis(String moreLikeThis) {
+        this.moreLikeThis = moreLikeThis;
+        return this;
+    }
+
+    /**
+     * Get the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @return the agenticOptions value.
+     */
+    @Generated
+    public AgenticSearchOptions getAgenticOptions() {
+        return this.agenticOptions;
+    }
+
+    /**
+     * Set the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @param agenticOptions the agenticOptions value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setAgenticOptions(AgenticSearchOptions agenticOptions) {
+        this.agenticOptions = agenticOptions;
         return this;
     }
 }
