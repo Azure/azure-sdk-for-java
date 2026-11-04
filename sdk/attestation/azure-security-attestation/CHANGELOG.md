@@ -1,15 +1,6 @@
 # Release History
 
-## 1.3.1 (2026-11-02)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
-- Upgraded `nimbus-jose-jwt` from `9.37.3` to version `9.37.4`.
-
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -18,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `nimbus-jose-jwt` from `9.37.3` to version `9.37.4`.
 
 ## 1.2.0 (2026-10-07)
 

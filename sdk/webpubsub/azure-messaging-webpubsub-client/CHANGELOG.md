@@ -1,15 +1,6 @@
 # Release History
 
-## 1.2.1 (2026-11-02)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
-- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
-
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -37,6 +28,15 @@
 #### Dependency Updates
 
 - Migrated `netty-codec-http` to `4.2.19.Final` and updated WebSocket event loops for Netty 4.2.
+
+## 1.2.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 
 ## 1.1.11 (2026-10-06)
 

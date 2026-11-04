@@ -1,5 +1,15 @@
 # Release History
 
+## 2.61.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.60.1 (2026-11-02)
 
 ### Other Changes
@@ -9,16 +19,6 @@
 - Upgraded `azure-resourcemanager-msi` from `2.54.3` to version `2.55.1`.
 - Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
 - Upgraded `azure-resourcemanager-authorization` from `2.53.14` to version `2.54.1`.
-
-## 2.60.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.59.0 (2026-10-13)
 
