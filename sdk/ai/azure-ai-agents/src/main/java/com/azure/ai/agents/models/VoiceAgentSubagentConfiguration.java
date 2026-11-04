@@ -78,7 +78,7 @@ public class VoiceAgentSubagentConfiguration implements JsonSerializable<VoiceAg
      * Creates an instance of VoiceAgentSubagentConfiguration class.
      */
     @Generated
-    public VoiceAgentSubagentConfiguration() {
+    protected VoiceAgentSubagentConfiguration() {
     }
 
     /**

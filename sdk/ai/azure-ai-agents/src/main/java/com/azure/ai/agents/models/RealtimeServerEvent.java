@@ -172,9 +172,9 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
                 } else if ("error".equals(discriminatorValue)) {
                     return RealtimeErrorEvent.fromJson(readerToUse.reset());
                 } else if ("session.handoff.started".equals(discriminatorValue)) {
-                    return VoiceAgentServerEventSessionHandoffStarted.fromJson(readerToUse.reset());
+                    return VoiceAgentSessionHandoffStartedEvent.fromJson(readerToUse.reset());
                 } else if ("session.handoff.aborted".equals(discriminatorValue)) {
-                    return VoiceAgentServerEventSessionHandoffAborted.fromJson(readerToUse.reset());
+                    return VoiceAgentSessionHandoffAbortedEvent.fromJson(readerToUse.reset());
                 } else if ("session.subagent.started".equals(discriminatorValue)) {
                     return VoiceAgentSessionSubagentStartedEvent.fromJson(readerToUse.reset());
                 } else if ("session.subagent.completed".equals(discriminatorValue)) {
@@ -208,7 +208,7 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
                 } else if ("response.video.delta".equals(discriminatorValue)) {
                     return VoiceAgentResponseVideoDeltaEvent.fromJson(readerToUse.reset());
                 } else if ("session.handoff.completed".equals(discriminatorValue)) {
-                    return VoiceAgentServerEventSessionHandoffCompleted.fromJson(readerToUse.reset());
+                    return VoiceAgentSessionHandoffCompletedEvent.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

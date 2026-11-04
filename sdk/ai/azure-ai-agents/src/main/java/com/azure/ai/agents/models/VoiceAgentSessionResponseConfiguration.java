@@ -404,6 +404,7 @@ public final class VoiceAgentSessionResponseConfiguration
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("interim_response", this.interimResponse);
         jsonWriter.writeJsonField("greeting", this.greeting);
+        jsonWriter.writeJsonField("handoff", this.handoff);
         jsonWriter.writeNumberField("expires_at", this.expiresAt);
         return jsonWriter.writeEndObject();
     }
@@ -437,6 +438,7 @@ public final class VoiceAgentSessionResponseConfiguration
             Map<String, String> metadata = null;
             VoiceAgentInterimResponseConfiguration interimResponse = null;
             VoiceAgentGreetingConfiguration greeting = null;
+            VoiceAgentHandoffState handoff = null;
             Long expiresAt = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -481,6 +483,8 @@ public final class VoiceAgentSessionResponseConfiguration
                     interimResponse = VoiceAgentInterimResponseConfiguration.fromJson(reader);
                 } else if ("greeting".equals(fieldName)) {
                     greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
+                } else if ("handoff".equals(fieldName)) {
+                    handoff = VoiceAgentHandoffState.fromJson(reader);
                 } else if ("expires_at".equals(fieldName)) {
                     expiresAt = reader.getNullable(JsonReader::getLong);
                 } else {
@@ -504,6 +508,7 @@ public final class VoiceAgentSessionResponseConfiguration
             deserializedVoiceAgentSessionResponseConfiguration.metadata = metadata;
             deserializedVoiceAgentSessionResponseConfiguration.interimResponse = interimResponse;
             deserializedVoiceAgentSessionResponseConfiguration.greeting = greeting;
+            deserializedVoiceAgentSessionResponseConfiguration.handoff = handoff;
             deserializedVoiceAgentSessionResponseConfiguration.expiresAt = expiresAt;
             return deserializedVoiceAgentSessionResponseConfiguration;
         });

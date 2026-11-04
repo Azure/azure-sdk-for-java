@@ -202,7 +202,7 @@ public class AgentsCustomizations extends Customization {
             "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
             "VoiceAgentPostCallDestination",
             "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
-            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
+            "VoiceAgentSubagentConfiguration", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
@@ -291,6 +291,12 @@ public class AgentsCustomizations extends Customization {
             "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
             "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
+        customizeUnionProperty(customization, "InlineVoiceSubagent", "toolChoice",
+            "Tool-selection behavior for this subagent. If omitted or null, the service defaults to auto.",
+            toolChoice, true, false, logger);
+        customizeUnionProperty(customization, "InlineVoiceSubagent", "maxResponseOutputTokens",
+            "The maximum output-token count for one response while this subagent is active.",
+            longMaxOutputTokens, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
             "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
             logger);

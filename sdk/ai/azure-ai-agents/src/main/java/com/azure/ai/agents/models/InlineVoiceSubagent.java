@@ -11,6 +11,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ToolChoiceFunction;
+import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 
@@ -116,13 +120,6 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      */
     @Generated
     private VoiceAgentInterimResponseConfiguration interimResponse;
-
-    /*
-     * Whether this subagent may call customer tools in parallel. If omitted, the service defaults to false. Subagents
-     * with outgoing handoff conditions must use `false`.
-     */
-    @Generated
-    private Boolean parallelToolCalls;
 
     /*
      * Outgoing handoffs from this subagent. The containing subagent supplies each condition's source. The service
@@ -291,8 +288,8 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
+    BinaryData getToolChoice() {
+        // AI Tooling: union type
         return this.toolChoice;
     }
 
@@ -303,8 +300,8 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      * @param toolChoice the toolChoice value to set.
      * @return the InlineVoiceSubagent object itself.
      */
-    @Generated
-    public InlineVoiceSubagent setToolChoice(BinaryData toolChoice) {
+    InlineVoiceSubagent setToolChoice(BinaryData toolChoice) {
+        // AI Tooling: union type
         this.toolChoice = toolChoice;
         return this;
     }
@@ -363,8 +360,8 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      *
      * @return the maxResponseOutputTokens value.
      */
-    @Generated
-    public BinaryData getMaxResponseOutputTokens() {
+    BinaryData getMaxResponseOutputTokens() {
+        // AI Tooling: union type
         return this.maxResponseOutputTokens;
     }
 
@@ -375,8 +372,8 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      * @param maxResponseOutputTokens the maxResponseOutputTokens value to set.
      * @return the InlineVoiceSubagent object itself.
      */
-    @Generated
-    public InlineVoiceSubagent setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
+    InlineVoiceSubagent setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
+        // AI Tooling: union type
         this.maxResponseOutputTokens = maxResponseOutputTokens;
         return this;
     }
@@ -450,30 +447,6 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
     }
 
     /**
-     * Get the parallelToolCalls property: Whether this subagent may call customer tools in parallel. If omitted, the
-     * service defaults to false. Subagents with outgoing handoff conditions must use `false`.
-     *
-     * @return the parallelToolCalls value.
-     */
-    @Generated
-    public Boolean isParallelToolCalls() {
-        return this.parallelToolCalls;
-    }
-
-    /**
-     * Set the parallelToolCalls property: Whether this subagent may call customer tools in parallel. If omitted, the
-     * service defaults to false. Subagents with outgoing handoff conditions must use `false`.
-     *
-     * @param parallelToolCalls the parallelToolCalls value to set.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    @Generated
-    public InlineVoiceSubagent setParallelToolCalls(Boolean parallelToolCalls) {
-        this.parallelToolCalls = parallelToolCalls;
-        return this;
-    }
-
-    /**
      * Get the handoffConditions property: Outgoing handoffs from this subagent. The containing subagent supplies each
      * condition's source. The service permits at most 128 conditions across the entire Agent.
      *
@@ -526,7 +499,7 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
             this.reasoningEffort == null ? null : this.reasoningEffort.toString());
         jsonWriter.writeJsonField("voice_adaptation", this.voiceAdaptation);
         jsonWriter.writeJsonField("interim_response", this.interimResponse);
-        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCallsEnabled);
         jsonWriter.writeArrayField("handoff_conditions", this.handoffConditions,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -557,7 +530,7 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
             VoiceAgentHandoffReasoningEffort reasoningEffort = null;
             VoiceAgentHandoffVoiceAdaptation voiceAdaptation = null;
             VoiceAgentInterimResponseConfiguration interimResponse = null;
-            Boolean parallelToolCalls = null;
+            Boolean parallelToolCallsEnabled = null;
             List<VoiceAgentHandoffCondition> handoffConditions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -591,7 +564,7 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
                 } else if ("interim_response".equals(fieldName)) {
                     interimResponse = VoiceAgentInterimResponseConfiguration.fromJson(reader);
                 } else if ("parallel_tool_calls".equals(fieldName)) {
-                    parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
+                    parallelToolCallsEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("handoff_conditions".equals(fieldName)) {
                     handoffConditions = reader.readArray(reader1 -> VoiceAgentHandoffCondition.fromJson(reader1));
                 } else {
@@ -610,9 +583,211 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
             deserializedInlineVoiceSubagent.reasoningEffort = reasoningEffort;
             deserializedInlineVoiceSubagent.voiceAdaptation = voiceAdaptation;
             deserializedInlineVoiceSubagent.interimResponse = interimResponse;
-            deserializedInlineVoiceSubagent.parallelToolCalls = parallelToolCalls;
+            deserializedInlineVoiceSubagent.parallelToolCallsEnabled = parallelToolCallsEnabled;
             deserializedInlineVoiceSubagent.handoffConditions = handoffConditions;
             return deserializedInlineVoiceSubagent;
         });
+    }
+
+    /*
+     * Whether this subagent may call customer tools in parallel. If omitted, the service defaults to false. Subagents
+     * with outgoing handoff conditions must use `false`.
+     */
+    @Generated
+    private Boolean parallelToolCallsEnabled;
+
+    /**
+     * Get the parallelToolCallsEnabled property: Whether this subagent may call customer tools in parallel. If omitted,
+     * the service defaults to false. Subagents with outgoing handoff conditions must use `false`.
+     *
+     * @return the parallelToolCallsEnabled value.
+     */
+    @Generated
+    public Boolean isParallelToolCallsEnabled() {
+        return this.parallelToolCallsEnabled;
+    }
+
+    /**
+     * Set the parallelToolCallsEnabled property: Whether this subagent may call customer tools in parallel. If omitted,
+     * the service defaults to false. Subagents with outgoing handoff conditions must use `false`.
+     *
+     * @param parallelToolCallsEnabled the parallelToolCallsEnabled value to set.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    @Generated
+    public InlineVoiceSubagent setParallelToolCallsEnabled(Boolean parallelToolCallsEnabled) {
+        this.parallelToolCallsEnabled = parallelToolCallsEnabled;
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property: Tool-selection behavior for this subagent. If omitted or null, the service defaults
+     * to auto.
+     *
+     * @return the toolChoice value as an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ToolChoiceOptions.class);
+    }
+
+    /**
+     * Set the toolChoice property: Tool-selection behavior for this subagent. If omitted or null, the service defaults
+     * to auto.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceOptions} mode to set, or null to clear.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    public InlineVoiceSubagent setToolChoice(ToolChoiceOptions toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property to a specific function tool.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    public InlineVoiceSubagent setToolChoice(ToolChoiceFunction toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property to a specific MCP tool.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    public InlineVoiceSubagent setToolChoice(ToolChoiceMcp toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
+     * active.
+     *
+     * @param maxResponseOutputTokens the maximum number of output tokens to set.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    public InlineVoiceSubagent setMaxResponseOutputTokens(long maxResponseOutputTokens) {
+        // AI Tooling: union type
+        this.maxResponseOutputTokens = BinaryData.fromObject(maxResponseOutputTokens);
+        return this;
+    }
+
+    /**
+     * Set the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
+     * active.
+     *
+     * @param maxResponseOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count,
+     * or null to clear.
+     * @return the InlineVoiceSubagent object itself.
+     */
+    public InlineVoiceSubagent setMaxResponseOutputTokens(String maxResponseOutputTokens) {
+        // AI Tooling: union type
+        this.maxResponseOutputTokens
+            = maxResponseOutputTokens == null ? null : BinaryData.fromObject(maxResponseOutputTokens);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: Tool-selection behavior for this
+     * subagent. If omitted or null, the service defaults to auto.
+     *
+     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isFunction()) {
+            return null;
+        }
+        return choice.asFunction();
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: Tool-selection behavior for this subagent.
+     * If omitted or null, the service defaults to auto.
+     *
+     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isMcp()) {
+            return null;
+        }
+        return choice.asMcp();
+    }
+
+    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!json.startsWith("{")) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ResponseCreateParams.ToolChoice.class);
+    }
+
+    /**
+     * Get the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
+     * active.
+     *
+     * @return the maxResponseOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
+     */
+    public Long getMaxResponseOutputTokensAsLong() {
+        // AI Tooling: union type
+        if (this.maxResponseOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxResponseOutputTokens.toString().trim();
+        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
+            return null;
+        }
+        return this.maxResponseOutputTokens.toObject(Long.class);
+    }
+
+    /**
+     * Get the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
+     * active.
+     *
+     * @return the maxResponseOutputTokens value as a String, or {@code null} when it is not set or holds another
+     * variant.
+     */
+    public String getMaxResponseOutputTokensAsString() {
+        // AI Tooling: union type
+        if (this.maxResponseOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxResponseOutputTokens.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.maxResponseOutputTokens.toObject(String.class);
     }
 }

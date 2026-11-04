@@ -323,9 +323,6 @@ class;com.azure.ai.agents.models.VoiceAgentRtcCallSdpCreatedEvent;Preview API. V
 class;com.azure.ai.agents.models.VoiceAgentRtcCallSdpCreateEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSemanticVadTurnDetection;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerEvent;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventSessionHandoffAborted;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventSessionHandoffCompleted;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventSessionHandoffStarted;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerEventTypeExtension;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerVadTurnDetection;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionAvatarConfiguration;Preview API. VoiceAgents=V1Preview;
@@ -333,6 +330,9 @@ class;com.azure.ai.agents.models.VoiceAgentSessionAvatarConnectEvent;Preview API
 class;com.azure.ai.agents.models.VoiceAgentSessionAvatarConnectingEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionAvatarSwitchToIdleEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionAvatarSwitchToSpeakingEvent;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSessionHandoffAbortedEvent;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSessionHandoffCompletedEvent;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSessionHandoffStartedEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionIncludeOption;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionResponseConfiguration;Preview API. VoiceAgents=V1Preview;
@@ -357,7 +357,6 @@ class;com.azure.ai.agents.models.VoiceAgentSystemToolName;Preview API. VoiceAgen
 class;com.azure.ai.agents.models.VoiceAgentTemplateGreetingConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentToolboxTool;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentToolChoice;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentToolResponseScheduling;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTranscriptionPhrase;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTranscriptionWord;Preview API. VoiceAgents=V1Preview;

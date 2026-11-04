@@ -6,11 +6,14 @@
 
 - Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
   destinations.
+- Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
+- Added preview SIP telephony bindings.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Preserved handoff state when serializing and deserializing voice-agent session response configurations.
 ### Other Changes
 
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.

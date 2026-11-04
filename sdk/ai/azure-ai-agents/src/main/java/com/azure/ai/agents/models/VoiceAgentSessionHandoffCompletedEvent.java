@@ -10,19 +10,20 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
- * The `session.handoff.started` server event.
+ * The `session.handoff.completed` server event.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeServerEvent {
+public final class VoiceAgentSessionHandoffCompletedEvent extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.SESSION_HANDOFF_STARTED;
+    private RealtimeServerEventType type = RealtimeServerEventType.SESSION_HANDOFF_COMPLETED;
 
     /*
      * The server-generated event identifier.
@@ -78,8 +79,20 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
     @Generated
     private final int nodeGeneration;
 
+    /*
+     * The target-preparation duration.
+     */
+    @Generated
+    private final long prepareDuration;
+
+    /*
+     * The total handoff duration.
+     */
+    @Generated
+    private final long duration;
+
     /**
-     * Creates an instance of VoiceAgentServerEventSessionHandoffStarted class.
+     * Creates an instance of VoiceAgentSessionHandoffCompletedEvent class.
      *
      * @param eventId the eventId value to set.
      * @param handoffId the handoffId value to set.
@@ -90,10 +103,13 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
      * @param toModel the toModel value to set.
      * @param toolCallId the toolCallId value to set.
      * @param nodeGeneration the nodeGeneration value to set.
+     * @param prepareDuration the prepareDuration value to set.
+     * @param duration the duration value to set.
      */
     @Generated
-    private VoiceAgentServerEventSessionHandoffStarted(String eventId, String handoffId, String edgeId,
-        String fromNodeId, String toNodeId, String fromModel, String toModel, String toolCallId, int nodeGeneration) {
+    private VoiceAgentSessionHandoffCompletedEvent(String eventId, String handoffId, String edgeId, String fromNodeId,
+        String toNodeId, String fromModel, String toModel, String toolCallId, int nodeGeneration,
+        Duration prepareDuration, Duration duration) {
         this.eventId = eventId;
         this.handoffId = handoffId;
         this.edgeId = edgeId;
@@ -103,6 +119,16 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
         this.toModel = toModel;
         this.toolCallId = toolCallId;
         this.nodeGeneration = nodeGeneration;
+        if (prepareDuration == null) {
+            this.prepareDuration = 0L;
+        } else {
+            this.prepareDuration = prepareDuration.toMillis();
+        }
+        if (duration == null) {
+            this.duration = 0L;
+        } else {
+            this.duration = duration.toMillis();
+        }
     }
 
     /**
@@ -208,6 +234,26 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
     }
 
     /**
+     * Get the prepareDuration property: The target-preparation duration.
+     *
+     * @return the prepareDuration value.
+     */
+    @Generated
+    public Duration getPrepareDuration() {
+        return Duration.ofMillis(this.prepareDuration);
+    }
+
+    /**
+     * Get the duration property: The total handoff duration.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -223,21 +269,23 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
         jsonWriter.writeStringField("to_model", this.toModel);
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
         jsonWriter.writeIntField("node_generation", this.nodeGeneration);
+        jsonWriter.writeLongField("prepare_duration_ms", this.prepareDuration);
+        jsonWriter.writeLongField("duration_ms", this.duration);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of VoiceAgentServerEventSessionHandoffStarted from the JsonReader.
+     * Reads an instance of VoiceAgentSessionHandoffCompletedEvent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentServerEventSessionHandoffStarted if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentSessionHandoffCompletedEvent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentServerEventSessionHandoffStarted.
+     * @throws IOException If an error occurs while reading the VoiceAgentSessionHandoffCompletedEvent.
      */
     @Generated
-    public static VoiceAgentServerEventSessionHandoffStarted fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSessionHandoffCompletedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             String handoffId = null;
@@ -248,7 +296,9 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
             String toModel = null;
             String toolCallId = null;
             int nodeGeneration = 0;
-            RealtimeServerEventType type = RealtimeServerEventType.SESSION_HANDOFF_STARTED;
+            Duration prepareDuration = null;
+            Duration duration = null;
+            RealtimeServerEventType type = RealtimeServerEventType.SESSION_HANDOFF_COMPLETED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -270,17 +320,21 @@ public final class VoiceAgentServerEventSessionHandoffStarted extends RealtimeSe
                     toolCallId = reader.getString();
                 } else if ("node_generation".equals(fieldName)) {
                     nodeGeneration = reader.getInt();
+                } else if ("prepare_duration_ms".equals(fieldName)) {
+                    prepareDuration = Duration.ofMillis(reader.getLong());
+                } else if ("duration_ms".equals(fieldName)) {
+                    duration = Duration.ofMillis(reader.getLong());
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentServerEventSessionHandoffStarted deserializedVoiceAgentServerEventSessionHandoffStarted
-                = new VoiceAgentServerEventSessionHandoffStarted(eventId, handoffId, edgeId, fromNodeId, toNodeId,
-                    fromModel, toModel, toolCallId, nodeGeneration);
-            deserializedVoiceAgentServerEventSessionHandoffStarted.type = type;
-            return deserializedVoiceAgentServerEventSessionHandoffStarted;
+            VoiceAgentSessionHandoffCompletedEvent deserializedVoiceAgentSessionHandoffCompletedEvent
+                = new VoiceAgentSessionHandoffCompletedEvent(eventId, handoffId, edgeId, fromNodeId, toNodeId,
+                    fromModel, toModel, toolCallId, nodeGeneration, prepareDuration, duration);
+            deserializedVoiceAgentSessionHandoffCompletedEvent.type = type;
+            return deserializedVoiceAgentSessionHandoffCompletedEvent;
         });
     }
 }
