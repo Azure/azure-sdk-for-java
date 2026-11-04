@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
+  destinations.
+
 ### Breaking Changes
 
 ### Bugs Fixed

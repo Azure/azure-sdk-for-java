@@ -271,6 +271,7 @@ class;com.azure.ai.agents.models.VoiceAgentEndConversationSystemTool;Preview API
 class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceDetection;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceDetectionModel;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceThresholdLevel;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentEventGridPostCallDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentFunctionTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentGreetingConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputTranscription;Preview API. VoiceAgents=V1Preview;
@@ -283,6 +284,10 @@ class;com.azure.ai.agents.models.VoiceAgentMaxOutputTokens;Preview API. VoiceAge
 class;com.azure.ai.agents.models.VoiceAgentMcpTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReduction;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentNoiseReductionType;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentPostCallConfiguration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentPostCallDestination;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentPostCallDestinationType;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentPostCallIncludeOption;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentProfanityFilterMode;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRealtimeResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseAnimationBlendshapeDeltaEvent;Preview API. VoiceAgents=V1Preview;
@@ -294,6 +299,7 @@ class;com.azure.ai.agents.models.VoiceAgentResponseAudioTimestampDeltaEvent;Prev
 class;com.azure.ai.agents.models.VoiceAgentResponseAudioTimestampDoneEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentResponseVideoDeltaEvent;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentRoutinePostCallDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRtcCallErrorDetails;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRtcCallErrorEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentRtcCallSdpCreatedEvent;Preview API. VoiceAgents=V1Preview;
