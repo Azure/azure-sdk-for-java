@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -79,7 +78,6 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     private Flux<HybridSearchQueryResult<Document>> hybridObservable;
     private Mono<GlobalFullTextSearchQueryStatistics> aggregatedGlobalStatistics;
     private final SchedulingStopwatch hybridSearchSchedulingStopwatch;
-    private final boolean useCompetitionRanking;
 
     protected HybridSearchDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -99,7 +97,6 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
         this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
-        this.useCompetitionRanking = Configs.isHybridSearchCompetitionRankingEnabled();
 
         // Initialize the shared stopwatch for hybrid search timing
         this.hybridSearchSchedulingStopwatch = new HybridSearchCumulativeSchedulingStopWatch();
@@ -206,8 +203,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         // Compose component scores matrix, where each tuple is (score, index)
         Mono<List<List<ScoreTuple>>> componentScoresList = retrieveComponentScores(coalescedAndSortedResults, componentWeights);
 
-        // Assign ordinal ranks by default, or competition ranks for equal component scores.
-        Mono<List<List<Integer>>> ranks = computeRanks(componentScoresList, this.useCompetitionRanking);
+        // Assign each result its 1-based sorted position, including equal component scores.
+        Mono<List<List<Integer>>> ranks = computeRanks(componentScoresList);
 
         // Compute the RRF scores
         return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights)
@@ -362,8 +359,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             }).flatMapMany(Flux::fromIterable);
     }
 
-    private static Mono<List<List<Integer>>> computeRanks(
-        Mono<List<List<ScoreTuple>>> componentScoresList, boolean useCompetitionRanking) {
+    private static Mono<List<List<Integer>>> computeRanks(Mono<List<List<ScoreTuple>>> componentScoresList) {
         return componentScoresList.map(componentScores -> {
             // initialize ranks as an N-D list with zeros
             List<List<Integer>> ranksInternal = new ArrayList<>();
@@ -376,16 +372,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             }
 
             for (int componentIndex = 0; componentIndex < componentScores.size(); componentIndex++) {
-                int rank = 1; // ranks are 1 based
                 for (int index = 0; index < componentScores.get(componentIndex).size(); index++) {
-                    // Competition ties share the first position; the next distinct score skips tied positions.
-                    if (!useCompetitionRanking || (index > 0
-                        && componentScores.get(componentIndex).get(index).getScore().doubleValue()
-                            != componentScores.get(componentIndex).get(index - 1).getScore().doubleValue())) {
-                        rank = index + 1;
-                    }
                     int rankIndex = componentScores.get(componentIndex).get(index).getIndex();
-                    ranksInternal.get(componentIndex).set(rankIndex, rank);
+                    ranksInternal.get(componentIndex).set(rankIndex, index + 1);
                 }
             }
             return ranksInternal;
