@@ -160,6 +160,79 @@ Describe 'Resolve-PatchDependencyVersions' -Tag 'UnitTest' {
 
         $result | Should -Match 'from `1\.0\.0` to version `1\.1\.0`'
     }
+
+    It 'uses baseline history even when it does not contain the patch entry' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
+        $baseline = @'
+# Release History
+
+## 1.0.0 (2026-09-01)
+
+- Upgraded `azure-core` from `0.9.0` to version `1.1.0`.
+'@
+
+        $result = Resolve-PatchDependencyVersions -ChangelogContent $baseline -Entry $entry
+
+        $result | Should -BeExactly $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
+    }
+
+    It 'selects prior upgrades by release date rather than heading order' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.3.0`.'
+        $changelog = @'
+# Release History
+
+## 2.0.0-beta.2 (Unreleased)
+
+- Upgraded `azure-core` from `1.3.0` to version `2.0.0`.
+
+## 2.0.0-beta.1 (2026-08-01)
+
+- Upgraded `azure-core` from `0.9.0` to version `1.0.0`.
+
+## 1.0.2 (2026-10-01)
+
+- Upgraded `azure-core` from `1.3.0` to version `1.4.0`.
+
+## 1.0.0 (2026-09-01)
+
+- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.
+'@
+
+        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
+
+        $result | Should -BeExactly $entry.Content.Replace('from `1.0.0`', 'from `1.2.0`')
+    }
+
+    It 'resolves dependencies independently and skips releases without upgrade notes' {
+        $entry = New-TestPatchEntry -Message @'
+- Upgraded `azure-core` from `1.0.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.0.0` to version `1.3.0`.
+- Upgraded `new-dependency` from `1.0.0` to version `1.3.0`.
+'@
+        $changelog = @'
+# Release History
+
+## 1.0.0 (2026-09-01)
+
+- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.
+
+## 0.9.9 (2026-08-15)
+
+Bug fixes only.
+
+## 0.9.8 (2026-08-01)
+
+- Upgraded `azure-core` from `0.9.0` to version `1.0.0`.
+- Upgraded `azure-core-http-netty` from `1.0.0` to version `1.1.0`.
+'@
+        $expected = $entry.Content.Replace(
+            '`azure-core` from `1.0.0`', '`azure-core` from `1.2.0`').Replace(
+            '`azure-core-http-netty` from `1.0.0`', '`azure-core-http-netty` from `1.1.0`')
+
+        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
+
+        $result | Should -BeExactly $expected
+    }
 }
 
 Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
@@ -248,20 +321,67 @@ Stable release.
         $result | Should -Match '## 1\.1\.0-beta\.2 \(Unreleased\)'
     }
 
-    It 'inserts a minor release before same-minor prereleases and older stable entries' {
-        $entry = New-TestPatchEntry -Version '1.1.0'
-        $result = Add-PatchChangelogEntry -Content $script:mainChangelog -Entry $entry
+    It 'keeps Unreleased first when inserting <Version> with <LineEndingName> line endings' -TestCases @(
+        @{ Version = '1.1.0'; LineEndingName = 'LF'; LineEnding = "`n" }
+        @{ Version = '1.1.0'; LineEndingName = 'CRLF'; LineEnding = "`r`n" }
+        @{ Version = '1.1.1'; LineEndingName = 'LF'; LineEnding = "`n" }
+        @{ Version = '1.1.1'; LineEndingName = 'CRLF'; LineEnding = "`r`n" }
+        @{ Version = '1.2.0'; LineEndingName = 'LF'; LineEnding = "`n" }
+        @{ Version = '1.2.0'; LineEndingName = 'CRLF'; LineEnding = "`r`n" }
+    ) {
+        param($Version, $LineEnding)
 
-        $result.IndexOf('## 1.1.0 (') | Should -BeLessThan $result.IndexOf('## 1.1.0-beta.2')
-        $result.IndexOf('## 1.1.0-beta.1') | Should -BeLessThan $result.IndexOf('## 1.0.0')
-        $result | Should -Match '## 1\.1\.0-beta\.2 \(Unreleased\)'
+        $entry = New-TestPatchEntry -Version $Version
+        $content = ($script:mainChangelog -replace "`r`n", "`n") -replace "`n", $LineEnding
+        $entryContent = $entry.Content -replace "`n", $LineEnding
+        $expected = $content.Replace(
+            '## 1.1.0-beta.1',
+            "$entryContent$LineEnding$LineEnding## 1.1.0-beta.1")
+
+        $result = Add-PatchChangelogEntry -Content $content -Entry $entry
+
+        $result | Should -BeExactly $expected
         Add-PatchChangelogEntry -Content $result -Entry $entry | Should -BeExactly $result
+    }
+
+    It 'preserves nonempty Unreleased notes when there are no released entries' {
+        $content = "# Release History`n`n## 1.0.0-beta.1 (Unreleased)`n`n### Features Added`n`n- New feature."
+
+        $result = Add-PatchChangelogEntry -Content $content -Entry $script:entry
+
+        $result | Should -BeExactly "$content`n`n$($script:entry.Content)`n"
+    }
+
+    It 'still orders released entries by version when there is no Unreleased entry' {
+        $content = $script:mainChangelog.Substring($script:mainChangelog.IndexOf('## 1.1.0-beta.1'))
+        $content = $content -replace "`r`n", "`n"
+        $content = "# Release History`n`n$content"
+        $expected = $content.Replace('## 1.0.0', "$($script:entry.Content)`n`n## 1.0.0")
+
+        $result = Add-PatchChangelogEntry -Content $content -Entry $script:entry
+
+        $result | Should -BeExactly $expected
     }
 
     It 'is idempotent when the exact entry is already present' {
         $first = Add-PatchChangelogEntry -Content $script:mainChangelog -Entry $script:entry
         $second = Add-PatchChangelogEntry -Content $first -Entry $script:entry
 
+        $second | Should -BeExactly $first
+    }
+
+    It 'corrects stale manifest dependency versions using target history and remains idempotent' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
+        $content = ($script:mainChangelog -replace "`r`n", "`n").Replace(
+            'Stable release.',
+            'Stable release.' + "`n`n" + '- Upgraded `azure-core` from `0.9.0` to version `1.1.0`.')
+        $correctedEntry = $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
+        $expected = $content.Replace('## 1.0.0', "$correctedEntry`n`n## 1.0.0")
+
+        $first = Add-PatchChangelogEntry -Content $content -Entry $entry
+        $second = Add-PatchChangelogEntry -Content $first -Entry $entry
+
+        $first | Should -BeExactly $expected
         $second | Should -BeExactly $first
     }
 

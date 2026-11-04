@@ -4,6 +4,11 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+param(
+    # Git revision whose changelogs preserve release history from before package source resets.
+    [string]$ChangelogHistoryRef
+)
+
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -55,12 +60,19 @@ foreach ($artifact in $artifacts) {
     $version = $versionMap[$coordinate].current
     $changelogContent = Get-Content -LiteralPath $changelogPath -Raw
     $entry = Get-ChangelogEntry -Content $changelogContent -Version $version
-    $entryContent = Resolve-PatchDependencyVersions -ChangelogContent $changelogContent -Entry $entry
+    $entry.Content = Resolve-PatchDependencyVersions -ChangelogContent $changelogContent -Entry $entry
+    if ($ChangelogHistoryRef) {
+        $baselineContent = git -C $repoRoot show "${ChangelogHistoryRef}:$relativePath"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Could not read '$relativePath' from changelog history reference '$ChangelogHistoryRef'."
+        }
+        $entry.Content = Resolve-PatchDependencyVersions -ChangelogContent ($baselineContent -join "`n") -Entry $entry
+    }
     $entries.Add([pscustomobject]@{
         Artifact = $coordinate
         Path = $relativePath
         Version = $version
-        Content = $entryContent
+        Content = $entry.Content
     })
 }
 

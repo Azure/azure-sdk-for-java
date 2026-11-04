@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="1" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-11-04" time="10:12:54">
+  <environment clr-version="10.0.14" user="jairmyree" nunit-version="2.5.8.0" platform="Linux" machine-name="LAPTOP-7V3668CR" cwd="/home/jairmyree/Repositories/Azure/azure-sdk-for-java" os-version="6.18.33.2-microsoft-standard-WSL2" user-domain="" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.9125" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/New-PatchChangelog.tests.ps1" executed="True" result="Success" success="True" time="0.9125" asserts="0" description="/home/jairmyree/Repositories/Azure/azure-sdk-for-java/eng/scripts/tests/New-PatchChangelog.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="New-PatchChangelog" executed="True" result="Success" success="True" time="0.6563" asserts="0" description="New-PatchChangelog">
+            <results>
+              <test-case description="uses changelog history from before package source resets" name="New-PatchChangelog.uses changelog history from before package source resets" time="0.5851" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

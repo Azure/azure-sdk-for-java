@@ -84,25 +84,34 @@ function Resolve-PatchDependencyVersions {
 
     $normalizedChangelog = $ChangelogContent -replace "`r`n", "`n"
     $normalizedEntry = ($Entry.Content -replace "`r`n", "`n").TrimEnd()
-    $entryIndex = $normalizedChangelog.IndexOf($normalizedEntry, [System.StringComparison]::Ordinal)
-    if ($entryIndex -lt 0) {
-        throw "Patch entry '$($Entry.Version)' was not found in its source changelog."
-    }
-
-    $history = $normalizedChangelog.Substring($entryIndex + $normalizedEntry.Length)
+    $parsedEntry = Get-ChangelogEntry -Content ($normalizedEntry + "`n") -Version $Entry.Version
+    $releasePattern = '(?ms)^##\s+(?<version>\S+)\s+\((?<date>\d{4}-\d{2}-\d{2})\)\s*\n.*?(?=^##\s+|\z)'
+    $history = [regex]::Matches($normalizedChangelog, $releasePattern) |
+        Where-Object {
+            $_.Groups['version'].Value -ne $Entry.Version -and
+            $_.Groups['date'].Value -le $parsedEntry.Date
+        } |
+        Sort-Object { $_.Groups['date'].Value } -Descending -Stable
     $dependencyPattern = '(?m)^- Upgraded `(?<dependency>[^`]+)` from `(?<from>[^`]+)` to version `(?<to>[^`]+)`\.$'
+    $previousVersions = @{}
+    foreach ($release in $history) {
+        foreach ($upgrade in [regex]::Matches($release.Value, $dependencyPattern)) {
+            $dependency = $upgrade.Groups['dependency'].Value
+            if (-not $previousVersions.ContainsKey($dependency)) {
+                $previousVersions[$dependency] = $upgrade.Groups['to'].Value
+            }
+        }
+    }
 
     return [regex]::Replace($normalizedEntry, $dependencyPattern, {
         param($match)
 
-        $dependency = [regex]::Escape($match.Groups['dependency'].Value)
-        $historyPattern = "(?m)^- Upgraded ``$dependency`` from ``[^``]+`` to version ``(?<to>[^``]+)``\.$"
-        $previousUpgrade = [regex]::Match($history, $historyPattern)
-        if (-not $previousUpgrade.Success) {
+        $dependency = $match.Groups['dependency'].Value
+        if (-not $previousVersions.ContainsKey($dependency)) {
             return $match.Value
         }
 
-        $previousVersion = $previousUpgrade.Groups['to'].Value
+        $previousVersion = $previousVersions[$dependency]
         if ($previousVersion -eq $match.Groups['from'].Value) {
             return $match.Value
         }
@@ -276,7 +285,7 @@ function Add-PatchChangelogEntry {
     )
 
     $lineEnding = if ($Content.Contains("`r`n")) { "`r`n" } else { "`n" }
-    $normalizedEntry = ($Entry.Content -replace "`r`n", "`n").TrimEnd()
+    $normalizedEntry = Resolve-PatchDependencyVersions -ChangelogContent $Content -Entry $Entry
     $escapedVersion = [regex]::Escape($Entry.Version)
     $existingMatches = [regex]::Matches(
         ($Content -replace "`r`n", "`n"),
@@ -292,9 +301,12 @@ function Add-PatchChangelogEntry {
         return $Content
     }
 
-    $headingMatches = [regex]::Matches($Content, '(?m)^##\s+(?<version>\S+)\s+\([^)]+\)\s*$')
+    $headingMatches = [regex]::Matches($Content, '(?m)^##\s+(?<version>\S+)\s+\((?<status>[^)]+)\)\s*$')
     $insertIndex = $Content.Length
     foreach ($heading in $headingMatches) {
+        if ($heading.Groups['status'].Value -eq 'Unreleased') {
+            continue
+        }
         $headingVersion = $heading.Groups['version'].Value
         try {
             if ((Compare-PatchVersion -Left $headingVersion -Right $Entry.Version) -lt 0) {

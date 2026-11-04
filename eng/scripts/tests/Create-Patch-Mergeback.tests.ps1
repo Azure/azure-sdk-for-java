@@ -10,6 +10,7 @@ Describe 'Create-Patch-Mergeback' -Tag @('UnitTest', 'Integration') {
     It 'creates only version, changelog, and generated POM changes from main for <ReleasedVersion>' -TestCases @(
         @{ ReleasedVersion = '1.0.1' }
         @{ ReleasedVersion = '1.1.0' }
+        @{ ReleasedVersion = '1.1.1' }
     ) {
         param($ReleasedVersion)
 
@@ -25,17 +26,23 @@ Describe 'Create-Patch-Mergeback' -Tag @('UnitTest', 'Integration') {
 com.azure:azure-example;1.0.0;1.1.0-beta.2
 '@ | Set-Content -LiteralPath (Join-Path $sourceRepo 'eng/versioning/version_client.txt') -NoNewline
 
-            @'
+            $mainChangelog = @'
 # Release History
 
 ## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
+- Unreleased feature.
+
 ## 1.0.0 (2026-08-01)
 
 Initial release.
-'@ | Set-Content -LiteralPath (Join-Path $sourceRepo 'sdk/example/azure-example/CHANGELOG.md') -NoNewline
+
+- Upgraded `azure-core` from `0.9.0` to version `1.1.0`.
+'@
+            $mainChangelog |
+                Set-Content -LiteralPath (Join-Path $sourceRepo 'sdk/example/azure-example/CHANGELOG.md') -NoNewline
 
             @'
 <project>
@@ -62,7 +69,8 @@ pom.write_text(pom.read_text().replace("<version>1.0.0</version>", f"<version>{v
                 Artifact = 'com.azure:azure-example'
                 Path = 'sdk/example/azure-example/CHANGELOG.md'
                 Version = $ReleasedVersion
-                Content = "## $ReleasedVersion (2026-09-10)`n`n### Other Changes`n`n- Upgraded core dependencies."
+                Content = "## $ReleasedVersion (2026-09-10)`n`n### Other Changes`n`n" +
+                    '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
             }
             New-PatchChangelogContent -Entries @($entry) |
                 Set-Content -LiteralPath (Join-Path $sourceRepo 'patch-changelog.md') -NoNewline
@@ -87,8 +95,13 @@ pom.write_text(pom.read_text().replace("<version>1.0.0</version>", f"<version>{v
             $LASTEXITCODE | Should -Be 0
             Get-Content -LiteralPath (Join-Path $cloneRepo 'eng/versioning/version_client.txt') -Raw |
                 Should -BeExactly "com.azure:azure-example;$ReleasedVersion;1.1.0-beta.2`n"
+            $correctedEntry = $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
+            $expectedChangelog = ($mainChangelog -replace "`r`n", "`n").Replace(
+                '## 1.0.0',
+                "$correctedEntry`n`n## 1.0.0")
             Get-Content -LiteralPath (Join-Path $cloneRepo 'sdk/example/azure-example/CHANGELOG.md') -Raw |
-                Should -Match "## $([regex]::Escape($ReleasedVersion)) \(2026-09-10\)"
+                ForEach-Object { $_ -replace "`r`n", "`n" } |
+                Should -BeExactly $expectedChangelog
             Get-Content -LiteralPath (Join-Path $cloneRepo 'sdk/example/azure-example/pom.xml') -Raw |
                 Should -Match "<version>$([regex]::Escape($ReleasedVersion))</version>"
 
