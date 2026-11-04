@@ -582,8 +582,7 @@ public class ExpectContinueTests {
     // A deferring transport legitimately sends the body without 100 Continue once its fallback wait elapses. That wait
     // starts after the request does, so the server's sample only shows whether the body was withheld if it was taken
     // within CONTINUE_FALLBACK_MILLIS of the request starting. On a slow machine it may not be; skip rather than fail.
-    private static void assumeSampledBeforeFallback(ExpectContinueServer server, long requestStartNanos,
-        String name) {
+    private static void assumeSampledBeforeFallback(ExpectContinueServer server, long requestStartNanos, String name) {
         long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(server.continueDecisionNanos - requestStartNanos);
         assumeTrue(elapsedMillis < CONTINUE_FALLBACK_MILLIS, name + " took " + elapsedMillis
             + " ms to reach the 100 Continue decision, so a body sent before it may be the transport's fallback");
