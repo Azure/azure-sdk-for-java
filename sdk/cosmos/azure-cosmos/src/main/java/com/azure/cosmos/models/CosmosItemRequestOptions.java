@@ -287,6 +287,8 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the token for use with session consistency.
+     * Gateway V2 scopes compound tokens to the target partition when safe, without changing this option
+     * or adding cached session progress. Otherwise, the request uses classic Gateway with the original token.
      *
      * @param sessionToken the session token.
      * @return the CosmosItemRequestOptions.

@@ -149,6 +149,10 @@ public class ThinClientRangeHeadersTest {
         throws Exception {
         byte[] body = model.wrapInHttpRequest(request, new URI("https://localhost:10250"))
             .body().single().block();
+        return decodeTokens(body);
+    }
+
+    public static Map<Short, byte[]> decodeTokens(byte[] body) {
         ByteBuf buffer = Unpooled.wrappedBuffer(body);
         try {
             int headerLength = buffer.readIntLE();

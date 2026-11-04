@@ -128,6 +128,8 @@ public final class CosmosStoredProcedureRequestOptions {
 
     /**
      * Sets the token for use with session consistency.
+     * When a session token applies to the operation, Gateway V2 scopes compound tokens to the target partition
+     * when safe. Otherwise, it uses classic Gateway with the original token, without changing this option.
      *
      * @param sessionToken the session token.
      * @return the CosmosStoredProcedureRequestOptions.

@@ -33,7 +33,8 @@ public class RxDocumentServiceRequestTest {
     private static final Set<String> CLONE_ACCOUNTED_FIELDS = new HashSet<>(Arrays.asList(
         "clientContext", "forcePartitionKeyRangeRefresh", "forceCollectionRoutingMapRefresh", "resourceId",
         "resourceType", "headers", "continuation", "isMedia", "isNameBased", "operationType", "resourceAddress",
-        "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken", "partitionKeyRangeIdentity",
+        "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken", "originalSessionTokenCaptured",
+        "partitionKeyRangeIdentity",
         "defaultReplicaIndex", "isAddressRefresh", "isForcedAddressRefresh", "requestContext",
         "faultInjectionRequestContext", "partitionKeyInternal", "partitionKeyDefinition", "effectivePartitionKey",
         "feedRange", "effectiveRange", "numberOfItemsInBatchRequest", "contentAsByteArray", "useGatewayMode",
@@ -462,6 +463,23 @@ public class RxDocumentServiceRequestTest {
         assertThat(original.getHeaders().containsKey("x-new-header")).isFalse();
         assertThat(cloned.getHeaders().get("x-test-header")).isEqualTo("cloned-value");
         assertThat(cloned.getHeaders().get("x-new-header")).isEqualTo("new-value");
+    }
+
+    @Test(groups = { "unit" })
+    public void clonePreservesCallerTokenProvenance() {
+        for (String token : Arrays.asList(null, "0:1#100,1:1#200")) {
+            RxDocumentServiceRequest original = RxDocumentServiceRequest.createFromName(
+                mockDiagnosticsClientContext(), OperationType.Query, "/dbs/db/colls/coll/docs", ResourceType.Document);
+            if (token != null) {
+                original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, token);
+            }
+            original.captureOriginalSessionToken();
+            original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, "0:1#999");
+            RxDocumentServiceRequest clone = original.clone();
+            clone.captureOriginalSessionToken();
+            assertThat(clone.getOriginalSessionToken()).isEqualTo(token);
+            assertThat(original.getOriginalSessionToken()).isEqualTo(token);
+        }
     }
 
     @Test(groups = { "unit" })

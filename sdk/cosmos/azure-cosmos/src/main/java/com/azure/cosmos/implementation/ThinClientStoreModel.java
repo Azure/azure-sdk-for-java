@@ -14,9 +14,13 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.PartitionKind;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -30,7 +34,9 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -45,6 +51,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private volatile String globalDatabaseAccountName = null;
     private final Map<String, String> defaultHeaders;
+    private RxGatewayStoreModel gatewayStoreModel;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -90,12 +97,120 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        return super.processMessage(request);
+        return Mono.defer(() -> {
+            request.captureOriginalSessionToken();
+            String originalToken = request.getOriginalSessionToken();
+            request.useThinClientMode = true;
+            if (originalToken == null || !originalToken.contains(",") || !shouldApplySessionToken(request)) {
+                return super.processMessage(request);
+            }
+
+            request.requestContext.sessionToken = null;
+            if (getCollectionCache() == null || getPartitionKeyRangeCache() == null) {
+                return processWithGateway(request);
+            }
+
+            MetadataDiagnosticsContext diagnostics =
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            return getCollectionCache().resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
+                if (collectionHolder.v == null) {
+                    return processWithGateway(request);
+                }
+                DocumentCollection collection = collectionHolder.v;
+                return getPartitionKeyRangeCache()
+                    .tryLookupAsync(diagnostics, collection.getResourceId(), null, request.properties)
+                    .flatMap(mapHolder -> {
+                        PartitionKeyRange target = resolveSessionTokenRange(request, collection, mapHolder.v);
+                        ISessionToken scoped =
+                            SessionTokenHelper.tryScopeExplicitSessionToken(originalToken, target, mapHolder.v);
+                        if (scoped == null) {
+                            return processWithGateway(request);
+                        }
+                        request.requestContext.resolvedPartitionKeyRange = target;
+                        request.requestContext.sessionToken = scoped;
+                        return super.processMessage(request);
+                    });
+            });
+        });
+    }
+
+    void setGatewayStoreModel(RxGatewayStoreModel gatewayStoreModel) {
+        this.gatewayStoreModel = gatewayStoreModel;
+    }
+
+    private Mono<RxDocumentServiceResponse> processWithGateway(RxDocumentServiceRequest request) {
+        logger.debug("Using classic Gateway because explicit compound session progress cannot be safely scoped");
+        request.useThinClientMode = false;
+        return Objects.requireNonNull(this.gatewayStoreModel, "Classic Gateway store is required for session fallback")
+            .processMessage(request);
+    }
+
+    private static PartitionKeyRange resolveSessionTokenRange(
+        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
+        if (routingMap == null || !collection.getResourceId().equals(routingMap.getCollectionUniqueId())
+            || request.getOperationType() == OperationType.QueryPlan) {
+            return null;
+        }
+
+        PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
+        if (identity != null && identity.getCollectionRid() != null
+            && !identity.getCollectionRid().equals(collection.getResourceId())) {
+            return null;
+        }
+        String rangeId = identity == null ? null : identity.getPartitionKeyRangeId();
+        String rangeHeader = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        if (!Strings.isNullOrEmpty(rangeHeader)) {
+            String[] parts = rangeHeader.split(",", -1);
+            if (parts.length > 2 || parts[parts.length - 1].isEmpty()
+                || (parts.length == 2 && !parts[0].equals(collection.getResourceId()))
+                || (rangeId != null && !rangeId.equals(parts[parts.length - 1]))) {
+                return null;
+            }
+            rangeId = parts[parts.length - 1];
+        }
+
+        PartitionKeyRange target = rangeId == null ? null : routingMap.tryGetRangeByPartitionKeyRangeId(rangeId);
+        if (rangeId != null && target == null) {
+            return null;
+        }
+
+        String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+        String end = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+        PartitionKeyInternal key = request.getPartitionKeyInternal();
+        PartitionKeyRange scopeTarget = null;
+        if (start != null || end != null) {
+            if (start == null || end == null || start.compareTo(end) >= 0
+                || !ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
+                    request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
+                return null;
+            }
+            List<PartitionKeyRange> overlapping =
+                routingMap.getOverlappingRanges(new Range<>(start, end, true, false));
+            if (overlapping.size() != 1) {
+                return null;
+            }
+            scopeTarget = overlapping.get(0);
+        } else if (key != null) {
+            if (collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
+                && key.getComponents().size() < collection.getPartitionKey().getPaths().size()) {
+                return null;
+            }
+            String epk = key.getEffectivePartitionKeyString(key, collection.getPartitionKey());
+            scopeTarget = routingMap.getRangeByEffectivePartitionKey(epk);
+        } else if (target == null && request.requestContext.resolvedPartitionKeyRange != null) {
+            scopeTarget = routingMap.tryGetRangeByPartitionKeyRangeId(
+                request.requestContext.resolvedPartitionKeyRange.getId());
+        }
+        if (target != null && scopeTarget != null && !target.getId().equals(scopeTarget.getId())) {
+            return null;
+        }
+        return scopeTarget == null ? target : scopeTarget;
     }
 
     @Override
     protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
         // ThinClient does not use the Gateway V1 server-side 449 retry loop.
+        request.getHeaders().remove(HttpConstants.HttpHeaders.NO_RETRY_449);
     }
 
     @Override
@@ -262,6 +377,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
+
+        String originalToken = request.getOriginalSessionToken();
+        if (originalToken != null && originalToken.contains(",") && request.requestContext.sessionToken != null
+            && shouldApplySessionToken(request)) {
+            // Keep the caller's header intact so retries and hedges never inherit narrowed progress.
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.SessionToken,
+                SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+                    request.requestContext.resolvedPartitionKeyRange.getId(),
+                    request.requestContext.sessionToken.convertToString()));
+        }
 
         String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
         String endEpk = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);

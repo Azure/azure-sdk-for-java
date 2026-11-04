@@ -1113,7 +1113,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          GlobalEndpointManager globalEndpointManager,
                                          HttpClient httpClient,
                                          Map<String, String> additionalHeaders) {
-        return new ThinClientStoreModel(
+        ThinClientStoreModel thinClientStoreModel = new ThinClientStoreModel(
             this,
             sessionContainer,
             consistencyLevel,
@@ -1122,6 +1122,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             httpClient,
             additionalHeaders,
             this.clientTelemetryConfig);
+        thinClientStoreModel.setGatewayStoreModel(this.gatewayProxy);
+        return thinClientStoreModel;
     }
 
     private HttpClient httpClient() {
@@ -7557,6 +7559,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        request.captureOriginalSessionToken();
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {
@@ -8370,7 +8373,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         );
     }
 
-    private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
+    Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
         ResourceType resourceType,
         OperationType operationType,
         DocumentPointOperation callback,
@@ -8816,7 +8819,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return orderedRegionsForSpeculation;
     }
 
-    private <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
+    <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
         final ResourceType resourceType,
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
@@ -9229,7 +9232,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @FunctionalInterface
-    private interface DocumentPointOperation {
+    interface DocumentPointOperation {
         Mono<ResourceResponse<Document>> apply(
             RequestOptions requestOptions,
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
