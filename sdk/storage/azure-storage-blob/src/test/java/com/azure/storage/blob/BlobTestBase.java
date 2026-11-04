@@ -22,6 +22,7 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -43,6 +44,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -81,6 +83,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -104,8 +107,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -2009,4 +2014,79 @@ public class BlobTestBase extends TestProxyTestBase {
             return false;
         }
     }
+
+    protected static String describeRanges(List<BlobLayoutRange> ranges) {
+        if (ranges == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < ranges.size(); i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            BlobLayoutRange r = ranges.get(i);
+            sb.append("{offset=")
+                .append(r.getRange().getOffset())
+                .append(", length=")
+                .append(r.getRange().getLength())
+                .append(", endpoint=")
+                .append(r.getEndpoint())
+                .append("}");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    protected static void assertLayoutCoversWindow(List<BlobLayoutRange> ranges, long windowStart,
+        long windowEndInclusive, String accountHost) {
+        String desc = describeRanges(ranges);
+        assertNotNull(ranges, "ranges must not be null; " + desc);
+        assertFalse(ranges.isEmpty(), "ranges must not be empty; " + desc);
+
+        long firstOffset = ranges.get(0).getRange().getOffset();
+        assertTrue(firstOffset <= windowStart,
+            "First range offset " + firstOffset + " must be <= windowStart " + windowStart + "; " + desc);
+
+        long nextOffset = firstOffset;
+        boolean unbounded = false;
+
+        for (int i = 0; i < ranges.size(); i++) {
+            BlobLayoutRange r = ranges.get(i);
+            long offset = r.getRange().getOffset();
+            Long length = r.getRange().getLength();
+
+            assertEquals(nextOffset, offset,
+                "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
+
+            URI endpoint = r.getEndpoint();
+            assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
+            String host = endpoint.getHost();
+            assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
+            assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
+            assertFalse(accountHost.equalsIgnoreCase(host),
+                "backend host '" + host + "' must not equal account host '" + accountHost + "'; " + desc);
+
+            if (length == null) {
+                // Null length means this range is unbounded; coverage through the end of the blob is satisfied.
+                unbounded = true;
+                break;
+            }
+            nextOffset = offset + length;
+        }
+
+        if (!unbounded) {
+            // nextOffset is the exclusive end of coverage; last covered byte = nextOffset - 1.
+            assertTrue(nextOffset > windowEndInclusive, "Coverage ends at byte " + (nextOffset - 1)
+                + " but windowEndInclusive is " + windowEndInclusive + "; " + desc);
+        }
+    }
+
+    protected static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayoutRange>> pages) {
+        List<BlobLayoutRange> result = new ArrayList<>();
+        for (PagedResponse<BlobLayoutRange> page : pages) {
+            result.addAll(page.getValue());
+        }
+        return result;
+    }
+
 }

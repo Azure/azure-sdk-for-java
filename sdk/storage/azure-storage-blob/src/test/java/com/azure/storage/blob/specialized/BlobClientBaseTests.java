@@ -65,6 +65,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
 
@@ -170,7 +171,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         BlockBlobClient emptyBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         emptyBlob.commitBlockList(new ArrayList<>());
 
-        assertDoesNotThrow(() -> emptyBlob.getLayout(null, Context.NONE).stream().count());
+        assertEquals(0, emptyBlob.getLayout(null, Context.NONE).stream().count());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -178,10 +179,12 @@ public class BlobClientBaseTests extends BlobTestBase {
     public void getLayoutRange() {
         bc.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
-        assertDoesNotThrow(
-            () -> bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB)), Context.NONE)
+        List<BlobLayoutRange> ranges
+            = bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB)), Context.NONE)
                 .stream()
-                .count());
+                .collect(Collectors.toList());
+
+        assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, URI.create(bc.getBlobUrl()).getHost());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -190,14 +193,17 @@ public class BlobClientBaseTests extends BlobTestBase {
         Iterator<PagedResponse<BlobLayoutRange>> iterator
             = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
         int pageCount = 0;
+        List<BlobLayoutRange> ranges = new ArrayList<>();
 
         while (iterator.hasNext()) {
             PagedResponse<BlobLayoutRange> page = iterator.next();
             assertTrue(page.getValue().size() <= 1);
+            ranges.addAll(page.getValue());
             pageCount++;
         }
 
         assertTrue(pageCount > 0);
+        assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, URI.create(bc.getBlobUrl()).getHost());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -205,7 +211,10 @@ public class BlobClientBaseTests extends BlobTestBase {
     public void getLayoutContinuationToken() {
         Iterator<PagedResponse<BlobLayoutRange>> iterator
             = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
-        String token = iterator.next().getContinuationToken();
+        PagedResponse<BlobLayoutRange> firstPage = iterator.next();
+        assertLayoutCoversWindow(firstPage.getValue(), 0, DATA.getDefaultDataSize() - 1,
+            URI.create(bc.getBlobUrl()).getHost());
+        String token = firstPage.getContinuationToken();
 
         assertDoesNotThrow(() -> bc.getLayout(null, Context.NONE).iterableByPage(token).iterator().hasNext());
     }
@@ -227,8 +236,11 @@ public class BlobClientBaseTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertDoesNotThrow(
-            () -> bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE).stream().count());
+        List<BlobLayoutRange> ranges = bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE)
+            .stream()
+            .collect(Collectors.toList());
+
+        assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, URI.create(bc.getBlobUrl()).getHost());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -925,80 +937,6 @@ public class BlobClientBaseTests extends BlobTestBase {
         byte[] data = getRandomByteArray(LARGE_LIVE_BLOB_SIZE);
         blobClient.getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length, true);
         return blobClient;
-    }
-
-    private static String describeRanges(List<BlobLayoutRange> ranges) {
-        if (ranges == null) {
-            return "null";
-        }
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < ranges.size(); i++) {
-            if (i > 0) {
-                sb.append(", ");
-            }
-            BlobLayoutRange r = ranges.get(i);
-            sb.append("{offset=")
-                .append(r.getRange().getOffset())
-                .append(", length=")
-                .append(r.getRange().getLength())
-                .append(", endpoint=")
-                .append(r.getEndpoint())
-                .append("}");
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static void assertLayoutCoversWindow(List<BlobLayoutRange> ranges, long windowStart,
-        long windowEndInclusive, String accountHost) {
-        String desc = describeRanges(ranges);
-        assertNotNull(ranges, "ranges must not be null; " + desc);
-        assertFalse(ranges.isEmpty(), "ranges must not be empty; " + desc);
-
-        long firstOffset = ranges.get(0).getRange().getOffset();
-        assertTrue(firstOffset <= windowStart,
-            "First range offset " + firstOffset + " must be <= windowStart " + windowStart + "; " + desc);
-
-        long nextOffset = firstOffset;
-        boolean unbounded = false;
-
-        for (int i = 0; i < ranges.size(); i++) {
-            BlobLayoutRange r = ranges.get(i);
-            long offset = r.getRange().getOffset();
-            Long length = r.getRange().getLength();
-
-            assertEquals(nextOffset, offset,
-                "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
-
-            URI endpoint = r.getEndpoint();
-            assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
-            String host = endpoint.getHost();
-            assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
-            assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
-            assertFalse(accountHost.equalsIgnoreCase(host),
-                "backend host '" + host + "' must not equal account host '" + accountHost + "'; " + desc);
-
-            if (length == null) {
-                // Null length means this range is unbounded; coverage through the end of the blob is satisfied.
-                unbounded = true;
-                break;
-            }
-            nextOffset = offset + length;
-        }
-
-        if (!unbounded) {
-            // nextOffset is the exclusive end of coverage; last covered byte = nextOffset - 1.
-            assertTrue(nextOffset > windowEndInclusive, "Coverage ends at byte " + (nextOffset - 1)
-                + " but windowEndInclusive is " + windowEndInclusive + "; " + desc);
-        }
-    }
-
-    private static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayoutRange>> pages) {
-        List<BlobLayoutRange> result = new ArrayList<>();
-        for (PagedResponse<BlobLayoutRange> page : pages) {
-            result.addAll(page.getValue());
-        }
-        return result;
     }
 
     private static final class CapturedRequest {

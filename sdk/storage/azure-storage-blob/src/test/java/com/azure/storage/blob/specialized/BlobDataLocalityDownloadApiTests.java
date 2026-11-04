@@ -16,6 +16,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 // import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -51,8 +52,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 // import reactor.core.publisher.Flux;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.DownloadHint;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import reactor.test.StepVerifier;
 
 // import java.io.ByteArrayOutputStream;
@@ -297,6 +303,71 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             assertNull(record.hostHeader, "No Host header rewriting expected. Observed: " + record);
         }
         assertArrayEquals(data, Files.readAllBytes(testFile));
+    }
+
+    /**
+     * The service must send {@code x-ms-download-hint: layout} for a blob large enough to benefit from layout-aware
+     * routing. Routing tests only infer the hint indirectly, so this asserts the header itself and fails when the
+     * service does not emit it.
+     */
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void downloadOfLargeBlobReturnsLayoutDownloadHint() {
+        BlobDownloadHeaders headers
+            = bc.downloadStreamWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, Context.NONE)
+                .getDeserializedHeaders();
+
+        assertEquals(DownloadHint.LAYOUT, headers.getDownloadHint(),
+            "Expected the service to return x-ms-download-hint: layout for a " + contentBytes.length + " byte blob.");
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void downloadOfLargeBlobReturnsLayoutDownloadHintAsync() {
+        BlobAsyncClient asyncClient = ccAsync.getBlobAsyncClient(bc.getBlobName());
+
+        StepVerifier
+            .create(asyncClient.downloadStreamWithResponse(null, null, null, false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .thenReturn(response.getDeserializedHeaders())))
+            .assertNext(headers -> assertEquals(DownloadHint.LAYOUT, headers.getDownloadHint(),
+                "Expected the service to return x-ms-download-hint: layout for a " + contentBytes.length
+                    + " byte blob."))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void downloadOfSmallBlobDoesNotReturnLayoutDownloadHint() {
+        byte[] data = getRandomByteArray(NO_HINT_LIVE_CONTENT_LENGTH);
+        BlobClient smallBlobClient = cc.getBlobClient(generateBlobName());
+        smallBlobClient.getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length, true);
+
+        BlobDownloadHeaders headers = smallBlobClient
+            .downloadStreamWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, Context.NONE)
+            .getDeserializedHeaders();
+
+        assertNull(headers.getDownloadHint(), "Expected no download hint for a " + data.length + " byte blob.");
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void downloadOfSmallBlobDoesNotReturnLayoutDownloadHintAsync() {
+        byte[] data = getRandomByteArray(NO_HINT_LIVE_CONTENT_LENGTH);
+        BlobAsyncClient smallBlobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+
+        StepVerifier
+            .create(smallBlobClient.getBlockBlobAsyncClient()
+                .upload(Flux.just(ByteBuffer.wrap(data)), data.length, true)
+                .then(smallBlobClient.downloadStreamWithResponse(null, null, null, false))
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .thenReturn(response.getDeserializedHeaders())))
+            .assertNext(headers -> assertNull(headers.getDownloadHint(), "Expected no download hint for a small blob."))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")

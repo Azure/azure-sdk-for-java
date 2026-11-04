@@ -24,6 +24,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.implementation.util.BlobGetLayoutOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -61,6 +63,10 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
     }
 
+    private String accountHost() {
+        return URI.create(bc.getBlobUrl()).getHost();
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayout() {
@@ -76,16 +82,20 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     public void getLayoutEmptyBlob() {
         BlockBlobAsyncClient emptyBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        StepVerifier.create(emptyBlob.commitBlockList(new ArrayList<>()).thenMany(emptyBlob.getLayout(null)).then())
+        StepVerifier.create(emptyBlob.commitBlockList(new ArrayList<>()).thenMany(emptyBlob.getLayout(null)).count())
+            .expectNext(0L)
             .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutRange() {
-        StepVerifier.create(bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
-            .then()).verifyComplete();
+        StepVerifier
+            .create(bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
+                .collectList())
+            .assertNext(ranges -> assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, accountHost()))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -94,14 +104,17 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(bc.getLayout(null).byPage(1).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             r.forEach(page -> assertTrue(page.getValue().size() <= 1));
+            assertLayoutCoversWindow(collectLayoutRanges(r), 0, DATA.getDefaultDataSize() - 1, accountHost());
         }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void getLayoutContinuationToken() {
-        Flux<PagedResponse<BlobLayoutRange>> response
-            = bc.getLayout(null).byPage(1).next().flatMapMany(r -> bc.getLayout(null).byPage(r.getContinuationToken()));
+        Flux<PagedResponse<BlobLayoutRange>> response = bc.getLayout(null).byPage(1).next().flatMapMany(r -> {
+            assertLayoutCoversWindow(r.getValue(), 0, DATA.getDefaultDataSize() - 1, accountHost());
+            return bc.getLayout(null).byPage(r.getContinuationToken());
+        });
 
         StepVerifier.create(response.then()).verifyComplete();
     }
@@ -114,10 +127,10 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
 
-        Flux<BlobLayoutRange> response = bc.setTags(t)
+        Mono<List<BlobLayoutRange>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
                 BlobTestBase::convertNulls))
-            .flatMapMany(conditions -> {
+            .flatMap(conditions -> {
                 BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
                     .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
@@ -125,10 +138,12 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
                     .setIfUnmodifiedSince(unmodified)
                     .setTagsConditions(tags);
 
-                return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac));
+                return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac)).collectList();
             });
 
-        StepVerifier.create(response.then()).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(ranges -> assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, accountHost()))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -160,6 +175,60 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         BlobAsyncClientBase blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
 
         StepVerifier.create(blobClient.getLayout(null)).verifyError(BlobStorageException.class);
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getLayoutLiveSmallBlobIsSinglePageCoveringWholeBlob() {
+        StepVerifier.create(bc.getLayout(null).byPage().collectList()).assertNext(pages -> {
+            assertEquals(1, pages.size(), "Expected a single page for a small blob");
+            assertNull(pages.get(0).getContinuationToken(), "Expected no continuation token for a single-page result");
+            assertLayoutCoversWindow(collectLayoutRanges(pages), 0, DATA.getDefaultDataSize() - 1, accountHost());
+        }).verifyComplete();
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getLayoutLiveLargeBlobCoversWholeBlobAcrossPages() {
+        long size = 16L * Constants.MB;
+        BlockBlobAsyncClient large = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        byte[] data = getRandomByteArray((int) size);
+        String host = URI.create(large.getBlobUrl()).getHost();
+
+        StepVerifier
+            .create(large.upload(Flux.just(ByteBuffer.wrap(data)), size, true)
+                .thenMany(large.getLayout(null).byPage())
+                .collectList())
+            .assertNext(pages -> assertLayoutCoversWindow(collectLayoutRanges(pages), 0, size - 1, host))
+            .verifyComplete();
+
+        StepVerifier.create(large.getLayout(null).byPage(1).collectList()).assertNext(pages -> {
+            assertTrue(pages.size() <= 100, "Exceeded 100 pages; possible infinite pagination loop");
+            assertLayoutCoversWindow(collectLayoutRanges(pages), 0, size - 1, host);
+        }).verifyComplete();
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getLayoutLiveRangeRequestCoversRequestedWindow() {
+        long size = 16L * Constants.MB;
+        long rangeOffset = 8L * Constants.MB;
+        long rangeLength = 4L * Constants.MB;
+        BlockBlobAsyncClient large = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        byte[] data = getRandomByteArray((int) size);
+        String host = URI.create(large.getBlobUrl()).getHost();
+
+        StepVerifier
+            .create(large.upload(Flux.just(ByteBuffer.wrap(data)), size, true)
+                .then(large.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(rangeOffset, rangeLength)))
+                    .byPage()
+                    .next()))
+            .assertNext(
+                page -> assertLayoutCoversWindow(page.getValue(), rangeOffset, rangeOffset + rangeLength - 1, host))
+            .verifyComplete();
     }
 }
 
