@@ -1,9 +1,10 @@
 # Release History
 
-## 1.2.0 (2026-11-04)
+## 1.3.0 (2026-11-04)
 
 ### Bugs Fixed
 
+- Fixed secure WebSocket connections accepting untrusted certificates or certificates for a different hostname. Connections now validate certificates against the JDK's default trust store and verify the hostname.
 - Fixed a race condition where send operations could miss fast acknowledgment responses.
 - Fixed JSON payloads sent to groups or server events being encoded as strings instead of JSON values.
 - Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
@@ -18,11 +19,16 @@
 ### Other Changes
 
 - Verbose WebSocket send logs now record the payload length in bytes instead of message contents.
+- Updated WebSocket event loops and compression handling to use Netty 4.2 APIs.
+
+## 1.2.1 (2026-11-02)
+
+### Other Changes
 
 #### Dependency Updates
 
+- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
 - Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
-- Migrated `netty-codec-http` to `4.2.19.Final` and updated WebSocket event loops for Netty 4.2.
 
 ## 1.1.11 (2026-10-06)
 
