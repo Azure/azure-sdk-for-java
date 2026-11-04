@@ -16,6 +16,8 @@ import com.azure.core.http.HttpHeaders;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -30,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BetaVoiceAgentsWebSocketSessionClientTests {
     @Test
-    public void connectionUriUsesSelectedTransport() {
+    public void connectionUriUsesSelectedTransport() throws Exception {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
@@ -47,6 +49,32 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         assertEquals("websocket", queryParameter(defaultUri, "transport"));
         assertEquals("websocket", queryParameter(websocketUri, "transport"));
         assertEquals("webrtc", queryParameter(webRtcUri, "transport"));
+    }
+
+    @Test
+    public void connectionUrisPreserveEncodedPathsAndReplaceEndpointQuery() throws Exception {
+        VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
+            URI.create("https://localhost:8443/project%20name/?discard=old&api-version=old"),
+            request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
+            "v1", "test-user-agent", null, null);
+
+        URI realtimeUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent/name",
+            new VoiceAgentWebSocketConnectionOptions().setAgentSessionId("session & id"));
+        URI liveUri = VoiceAgentWebSocketUtils.buildLiveWebSocketUri(configuration, "agent/name",
+            new VoiceAgentLiveWebSocketConnectionOptions().setStructuredInputs("{\"name\":\"a & b\"}"));
+
+        for (URI uri : new URI[] { realtimeUri, liveUri }) {
+            assertEquals("wss", uri.getScheme());
+            assertEquals("localhost", uri.getHost());
+            assertEquals(8443, uri.getPort());
+            assertEquals("v1", queryParameter(uri, "api-version"));
+            assertEquals(null, queryParameter(uri, "discard"));
+        }
+        assertEquals("/project%20name/agents/agent%2Fname/endpoint/protocols/voice", realtimeUri.getRawPath());
+        assertEquals("/project%20name/agents/agent%2Fname/endpoint/protocols/voice/live/sessions",
+            liveUri.getRawPath());
+        assertEquals("session & id", queryParameter(realtimeUri, "agent_session_id"));
+        assertEquals("{\"name\":\"a & b\"}", queryParameter(liveUri, "structured_inputs"));
     }
 
     @Test
@@ -181,11 +209,11 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         assertEquals(Duration.ofSeconds(3), snapshot.getCloseTimeout());
     }
 
-    private static String queryParameter(URI uri, String name) {
-        for (String parameter : uri.getQuery().split("&")) {
+    private static String queryParameter(URI uri, String name) throws Exception {
+        for (String parameter : uri.getRawQuery().split("&")) {
             String[] pair = parameter.split("=", 2);
             if (name.equals(pair[0])) {
-                return pair.length == 2 ? pair[1] : "";
+                return pair.length == 2 ? URLDecoder.decode(pair[1], StandardCharsets.UTF_8.name()) : "";
             }
         }
         return null;

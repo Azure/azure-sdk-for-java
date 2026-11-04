@@ -1140,6 +1140,7 @@ VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketCo
     .setHandshakeTimeout(Duration.ofSeconds(30))
     .setCloseTimeout(Duration.ofSeconds(10))
     .setStoreEnabled(false);
+
 try (BetaVoiceAgentsLiveWebSocketSessionClient session = liveClient.openWebSocketSession(agentName, options)) {
     for (ServerEvent event : session.receiveEvents()) {
         if (event.isSessionStarted()) {

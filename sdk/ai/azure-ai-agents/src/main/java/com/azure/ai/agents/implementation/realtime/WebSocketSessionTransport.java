@@ -57,8 +57,7 @@ public final class WebSocketSessionTransport implements AutoCloseable {
     private final CountDownLatch closeCompleted = new CountDownLatch(1);
     private final AtomicReference<Throwable> connectionError = new AtomicReference<>();
     private final AtomicBoolean receiveClaimed = new AtomicBoolean();
-    private final AtomicReference<WebSocketSessionState> state
-        = new AtomicReference<>(WebSocketSessionState.CONNECTING);
+    private final AtomicReference<WebSocketSessionState> state = new AtomicReference<>(WebSocketSessionState.NEW);
     private final AtomicBoolean clientShutdown = new AtomicBoolean();
     private volatile WebSocket webSocket;
     private volatile Integer closeCode;
@@ -75,6 +74,7 @@ public final class WebSocketSessionTransport implements AutoCloseable {
 
     private void open(VoiceAgentWebSocketClientConfiguration configuration, String subprotocol,
         Function<String, HttpHeaders> headersFactory) {
+        state.set(WebSocketSessionState.CONNECTING);
         String token = configuration.getCredential()
             .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
             .getToken();

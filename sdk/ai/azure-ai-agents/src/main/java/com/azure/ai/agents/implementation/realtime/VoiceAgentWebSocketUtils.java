@@ -205,10 +205,7 @@ public final class VoiceAgentWebSocketUtils {
             throw new IllegalArgumentException("A voice-agent route suffix must start with '/'.");
         }
         URI endpoint = configuration.getEndpoint();
-        String scheme;
-        if ("https".equalsIgnoreCase(endpoint.getScheme()) || "wss".equalsIgnoreCase(endpoint.getScheme())) {
-            scheme = "wss";
-        } else {
+        if (!"https".equalsIgnoreCase(endpoint.getScheme()) && !"wss".equalsIgnoreCase(endpoint.getScheme())) {
             throw new IllegalArgumentException(
                 "Voice-agent WebSocket endpoints must use https or wss to protect credentials.");
         }
@@ -219,8 +216,10 @@ public final class VoiceAgentWebSocketUtils {
 
         String basePath = endpoint.getRawPath() == null ? "" : endpoint.getRawPath().replaceAll("/$", "");
         String path = basePath + "/agents/" + encode(agentName) + "/endpoint/protocols/voice" + suffix;
-        URI baseUri = URI.create(scheme + "://" + endpoint.getRawAuthority() + path);
-        UrlBuilder url = UrlBuilder.parse(baseUri.toString());
+        UrlBuilder url = UrlBuilder.parse(endpoint.toString()).setScheme("wss").setPath(path);
+        // Initialize the lazy query before clearing it; the pinned Azure Core version otherwise retains it.
+        url.getQuery();
+        url.clearQuery();
         url.setQueryParameter("api-version", encode(configuration.getApiVersion()));
         url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
         if (store != null) {
