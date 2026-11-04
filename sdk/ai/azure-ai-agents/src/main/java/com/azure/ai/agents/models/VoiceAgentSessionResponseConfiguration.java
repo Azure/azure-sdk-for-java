@@ -606,4 +606,20 @@ public final class VoiceAgentSessionResponseConfiguration
         return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
             ToolChoiceOptions.class);
     }
+
+    /*
+     * The effective handoff topology and runtime state, when handoff is configured.
+     */
+    @Generated
+    private VoiceAgentHandoffState handoff;
+
+    /**
+     * Get the handoff property: The effective handoff topology and runtime state, when handoff is configured.
+     *
+     * @return the handoff value.
+     */
+    @Generated
+    public VoiceAgentHandoffState getHandoff() {
+        return this.handoff;
+    }
 }

@@ -440,4 +440,42 @@ public final class RealtimeServerEventType extends ExpandableStringEnum<Realtime
     public static Collection<RealtimeServerEventType> values() {
         return values(RealtimeServerEventType.class);
     }
+
+    /**
+     * An incremental fragment of model-generated system-tool arguments.
+     */
+    @Generated
+    public static final RealtimeServerEventType RESPONSE_SYSTEM_TOOL_ARGUMENTS_DELTA
+        = fromString("response.system_tool_arguments.delta");
+
+    /**
+     * The complete model-generated system-tool arguments, not a provider outcome.
+     */
+    @Generated
+    public static final RealtimeServerEventType RESPONSE_SYSTEM_TOOL_ARGUMENTS_DONE
+        = fromString("response.system_tool_arguments.done");
+
+    /**
+     * An asynchronous collection or telephony-operation outcome.
+     */
+    @Generated
+    public static final RealtimeServerEventType INPUT_COLLECTION_STATUS = fromString("input_collection.status");
+
+    /**
+     * Static value session.handoff.started for RealtimeServerEventType.
+     */
+    @Generated
+    public static final RealtimeServerEventType SESSION_HANDOFF_STARTED = fromString("session.handoff.started");
+
+    /**
+     * Static value session.handoff.completed for RealtimeServerEventType.
+     */
+    @Generated
+    public static final RealtimeServerEventType SESSION_HANDOFF_COMPLETED = fromString("session.handoff.completed");
+
+    /**
+     * Static value session.handoff.aborted for RealtimeServerEventType.
+     */
+    @Generated
+    public static final RealtimeServerEventType SESSION_HANDOFF_ABORTED = fromString("session.handoff.aborted");
 }

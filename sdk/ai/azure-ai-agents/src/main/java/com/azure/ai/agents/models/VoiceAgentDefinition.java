@@ -814,8 +814,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
+     * Optional subagent configuration. Set `subagent_type` to `delegate` for delegated background specialists or
+     * `inline` for inline voice subagents.
      */
     @Generated
     private VoiceAgentSubagentConfiguration subagentConfiguration;
@@ -873,8 +873,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Get the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @return the subagentConfiguration value.
      */
@@ -884,8 +884,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Set the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @param subagentConfiguration the subagentConfiguration value to set.
      * @return the VoiceAgentDefinition object itself.
