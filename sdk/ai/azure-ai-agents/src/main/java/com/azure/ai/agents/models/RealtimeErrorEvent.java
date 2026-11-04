@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Returned when an error occurs, which could be a client problem or a server
  * problem. Most errors are recoverable and the session will stay open, we
- * recommend to implementers to monitor and log error messages by default.
+ * recommend to implementors to monitor and log error messages by default.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")

@@ -410,7 +410,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * mesh.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String clusterMeshProfileName, ClusterMeshProfileInner resource,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, clusterMeshProfileName,
@@ -672,7 +672,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
@@ -1033,8 +1033,8 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * mesh.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginApply(String resourceGroupName,
-        String fleetName, String clusterMeshProfileName, String ifMatch) {
+    private SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner>
+        beginApply(String resourceGroupName, String fleetName, String clusterMeshProfileName, String ifMatch) {
         Response<BinaryData> response
             = applyWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
         return this.client.<ClusterMeshProfileInner, ClusterMeshProfileInner>getLroResult(response,

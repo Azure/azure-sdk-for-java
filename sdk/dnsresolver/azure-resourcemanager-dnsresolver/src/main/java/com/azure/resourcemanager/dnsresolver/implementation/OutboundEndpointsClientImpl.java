@@ -428,7 +428,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverName, String outboundEndpointName, OutboundEndpointInner parameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverName,
@@ -718,7 +718,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, String outboundEndpointName, OutboundEndpointPatch parameters, String ifMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch);
@@ -979,7 +979,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch);
