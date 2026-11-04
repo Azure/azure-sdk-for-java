@@ -168,6 +168,20 @@
 
 * `models.MigrationValidationWarning` was added
 
+#### `fluent.ClustersClient` was added
+
+* `beginUnlinkMigratedEndpoint(...)` was added
+
+* `unlinkMigratedEndpoint(...)` was added
+
+#### `fluent.MigrationsClient` was modified
+
+* `beginUndo(...)` and `undo(...)` were added
+
+* `beginUnlinkMigratedEndpoint(...)` was added
+
+* `unlinkMigratedEndpoint(...)` was added
+
 #### `models.ClusterUpdate` was modified
 
 * `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
