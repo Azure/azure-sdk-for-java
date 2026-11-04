@@ -6,6 +6,8 @@
 
 - Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
   voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
+- Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
+  destinations.
 
 ### Breaking Changes
 

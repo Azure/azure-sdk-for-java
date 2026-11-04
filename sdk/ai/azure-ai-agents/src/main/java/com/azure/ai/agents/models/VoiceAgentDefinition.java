@@ -570,6 +570,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("subagent_config", this.subagentConfiguration);
+        jsonWriter.writeJsonField("post_call", this.postCall);
         jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
@@ -638,6 +639,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                 } else if ("subagent_config".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.subagentConfiguration
                         = VoiceAgentSubagentConfiguration.fromJson(reader);
+                } else if ("post_call".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.postCall = VoiceAgentPostCallConfiguration.fromJson(reader);
                 } else if ("store".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -927,6 +930,37 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentDefinition setSoundscape(VoiceAgentSoundscapeConfiguration soundscape) {
         this.soundscape = soundscape;
+        return this;
+    }
+
+    /*
+     * Optional post-call delivery configuration. After each session ends, the service notifies the configured
+     * destinations.
+     */
+    @Generated
+    private VoiceAgentPostCallConfiguration postCall;
+
+    /**
+     * Get the postCall property: Optional post-call delivery configuration. After each session ends, the service
+     * notifies the configured destinations.
+     *
+     * @return the postCall value.
+     */
+    @Generated
+    public VoiceAgentPostCallConfiguration getPostCall() {
+        return this.postCall;
+    }
+
+    /**
+     * Set the postCall property: Optional post-call delivery configuration. After each session ends, the service
+     * notifies the configured destinations.
+     *
+     * @param postCall the postCall value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setPostCall(VoiceAgentPostCallConfiguration postCall) {
+        this.postCall = postCall;
         return this;
     }
 }

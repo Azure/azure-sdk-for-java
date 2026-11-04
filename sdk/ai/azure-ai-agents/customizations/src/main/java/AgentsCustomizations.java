@@ -201,6 +201,7 @@ public class AgentsCustomizations extends Customization {
             "RealtimeSessionConfigurationBase",
             "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
             "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+            "VoiceAgentPostCallDestination",
             "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
             "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
