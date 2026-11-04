@@ -128,9 +128,15 @@ public final class ExternalSvmImpl implements ExternalSvm, ExternalSvm.Definitio
     ExternalSvmImpl(ExternalSvmInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.externalClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalClusters");
-        this.externalSvmName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalSvms");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}",
+            "resourceGroupName");
+        this.externalClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}",
+            "externalClusterName");
+        this.externalSvmName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/externalClusters/{externalClusterName}/externalSvms/{externalSvmName}",
+            "externalSvmName");
     }
 
     public ExternalSvm refresh() {

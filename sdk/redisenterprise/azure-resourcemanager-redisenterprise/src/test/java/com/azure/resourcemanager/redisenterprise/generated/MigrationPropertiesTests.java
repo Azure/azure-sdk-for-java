@@ -11,7 +11,7 @@ public final class MigrationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationProperties model = BinaryData.fromString(
-            "{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"g\",\"provisioningState\":\"InProgress\",\"statusDetails\":\"wu\",\"creationTime\":\"2021-10-03T15:35:19Z\",\"lastModifiedTime\":\"2021-02-12T15:23:48Z\"}")
+            "{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"g\",\"provisioningState\":\"InProgress\",\"statusDetails\":\"wu\",\"creationTime\":\"2021-10-03T15:35:19Z\",\"lastModifiedTime\":\"2021-02-12T15:23:48Z\",\"rollbackEligibleUntil\":\"2021-01-04T00:59:55Z\"}")
             .toObject(MigrationProperties.class);
     }
 

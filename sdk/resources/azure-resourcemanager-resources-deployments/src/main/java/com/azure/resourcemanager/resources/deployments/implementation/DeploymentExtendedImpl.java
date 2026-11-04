@@ -137,8 +137,30 @@ public final class DeploymentExtendedImpl
         com.azure.resourcemanager.resources.deployments.DeploymentsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}",
+            "deploymentName");
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
     }
 
     public DeploymentExtended refresh() {

@@ -29,7 +29,7 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"bagn\",\"privateLinkScopeId\":\"jhgem\",\"privateEndpointConnections\":[{\"id\":\"ky\",\"name\":\"lhjym\",\"type\":\"gqtagd\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"soljome\",\"description\":\"tfy\"},\"provisioningState\":\"lbvgjc\",\"groupIds\":[\"kgjiiytssikizbc\"]}},{\"id\":\"q\",\"name\":\"ntnrgmqsorh\",\"type\":\"kxgnlykmxcpwzvmd\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"dt\",\"description\":\"wlwxlboncqbazqic\"},\"provisioningState\":\"hygtv\",\"groupIds\":[\"janepubdpkx\",\"qvgx\",\"aodetv\"]}},{\"id\":\"kxdxuwsaifmcwn\",\"name\":\"bzlehgc\",\"type\":\"bcknjolgj\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"velsz\",\"description\":\"rqz\"},\"provisioningState\":\"xoqeintxwalj\",\"groupIds\":[\"o\",\"lqwa\"]}},{\"id\":\"r\",\"name\":\"lhm\",\"type\":\"qb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"fjrqpjiyr\",\"description\":\"jc\"},\"provisioningState\":\"a\",\"groupIds\":[\"z\",\"dfkbnrzorpdltbq\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datafg\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"etgzdgvpy\",\"tags\":{\"ngucaifpaurww\":\"aqqilzdcduwjoed\",\"wxdcvjwcyz\":\"ilfjqqacdmk\",\"tuicds\":\"akeciqchx\"},\"id\":\"wdfmmpzhzzwvywr\",\"name\":\"yngydgrpxncaki\",\"type\":\"aondjrkclamgg\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"zllrz\",\"privateLinkScopeId\":\"mmdqgmihzpimc\",\"privateEndpointConnections\":[{\"id\":\"xtminklogxsvtzar\",\"name\":\"vqnsqk\",\"type\":\"mbjwzzoslpkyb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"kzpgaj\",\"description\":\"qjcemqbmf\"},\"provisioningState\":\"qarwzxuqreblu\",\"groupIds\":[\"bwxsfgtdm\",\"vxekraokqkbud\"]}},{\"id\":\"waokbavlytta\",\"name\":\"nwfrkebsmhpd\",\"type\":\"dig\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"ekscbctnanqimwbz\",\"description\":\"pdcldpka\"},\"provisioningState\":\"snlaimoux\",\"groupIds\":[\"qmudmfcoibic\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datawswjrkbqsjh\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"datavyfscyrfwbi\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"datagfuyzwv\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"datamb\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]},\"location\":\"r\",\"tags\":{\"asaxxo\":\"likcdrd\",\"kwiy\":\"sm\",\"ukosrn\":\"v\"},\"id\":\"wnvz\",\"name\":\"lnk\",\"type\":\"ywsxvjabjqqaxu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,28 +38,32 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        HybridComputePrivateLinkScope response
-            = manager.privateLinkScopes()
-                .define("z")
-                .withRegion("lmydidwhep")
-                .withExistingResourceGroup("mwiuawvcm")
-                .withTags(mapOf("dbckyo", "tjfdoesxxhmw"))
-                .withProperties(new HybridComputePrivateLinkScopeProperties()
-                    .withPublicNetworkAccess(PublicNetworkAccessType.DISABLED)
-                    .withServiceExtensions(Arrays.asList(
-                        new ServiceExtension()
-                            .withServiceExtensionType(
-                                BinaryData.fromBytes("\"dataxzcmjhngxno\"".getBytes(StandardCharsets.UTF_8)))
-                            .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
-                        new ServiceExtension()
-                            .withServiceExtensionType(
-                                BinaryData.fromBytes("\"datadisnj\"".getBytes(StandardCharsets.UTF_8)))
-                            .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED))))
-                .create();
+        HybridComputePrivateLinkScope response = manager.privateLinkScopes()
+            .define("mtvtvegwqiukvzwy")
+            .withRegion("jvqntt")
+            .withExistingResourceGroup("zx")
+            .withTags(mapOf("fiv", "dab"))
+            .withProperties(new HybridComputePrivateLinkScopeProperties()
+                .withPublicNetworkAccess(PublicNetworkAccessType.DISABLED)
+                .withServiceExtensions(Arrays.asList(
+                    new ServiceExtension()
+                        .withServiceExtensionType(
+                            BinaryData.fromBytes("\"datazptjxulweucyrth\"".getBytes(StandardCharsets.UTF_8)))
+                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
+                    new ServiceExtension()
+                        .withServiceExtensionType(BinaryData.fromBytes("\"datah\"".getBytes(StandardCharsets.UTF_8)))
+                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.ENABLED),
+                    new ServiceExtension()
+                        .withServiceExtensionType(BinaryData.fromBytes("\"datajei\"".getBytes(StandardCharsets.UTF_8)))
+                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
+                    new ServiceExtension()
+                        .withServiceExtensionType(BinaryData.fromBytes("\"dataoka\"".getBytes(StandardCharsets.UTF_8)))
+                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.ENABLED))))
+            .create();
 
-        Assertions.assertEquals("etgzdgvpy", response.location());
-        Assertions.assertEquals("aqqilzdcduwjoed", response.tags().get("ngucaifpaurww"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("r", response.location());
+        Assertions.assertEquals("likcdrd", response.tags().get("asaxxo"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
             response.properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());
     }

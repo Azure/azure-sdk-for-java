@@ -1,6 +1,6 @@
 # Release History
 
-## 12.30.0-beta.1 (Unreleased)
+## 12.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -16,6 +16,16 @@
   when that position was not 0 and the buffer was larger than the block size.
 
 ### Other Changes
+
+## 12.30.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 ## 12.29.0 (2026-10-07)
 

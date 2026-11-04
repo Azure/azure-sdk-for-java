@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationValidationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationValidationError model
-            = BinaryData.fromString("{\"disparities\":[{\"category\":\"pg\",\"message\":\"dtocj\"}]}")
-                .toObject(MigrationValidationError.class);
-        Assertions.assertEquals("pg", model.disparities().get(0).category());
-        Assertions.assertEquals("dtocj", model.disparities().get(0).message());
+        MigrationValidationError model = BinaryData.fromString(
+            "{\"disparities\":[{\"category\":\"hhbcsglummajtjao\",\"message\":\"xobnbdxkqpxok\"},{\"category\":\"jionpimexgstxgc\",\"message\":\"odgmaajrmvdjwz\"}]}")
+            .toObject(MigrationValidationError.class);
+        Assertions.assertEquals("hhbcsglummajtjao", model.disparities().get(0).category());
+        Assertions.assertEquals("xobnbdxkqpxok", model.disparities().get(0).message());
     }
 }

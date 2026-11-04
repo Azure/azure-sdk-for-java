@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-documentintelligence</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
 
   <name>Microsoft Azure client library for Document Intelligence</name>
   <description>This package contains the Microsoft Azure AI Document Intelligence SDK.</description>
@@ -66,13 +66,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.36.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.37.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
