@@ -7,16 +7,21 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -28,6 +33,11 @@ import java.util.Objects;
  * {@link StorageBearerTokenChallengeAuthorizationPolicy}. When sessions are enabled, for eligible blob GET requests,
  * the policy authenticates with a session token, refreshing {@code x-ms-date} before each signing.
  * For all other requests, it delegates to the wrapped bearer token policy.
+ * <p>
+ * A layout-routed request, whose URL names the layout endpoint and whose {@code Host} header names the account, is
+ * judged by the account authority: it is eligible for a session exactly as the same request sent directly to the
+ * account would be. A retry against the secondary host carries no {@code Host} header, so it is judged by the
+ * secondary URL and uses bearer authentication like any other secondary request.
  * <p>
  * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
  * session credential is invalidated only if it is still current. Each transport retry may fall back independently.
@@ -145,12 +155,41 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        BlobUrlParts parts = sessionProvider.getEligibleRequestParts(context.getHttpRequest());
-        if (parts == null || !sessionAcquirer.isRequestForSessionEndpoint(context.getHttpRequest())) {
+        HttpRequest request = getAccountAddressedRequest(context);
+        BlobUrlParts parts = sessionProvider.getEligibleRequestParts(request);
+        if (parts == null || !sessionAcquirer.isRequestForSessionEndpoint(request)) {
             return null;
         }
 
         return new SessionRequestContext(parts.getBlobContainerName(), sessionAcquirer, context.getContext());
+    }
+
+    /**
+     * Returns the request as it is addressed to the account. A layout-routed request has the layout endpoint in its
+     * URL and the account authority in its {@code Host} header, and session eligibility is decided on the latter.
+     * Any other request is returned unchanged.
+     */
+    private static HttpRequest getAccountAddressedRequest(HttpPipelineCallContext context) {
+        HttpRequest request = context.getHttpRequest();
+        String authority = request.getHeaders().getValue(HttpHeaderName.HOST);
+        if (CoreUtils.isNullOrEmpty(authority) || !isLayoutRouted(context)) {
+            return request;
+        }
+
+        try {
+            UrlBuilder addressed = UrlBuilder.parse(request.getUrl().getProtocol() + "://" + authority);
+            UrlBuilder builder = UrlBuilder.parse(request.getUrl());
+            builder.setHost(addressed.getHost());
+            builder.setPort(addressed.getPort() == null ? null : addressed.getPort().toString());
+            return new HttpRequest(request.getHttpMethod(), builder.toUrl()).setHeaders(request.getHeaders());
+        } catch (MalformedURLException | RuntimeException ex) {
+            return request;
+        }
+    }
+
+    private static boolean isLayoutRouted(HttpPipelineCallContext context) {
+        Object endpoint = context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).orElse(null);
+        return endpoint instanceof String && !CoreUtils.isNullOrEmpty((String) endpoint);
     }
 
     /**

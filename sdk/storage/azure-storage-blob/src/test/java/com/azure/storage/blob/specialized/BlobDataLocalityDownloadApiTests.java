@@ -3,9 +3,12 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -16,6 +19,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 // import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -23,6 +27,9 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.SessionContext;
+import com.azure.storage.blob.SessionContext.SessionMode;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 // import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
@@ -38,6 +45,7 @@ import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -72,6 +80,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 // import java.util.Arrays;
 import java.util.HashSet;
@@ -113,6 +122,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
     // private static final URI DATA_LOCALITY_ENDPOINT = URI.create("https://host-a:443");
     private static final String DATA_LOCALITY_HOST = "host-a";
+    private static final String SECONDARY_HOST = "account-secondary.blob.core.windows.net";
     private static final byte[] MOCK_BODY
         = "the quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8);
     // private static final int MOCK_FAILURE_OFFSET = 16;
@@ -398,6 +408,108 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         byte[] expected = new byte[4 * Constants.KB];
         System.arraycopy(contentBytes, Constants.KB, expected, 0, expected.length);
         assertArrayEquals(expected, readBytes);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void downloadToFileWithSessionsSignsLayoutRoutedChunks(boolean async) throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY);
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+        BlobDownloadToFileOptions options
+            = new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1));
+
+        if (async) {
+            StepVerifier
+                .create(sessionMockBuilder(httpClient).buildAsyncClient()
+                    .downloadToFileWithResponse(options)
+                    .subscribeOn(Schedulers.parallel()))
+                .assertNext(response -> assertEquals(MOCK_BODY.length, response.getValue().getBlobSize()))
+                .verifyComplete();
+        } else {
+            sessionMockBuilder(httpClient).buildClient().downloadToFileWithResponse(options, null, Context.NONE);
+        }
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        assertEquals(1, httpClient.getSessionRequestRecords().size(), "Expected a single CreateSession call.");
+        RequestRecord createSession = httpClient.getSessionRequestRecords().get(0);
+        assertEquals(ORIGINAL_HOST, createSession.urlHost);
+        assertNull(createSession.hostHeader);
+        assertEquals("Bearer", createSession.authScheme);
+
+        List<RequestRecord> requests = httpClient.getDataRequestRecords();
+        assertTrue(requests.size() > 2);
+        assertEquals(ORIGINAL_HOST, requests.get(0).urlHost);
+        for (RequestRecord request : requests.subList(1, requests.size())) {
+            assertEquals(DATA_LOCALITY_HOST, request.urlHost);
+            assertEquals(ORIGINAL_HOST, request.hostHeader);
+        }
+        for (RequestRecord request : requests) {
+            assertEquals("Session", request.authScheme, request.url);
+        }
+
+        assertEquals(1, httpClient.getLayoutRequestRecords().size());
+        assertEquals("Bearer", httpClient.getLayoutRequestRecords().get(0).authScheme);
+    }
+
+    @DoNotRecord
+    @Test
+    public void routedReadAcquiresSessionFromAccountEndpoint() {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY);
+        BlobClient client = sessionMockBuilder(httpClient).buildClient();
+        Context routed
+            = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://" + DATA_LOCALITY_HOST + ":443");
+
+        client.downloadContentWithResponse((DownloadRetryOptions) null, null, new BlobRange(0, 8L), false, null,
+            routed);
+
+        assertEquals(1, httpClient.getSessionRequestRecords().size(), "Expected a single CreateSession call.");
+        RequestRecord createSession = httpClient.getSessionRequestRecords().get(0);
+        assertEquals(ORIGINAL_HOST, createSession.urlHost);
+        assertNull(createSession.hostHeader);
+
+        assertEquals(1, httpClient.getDataRequestRecords().size());
+        RequestRecord read = httpClient.getDataRequestRecords().get(0);
+        assertEquals(DATA_LOCALITY_HOST, read.urlHost);
+        assertEquals(ORIGINAL_HOST, read.hostHeader);
+        assertEquals("Session", read.authScheme);
+    }
+
+    @DoNotRecord
+    @Test
+    public void routedChunkSecondaryRetryUsesBearer() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY).failRoutedRequestsWith(503);
+        BlobClient client = sessionMockBuilder(httpClient)
+            .retryOptions(new RequestRetryOptions(null, 2, Duration.ofSeconds(1), Duration.ofMillis(1),
+                Duration.ofMillis(1), SECONDARY_HOST))
+            .buildClient();
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        client.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)),
+            null, Context.NONE);
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        int routedAttempts = 0;
+        int secondaryAttempts = 0;
+        for (RequestRecord request : httpClient.getDataRequestRecords()) {
+            if (DATA_LOCALITY_HOST.equals(request.urlHost)) {
+                routedAttempts++;
+                assertEquals(ORIGINAL_HOST, request.hostHeader);
+                assertEquals("Session", request.authScheme, request.url);
+            } else if (SECONDARY_HOST.equals(request.urlHost)) {
+                secondaryAttempts++;
+                assertNull(request.hostHeader);
+                assertTrue(request.url.startsWith("https://" + SECONDARY_HOST + "/container/blob"), request.url);
+                assertEquals("Bearer", request.authScheme, request.url);
+            }
+        }
+        assertTrue(routedAttempts > 0, "Expected routed attempts.");
+        assertEquals(routedAttempts, secondaryAttempts, "Expected one secondary attempt per failed routed attempt.");
     }
 
     @DoNotRecord
@@ -850,6 +962,17 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             .httpClient(httpClient);
     }
 
+    private static BlobClientBuilder sessionMockBuilder(HttpClient httpClient) {
+        TokenCredential credential
+            = context -> Mono.just(new AccessToken("mock-token", OffsetDateTime.now().plusHours(1)));
+        return new BlobClientBuilder().endpoint("https://" + ORIGINAL_HOST)
+            .containerName("container")
+            .blobName("blob")
+            .credential(credential)
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED))
+            .httpClient(httpClient);
+    }
+
     // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
     // private static HttpHeaders mockDownloadHeaders(int start, int end) {
     //     return new HttpHeaders().set(HttpHeaderName.ETAG, "\"etag\"")
@@ -889,7 +1012,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         private final byte[] contentBytes;
         private final Mono<HttpResponse> layoutFailure;
         private final List<RequestRecord> dataRequestRecords = new ArrayList<>();
+        private final List<RequestRecord> layoutRequestRecords = new CopyOnWriteArrayList<>();
+        private final List<RequestRecord> sessionRequestRecords = new CopyOnWriteArrayList<>();
         private int layoutRequestCount;
+        private Integer routedFailureStatus;
 
         private LayoutRoutingHttpClient(byte[] contentBytes) {
             this(contentBytes, null);
@@ -900,11 +1026,25 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             this.layoutFailure = layoutFailure;
         }
 
+        /**
+         * Makes every request addressed to the layout endpoint fail with the given status code.
+         */
+        LayoutRoutingHttpClient failRoutedRequestsWith(int statusCode) {
+            this.routedFailureStatus = statusCode;
+            return this;
+        }
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             RequestRecord record = new RequestRecord(request);
+            if (request.getHttpMethod() == HttpMethod.POST && record.url.contains("comp=session")) {
+                sessionRequestRecords.add(record);
+                return createSessionResponse(request);
+            }
+
             if (record.url.contains("comp=layout")) {
                 layoutRequestCount++;
+                layoutRequestRecords.add(record);
                 if (layoutFailure != null) {
                     return layoutFailure;
                 }
@@ -918,6 +1058,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             }
 
             dataRequestRecords.add(record);
+            if (routedFailureStatus != null && DATA_LOCALITY_HOST.equals(record.urlHost)) {
+                return Mono.just(new MockHttpResponse(request, routedFailureStatus));
+            }
+
             String rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
             int start = 0;
             int end = contentBytes.length - 1;
@@ -947,6 +1091,26 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         List<RequestRecord> getDataRequestRecords() {
             return dataRequestRecords;
         }
+
+        List<RequestRecord> getLayoutRequestRecords() {
+            return layoutRequestRecords;
+        }
+
+        List<RequestRecord> getSessionRequestRecords() {
+            return sessionRequestRecords;
+        }
+
+        private static Mono<HttpResponse> createSessionResponse(HttpRequest request) {
+            String body = "<CreateSessionResult><Id>test-session</Id><Expiration>"
+                + new DateTimeRfc1123(OffsetDateTime.now().plusHours(1))
+                + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
+                + "<SessionToken>session-token</SessionToken>"
+                + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+                + "</Credentials></CreateSessionResult>";
+            return Mono.just(new MockHttpResponse(request, 201,
+                new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"),
+                body.getBytes(StandardCharsets.UTF_8)));
+        }
     }
 
     private static final class RequestRecord {
@@ -954,12 +1118,15 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         private final String urlHost;
         private final String requestHost;
         private final String hostHeader;
+        private final String authScheme;
 
         private RequestRecord(HttpRequest request) {
             this.url = request.getUrl().toString();
             this.urlHost = request.getUrl().getHost();
             this.requestHost = request.getUrl().getHost();
             this.hostHeader = request.getHeaders().getValue(HttpHeaderName.HOST);
+            String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            this.authScheme = authorization == null ? null : authorization.split(" ", 2)[0];
         }
     }
 

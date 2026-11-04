@@ -16,6 +16,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
 import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
 import com.azure.storage.blob.implementation.models.CreateSessionResponse;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
@@ -105,7 +106,8 @@ final class SessionAcquirer {
     }
 
     /**
-     * Sends a CreateSession request for the container through the bound pipeline.
+     * Sends a CreateSession request for the container through the bound pipeline. The request always targets the
+     * account endpoint, even when the request that triggered acquisition was routed to a layout endpoint.
      *
      * @param containerName The container to create a session for.
      * @param context The context of the request that triggered session acquisition.
@@ -120,7 +122,8 @@ final class SessionAcquirer {
 
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
-        Context acquisitionContext = context.addData(SESSION_ACQUISITION_CONTEXT_KEY, true);
+        Context acquisitionContext = context.addData(SESSION_ACQUISITION_CONTEXT_KEY, true)
+            .addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "");
         return client.getContainers()
             .createSessionWithResponseAsync(containerName, config, null, null, acquisitionContext);
     }

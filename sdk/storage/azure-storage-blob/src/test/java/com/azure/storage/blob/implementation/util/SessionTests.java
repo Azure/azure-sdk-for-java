@@ -38,6 +38,7 @@ import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccesso
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -50,6 +51,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -95,6 +97,8 @@ import static org.mockito.Mockito.when;
 
 public class SessionTests {
 
+    private static final String ACCOUNT_AUTHORITY = "testaccount.blob.core.windows.net";
+    private static final String LAYOUT_ENDPOINT = "https://layout.example.net:9443";
     private static final String FIRST_TOKEN = "first-session-token";
     private static final String ENDPOINT = "https://account.blob.core.windows.net";
     private static final HttpHeaderName CONSUMER_HEADER = HttpHeaderName.fromString("x-test-consumer");
@@ -322,6 +326,86 @@ public class SessionTests {
         assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session " + FIRST_TOKEN),
             "Expected request to be signed with a session credential.");
     }
+
+    @Test
+    public void routedRequestIsEvaluatedAgainstAccountAddressAsync() {
+        HttpRequest request = routedBlobGetRequest(ACCOUNT_AUTHORITY);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request, routedContext(LAYOUT_ENDPOINT)))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        assertTrue(isSessionAuthenticated(request), "Expected the routed request to be session-authenticated.");
+        verify(sessionProvider).getEligibleRequestParts(argThat(this::isAddressedToAccount));
+        verify(bearerPolicy, never()).process(any(), any());
+        assertRoutedRequestUnchanged(request);
+    }
+
+    @Test
+    public void routedRequestIsEvaluatedAgainstAccountAddressSync() {
+        HttpRequest request = routedBlobGetRequest(ACCOUNT_AUTHORITY);
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        when(next.processSync()).thenReturn(new MockHttpResponse(null, 200));
+        when(next.clone()).thenReturn(next);
+        HttpPipelineCallContext context = createContextForRequest(request);
+        context.setData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, LAYOUT_ENDPOINT);
+
+        try (HttpResponse response = policy.processSync(context, next)) {
+            assertEquals(200, response.getStatusCode());
+        }
+
+        assertTrue(isSessionAuthenticated(request), "Expected the routed request to be session-authenticated.");
+        verify(sessionProvider).getEligibleRequestParts(argThat(this::isAddressedToAccount));
+        verify(bearerPolicy, never()).processSync(any(), any());
+        assertRoutedRequestUnchanged(request);
+    }
+
+    @Test
+    public void routedRequestAddressedToAnotherAccountUsesBearer() {
+        HttpRequest request = routedBlobGetRequest("otheraccount.blob.core.windows.net");
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request, routedContext(LAYOUT_ENDPOINT)))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        assertFalse(isSessionAuthenticated(request));
+        verify(sessionProvider, never()).getSessionAsync(any());
+        verify(bearerPolicy).process(any(), any());
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = { "" })
+    public void hostHeaderWithoutLayoutEndpointDoesNotChangeEligibility(String layoutEndpoint) {
+        HttpRequest request = routedBlobGetRequest(ACCOUNT_AUTHORITY);
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request, routedContext(layoutEndpoint)))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        assertFalse(isSessionAuthenticated(request));
+        verify(sessionProvider, never()).getSessionAsync(any());
+        verify(bearerPolicy).process(any(), any());
+    }
+
+    @Test
+    public void createSessionIsNeverRoutedToLayoutEndpoint() {
+        List<HttpRequest> sent = new ArrayList<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            sent.add(request);
+            return sessionResponse(request, FIRST_TOKEN);
+        }).policies(new DataLocalityPolicy()).build();
+        SessionAcquirer acquirer = testAcquirer().bind(pipeline);
+
+        acquirer.createSessionAsync("mycontainer", routedContext(LAYOUT_ENDPOINT)).block();
+
+        assertEquals(1, sent.size());
+        assertEquals(ACCOUNT_AUTHORITY, sent.get(0).getUrl().getAuthority());
+        assertNull(sent.get(0).getHeaders().getValue(HttpHeaderName.HOST));
+    }
+
 
     /**
      * Verifies that a 401 from the service invalidates the cached session and retries the request
@@ -1348,5 +1432,26 @@ public class SessionTests {
         private void advance(Duration duration) {
             instant = instant.plus(duration);
         }
+    }
+
+
+    private boolean isAddressedToAccount(HttpRequest request) {
+        return ACCOUNT_AUTHORITY.equals(request.getUrl().getAuthority());
+    }
+
+    private static void assertRoutedRequestUnchanged(HttpRequest request) {
+        assertEquals("layout.example.net:9443", request.getUrl().getAuthority());
+        assertEquals(ACCOUNT_AUTHORITY, request.getHeaders().getValue(HttpHeaderName.HOST));
+    }
+
+    private static HttpRequest routedBlobGetRequest(String hostHeader) {
+        return new HttpRequest(HttpMethod.GET, "https://layout.example.net:9443/mycontainer/myblob")
+            .setHeader(HttpHeaderName.HOST, hostHeader);
+    }
+
+    private static Context routedContext(String layoutEndpoint) {
+        return layoutEndpoint == null
+            ? Context.NONE
+            : new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, layoutEndpoint);
     }
 }
