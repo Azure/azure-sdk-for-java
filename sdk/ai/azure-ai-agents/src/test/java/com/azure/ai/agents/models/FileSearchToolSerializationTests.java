@@ -318,11 +318,12 @@ public class FileSearchToolSerializationTests {
             tool = Tool.fromJson(reader);
         }
 
-        assertInstanceOf(FileSearchTool.class, tool, "Should deserialize as FileSearchTool");
-        FileSearchTool fst = (FileSearchTool) tool;
-        assertEquals(Collections.singletonList("vs_poly"), fst.getVectorStoreIds());
-        assertEquals(3L, fst.getMaxResults());
-        assertNotNull(fst.getFilters());
+        ToolFileSearchTool fileSearchTool
+            = assertInstanceOf(ToolFileSearchTool.class, tool, "Should deserialize as ToolFileSearchTool");
+        assertEquals(ToolType.FILE_SEARCH, fileSearchTool.getType());
+        assertEquals(Collections.singletonList("vs_poly"), fileSearchTool.getVectorStoreIds());
+        assertEquals(3L, fileSearchTool.getMaxResults());
+        assertNotNull(fileSearchTool.getFilters());
     }
 
     // -----------------------------------------------------------------------
