@@ -10,7 +10,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.util.ReferenceCountUtil;
@@ -38,7 +39,7 @@ public class WebSocketSessionInterruptTests {
             }, opened -> {
             }, reason -> {
             });
-        EventLoopGroup group = new NioEventLoopGroup(1);
+        EventLoopGroup group = new MultiThreadIoEventLoopGroup(1, NioIoHandler.newFactory());
         Channel channel = mock(Channel.class);
         ChannelFuture closeFuture = mock(ChannelFuture.class);
         InterruptedException interrupted = new InterruptedException("Close interrupted");

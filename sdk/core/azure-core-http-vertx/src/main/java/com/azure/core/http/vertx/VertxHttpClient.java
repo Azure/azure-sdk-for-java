@@ -35,7 +35,9 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.RequestOptions;
+import io.vertx.core.net.HostAndPort;
 import reactor.core.publisher.Mono;
 import reactor.util.context.ContextView;
 
@@ -53,6 +55,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.http.vertx.implementation.VertxUtils.resetRequest;
+
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
@@ -63,16 +67,9 @@ class VertxHttpClient implements HttpClient {
     // other HTTP stacks. RFC 9110 requires a client not to wait indefinitely.
     private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
 
-    private static final ReflectiveInvoker REQUEST_RESET;
     private static final ReflectiveInvoker REQUEST_WRITE_HEAD;
     static {
-        // In order to support both Vert.x 4.5 and 5.x reflection is needed to reset an HttpClientRequest.
-        // HttpClientRequest.reset(long, Throwable) is available in both versions, but it returns boolean in 4.5 and
-        // Future<Void> in 5.x, so a call compiled against one version fails with NoSuchMethodError on the other.
         try {
-            Method method = HttpClientRequest.class.getMethod("reset", long.class, Throwable.class);
-            REQUEST_RESET = ReflectionUtils.getMethodInvoker(HttpClientRequest.class, method, false);
-
             // Vert.x 5.1 introduced writeHead() and deprecated sendHead() for removal. Resolve the appropriate method
             // at runtime so the transport can still be compiled and used with Vert.x 4.5 and 5.0.
             Method writeHeadMethod;
@@ -206,7 +203,13 @@ class VertxHttpClient implements HttpClient {
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
-                vertxRequest.putHeader(header.getName(), header.getValuesList());
+                if (vertxRequest.version() == HttpVersion.HTTP_2
+                    && HttpHeaderName.HOST.getCaseSensitiveName().equalsIgnoreCase(header.getName())) {
+                    // Keep the entire Host value, including any port, unchanged as :authority.
+                    vertxRequest.authority(HostAndPort.create(header.getValue(), -1));
+                } else {
+                    vertxRequest.putHeader(header.getName(), header.getValuesList());
+                }
             }
             if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
                 vertxRequest.setChunked(true);
@@ -356,16 +359,6 @@ class VertxHttpClient implements HttpClient {
             return (Future<Void>) REQUEST_WRITE_HEAD.invokeWithArguments(vertxRequest);
         } catch (Exception ex) {
             return Future.failedFuture(ex);
-        }
-    }
-
-    private static void resetRequest(HttpClientRequest vertxRequest, long code, Throwable cause) {
-        try {
-            REQUEST_RESET.invokeWithArguments(vertxRequest, code, cause);
-        } catch (Exception ex) {
-            // The request is already being failed with 'cause', so don't let a failed reset replace that error.
-            cause.addSuppressed(ex);
-            LOGGER.atWarning().log("Failed to reset the Vert.x HttpClientRequest.", ex);
         }
     }
 

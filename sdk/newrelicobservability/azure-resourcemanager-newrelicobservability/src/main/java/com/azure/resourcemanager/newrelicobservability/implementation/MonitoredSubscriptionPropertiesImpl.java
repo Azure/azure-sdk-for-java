@@ -104,10 +104,16 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = ConfigurationName
-            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitoredSubscriptions"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "resourceGroupName");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "monitorName");
+        this.configurationName = ConfigurationName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "configurationName"));
     }
 
     public MonitoredSubscriptionProperties refresh() {

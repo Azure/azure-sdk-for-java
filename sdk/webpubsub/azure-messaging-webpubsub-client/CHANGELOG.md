@@ -1,10 +1,11 @@
 # Release History
 
-## 1.2.0 (2026-10-23)
+## 1.2.0 (2026-11-04)
 
 ### Bugs Fixed
 
 - Fixed a race condition where send operations could miss fast acknowledgment responses.
+- Fixed JSON payloads sent to groups or server events being encoded as strings instead of JSON values.
 - Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
 - Fixed incomplete fragmented messages being decoded when a WebSocket connection closes or its handler is removed.
 - Fixed WebSocket connection attempts hanging when the peer does not complete the handshake, disconnects, or the handshake request cannot be sent. Opening handshakes now time out after 10 seconds.
@@ -17,6 +18,11 @@
 ### Other Changes
 
 - Verbose WebSocket send logs now record the payload length in bytes instead of message contents.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Migrated `netty-codec-http` to `4.2.19.Final` and updated WebSocket event loops for Netty 4.2.
 
 ## 1.1.11 (2026-10-06)
 

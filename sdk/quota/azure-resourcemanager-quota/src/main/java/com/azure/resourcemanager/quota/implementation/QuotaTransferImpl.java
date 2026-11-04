@@ -102,9 +102,15 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     QuotaTransferImpl(QuotaTransferInner innerObject, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.targetProvider = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providers");
-        this.region = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.transferName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "quotaTransfers");
+        this.targetProvider = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "targetProvider");
+        this.region = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "region");
+        this.transferName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "transferName");
     }
 
     public QuotaTransfer refresh() {

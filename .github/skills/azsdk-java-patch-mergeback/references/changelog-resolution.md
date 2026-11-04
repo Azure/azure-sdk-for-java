@@ -11,9 +11,9 @@ Produce, from top to bottom:
 1. **The `## X.Y.Z (Unreleased)` section exactly as it is on `main`** — including
    any unreleased entries already present there. Do not add to, edit, or remove
    unreleased content.
-2. **The patch entry from `RELEASE_BRANCH`**, i.e. the `## X.Y.Z (PATCH_DATE)`
-   section (e.g. `## 12.33.3 (2026-07-01)`). This is the *only* content taken
-   from the release branch.
+2. **The exact patch entry from `patch-changelog.md`**, i.e. the
+   `## X.Y.Z (PATCH_DATE)` section (e.g. `## 12.33.3 (2026-07-01)`). This is the
+   only release-branch content inserted into the target changelog.
 3. **The remainder of the file exactly as it is on `main`** (all previously
    released entries, unchanged).
 

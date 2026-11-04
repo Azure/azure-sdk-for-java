@@ -24,7 +24,7 @@ public final class PrivateLinkScopesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"es\",\"privateLinkScopeId\":\"rijwai\",\"privateEndpointConnections\":[{\"id\":\"raybfueqfr\",\"name\":\"sydgrhydk\",\"type\":\"ywezskiecafyg\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"eqvdsm\",\"description\":\"klixqcahyhxaly\"},\"provisioningState\":\"awoijp\",\"groupIds\":[\"blxpkkwjdjodq\",\"ykincnremehl\",\"izhceumoqodkadp\",\"yibngqladywrxwh\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datauvvadswzsnu\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"owuowh\",\"tags\":{\"lgmokzkl\":\"nwyrmouv\"},\"id\":\"rfowtdvrfmvlih\",\"name\":\"vjdrqcrjidhftuk\",\"type\":\"hdxlw\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"wtyg\",\"privateLinkScopeId\":\"gwmseharxifv\",\"privateEndpointConnections\":[{\"id\":\"tmbpjp\",\"name\":\"vwjhrsidqpxlbt\",\"type\":\"kft\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"wmykyutry\",\"description\":\"dwmf\"},\"provisioningState\":\"pycvjqdvdwkqpldr\",\"groupIds\":[\"gnaavu\",\"gnteta\",\"utnpdctuhspfefyi\",\"duyeuyl\"]}},{\"id\":\"hmtybkcgsuthhll\",\"name\":\"wynefx\",\"type\":\"lf\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xtjrrlk\",\"description\":\"dskjhhxdlaj\"},\"provisioningState\":\"xcxscvslxlh\",\"groupIds\":[\"krmukmyjmkxett\",\"slojfkqidnqt\",\"qxjhqxcsqhtkbtnq\"]}},{\"id\":\"ngldmbiipsn\",\"name\":\"wl\",\"type\":\"znxhhllxr\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"kwmuqqo\",\"description\":\"jxeiy\"},\"provisioningState\":\"esrw\",\"groupIds\":[\"xhdctrceqnk\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"dataobehdmljz\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"},{\"serviceExtensionType\":\"\\\"datame\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"},{\"serviceExtensionType\":\"\\\"dataibnzp\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"ifexleqirccjcly\",\"tags\":{\"rpjl\":\"x\",\"cpunettepdjx\":\"czuod\"},\"id\":\"eskoy\",\"name\":\"uiylpc\",\"type\":\"aewse\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,11 +36,11 @@ public final class PrivateLinkScopesListMockTests {
         PagedIterable<HybridComputePrivateLinkScope> response
             = manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("owuowh", response.iterator().next().location());
-        Assertions.assertEquals("nwyrmouv", response.iterator().next().tags().get("lgmokzkl"));
+        Assertions.assertEquals("ifexleqirccjcly", response.iterator().next().location());
+        Assertions.assertEquals("x", response.iterator().next().tags().get("rpjl"));
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
             response.iterator().next().properties().publicNetworkAccess());
-        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
+        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.ENABLED,
             response.iterator().next().properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());
     }
 }

@@ -161,6 +161,29 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     }
 
     /**
+     * Get the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @return the entraIdConfig value.
+     */
+    public EntraIdConfigPatch entraIdConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().entraIdConfig();
+    }
+
+    /**
+     * Set the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @param entraIdConfig the entraIdConfig value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountPropertiesPatch();
+        }
+        this.innerProperties().withEntraIdConfig(entraIdConfig);
+        return this;
+    }
+
+    /**
      * Get the ldapConfiguration property: LDAP Configuration for the account.
      * 
      * @return the ldapConfiguration value.

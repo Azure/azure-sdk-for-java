@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":4378456940205498641,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"xhikkflrmymyin\"},\"location\":\"lhrisw\",\"tags\":{\"ctotiowlx\":\"iiiovgqcgxuugq\"},\"id\":\"e\",\"name\":\"dptjgwdtgukranb\",\"type\":\"wphqlkccuzgygqw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":4319782707602321563,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"gglmvoka\"},\"location\":\"ztjctibpvbkae\",\"tags\":{\"dfwakwseivmak\":\"mzy\"},\"id\":\"hysowljuxlkbect\",\"name\":\"tfjmskdchmaiub\",\"type\":\"vlzw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,13 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("fykhvuhxepmru", "znabaobns", "ujdjltymkmvg", "ihywartspph", "ixkykxd",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("sa", "cdrnxsl", "vlzladl", "x", "pbqhvfdqqjwkr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lhrisw", response.location());
-        Assertions.assertEquals("iiiovgqcgxuugq", response.tags().get("ctotiowlx"));
-        Assertions.assertEquals(4378456940205498641L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("ztjctibpvbkae", response.location());
+        Assertions.assertEquals("mzy", response.tags().get("dfwakwseivmak"));
+        Assertions.assertEquals(4319782707602321563L, response.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("xhikkflrmymyin", response.quotaTarget());
+        Assertions.assertEquals("gglmvoka", response.quotaTarget());
     }
 }

@@ -6,6 +6,8 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -79,10 +81,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        Long length = getContentLength();
-        // Asynchronous file channels cannot accept scoped direct buffers allocated by Netty on newer JDKs.
-        return Mono.using(() -> this, response -> Mono.create(sink -> response.bodyIntern()
-            .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length, true))),
+        // The writer copies bytes during onNext, before Netty releases its network buffers.
+        return Mono.using(() -> this,
+            response -> FluxUtil.writeToAsynchronousByteChannel(response.bodyIntern().map(ByteBuf::nioBuffer), channel),
             NettyAsyncHttpResponse::close);
     }
 

@@ -4,6 +4,7 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
@@ -13,6 +14,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +40,11 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
+ * <p>
+ * To send an explicit {@code Host} header, start the JVM with
+ * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
+ * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
+ * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
  */
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
@@ -45,7 +52,7 @@ public class JdkHttpClientBuilder {
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
 
-    // These headers are restricted by default in native JDK12 HttpClient.
+    // These headers are restricted by default in the JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
     // property in the network properties file: 'JAVA_HOME/conf/net.properties'
     // e.g white listing 'host' header.
@@ -67,6 +74,7 @@ public class JdkHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates JdkHttpClientBuilder.
@@ -83,6 +91,34 @@ public class JdkHttpClientBuilder {
      */
     public JdkHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
         this.httpClientBuilder = httpClientBuilder;
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback using the JDK client's protocol
+     * negotiation.
+     * <p>
+     * By default, the client uses HTTP/1.1, or the version configured on a supplied JDK builder. An explicit
+     * maximum overrides the version used for requests without modifying the supplied builder's version. Passing null
+     * clears the maximum and restores the default or the supplied builder's version.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated JdkHttpClientBuilder object.
+     */
+    public JdkHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -195,6 +231,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -244,8 +282,14 @@ public class JdkHttpClientBuilder {
         java.net.http.HttpClient.Builder httpClientBuilder
             = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
 
-        // Azure JDK http client supports HTTP 1.1 by default.
-        httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
+        java.net.http.HttpClient.Version httpVersion = maximumHttpVersion == null
+            ? null
+            : maximumHttpVersion == HttpProtocolVersion.HTTP_2
+                ? java.net.http.HttpClient.Version.HTTP_2
+                : java.net.http.HttpClient.Version.HTTP_1_1;
+        if (this.httpClientBuilder == null) {
+            httpClientBuilder.version(httpVersion == null ? java.net.http.HttpClient.Version.HTTP_1_1 : httpVersion);
+        }
 
         Duration connectionTimeout = getTimeout(this.connectionTimeout, configuration,
             PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT);
@@ -280,12 +324,12 @@ public class JdkHttpClientBuilder {
                     buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                httpClientBuilder.authenticator(
-                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
+                httpClientBuilder.authenticator(new ProxyAuthenticator(buildProxyOptions.getAddress(),
+                    buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
-            writeTimeout, responseTimeout, readTimeout);
+            writeTimeout, responseTimeout, readTimeout, httpVersion);
     }
 
     Set<String> getRestrictedHeaders() {
@@ -328,16 +372,23 @@ public class JdkHttpClientBuilder {
     }
 
     private static class ProxyAuthenticator extends Authenticator {
+        private final InetSocketAddress proxyAddress;
         private final String userName;
         private final String password;
 
-        ProxyAuthenticator(String userName, String password) {
+        ProxyAuthenticator(InetSocketAddress proxyAddress, String userName, String password) {
+            this.proxyAddress = proxyAddress;
             this.userName = userName;
             this.password = password;
         }
 
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
+            if (getRequestorType() != RequestorType.PROXY
+                || getRequestingPort() != proxyAddress.getPort()
+                || !proxyAddress.getHostString().equalsIgnoreCase(getRequestingHost())) {
+                return null;
+            }
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
     }

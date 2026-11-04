@@ -62,6 +62,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -916,8 +917,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) -> StepVerifier
             .create(certificateAsyncClient.importCertificate(importCertificateOptions))
             .assertNext(importedCertificate -> {
-                assertTrue("931dd8219585752bc915684ca3967974c400de28"
-                    .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
+                assertArrayEquals(ImportCertificateFixture.getThumbprint(),
+                    importedCertificate.getProperties().getX509Thumbprint());
                 assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                 // Load the CER part into X509Certificate object

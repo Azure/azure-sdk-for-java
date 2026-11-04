@@ -322,8 +322,20 @@ class DocumentProducer<T> {
                 pageSize,
                 initialContinuationToken,
                 top,
-                new FeedRangeEpkImpl(targetRange.toRange()),
+                intersectFeedRange(this.feedRange.getRange(), targetRange.toRange()),
                 this.operationContextTextProvider);
+    }
+
+    protected FeedRangeEpkImpl intersectFeedRange(
+        Range<String> requestedRange, Range<String> physicalRange) {
+        // The ranges overlap, and the physical range has an inclusive minimum and exclusive maximum.
+        boolean useRequestedMin = requestedRange.getMin().compareTo(physicalRange.getMin()) >= 0;
+        boolean useRequestedMax = requestedRange.getMax().compareTo(physicalRange.getMax()) < 0;
+        return new FeedRangeEpkImpl(new Range<>(
+            useRequestedMin ? requestedRange.getMin() : physicalRange.getMin(),
+            useRequestedMax ? requestedRange.getMax() : physicalRange.getMax(),
+            !useRequestedMin || requestedRange.isMinInclusive(),
+            useRequestedMax && requestedRange.isMaxInclusive()));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {

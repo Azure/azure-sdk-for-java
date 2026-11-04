@@ -53,7 +53,7 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
             .withSourceName(ctx.sourceName)
             .withTargetName(ctx.targetName)
             .withDescription("Job definition with weekly schedule")
-            .withDataIntegrityValidation(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5)
+            .withDataIntegrityValidation(DataIntegrityValidation.NONE)
             .withSchedule(schedule)
             .create();
 
@@ -62,6 +62,7 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
         Assertions.assertEquals(ctx.targetName, jobDefinition.targetName());
         Assertions.assertEquals(CopyMode.ADDITIVE, jobDefinition.copyMode());
         Assertions.assertEquals("Job definition with weekly schedule", jobDefinition.description());
+        Assertions.assertEquals(DataIntegrityValidation.NONE, jobDefinition.dataIntegrityValidation());
 
         Assertions.assertNotNull(jobDefinition.schedule());
         Assertions.assertEquals(Frequency.WEEKLY, jobDefinition.schedule().frequency());
@@ -155,7 +156,7 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
 
         StorageMover sm = storageMoverManager.storageMovers()
             .define(ctx.storageMoverName)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
 

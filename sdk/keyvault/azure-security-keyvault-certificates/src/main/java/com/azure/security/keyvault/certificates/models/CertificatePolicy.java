@@ -430,8 +430,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * Get the platform managed certificate configuration.
      *
      * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
-     * It is only populated when the policy was created against the preview service version
-     * {@code 2026-03-01-preview}. Third-party callers should not rely on this property; the underlying
+     * It is populated when the policy uses platform-managed configuration in service version
+     * {@code 2026-04-01}. Third-party callers should not rely on this property; the underlying
      * service contract may change without notice.
      *
      * @return the platform managed certificate configuration.
@@ -444,7 +444,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * Set the platform managed certificate configuration.
      *
      * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
-     * It is exposed under the preview service version {@code 2026-03-01-preview} and is not generally available.
+     * It is exposed in service version {@code 2026-04-01}, but the feature is not generally available.
      * Third-party calls that supply a {@link PlatformManaged} configuration will be rejected by the service.
      * Do not use this setter in production code.
      *
@@ -510,7 +510,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * that specify them when {@code platformManaged} is set.
      *
      * <p><strong>Warning: this factory is currently intended for internal (first-party) Key Vault use only.</strong>
-     * It targets the preview service version {@code 2026-03-01-preview} and is not generally available. Third-party
+     * It targets service version {@code 2026-04-01}, but the feature is not generally available. Third-party
      * calls will be rejected by the service. Do not use in production code.
      *
      * @param platformManaged the platform-managed certificate configuration.

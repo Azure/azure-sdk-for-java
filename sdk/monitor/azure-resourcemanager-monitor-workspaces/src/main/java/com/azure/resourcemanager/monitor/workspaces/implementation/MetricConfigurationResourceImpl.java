@@ -118,11 +118,21 @@ public final class MetricConfigurationResourceImpl
         com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.metricsContainerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metricsContainers");
-        this.encodedMetricNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.encodedMetricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}/namespaces/{encodedMetricNamespace}/metrics/{encodedMetricName}",
+            "resourceGroupName");
+        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}/namespaces/{encodedMetricNamespace}/metrics/{encodedMetricName}",
+            "azureMonitorWorkspaceName");
+        this.metricsContainerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}/namespaces/{encodedMetricNamespace}/metrics/{encodedMetricName}",
+            "metricsContainerName");
+        this.encodedMetricNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}/namespaces/{encodedMetricNamespace}/metrics/{encodedMetricName}",
+            "encodedMetricNamespace");
+        this.encodedMetricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}/namespaces/{encodedMetricNamespace}/metrics/{encodedMetricName}",
+            "encodedMetricName");
     }
 
     public MetricConfigurationResource refresh() {
