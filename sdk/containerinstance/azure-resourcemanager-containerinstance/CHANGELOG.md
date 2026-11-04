@@ -1,5 +1,15 @@
 # Release History
 
+## 2.55.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.54.1 (2026-11-02)
 
 ### Other Changes
@@ -12,16 +22,6 @@
 - Upgraded `azure-resourcemanager-storage` from `2.58.2` to version `2.60.1`.
 - Upgraded `azure-resourcemanager-network` from `2.61.2` to version `2.63.1`.
 - Upgraded `azure-resourcemanager-msi` from `2.54.3` to version `2.55.1`.
-
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.53.15 (2026-10-09)
 

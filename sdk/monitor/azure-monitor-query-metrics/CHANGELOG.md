@@ -1,15 +1,6 @@
 # Release History
 
-## 1.1.1 (2026-11-02)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
-- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
-
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -20,6 +11,15 @@
 - Fixed `MetricsClient` and `MetricsAsyncClient` batch queries failing for subscription-level resource IDs.
 
 ### Other Changes
+
+## 1.1.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 
 ## 1.0.8 (2026-10-06)
 

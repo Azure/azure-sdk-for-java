@@ -1,5 +1,15 @@
 # Release History
 
+## 2.58.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.57.1 (2026-11-02)
 
 ### Other Changes
@@ -11,16 +21,6 @@
 - Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
 - Upgraded `azure-resourcemanager-storage` from `2.58.2` to version `2.60.1`.
 - Upgraded `azure-resourcemanager-keyvault` from `2.55.6` to version `2.57.1`.
-
-## 2.57.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.56.3 (2026-10-09)
 
