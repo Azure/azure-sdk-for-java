@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
+
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -35,6 +36,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Gets the WebSocket endpoint. It may contain structured inputs; do not log sensitive query values.
+     *
      * @return the endpoint.
      */
     public String getEndpoint() {
@@ -43,6 +45,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Determines whether the transport is open, not whether {@code session.started} has been received.
+     *
      * @return whether the WebSocket is open.
      */
     public boolean isOpen() {
@@ -51,6 +54,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Gets the peer close code.
+     *
      * @return the code, or null if no close frame has been received.
      */
     public Integer getCloseCode() {
@@ -59,6 +63,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Gets the peer close reason.
+     *
      * @return the reason, or null if no close frame has been received.
      */
     public String getCloseReason() {
@@ -68,6 +73,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
     /**
      * Receives native Live server events in wire order, including unknown events.
      * Messages are not parsed or validated as JSON. Transport errors terminate iteration.
+     *
      * @return the single-consumer stream of raw messages.
      * @throws IllegalStateException if the receive stream was already claimed.
      */
@@ -77,6 +83,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Receives typed native Live server events. Typed and raw receivers share the single-consumer limit.
+     *
      * @return the typed server event stream.
      */
     public IterableStream<ServerEvent> receiveEvents() {
@@ -86,6 +93,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
     /**
      * Receives typed native Live events with a timeout per wait. Timeouts leave the session open.
      * Use {@link #receiveRawEvents(Duration)} when the original JSON representation is needed.
+     *
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer typed event stream.
      * @throws IllegalArgumentException if the timeout is zero or negative.
@@ -102,6 +110,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
      * Sends a typed native Live command. Foundry supplies {@code session.start}; clients must not send it.
      * This method enqueues the event; returning does not mean the frame has been written to the network.
      * Later network failures surface through the receive stream and session lifecycle.
+     *
      * @param event the command to send.
      * @throws IllegalStateException if the session cannot accept the event.
      */
@@ -113,6 +122,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
     /**
      * Receives raw Live messages without JSON decoding, with a timeout per wait.
      * Timeouts leave the session open so iteration can resume.
+     *
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer event stream.
      * @throws IllegalArgumentException if the timeout is zero or negative.
@@ -127,6 +137,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
      * The service validates native command semantics, including delegation restrictions.
      * This method enqueues the event; returning does not mean the frame has been written to the network.
      * Later network failures surface through the receive stream and session lifecycle.
+     *
      * @param event the complete JSON object.
      * @throws IllegalArgumentException if the event is not a JSON object.
      * @throws IllegalStateException if the session cannot accept the event.
@@ -135,7 +146,9 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
         transport.sendEvent(event);
     }
 
-    /** Closes the WebSocket normally. */
+    /**
+     * Closes the WebSocket normally.
+     */
     @Override
     public void close() {
         transport.close();
@@ -143,6 +156,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionClient implements AutoClos
 
     /**
      * Closes the WebSocket with the specified close frame.
+     *
      * @param code a valid WebSocket close code.
      * @param reason a non-null reason of at most 123 UTF-8 bytes.
      * @throws IllegalArgumentException if the code or reason is invalid.

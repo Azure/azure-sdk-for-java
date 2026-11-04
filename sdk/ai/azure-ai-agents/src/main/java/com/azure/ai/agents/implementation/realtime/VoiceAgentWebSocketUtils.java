@@ -6,8 +6,8 @@ package com.azure.ai.agents.implementation.realtime;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
+import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeader;
@@ -20,6 +20,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import reactor.core.publisher.Flux;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -28,12 +30,11 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
-import reactor.core.publisher.Flux;
 
 public final class VoiceAgentWebSocketUtils {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketUtils.class);

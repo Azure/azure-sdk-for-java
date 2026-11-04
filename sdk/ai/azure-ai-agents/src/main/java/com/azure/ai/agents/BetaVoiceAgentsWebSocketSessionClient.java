@@ -7,21 +7,22 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
+import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
+import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
+import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferAppendEvent;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferClearEvent;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferCommitEvent;
 import com.azure.ai.agents.models.RealtimeResponseCancelEvent;
 import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
-import com.azure.ai.agents.models.RealtimeConversationItem;
-import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
-import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
 import com.azure.core.util.BinaryData;
-import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Base64;
@@ -83,8 +84,8 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
     /**
      * Receives typed server events in wire order. The returned stream may be iterated once.
      *
-     * @throws IllegalStateException if the event stream has already been claimed.
      * @return the server event stream.
+     * @throws IllegalStateException if the event stream has already been claimed.
      */
     public IterableStream<RealtimeServerEvent> receiveEvents() {
         return receiveEvents(null);
@@ -92,6 +93,7 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
 
     /**
      * Receives events with a timeout for each wait. A timeout leaves the session open and the iterator can be retried.
+     *
      * @param timeout positive per-event timeout, or null to wait indefinitely.
      * @return the single-consumer event stream.
      * @throws IllegalArgumentException if timeout is zero or negative.
@@ -107,8 +109,8 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
      * Sends a typed realtime client event.
      *
      * @param event the event to send.
-    * @throws IllegalArgumentException if the event cannot be serialized.
-    * @throws IllegalStateException if the session is closed or cannot accept another event.
+     * @throws IllegalArgumentException if the event cannot be serialized.
+     * @throws IllegalStateException if the session is closed or cannot accept another event.
      */
     public void sendEvent(RealtimeClientEvent event) {
         Objects.requireNonNull(event, "'event' cannot be null.");
@@ -122,6 +124,7 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
 
     /**
      * Sends a JSON object, including event types and fields unknown to this SDK.
+     *
      * @param event the complete JSON event.
      * @throws IllegalArgumentException if the event is not a JSON object.
      * @throws IllegalStateException if the session cannot accept the event.
@@ -171,17 +174,23 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
         sendEvent(new RealtimeInputAudioBufferAppendEvent(Base64.getEncoder().encodeToString(audio.toBytes())));
     }
 
-    /** Clears the input audio buffer. */
+    /**
+     * Clears the input audio buffer.
+     */
     public void clearInputAudio() {
         sendEvent(new RealtimeInputAudioBufferClearEvent());
     }
 
-    /** Commits the input audio buffer. */
+    /**
+     * Commits the input audio buffer.
+     */
     public void commitInputAudio() {
         sendEvent(new RealtimeInputAudioBufferCommitEvent());
     }
 
-    /** Requests a response using the voice agent's configuration. */
+    /**
+     * Requests a response using the voice agent's configuration.
+     */
     public void createResponse() {
         sendEvent(new RealtimeResponseCreateEvent());
     }
@@ -196,7 +205,9 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
         sendEvent(new RealtimeResponseCreateEvent().setResponse(responseOptions));
     }
 
-    /** Cancels the active response. */
+    /**
+     * Cancels the active response.
+     */
     public void cancelResponse() {
         sendEvent(new RealtimeResponseCancelEvent());
     }
@@ -222,7 +233,9 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
         createResponse();
     }
 
-    /** Closes the session. */
+    /**
+     * Closes the session.
+     */
     @Override
     public void close() {
         transport.close();
@@ -230,6 +243,7 @@ public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseabl
 
     /**
      * Closes the session with an application-selected WebSocket close frame.
+     *
      * @param code a valid WebSocket close code.
      * @param reason non-null reason of at most 123 UTF-8 bytes.
      * @throws IllegalArgumentException if the code or reason is invalid.

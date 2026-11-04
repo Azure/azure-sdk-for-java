@@ -7,27 +7,28 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
+import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
+import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
+import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferAppendEvent;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferClearEvent;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferCommitEvent;
 import com.azure.ai.agents.models.RealtimeResponseCancelEvent;
 import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
-import com.azure.ai.agents.models.RealtimeConversationItem;
-import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
-import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Consumer;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
@@ -113,6 +114,7 @@ public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCl
 
     /**
      * Sends a JSON object, including event types and fields unknown to this SDK.
+     *
      * @param event the complete JSON event.
      * @return completion after the frame is written, or an error for invalid JSON or a closed session.
      */
@@ -250,6 +252,7 @@ public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCl
     /**
      * Closes the session with an application-selected WebSocket close frame.
      * The first requested close frame wins when close is called more than once.
+     *
      * @param code a valid WebSocket close code.
      * @param reason non-null reason of at most 123 UTF-8 bytes.
      * @return a completion signal, or an error if the code or reason is invalid.

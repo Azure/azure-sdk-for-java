@@ -42,8 +42,8 @@ public final class BetaVoiceAgentsWebSocketClient {
      *
      * @param agentName the voice agent name.
      * @param options connection options.
-    * @throws IllegalArgumentException if {@code agentName} is empty.
      * @return a connected session.
+     * @throws IllegalArgumentException if {@code agentName} is empty.
      */
     public BetaVoiceAgentsWebSocketSessionClient openWebSocketSession(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {

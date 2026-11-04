@@ -11,10 +11,11 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
-import java.util.Objects;
-import java.util.function.Consumer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * An asynchronous bidirectional native GPT Live session.
@@ -36,6 +37,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Gets the WebSocket endpoint. It may contain structured inputs; do not log sensitive query values.
+     *
      * @return the endpoint.
      */
     public String getEndpoint() {
@@ -44,6 +46,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Determines whether the transport is open, not whether {@code session.started} has been received.
+     *
      * @return whether the WebSocket is open.
      */
     public boolean isOpen() {
@@ -52,6 +55,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Gets the peer close code.
+     *
      * @return the code, or null if no close frame has been received.
      */
     public Integer getCloseCode() {
@@ -60,6 +64,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Gets the peer close reason.
+     *
      * @return the reason, or null if no close frame has been received.
      */
     public String getCloseReason() {
@@ -69,6 +74,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
     /**
      * Receives native Live server events in wire order, including unknown events.
      * Messages are not parsed or validated as JSON. Transport errors terminate the stream.
+     *
      * @return the single-subscriber stream of raw messages.
      */
     public Flux<BinaryData> receiveRawEvents() {
@@ -78,6 +84,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
     /**
      * Receives typed native Live server events. Typed and raw receivers share the single-subscriber limit.
      * Use {@link #receiveRawEvents()} when the original JSON representation is needed.
+     *
      * @return the typed server event stream.
      */
     public Flux<ServerEvent> receiveEvents() {
@@ -89,6 +96,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Sends a typed native Live command. Foundry supplies {@code session.start}; clients must not send it.
+     *
      * @param event the command to send.
      * @return completion after the frame is written.
      */
@@ -100,6 +108,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
     /**
      * Sends a native Live JSON event. Foundry supplies {@code session.start}; clients must not send it.
      * The service validates native command semantics, including delegation restrictions.
+     *
      * @param event the complete JSON object.
      * @return completion after the frame is written, or an error for invalid JSON or a closed session.
      */
@@ -109,6 +118,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Closes the WebSocket normally.
+     *
      * @return completion when the session is closed.
      */
     @Override
@@ -118,6 +128,7 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
 
     /**
      * Closes the WebSocket with the specified close frame. The first asynchronous close request wins.
+     *
      * @param code a valid WebSocket close code.
      * @param reason a non-null reason of at most 123 UTF-8 bytes.
      * @return completion when the session is closed.
@@ -127,7 +138,9 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
         return transport.closeAsync(code, reason);
     }
 
-    /** Closes the session, blocking until closure or the configured close timeout. */
+    /**
+     * Closes the session, blocking until closure or the configured close timeout.
+     */
     @Override
     public void close() {
         transport.close();

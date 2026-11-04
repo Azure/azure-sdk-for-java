@@ -30,6 +30,7 @@ public final class BetaVoiceAgentsLiveWebSocketClient {
 
     /**
      * Opens a WebSocket session using the persisted Live agent configuration.
+     *
      * @param agentName the Live voice agent name.
      * @return the connected session.
      */
@@ -40,6 +41,7 @@ public final class BetaVoiceAgentsLiveWebSocketClient {
     /**
      * Opens a WebSocket session. Foundry sends the initial {@code session.start}; consume {@code session.started}
      * from the event stream before sending application events. No Realtime subprotocol is negotiated.
+     *
      * @param agentName the Live voice agent name.
      * @param options the connection options, copied before connecting.
      * @return the connected session.

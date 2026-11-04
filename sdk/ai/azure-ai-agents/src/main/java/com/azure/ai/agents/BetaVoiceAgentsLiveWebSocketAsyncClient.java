@@ -10,9 +10,10 @@ import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
-import java.util.Objects;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
+
+import java.util.Objects;
 
 /**
  * An asynchronous client for opening native GPT Live sessions with persisted Foundry Live voice agents.
@@ -29,6 +30,7 @@ public final class BetaVoiceAgentsLiveWebSocketAsyncClient {
 
     /**
      * Opens a WebSocket session using the persisted Live agent configuration.
+     *
      * @param agentName the Live voice agent name.
      * @return the connected session. Each subscription opens a new connection.
      */
@@ -39,6 +41,7 @@ public final class BetaVoiceAgentsLiveWebSocketAsyncClient {
     /**
      * Opens a WebSocket session. Foundry sends the initial {@code session.start}; consume {@code session.started}
      * from the event stream before sending application events. No Realtime subprotocol is negotiated.
+     *
      * @param agentName the Live voice agent name.
      * @param options the connection options, copied when this method is called.
      * @return the connected session. Each subscription opens a new connection.

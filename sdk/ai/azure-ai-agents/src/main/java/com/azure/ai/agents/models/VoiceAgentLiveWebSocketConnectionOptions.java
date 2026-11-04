@@ -6,6 +6,7 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -28,12 +29,15 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
     private String agentVersionOverride;
     private String structuredInputs;
 
-    /** Creates options with a 30-second handshake timeout and a 256-event receive buffer. */
+    /**
+     * Creates options with a 30-second handshake timeout and a 256-event receive buffer.
+     */
     public VoiceAgentLiveWebSocketConnectionOptions() {
     }
 
     /**
      * Copies connection options.
+     *
      * @param source the options to copy.
      */
     public VoiceAgentLiveWebSocketConnectionOptions(VoiceAgentLiveWebSocketConnectionOptions source) {
@@ -51,6 +55,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the receive queue capacity.
+     *
      * @return the maximum queued events, default 256.
      */
     public int getReceiveBufferCapacity() {
@@ -59,6 +64,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the receive queue capacity.
+     *
      * @param capacity the capacity, between 1 and 65536.
      * @return this options instance.
      * @throws IllegalArgumentException if the capacity is outside the supported range.
@@ -74,6 +80,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the maximum accepted message size.
+     *
      * @return the size in bytes, default 32 MiB.
      */
     public int getMaxMessageSize() {
@@ -82,6 +89,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the maximum accepted message size.
+     *
      * @param bytes the positive maximum message size in bytes.
      * @return this options instance.
      * @throws IllegalArgumentException if the size is not positive.
@@ -96,6 +104,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the receive queue overflow strategy.
+     *
      * @return the strategy, default ERROR.
      */
     public VoiceAgentWebSocketOverflowStrategy getOverflowStrategy() {
@@ -104,6 +113,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the overflow strategy. Drop strategies explicitly permit event loss.
+     *
      * @param strategy the non-null strategy.
      * @return this options instance.
      */
@@ -114,6 +124,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the callback for malformed events.
+     *
      * @return the callback, or null to terminate the session.
      */
     public Consumer<Throwable> getMalformedEventHandler() {
@@ -121,10 +132,11 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
     }
 
     /**
-    * Sets a callback to report and skip malformed events. It runs while receiving events and must not block.
-    * JSON decoding failures are reported only by typed receivers; raw receivers do not parse JSON.
-    * Invalid UTF-8 is reported by the transport for either receiver type.
+     * Sets a callback to report and skip malformed events. It runs while receiving events and must not block.
+     * JSON decoding failures are reported only by typed receivers; raw receivers do not parse JSON.
+     * Invalid UTF-8 is reported by the transport for either receiver type.
      * If the callback throws, the session terminates. Transport errors and oversized messages are not skipped.
+     *
      * @param handler the callback, or null to terminate on malformed events.
      * @return this options instance.
      */
@@ -135,6 +147,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the handshake timeout.
+     *
      * @return the timeout, default 30 seconds.
      */
     public Duration getHandshakeTimeout() {
@@ -143,6 +156,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the handshake timeout.
+     *
      * @param timeout a non-null positive timeout.
      * @return this options instance.
      * @throws IllegalArgumentException if the timeout is not positive.
@@ -155,6 +169,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the close timeout.
+     *
      * @return the timeout, default 10 seconds.
      */
     public Duration getCloseTimeout() {
@@ -163,6 +178,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the close timeout.
+     *
      * @param timeout a non-null positive timeout.
      * @return this options instance.
      * @throws IllegalArgumentException if the timeout is not positive.
@@ -175,6 +191,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the persistence override.
+     *
      * @return the override, or null to use the persisted agent configuration.
      */
     public Boolean isStoreEnabled() {
@@ -183,6 +200,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Overrides Foundry conversation and audio persistence for this session.
+     *
      * @param store the override, or null to use the persisted agent configuration.
      * @return this options instance.
      */
@@ -193,6 +211,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets the agent version override.
+     *
      * @return the version override, or null.
      */
     public String getAgentVersionOverride() {
@@ -201,6 +220,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Sets the agent version to connect to.
+     *
      * @param version the version override, or null to use the default version.
      * @return this options instance.
      */
@@ -211,6 +231,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
 
     /**
      * Gets structured inputs for instruction and greeting templates.
+     *
      * @return the JSON inputs, or null.
      */
     public String getStructuredInputs() {
@@ -220,6 +241,7 @@ public final class VoiceAgentLiveWebSocketConnectionOptions {
     /**
      * Sets the JSON inputs for instruction and greeting templates.
      * The SDK URL-encodes this value into the {@code structured_inputs} query parameter.
+     *
      * @param inputs the unencoded JSON inputs, or null.
      * @return this options instance.
      */
