@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConf
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHandshakeHandler;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentTracer;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -77,6 +78,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
     private final VoiceAgentWebSocketConnectionOptions options;
     private final HttpClient httpClient;
     private final URI websocketUri;
+    private final VoiceAgentTracer tracer;
     private final AtomicReference<State> state = new AtomicReference<>(State.NEW);
     private final AtomicReference<Channel> channel = new AtomicReference<>();
     private final AtomicReference<WebsocketOutbound> outbound = new AtomicReference<>();
@@ -110,6 +112,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
         this.events = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, this.options);
+        this.tracer = VoiceAgentTracer.create(websocketUri, agentName);
     }
 
     Mono<Void> connect() {
@@ -117,6 +120,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
             if (!state.compareAndSet(State.NEW, State.CONNECTING)) {
                 return Mono.error(new IllegalStateException("The voice-agent session has already been started."));
             }
+            tracer.startConnectSpan();
 
             TokenRequestContext tokenContext = VoiceAgentWebSocketUtils.createTokenRequestContext();
             return configuration.getCredential().getToken(tokenContext).map(AccessToken::getToken).flatMap(token -> {
@@ -204,6 +208,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
             return Mono.create(sink -> current.writeAndFlush(new TextWebSocketFrame(json)).addListener(result -> {
                 sendPermits.release();
                 if (result.isSuccess()) {
+                    tracer.traceSend(event, json);
                     sink.success();
                 } else {
                     sink.error(result.cause());
@@ -228,6 +233,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
             return Mono.create(sink -> current.writeAndFlush(new TextWebSocketFrame(json)).addListener(result -> {
                 sendPermits.release();
                 if (result.isSuccess()) {
+                    tracer.traceSendRaw(json);
                     sink.success();
                 } else {
                     sink.error(result.cause());
@@ -389,6 +395,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
                 return Mono.empty();
             }
             state.set(State.CLOSING);
+            tracer.traceClose();
             WebsocketOutbound currentOutbound = outbound.get();
             Channel currentChannel = channel.get();
             Mono<Void> graceful = currentOutbound == null ? Mono.empty() : currentOutbound.sendClose(code, reason);
@@ -465,11 +472,13 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
 
     private void handleFrame(WebSocketFrame frame) {
         if (frame instanceof TextWebSocketFrame || frame instanceof BinaryWebSocketFrame) {
+            String payload = null;
             try {
                 byte[] bytes = new byte[frame.content().readableBytes()];
                 frame.content().getBytes(frame.content().readerIndex(), bytes);
-                RealtimeServerEvent event
-                    = VoiceAgentWebSocketUtils.deserializeEvent(VoiceAgentWebSocketUtils.decodeEvent(bytes));
+                payload = VoiceAgentWebSocketUtils.decodeEvent(bytes);
+                RealtimeServerEvent event = VoiceAgentWebSocketUtils.deserializeEvent(payload);
+                tracer.traceReceive(event, payload);
                 Sinks.EmitResult result = events.tryEmitNext(event);
                 if (result == Sinks.EmitResult.FAIL_OVERFLOW || result == Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER) {
                     switch (options.getOverflowStrategy()) {
@@ -489,6 +498,9 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
                     terminateWithError(new IllegalStateException("Voice-agent event emission failed: " + result));
                 }
             } catch (IOException | RuntimeException error) {
+                if (payload != null) {
+                    tracer.traceReceiveRaw(payload);
+                }
                 Throwable failure = error;
                 if (options.getMalformedEventHandler() != null) {
                     try {
@@ -523,6 +535,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
         events.tryEmitError(mappedError);
         closeSignal.tryEmitError(mappedError);
         disposeReceive();
+        tracer.endConnectSpan(mappedError);
     }
 
     private Throwable mapHandshakeError(Throwable error) {
@@ -566,6 +579,8 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
         events.tryEmitComplete();
         closeSignal.tryEmitEmpty();
         disposeReceive();
+        tracer.traceClose();
+        tracer.endConnectSpan(null);
     }
 
     private void disposeReceive() {

@@ -121,6 +121,42 @@ ResponseService responseService = responsesClient.getResponseService();
 ConversationService conversationService = agentScopedOpenAIClient.conversations();
 ```
 
+### Voice agent WebSocket telemetry
+
+The synchronous and asynchronous voice-agent WebSocket clients emit OpenTelemetry spans through the globally
+registered OpenTelemetry instance. Tracing is automatically a no-op when no SDK or Java agent is configured.
+
+Configure an [OpenTelemetry Java agent](https://opentelemetry.io/docs/zero-code/java/agent/) or register an
+`OpenTelemetrySdk` globally before opening the WebSocket session. Each session emits a parent `connect` span with
+child spans for sent, received, and close operations:
+
+```text
+connect
+|-- send session.update
+|-- send response.create
+|-- recv session.created
+|-- recv response.done
+`-- close
+```
+
+The connect span contains session totals such as turn count, interruptions, audio bytes, and first-token latency.
+Response spans include token usage, response ID, and finish reason when supplied by the service. High-volume audio,
+text, and transcript delta spans are suppressed. Rate-limit updates include the Azure-specific
+`gen_ai.voice.rate_limits.updated` span event.
+
+Message content is not recorded by default. To include WebSocket payloads as span events, set:
+
+```bash
+OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+```
+
+`AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true` remains supported as a fallback. The standard OpenTelemetry
+setting takes precedence when both are present.
+
+> [!WARNING]
+> Message content can contain sensitive or personally identifiable information. Enable content recording only when
+> your data-handling and telemetry-retention policies permit it.
+
 ### Agent version drafts
 
 Draft agent versions are preview candidates that are not promoted to the agent's latest released version. Create one with

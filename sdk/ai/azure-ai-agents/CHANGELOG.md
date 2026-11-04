@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added OpenTelemetry tracing for synchronous and asynchronous voice-agent WebSocket sessions. A session emits a
+  parent `connect` span with child `send`, `recv`, and `close` spans when global OpenTelemetry is configured.
+
 ### Breaking Changes
 
 ### Bugs Fixed
