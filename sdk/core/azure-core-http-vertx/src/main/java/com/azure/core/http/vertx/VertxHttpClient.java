@@ -93,6 +93,7 @@ class VertxHttpClient implements HttpClient {
     private final Duration responseTimeout;
     private final Duration writeTimeout;
     private final ScheduledExecutorService writeTimeoutExecutor;
+    private final Duration expectContinueTimeout;
 
     /**
      * Constructs a {@link VertxHttpClient}.
@@ -110,11 +111,19 @@ class VertxHttpClient implements HttpClient {
 
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
         Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor) {
+        this(client, buildOptions, responseTimeout, writeTimeout, writeTimeoutExecutor, EXPECT_CONTINUE_TIMEOUT);
+    }
+
+    // Visible for testing, so tests can make the body follow 100 Continue regardless of how slow the agent is.
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor, Duration expectContinueTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
         this.writeTimeout = writeTimeout;
         this.writeTimeoutExecutor = Objects.requireNonNull(writeTimeoutExecutor, "writeTimeoutExecutor cannot be null");
+        this.expectContinueTimeout
+            = Objects.requireNonNull(expectContinueTimeout, "expectContinueTimeout cannot be null");
     }
 
     @Override
@@ -310,7 +319,7 @@ class VertxHttpClient implements HttpClient {
                 // Start the wait only once the headers are written, so the service gets the full wait to answer
                 // regardless of how long the headers took to reach the wire.
                 if (vertx != null && !bodyWritten.get()) {
-                    fallbackTimerId.set(vertx.setTimer(EXPECT_CONTINUE_TIMEOUT.toMillis(), id -> writeOnce.run()));
+                    fallbackTimerId.set(vertx.setTimer(expectContinueTimeout.toMillis(), id -> writeOnce.run()));
                     // The exchange may have finished, or the service may have answered, while the timer was being
                     // set, in which case nothing remains to cancel it.
                     if (bodyWritten.get()) {
