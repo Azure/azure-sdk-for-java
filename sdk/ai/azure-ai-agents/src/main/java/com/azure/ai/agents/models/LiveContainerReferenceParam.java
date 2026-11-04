@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveContainerReferenceParam implements JsonSerializable<LiveContainerReferenceParam> {
 
     /*
-     * References a container created with the /v1/containers endpoint
-     */
-    @Generated
-    private final String type = "container_reference";
-
-    /*
      * The ID of the referenced container.
      */
     @Generated
@@ -48,7 +42,7 @@ public final class LiveContainerReferenceParam implements JsonSerializable<LiveC
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -68,7 +62,7 @@ public final class LiveContainerReferenceParam implements JsonSerializable<LiveC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("container_id", this.containerId);
         return jsonWriter.writeEndObject();
     }
@@ -98,4 +92,10 @@ public final class LiveContainerReferenceParam implements JsonSerializable<LiveC
             return new LiveContainerReferenceParam(containerId);
         });
     }
+
+    /*
+     * References a container created with the /v1/containers endpoint
+     */
+    @Generated
+    private static final String TYPE = "container_reference";
 }

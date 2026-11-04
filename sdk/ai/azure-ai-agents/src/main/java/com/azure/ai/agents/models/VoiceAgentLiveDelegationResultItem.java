@@ -13,18 +13,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The VoiceAgentLiveDelegationResultItem2 model.
+ * Persisted guidance accepted by Live. The service populates commentary, thinking, or both. Agent delegation section
+ * markers are removed before storage.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentLiveDelegationResultItem2
-    implements JsonSerializable<VoiceAgentLiveDelegationResultItem2> {
+public final class VoiceAgentLiveDelegationResultItem implements JsonSerializable<VoiceAgentLiveDelegationResultItem> {
 
     /*
      * Guidance for Live to communicate to the user.
      */
     @Generated
-    private final String commentary;
+    private String commentary;
 
     /*
      * Background context, not private reasoning or a request to speak.
@@ -33,13 +33,10 @@ public final class VoiceAgentLiveDelegationResultItem2
     private String thinking;
 
     /**
-     * Creates an instance of VoiceAgentLiveDelegationResultItem2 class.
-     *
-     * @param commentary the commentary value to set.
+     * Creates an instance of VoiceAgentLiveDelegationResultItem class.
      */
     @Generated
-    private VoiceAgentLiveDelegationResultItem2(String commentary) {
-        this.commentary = commentary;
+    private VoiceAgentLiveDelegationResultItem() {
     }
 
     /**
@@ -75,34 +72,30 @@ public final class VoiceAgentLiveDelegationResultItem2
     }
 
     /**
-     * Reads an instance of VoiceAgentLiveDelegationResultItem2 from the JsonReader.
+     * Reads an instance of VoiceAgentLiveDelegationResultItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentLiveDelegationResultItem2 if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentLiveDelegationResultItem2.
+     * @return An instance of VoiceAgentLiveDelegationResultItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VoiceAgentLiveDelegationResultItem.
      */
     @Generated
-    public static VoiceAgentLiveDelegationResultItem2 fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentLiveDelegationResultItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String commentary = null;
-            String thinking = null;
+            VoiceAgentLiveDelegationResultItem deserializedVoiceAgentLiveDelegationResultItem
+                = new VoiceAgentLiveDelegationResultItem();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("commentary".equals(fieldName)) {
-                    commentary = reader.getString();
+                    deserializedVoiceAgentLiveDelegationResultItem.commentary = reader.getString();
                 } else if ("thinking".equals(fieldName)) {
-                    thinking = reader.getString();
+                    deserializedVoiceAgentLiveDelegationResultItem.thinking = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentLiveDelegationResultItem2 deserializedVoiceAgentLiveDelegationResultItem2
-                = new VoiceAgentLiveDelegationResultItem2(commentary);
-            deserializedVoiceAgentLiveDelegationResultItem2.thinking = thinking;
-            return deserializedVoiceAgentLiveDelegationResultItem2;
+            return deserializedVoiceAgentLiveDelegationResultItem;
         });
     }
 }

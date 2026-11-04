@@ -11,41 +11,14 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Configuration for sibling Foundry text agents that a voice agent may consult.
+ * Configuration for delegated background specialists or inline voice subagents. For compatibility with existing
+ * delegate configurations, the service treats an omitted `subagent_type` as `delegate`.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSubagentConfiguration implements JsonSerializable<VoiceAgentSubagentConfiguration> {
-
-    /*
-     * The sibling Foundry text agents, in the same project, that this voice agent may consult.
-     */
-    @Generated
-    private final List<VoiceAgentSubagent> subagents;
-
-    /**
-     * Creates an instance of VoiceAgentSubagentConfiguration class.
-     *
-     * @param subagents the subagents value to set.
-     */
-    @Generated
-    public VoiceAgentSubagentConfiguration(List<VoiceAgentSubagent> subagents) {
-        this.subagents = subagents;
-    }
-
-    /**
-     * Get the subagents property: The sibling Foundry text agents, in the same project, that this voice agent may
-     * consult.
-     *
-     * @return the subagents value.
-     */
-    @Generated
-    public List<VoiceAgentSubagent> getSubagents() {
-        return this.subagents;
-    }
+public class VoiceAgentSubagentConfiguration implements JsonSerializable<VoiceAgentSubagentConfiguration> {
 
     /**
      * {@inheritDoc}
@@ -54,7 +27,7 @@ public final class VoiceAgentSubagentConfiguration implements JsonSerializable<V
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("subagents", this.subagents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("subagent_type", this.subagentType == null ? null : this.subagentType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -64,23 +37,76 @@ public final class VoiceAgentSubagentConfiguration implements JsonSerializable<V
      * @param jsonReader The JsonReader being read.
      * @return An instance of VoiceAgentSubagentConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VoiceAgentSubagentConfiguration.
      */
     @Generated
     public static VoiceAgentSubagentConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<VoiceAgentSubagent> subagents = null;
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("subagent_type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("delegate".equals(discriminatorValue)) {
+                    return VoiceAgentDelegateSubagentConfiguration.fromJson(readerToUse.reset());
+                } else if ("inline".equals(discriminatorValue)) {
+                    return VoiceAgentInlineSubagentConfiguration.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    /*
+     * The subagent mode.
+     */
+    @Generated
+    private VoiceAgentSubagentType subagentType = VoiceAgentSubagentType.fromString("VoiceAgentSubagentConfiguration");
+
+    /**
+     * Creates an instance of VoiceAgentSubagentConfiguration class.
+     */
+    @Generated
+    public VoiceAgentSubagentConfiguration() {
+    }
+
+    /**
+     * Get the subagentType property: The subagent mode.
+     *
+     * @return the subagentType value.
+     */
+    @Generated
+    public VoiceAgentSubagentType getSubagentType() {
+        return this.subagentType;
+    }
+
+    @Generated
+    static VoiceAgentSubagentConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VoiceAgentSubagentConfiguration deserializedVoiceAgentSubagentConfiguration
+                = new VoiceAgentSubagentConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("subagents".equals(fieldName)) {
-                    subagents = reader.readArray(reader1 -> VoiceAgentSubagent.fromJson(reader1));
+                if ("subagent_type".equals(fieldName)) {
+                    deserializedVoiceAgentSubagentConfiguration.subagentType
+                        = VoiceAgentSubagentType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new VoiceAgentSubagentConfiguration(subagents);
+            return deserializedVoiceAgentSubagentConfiguration;
         });
     }
 }

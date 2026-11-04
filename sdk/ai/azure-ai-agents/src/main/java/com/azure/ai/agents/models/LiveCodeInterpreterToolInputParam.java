@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveCodeInterpreterToolInputParam implements JsonSerializable<LiveCodeInterpreterToolInputParam> {
 
-    /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "code_interpreter";
-
     /**
      * Creates an instance of LiveCodeInterpreterToolInputParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveCodeInterpreterToolInputParam implements JsonSerializable
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveCodeInterpreterToolInputParam implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,4 +69,10 @@ public final class LiveCodeInterpreterToolInputParam implements JsonSerializable
             return deserializedLiveCodeInterpreterToolInputParam;
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "code_interpreter";
 }

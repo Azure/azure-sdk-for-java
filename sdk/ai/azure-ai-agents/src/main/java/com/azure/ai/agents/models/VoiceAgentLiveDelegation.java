@@ -13,33 +13,32 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Who handles tasks delegated by the Live model. Omitted or null selects your application; use `responses` to let the
- * API manage a Responses backend.
+ * Who handles delegated work for a Live voice agent.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public class Delegation implements JsonSerializable<Delegation> {
+public class VoiceAgentLiveDelegation implements JsonSerializable<VoiceAgentLiveDelegation> {
 
     /*
-     * The type property.
+     * The delegation owner.
      */
     @Generated
-    private DelegationType type = DelegationType.fromString("delegation");
+    private VoiceAgentLiveDelegationType type;
 
     /**
-     * Creates an instance of Delegation class.
+     * Creates an instance of VoiceAgentLiveDelegation class.
      */
     @Generated
-    public Delegation() {
+    public VoiceAgentLiveDelegation() {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The delegation owner.
      *
      * @return the type value.
      */
     @Generated
-    public DelegationType getType() {
+    public VoiceAgentLiveDelegationType getType() {
         return this.type;
     }
 
@@ -55,15 +54,15 @@ public class Delegation implements JsonSerializable<Delegation> {
     }
 
     /**
-     * Reads an instance of Delegation from the JsonReader.
+     * Reads an instance of VoiceAgentLiveDelegation from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Delegation if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the Delegation.
+     * @return An instance of VoiceAgentLiveDelegation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VoiceAgentLiveDelegation.
      */
     @Generated
-    public static Delegation fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentLiveDelegation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -80,10 +79,12 @@ public class Delegation implements JsonSerializable<Delegation> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("responses".equals(discriminatorValue)) {
-                    return LiveResponsesDelegationParam.fromJson(readerToUse.reset());
-                } else if ("client".equals(discriminatorValue)) {
-                    return LiveClientDelegationParam.fromJson(readerToUse.reset());
+                if ("client".equals(discriminatorValue)) {
+                    return VoiceAgentLiveClientDelegation.fromJson(readerToUse.reset());
+                } else if ("responses".equals(discriminatorValue)) {
+                    return VoiceAgentLiveResponsesDelegation.fromJson(readerToUse.reset());
+                } else if ("foundry_managed_agent".equals(discriminatorValue)) {
+                    return VoiceAgentLiveManagedAgentDelegation.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -92,19 +93,20 @@ public class Delegation implements JsonSerializable<Delegation> {
     }
 
     @Generated
-    static Delegation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static VoiceAgentLiveDelegation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Delegation deserializedDelegation = new Delegation();
+            VoiceAgentLiveDelegation deserializedVoiceAgentLiveDelegation = new VoiceAgentLiveDelegation();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedDelegation.type = DelegationType.fromString(reader.getString());
+                    deserializedVoiceAgentLiveDelegation.type
+                        = VoiceAgentLiveDelegationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedDelegation;
+            return deserializedVoiceAgentLiveDelegation;
         });
     }
 }

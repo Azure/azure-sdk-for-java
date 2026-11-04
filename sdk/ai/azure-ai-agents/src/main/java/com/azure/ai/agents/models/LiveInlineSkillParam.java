@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveInlineSkillParam implements JsonSerializable<LiveInlineSkillParam> {
 
     /*
-     * Defines an inline skill for this request.
-     */
-    @Generated
-    private final String type = "inline";
-
-    /*
      * The name of the skill.
      */
     @Generated
@@ -64,7 +58,7 @@ public final class LiveInlineSkillParam implements JsonSerializable<LiveInlineSk
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -104,7 +98,7 @@ public final class LiveInlineSkillParam implements JsonSerializable<LiveInlineSk
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("source", this.source);
@@ -142,4 +136,10 @@ public final class LiveInlineSkillParam implements JsonSerializable<LiveInlineSk
             return new LiveInlineSkillParam(name, description, source);
         });
     }
+
+    /*
+     * Defines an inline skill for this request.
+     */
+    @Generated
+    private static final String TYPE = "inline";
 }

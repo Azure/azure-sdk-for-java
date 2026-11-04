@@ -841,7 +841,7 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      * List items in a Live voice agent conversation
      *
      * Lists stored speech and delegation items in order; cursors use item IDs. Returns 404 if the conversation is
-     * absent or unstored.
+     * absent or not stored.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -898,7 +898,7 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      * List items in a Live voice agent conversation
      *
      * Lists stored speech and delegation items in order; cursors use item IDs. Returns 404 if the conversation is
-     * absent or unstored.
+     * absent or not stored.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -977,7 +977,7 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      * List items in a Live voice agent conversation
      *
      * Lists stored speech and delegation items in order; cursors use item IDs. Returns 404 if the conversation is
-     * absent or unstored.
+     * absent or not stored.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1032,7 +1032,7 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      * List items in a Live voice agent conversation
      *
      * Lists stored speech and delegation items in order; cursors use item IDs. Returns 404 if the conversation is
-     * absent or unstored.
+     * absent or not stored.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1180,8 +1180,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
     /**
      * Get a Live conversation item's audio metadata
      *
-     * Gets captured speech-audio metadata. BYOS uses unsigned blob_uri. Returns 404 for missing audio, unstored
-     * conversations, or delegation items.
+     * Gets captured speech-audio metadata. BYOS uses unsigned blob_uri. Returns 404 for missing audio, conversations
+     * not stored, or delegation items.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1225,8 +1225,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
     /**
      * Get a Live conversation item's audio metadata
      *
-     * Gets captured speech-audio metadata. BYOS uses unsigned blob_uri. Returns 404 for missing audio, unstored
-     * conversations, or delegation items.
+     * Gets captured speech-audio metadata. BYOS uses unsigned blob_uri. Returns 404 for missing audio, conversations
+     * not stored, or delegation items.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1269,8 +1269,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
     /**
      * Stream a Live conversation item's audio
      *
-     * Streams captured speech as WAV. BYOS returns 409; use blob_uri. Returns 404 for missing audio, unstored
-     * conversations, or delegation items.
+     * Streams captured speech as WAV. BYOS returns 409; use blob_uri. Returns 404 for missing audio, conversations not
+     * stored, or delegation items.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1301,8 +1301,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
     /**
      * Stream a Live conversation item's audio
      *
-     * Streams captured speech as WAV. BYOS returns 409; use blob_uri. Returns 404 for missing audio, unstored
-     * conversations, or delegation items.
+     * Streams captured speech as WAV. BYOS returns 409; use blob_uri. Returns 404 for missing audio, conversations not
+     * stored, or delegation items.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>

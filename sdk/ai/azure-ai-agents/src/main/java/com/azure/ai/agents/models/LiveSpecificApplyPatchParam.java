@@ -21,12 +21,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveSpecificApplyPatchParam implements JsonSerializable<LiveSpecificApplyPatchParam> {
 
-    /*
-     * The tool to call. Always `apply_patch`.
-     */
-    @Generated
-    private final String type = "apply_patch";
-
     /**
      * Creates an instance of LiveSpecificApplyPatchParam class.
      */
@@ -41,7 +35,7 @@ public final class LiveSpecificApplyPatchParam implements JsonSerializable<LiveS
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -51,7 +45,7 @@ public final class LiveSpecificApplyPatchParam implements JsonSerializable<LiveS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,4 +70,10 @@ public final class LiveSpecificApplyPatchParam implements JsonSerializable<LiveS
             return deserializedLiveSpecificApplyPatchParam;
         });
     }
+
+    /*
+     * The tool to call. Always `apply_patch`.
+     */
+    @Generated
+    private static final String TYPE = "apply_patch";
 }

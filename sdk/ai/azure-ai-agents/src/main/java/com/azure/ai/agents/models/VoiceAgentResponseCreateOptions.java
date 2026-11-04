@@ -113,7 +113,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * using their id.
      */
     @Generated
-    private List<RealtimeConversationItem> input;
+    private List<BinaryData> input;
 
     /*
      * A pre-generated assistant message used to begin the response.
@@ -404,7 +404,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * @return the input value.
      */
     @Generated
-    public List<RealtimeConversationItem> getInput() {
+    public List<BinaryData> getInput() {
         return this.input;
     }
 
@@ -419,7 +419,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * @return the VoiceAgentResponseCreateOptions object itself.
      */
     @Generated
-    public VoiceAgentResponseCreateOptions setInput(List<RealtimeConversationItem> input) {
+    public VoiceAgentResponseCreateOptions setInput(List<BinaryData> input) {
         this.input = input;
         return this;
     }
@@ -480,7 +480,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
             if (element == null) {
                 writer.writeNull();
             } else {
-                element.writeTo(writer);
+                writer.writeRawValue(element.toString());
             }
         });
         if (this.toolChoice != null) {
@@ -502,7 +502,13 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("audio", this.audio);
-        jsonWriter.writeArrayField("input", this.input, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("input", this.input, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                writer.writeUntyped(element.toObject(Object.class));
+            }
+        });
         jsonWriter.writeJsonField("pre_generated_assistant_message", this.preGeneratedAssistantMessage);
         jsonWriter.writeJsonField("interim_response", this.interimResponse);
         return jsonWriter.writeEndObject();
@@ -557,8 +563,8 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
                 } else if ("audio".equals(fieldName)) {
                     deserializedVoiceAgentResponseCreateOptions.audio = VoiceAgentResponseAudioConfig.fromJson(reader);
                 } else if ("input".equals(fieldName)) {
-                    List<RealtimeConversationItem> input
-                        = reader.readArray(reader1 -> RealtimeConversationItem.fromJson(reader1));
+                    List<BinaryData> input = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedVoiceAgentResponseCreateOptions.input = input;
                 } else if ("pre_generated_assistant_message".equals(fieldName)) {
                     deserializedVoiceAgentResponseCreateOptions.preGeneratedAssistantMessage

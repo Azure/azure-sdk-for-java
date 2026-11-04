@@ -21,12 +21,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveSpecificFunctionShellParam implements JsonSerializable<LiveSpecificFunctionShellParam> {
 
-    /*
-     * The tool to call. Always `shell`.
-     */
-    @Generated
-    private final String type = "shell";
-
     /**
      * Creates an instance of LiveSpecificFunctionShellParam class.
      */
@@ -41,7 +35,7 @@ public final class LiveSpecificFunctionShellParam implements JsonSerializable<Li
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -51,7 +45,7 @@ public final class LiveSpecificFunctionShellParam implements JsonSerializable<Li
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,4 +71,10 @@ public final class LiveSpecificFunctionShellParam implements JsonSerializable<Li
             return deserializedLiveSpecificFunctionShellParam;
         });
     }
+
+    /*
+     * The tool to call. Always `shell`.
+     */
+    @Generated
+    private static final String TYPE = "shell";
 }

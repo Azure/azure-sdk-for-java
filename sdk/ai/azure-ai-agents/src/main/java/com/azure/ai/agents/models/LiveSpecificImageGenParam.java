@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveSpecificImageGenParam implements JsonSerializable<LiveSpecificImageGenParam> {
 
-    /*
-     * The tool to call. Always `image_generation`.
-     */
-    @Generated
-    private final String type = "image_generation";
-
     /**
      * Creates an instance of LiveSpecificImageGenParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveSpecificImageGenParam implements JsonSerializable<LiveSpe
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveSpecificImageGenParam implements JsonSerializable<LiveSpe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,4 +68,10 @@ public final class LiveSpecificImageGenParam implements JsonSerializable<LiveSpe
             return deserializedLiveSpecificImageGenParam;
         });
     }
+
+    /*
+     * The tool to call. Always `image_generation`.
+     */
+    @Generated
+    private static final String TYPE = "image_generation";
 }

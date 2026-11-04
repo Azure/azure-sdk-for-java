@@ -22,12 +22,6 @@ public final class LiveHostedShellNetworkPolicyAllowlistParam
     implements JsonSerializable<LiveHostedShellNetworkPolicyAllowlistParam> {
 
     /*
-     * Allow outbound network access only to specified domains. Always `allowlist`.
-     */
-    @Generated
-    private final String type = "allowlist";
-
-    /*
      * A list of allowed domains when type is `allowlist`.
      */
     @Generated
@@ -50,7 +44,7 @@ public final class LiveHostedShellNetworkPolicyAllowlistParam
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -70,7 +64,7 @@ public final class LiveHostedShellNetworkPolicyAllowlistParam
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeArrayField("allowed_domains", this.allowedDomains,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -101,4 +95,10 @@ public final class LiveHostedShellNetworkPolicyAllowlistParam
             return new LiveHostedShellNetworkPolicyAllowlistParam(allowedDomains);
         });
     }
+
+    /*
+     * Allow outbound network access only to specified domains. Always `allowlist`.
+     */
+    @Generated
+    private static final String TYPE = "allowlist";
 }

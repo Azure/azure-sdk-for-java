@@ -22,12 +22,6 @@ import java.util.List;
 public final class LiveHostedShellContainerAutoParam implements JsonSerializable<LiveHostedShellContainerAutoParam> {
 
     /*
-     * Automatically creates a container for this request
-     */
-    @Generated
-    private final String type = "container_auto";
-
-    /*
      * The file_ids property.
      */
     @Generated
@@ -65,7 +59,7 @@ public final class LiveHostedShellContainerAutoParam implements JsonSerializable
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -163,7 +157,7 @@ public final class LiveHostedShellContainerAutoParam implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("memory_limit", this.memoryLimit == null ? null : this.memoryLimit.toString());
         if (this.networkPolicy != null) {
@@ -217,4 +211,10 @@ public final class LiveHostedShellContainerAutoParam implements JsonSerializable
             return deserializedLiveHostedShellContainerAutoParam;
         });
     }
+
+    /*
+     * Automatically creates a container for this request
+     */
+    @Generated
+    private static final String TYPE = "container_auto";
 }

@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveSpecificProgrammaticToolCallingParam
     implements JsonSerializable<LiveSpecificProgrammaticToolCallingParam> {
 
-    /*
-     * The tool to call. Always `programmatic_tool_calling`.
-     */
-    @Generated
-    private final String type = "programmatic_tool_calling";
-
     /**
      * Creates an instance of LiveSpecificProgrammaticToolCallingParam class.
      */
@@ -40,7 +34,7 @@ public final class LiveSpecificProgrammaticToolCallingParam
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -50,7 +44,7 @@ public final class LiveSpecificProgrammaticToolCallingParam
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,4 +70,10 @@ public final class LiveSpecificProgrammaticToolCallingParam
             return deserializedLiveSpecificProgrammaticToolCallingParam;
         });
     }
+
+    /*
+     * The tool to call. Always `programmatic_tool_calling`.
+     */
+    @Generated
+    private static final String TYPE = "programmatic_tool_calling";
 }

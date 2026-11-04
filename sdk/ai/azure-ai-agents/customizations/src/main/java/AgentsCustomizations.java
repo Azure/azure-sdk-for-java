@@ -53,6 +53,7 @@ public class AgentsCustomizations extends Customization {
         makeLiveModelConstantsStatic(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
+        customizeVoiceModelSerialization(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
@@ -189,18 +190,67 @@ public class AgentsCustomizations extends Customization {
     }
 
     /**
-     * Stores fixed Live model wire values once per class while preserving their public getters and serialization.
+     * Stores fixed model wire values once per class while preserving their public getters and serialization.
      */
     private void makeLiveModelConstantsStatic(LibraryCustomization customization) {
         String[][] constants = {
+            { "LiveAllowedToolsChoiceParam", "type", "TYPE" },
+            { "LiveApplyPatchToolInputParam", "type", "TYPE" },
+            { "LiveCodeInterpreterToolInputParam", "type", "TYPE" },
+            { "LiveComputerToolInputParam", "type", "TYPE" },
+            { "LiveContainerNetworkPolicyDisabledParam", "type", "TYPE" },
+            { "LiveContainerReferenceParam", "type", "TYPE" },
+            { "LiveCustomToolInputParam", "type", "TYPE" },
+            { "LiveFileSearchToolInputParam", "type", "TYPE" },
             { "LiveFunctionToolChoiceParam", "type", "TYPE" },
             { "LiveFunctionToolInputParam", "type", "TYPE" },
+            { "LiveHostedShellContainerAutoParam", "type", "TYPE" },
+            { "LiveHostedShellNetworkPolicyAllowlistParam", "type", "TYPE" },
+            { "LiveHostedShellToolInputParam", "type", "TYPE" },
+            { "LiveImageGenerationToolInputParam", "type", "TYPE" },
+            { "LiveInlineSkillParam", "type", "TYPE" },
+            { "LiveInlineSkillSourceParam", "type", "TYPE" },
+            { "LiveInlineSkillSourceParam", "mediaType", "MEDIA_TYPE" },
+            { "LiveLocalEnvironmentParam", "type", "TYPE" },
             { "LiveMCPToolChoiceParam", "type", "TYPE" },
+            { "LiveMCPToolInputParam", "type", "TYPE" },
+            { "LiveNamespaceToolInputParam", "type", "TYPE" },
+            { "LiveProgrammaticToolInputParam", "type", "TYPE" },
+            { "LiveSkillReferenceParam", "type", "TYPE" },
+            { "LiveSpecificApplyPatchParam", "type", "TYPE" },
+            { "LiveSpecificCodeInterpreterParam", "type", "TYPE" },
+            { "LiveSpecificComputerParam", "type", "TYPE" },
+            { "LiveSpecificCustomToolParam", "type", "TYPE" },
+            { "LiveSpecificFileSearchParam", "type", "TYPE" },
+            { "LiveSpecificFunctionShellParam", "type", "TYPE" },
+            { "LiveSpecificImageGenParam", "type", "TYPE" },
+            { "LiveSpecificProgrammaticToolCallingParam", "type", "TYPE" },
+            { "LiveSpecificWebSearchParam", "type", "TYPE" },
+            { "LiveSpecificWebSearchPreviewParam", "type", "TYPE" },
+            { "LiveToolSearchToolInputParam", "type", "TYPE" },
             { "LiveWebSearchToolInputParam", "type", "TYPE" },
             { "VoiceAgentLiveConversation", "objectType", "OBJECT_TYPE" },
-            { "VoiceAgentLiveDefinition", "modelType", "MODEL_TYPE" },
-            { "VoiceAgentLiveManagedAgentDelegation", "type", "TYPE" }
-        };
+            { "InlineVoiceSubagent", "interfaceProperty", "INTERFACE_PROPERTY" },
+            { "InlineVoiceSubagent", "source", "SOURCE" },
+            { "RealtimeResponseInputAudio", "type", "TYPE" },
+            { "RealtimeResponseInputFunctionCall", "type", "TYPE" },
+            { "RealtimeResponseInputFunctionCallOutput", "type", "TYPE" },
+            { "RealtimeResponseInputImage", "type", "TYPE" },
+            { "RealtimeResponseInputMessageAssistant", "type", "TYPE" },
+            { "RealtimeResponseInputMessageAssistantContent", "type", "TYPE" },
+            { "RealtimeResponseInputMessageDeveloper", "type", "TYPE" },
+            { "RealtimeResponseInputMessageSystem", "type", "TYPE" },
+            { "RealtimeResponseInputMessageUser", "type", "TYPE" },
+            { "RealtimeResponseInputText", "type", "TYPE" },
+            { "RealtimeResponseItemReference", "type", "TYPE" },
+            { "VoiceAgentCollectDtmfSystemTool", "type", "TYPE" },
+            { "VoiceAgentCollectSmsSystemTool", "type", "TYPE" },
+            { "VoiceAgentDigitRecognitionSystemTool", "type", "TYPE" },
+            { "VoiceAgentHandoffVoiceAdaptation", "type", "TYPE" },
+            { "VoiceAgentLanguageDetectionSystemTool", "type", "TYPE" },
+            { "VoiceAgentSendDtmfSystemTool", "type", "TYPE" },
+            { "VoiceAgentSendSmsSystemTool", "type", "TYPE" },
+            { "VoiceAgentTransferSystemTool", "type", "TYPE" } };
         for (String[] constant : constants) {
             String className = constant[0];
             String fieldName = constant[1];
@@ -210,14 +260,19 @@ public class AgentsCustomizations extends Customization {
                     .orElseThrow(() -> new IllegalStateException(className + " was not generated"));
                 FieldDeclaration field = clazz.getFieldByName(fieldName)
                     .orElseThrow(() -> new IllegalStateException(className + "." + fieldName + " was not generated"));
-                if (!field.isPrivate() || !field.isFinal() || field.getVariables().size() != 1
-                    || !field.getVariable(0).getInitializer().filter(expression -> expression.isStringLiteralExpr())
+                if (!field.isPrivate()
+                    || !field.isFinal()
+                    || field.getVariables().size() != 1
+                    || !field.getVariable(0)
+                        .getInitializer()
+                        .filter(expression -> expression.isStringLiteralExpr())
                         .isPresent()) {
                     throw new IllegalStateException(className + "." + fieldName + " is not a private string constant");
                 }
                 field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
                 field.getVariable(0).setName(constantName);
-                clazz.findAll(FieldAccessExpr.class).stream()
+                clazz.findAll(FieldAccessExpr.class)
+                    .stream()
                     .filter(access -> access.getScope().isThisExpr() && fieldName.equals(access.getNameAsString()))
                     .forEach(access -> access.replace(new NameExpr(constantName)));
             });
@@ -254,6 +309,52 @@ public class AgentsCustomizations extends Customization {
         }
     }
 
+    private void customizeVoiceModelSerialization(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentResponseCreateOptions").customizeAst(ast -> {
+            ast.findAll(MethodCallExpr.class)
+                .stream()
+                .filter(call -> "writeArrayField".equals(call.getNameAsString())
+                    && call.getArguments().size() == 3
+                    && call.getArgument(0).isStringLiteralExpr()
+                    && "input".equals(call.getArgument(0).asStringLiteralExpr().asString()))
+                .forEach(call -> call.setArgument(2,
+                    StaticJavaParser.parseExpression("(writer, element) -> { if (element == null) {"
+                        + " writer.writeNull(); } else { writer.writeUntyped(element.toObject(Object.class)); } }")));
+            ast.findAll(com.github.javaparser.ast.expr.VariableDeclarationExpr.class)
+                .stream()
+                .filter(declaration -> declaration.getVariables().size() == 1
+                    && "input".equals(declaration.getVariable(0).getNameAsString()))
+                .forEach(declaration -> {
+                    declaration.getVariable(0).setType("List<BinaryData>");
+                    declaration.getVariable(0)
+                        .setInitializer("reader.readArray(reader1 -> "
+                            + "reader1.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())))");
+                });
+        });
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentServerEventSessionHandoffAborted").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.agents.implementation.OpenAIJsonHelper");
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.findAll(MethodCallExpr.class)
+                .stream()
+                .filter(call -> "writeJsonField".equals(call.getNameAsString())
+                    && call.getArguments().size() == 2
+                    && call.getArgument(0).isStringLiteralExpr()
+                    && "error".equals(call.getArgument(0).asStringLiteralExpr().asString()))
+                .forEach(call -> {
+                    call.setName("writeUntypedField");
+                    call.setArgument(1, StaticJavaParser.parseExpression(
+                        "this.error == null ? null : OpenAIJsonHelper.toBinaryData(this.error).toObject(Object.class)"));
+                });
+            ast.findAll(MethodCallExpr.class)
+                .stream()
+                .filter(call -> "fromJson".equals(call.getNameAsString())
+                    && call.getScope().map(Node::toString).filter("RealtimeError"::equals).isPresent())
+                .forEach(call -> call.replace(StaticJavaParser
+                    .parseExpression("OpenAIJsonHelper.fromBinaryData(reader.getNullable(nonNullReader -> "
+                        + "BinaryData.fromObject(nonNullReader.readUntyped())), RealtimeError.class)")));
+        });
+    }
+
     private void exposeVoiceAgentBaseDiscriminatorToSubtypes(LibraryCustomization customization) {
         customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition")
             .customizeAst(ast -> ast.getClassByName("VoiceAgentBaseDefinition")
@@ -273,7 +374,8 @@ public class AgentsCustomizations extends Customization {
 
             fromJson
                 .findFirst(MethodCallExpr.class,
-                    call -> "fromJsonKnownDiscriminator".equals(call.getNameAsString())
+                    call -> ("fromJsonKnownDiscriminator".equals(call.getNameAsString())
+                        || "fromJson".equals(call.getNameAsString()))
                         && call.getScope().map(Node::toString).filter("VoiceAgentBaseDefinition"::equals).isPresent())
                 .orElseThrow(() -> new IllegalStateException("AgentDefinition voice dispatch was not generated"))
                 .setName("fromJson");
@@ -287,7 +389,9 @@ public class AgentsCustomizations extends Customization {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.fromJson was not generated"));
 
-            fromJson.findFirst(StringLiteralExpr.class, literal -> "kind".equals(literal.asString()))
+            fromJson
+                .findFirst(StringLiteralExpr.class,
+                    literal -> "kind".equals(literal.asString()) || "sub_protocol".equals(literal.asString()))
                 .orElseThrow(() -> new IllegalStateException("Voice-agent discriminator field was not generated"))
                 .setString("sub_protocol");
             fromJson

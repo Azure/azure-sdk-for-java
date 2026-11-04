@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * A service-managed control that acts on the active voice session without customer code or external authentication.
@@ -97,6 +98,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("timeout_seconds", this.timeoutSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,6 +130,20 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("end_conversation".equals(discriminatorValue)) {
                     return VoiceAgentEndConversationSystemTool.fromJson(readerToUse.reset());
+                } else if ("language_detection".equals(discriminatorValue)) {
+                    return VoiceAgentLanguageDetectionSystemTool.fromJson(readerToUse.reset());
+                } else if ("digit_recognition".equals(discriminatorValue)) {
+                    return VoiceAgentDigitRecognitionSystemTool.fromJson(readerToUse.reset());
+                } else if ("collect_sms".equals(discriminatorValue)) {
+                    return VoiceAgentCollectSmsSystemTool.fromJson(readerToUse.reset());
+                } else if ("collect_dtmf".equals(discriminatorValue)) {
+                    return VoiceAgentCollectDtmfSystemTool.fromJson(readerToUse.reset());
+                } else if ("transfer".equals(discriminatorValue)) {
+                    return VoiceAgentTransferSystemTool.fromJson(readerToUse.reset());
+                } else if ("send_dtmf".equals(discriminatorValue)) {
+                    return VoiceAgentSendDtmfSystemTool.fromJson(readerToUse.reset());
+                } else if ("send_sms".equals(discriminatorValue)) {
+                    return VoiceAgentSendSmsSystemTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -146,11 +162,50 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                     deserializedVoiceAgentSystemTool.name = VoiceAgentSystemToolName.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedVoiceAgentSystemTool.description = reader.getString();
+                } else if ("timeout_seconds".equals(fieldName)) {
+                    deserializedVoiceAgentSystemTool.timeoutSeconds = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedVoiceAgentSystemTool;
         });
+    }
+
+    /*
+     * Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60 seconds.
+     */
+    @Generated
+    private Long timeoutSeconds;
+
+    /**
+     * Get the timeoutSeconds property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * seconds.
+     *
+     * @return the timeoutSeconds value.
+     */
+    @Generated
+    public Duration getTimeoutSeconds() {
+        if (this.timeoutSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeoutSeconds);
+    }
+
+    /**
+     * Set the timeoutSeconds property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * seconds.
+     *
+     * @param timeoutSeconds the timeoutSeconds value to set.
+     * @return the VoiceAgentSystemTool object itself.
+     */
+    @Generated
+    public VoiceAgentSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
+        if (timeoutSeconds == null) {
+            this.timeoutSeconds = null;
+        } else {
+            this.timeoutSeconds = timeoutSeconds.getSeconds();
+        }
+        return this;
     }
 }

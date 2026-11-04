@@ -4,59 +4,62 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * The kind of a persisted Live conversation item.
  */
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public enum VoiceAgentLiveConversationItemType {
+public final class VoiceAgentLiveConversationItemType extends ExpandableStringEnum<VoiceAgentLiveConversationItemType> {
 
     /**
-     * Enum value input.
+     * Static value input for VoiceAgentLiveConversationItemType.
      */
-    INPUT("input"),
-    /**
-     * Enum value output.
-     */
-    OUTPUT("output"),
-    /**
-     * Enum value delegation.
-     */
-    DELEGATION("delegation");
+    @Generated
+    public static final VoiceAgentLiveConversationItemType INPUT = fromString("input");
 
     /**
-     * The actual serialized value for a VoiceAgentLiveConversationItemType instance.
+     * Static value output for VoiceAgentLiveConversationItemType.
      */
-    private final String value;
-
-    VoiceAgentLiveConversationItemType(String value) {
-        this.value = value;
-    }
+    @Generated
+    public static final VoiceAgentLiveConversationItemType OUTPUT = fromString("output");
 
     /**
-     * Parses a serialized value to a VoiceAgentLiveConversationItemType instance.
+     * Static value delegation for VoiceAgentLiveConversationItemType.
+     */
+    @Generated
+    public static final VoiceAgentLiveConversationItemType DELEGATION = fromString("delegation");
+
+    /**
+     * Creates a new instance of VoiceAgentLiveConversationItemType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed VoiceAgentLiveConversationItemType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static VoiceAgentLiveConversationItemType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        VoiceAgentLiveConversationItemType[] items = VoiceAgentLiveConversationItemType.values();
-        for (VoiceAgentLiveConversationItemType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public VoiceAgentLiveConversationItemType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a VoiceAgentLiveConversationItemType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding VoiceAgentLiveConversationItemType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static VoiceAgentLiveConversationItemType fromString(String name) {
+        return fromString(name, VoiceAgentLiveConversationItemType.class);
+    }
+
+    /**
+     * Gets known VoiceAgentLiveConversationItemType values.
+     *
+     * @return known VoiceAgentLiveConversationItemType values.
+     */
+    @Generated
+    public static Collection<VoiceAgentLiveConversationItemType> values() {
+        return values(VoiceAgentLiveConversationItemType.class);
     }
 }

@@ -24,7 +24,8 @@ public class VoiceAgentLiveConversationItem implements JsonSerializable<VoiceAge
      * The persisted item kind.
      */
     @Generated
-    private VoiceAgentLiveConversationItemType type;
+    private VoiceAgentLiveConversationItemType type
+        = VoiceAgentLiveConversationItemType.fromString("VoiceAgentLiveConversationItem");
 
     /*
      * Item ID used for retrieval. Foundry assigns speech IDs; delegation IDs retain their native value.

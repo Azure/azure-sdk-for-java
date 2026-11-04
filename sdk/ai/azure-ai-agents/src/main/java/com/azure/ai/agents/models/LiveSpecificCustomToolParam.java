@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveSpecificCustomToolParam implements JsonSerializable<LiveSpecificCustomToolParam> {
 
     /*
-     * The tool to call. Always `custom`.
-     */
-    @Generated
-    private final String type = "custom";
-
-    /*
      * The name of the custom tool to call.
      */
     @Generated
@@ -48,7 +42,7 @@ public final class LiveSpecificCustomToolParam implements JsonSerializable<LiveS
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -68,7 +62,7 @@ public final class LiveSpecificCustomToolParam implements JsonSerializable<LiveS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -98,4 +92,10 @@ public final class LiveSpecificCustomToolParam implements JsonSerializable<LiveS
             return new LiveSpecificCustomToolParam(name);
         });
     }
+
+    /*
+     * The tool to call. Always `custom`.
+     */
+    @Generated
+    private static final String TYPE = "custom";
 }

@@ -7,7 +7,6 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -18,8 +17,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentLiveManagedAgentDelegation
-    implements JsonSerializable<VoiceAgentLiveManagedAgentDelegation> {
+public final class VoiceAgentLiveManagedAgentDelegation extends VoiceAgentLiveDelegation {
 
     /*
      * Name of a prompt agent in the same project.
@@ -44,14 +42,14 @@ public final class VoiceAgentLiveManagedAgentDelegation
     }
 
     /**
-     * Get the type property: Canonical delegation type; legacy managed_prompt_agent values are returned as
-     * foundry_managed_agent.
+     * Get the type property: The delegation owner.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
-        return TYPE;
+    @Override
+    public VoiceAgentLiveDelegationType getType() {
+        return this.type;
     }
 
     /**
@@ -93,8 +91,8 @@ public final class VoiceAgentLiveManagedAgentDelegation
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("agent_version", this.agentVersion);
         return jsonWriter.writeEndObject();
     }
@@ -112,12 +110,15 @@ public final class VoiceAgentLiveManagedAgentDelegation
     public static VoiceAgentLiveManagedAgentDelegation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String agentName = null;
+            VoiceAgentLiveDelegationType type = VoiceAgentLiveDelegationType.FOUNDRY_MANAGED_AGENT;
             String agentVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("agent_name".equals(fieldName)) {
                     agentName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = VoiceAgentLiveDelegationType.fromString(reader.getString());
                 } else if ("agent_version".equals(fieldName)) {
                     agentVersion = reader.getString();
                 } else {
@@ -126,14 +127,15 @@ public final class VoiceAgentLiveManagedAgentDelegation
             }
             VoiceAgentLiveManagedAgentDelegation deserializedVoiceAgentLiveManagedAgentDelegation
                 = new VoiceAgentLiveManagedAgentDelegation(agentName);
+            deserializedVoiceAgentLiveManagedAgentDelegation.type = type;
             deserializedVoiceAgentLiveManagedAgentDelegation.agentVersion = agentVersion;
             return deserializedVoiceAgentLiveManagedAgentDelegation;
         });
     }
 
     /*
-     * Canonical delegation type; legacy managed_prompt_agent values are returned as foundry_managed_agent.
+     * The delegation owner.
      */
     @Generated
-    private static final String TYPE = "foundry_managed_agent";
+    private VoiceAgentLiveDelegationType type = VoiceAgentLiveDelegationType.FOUNDRY_MANAGED_AGENT;
 }

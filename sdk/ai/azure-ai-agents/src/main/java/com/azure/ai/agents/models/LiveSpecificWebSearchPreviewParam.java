@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveSpecificWebSearchPreviewParam implements JsonSerializable<LiveSpecificWebSearchPreviewParam> {
 
-    /*
-     * The tool to call. Always `web_search_preview`.
-     */
-    @Generated
-    private final String type = "web_search_preview";
-
     /**
      * Creates an instance of LiveSpecificWebSearchPreviewParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveSpecificWebSearchPreviewParam implements JsonSerializable
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveSpecificWebSearchPreviewParam implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,4 +69,10 @@ public final class LiveSpecificWebSearchPreviewParam implements JsonSerializable
             return deserializedLiveSpecificWebSearchPreviewParam;
         });
     }
+
+    /*
+     * The tool to call. Always `web_search_preview`.
+     */
+    @Generated
+    private static final String TYPE = "web_search_preview";
 }

@@ -133,6 +133,8 @@ public class CreateTelephonyBindingInput implements JsonSerializable<CreateTelep
                     return CreateTeamsPhoneExtensibilityTelephonyBindingInput.fromJson(readerToUse.reset());
                 } else if ("twilio".equals(discriminatorValue)) {
                     return CreateTwilioTelephonyBindingInput.fromJson(readerToUse.reset());
+                } else if ("sip".equals(discriminatorValue)) {
+                    return CreateSipTelephonyBindingInput.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

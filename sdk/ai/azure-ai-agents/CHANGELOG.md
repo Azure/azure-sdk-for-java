@@ -8,6 +8,15 @@
   destinations.
 - Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
   and audio. Live WebSocket transport is not included.
+- Added SIP telephony bindings, inline voice subagents and handoff configuration, and system tools for language
+  detection, digit recognition, transfer, SMS, and DTMF, with related server events.
+- Added polymorphic voice subagent configuration through `VoiceAgentSubagentConfiguration`, with
+  `VoiceAgentDelegateSubagentConfiguration` for referenced Foundry agents and
+  `VoiceAgentInlineSubagentConfiguration` for inline voice subagents.
+- Added response input support through `List<BinaryData>` in `VoiceAgentResponseCreateOptions`.
+- Added typed Live delegation through `VoiceAgentLiveDelegation`, `VoiceAgentLiveDelegationType`,
+  `VoiceAgentLiveClientDelegation`, and `VoiceAgentLiveResponsesDelegation`, with managed-agent delegation offsets
+  represented as `Duration` and outputs as `List<VoiceAgentLiveDelegationResultItem>`.
 
 ### Breaking Changes
 
@@ -15,10 +24,13 @@
 
 - Fixed voice-agent definition deserialization through `AgentDefinition` and `VoiceAgentBaseDefinition` to select
   Realtime for an omitted or `realtime` sub-protocol and Live for `live`.
+- Fixed response input and handoff error JSON serialization to preserve objects rather than encode them as strings.
 
 ### Other Changes
 
-- Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated post-generation customizations to store fixed wire values in new Live and voice-agent models as class
+  constants, preserving public getters and JSON serialization.
 
 ## 2.9.0 (2026-10-30)
 

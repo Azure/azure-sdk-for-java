@@ -21,12 +21,6 @@ import java.util.List;
 public final class LiveLocalEnvironmentParam implements JsonSerializable<LiveLocalEnvironmentParam> {
 
     /*
-     * Use a local computer environment.
-     */
-    @Generated
-    private final String type = "local";
-
-    /*
      * The skills property.
      */
     @Generated
@@ -46,7 +40,7 @@ public final class LiveLocalEnvironmentParam implements JsonSerializable<LiveLoc
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -78,7 +72,7 @@ public final class LiveLocalEnvironmentParam implements JsonSerializable<LiveLoc
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -110,4 +104,10 @@ public final class LiveLocalEnvironmentParam implements JsonSerializable<LiveLoc
             return deserializedLiveLocalEnvironmentParam;
         });
     }
+
+    /*
+     * Use a local computer environment.
+     */
+    @Generated
+    private static final String TYPE = "local";
 }

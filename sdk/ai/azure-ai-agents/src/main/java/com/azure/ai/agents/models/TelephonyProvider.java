@@ -57,4 +57,10 @@ public final class TelephonyProvider extends ExpandableStringEnum<TelephonyProvi
      */
     @Generated
     public static final TelephonyProvider TEAMS_PHONE_EXTENSIBILITY = fromString("teams_phone_extensibility");
+
+    /**
+     * Session Initiation Protocol.
+     */
+    @Generated
+    public static final TelephonyProvider SIP = fromString("sip");
 }

@@ -14,7 +14,8 @@ import java.util.Map;
 
 /**
  * Shared voice-agent settings; protocol-specific fields remain flat on each subtype.
- * Creates and updates produce immutable versions. An agent's protocol cannot change across versions.
+ * Creates and updates produce immutable versions. Each version selects its own protocol, so a new version can switch
+ * between Realtime and Live.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -24,10 +25,10 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
      * The kind property.
      */
     @Generated
-    AgentKind kind = AgentKind.VOICE;
+    final AgentKind kind = AgentKind.VOICE;
 
     /*
-     * Omission selects Realtime. Null and unknown values are invalid. Reads preserve omission.
+     * The voice protocol for this agent version. Null and unknown values are invalid.
      */
     @Generated
     private VoiceAgentSubProtocol subProtocol;
@@ -69,27 +70,13 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the subProtocol property: Omission selects Realtime. Null and unknown values are invalid. Reads preserve
-     * omission.
+     * Get the subProtocol property: The voice protocol for this agent version. Null and unknown values are invalid.
      *
      * @return the subProtocol value.
      */
     @Generated
     public VoiceAgentSubProtocol getSubProtocol() {
         return this.subProtocol;
-    }
-
-    /**
-     * Set the subProtocol property: Omission selects Realtime. Null and unknown values are invalid. Reads preserve
-     * omission.
-     *
-     * @param subProtocol the subProtocol value to set.
-     * @return the VoiceAgentBaseDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentBaseDefinition setSubProtocol(VoiceAgentSubProtocol subProtocol) {
-        this.subProtocol = subProtocol;
-        return this;
     }
 
     /**
@@ -179,8 +166,8 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
@@ -214,12 +201,19 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
                         readerToUse.skipChildren();
                     }
                 }
-                if (discriminatorValue == null || "realtime".equals(discriminatorValue)) {
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("realtime".equals(discriminatorValue)) {
                     return VoiceAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("live".equals(discriminatorValue)) {
                     return VoiceAgentLiveDefinition.fromJson(readerToUse.reset());
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    if (discriminatorValue == null || "realtime".equals(discriminatorValue)) {
+                        return VoiceAgentDefinition.fromJson(readerToUse.reset());
+                    } else if ("live".equals(discriminatorValue)) {
+                        return VoiceAgentLiveDefinition.fromJson(readerToUse.reset());
+                    } else {
+                        return fromJsonKnownDiscriminator(readerToUse.reset());
+                    }
                 }
             }
         });
@@ -234,8 +228,6 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
                     deserializedVoiceAgentBaseDefinition.setRaiConfig(RaiConfig.fromJson(reader));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedVoiceAgentBaseDefinition.kind = AgentKind.fromString(reader.getString());
                 } else if ("sub_protocol".equals(fieldName)) {
                     deserializedVoiceAgentBaseDefinition.subProtocol
                         = VoiceAgentSubProtocol.fromString(reader.getString());

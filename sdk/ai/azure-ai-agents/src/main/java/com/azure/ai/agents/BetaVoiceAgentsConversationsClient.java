@@ -298,7 +298,7 @@ public final class BetaVoiceAgentsConversationsClient {
      *     }
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message/system_tool) (Required)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -388,7 +388,7 @@ public final class BetaVoiceAgentsConversationsClient {
      *     }
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message/system_tool) (Required)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -490,7 +490,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message/system_tool) (Required)
      * }
      * }
      * </pre>
@@ -544,7 +544,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message/system_tool) (Required)
      * }
      * }
      * </pre>
@@ -578,7 +578,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message/system_tool) (Required)
      * }
      * }
      * </pre>

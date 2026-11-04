@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * A service-managed control that ends the active conversation.
@@ -79,6 +80,9 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", getDescription());
+        if (getTimeoutSeconds() != null) {
+            jsonWriter.writeNumberField("timeout_seconds", getTimeoutSeconds().getSeconds());
+        }
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         return jsonWriter.writeEndObject();
     }
@@ -101,6 +105,12 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
                 reader.nextToken();
                 if ("description".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.setDescription(reader.getString());
+                } else if ("timeout_seconds".equals(fieldName)) {
+                    Long timeoutSecondsHolder = reader.getNullable(JsonReader::getLong);
+                    if (timeoutSecondsHolder != null) {
+                        deserializedVoiceAgentEndConversationSystemTool
+                            .setTimeoutSeconds(Duration.ofSeconds(timeoutSecondsHolder));
+                    }
                 } else if ("name".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.name
                         = VoiceAgentSystemToolName.fromString(reader.getString());
@@ -110,5 +120,15 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
             }
             return deserializedVoiceAgentEndConversationSystemTool;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentEndConversationSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
+        super.setTimeoutSeconds(timeoutSeconds);
+        return this;
     }
 }

@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveMCPToolInputParam implements JsonSerializable<LiveMCPToolInputParam> {
 
-    /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "mcp";
-
     /**
      * Creates an instance of LiveMCPToolInputParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveMCPToolInputParam implements JsonSerializable<LiveMCPTool
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveMCPToolInputParam implements JsonSerializable<LiveMCPTool
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,4 +68,10 @@ public final class LiveMCPToolInputParam implements JsonSerializable<LiveMCPTool
             return deserializedLiveMCPToolInputParam;
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "mcp";
 }

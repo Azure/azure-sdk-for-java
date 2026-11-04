@@ -22,12 +22,6 @@ import java.io.IOException;
 public final class LiveHostedShellToolInputParam implements JsonSerializable<LiveHostedShellToolInputParam> {
 
     /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "shell";
-
-    /*
      * The environment property.
      */
     @Generated
@@ -47,7 +41,7 @@ public final class LiveHostedShellToolInputParam implements JsonSerializable<Liv
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -79,7 +73,7 @@ public final class LiveHostedShellToolInputParam implements JsonSerializable<Liv
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         if (this.environment != null) {
             jsonWriter.writeFieldName("environment");
             this.environment.writeTo(jsonWriter);
@@ -114,4 +108,10 @@ public final class LiveHostedShellToolInputParam implements JsonSerializable<Liv
             return deserializedLiveHostedShellToolInputParam;
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "shell";
 }

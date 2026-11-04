@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveNamespaceToolInputParam implements JsonSerializable<LiveNamespaceToolInputParam> {
 
-    /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "namespace";
-
     /**
      * Creates an instance of LiveNamespaceToolInputParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveNamespaceToolInputParam implements JsonSerializable<LiveN
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveNamespaceToolInputParam implements JsonSerializable<LiveN
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,4 +68,10 @@ public final class LiveNamespaceToolInputParam implements JsonSerializable<LiveN
             return deserializedLiveNamespaceToolInputParam;
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "namespace";
 }

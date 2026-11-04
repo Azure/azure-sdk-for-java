@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveSkillReferenceParam implements JsonSerializable<LiveSkillReferenceParam> {
 
     /*
-     * References a skill created with the /v1/skills endpoint.
-     */
-    @Generated
-    private final String type = "skill_reference";
-
-    /*
      * The ID of the referenced skill.
      */
     @Generated
@@ -54,7 +48,7 @@ public final class LiveSkillReferenceParam implements JsonSerializable<LiveSkill
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -96,7 +90,7 @@ public final class LiveSkillReferenceParam implements JsonSerializable<LiveSkill
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("skill_id", this.skillId);
         jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
@@ -132,4 +126,10 @@ public final class LiveSkillReferenceParam implements JsonSerializable<LiveSkill
             return deserializedLiveSkillReferenceParam;
         });
     }
+
+    /*
+     * References a skill created with the /v1/skills endpoint.
+     */
+    @Generated
+    private static final String TYPE = "skill_reference";
 }

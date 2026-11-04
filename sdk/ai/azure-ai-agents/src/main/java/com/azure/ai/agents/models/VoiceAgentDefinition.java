@@ -28,10 +28,10 @@ import java.util.Map;
 public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
 
     /*
-     * Selects Realtime. May be omitted for legacy agents.
+     * The voice protocol for this agent version. Null and unknown values are invalid.
      */
     @Generated
-    private VoiceAgentSubProtocol subProtocol;
+    private VoiceAgentSubProtocol subProtocol = VoiceAgentSubProtocol.REALTIME;
 
     /*
      * How the model backing this voice agent is served. Required with `model` for a model-backed voice agent and
@@ -126,8 +126,8 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
     private Boolean parallelToolCalls;
 
     /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
+     * Optional subagent configuration. Set `subagent_type` to `delegate` for delegated background specialists or
+     * `inline` for inline voice subagents.
      */
     @Generated
     private VoiceAgentSubagentConfiguration subagentConfiguration;
@@ -136,7 +136,7 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
      * The kind property.
      */
     @Generated
-    private AgentKind kind = AgentKind.VOICE;
+    private final AgentKind kind = AgentKind.VOICE;
 
     /**
      * Creates an instance of VoiceAgentDefinition class.
@@ -146,25 +146,14 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
     }
 
     /**
-     * Get the subProtocol property: Selects Realtime. May be omitted for legacy agents.
+     * Get the subProtocol property: The voice protocol for this agent version. Null and unknown values are invalid.
      *
      * @return the subProtocol value.
      */
     @Generated
+    @Override
     public VoiceAgentSubProtocol getSubProtocol() {
         return this.subProtocol;
-    }
-
-    /**
-     * Set the subProtocol property: Selects Realtime. May be omitted for legacy agents.
-     *
-     * @param subProtocol the subProtocol value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setSubProtocol(VoiceAgentSubProtocol subProtocol) {
-        this.subProtocol = subProtocol;
-        return this;
     }
 
     /**
@@ -492,8 +481,8 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
     }
 
     /**
-     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Get the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @return the subagentConfiguration value.
      */
@@ -503,8 +492,8 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
     }
 
     /**
-     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Set the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @param subagentConfiguration the subagentConfiguration value to set.
      * @return the VoiceAgentDefinition object itself.
@@ -573,7 +562,7 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("instructions", getInstructions());
         jsonWriter.writeMapField("structured_inputs", getStructuredInputs(),
@@ -623,9 +612,7 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.kind = AgentKind.fromString(reader.getString());
-                } else if ("rai_config".equals(fieldName)) {
+                if ("rai_config".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
                 } else if ("instructions".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.setInstructions(reader.getString());

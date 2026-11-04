@@ -22,12 +22,6 @@ import java.util.List;
 public final class LiveAllowedToolsChoiceParam implements JsonSerializable<LiveAllowedToolsChoiceParam> {
 
     /*
-     * The tool choice type. Always `allowed_tools`.
-     */
-    @Generated
-    private final String type = "allowed_tools";
-
-    /*
      * The tools that the delegated Responses model may call.
      */
     @Generated
@@ -56,7 +50,7 @@ public final class LiveAllowedToolsChoiceParam implements JsonSerializable<LiveA
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -98,7 +92,7 @@ public final class LiveAllowedToolsChoiceParam implements JsonSerializable<LiveA
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
@@ -142,4 +136,10 @@ public final class LiveAllowedToolsChoiceParam implements JsonSerializable<LiveA
             return deserializedLiveAllowedToolsChoiceParam;
         });
     }
+
+    /*
+     * The tool choice type. Always `allowed_tools`.
+     */
+    @Generated
+    private static final String TYPE = "allowed_tools";
 }

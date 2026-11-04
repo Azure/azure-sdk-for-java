@@ -48,8 +48,8 @@ public class VoiceAgentLiveConstantSerializationTests {
 
     @Test
     public void definitionRetainsModelType() throws IOException {
-        assertConstant(new VoiceAgentLiveDefinition(VoiceAgentSubProtocol.LIVE, "gpt-live"), "model_type",
-            "self_deployed", VoiceAgentLiveDefinition::getModelType, VoiceAgentLiveDefinition::fromJson);
+        assertConstant(new VoiceAgentLiveDefinition("gpt-live"), "model_type", "self_deployed",
+            VoiceAgentLiveDefinition::getModelType, VoiceAgentLiveDefinition::fromJson);
     }
 
     @Test
@@ -59,14 +59,14 @@ public class VoiceAgentLiveConstantSerializationTests {
     }
 
     private static <T extends JsonSerializable<?>> void assertConstant(T model, String property, String expected,
-        Function<T, String> getter, UnionTypeSerializationTestUtils.Deserializer<T> deserializer) throws IOException {
-        assertEquals(expected, getter.apply(model));
+        Function<T, ?> getter, UnionTypeSerializationTestUtils.Deserializer<T> deserializer) throws IOException {
+        assertEquals(expected, String.valueOf(getter.apply(model)));
         String json = UnionTypeSerializationTestUtils.serialize(model);
         try (JsonReader reader = JsonProviders.createReader(json)) {
             assertEquals(expected, reader.readMap(JsonReader::readUntyped).get(property));
         }
         T roundTripped = UnionTypeSerializationTestUtils.deserialize(json, deserializer);
-        assertEquals(expected, getter.apply(roundTripped));
+        assertEquals(expected, String.valueOf(getter.apply(roundTripped)));
         assertEquals(json, UnionTypeSerializationTestUtils.serialize(roundTripped));
     }
 }

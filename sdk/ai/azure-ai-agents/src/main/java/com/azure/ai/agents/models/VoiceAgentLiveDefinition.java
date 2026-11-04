@@ -6,7 +6,6 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,10 +23,10 @@ import java.util.Map;
 public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
 
     /*
-     * Selects the Live protocol.
+     * The voice protocol for this agent version. Null and unknown values are invalid.
      */
     @Generated
-    private final VoiceAgentSubProtocol subProtocol;
+    private VoiceAgentSubProtocol subProtocol = VoiceAgentSubProtocol.LIVE;
 
     /*
      * The GPT Live deployment name.
@@ -53,26 +52,15 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      * a model catalog ID.
      */
     @Generated
-    private BinaryData delegation;
+    private VoiceAgentLiveDelegation delegation;
 
     /**
-     * Creates an instance of VoiceAgentLiveDefinition class.
-     *
-     * @param subProtocol the subProtocol value to set.
-     * @param model the model value to set.
-     */
-    @Generated
-    public VoiceAgentLiveDefinition(VoiceAgentSubProtocol subProtocol, String model) {
-        this.subProtocol = subProtocol;
-        this.model = model;
-    }
-
-    /**
-     * Get the subProtocol property: Selects the Live protocol.
+     * Get the subProtocol property: The voice protocol for this agent version. Null and unknown values are invalid.
      *
      * @return the subProtocol value.
      */
     @Generated
+    @Override
     public VoiceAgentSubProtocol getSubProtocol() {
         return this.subProtocol;
     }
@@ -83,8 +71,8 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      * @return the modelType value.
      */
     @Generated
-    public String getModelType() {
-        return MODEL_TYPE;
+    public VoiceModelType getModelType() {
+        return this.modelType;
     }
 
     /**
@@ -150,21 +138,8 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      * @return the delegation value.
      */
     @Generated
-    public BinaryData getDelegation() {
+    public VoiceAgentLiveDelegation getDelegation() {
         return this.delegation;
-    }
-
-    /**
-     * Set the delegation property: Delegation settings. Omit for client mode. responses.model is a backend deployment
-     * name in the Live resource, not a model catalog ID.
-     *
-     * @param delegation the delegation value to set.
-     * @return the VoiceAgentLiveDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentLiveDefinition setDelegation(BinaryData delegation) {
-        this.delegation = delegation;
-        return this;
     }
 
     /**
@@ -214,21 +189,18 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("instructions", getInstructions());
         jsonWriter.writeMapField("structured_inputs", getStructuredInputs(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("store", isStore());
-        jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
-        jsonWriter.writeStringField("model_type", MODEL_TYPE);
+        jsonWriter.writeStringField("model_type", this.modelType == null ? null : this.modelType.toString());
         jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
-        if (this.delegation != null) {
-            jsonWriter.writeFieldName("delegation");
-            this.delegation.writeTo(jsonWriter);
-        }
+        jsonWriter.writeJsonField("delegation", this.delegation);
         return jsonWriter.writeEndObject();
     }
 
@@ -244,22 +216,19 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
     @Generated
     public static VoiceAgentLiveDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentKind kind = AgentKind.VOICE;
             RaiConfig raiConfig = null;
             String instructions = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
             Boolean store = null;
-            VoiceAgentSubProtocol subProtocol = null;
             String model = null;
+            VoiceAgentSubProtocol subProtocol = VoiceAgentSubProtocol.LIVE;
             VoiceAgentTemplateGreetingConfiguration greeting = null;
             LiveInitialSessionAudioParam audio = null;
-            BinaryData delegation = null;
+            VoiceAgentLiveDelegation delegation = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    kind = AgentKind.fromString(reader.getString());
-                } else if ("rai_config".equals(fieldName)) {
+                if ("rai_config".equals(fieldName)) {
                     raiConfig = RaiConfig.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
@@ -267,28 +236,26 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
                     structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
                 } else if ("store".equals(fieldName)) {
                     store = reader.getNullable(JsonReader::getBoolean);
-                } else if ("sub_protocol".equals(fieldName)) {
-                    subProtocol = VoiceAgentSubProtocol.fromString(reader.getString());
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
+                } else if ("sub_protocol".equals(fieldName)) {
+                    subProtocol = VoiceAgentSubProtocol.fromString(reader.getString());
                 } else if ("greeting".equals(fieldName)) {
                     greeting = VoiceAgentTemplateGreetingConfiguration.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
                     audio = LiveInitialSessionAudioParam.fromJson(reader);
                 } else if ("delegation".equals(fieldName)) {
-                    delegation
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    delegation = VoiceAgentLiveDelegation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentLiveDefinition deserializedVoiceAgentLiveDefinition
-                = new VoiceAgentLiveDefinition(subProtocol, model);
-            deserializedVoiceAgentLiveDefinition.kind = kind;
+            VoiceAgentLiveDefinition deserializedVoiceAgentLiveDefinition = new VoiceAgentLiveDefinition(model);
             deserializedVoiceAgentLiveDefinition.setRaiConfig(raiConfig);
             deserializedVoiceAgentLiveDefinition.setInstructions(instructions);
             deserializedVoiceAgentLiveDefinition.setStructuredInputs(structuredInputs);
             deserializedVoiceAgentLiveDefinition.setStore(store);
+            deserializedVoiceAgentLiveDefinition.subProtocol = subProtocol;
             deserializedVoiceAgentLiveDefinition.greeting = greeting;
             deserializedVoiceAgentLiveDefinition.audio = audio;
             deserializedVoiceAgentLiveDefinition.delegation = delegation;
@@ -300,7 +267,7 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      * The kind property.
      */
     @Generated
-    private AgentKind kind = AgentKind.VOICE;
+    private final AgentKind kind = AgentKind.VOICE;
 
     /**
      * Get the kind property: The kind property.
@@ -317,5 +284,28 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      * Uses a Foundry model deployment.
      */
     @Generated
-    private static final String MODEL_TYPE = "self_deployed";
+    private final VoiceModelType modelType = VoiceModelType.SELF_DEPLOYED;
+
+    /**
+     * Creates an instance of VoiceAgentLiveDefinition class.
+     *
+     * @param model the model value to set.
+     */
+    @Generated
+    public VoiceAgentLiveDefinition(String model) {
+        this.model = model;
+    }
+
+    /**
+     * Set the delegation property: Delegation settings. Omit for client mode. responses.model is a backend deployment
+     * name in the Live resource, not a model catalog ID.
+     *
+     * @param delegation the delegation value to set.
+     * @return the VoiceAgentLiveDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentLiveDefinition setDelegation(VoiceAgentLiveDelegation delegation) {
+        this.delegation = delegation;
+        return this;
+    }
 }

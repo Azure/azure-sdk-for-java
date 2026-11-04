@@ -38,6 +38,7 @@
   <suppress files="com.azure.ai.agents.models.VoiceAgentRealtimeResponse.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.VoiceAgentRealtimeResponseBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.VoiceAgentResponseCreateOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentServerEventSessionHandoffAborted.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.VoiceAgentSessionResponseConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.VoiceAgentSessionUpdateConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.VoiceConversation.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />

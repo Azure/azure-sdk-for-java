@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveSpecificFileSearchParam implements JsonSerializable<LiveSpecificFileSearchParam> {
 
-    /*
-     * The tool to call. Always `file_search`.
-     */
-    @Generated
-    private final String type = "file_search";
-
     /**
      * Creates an instance of LiveSpecificFileSearchParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveSpecificFileSearchParam implements JsonSerializable<LiveS
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveSpecificFileSearchParam implements JsonSerializable<LiveS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,4 +68,10 @@ public final class LiveSpecificFileSearchParam implements JsonSerializable<LiveS
             return deserializedLiveSpecificFileSearchParam;
         });
     }
+
+    /*
+     * The tool to call. Always `file_search`.
+     */
+    @Generated
+    private static final String TYPE = "file_search";
 }

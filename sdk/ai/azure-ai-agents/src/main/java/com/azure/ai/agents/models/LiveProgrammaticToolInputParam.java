@@ -19,12 +19,6 @@ import java.io.IOException;
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class LiveProgrammaticToolInputParam implements JsonSerializable<LiveProgrammaticToolInputParam> {
 
-    /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "programmatic_tool_calling";
-
     /**
      * Creates an instance of LiveProgrammaticToolInputParam class.
      */
@@ -39,7 +33,7 @@ public final class LiveProgrammaticToolInputParam implements JsonSerializable<Li
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -49,7 +43,7 @@ public final class LiveProgrammaticToolInputParam implements JsonSerializable<Li
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,4 +69,10 @@ public final class LiveProgrammaticToolInputParam implements JsonSerializable<Li
             return deserializedLiveProgrammaticToolInputParam;
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "programmatic_tool_calling";
 }

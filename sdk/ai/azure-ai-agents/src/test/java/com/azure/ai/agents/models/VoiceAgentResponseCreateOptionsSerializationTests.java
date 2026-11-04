@@ -3,6 +3,9 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.openai.models.realtime.RealtimeFunctionTool;
 import com.openai.models.realtime.RealtimeResponseCreateMcpTool;
 import com.openai.models.realtime.RealtimeResponseCreateParams;
@@ -14,12 +17,54 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentResponseCreateOptionsSerializationTests {
+
+    @Test
+    public void inputJsonRoundTripsWithoutStringEncoding() throws IOException {
+        String input = "{\"type\":\"item_reference\",\"id\":\"item-test\"}";
+        VoiceAgentResponseCreateOptions original
+            = new VoiceAgentResponseCreateOptions().setInput(Arrays.asList(BinaryData.fromString(input), null));
+        String json = UnionTypeSerializationTestUtils.serialize(original);
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            List<?> serializedInput = (List<?>) reader.readMap(JsonReader::readUntyped).get("input");
+            assertEquals(2, serializedInput.size());
+            assertEquals("item-test", ((Map<?, ?>) serializedInput.get(0)).get("id"));
+            assertNull(serializedInput.get(1));
+        }
+        VoiceAgentResponseCreateOptions result = roundTrip(original);
+        assertEquals("item-test", result.getInput().get(0).toObject(Map.class).get("id"));
+        assertNull(result.getInput().get(1));
+    }
+
+    @Test
+    public void handoffErrorRoundTripsWithoutStringEncoding() throws IOException {
+        String json = "{\"event_id\":\"event-test\",\"handoff_id\":\"handoff-test\",\"edge_id\":\"edge-test\","
+            + "\"from_node_id\":\"from\",\"to_node_id\":\"to\",\"from_model\":\"model-from\","
+            + "\"to_model\":\"model-to\",\"tool_call_id\":\"call-test\",\"node_generation\":1,"
+            + "\"reason\":\"cancelled\",\"error\":{\"type\":\"server_error\",\"message\":\"handoff failed\"}}";
+        VoiceAgentServerEventSessionHandoffAborted event
+            = UnionTypeSerializationTestUtils.deserialize(json, VoiceAgentServerEventSessionHandoffAborted::fromJson);
+        String serialized = UnionTypeSerializationTestUtils.serialize(event);
+        assertTrue(serialized.contains("\"error\":{"));
+        VoiceAgentServerEventSessionHandoffAborted result = UnionTypeSerializationTestUtils.deserialize(serialized,
+            VoiceAgentServerEventSessionHandoffAborted::fromJson);
+        assertEquals("handoff failed", result.getError().message());
+
+        VoiceAgentServerEventSessionHandoffAborted withoutError = UnionTypeSerializationTestUtils.deserialize(
+            json.replace(",\"error\":{\"type\":\"server_error\",\"message\":\"handoff failed\"}", ""),
+            VoiceAgentServerEventSessionHandoffAborted::fromJson);
+        assertNull(
+            UnionTypeSerializationTestUtils
+                .deserialize(UnionTypeSerializationTestUtils.serialize(withoutError),
+                    VoiceAgentServerEventSessionHandoffAborted::fromJson)
+                .getError());
+    }
 
     @Test
     public void maxOutputTokensVariantsRoundTrip() throws IOException {

@@ -20,12 +20,6 @@ import java.io.IOException;
 public final class LiveContainerNetworkPolicyDisabledParam
     implements JsonSerializable<LiveContainerNetworkPolicyDisabledParam> {
 
-    /*
-     * Disable outbound network access. Always `disabled`.
-     */
-    @Generated
-    private final String type = "disabled";
-
     /**
      * Creates an instance of LiveContainerNetworkPolicyDisabledParam class.
      */
@@ -40,7 +34,7 @@ public final class LiveContainerNetworkPolicyDisabledParam
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -50,7 +44,7 @@ public final class LiveContainerNetworkPolicyDisabledParam
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,4 +70,10 @@ public final class LiveContainerNetworkPolicyDisabledParam
             return deserializedLiveContainerNetworkPolicyDisabledParam;
         });
     }
+
+    /*
+     * Disable outbound network access. Always `disabled`.
+     */
+    @Generated
+    private static final String TYPE = "disabled";
 }

@@ -7,121 +7,24 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Output audio configuration for a voice agent.
- * Provider-specific fields are selected by `voice_type`:
- * - `openai`: `voice` and `speed`.
- * - `azure-standard`: `voice`, `voice_locale`, `speed`, `voice_temperature`, `custom_lexicon_url`,
- * `custom_text_normalization_url`, `prefer_locales`, `style`, `pitch`, and `volume`.
- * - `azure-custom`: all `azure-standard` fields except `style`, plus `custom_voice_endpoint_id`.
- * - `azure-personal`: all `azure-standard` fields except `style`, plus `personal_voice_model`.
- * - `avatar-voice-sync`: all `azure-standard` fields except `voice` and `style`, plus `personal_voice_model`; the voice
- * name is derived from the avatar.
- * - `azure-realtime-native`: `voice` and `speed`.
- * `format` and `output_audio_timestamp_types` apply to every voice type.
+ * Output audio configuration for a voice agent. Extends the voice configuration with the session-level `format` and
+ * `output_audio_timestamp_types` settings, which apply to every voice type.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentAudioOutputConfiguration implements JsonSerializable<VoiceAgentAudioOutputConfiguration> {
+public final class VoiceAgentAudioOutputConfiguration extends VoiceAgentVoiceConfiguration {
 
     /*
      * The output audio format. Applies to every `voice_type` and defaults to 24 kHz PCM.
      */
     @Generated
     private RealtimeAudioFormat format;
-
-    /*
-     * The voice name or identifier. Applies to `openai`, `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `azure-realtime-native`. It does not apply to `avatar-voice-sync`, which derives the voice name from the avatar.
-     */
-    @Generated
-    private String voice;
-
-    /*
-     * The voice implementation.
-     */
-    @Generated
-    private VoiceType voiceType;
-
-    /*
-     * The enforced BCP-47 output locale. Applies to `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private String voiceLocale;
-
-    /*
-     * The numeric output speed multiplier. Applies to all known `voice_type` values and defaults to 1.
-     */
-    @Generated
-    private Double speed;
-
-    /*
-     * The voice variation temperature. Applies to `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private Double voiceTemperature;
-
-    /*
-     * The URL of a custom pronunciation lexicon. Applies to `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private String customLexiconUrl;
-
-    /*
-     * The URL of a custom text-normalization configuration. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     */
-    @Generated
-    private String customTextNormalizationUrl;
-
-    /*
-     * Preferred BCP-47 locales for multilingual synthesis. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     */
-    @Generated
-    private List<String> preferredLocales;
-
-    /*
-     * The voice speaking style. Applies only when `voice_type` is `azure-standard`.
-     */
-    @Generated
-    private String style;
-
-    /*
-     * The voice pitch adjustment. Applies to `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private String pitch;
-
-    /*
-     * The voice volume adjustment. Applies to `azure-standard`, `azure-custom`, `azure-personal`, and
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private String volume;
-
-    /*
-     * The Azure custom-voice deployment endpoint identifier. Applies only when `voice_type` is `azure-custom`.
-     */
-    @Generated
-    private String customVoiceEndpointId;
-
-    /*
-     * The Azure personal or avatar voice model. Applies only when `voice_type` is `azure-personal` or
-     * `avatar-voice-sync`.
-     */
-    @Generated
-    private String personalVoiceModel;
 
     /*
      * Timestamp kinds to include with output audio. Applies to every `voice_type`.
@@ -159,312 +62,132 @@ public final class VoiceAgentAudioOutputConfiguration implements JsonSerializabl
     }
 
     /**
-     * Get the voice property: The voice name or identifier. Applies to `openai`, `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `azure-realtime-native`. It does not apply to `avatar-voice-sync`, which derives the voice
-     * name from the avatar.
-     *
-     * @return the voice value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getVoice() {
-        return this.voice;
-    }
-
-    /**
-     * Set the voice property: The voice name or identifier. Applies to `openai`, `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `azure-realtime-native`. It does not apply to `avatar-voice-sync`, which derives the voice
-     * name from the avatar.
-     *
-     * @param voice the voice value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setVoice(String voice) {
-        this.voice = voice;
+        super.setVoice(voice);
         return this;
     }
 
     /**
-     * Get the voiceType property: The voice implementation.
-     *
-     * @return the voiceType value.
+     * {@inheritDoc}
      */
     @Generated
-    public VoiceType getVoiceType() {
-        return this.voiceType;
-    }
-
-    /**
-     * Set the voiceType property: The voice implementation.
-     *
-     * @param voiceType the voiceType value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setVoiceType(VoiceType voiceType) {
-        this.voiceType = voiceType;
+        super.setVoiceType(voiceType);
         return this;
     }
 
     /**
-     * Get the voiceLocale property: The enforced BCP-47 output locale. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the voiceLocale value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getVoiceLocale() {
-        return this.voiceLocale;
-    }
-
-    /**
-     * Set the voiceLocale property: The enforced BCP-47 output locale. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param voiceLocale the voiceLocale value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setVoiceLocale(String voiceLocale) {
-        this.voiceLocale = voiceLocale;
+        super.setVoiceLocale(voiceLocale);
         return this;
     }
 
     /**
-     * Get the speed property: The numeric output speed multiplier. Applies to all known `voice_type` values and
-     * defaults to 1.
-     *
-     * @return the speed value.
+     * {@inheritDoc}
      */
     @Generated
-    public Double getSpeed() {
-        return this.speed;
-    }
-
-    /**
-     * Set the speed property: The numeric output speed multiplier. Applies to all known `voice_type` values and
-     * defaults to 1.
-     *
-     * @param speed the speed value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setSpeed(Double speed) {
-        this.speed = speed;
+        super.setSpeed(speed);
         return this;
     }
 
     /**
-     * Get the voiceTemperature property: The voice variation temperature. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the voiceTemperature value.
+     * {@inheritDoc}
      */
     @Generated
-    public Double getVoiceTemperature() {
-        return this.voiceTemperature;
-    }
-
-    /**
-     * Set the voiceTemperature property: The voice variation temperature. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param voiceTemperature the voiceTemperature value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setVoiceTemperature(Double voiceTemperature) {
-        this.voiceTemperature = voiceTemperature;
+        super.setVoiceTemperature(voiceTemperature);
         return this;
     }
 
     /**
-     * Get the customLexiconUrl property: The URL of a custom pronunciation lexicon. Applies to `azure-standard`,
-     * `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the customLexiconUrl value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getCustomLexiconUrl() {
-        return this.customLexiconUrl;
-    }
-
-    /**
-     * Set the customLexiconUrl property: The URL of a custom pronunciation lexicon. Applies to `azure-standard`,
-     * `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param customLexiconUrl the customLexiconUrl value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setCustomLexiconUrl(String customLexiconUrl) {
-        this.customLexiconUrl = customLexiconUrl;
+        super.setCustomLexiconUrl(customLexiconUrl);
         return this;
     }
 
     /**
-     * Get the customTextNormalizationUrl property: The URL of a custom text-normalization configuration. Applies to
-     * `azure-standard`, `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the customTextNormalizationUrl value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getCustomTextNormalizationUrl() {
-        return this.customTextNormalizationUrl;
-    }
-
-    /**
-     * Set the customTextNormalizationUrl property: The URL of a custom text-normalization configuration. Applies to
-     * `azure-standard`, `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param customTextNormalizationUrl the customTextNormalizationUrl value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setCustomTextNormalizationUrl(String customTextNormalizationUrl) {
-        this.customTextNormalizationUrl = customTextNormalizationUrl;
+        super.setCustomTextNormalizationUrl(customTextNormalizationUrl);
         return this;
     }
 
     /**
-     * Get the preferredLocales property: Preferred BCP-47 locales for multilingual synthesis. Applies to
-     * `azure-standard`, `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the preferredLocales value.
+     * {@inheritDoc}
      */
     @Generated
-    public List<String> getPreferredLocales() {
-        return this.preferredLocales;
-    }
-
-    /**
-     * Set the preferredLocales property: Preferred BCP-47 locales for multilingual synthesis. Applies to
-     * `azure-standard`, `azure-custom`, `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param preferredLocales the preferredLocales value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setPreferredLocales(List<String> preferredLocales) {
-        this.preferredLocales = preferredLocales;
+        super.setPreferredLocales(preferredLocales);
         return this;
     }
 
     /**
-     * Get the style property: The voice speaking style. Applies only when `voice_type` is `azure-standard`.
-     *
-     * @return the style value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getStyle() {
-        return this.style;
-    }
-
-    /**
-     * Set the style property: The voice speaking style. Applies only when `voice_type` is `azure-standard`.
-     *
-     * @param style the style value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setStyle(String style) {
-        this.style = style;
+        super.setStyle(style);
         return this;
     }
 
     /**
-     * Get the pitch property: The voice pitch adjustment. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the pitch value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getPitch() {
-        return this.pitch;
-    }
-
-    /**
-     * Set the pitch property: The voice pitch adjustment. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param pitch the pitch value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setPitch(String pitch) {
-        this.pitch = pitch;
+        super.setPitch(pitch);
         return this;
     }
 
     /**
-     * Get the volume property: The voice volume adjustment. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @return the volume value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getVolume() {
-        return this.volume;
-    }
-
-    /**
-     * Set the volume property: The voice volume adjustment. Applies to `azure-standard`, `azure-custom`,
-     * `azure-personal`, and `avatar-voice-sync`.
-     *
-     * @param volume the volume value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setVolume(String volume) {
-        this.volume = volume;
+        super.setVolume(volume);
         return this;
     }
 
     /**
-     * Get the customVoiceEndpointId property: The Azure custom-voice deployment endpoint identifier. Applies only when
-     * `voice_type` is `azure-custom`.
-     *
-     * @return the customVoiceEndpointId value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getCustomVoiceEndpointId() {
-        return this.customVoiceEndpointId;
-    }
-
-    /**
-     * Set the customVoiceEndpointId property: The Azure custom-voice deployment endpoint identifier. Applies only when
-     * `voice_type` is `azure-custom`.
-     *
-     * @param customVoiceEndpointId the customVoiceEndpointId value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setCustomVoiceEndpointId(String customVoiceEndpointId) {
-        this.customVoiceEndpointId = customVoiceEndpointId;
+        super.setCustomVoiceEndpointId(customVoiceEndpointId);
         return this;
     }
 
     /**
-     * Get the personalVoiceModel property: The Azure personal or avatar voice model. Applies only when `voice_type` is
-     * `azure-personal` or `avatar-voice-sync`.
-     *
-     * @return the personalVoiceModel value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getPersonalVoiceModel() {
-        return this.personalVoiceModel;
-    }
-
-    /**
-     * Set the personalVoiceModel property: The Azure personal or avatar voice model. Applies only when `voice_type` is
-     * `azure-personal` or `avatar-voice-sync`.
-     *
-     * @param personalVoiceModel the personalVoiceModel value to set.
-     * @return the VoiceAgentAudioOutputConfiguration object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentAudioOutputConfiguration setPersonalVoiceModel(String personalVoiceModel) {
-        this.personalVoiceModel = personalVoiceModel;
+        super.setPersonalVoiceModel(personalVoiceModel);
         return this;
     }
 
@@ -500,21 +223,21 @@ public final class VoiceAgentAudioOutputConfiguration implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("format", this.format);
-        jsonWriter.writeStringField("voice", this.voice);
-        jsonWriter.writeStringField("voice_type", this.voiceType == null ? null : this.voiceType.toString());
-        jsonWriter.writeStringField("voice_locale", this.voiceLocale);
-        jsonWriter.writeNumberField("speed", this.speed);
-        jsonWriter.writeNumberField("voice_temperature", this.voiceTemperature);
-        jsonWriter.writeStringField("custom_lexicon_url", this.customLexiconUrl);
-        jsonWriter.writeStringField("custom_text_normalization_url", this.customTextNormalizationUrl);
-        jsonWriter.writeArrayField("prefer_locales", this.preferredLocales,
+        jsonWriter.writeStringField("voice", getVoice());
+        jsonWriter.writeStringField("voice_type", getVoiceType() == null ? null : getVoiceType().toString());
+        jsonWriter.writeStringField("voice_locale", getVoiceLocale());
+        jsonWriter.writeNumberField("speed", getSpeed());
+        jsonWriter.writeNumberField("voice_temperature", getVoiceTemperature());
+        jsonWriter.writeStringField("custom_lexicon_url", getCustomLexiconUrl());
+        jsonWriter.writeStringField("custom_text_normalization_url", getCustomTextNormalizationUrl());
+        jsonWriter.writeArrayField("prefer_locales", getPreferredLocales(),
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("style", this.style);
-        jsonWriter.writeStringField("pitch", this.pitch);
-        jsonWriter.writeStringField("volume", this.volume);
-        jsonWriter.writeStringField("custom_voice_endpoint_id", this.customVoiceEndpointId);
-        jsonWriter.writeStringField("personal_voice_model", this.personalVoiceModel);
+        jsonWriter.writeStringField("style", getStyle());
+        jsonWriter.writeStringField("pitch", getPitch());
+        jsonWriter.writeStringField("volume", getVolume());
+        jsonWriter.writeStringField("custom_voice_endpoint_id", getCustomVoiceEndpointId());
+        jsonWriter.writeStringField("personal_voice_model", getPersonalVoiceModel());
+        jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeArrayField("output_audio_timestamp_types", this.outputAudioTimestampTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
@@ -536,36 +259,37 @@ public final class VoiceAgentAudioOutputConfiguration implements JsonSerializabl
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("format".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.format = RealtimeAudioFormat.fromJson(reader);
-                } else if ("voice".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.voice = reader.getString();
+                if ("voice".equals(fieldName)) {
+                    deserializedVoiceAgentAudioOutputConfiguration.setVoice(reader.getString());
                 } else if ("voice_type".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.voiceType = VoiceType.fromString(reader.getString());
+                    deserializedVoiceAgentAudioOutputConfiguration
+                        .setVoiceType(VoiceType.fromString(reader.getString()));
                 } else if ("voice_locale".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.voiceLocale = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setVoiceLocale(reader.getString());
                 } else if ("speed".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.speed = reader.getNullable(JsonReader::getDouble);
+                    deserializedVoiceAgentAudioOutputConfiguration.setSpeed(reader.getNullable(JsonReader::getDouble));
                 } else if ("voice_temperature".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.voiceTemperature
-                        = reader.getNullable(JsonReader::getDouble);
+                    deserializedVoiceAgentAudioOutputConfiguration
+                        .setVoiceTemperature(reader.getNullable(JsonReader::getDouble));
                 } else if ("custom_lexicon_url".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.customLexiconUrl = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setCustomLexiconUrl(reader.getString());
                 } else if ("custom_text_normalization_url".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.customTextNormalizationUrl = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setCustomTextNormalizationUrl(reader.getString());
                 } else if ("prefer_locales".equals(fieldName)) {
                     List<String> preferredLocales = reader.readArray(reader1 -> reader1.getString());
-                    deserializedVoiceAgentAudioOutputConfiguration.preferredLocales = preferredLocales;
+                    deserializedVoiceAgentAudioOutputConfiguration.setPreferredLocales(preferredLocales);
                 } else if ("style".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.style = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setStyle(reader.getString());
                 } else if ("pitch".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.pitch = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setPitch(reader.getString());
                 } else if ("volume".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.volume = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setVolume(reader.getString());
                 } else if ("custom_voice_endpoint_id".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.customVoiceEndpointId = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setCustomVoiceEndpointId(reader.getString());
                 } else if ("personal_voice_model".equals(fieldName)) {
-                    deserializedVoiceAgentAudioOutputConfiguration.personalVoiceModel = reader.getString();
+                    deserializedVoiceAgentAudioOutputConfiguration.setPersonalVoiceModel(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedVoiceAgentAudioOutputConfiguration.format = RealtimeAudioFormat.fromJson(reader);
                 } else if ("output_audio_timestamp_types".equals(fieldName)) {
                     List<VoiceAgentAudioTimestampType> outputAudioTimestampTypes
                         = reader.readArray(reader1 -> VoiceAgentAudioTimestampType.fromString(reader1.getString()));

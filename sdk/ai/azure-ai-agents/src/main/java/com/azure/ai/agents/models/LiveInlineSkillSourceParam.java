@@ -20,18 +20,6 @@ import java.io.IOException;
 public final class LiveInlineSkillSourceParam implements JsonSerializable<LiveInlineSkillSourceParam> {
 
     /*
-     * The type of the inline skill source. Must be `base64`.
-     */
-    @Generated
-    private final String type = "base64";
-
-    /*
-     * The media type of the inline skill payload. Must be `application/zip`.
-     */
-    @Generated
-    private final String mediaType = "application/zip";
-
-    /*
      * Base64-encoded skill zip bundle.
      */
     @Generated
@@ -54,7 +42,7 @@ public final class LiveInlineSkillSourceParam implements JsonSerializable<LiveIn
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -64,7 +52,7 @@ public final class LiveInlineSkillSourceParam implements JsonSerializable<LiveIn
      */
     @Generated
     public String getMediaType() {
-        return this.mediaType;
+        return MEDIA_TYPE;
     }
 
     /**
@@ -84,8 +72,8 @@ public final class LiveInlineSkillSourceParam implements JsonSerializable<LiveIn
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeStringField("media_type", this.mediaType);
+        jsonWriter.writeStringField("type", TYPE);
+        jsonWriter.writeStringField("media_type", MEDIA_TYPE);
         jsonWriter.writeStringField("data", this.data);
         return jsonWriter.writeEndObject();
     }
@@ -115,4 +103,16 @@ public final class LiveInlineSkillSourceParam implements JsonSerializable<LiveIn
             return new LiveInlineSkillSourceParam(data);
         });
     }
+
+    /*
+     * The type of the inline skill source. Must be `base64`.
+     */
+    @Generated
+    private static final String TYPE = "base64";
+
+    /*
+     * The media type of the inline skill payload. Must be `application/zip`.
+     */
+    @Generated
+    private static final String MEDIA_TYPE = "application/zip";
 }
