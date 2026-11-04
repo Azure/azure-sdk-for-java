@@ -13,6 +13,8 @@
 
 ### Other Changes
 
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
+
 ## 2.9.0 (2026-10-30)
 
 ### Features Added

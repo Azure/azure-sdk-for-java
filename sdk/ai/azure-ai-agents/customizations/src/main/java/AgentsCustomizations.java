@@ -40,7 +40,7 @@ public class AgentsCustomizations extends Customization {
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
         stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
-        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
+        internalizeUnusedFunctionToolType(libraryCustomization, logger);
         deprecateLegacyBrowserAutomationTools(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
@@ -169,17 +169,17 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
-    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization, Logger logger) {
+    private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
         ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
-            .filter(clazz -> "VoiceAgentFunctionToolType1".equals(clazz.getClassName()))
+            .filter(clazz -> "ToolFunctionToolType1".equals(clazz.getClassName()))
             .findFirst()
             .orElse(null);
         if (enumCustomization == null) {
-            logger.info("VoiceAgentFunctionToolType1 is not generated; no enum visibility change is needed.");
+            logger.info("ToolFunctionToolType1 is not generated; no enum visibility change is needed.");
             return;
         }
-        enumCustomization.customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
-            .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType1")
+            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType1 was not generated"))
             .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
