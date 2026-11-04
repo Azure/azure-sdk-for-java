@@ -18,11 +18,6 @@ public final class ScrubbingRuleEntryMatchOperator extends ExpandableStringEnum<
     public static final ScrubbingRuleEntryMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
-     * Static value Equals for ScrubbingRuleEntryMatchOperator.
-     */
-    public static final ScrubbingRuleEntryMatchOperator EQUALS = fromString("Equals");
-
-    /**
      * Creates a new instance of ScrubbingRuleEntryMatchOperator value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -209,8 +209,12 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     ElasticSanImpl(ElasticSanInner innerObject, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.elasticSanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "elasticSans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}",
+            "resourceGroupName");
+        this.elasticSanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}",
+            "elasticSanName");
     }
 
     public ElasticSan refresh() {

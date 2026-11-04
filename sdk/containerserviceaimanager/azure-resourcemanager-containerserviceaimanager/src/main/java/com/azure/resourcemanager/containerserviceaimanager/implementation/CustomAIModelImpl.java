@@ -124,9 +124,15 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
         com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.aiManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "aiManagers");
-        this.customAIModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customAIModels");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "resourceGroupName");
+        this.aiManagerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "aiManagerName");
+        this.customAIModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "customAIModelName");
     }
 
     public CustomAIModel refresh() {

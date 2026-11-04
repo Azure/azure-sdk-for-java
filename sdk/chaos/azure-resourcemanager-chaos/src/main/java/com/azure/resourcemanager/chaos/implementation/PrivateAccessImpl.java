@@ -125,8 +125,12 @@ public final class PrivateAccessImpl implements PrivateAccess, PrivateAccess.Def
     PrivateAccessImpl(PrivateAccessInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateAccessName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateAccesses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}",
+            "resourceGroupName");
+        this.privateAccessName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}",
+            "privateAccessName");
     }
 
     public PrivateAccess refresh() {

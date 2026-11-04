@@ -575,7 +575,7 @@ public class ClientMetricsTest extends BatchTestBase {
             state.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
-            state.assertMetrics("cosmos.client.req.gw.RUs", true, queryPlanTag);
+            state.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
         }
     }
 
@@ -621,7 +621,7 @@ public class ClientMetricsTest extends BatchTestBase {
             state.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
-            state.assertMetrics("cosmos.client.req.gw.RUs", true, queryPlanTag);
+            state.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
 
             state.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
             state.assertMetrics("cosmos.client.op.maxItemCount", true);
@@ -734,7 +734,7 @@ public class ClientMetricsTest extends BatchTestBase {
             state.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
-            state.assertMetrics("cosmos.client.req.gw.RUs", true, queryPlanTag);
+            state.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
 
             state.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
             state.assertMetrics("cosmos.client.op.maxItemCount", true);

@@ -155,7 +155,7 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                 assertThat(rule.getHitCount()).isEqualTo(1);
 
                 List<Counter> planCounters = registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
-                    .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
+                    .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
                     .counters().stream().collect(Collectors.toList());
                 assertThat(planCounters).hasSize(2);
                 assertThat(planCounters.stream().mapToDouble(Counter::count).sum()).isEqualTo(2);
@@ -171,12 +171,21 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                     }
                     assertThat(registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
                         .tags(counter.getId().getTags()).timer().count()).isEqualTo((long) counter.count());
-                    assertThat(registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE.toString())
-                        .tags(counter.getId().getTags()).summary().count()).isEqualTo((long) counter.count());
+                    assertThat(registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE.toString())
+                        .tags(counter.getId().getTags()).summaries()).isEmpty();
                 }
+                Counter planContextCounter = registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                    .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
+                    .tag(TagName.RequestStatusCode.toString(), "NONE")
+                    .tag(TagName.ServiceEndpoint.toString(), "NONE").counter();
+                assertThat(planContextCounter.count()).isEqualTo(1);
+                assertThat(registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE.toString())
+                    .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan").summaries()).isEmpty();
                 assertThat(container.queryItems(query, queryOptions, String.class).iterator().next()).isEqualTo(id);
                 assertThat(planCounters.stream().mapToDouble(Counter::count).sum())
                     .as("A cached plan must not emit another network request measurement").isEqualTo(2);
+                assertThat(planContextCounter.count())
+                    .as("Cached plans retain the legacy plan-context measurement").isEqualTo(2);
 
                 for (CosmosMetricName name : new CosmosMetricName[] {
                     CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS,

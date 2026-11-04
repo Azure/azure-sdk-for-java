@@ -1,10 +1,23 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added `maximumHttpVersion` to enable HTTP/2 with HTTP/1.1 fallback. Clients created without a supplied JDK builder
+  still default to HTTP/1.1.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+
 ### Breaking Changes
+
+### Bugs Fixed
+
+- HTTP clients created with a supplied JDK builder now honor its explicit HTTP version instead of silently
+  defaulting to HTTP/1.1.
+
+### Other Changes
+
+## 1.3.0 (2026-10-27)
 
 ### Bugs Fixed
 
@@ -22,6 +35,10 @@
 ### Other Changes
 
 - Documented the `jdk.httpclient.allowRestrictedHeaders` setting for explicit `Host` headers.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
 
 ## 1.2.0 (2026-09-29)
 

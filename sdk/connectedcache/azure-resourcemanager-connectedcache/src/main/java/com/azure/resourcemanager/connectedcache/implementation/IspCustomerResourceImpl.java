@@ -130,8 +130,12 @@ public final class IspCustomerResourceImpl
         com.azure.resourcemanager.connectedcache.ConnectedCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.customerResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ispCustomers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "resourceGroupName");
+        this.customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "customerResourceName");
     }
 
     public IspCustomerResource refresh() {

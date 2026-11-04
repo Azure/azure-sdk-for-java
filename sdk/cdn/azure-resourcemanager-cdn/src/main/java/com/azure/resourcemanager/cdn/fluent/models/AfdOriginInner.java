@@ -11,12 +11,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
+import com.azure.resourcemanager.cdn.models.CertificateNameCheckValidationMode;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Azure Front Door origin is the source of the content being delivered via Azure Front Door. When the edge nodes
@@ -310,29 +311,6 @@ public final class AfdOriginInner extends ProxyResource {
     }
 
     /**
-     * Get the originCapacityResource property: Origin capacity settings for an origin.
-     * 
-     * @return the originCapacityResource value.
-     */
-    public OriginCapacityResourceProperties originCapacityResource() {
-        return this.innerProperties() == null ? null : this.innerProperties().originCapacityResource();
-    }
-
-    /**
-     * Set the originCapacityResource property: Origin capacity settings for an origin.
-     * 
-     * @param originCapacityResource the originCapacityResource value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AfdOriginProperties();
-        }
-        this.innerProperties().withOriginCapacityResource(originCapacityResource);
-        return this;
-    }
-
-    /**
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
@@ -379,6 +357,57 @@ public final class AfdOriginInner extends ProxyResource {
             this.innerProperties = new AfdOriginProperties();
         }
         this.innerProperties().withEnforceCertificateNameCheck(enforceCertificateNameCheck);
+        return this;
+    }
+
+    /**
+     * Get the certificateNameCheckValidationMode property: The validation mode for certificate name check. Only
+     * applicable when enforceCertificateNameCheck is true.
+     * 
+     * @return the certificateNameCheckValidationMode value.
+     */
+    public CertificateNameCheckValidationMode certificateNameCheckValidationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateNameCheckValidationMode();
+    }
+
+    /**
+     * Set the certificateNameCheckValidationMode property: The validation mode for certificate name check. Only
+     * applicable when enforceCertificateNameCheck is true.
+     * 
+     * @param certificateNameCheckValidationMode the certificateNameCheckValidationMode value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner
+        withCertificateNameCheckValidationMode(CertificateNameCheckValidationMode certificateNameCheckValidationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withCertificateNameCheckValidationMode(certificateNameCheckValidationMode);
+        return this;
+    }
+
+    /**
+     * Get the customCertificateSubjects property: The list of custom certificate subjects to validate against. Only
+     * applicable when certificateNameCheckValidationMode is 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+     * 
+     * @return the customCertificateSubjects value.
+     */
+    public List<String> customCertificateSubjects() {
+        return this.innerProperties() == null ? null : this.innerProperties().customCertificateSubjects();
+    }
+
+    /**
+     * Set the customCertificateSubjects property: The list of custom certificate subjects to validate against. Only
+     * applicable when certificateNameCheckValidationMode is 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+     * 
+     * @param customCertificateSubjects the customCertificateSubjects value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withCustomCertificateSubjects(List<String> customCertificateSubjects) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withCustomCertificateSubjects(customCertificateSubjects);
         return this;
     }
 

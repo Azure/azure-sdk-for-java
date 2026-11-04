@@ -31,6 +31,11 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
      */
     private List<SecurityPolicyWebApplicationFirewallAssociation> associations;
 
+    /*
+     * Indicates if this is a profile-level WAF policy.
+     */
+    private Boolean isProfileLevel;
+
     /**
      * Creates an instance of SecurityPolicyWebApplicationFirewallParameters class.
      */
@@ -89,6 +94,26 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
     }
 
     /**
+     * Get the isProfileLevel property: Indicates if this is a profile-level WAF policy.
+     * 
+     * @return the isProfileLevel value.
+     */
+    public Boolean isProfileLevel() {
+        return this.isProfileLevel;
+    }
+
+    /**
+     * Set the isProfileLevel property: Indicates if this is a profile-level WAF policy.
+     * 
+     * @param isProfileLevel the isProfileLevel value to set.
+     * @return the SecurityPolicyWebApplicationFirewallParameters object itself.
+     */
+    public SecurityPolicyWebApplicationFirewallParameters withIsProfileLevel(Boolean isProfileLevel) {
+        this.isProfileLevel = isProfileLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,6 +137,7 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("wafPolicy", this.wafPolicy);
         jsonWriter.writeArrayField("associations", this.associations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isProfileLevel", this.isProfileLevel);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +167,9 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
                     List<SecurityPolicyWebApplicationFirewallAssociation> associations = reader
                         .readArray(reader1 -> SecurityPolicyWebApplicationFirewallAssociation.fromJson(reader1));
                     deserializedSecurityPolicyWebApplicationFirewallParameters.associations = associations;
+                } else if ("isProfileLevel".equals(fieldName)) {
+                    deserializedSecurityPolicyWebApplicationFirewallParameters.isProfileLevel
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

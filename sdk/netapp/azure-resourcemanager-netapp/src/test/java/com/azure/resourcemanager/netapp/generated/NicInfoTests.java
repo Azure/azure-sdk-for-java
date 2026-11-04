@@ -12,8 +12,8 @@ public final class NicInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NicInfo model = BinaryData
-            .fromString("{\"ipAddress\":\"srboldforobw\",\"volumeResourceIds\":[\"izbfhfovvacq\",\"btuodxeszabbel\"]}")
+            .fromString("{\"ipAddress\":\"nudqllz\",\"volumeResourceIds\":[\"zp\",\"lxeehuxiq\",\"zlrayme\"]}")
             .toObject(NicInfo.class);
-        Assertions.assertEquals("izbfhfovvacq", model.volumeResourceIds().get(0));
+        Assertions.assertEquals("zp", model.volumeResourceIds().get(0));
     }
 }

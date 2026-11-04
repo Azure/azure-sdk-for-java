@@ -1,5 +1,24 @@
 # Release History
 
+## 4.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.11.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
 ## 4.10.0 (2026-10-27)
 
 ### Features Added
@@ -14,7 +33,6 @@
 
 #### `CertificateServiceVersion` was modified
 
-* `V2026_03_01_PREVIEW` was added
 * `V2026_04_01` was added and is the default service version.
 
 ## 4.9.3 (2026-10-06)

@@ -135,9 +135,15 @@ public final class LocationBasedLaunchBulkInstancesOperationImpl implements Loca
         com.azure.resourcemanager.computebulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "launchBulkInstancesOperations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "name");
     }
 
     public LocationBasedLaunchBulkInstancesOperation refresh() {

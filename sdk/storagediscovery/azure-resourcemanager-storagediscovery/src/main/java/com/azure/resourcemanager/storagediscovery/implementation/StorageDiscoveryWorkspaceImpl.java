@@ -134,9 +134,12 @@ public final class StorageDiscoveryWorkspaceImpl
         com.azure.resourcemanager.storagediscovery.StorageDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageDiscoveryWorkspaceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageDiscoveryWorkspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
+            "resourceGroupName");
+        this.storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
+            "storageDiscoveryWorkspaceName");
     }
 
     public StorageDiscoveryWorkspace refresh() {
