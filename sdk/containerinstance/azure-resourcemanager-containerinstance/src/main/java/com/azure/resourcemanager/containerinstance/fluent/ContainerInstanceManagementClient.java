@@ -75,6 +75,13 @@ public interface ContainerInstanceManagementClient {
     CGProfilesClient getCGProfiles();
 
     /**
+     * Gets the AiAgentsGroupsClient object to access its operations.
+     * 
+     * @return the AiAgentsGroupsClient object.
+     */
+    AiAgentsGroupsClient getAiAgentsGroups();
+
+    /**
      * Gets the ContainersClient object to access its operations.
      * 
      * @return the ContainersClient object.

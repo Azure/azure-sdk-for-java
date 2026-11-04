@@ -40,7 +40,7 @@ import java.util.Map;
  */
 public final class CGProfileCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
      */
     /**
      * Sample code: ConfidentialContainerGroupProfile.
@@ -78,7 +78,7 @@ public final class CGProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
      */
     /**
      * Sample code: ContainerGroupProfileWithEncryptionProperties.
@@ -112,7 +112,7 @@ public final class CGProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfileCreateOrUpdate_Extensions.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfileCreateOrUpdate_Extensions.json
      */
     /**
      * Sample code: ContainerGroupProfileCreateWithExtensions.
@@ -153,7 +153,7 @@ public final class CGProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesCreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfilesCreateOrUpdate.json
      */
     /**
      * Sample code: ContainerGroupProfilesCreateOrUpdate.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class LocationListCachedImagesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/CachedImagesList.json
+     * x-ms-original-file: 2026-08-01-preview/CachedImagesList.json
      */
     /**
      * Sample code: CachedImages.
