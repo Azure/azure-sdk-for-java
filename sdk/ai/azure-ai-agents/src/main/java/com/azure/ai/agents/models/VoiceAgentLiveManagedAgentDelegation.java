@@ -20,12 +20,6 @@ public final class VoiceAgentLiveManagedAgentDelegation
     implements JsonSerializable<VoiceAgentLiveManagedAgentDelegation> {
 
     /*
-     * Canonical delegation type; legacy managed_prompt_agent values are returned as foundry_managed_agent.
-     */
-    @Generated
-    private final String type = "foundry_managed_agent";
-
-    /*
      * Name of a prompt agent in the same project.
      */
     @Generated
@@ -55,7 +49,7 @@ public final class VoiceAgentLiveManagedAgentDelegation
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -97,7 +91,7 @@ public final class VoiceAgentLiveManagedAgentDelegation
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("agent_version", this.agentVersion);
         return jsonWriter.writeEndObject();
@@ -134,4 +128,10 @@ public final class VoiceAgentLiveManagedAgentDelegation
             return deserializedVoiceAgentLiveManagedAgentDelegation;
         });
     }
+
+    /*
+     * Canonical delegation type; legacy managed_prompt_agent values are returned as foundry_managed_agent.
+     */
+    @Generated
+    private static final String TYPE = "foundry_managed_agent";
 }

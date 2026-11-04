@@ -17,12 +17,6 @@ import java.io.IOException;
 @Immutable
 public final class LiveWebSearchToolInputParam implements JsonSerializable<LiveWebSearchToolInputParam> {
 
-    /*
-     * The tool type. Always `web_search`.
-     */
-    @Generated
-    private final String type = "web_search";
-
     /**
      * Creates an instance of LiveWebSearchToolInputParam class.
      */
@@ -37,7 +31,7 @@ public final class LiveWebSearchToolInputParam implements JsonSerializable<LiveW
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -47,7 +41,7 @@ public final class LiveWebSearchToolInputParam implements JsonSerializable<LiveW
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         return jsonWriter.writeEndObject();
     }
 
@@ -72,4 +66,10 @@ public final class LiveWebSearchToolInputParam implements JsonSerializable<LiveW
             return deserializedLiveWebSearchToolInputParam;
         });
     }
+
+    /*
+     * The tool type. Always `web_search`.
+     */
+    @Generated
+    private static final String TYPE = "web_search";
 }

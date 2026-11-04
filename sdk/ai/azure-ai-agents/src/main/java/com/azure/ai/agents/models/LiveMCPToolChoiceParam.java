@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class LiveMCPToolChoiceParam implements JsonSerializable<LiveMCPToolChoiceParam> {
 
     /*
-     * The tool to call. Always `mcp`.
-     */
-    @Generated
-    private final String type = "mcp";
-
-    /*
      * The label of the MCP server to call.
      */
     @Generated
@@ -42,7 +36,7 @@ public final class LiveMCPToolChoiceParam implements JsonSerializable<LiveMCPToo
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -72,7 +66,7 @@ public final class LiveMCPToolChoiceParam implements JsonSerializable<LiveMCPToo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("server_label", this.serverLabel);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -130,4 +124,10 @@ public final class LiveMCPToolChoiceParam implements JsonSerializable<LiveMCPToo
         this.name = name;
         return this;
     }
+
+    /*
+     * The tool to call. Always `mcp`.
+     */
+    @Generated
+    private static final String TYPE = "mcp";
 }

@@ -28,8 +28,8 @@ public class VoiceAgentLiveConstantSerializationTests {
 
     @Test
     public void mcpToolChoiceRetainsType() throws IOException {
-        assertConstant(new LiveMCPToolChoiceParam("server", "weather"), "type", "mcp", LiveMCPToolChoiceParam::getType,
-            LiveMCPToolChoiceParam::fromJson);
+        assertConstant(new LiveMCPToolChoiceParam("server").setName("weather"), "type", "mcp",
+            LiveMCPToolChoiceParam::getType, LiveMCPToolChoiceParam::fromJson);
     }
 
     @Test
