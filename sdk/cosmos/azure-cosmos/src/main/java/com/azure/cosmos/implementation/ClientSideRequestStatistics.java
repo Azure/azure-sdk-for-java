@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import io.micrometer.core.instrument.Tag;
 
 import java.io.IOException;
 import java.net.URI;
@@ -307,6 +308,8 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
+            gatewayStatistics.requestUri = storeResponseDiagnostics.getRequestUri();
+            gatewayStatistics.serviceEndpointMetricTag = storeResponseDiagnostics.getServiceEndpointMetricTag();
             gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
 
@@ -976,6 +979,8 @@ public class ClientSideRequestStatistics {
         private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder
             = PerPartitionAutomaticFailoverInfoHolder.EMPTY;
         private String endpoint;
+        private URI requestUri;
+        private Tag serviceEndpointMetricTag;
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
         private String isHubRegionProcessingOnly;
@@ -1051,6 +1056,16 @@ public class ClientSideRequestStatistics {
 
         public String getEndpoint() {
             return this.endpoint;
+        }
+
+        @JsonIgnore
+        public URI getRequestUri() {
+            return this.requestUri;
+        }
+
+        @JsonIgnore
+        public Tag getServiceEndpointMetricTag() {
+            return this.serviceEndpointMetricTag;
         }
 
         public String getRequestThroughputControlGroupName() {

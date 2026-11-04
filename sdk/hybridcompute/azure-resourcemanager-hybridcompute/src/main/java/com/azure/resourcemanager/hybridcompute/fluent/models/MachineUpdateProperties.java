@@ -61,6 +61,11 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
      */
     private String tpmEkCertificate;
 
+    /*
+     * Public Key that the client provides to be used during initial resource onboarding
+     */
+    private String clientPublicKey;
+
     /**
      * Creates an instance of MachineUpdateProperties class.
      */
@@ -234,6 +239,28 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
     }
 
     /**
+     * Get the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @return the clientPublicKey value.
+     */
+    public String clientPublicKey() {
+        return this.clientPublicKey;
+    }
+
+    /**
+     * Set the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @param clientPublicKey the clientPublicKey value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withClientPublicKey(String clientPublicKey) {
+        this.clientPublicKey = clientPublicKey;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -247,6 +274,7 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
         jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
         jsonWriter.writeStringField("identityKeyStore", this.identityKeyStore);
         jsonWriter.writeStringField("tpmEkCertificate", this.tpmEkCertificate);
+        jsonWriter.writeStringField("clientPublicKey", this.clientPublicKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -281,6 +309,8 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
                     deserializedMachineUpdateProperties.identityKeyStore = reader.getString();
                 } else if ("tpmEkCertificate".equals(fieldName)) {
                     deserializedMachineUpdateProperties.tpmEkCertificate = reader.getString();
+                } else if ("clientPublicKey".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.clientPublicKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

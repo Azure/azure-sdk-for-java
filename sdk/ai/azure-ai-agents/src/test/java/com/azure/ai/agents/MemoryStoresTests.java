@@ -76,6 +76,7 @@ public class MemoryStoresTests extends ClientTestBase {
                 found = true;
                 assertEquals(updatedStore.getId(), store.getId());
                 assertEquals(updatedDescription, store.getDescription());
+                break;
             }
         }
         assertTrue(found, "Created memory store not found in list.");

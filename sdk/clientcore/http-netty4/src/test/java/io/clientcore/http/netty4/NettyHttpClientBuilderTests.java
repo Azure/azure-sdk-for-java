@@ -37,6 +37,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
@@ -327,6 +328,45 @@ public class NettyHttpClientBuilderTests {
             Arguments.of(Duration.ofSeconds(-1), 0),
             Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, value));
+        EventLoopGroup group = new MultiThreadIoEventLoopGroup(1, NioIoHandler.newFactory());
+        try {
+            NettyHttpClientBuilder builder
+                = new NettyHttpClientBuilder().eventLoopGroup(group).configuration(configuration).connectionPoolSize(0);
+            assertTimeouts((NettyHttpClient) builder.build(), Math.max(0, timeoutMillis));
+            assertTimeouts((NettyHttpClient) builder.connectTimeout(Duration.ofMillis(456000))
+                .readTimeout(Duration.ofMillis(456000))
+                .writeTimeout(Duration.ofMillis(456000))
+                .responseTimeout(Duration.ofMillis(456000))
+                .build(), 456000);
+            assertTimeouts((NettyHttpClient) builder.connectTimeout(Duration.ofNanos(-1))
+                .readTimeout(Duration.ZERO)
+                .writeTimeout(Duration.ofNanos(-1))
+                .responseTimeout(Duration.ZERO)
+                .build(), 0);
+        } finally {
+            group.shutdownGracefully(0, 5, TimeUnit.SECONDS).syncUninterruptibly();
+        }
+    }
+
+    private static void assertTimeouts(NettyHttpClient client, long expected) throws ReflectiveOperationException {
+        assertEquals((int) expected,
+            client.getBootstrap().config().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+        for (String name : new String[] { "readTimeoutMillis", "writeTimeoutMillis", "responseTimeoutMillis" }) {
+            Field field = NettyHttpClient.class.getDeclaredField(name);
+            field.setAccessible(true);
+            assertEquals(expected, field.getLong(client));
+        }
     }
 
     @Test

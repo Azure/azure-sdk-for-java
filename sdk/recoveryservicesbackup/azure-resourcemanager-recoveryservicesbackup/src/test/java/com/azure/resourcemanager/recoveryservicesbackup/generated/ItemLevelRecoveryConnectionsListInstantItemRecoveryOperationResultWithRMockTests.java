@@ -22,7 +22,7 @@ public final class ItemLevelRecoveryConnectionsListInstantItemRecoveryOperationR
     @Test
     public void testListInstantItemRecoveryOperationResultWithResponse() throws Exception {
         String responseStr
-            = "{\"clientScripts\":[{\"scriptContent\":\"eq\",\"scriptExtension\":\"fzqxjo\",\"osType\":\"ohtotryegp\",\"url\":\"xrmexznlw\",\"scriptNameSuffix\":\"fokxk\"},{\"scriptContent\":\"p\",\"scriptExtension\":\"rufgjblcdrmyfcem\",\"osType\":\"zgyykyalug\",\"url\":\"dfqnhttwdowrczfj\",\"scriptNameSuffix\":\"nuxxrkkm\"},{\"scriptContent\":\"nulwempdci\",\"scriptExtension\":\"hjulrsulwzpflu\",\"osType\":\"awmhh\",\"url\":\"ot\",\"scriptNameSuffix\":\"iyrgkoek\"},{\"scriptContent\":\"wxxyxhighctx\",\"scriptExtension\":\"molpcqyde\",\"osType\":\"vskiczd\",\"url\":\"jei\",\"scriptNameSuffix\":\"kgqaboo\"}]}";
+            = "{\"clientScripts\":[{\"scriptContent\":\"zcrryklleynqa\",\"scriptExtension\":\"kig\",\"osType\":\"clwa\",\"url\":\"v\",\"scriptNameSuffix\":\"hg\"},{\"scriptContent\":\"hetxdqcmyctajqz\",\"scriptExtension\":\"alec\",\"osType\":\"ibiwksdegyxsb\",\"url\":\"zvoikvntwczf\",\"scriptNameSuffix\":\"ushlcxpblalh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class ItemLevelRecoveryConnectionsListInstantItemRecoveryOperationR
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InstantItemRecoveryTarget response = manager.itemLevelRecoveryConnections()
-            .listInstantItemRecoveryOperationResultWithResponse("pihtdmiwjekpt", "caydbjzcqymlcfnz", "mhsurlgwqkpmm",
-                "pstauol", "wiubmomsgvv", "hvvlrl",
+            .listInstantItemRecoveryOperationResultWithResponse("rcwgzwllxzlhhf", "xacfculzjrmhp", "ywvyldqpzfzxsox",
+                "nunjlzkdr", "cqsxytqqtcmiw", "w",
                 new InstantItemRecoveryOperationResultRequest()
-                    .withProvisionInstantItemRecoveryOperationId("hewjjmajnkdflqio"),
+                    .withProvisionInstantItemRecoveryOperationId("svnmeylajamcajy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eq", response.clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("fzqxjo", response.clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("ohtotryegp", response.clientScripts().get(0).osType());
-        Assertions.assertEquals("xrmexznlw", response.clientScripts().get(0).url());
-        Assertions.assertEquals("fokxk", response.clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("zcrryklleynqa", response.clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("kig", response.clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("clwa", response.clientScripts().get(0).osType());
+        Assertions.assertEquals("v", response.clientScripts().get(0).url());
+        Assertions.assertEquals("hg", response.clientScripts().get(0).scriptNameSuffix());
     }
 }

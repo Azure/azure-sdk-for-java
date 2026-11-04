@@ -16,7 +16,7 @@ import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
  */
 public final class MachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15/machine/Machines_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/machine/Machines_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine.

@@ -100,9 +100,15 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     TriggerImpl(TriggerInner innerObject, com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "imageTemplates");
-        this.triggerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "triggers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "resourceGroupName");
+        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "imageTemplateName");
+        this.triggerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "triggerName");
     }
 
     public Trigger refresh() {

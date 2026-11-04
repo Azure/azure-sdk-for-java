@@ -106,7 +106,11 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
     private VoiceAgentResponseAudioConfig audio;
 
     /*
-     * Conversation items used as inline response input.
+     * Input items to include in the prompt for the model. Using this field
+     * creates a new context for this Response instead of using the default
+     * conversation. An empty array `[]` will clear the context for this Response.
+     * Note that this can include references to items that previously appeared in the session
+     * using their id.
      */
     @Generated
     private List<RealtimeConversationItem> input;
@@ -391,7 +395,11 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
     }
 
     /**
-     * Get the input property: Conversation items used as inline response input.
+     * Get the input property: Input items to include in the prompt for the model. Using this field
+     * creates a new context for this Response instead of using the default
+     * conversation. An empty array `[]` will clear the context for this Response.
+     * Note that this can include references to items that previously appeared in the session
+     * using their id.
      *
      * @return the input value.
      */
@@ -401,7 +409,11 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
     }
 
     /**
-     * Set the input property: Conversation items used as inline response input.
+     * Set the input property: Input items to include in the prompt for the model. Using this field
+     * creates a new context for this Response instead of using the default
+     * conversation. An empty array `[]` will clear the context for this Response.
+     * Note that this can include references to items that previously appeared in the session
+     * using their id.
      *
      * @param input the input value to set.
      * @return the VoiceAgentResponseCreateOptions object itself.

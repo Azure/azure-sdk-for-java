@@ -10,12 +10,13 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
+import com.azure.resourcemanager.cdn.models.CertificateNameCheckValidationMode;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The JSON object that contains the properties of the origin.
@@ -72,11 +73,6 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
     private SharedPrivateLinkResourceProperties sharedPrivateLinkResource;
 
     /*
-     * Origin capacity settings for an origin
-     */
-    private OriginCapacityResourceProperties originCapacityResource;
-
-    /*
      * Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be
      * disabled if there is a single enabled backend in single enabled backend pool.
      */
@@ -86,6 +82,17 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
      * Whether to enable certificate name check at origin level
      */
     private Boolean enforceCertificateNameCheck;
+
+    /*
+     * The validation mode for certificate name check. Only applicable when enforceCertificateNameCheck is true.
+     */
+    private CertificateNameCheckValidationMode certificateNameCheckValidationMode;
+
+    /*
+     * The list of custom certificate subjects to validate against. Only applicable when
+     * certificateNameCheckValidationMode is 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+     */
+    private List<String> customCertificateSubjects;
 
     /*
      * Provisioning status
@@ -286,26 +293,6 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
     }
 
     /**
-     * Get the originCapacityResource property: Origin capacity settings for an origin.
-     * 
-     * @return the originCapacityResource value.
-     */
-    public OriginCapacityResourceProperties originCapacityResource() {
-        return this.originCapacityResource;
-    }
-
-    /**
-     * Set the originCapacityResource property: Origin capacity settings for an origin.
-     * 
-     * @param originCapacityResource the originCapacityResource value to set.
-     * @return the AfdOriginProperties object itself.
-     */
-    public AfdOriginProperties withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
-        this.originCapacityResource = originCapacityResource;
-        return this;
-    }
-
-    /**
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
@@ -350,6 +337,51 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
     }
 
     /**
+     * Get the certificateNameCheckValidationMode property: The validation mode for certificate name check. Only
+     * applicable when enforceCertificateNameCheck is true.
+     * 
+     * @return the certificateNameCheckValidationMode value.
+     */
+    public CertificateNameCheckValidationMode certificateNameCheckValidationMode() {
+        return this.certificateNameCheckValidationMode;
+    }
+
+    /**
+     * Set the certificateNameCheckValidationMode property: The validation mode for certificate name check. Only
+     * applicable when enforceCertificateNameCheck is true.
+     * 
+     * @param certificateNameCheckValidationMode the certificateNameCheckValidationMode value to set.
+     * @return the AfdOriginProperties object itself.
+     */
+    public AfdOriginProperties
+        withCertificateNameCheckValidationMode(CertificateNameCheckValidationMode certificateNameCheckValidationMode) {
+        this.certificateNameCheckValidationMode = certificateNameCheckValidationMode;
+        return this;
+    }
+
+    /**
+     * Get the customCertificateSubjects property: The list of custom certificate subjects to validate against. Only
+     * applicable when certificateNameCheckValidationMode is 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+     * 
+     * @return the customCertificateSubjects value.
+     */
+    public List<String> customCertificateSubjects() {
+        return this.customCertificateSubjects;
+    }
+
+    /**
+     * Set the customCertificateSubjects property: The list of custom certificate subjects to validate against. Only
+     * applicable when certificateNameCheckValidationMode is 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+     * 
+     * @param customCertificateSubjects the customCertificateSubjects value to set.
+     * @return the AfdOriginProperties object itself.
+     */
+    public AfdOriginProperties withCustomCertificateSubjects(List<String> customCertificateSubjects) {
+        this.customCertificateSubjects = customCertificateSubjects;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning status.
      * 
      * @return the provisioningState value.
@@ -379,9 +411,6 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
         if (sharedPrivateLinkResource() != null) {
             sharedPrivateLinkResource().validate();
         }
-        if (originCapacityResource() != null) {
-            originCapacityResource().validate();
-        }
     }
 
     /**
@@ -398,9 +427,14 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
         jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeNumberField("weight", this.weight);
         jsonWriter.writeJsonField("sharedPrivateLinkResource", this.sharedPrivateLinkResource);
-        jsonWriter.writeJsonField("originCapacityResource", this.originCapacityResource);
         jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
         jsonWriter.writeBooleanField("enforceCertificateNameCheck", this.enforceCertificateNameCheck);
+        jsonWriter.writeStringField("certificateNameCheckValidationMode",
+            this.certificateNameCheckValidationMode == null
+                ? null
+                : this.certificateNameCheckValidationMode.toString());
+        jsonWriter.writeArrayField("customCertificateSubjects", this.customCertificateSubjects,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -438,14 +472,17 @@ public final class AfdOriginProperties implements JsonSerializable<AfdOriginProp
                 } else if ("sharedPrivateLinkResource".equals(fieldName)) {
                     deserializedAfdOriginProperties.sharedPrivateLinkResource
                         = SharedPrivateLinkResourceProperties.fromJson(reader);
-                } else if ("originCapacityResource".equals(fieldName)) {
-                    deserializedAfdOriginProperties.originCapacityResource
-                        = OriginCapacityResourceProperties.fromJson(reader);
                 } else if ("enabledState".equals(fieldName)) {
                     deserializedAfdOriginProperties.enabledState = EnabledState.fromString(reader.getString());
                 } else if ("enforceCertificateNameCheck".equals(fieldName)) {
                     deserializedAfdOriginProperties.enforceCertificateNameCheck
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("certificateNameCheckValidationMode".equals(fieldName)) {
+                    deserializedAfdOriginProperties.certificateNameCheckValidationMode
+                        = CertificateNameCheckValidationMode.fromString(reader.getString());
+                } else if ("customCertificateSubjects".equals(fieldName)) {
+                    List<String> customCertificateSubjects = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAfdOriginProperties.customCertificateSubjects = customCertificateSubjects;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAfdOriginProperties.provisioningState
                         = AfdProvisioningState.fromString(reader.getString());

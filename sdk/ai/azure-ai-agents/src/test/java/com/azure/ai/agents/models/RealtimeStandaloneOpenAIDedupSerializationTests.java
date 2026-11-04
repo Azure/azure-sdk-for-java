@@ -345,8 +345,8 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
                 RealtimeResponse.OutputModality.AUDIO }) {
                 String json = "{\"object\":\"realtime.response\",\"status\":\"" + status.asString()
                     + "\",\"output_modalities\":[\"" + modality.asString() + "\"]}";
-                VoiceResponseBase result = deserialize(json, VoiceResponseBase::fromJson);
-                assertEquals(VoiceResponseBaseObject.REALTIME_RESPONSE, result.getObject());
+                VoiceResponse result = deserialize(json, VoiceResponse::fromJson);
+                assertEquals(VoiceResponseObjectType.REALTIME_RESPONSE, result.getObjectType());
                 assertEquals(status, result.getStatus());
                 assertEquals(modality, result.getOutputModalities().get(0));
                 assertEquals(json, serialize(result));

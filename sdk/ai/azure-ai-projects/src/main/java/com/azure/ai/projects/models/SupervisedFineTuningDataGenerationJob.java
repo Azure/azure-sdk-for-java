@@ -72,6 +72,19 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
     }
 
     /**
+     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
+    }
+
+    /**
      * Reads an instance of SupervisedFineTuningDataGenerationJob from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -80,6 +93,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SupervisedFineTuningDataGenerationJob.
      */
+    @Generated
     public static SupervisedFineTuningDataGenerationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -113,8 +127,10 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
                 } else if ("error".equals(fieldName)) {
                     error = ApiError.fromJson(reader);
                 } else if ("finished_at".equals(fieldName)) {
-                    finishedAt = reader.getNullable(nullableReader -> OffsetDateTime
-                        .ofInstant(Instant.ofEpochSecond(nullableReader.getLong()), ZoneOffset.UTC));
+                    Long finishedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (finishedAtHolder != null) {
+                        finishedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(finishedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("scenario".equals(fieldName)) {
                     scenario = DataGenerationJobScenario.fromString(reader.getString());
                 } else if ("output_configuration".equals(fieldName)) {
@@ -135,18 +151,5 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
             deserializedSupervisedFineTuningDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedSupervisedFineTuningDataGenerationJob;
         });
-    }
-
-    /**
-     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobConfiguration generationConfiguration) {
-        super(name, sources, generationConfiguration);
     }
 }

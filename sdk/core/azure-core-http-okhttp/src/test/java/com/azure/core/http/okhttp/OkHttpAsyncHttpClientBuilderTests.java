@@ -6,6 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.SharedExecutorService;
@@ -19,12 +20,15 @@ import okhttp3.Dispatcher;
 import okhttp3.EventListener;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -46,6 +50,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LOCATION_PA
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.REDIRECT_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -63,6 +68,45 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        OkHttpAsyncHttpClient client = (OkHttpAsyncHttpClient) builder.build();
+        assertEquals(version == HttpProtocolVersion.HTTP_2
+            ? Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1)
+            : Collections.singletonList(Protocol.HTTP_1_1), client.httpClient.protocols());
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1);
+        OkHttpAsyncHttpClient first = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1), cleared.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), first.httpClient.protocols());
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        List<Protocol> internalProtocols = Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE);
+        OkHttpClient internalClient = new OkHttpClient.Builder().protocols(internalProtocols).build();
+        OkHttpAsyncHttpClientBuilder builder
+            = new OkHttpAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
+        OkHttpAsyncHttpClient original = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient limited
+            = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(internalProtocols, original.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), limited.httpClient.protocols());
+        assertEquals(internalProtocols, cleared.httpClient.protocols());
+        assertEquals(internalProtocols, internalClient.protocols());
+    }
 
     /**
      * Tests that an {@link OkHttpAsyncHttpClient} is able to be built from an existing {@link OkHttpClient}.
@@ -231,14 +275,47 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .verifyComplete();
     }
 
-    /**
-     * Tests building a client with negative callTimeout.
-     */
-    @Test
-    public void throwsWithNegativeCallTimeout() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new OkHttpAsyncHttpClientBuilder().callTimeout(Duration.ofSeconds(-1));
-        });
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0 })
+    public void nonpositiveCallTimeoutIsDisabled(long timeoutMillis) {
+        OkHttpAsyncHttpClient client
+            = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder().callTimeout(Duration.ofMillis(timeoutMillis))
+                .build();
+        assertEquals(0, client.httpClient.callTimeoutMillis());
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, value),
+            EMPTY_SOURCE).build();
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(configuration);
+        assertTimeouts((OkHttpAsyncHttpClient) builder.build(), Math.max(0, timeoutMillis));
+        assertTimeouts((OkHttpAsyncHttpClient) builder.connectionTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertTimeouts((OkHttpAsyncHttpClient) builder.connectionTimeout(Duration.ofNanos(-1))
+            .readTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ofNanos(-1))
+            .responseTimeout(Duration.ZERO)
+            .build(), 0);
+    }
+
+    private static void assertTimeouts(OkHttpAsyncHttpClient client, long expected)
+        throws ReflectiveOperationException {
+        assertEquals(expected, client.httpClient.connectTimeoutMillis());
+        assertEquals(expected, client.httpClient.readTimeoutMillis());
+        assertEquals(expected, client.httpClient.writeTimeoutMillis());
+        java.lang.reflect.Field responseTimeout = OkHttpAsyncHttpClient.class.getDeclaredField("responseTimeout");
+        responseTimeout.setAccessible(true);
+        assertEquals(Duration.ofMillis(expected), responseTimeout.get(client));
     }
 
     /**
