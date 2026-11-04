@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added `EventHubClientBuilder.scheduler(Scheduler)` to allow configuring the Reactor `Scheduler` that clients built
+  from the builder publish downstream signals on. When not set, the shared `Schedulers.boundedElastic()` scheduler is
+  used as before. A caller-supplied scheduler is not disposed by the clients, so callers own its lifetime and must keep
+  it alive for as long as any client built from the builder is in use.
+
 ### Breaking Changes
 
 ### Bugs Fixed
