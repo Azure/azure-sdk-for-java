@@ -1,5 +1,23 @@
 # Release History
 
+## 2.55.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.54.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+
 ## 2.54.0-beta.2 (2026-10-23)
 
 - Package api-version DataCollectionApi: 2024-03-11, PrivateLinkScopesApi: 2023-06-01-preview, AutoScaleApi: 2025-09-01-preview, ActivityLogsApi: 2015-04-01, MetricsApi: 2024-02-01, ServiceDiagnosticsSettingsApi: 2016-09-01, AlertRulesIncidentsApi: 2016-03-01, LogProfilesApi: 2016-03-01, ActivityLogAlertsApi: 2023-01-01-preview, MetricAlertApi: 2026-01-01, ScheduledQueryRuleApi: 2025-01-01-preview, MetricBaselinesApi: 2019-03-01, ActionGroupsApi: 2024-10-01-preview, NetworkSecurityPerimeterApi: 2021-10-01, TenantActionGroups: 2023-05-01-preview, VmInsightsOnboarding: 2018-11-27-preview, DiagnosticsSettings: 2021-05-01-preview.
