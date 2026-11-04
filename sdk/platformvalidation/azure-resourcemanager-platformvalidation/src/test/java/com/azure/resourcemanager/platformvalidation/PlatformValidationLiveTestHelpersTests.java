@@ -27,6 +27,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlatformValidationLiveTestHelpersTests {
     @Test
+    public void catalogIdentityRejectsGlobalAndWrongSubscriptionIds() {
+        String subscription = "11111111-1111-1111-1111-111111111111";
+        for (String resource : new String[] {
+            "validationTests/boot",
+            "validationTests/boot/versions/1.0.0",
+            "validationTestCategories/image-certification" }) {
+            String providerId = "/providers/Microsoft.PlatformValidation/" + resource;
+            PlatformValidationLiveTests.assertCatalogId("/subscriptions/" + subscription + providerId, subscription,
+                resource);
+            Assertions.assertThrows(AssertionError.class,
+                () -> PlatformValidationLiveTests.assertCatalogId(providerId, subscription, resource));
+            Assertions.assertThrows(AssertionError.class, () -> PlatformValidationLiveTests
+                .assertCatalogId("/subscriptions/unexpected" + providerId, subscription, resource));
+        }
+    }
+
+    @Test
     public void parentDeletionRetriesOnlyKnownConflictAndRechecksChildren() {
         AtomicInteger attempts = new AtomicInteger();
         AtomicInteger guards = new AtomicInteger();
