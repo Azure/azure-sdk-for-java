@@ -95,10 +95,9 @@ pom.write_text(pom.read_text().replace("<version>1.0.0</version>", f"<version>{v
             $LASTEXITCODE | Should -Be 0
             Get-Content -LiteralPath (Join-Path $cloneRepo 'eng/versioning/version_client.txt') -Raw |
                 Should -BeExactly "com.azure:azure-example;$ReleasedVersion;1.1.0-beta.2`n"
-            $correctedEntry = $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
             $expectedChangelog = ($mainChangelog -replace "`r`n", "`n").Replace(
                 '## 1.0.0',
-                "$correctedEntry`n`n## 1.0.0")
+                "$($entry.Content)`n`n## 1.0.0")
             Get-Content -LiteralPath (Join-Path $cloneRepo 'sdk/example/azure-example/CHANGELOG.md') -Raw |
                 ForEach-Object { $_ -replace "`r`n", "`n" } |
                 Should -BeExactly $expectedChangelog

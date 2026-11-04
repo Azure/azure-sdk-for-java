@@ -125,113 +125,130 @@ $($entry.Content)
 }
 
 Describe 'Resolve-PatchDependencyVersions' -Tag 'UnitTest' {
-    It 'uses the most recent previously released dependency version' {
-        $changelog = @'
-# Release History
-
-## 1.0.2 (2026-09-10)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.
-
-## 1.0.1 (2026-08-10)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.0.0` to version `1.1.0`.
+    BeforeEach {
+        $script:baselineVersions = @{
+            'com.azure:azure-core' = @{ dependency = '1.1.0'; current = '1.3.0-beta.1' }
+            'com.azure:azure-core-http-netty' = @{ dependency = '1.2.0'; current = '1.3.0-beta.2' }
+            'com.azure.v2:azure-core' = @{ dependency = '2.1.0'; current = '2.2.0-beta.1' }
+        }
+        $script:dependencyPom = [xml]@'
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.3.0-beta.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.3.0-beta.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>third-party</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.2.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
 '@
-        $entry = Get-ChangelogEntry -Content $changelog -Version '1.0.2'
-
-        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
-
-        $result | Should -Match 'from `1\.1\.0` to version `1\.2\.0`'
     }
 
-    It 'leaves dependencies without prior upgrade history unchanged' {
-        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.1.0`.'
-        $changelog = "# Release History`n`n$($entry.Content)`n"
-
-        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
-
-        $result | Should -Match 'from `1\.0\.0` to version `1\.1\.0`'
-    }
-
-    It 'uses baseline history even when it does not contain the patch entry' {
+    It 'uses the catalog dependency version rather than current or POM versions' {
         $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
-        $baseline = @'
-# Release History
 
-## 1.0.0 (2026-09-01)
-
-- Upgraded `azure-core` from `0.9.0` to version `1.1.0`.
-'@
-
-        $result = Resolve-PatchDependencyVersions -ChangelogContent $baseline -Entry $entry
+        $result = Resolve-PatchDependencyVersions `
+            -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
 
         $result | Should -BeExactly $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
     }
 
-    It 'selects prior upgrades by release date rather than heading order' {
-        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.3.0`.'
-        $changelog = @'
-# Release History
+    It 'preserves an already correct baseline and destination version' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.1.0` to version `1.2.0`.'
 
-## 2.0.0-beta.2 (Unreleased)
+        $result = Resolve-PatchDependencyVersions `
+            -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
 
-- Upgraded `azure-core` from `1.3.0` to version `2.0.0`.
-
-## 2.0.0-beta.1 (2026-08-01)
-
-- Upgraded `azure-core` from `0.9.0` to version `1.0.0`.
-
-## 1.0.2 (2026-10-01)
-
-- Upgraded `azure-core` from `1.3.0` to version `1.4.0`.
-
-## 1.0.0 (2026-09-01)
-
-- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.
-'@
-
-        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
-
-        $result | Should -BeExactly $entry.Content.Replace('from `1.0.0`', 'from `1.2.0`')
+        $result | Should -BeExactly $entry.Content
     }
 
-    It 'resolves dependencies independently and skips releases without upgrade notes' {
+    It 'uses fully qualified coordinates without crossing group IDs' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `2.0.0` to version `2.2.0`.'
+        $script:dependencyPom.project.dependencies.dependency[0].groupId = 'com.azure.v2'
+
+        $result = Resolve-PatchDependencyVersions `
+            -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
+
+        $result | Should -BeExactly $entry.Content.Replace('from `2.0.0`', 'from `2.1.0`')
+    }
+
+    It 'resolves dependencies independently and preserves uncatalogued external dependencies' {
         $entry = New-TestPatchEntry -Message @'
 - Upgraded `azure-core` from `1.0.0` to version `1.3.0`.
 - Upgraded `azure-core-http-netty` from `1.0.0` to version `1.3.0`.
-- Upgraded `new-dependency` from `1.0.0` to version `1.3.0`.
-'@
-        $changelog = @'
-# Release History
-
-## 1.0.0 (2026-09-01)
-
-- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.
-
-## 0.9.9 (2026-08-15)
-
-Bug fixes only.
-
-## 0.9.8 (2026-08-01)
-
-- Upgraded `azure-core` from `0.9.0` to version `1.0.0`.
-- Upgraded `azure-core-http-netty` from `1.0.0` to version `1.1.0`.
+- Upgraded `third-party` from `2.0.0` to version `3.0.0`.
 '@
         $expected = $entry.Content.Replace(
-            '`azure-core` from `1.0.0`', '`azure-core` from `1.2.0`').Replace(
-            '`azure-core-http-netty` from `1.0.0`', '`azure-core-http-netty` from `1.1.0`')
+            '`azure-core` from `1.0.0`', '`azure-core` from `1.1.0`').Replace(
+            '`azure-core-http-netty` from `1.0.0`', '`azure-core-http-netty` from `1.2.0`')
 
-        $result = Resolve-PatchDependencyVersions -ChangelogContent $changelog -Entry $entry
+        $result = Resolve-PatchDependencyVersions `
+            -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
 
         $result | Should -BeExactly $expected
+    }
+
+    It 'rejects a missing Azure dependency baseline instead of guessing' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
+        $script:baselineVersions.Remove('com.azure:azure-core')
+
+        {
+            Resolve-PatchDependencyVersions `
+                -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
+        } | Should -Throw '*com.azure:azure-core*not found*pre-reversion*'
+    }
+
+    It 'rejects prerelease dependency baseline <Version>' -TestCases @(
+        @{ Version = '1.2.0-beta.1' }
+        @{ Version = '1.2.0-alpha.1' }
+        @{ Version = '1.2.0-preview.1' }
+        @{ Version = '1.2.0-rc.1' }
+        @{ Version = '1.2.0-SNAPSHOT' }
+    ) {
+        param($Version)
+
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
+        $script:baselineVersions['com.azure:azure-core'].dependency = $Version
+
+        {
+            Resolve-PatchDependencyVersions `
+                -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
+        } | Should -Throw '*prerelease baseline*pre-reversion*'
+    }
+
+    It 'rejects ambiguous dependency coordinates rather than guessing a group ID' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
+        $script:dependencyPom.project.dependencies.dependency[3].scope = 'compile'
+
+        {
+            Resolve-PatchDependencyVersions `
+                -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
+        } | Should -Throw '*one non-test dependency coordinate*azure-core*found 2*'
+    }
+
+    It 'rejects a dependency bullet that cannot be matched to the POM' {
+        $entry = New-TestPatchEntry -Message '- Upgraded `azure-missing` from `1.0.0` to version `1.2.0`.'
+
+        {
+            Resolve-PatchDependencyVersions `
+                -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
+        } | Should -Throw '*one non-test dependency coordinate*azure-missing*found 0*'
     }
 }
 
@@ -370,13 +387,12 @@ Stable release.
         $second | Should -BeExactly $first
     }
 
-    It 'corrects stale manifest dependency versions using target history and remains idempotent' {
+    It 'preserves manifest dependency baselines regardless of target history and remains idempotent' {
         $entry = New-TestPatchEntry -Message '- Upgraded `azure-core` from `1.0.0` to version `1.2.0`.'
         $content = ($script:mainChangelog -replace "`r`n", "`n").Replace(
             'Stable release.',
             'Stable release.' + "`n`n" + '- Upgraded `azure-core` from `0.9.0` to version `1.1.0`.')
-        $correctedEntry = $entry.Content.Replace('from `1.0.0`', 'from `1.1.0`')
-        $expected = $content.Replace('## 1.0.0', "$correctedEntry`n`n## 1.0.0")
+        $expected = $content.Replace('## 1.0.0', "$($entry.Content)`n`n## 1.0.0")
 
         $first = Add-PatchChangelogEntry -Content $content -Entry $entry
         $second = Add-PatchChangelogEntry -Content $first -Entry $entry

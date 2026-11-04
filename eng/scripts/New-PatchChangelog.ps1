@@ -5,8 +5,8 @@
 # Licensed under the MIT License.
 
 param(
-    # Git revision whose changelogs preserve release history from before package source resets.
-    [string]$ChangelogHistoryRef
+    # Main commit whose dependency versions precede all patch preparation changes.
+    [Parameter(Mandatory = $true)][string]$DependencyVersionRef
 )
 
 $ErrorActionPreference = 'Stop'
@@ -35,6 +35,13 @@ if ($artifacts.Count -eq 0) {
 $versionJson = & $versionClientConverterPath -VersionClientPath $versionClientPath
 $versionMap = $versionJson | ConvertFrom-Json -AsHashtable
 
+$baselineLines = git -C $repoRoot show "${DependencyVersionRef}:eng/versioning/version_client.txt"
+if ($LASTEXITCODE -ne 0) {
+    throw "Could not read eng/versioning/version_client.txt from dependency version reference '$DependencyVersionRef'."
+}
+$baselineJson = & $versionClientConverterPath -Lines $baselineLines
+$baselineVersions = $baselineJson | ConvertFrom-Json -AsHashtable
+
 $entries = [System.Collections.Generic.List[object]]::new()
 foreach ($artifact in $artifacts) {
     $coordinate = "$($artifact.groupId):$($artifact.name)"
@@ -60,14 +67,9 @@ foreach ($artifact in $artifacts) {
     $version = $versionMap[$coordinate].current
     $changelogContent = Get-Content -LiteralPath $changelogPath -Raw
     $entry = Get-ChangelogEntry -Content $changelogContent -Version $version
-    $entry.Content = Resolve-PatchDependencyVersions -ChangelogContent $changelogContent -Entry $entry
-    if ($ChangelogHistoryRef) {
-        $baselineContent = git -C $repoRoot show "${ChangelogHistoryRef}:$relativePath"
-        if ($LASTEXITCODE -ne 0) {
-            throw "Could not read '$relativePath' from changelog history reference '$ChangelogHistoryRef'."
-        }
-        $entry.Content = Resolve-PatchDependencyVersions -ChangelogContent ($baselineContent -join "`n") -Entry $entry
-    }
+    $pomPath = Join-Path (Split-Path $changelogPath -Parent) 'pom.xml'
+    $pom = [xml](Get-Content -LiteralPath $pomPath -Raw)
+    $entry.Content = Resolve-PatchDependencyVersions -BaselineVersions $baselineVersions -Pom $pom -Entry $entry
     $entries.Add([pscustomobject]@{
         Artifact = $coordinate
         Path = $relativePath

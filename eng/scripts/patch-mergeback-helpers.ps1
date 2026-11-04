@@ -78,40 +78,38 @@ function Get-ChangelogEntry {
 
 function Resolve-PatchDependencyVersions {
     param(
-        [Parameter(Mandatory = $true)][string]$ChangelogContent,
+        [Parameter(Mandatory = $true)][System.Collections.IDictionary]$BaselineVersions,
+        [Parameter(Mandatory = $true)][xml]$Pom,
         [Parameter(Mandatory = $true)][object]$Entry
     )
 
-    $normalizedChangelog = $ChangelogContent -replace "`r`n", "`n"
     $normalizedEntry = ($Entry.Content -replace "`r`n", "`n").TrimEnd()
-    $parsedEntry = Get-ChangelogEntry -Content ($normalizedEntry + "`n") -Version $Entry.Version
-    $releasePattern = '(?ms)^##\s+(?<version>\S+)\s+\((?<date>\d{4}-\d{2}-\d{2})\)\s*\n.*?(?=^##\s+|\z)'
-    $history = [regex]::Matches($normalizedChangelog, $releasePattern) |
-        Where-Object {
-            $_.Groups['version'].Value -ne $Entry.Version -and
-            $_.Groups['date'].Value -le $parsedEntry.Date
-        } |
-        Sort-Object { $_.Groups['date'].Value } -Descending -Stable
     $dependencyPattern = '(?m)^- Upgraded `(?<dependency>[^`]+)` from `(?<from>[^`]+)` to version `(?<to>[^`]+)`\.$'
-    $previousVersions = @{}
-    foreach ($release in $history) {
-        foreach ($upgrade in [regex]::Matches($release.Value, $dependencyPattern)) {
-            $dependency = $upgrade.Groups['dependency'].Value
-            if (-not $previousVersions.ContainsKey($dependency)) {
-                $previousVersions[$dependency] = $upgrade.Groups['to'].Value
-            }
-        }
-    }
-
     return [regex]::Replace($normalizedEntry, $dependencyPattern, {
         param($match)
 
         $dependency = $match.Groups['dependency'].Value
-        if (-not $previousVersions.ContainsKey($dependency)) {
+        $coordinates = @($Pom.project.dependencies.dependency |
+            Where-Object { $_.artifactId -eq $dependency -and $_.scope -ne 'test' } |
+            ForEach-Object { "$($_.groupId):$($_.artifactId)" } |
+            Select-Object -Unique)
+        if ($coordinates.Count -ne 1) {
+            throw "Expected one non-test dependency coordinate for '$dependency', found $($coordinates.Count)."
+        }
+
+        $coordinate = $coordinates[0]
+        if (-not $BaselineVersions.Contains($coordinate)) {
+            if ($dependency -like 'azure-*') {
+                throw "Dependency '$coordinate' was not found in the pre-reversion version_client.txt."
+            }
             return $match.Value
         }
 
-        $previousVersion = $previousVersions[$dependency]
+        $previousVersion = $BaselineVersions[$coordinate].dependency
+        $parsedVersion = ConvertTo-ComparableVersion -Version $previousVersion
+        if ($parsedVersion.Label) {
+            throw "Dependency '$coordinate' has prerelease baseline '$previousVersion' in the pre-reversion version_client.txt."
+        }
         if ($previousVersion -eq $match.Groups['from'].Value) {
             return $match.Value
         }
@@ -285,7 +283,7 @@ function Add-PatchChangelogEntry {
     )
 
     $lineEnding = if ($Content.Contains("`r`n")) { "`r`n" } else { "`n" }
-    $normalizedEntry = Resolve-PatchDependencyVersions -ChangelogContent $Content -Entry $Entry
+    $normalizedEntry = ($Entry.Content -replace "`r`n", "`n").TrimEnd()
     $escapedVersion = [regex]::Escape($Entry.Version)
     $existingMatches = [regex]::Matches(
         ($Content -replace "`r`n", "`n"),
