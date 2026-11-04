@@ -1,6 +1,6 @@
 # Release History
 
-## 12.36.0-beta.1 (Unreleased)
+## 12.37.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -13,6 +13,15 @@
   both the sync and async clients.
 
 ### Other Changes
+
+## 12.36.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 ## 12.35.0 (2026-10-07)
 
