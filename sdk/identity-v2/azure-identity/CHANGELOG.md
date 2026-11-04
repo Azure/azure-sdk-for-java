@@ -17,8 +17,6 @@
 
 ### Other Changes
 
-- Aligned `GitHubActionsCredential` OIDC response error messages with Azure Identity for JavaScript.
-
 #### Dependency Updates
 
 - Upgraded `msal4j` from `1.23.1` to `1.26.0`.
