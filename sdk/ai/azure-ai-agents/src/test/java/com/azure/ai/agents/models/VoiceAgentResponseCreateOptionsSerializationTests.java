@@ -6,9 +6,6 @@ package com.azure.ai.agents.models;
 import com.openai.models.realtime.RealtimeFunctionTool;
 import com.openai.models.realtime.RealtimeResponseCreateMcpTool;
 import com.openai.models.realtime.RealtimeResponseCreateParams;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -69,44 +66,17 @@ public class VoiceAgentResponseCreateOptionsSerializationTests {
     }
 
     @Test
-    public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentResponseCreateOptions params
-            = new VoiceAgentResponseCreateOptions().setToolChoice(ToolChoiceOptions.REQUIRED);
-        assertEquals(ToolChoiceOptions.REQUIRED, params.getToolChoiceAsToolChoiceOptions());
-
-        VoiceAgentResponseCreateOptions optionsResult = roundTrip(params);
-        assertEquals(ToolChoiceOptions.REQUIRED, optionsResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(optionsResult.getToolChoiceAsToolChoiceFunction());
-        assertNull(optionsResult.getToolChoiceAsToolChoiceMcp());
-
-        VoiceAgentResponseCreateOptions functionResult = roundTrip(
-            new VoiceAgentResponseCreateOptions().setToolChoice(ToolChoiceFunction.builder().name("lookup").build()));
-        assertEquals("lookup", functionResult.getToolChoiceAsToolChoiceFunction().name());
-        assertNull(functionResult.getToolChoiceAsToolChoiceOptions());
-
-        VoiceAgentResponseCreateOptions mcpResult = roundTrip(
-            new VoiceAgentResponseCreateOptions().setToolChoice(ToolChoiceMcp.builder().serverLabel("server").build()));
-        assertEquals("server", mcpResult.getToolChoiceAsToolChoiceMcp().serverLabel());
-        assertNull(mcpResult.getToolChoiceAsToolChoiceOptions());
-    }
-
-    @Test
     public void absentAndNullValuesReturnNull() throws IOException {
         VoiceAgentResponseCreateOptions result
             = UnionTypeSerializationTestUtils.deserialize("{}", VoiceAgentResponseCreateOptions::fromJson);
         assertNull(result.getMaxOutputTokensAsLong());
         assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getToolsAsOpenAITools());
-        assertNull(result.getToolChoiceAsToolChoiceOptions());
-        assertNull(result.getToolChoiceAsToolChoiceFunction());
-        assertNull(result.getToolChoiceAsToolChoiceMcp());
 
         result.setMaxOutputTokens("inf").setMaxOutputTokens((String) null);
         result.setToolsAsOpenAITools(null);
-        result.setToolChoice(ToolChoiceOptions.AUTO).setToolChoice((ToolChoiceOptions) null);
         assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getToolsAsOpenAITools());
-        assertNull(result.getToolChoiceAsToolChoiceOptions());
     }
 
     private VoiceAgentResponseCreateOptions roundTrip(VoiceAgentResponseCreateOptions value) throws IOException {

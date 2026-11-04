@@ -11,6 +11,12 @@
 
 ### Breaking Changes
 
+- Replaced the per-variant tool-choice accessors on preview voice and realtime models with
+  `getToolChoice()` and `setToolChoice(VoiceAgentToolChoice)`, where writable. Use `VoiceAgentToolChoice.ofMode`,
+  `ofFunction`, or `ofMcp` to create a choice, and `getMode`, `getFunction`, or `getMcp` to inspect it. Getters for
+  other variants return `null`. Passing `null` to the setter clears the property; the factories reject null arguments.
+  `PromptAgentDefinition` is unchanged.
+
 ### Bugs Fixed
 
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.

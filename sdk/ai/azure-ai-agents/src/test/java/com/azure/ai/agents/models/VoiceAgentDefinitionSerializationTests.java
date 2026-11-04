@@ -7,9 +7,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import org.junit.jupiter.api.Test;
 
@@ -38,42 +35,15 @@ public class VoiceAgentDefinitionSerializationTests {
     }
 
     @Test
-    public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentDefinition definition = new VoiceAgentDefinition().setToolChoice(ToolChoiceOptions.AUTO);
-        assertEquals(ToolChoiceOptions.AUTO, definition.getToolChoiceAsToolChoiceOptions());
-
-        VoiceAgentDefinition stringResult = roundTrip(definition);
-        assertEquals(ToolChoiceOptions.AUTO, stringResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(stringResult.getToolChoiceAsToolChoiceFunction());
-        assertNull(stringResult.getToolChoiceAsToolChoiceMcp());
-
-        VoiceAgentDefinition functionResult
-            = roundTrip(new VoiceAgentDefinition().setToolChoice(ToolChoiceFunction.builder().name("lookup").build()));
-        assertEquals("lookup", functionResult.getToolChoiceAsToolChoiceFunction().name());
-        assertNull(functionResult.getToolChoiceAsToolChoiceOptions());
-
-        VoiceAgentDefinition mcpResult = roundTrip(new VoiceAgentDefinition()
-            .setToolChoice(ToolChoiceMcp.builder().serverLabel("server").name("search").build()));
-        assertEquals("server", mcpResult.getToolChoiceAsToolChoiceMcp().serverLabel());
-        assertNull(mcpResult.getToolChoiceAsToolChoiceOptions());
-    }
-
-    @Test
     public void absentAndNullValuesReturnNull() throws IOException {
         VoiceAgentDefinition result
             = UnionTypeSerializationTestUtils.deserialize("{\"kind\":\"voice\"}", VoiceAgentDefinition::fromJson);
         assertNull(result.getMaxOutputTokensAsLong());
         assertNull(result.getMaxOutputTokensAsString());
-        assertNull(result.getToolChoiceAsToolChoiceOptions());
-        assertNull(result.getToolChoiceAsToolChoiceFunction());
-        assertNull(result.getToolChoiceAsToolChoiceMcp());
 
-        VoiceAgentDefinition cleared = new VoiceAgentDefinition().setMaxOutputTokens("inf")
-            .setMaxOutputTokens((String) null)
-            .setToolChoice(ToolChoiceOptions.AUTO)
-            .setToolChoice((ToolChoiceOptions) null);
+        VoiceAgentDefinition cleared
+            = new VoiceAgentDefinition().setMaxOutputTokens("inf").setMaxOutputTokens((String) null);
         assertNull(cleared.getMaxOutputTokensAsString());
-        assertNull(cleared.getToolChoiceAsToolChoiceOptions());
     }
 
     private VoiceAgentDefinition roundTrip(VoiceAgentDefinition value) throws IOException {

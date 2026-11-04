@@ -11,10 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 
@@ -286,23 +282,21 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      * Get the toolChoice property: Tool-selection behavior for this subagent. If omitted, the service defaults to auto.
      * Null also selects auto.
      *
-     * @return the toolChoice value.
+     * @return the tool choice, or {@code null} when absent or JSON null.
      */
-    BinaryData getToolChoice() {
-        // AI Tooling: union type
-        return this.toolChoice;
+    public VoiceAgentToolChoice getToolChoice() {
+        return this.toolChoice == null ? null : this.toolChoice.toObject(VoiceAgentToolChoice.class);
     }
 
     /**
      * Set the toolChoice property: Tool-selection behavior for this subagent. If omitted, the service defaults to auto.
      * Null also selects auto.
      *
-     * @param toolChoice the toolChoice value to set.
+     * @param toolChoice the tool choice, or {@code null} to clear the property.
      * @return the InlineVoiceSubagent object itself.
      */
-    InlineVoiceSubagent setToolChoice(BinaryData toolChoice) {
-        // AI Tooling: union type
-        this.toolChoice = toolChoice;
+    public InlineVoiceSubagent setToolChoice(VoiceAgentToolChoice toolChoice) {
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice);
         return this;
     }
 
@@ -621,67 +615,6 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
     }
 
     /**
-     * Get the toolChoice property: Tool-selection behavior for this subagent. If omitted or null, the service defaults
-     * to auto.
-     *
-     * @return the toolChoice value as an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or
-     * holds another variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ToolChoiceOptions.class);
-    }
-
-    /**
-     * Set the toolChoice property: Tool-selection behavior for this subagent. If omitted or null, the service defaults
-     * to auto.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceOptions} mode to set, or null to clear.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    public InlineVoiceSubagent setToolChoice(ToolChoiceOptions toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Set the toolChoice property to a specific function tool.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    public InlineVoiceSubagent setToolChoice(ToolChoiceFunction toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Set the toolChoice property to a specific MCP tool.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    public InlineVoiceSubagent setToolChoice(ToolChoiceMcp toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
      * Set the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
      * active.
      *
@@ -707,51 +640,6 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
         this.maxResponseOutputTokens
             = maxResponseOutputTokens == null ? null : BinaryData.fromObject(maxResponseOutputTokens);
         return this;
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: Tool-selection behavior for this
-     * subagent. If omitted or null, the service defaults to auto.
-     *
-     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isFunction()) {
-            return null;
-        }
-        return choice.asFunction();
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: Tool-selection behavior for this subagent.
-     * If omitted or null, the service defaults to auto.
-     *
-     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isMcp()) {
-            return null;
-        }
-        return choice.asMcp();
-    }
-
-    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!json.startsWith("{")) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ResponseCreateParams.ToolChoice.class);
     }
 
     /**

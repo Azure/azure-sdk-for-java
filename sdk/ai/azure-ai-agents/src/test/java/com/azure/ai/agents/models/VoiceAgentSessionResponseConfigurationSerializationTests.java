@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -30,37 +29,12 @@ public class VoiceAgentSessionResponseConfigurationSerializationTests {
     }
 
     @Test
-    public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentSessionResponseConfiguration stringResult
-            = roundTrip("{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"s\","
-                + "\"model\":\"m\",\"tool_choice\":\"auto\"}");
-        assertEquals(ToolChoiceOptions.AUTO, stringResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(stringResult.getToolChoiceAsToolChoiceFunction());
-        assertNull(stringResult.getToolChoiceAsToolChoiceMcp());
-
-        VoiceAgentSessionResponseConfiguration functionResult
-            = roundTrip("{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"s\","
-                + "\"model\":\"m\",\"tool_choice\":{\"type\":\"function\",\"name\":\"lookup\"}}");
-        assertEquals("lookup", functionResult.getToolChoiceAsToolChoiceFunction().name());
-        assertNull(functionResult.getToolChoiceAsToolChoiceOptions());
-
-        VoiceAgentSessionResponseConfiguration mcpResult
-            = roundTrip("{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"s\","
-                + "\"model\":\"m\",\"tool_choice\":{\"type\":\"mcp\",\"server_label\":\"server\"}}");
-        assertEquals("server", mcpResult.getToolChoiceAsToolChoiceMcp().serverLabel());
-        assertNull(mcpResult.getToolChoiceAsToolChoiceOptions());
-    }
-
-    @Test
     public void absentValuesReturnNull() throws IOException {
         VoiceAgentSessionResponseConfiguration result = UnionTypeSerializationTestUtils.deserialize(
             "{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"s\",\"model\":\"m\"}",
             VoiceAgentSessionResponseConfiguration::fromJson);
         assertNull(result.getMaxOutputTokensAsLong());
         assertNull(result.getMaxOutputTokensAsString());
-        assertNull(result.getToolChoiceAsToolChoiceOptions());
-        assertNull(result.getToolChoiceAsToolChoiceFunction());
-        assertNull(result.getToolChoiceAsToolChoiceMcp());
     }
 
     private VoiceAgentSessionResponseConfiguration roundTrip(String json) throws IOException {

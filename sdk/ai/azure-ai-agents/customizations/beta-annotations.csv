@@ -357,6 +357,7 @@ class;com.azure.ai.agents.models.VoiceAgentSystemToolName;Preview API. VoiceAgen
 class;com.azure.ai.agents.models.VoiceAgentTemplateGreetingConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentToolboxTool;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentToolChoice;Preview API.;
 class;com.azure.ai.agents.models.VoiceAgentToolResponseScheduling;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTranscriptionPhrase;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTranscriptionWord;Preview API. VoiceAgents=V1Preview;

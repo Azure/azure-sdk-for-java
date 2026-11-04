@@ -13,10 +13,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -257,11 +253,10 @@ public final class VoiceAgentSessionResponseConfiguration
     /**
      * Get the toolChoice property: Tool-selection behavior for the session.
      *
-     * @return the toolChoice value.
+     * @return the tool choice, or {@code null} when absent or JSON null.
      */
-    BinaryData getToolChoice() {
-        // AI Tooling: union type
-        return this.toolChoice;
+    public VoiceAgentToolChoice getToolChoice() {
+        return this.toolChoice == null ? null : this.toolChoice.toObject(VoiceAgentToolChoice.class);
     }
 
     /**
@@ -546,70 +541,6 @@ public final class VoiceAgentSessionResponseConfiguration
             return null;
         }
         return this.maxOutputTokens.toObject(String.class);
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: Tool-selection behavior for the
-     * session.
-     *
-     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isFunction()) {
-            return null;
-        }
-        return choice.asFunction();
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: Tool-selection behavior for the session.
-     *
-     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isMcp()) {
-            return null;
-        }
-        return choice.asMcp();
-    }
-
-    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!json.startsWith("{")) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ResponseCreateParams.ToolChoice.class);
-    }
-
-    /**
-     * Get the toolChoice property: Tool-selection behavior for the session.
-     *
-     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ToolChoiceOptions.class);
     }
 
     /*

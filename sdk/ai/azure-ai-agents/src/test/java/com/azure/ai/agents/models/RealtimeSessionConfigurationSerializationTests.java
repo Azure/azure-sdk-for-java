@@ -7,9 +7,6 @@ import com.azure.core.util.BinaryData;
 import com.openai.models.realtime.RealtimeFunctionTool;
 import com.openai.models.realtime.RealtimeToolsConfigUnion;
 import com.openai.models.realtime.RealtimeTruncationRetentionRatio;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,7 +14,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,35 +73,6 @@ public class RealtimeSessionConfigurationSerializationTests {
     }
 
     @Test
-    public void toolChoiceVariantsRoundTrip() throws IOException {
-        RealtimeSessionConfiguration request
-            = new RealtimeSessionConfiguration().setToolChoice(ToolChoiceOptions.REQUIRED);
-        assertEquals(ToolChoiceOptions.REQUIRED, request.getToolChoiceAsToolChoiceOptions());
-        assertEquals("required", getSerializedToolChoice(request));
-
-        RealtimeSessionConfiguration stringResult = roundTrip(request);
-        assertEquals(ToolChoiceOptions.REQUIRED, stringResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(stringResult.getToolChoiceAsToolChoiceFunction());
-        assertNull(stringResult.getToolChoiceAsToolChoiceMcp());
-
-        ToolChoiceFunction function = ToolChoiceFunction.builder().name("lookup").build();
-        RealtimeSessionConfiguration functionRequest = new RealtimeSessionConfiguration().setToolChoice(function);
-        assertEquals(parseJson("{\"type\":\"function\",\"name\":\"lookup\"}"),
-            getSerializedToolChoice(functionRequest));
-
-        RealtimeSessionConfiguration functionResult = roundTrip(functionRequest);
-        assertEquals("lookup", functionResult.getToolChoiceAsToolChoiceFunction().name());
-        assertNull(functionResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(functionResult.getToolChoiceAsToolChoiceMcp());
-
-        ToolChoiceMcp mcp = ToolChoiceMcp.builder().serverLabel("server").name("search").build();
-        RealtimeSessionConfiguration mcpResult = roundTrip(new RealtimeSessionConfiguration().setToolChoice(mcp));
-        assertEquals("server", mcpResult.getToolChoiceAsToolChoiceMcp().serverLabel());
-        assertNull(mcpResult.getToolChoiceAsToolChoiceOptions());
-        assertNull(mcpResult.getToolChoiceAsToolChoiceFunction());
-    }
-
-    @Test
     public void serverVadDurationsRoundTripAsMilliseconds() throws IOException {
         RealtimeServerVadTurnDetection original
             = new RealtimeServerVadTurnDetection().setSilenceDuration(Duration.ofMillis(500))
@@ -152,14 +119,12 @@ public class RealtimeSessionConfigurationSerializationTests {
     @Test
     public void deserializesEveryUnionProperty() throws IOException {
         String json = "{\"type\":\"realtime\",\"tracing\":{\"workflow_name\":\"workflow\"},"
-            + "\"tool_choice\":{\"type\":\"function\",\"name\":\"lookup\"}," + "\"max_output_tokens\":123,"
-            + "\"truncation\":{\"type\":\"retention_ratio\",\"retention_ratio\":0.5}}";
+            + "\"max_output_tokens\":123," + "\"truncation\":{\"type\":\"retention_ratio\",\"retention_ratio\":0.5}}";
 
         RealtimeSessionConfiguration result
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionConfiguration::fromJson);
 
         assertEquals("workflow", result.getTracingAsRealtimeSessionTracingConfiguration().getWorkflowName());
-        assertEquals("lookup", result.getToolChoiceAsToolChoiceFunction().name());
         assertEquals(123L, result.getMaxOutputTokensAsLong());
         assertEquals(0.5, result.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
     }
@@ -171,9 +136,6 @@ public class RealtimeSessionConfigurationSerializationTests {
         assertNull(result.getTracingAsString());
         assertNull(result.getTracingAsRealtimeSessionTracingConfiguration());
         assertNull(result.getToolsAsOpenAITools());
-        assertNull(result.getToolChoiceAsToolChoiceOptions());
-        assertNull(result.getToolChoiceAsToolChoiceFunction());
-        assertNull(result.getToolChoiceAsToolChoiceMcp());
         assertNull(result.getMaxOutputTokensAsLong());
         assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getTruncationAsString());
@@ -182,24 +144,13 @@ public class RealtimeSessionConfigurationSerializationTests {
         String serialized
             = UnionTypeSerializationTestUtils.serialize(new RealtimeSessionConfiguration().setTracing((String) null)
                 .setToolsAsOpenAITools(null)
-                .setToolChoice((ToolChoiceOptions) null)
                 .setMaxOutputTokens((String) null)
                 .setTruncation((String) null));
         assertNotNull(serialized);
         assertTrue(!serialized.contains("\"tracing\"")
             && !serialized.contains("\"tools\"")
-            && !serialized.contains("\"tool_choice\"")
             && !serialized.contains("\"max_output_tokens\"")
             && !serialized.contains("\"truncation\""));
-    }
-
-    private Object getSerializedToolChoice(RealtimeSessionConfiguration value) throws IOException {
-        Object serialized = parseJson(UnionTypeSerializationTestUtils.serialize(value));
-        return ((Map<?, ?>) serialized).get("tool_choice");
-    }
-
-    private Object parseJson(String json) throws IOException {
-        return UnionTypeSerializationTestUtils.deserialize(json, reader -> reader.readUntyped());
     }
 
     private RealtimeSessionConfiguration roundTrip(RealtimeSessionConfiguration value) throws IOException {

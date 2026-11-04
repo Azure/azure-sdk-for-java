@@ -224,19 +224,6 @@ public class AgentsCustomizations extends Customization {
         List<String[]> requireApproval = Arrays.asList(
             stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
             modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
-        List<String[]> toolChoice = Arrays.asList(
-            openAiDirectUnionVariant("com.openai.models.responses.ToolChoiceOptions", "ToolChoiceOptions",
-                "the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or"
-                    + " {@code REQUIRED})",
-                "an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another"
-                    + " variant",
-                "json.startsWith(\"\\\"\")"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceFunction",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isFunction",
-                "asFunction", "a specific function tool"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceMcp",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isMcp",
-                "asMcp", "a specific MCP tool"));
         List<String[]> longMaxOutputTokens = Arrays.asList(
             longUnionVariant("the maximum number of output tokens to set"),
             stringUnionVariant(
@@ -277,8 +264,6 @@ public class AgentsCustomizations extends Customization {
 
         customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
             tracing, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "RealtimeSessionConfiguration", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
             logger);
@@ -289,34 +274,20 @@ public class AgentsCustomizations extends Customization {
 
         customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
-            "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "InlineVoiceSubagent", "toolChoice",
-            "Tool-selection behavior for this subagent. If omitted or null, the service defaults to auto.",
-            toolChoice, true, false, logger);
         customizeUnionProperty(customization, "InlineVoiceSubagent", "maxResponseOutputTokens",
             "The maximum output-token count for one response while this subagent is active.",
             longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
-            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
-            logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
             "The require_approval property.", requireApproval, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
             logger);
         customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, false, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, false, false, logger);
 
         // Retain base-model wrappers for older snapshots and expose them directly on the flattened response models.
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",

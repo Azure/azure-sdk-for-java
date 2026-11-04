@@ -16,11 +16,7 @@ import com.openai.models.realtime.RealtimeSessionCreateRequest.Model;
 import com.openai.models.realtime.RealtimeSessionCreateRequest.OutputModality;
 import com.openai.models.realtime.RealtimeToolsConfigUnion;
 import com.openai.models.realtime.RealtimeTruncationRetentionRatio;
-import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponsePrompt;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 
@@ -359,23 +355,21 @@ public final class RealtimeSessionConfiguration extends RealtimeSessionConfigura
      * Get the toolChoice property: How the model chooses tools. Provide one of the string modes or force a specific
      * function/MCP tool.
      *
-     * @return the toolChoice value.
+     * @return the tool choice, or {@code null} when absent or JSON null.
      */
-    BinaryData getToolChoice() {
-        // AI Tooling: union type
-        return this.toolChoice;
+    public VoiceAgentToolChoice getToolChoice() {
+        return this.toolChoice == null ? null : this.toolChoice.toObject(VoiceAgentToolChoice.class);
     }
 
     /**
      * Set the toolChoice property: How the model chooses tools. Provide one of the string modes or force a specific
      * function/MCP tool.
      *
-     * @param toolChoice the toolChoice value to set.
+     * @param toolChoice the tool choice, or {@code null} to clear the property.
      * @return the RealtimeSessionConfiguration object itself.
      */
-    RealtimeSessionConfiguration setToolChoice(BinaryData toolChoice) {
-        // AI Tooling: union type
-        this.toolChoice = toolChoice;
+    public RealtimeSessionConfiguration setToolChoice(VoiceAgentToolChoice toolChoice) {
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice);
         return this;
     }
 
@@ -655,88 +649,6 @@ public final class RealtimeSessionConfiguration extends RealtimeSessionConfigura
     }
 
     /**
-     * Set the toolChoice property: How the model chooses tools.
-     *
-     * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
-     * @return the RealtimeSessionConfiguration object itself.
-     */
-    public RealtimeSessionConfiguration setToolChoice(ToolChoiceOptions toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Set the toolChoice property to a specific function tool: How the model chooses tools.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
-     * @return the RealtimeSessionConfiguration object itself.
-     */
-    public RealtimeSessionConfiguration setToolChoice(ToolChoiceFunction toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: How the model chooses tools.
-     *
-     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isFunction()) {
-            return null;
-        }
-        return choice.asFunction();
-    }
-
-    /**
-     * Set the toolChoice property to a specific MCP tool: How the model chooses tools.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
-     * @return the RealtimeSessionConfiguration object itself.
-     */
-    public RealtimeSessionConfiguration setToolChoice(ToolChoiceMcp toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: How the model chooses tools.
-     *
-     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isMcp()) {
-            return null;
-        }
-        return choice.asMcp();
-    }
-
-    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!json.startsWith("{")) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ResponseCreateParams.ToolChoice.class);
-    }
-
-    /**
      * Set the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
      *
      * @param maxOutputTokens the maximum number of output tokens to set.
@@ -834,25 +746,6 @@ public final class RealtimeSessionConfiguration extends RealtimeSessionConfigura
         // AI Tooling: openai-java de-dup
         this.truncation = OpenAIJsonHelper.toBinaryData(truncation);
         return this;
-    }
-
-    /**
-     * Get the toolChoice property: How the model chooses tools.
-     *
-     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return OpenAIJsonHelper.fromBinaryData(this.toolChoice, ToolChoiceOptions.class);
     }
 
     /**
