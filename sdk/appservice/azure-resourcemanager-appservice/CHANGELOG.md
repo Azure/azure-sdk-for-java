@@ -1,6 +1,6 @@
 # Release History
 
-## 2.57.0 (2026-11-03)
+## 2.58.0 (2026-11-04)
 
 - Package api-version 2026-08-01.
 
