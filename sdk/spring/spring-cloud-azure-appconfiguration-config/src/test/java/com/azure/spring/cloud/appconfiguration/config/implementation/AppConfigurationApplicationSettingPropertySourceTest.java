@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_1;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_2;
@@ -44,7 +45,6 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 
@@ -367,7 +367,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     }
 
     @Test
-    public void featureFlagsFromSnapshotAreCollected() throws IOException {
+    public void featureFlagsFromSnapshotReferenceAreSkippedByContentType() throws IOException {
         ConfigurationSetting snapshotRef = new ConfigurationSetting()
             .setKey("snapshot-ref-key")
             .setValue("{\"snapshot_name\":\"my-snapshot\"}")
@@ -380,6 +380,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         List<ConfigurationSetting> snapshotSettings = new ArrayList<>();
         snapshotSettings.add(createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE));
         snapshotSettings.add(featureFlag);
+        snapshotSettings.add(createItem(KEY_FILTER, "raw-feature-flag", "not-json", TEST_LABEL_1,
+            FEATURE_FLAG_CONTENT_TYPE));
+        snapshotSettings.add(ITEM_NULL);
 
         when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(settings);
         when(clientMock.listSettingSnapshot(Mockito.eq("my-snapshot"), Mockito.any(Context.class)))
@@ -387,15 +390,12 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
         propertySource.initProperties(null, contextMock);
 
-        // Feature flag should be in the featureFlagsList
-        assertThat(propertySource.featureFlagsList).hasSize(1);
-        assertThat(propertySource.featureFlagsList.get(0)).isInstanceOf(FeatureFlagConfigurationSetting.class);
-
-        // Regular setting should be loaded
+        assertThat(propertySource.featureFlagsList).isEmpty();
+        assertThat(propertySource.getPropertyNames()).containsExactlyInAnyOrder(TEST_KEY_1, TEST_KEY_3);
         assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
+        assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
 
-        // featureFlagClient should have been called
-        Mockito.verify(featureFlagClientMock).processFeatureFlags(Mockito.anyList(), Mockito.any());
+        Mockito.verify(featureFlagClientMock).processFeatureFlags(Mockito.eq(Collections.emptyList()), Mockito.any());
     }
 
     @Test
@@ -443,7 +443,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     }
 
     @Test
-    public void snapshotReferenceRefreshUsesFreshFeatureFlagClient() throws IOException {
+    public void snapshotReferenceRefreshContinuesToSkipFeatureFlags() throws IOException {
         FeatureFlagClient firstFeatureFlagClient = new FeatureFlagClient();
         AppConfigurationApplicationSettingPropertySource snapshotPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
@@ -462,20 +462,22 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
             .thenReturn(List.of(firstReference))
             .thenReturn(List.of(secondReference));
         when(clientMock.listSettingSnapshot("first-snapshot", contextMock))
-            .thenReturn(List.of(createItemFeatureFlag("Alpha", "/0"), createItemFeatureFlag("Beta", "/0")));
+            .thenReturn(List.of(ITEM_1, createItemFeatureFlag("Alpha", "/0"), createItemFeatureFlag("Beta", "/0")));
         when(clientMock.listSettingSnapshot("second-snapshot", contextMock))
-            .thenReturn(List.of(createItemFeatureFlag("Alpha", "/0"), createItemFeatureFlag("Gamma", "/0")));
+            .thenReturn(List.of(ITEM_2, createItemFeatureFlag("Alpha", "/0"), createItemFeatureFlag("Gamma", "/0")));
 
         snapshotPropertySource.initProperties(null, contextMock);
-        assertThat(firstFeatureFlagClient.getFeatureFlags()).extracting(Feature::getId)
-            .containsExactlyInAnyOrder("Alpha", "Beta");
+        assertThat(firstFeatureFlagClient.getFeatureFlags()).isEmpty();
+        assertThat(snapshotPropertySource.getPropertyNames()).containsExactly(TEST_KEY_1);
+        assertThat(snapshotPropertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
 
         FeatureFlagClient refreshedFeatureFlagClient = new FeatureFlagClient();
         AppConfigurationApplicationSettingPropertySource refreshedPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
                 keyVaultClientFactoryMock, KEY_FILTER, new String[] { "\0" }, null, refreshedFeatureFlagClient);
         refreshedPropertySource.initProperties(null, contextMock);
-        assertThat(refreshedFeatureFlagClient.getFeatureFlags()).extracting(Feature::getId)
-            .containsExactlyInAnyOrder("Alpha", "Gamma");
+        assertThat(refreshedFeatureFlagClient.getFeatureFlags()).isEmpty();
+        assertThat(refreshedPropertySource.getPropertyNames()).containsExactly(TEST_KEY_2);
+        assertThat(refreshedPropertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
     }
 }

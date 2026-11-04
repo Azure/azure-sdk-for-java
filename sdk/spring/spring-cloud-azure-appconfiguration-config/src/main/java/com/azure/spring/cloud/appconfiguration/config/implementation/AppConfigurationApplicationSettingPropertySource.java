@@ -141,7 +141,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 String snapshotName = parseSnapshotName(setting);
                 replicaClient.getTracingInfo().setUsesSnapshotReference();
                 try {
-                    resolvedSettings.addAll(replicaClient.listSettingSnapshot(snapshotName, context));
+                    for (ConfigurationSetting resolvedSetting : replicaClient.listSettingSnapshot(snapshotName, context)) {
+                        if (!FEATURE_FLAG_CONTENT_TYPE.equals(resolvedSetting.getContentType())) {
+                            resolvedSettings.add(resolvedSetting);
+                        }
+                    }
                 } catch (com.azure.core.exception.HttpResponseException e) {
                     if (e.getResponse() == null || e.getResponse().getStatusCode() != 404) {
                         throw e;
@@ -150,9 +154,8 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                     replicaClient.getTracingInfo().resetUsesSnapshotReference();
                 }
             } else if (setting instanceof FeatureFlagConfigurationSetting) {
-                // We need to strip feature flags as we only support feature flags from snapshots, and if they are in a
-                // snapshot reference we won't be able to resolve them.
-                LOGGER.warn("Feature Flag {} with key {} is being ignored as it is not from a snapshot reference.",
+                // Feature flags are only supported when loading a snapshot directly.
+                LOGGER.warn("Feature Flag {} with key {} is being ignored when loading application settings.",
                     setting.getLabel(), setting.getKey());
             } else {
                 resolvedSettings.add(setting);
