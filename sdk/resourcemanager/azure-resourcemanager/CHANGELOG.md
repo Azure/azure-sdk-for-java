@@ -1,5 +1,15 @@
 # Release History
 
+## 2.67.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.66.0 (2026-11-04)
 
 ### azure-resourcemanager-network
