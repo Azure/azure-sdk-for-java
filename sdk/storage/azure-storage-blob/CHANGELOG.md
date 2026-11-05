@@ -1,5 +1,29 @@
 # Release History
 
+## 12.38.0 (2026-11-05)
+
+### Features Added
+- Provides a private general availability (GA) release of the STG105 features.
+- Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
+  `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
+  requires an HTTP client that withholds the request body until the service responds.
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
+
+### Breaking Changes
+
+- Changed the default response serialization format for `listBlobs` and `listBlobsByHierarchy` from XML to Apache Arrow
+  for both synchronous and asynchronous clients, with support for XML fallback responses from the service. To explicitly
+  request XML, use `new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.37.0-beta.1` to version `12.37.0`.
+- Upgraded `azure-storage-internal-avro` from `12.23.0-beta.1` to version `12.23.0`.
+
 ## 12.38.0-beta.1 (2026-11-05)
 
 ### Features Added
