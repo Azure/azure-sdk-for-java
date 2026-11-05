@@ -19,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RealtimeResponseInputContentSerializationTests {
     @Test
     public void heterogeneousUserContentRoundTrips() throws IOException {
-        List<RealtimeResponseInputContent> content = Arrays.asList(
-            RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("text")),
-            RealtimeResponseInputContent.fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
-            RealtimeResponseInputContent
-                .fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
+        List<RealtimeResponseInputContent> content
+            = Arrays.asList(RealtimeResponseInputContent.ofText(new RealtimeResponseInputText("text")),
+                RealtimeResponseInputContent.ofAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
+                RealtimeResponseInputContent
+                    .ofImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
         String json = UnionTypeSerializationTestUtils.serialize(new RealtimeResponseInputMessageUser(content));
         RealtimeResponseInputMessageUser result
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeResponseInputMessageUser::fromJson);
@@ -42,19 +42,19 @@ public class RealtimeResponseInputContentSerializationTests {
     @Test
     public void factoriesExposeOnlyTheirVariant() {
         RealtimeResponseInputText text = new RealtimeResponseInputText("text");
-        RealtimeResponseInputContent textContent = RealtimeResponseInputContent.fromText(text);
+        RealtimeResponseInputContent textContent = RealtimeResponseInputContent.ofText(text);
         assertSame(text, textContent.getText());
         assertNull(textContent.getAudio());
         assertNull(textContent.getImage());
 
         RealtimeResponseInputAudio audio = new RealtimeResponseInputAudio("YQ==");
-        RealtimeResponseInputContent audioContent = RealtimeResponseInputContent.fromAudio(audio);
+        RealtimeResponseInputContent audioContent = RealtimeResponseInputContent.ofAudio(audio);
         assertSame(audio, audioContent.getAudio());
         assertNull(audioContent.getText());
         assertNull(audioContent.getImage());
 
         RealtimeResponseInputImage image = new RealtimeResponseInputImage("data:image/png;base64,YQ==");
-        RealtimeResponseInputContent imageContent = RealtimeResponseInputContent.fromImage(image);
+        RealtimeResponseInputContent imageContent = RealtimeResponseInputContent.ofImage(image);
         assertSame(image, imageContent.getImage());
         assertNull(imageContent.getText());
         assertNull(imageContent.getAudio());
@@ -72,7 +72,7 @@ public class RealtimeResponseInputContentSerializationTests {
     public void imageDetailValuesRoundTrip() throws IOException {
         for (Detail detail : Arrays.asList(Detail.LOW, Detail.HIGH, Detail.AUTO)) {
             RealtimeResponseInputContent content = RealtimeResponseInputContent
-                .fromImage(new RealtimeResponseInputImage("data:image/png;base64,YQ==").setDetail(detail));
+                .ofImage(new RealtimeResponseInputImage("data:image/png;base64,YQ==").setDetail(detail));
             String json = UnionTypeSerializationTestUtils.serialize(content);
             assertTrue(json.contains("\"detail\":\"" + detail.asString() + "\""));
             RealtimeResponseInputContent result
@@ -92,8 +92,8 @@ public class RealtimeResponseInputContentSerializationTests {
             assertThrows(IllegalStateException.class,
                 () -> UnionTypeSerializationTestUtils.deserialize(json, RealtimeResponseInputContent::fromJson));
         }
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.fromText(null));
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.fromAudio(null));
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.fromImage(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.ofText(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.ofAudio(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputContent.ofImage(null));
     }
 }

@@ -34,7 +34,7 @@ public final class RealtimeResponseInputItem implements JsonSerializable<Realtim
      * @return the input item.
      * @throws NullPointerException if {@code message} is null.
      */
-    public static RealtimeResponseInputItem fromMessage(RealtimeResponseInputMessage message) {
+    public static RealtimeResponseInputItem ofMessage(RealtimeResponseInputMessage message) {
         return new RealtimeResponseInputItem(message);
     }
 
@@ -44,7 +44,7 @@ public final class RealtimeResponseInputItem implements JsonSerializable<Realtim
      * @return the input item.
      * @throws NullPointerException if {@code functionCall} is null.
      */
-    public static RealtimeResponseInputItem fromFunctionCall(RealtimeResponseInputFunctionCall functionCall) {
+    public static RealtimeResponseInputItem ofFunctionCall(RealtimeResponseInputFunctionCall functionCall) {
         return new RealtimeResponseInputItem(functionCall);
     }
 
@@ -55,7 +55,7 @@ public final class RealtimeResponseInputItem implements JsonSerializable<Realtim
      * @throws NullPointerException if {@code functionCallOutput} is null.
      */
     public static RealtimeResponseInputItem
-        fromFunctionCallOutput(RealtimeResponseInputFunctionCallOutput functionCallOutput) {
+        ofFunctionCallOutput(RealtimeResponseInputFunctionCallOutput functionCallOutput) {
         return new RealtimeResponseInputItem(functionCallOutput);
     }
 
@@ -65,7 +65,7 @@ public final class RealtimeResponseInputItem implements JsonSerializable<Realtim
      * @return the input item.
      * @throws NullPointerException if {@code itemReference} is null.
      */
-    public static RealtimeResponseInputItem fromItemReference(RealtimeResponseItemReference itemReference) {
+    public static RealtimeResponseInputItem ofItemReference(RealtimeResponseItemReference itemReference) {
         return new RealtimeResponseInputItem(itemReference);
     }
 
@@ -130,14 +130,14 @@ public final class RealtimeResponseInputItem implements JsonSerializable<Realtim
                     bufferedReader.skipChildren();
                 }
                 if ("message".equals(type)) {
-                    return fromMessage(RealtimeResponseInputMessage.fromJson(bufferedReader.reset()));
+                    return ofMessage(RealtimeResponseInputMessage.fromJson(bufferedReader.reset()));
                 } else if ("function_call".equals(type)) {
-                    return fromFunctionCall(RealtimeResponseInputFunctionCall.fromJson(bufferedReader.reset()));
+                    return ofFunctionCall(RealtimeResponseInputFunctionCall.fromJson(bufferedReader.reset()));
                 } else if ("function_call_output".equals(type)) {
-                    return fromFunctionCallOutput(
+                    return ofFunctionCallOutput(
                         RealtimeResponseInputFunctionCallOutput.fromJson(bufferedReader.reset()));
                 } else if ("item_reference".equals(type)) {
-                    return fromItemReference(RealtimeResponseItemReference.fromJson(bufferedReader.reset()));
+                    return ofItemReference(RealtimeResponseItemReference.fromJson(bufferedReader.reset()));
                 }
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Unsupported realtime response input item type: " + type));

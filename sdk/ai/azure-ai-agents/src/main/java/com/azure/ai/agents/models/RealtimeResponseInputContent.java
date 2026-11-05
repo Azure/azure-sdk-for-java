@@ -34,7 +34,7 @@ public final class RealtimeResponseInputContent implements JsonSerializable<Real
      * @return the input content.
      * @throws NullPointerException if {@code text} is null.
      */
-    public static RealtimeResponseInputContent fromText(RealtimeResponseInputText text) {
+    public static RealtimeResponseInputContent ofText(RealtimeResponseInputText text) {
         return new RealtimeResponseInputContent(text);
     }
 
@@ -44,7 +44,7 @@ public final class RealtimeResponseInputContent implements JsonSerializable<Real
      * @return the input content.
      * @throws NullPointerException if {@code audio} is null.
      */
-    public static RealtimeResponseInputContent fromAudio(RealtimeResponseInputAudio audio) {
+    public static RealtimeResponseInputContent ofAudio(RealtimeResponseInputAudio audio) {
         return new RealtimeResponseInputContent(audio);
     }
 
@@ -54,7 +54,7 @@ public final class RealtimeResponseInputContent implements JsonSerializable<Real
      * @return the input content.
      * @throws NullPointerException if {@code image} is null.
      */
-    public static RealtimeResponseInputContent fromImage(RealtimeResponseInputImage image) {
+    public static RealtimeResponseInputContent ofImage(RealtimeResponseInputImage image) {
         return new RealtimeResponseInputContent(image);
     }
 
@@ -109,11 +109,11 @@ public final class RealtimeResponseInputContent implements JsonSerializable<Real
                     bufferedReader.skipChildren();
                 }
                 if ("input_text".equals(type)) {
-                    return fromText(RealtimeResponseInputText.fromJson(bufferedReader.reset()));
+                    return ofText(RealtimeResponseInputText.fromJson(bufferedReader.reset()));
                 } else if ("input_audio".equals(type)) {
-                    return fromAudio(RealtimeResponseInputAudio.fromJson(bufferedReader.reset()));
+                    return ofAudio(RealtimeResponseInputAudio.fromJson(bufferedReader.reset()));
                 } else if ("input_image".equals(type)) {
-                    return fromImage(RealtimeResponseInputImage.fromJson(bufferedReader.reset()));
+                    return ofImage(RealtimeResponseInputImage.fromJson(bufferedReader.reset()));
                 }
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Unsupported realtime response input content type: " + type));

@@ -22,28 +22,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RealtimeResponseInputItemSerializationTests {
     @Test
     public void heterogeneousResponseInputRoundTrips() throws IOException {
-        List<RealtimeResponseInputContent> content = Arrays.asList(
-            RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("hello")),
-            RealtimeResponseInputContent.fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
-            RealtimeResponseInputContent
-                .fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
-        List<RealtimeResponseInputItem> input = Arrays.asList(RealtimeResponseInputItem.fromMessage(
+        List<RealtimeResponseInputContent> content
+            = Arrays.asList(RealtimeResponseInputContent.ofText(new RealtimeResponseInputText("hello")),
+                RealtimeResponseInputContent.ofAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
+                RealtimeResponseInputContent
+                    .ofImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
+        List<RealtimeResponseInputItem> input = Arrays.asList(RealtimeResponseInputItem.ofMessage(
             new RealtimeResponseInputMessageSystem(Collections.singletonList(new RealtimeResponseInputText("system")))
                 .setStatus(RealtimeResponseInputItemStatus.COMPLETED)),
-            RealtimeResponseInputItem.fromMessage(new RealtimeResponseInputMessageDeveloper(
+            RealtimeResponseInputItem.ofMessage(new RealtimeResponseInputMessageDeveloper(
                 Collections.singletonList(new RealtimeResponseInputText("developer")))
                     .setStatus(RealtimeResponseInputItemStatus.INCOMPLETE)),
-            RealtimeResponseInputItem.fromMessage(
+            RealtimeResponseInputItem.ofMessage(
                 new RealtimeResponseInputMessageUser(content).setStatus(RealtimeResponseInputItemStatus.COMPLETED)),
-            RealtimeResponseInputItem.fromMessage(new RealtimeResponseInputMessageAssistant(
+            RealtimeResponseInputItem.ofMessage(new RealtimeResponseInputMessageAssistant(
                 Collections.singletonList(new RealtimeResponseInputMessageAssistantContent("assistant")))
                     .setStatus(RealtimeResponseInputItemStatus.INCOMPLETE)),
-            RealtimeResponseInputItem.fromFunctionCall(new RealtimeResponseInputFunctionCall("call_1", "lookup", "{}")
+            RealtimeResponseInputItem.ofFunctionCall(new RealtimeResponseInputFunctionCall("call_1", "lookup", "{}")
                 .setStatus(RealtimeResponseInputItemStatus.COMPLETED)),
-            RealtimeResponseInputItem
-                .fromFunctionCallOutput(new RealtimeResponseInputFunctionCallOutput("call_1", "done")
-                    .setStatus(RealtimeResponseInputItemStatus.INCOMPLETE)),
-            RealtimeResponseInputItem.fromItemReference(new RealtimeResponseItemReference("item_1")));
+            RealtimeResponseInputItem.ofFunctionCallOutput(new RealtimeResponseInputFunctionCallOutput("call_1", "done")
+                .setStatus(RealtimeResponseInputItemStatus.INCOMPLETE)),
+            RealtimeResponseInputItem.ofItemReference(new RealtimeResponseItemReference("item_1")));
 
         String json = UnionTypeSerializationTestUtils.serialize(new VoiceAgentResponseCreateOptions().setInput(input));
         VoiceAgentResponseCreateOptions result
@@ -91,29 +90,29 @@ public class RealtimeResponseInputItemSerializationTests {
     @Test
     public void factoriesExposeOnlyTheirVariant() {
         RealtimeResponseInputMessage message = new RealtimeResponseInputMessageUser(
-            Collections.singletonList(RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("text"))));
-        RealtimeResponseInputItem messageItem = RealtimeResponseInputItem.fromMessage(message);
+            Collections.singletonList(RealtimeResponseInputContent.ofText(new RealtimeResponseInputText("text"))));
+        RealtimeResponseInputItem messageItem = RealtimeResponseInputItem.ofMessage(message);
         assertSame(message, messageItem.getMessage());
         assertNull(messageItem.getFunctionCall());
         assertNull(messageItem.getFunctionCallOutput());
         assertNull(messageItem.getItemReference());
 
         RealtimeResponseInputFunctionCall call = new RealtimeResponseInputFunctionCall("call_1", "lookup", "{}");
-        RealtimeResponseInputItem callItem = RealtimeResponseInputItem.fromFunctionCall(call);
+        RealtimeResponseInputItem callItem = RealtimeResponseInputItem.ofFunctionCall(call);
         assertSame(call, callItem.getFunctionCall());
         assertNull(callItem.getMessage());
         assertNull(callItem.getFunctionCallOutput());
         assertNull(callItem.getItemReference());
 
         RealtimeResponseInputFunctionCallOutput output = new RealtimeResponseInputFunctionCallOutput("call_1", "done");
-        RealtimeResponseInputItem outputItem = RealtimeResponseInputItem.fromFunctionCallOutput(output);
+        RealtimeResponseInputItem outputItem = RealtimeResponseInputItem.ofFunctionCallOutput(output);
         assertSame(output, outputItem.getFunctionCallOutput());
         assertNull(outputItem.getMessage());
         assertNull(outputItem.getFunctionCall());
         assertNull(outputItem.getItemReference());
 
         RealtimeResponseItemReference reference = new RealtimeResponseItemReference("item_1");
-        RealtimeResponseInputItem referenceItem = RealtimeResponseInputItem.fromItemReference(reference);
+        RealtimeResponseInputItem referenceItem = RealtimeResponseInputItem.ofItemReference(reference);
         assertSame(reference, referenceItem.getItemReference());
         assertNull(referenceItem.getMessage());
         assertNull(referenceItem.getFunctionCall());
@@ -154,10 +153,10 @@ public class RealtimeResponseInputItemSerializationTests {
             assertThrows(IllegalStateException.class,
                 () -> UnionTypeSerializationTestUtils.deserialize(json, RealtimeResponseInputItem::fromJson));
         }
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.fromMessage(null));
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.fromFunctionCall(null));
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.fromFunctionCallOutput(null));
-        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.fromItemReference(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.ofMessage(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.ofFunctionCall(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.ofFunctionCallOutput(null));
+        assertThrows(NullPointerException.class, () -> RealtimeResponseInputItem.ofItemReference(null));
     }
 
     @Test
