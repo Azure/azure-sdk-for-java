@@ -5,11 +5,11 @@
 ### Features Added
 - Added support for service version 2027-03-07.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
 
 ## 12.33.2 (2026-11-03)
 

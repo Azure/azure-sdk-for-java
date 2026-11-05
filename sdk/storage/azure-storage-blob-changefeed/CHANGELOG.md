@@ -5,11 +5,13 @@
 ### Features Added
 - Added support for service version 2027-03-07.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.38.0-beta.1`.
 
 ## 12.0.0-beta.40 (2026-10-07)
 

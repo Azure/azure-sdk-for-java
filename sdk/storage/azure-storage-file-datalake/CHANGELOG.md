@@ -7,11 +7,11 @@
 - Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
   it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
 
 ## 12.30.2 (2026-11-03)
 

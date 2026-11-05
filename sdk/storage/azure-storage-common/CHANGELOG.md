@@ -11,12 +11,6 @@
 - Added `DataLocalityPolicy`, an `HttpPipelinePolicy` that routes a request to an ideal endpoint set on the per-call
   `Context` (see `DataLocalityPolicy.LAYOUT_ENDPOINT_KEY`), for internal use by data-locality-aware download paths.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.36.2 (2026-11-03)
 
 ### Bugs Fixed

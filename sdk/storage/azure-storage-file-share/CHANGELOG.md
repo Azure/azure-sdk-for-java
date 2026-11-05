@@ -14,11 +14,11 @@
 - Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
   creation time returned in list and get properties responses.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
 
 ## 12.33.2 (2026-11-03)
 

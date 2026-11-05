@@ -5,11 +5,11 @@
 ### Features Added
 - Added support for service version 2027-03-07.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
 
 ## 12.22.2 (2026-11-03)
 
