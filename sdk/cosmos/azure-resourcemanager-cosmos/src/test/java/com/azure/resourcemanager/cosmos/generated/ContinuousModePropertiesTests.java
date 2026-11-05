@@ -13,14 +13,14 @@ public final class ContinuousModePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContinuousModeProperties model
-            = BinaryData.fromString("{\"tier\":\"Continuous30Days\"}").toObject(ContinuousModeProperties.class);
-        Assertions.assertEquals(ContinuousTier.CONTINUOUS30DAYS, model.tier());
+            = BinaryData.fromString("{\"tier\":\"Continuous35Days\"}").toObject(ContinuousModeProperties.class);
+        Assertions.assertEquals(ContinuousTier.CONTINUOUS35DAYS, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContinuousModeProperties model = new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS30DAYS);
+        ContinuousModeProperties model = new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS35DAYS);
         model = BinaryData.fromObject(model).toObject(ContinuousModeProperties.class);
-        Assertions.assertEquals(ContinuousTier.CONTINUOUS30DAYS, model.tier());
+        Assertions.assertEquals(ContinuousTier.CONTINUOUS35DAYS, model.tier());
     }
 }

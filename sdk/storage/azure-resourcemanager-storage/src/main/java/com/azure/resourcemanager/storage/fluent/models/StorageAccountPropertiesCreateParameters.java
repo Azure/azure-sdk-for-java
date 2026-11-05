@@ -27,6 +27,7 @@ import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.StorageAccountSharedKeyAccessProperties;
 import com.azure.resourcemanager.storage.models.StorageDataCollaborationPolicyProperties;
+import com.azure.resourcemanager.storage.models.TurboTier;
 import java.io.IOException;
 
 /**
@@ -79,6 +80,11 @@ public final class StorageAccountPropertiesCreateParameters
      * block blobs storage account type.
      */
     private AccessTier accessTier;
+
+    /*
+     * Configures Turbo Tier for the storage account.
+     */
+    private TurboTier turboTier;
 
     /*
      * Provides the identity based authentication settings for Azure Files.
@@ -190,6 +196,12 @@ public final class StorageAccountPropertiesCreateParameters
      * Data Collaboration policy for the storage account.
      */
     private StorageDataCollaborationPolicyProperties dataCollaborationPolicyProperties;
+
+    /*
+     * Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is
+     * false for this property.
+     */
+    private Boolean allowCrossTenantDelegationSas;
 
     /**
      * Creates an instance of StorageAccountPropertiesCreateParameters class.
@@ -368,6 +380,26 @@ public final class StorageAccountPropertiesCreateParameters
      */
     public StorageAccountPropertiesCreateParameters withAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @return the turboTier value.
+     */
+    public TurboTier turboTier() {
+        return this.turboTier;
+    }
+
+    /**
+     * Set the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @param turboTier the turboTier value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withTurboTier(TurboTier turboTier) {
+        this.turboTier = turboTier;
         return this;
     }
 
@@ -817,6 +849,29 @@ public final class StorageAccountPropertiesCreateParameters
     }
 
     /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.allowCrossTenantDelegationSas;
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters
+        withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        this.allowCrossTenantDelegationSas = allowCrossTenantDelegationSas;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -836,6 +891,9 @@ public final class StorageAccountPropertiesCreateParameters
         }
         if (networkRuleSet() != null) {
             networkRuleSet().validate();
+        }
+        if (turboTier() != null) {
+            turboTier().validate();
         }
         if (azureFilesIdentityBasedAuthentication() != null) {
             azureFilesIdentityBasedAuthentication().validate();
@@ -876,6 +934,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeJsonField("networkAcls", this.networkRuleSet);
         jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeJsonField("turboTier", this.turboTier);
         jsonWriter.writeJsonField("azureFilesIdentityBasedAuthentication", this.azureFilesIdentityBasedAuthentication);
         jsonWriter.writeBooleanField("supportsHttpsTrafficOnly", this.enableHttpsTrafficOnly);
         jsonWriter.writeBooleanField("isSftpEnabled", this.isSftpEnabled);
@@ -899,6 +958,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         jsonWriter.writeJsonField("allowSharedKeyAccessForServices", this.allowSharedKeyAccessForServices);
         jsonWriter.writeJsonField("dataCollaborationPolicyProperties", this.dataCollaborationPolicyProperties);
+        jsonWriter.writeBooleanField("allowCrossTenantDelegationSas", this.allowCrossTenantDelegationSas);
         return jsonWriter.writeEndObject();
     }
 
@@ -938,6 +998,8 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("accessTier".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.accessTier
                         = AccessTier.fromString(reader.getString());
+                } else if ("turboTier".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.turboTier = TurboTier.fromJson(reader);
                 } else if ("azureFilesIdentityBasedAuthentication".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.azureFilesIdentityBasedAuthentication
                         = AzureFilesIdentityBasedAuthentication.fromJson(reader);
@@ -998,6 +1060,9 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("dataCollaborationPolicyProperties".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.dataCollaborationPolicyProperties
                         = StorageDataCollaborationPolicyProperties.fromJson(reader);
+                } else if ("allowCrossTenantDelegationSas".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.allowCrossTenantDelegationSas
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

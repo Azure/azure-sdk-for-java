@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.core.validation.http;
 
+import com.azure.core.http.HttpProtocolVersion;
+import org.conscrypt.OpenSSLProvider;
+import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
+import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -23,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Security;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -53,6 +59,23 @@ public class LocalTestServer {
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
+        this(requestHandler, maxThreads, HttpProtocolVersion.HTTP_1_1, "/keystore.jks");
+    }
+
+    /**
+     * Creates a local server with an HTTP/1.1 connector and a configurable HTTPS connector.
+     *
+     * @param requestHandler The request handler that will process requests.
+     * @param maxThreads The maximum number of server threads.
+     * @param maximumHttpVersion The maximum HTTPS protocol version. HTTP/2 also permits HTTP/1.1.
+     * @throws RuntimeException If the server cannot configure SSL.
+     */
+    public LocalTestServer(RequestHandler requestHandler, int maxThreads, HttpProtocolVersion maximumHttpVersion) {
+        this(requestHandler, maxThreads, maximumHttpVersion, "/http-protocol-keystore.jks");
+    }
+
+    private LocalTestServer(RequestHandler requestHandler, int maxThreads, HttpProtocolVersion maximumHttpVersion,
+        String keystoreResource) {
         this.server = new Server(new ExecutorThreadPool(maxThreads));
 
         HttpConfiguration httpConfiguration = new HttpConfiguration();
@@ -64,21 +87,24 @@ public class LocalTestServer {
         server.addConnector(this.httpConnector);
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
+        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource(keystoreResource), null);
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setKeyStorePassword("password");
         sslContextFactory.setKeyManagerPassword("password");
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
-        SslConnectionFactory sslConnectionFactory
-            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
-
         HttpConfiguration httpsConfiguration = new HttpConfiguration(httpConfiguration);
         httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
 
-        this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpsConfiguration));
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            this.httpsConnector = Http2ConnectorFactory.create(server, sslContextFactory, httpsConfiguration);
+        } else {
+            SslConnectionFactory sslConnectionFactory
+                = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
+            this.httpsConnector
+                = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpsConfiguration));
+        }
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
@@ -89,6 +115,24 @@ public class LocalTestServer {
 
         ServletHolder servletHolder = new ServletHolder(new AzureTestHttpServlet(requestHandler));
         servletContextHandler.addServlet(servletHolder, "/");
+    }
+
+    // Load HTTP/2-only dependencies only when the new server mode is requested by a test-JAR consumer.
+    private static final class Http2ConnectorFactory {
+        private static ServerConnector create(Server server, SslContextFactory.Server sslContextFactory,
+            HttpConfiguration configuration) {
+            Security.addProvider(new OpenSSLProvider());
+            sslContextFactory.setProvider("Conscrypt");
+
+            HttpConnectionFactory http1 = new HttpConnectionFactory(configuration);
+            HTTP2ServerConnectionFactory http2 = new HTTP2ServerConnectionFactory(configuration);
+            String http1AlpnProtocol = http1.getProtocol().toLowerCase(Locale.ROOT);
+            ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory(http2.getProtocol(), http1AlpnProtocol);
+            alpn.setDefaultProtocol(http1AlpnProtocol);
+
+            return new ServerConnector(server, new SslConnectionFactory(sslContextFactory, alpn.getProtocol()), alpn,
+                http2, http1);
+        }
     }
 
     private static final class AzureTestHttpServlet extends HttpServlet {

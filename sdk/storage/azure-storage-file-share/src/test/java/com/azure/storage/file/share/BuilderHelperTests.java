@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
@@ -44,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderHelperTests {
     private static final ClientLogger LOGGER = new ClientLogger(BuilderHelperTests.class);
@@ -55,6 +57,126 @@ public class BuilderHelperTests {
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
+
+    @ParameterizedTest
+    @MethodSource("fileIdUrls")
+    void syncFileIdUrls(String fileId, String snapshot, String expectedUrl) {
+        ShareClient shareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME)
+            .getSnapshotClient(snapshot);
+        ShareFileClient fileClient = shareClient.getFileClientByFileId(fileId);
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClientByFileId(fileId);
+
+        assertEquals(fileId, fileClient.getFileId());
+        assertEquals(expectedUrl, fileClient.getFileUrl());
+        assertEquals(fileId, directoryClient.getFileId());
+        assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
+
+        ShareFileClient rebuiltClient
+            = new ShareFileClientBuilder().endpoint(fileClient.getFileUrl()).buildFileClient();
+        assertEquals(fileId, rebuiltClient.getFileId());
+        assertEquals(expectedUrl, rebuiltClient.getFileUrl());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileIdUrls")
+    void asyncFileIdUrls(String fileId, String snapshot, String expectedUrl) {
+        ShareAsyncClient shareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME)
+            .getSnapshotClient(snapshot);
+        ShareFileAsyncClient fileClient = shareClient.getFileClientByFileId(fileId);
+        ShareDirectoryAsyncClient directoryClient = shareClient.getDirectoryClientByFileId(fileId);
+
+        assertEquals(fileId, fileClient.getFileId());
+        assertEquals(expectedUrl, fileClient.getFileUrl());
+        assertEquals(fileId, directoryClient.getFileId());
+        assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
+
+        ShareFileAsyncClient rebuiltClient
+            = new ShareFileClientBuilder().endpoint(fileClient.getFileUrl()).buildFileAsyncClient();
+        assertEquals(fileId, rebuiltClient.getFileId());
+        assertEquals(expectedUrl, rebuiltClient.getFileUrl());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileIdEndpointSetters")
+    void syncFileIdEndpointSetters(boolean connectionString, String endpointSuffix, String expectedFileId,
+        String expectedPath) {
+        ShareFileClient fileClient
+            = fileIdEndpointBuilder(connectionString, endpointSuffix, expectedFileId, expectedPath).buildFileClient();
+
+        assertEquals(expectedFileId, fileClient.getFileId());
+        assertEquals(expectedPath, fileClient.getFilePath());
+        fileClient.getProperties();
+        if (!expectedFileId.isEmpty()) {
+            assertThrows(IllegalStateException.class, fileClient::exists);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileIdEndpointSetters")
+    void asyncFileIdEndpointSetters(boolean connectionString, String endpointSuffix, String expectedFileId,
+        String expectedPath) {
+        ShareFileAsyncClient fileClient
+            = fileIdEndpointBuilder(connectionString, endpointSuffix, expectedFileId, expectedPath)
+                .buildFileAsyncClient();
+
+        assertEquals(expectedFileId, fileClient.getFileId());
+        assertEquals(expectedPath, fileClient.getFilePath());
+        StepVerifier.create(fileClient.getProperties()).expectNextCount(1).verifyComplete();
+        if (!expectedFileId.isEmpty()) {
+            StepVerifier.create(fileClient.exists()).verifyError(IllegalStateException.class);
+        }
+    }
+
+    private static ShareFileClientBuilder fileIdEndpointBuilder(boolean connectionString, String endpointSuffix,
+        String expectedFileId, String expectedPath) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(HttpMethod.HEAD, request.getHttpMethod());
+            assertEquals(
+                "/" + FileIdTestHelper.SHARE_NAME
+                    + (expectedFileId.isEmpty() ? "/" + expectedPath.replace("/", "%2F") : ""),
+                request.getUrl().getPath());
+            if (expectedFileId.isEmpty()) {
+                assertNull(request.getUrl().getQuery());
+            } else {
+                assertTrue(request.getUrl().getQuery().contains("fileid=" + expectedFileId));
+            }
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+        ShareFileClientBuilder builder = new ShareFileClientBuilder().fileId(FileIdTestHelper.FILE_ID);
+        String endpoint = FileIdTestHelper.ENDPOINT + endpointSuffix;
+        if (connectionString) {
+            builder.connectionString("FileEndpoint=" + endpoint + ";SharedAccessSignature=sv=2027-03-07&sig=test");
+        } else {
+            builder.endpoint(endpoint);
+        }
+        return builder.shareName(FileIdTestHelper.SHARE_NAME).pipeline(pipeline);
+    }
+
+    private static Stream<Arguments> fileIdEndpointSetters() {
+        return Stream.of(false, true)
+            .flatMap(connectionString -> Stream.of(Arguments.of(connectionString, "", FileIdTestHelper.FILE_ID, ""),
+                Arguments.of(connectionString, "/", FileIdTestHelper.FILE_ID, ""),
+                Arguments.of(connectionString, "/share", "", ""), Arguments.of(connectionString, "/share/", "", ""),
+                Arguments.of(connectionString, "/share/directory/file.txt", "", "directory/file.txt"),
+                Arguments.of(connectionString, "?fileid=replacement-id", "replacement-id", ""), Arguments
+                    .of(connectionString, "/share/directory/file.txt?fileid=replacement-id", "replacement-id", "")));
+    }
+
+    // These are not realistic file IDs, but are here for defensive testing
+    private static Stream<Arguments> fileIdUrls() {
+        return Stream
+            .of(new String[] { FileIdTestHelper.FILE_ID, FileIdTestHelper.FILE_ID }, new String[] { "a&b", "a%26b" },
+                new String[] { "a%26b", "a%2526b" }, new String[] { "a +/=?#%", "a%20%2B%2F%3D%3F%23%25" },
+                new String[] { "caf\u00e9", "caf%C3%A9" })
+            .flatMap(pair -> Stream.of(null, "2026-09-29T12:34:56.1234567Z")
+                .map(snapshot -> Arguments.of(pair[0], snapshot,
+                    FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+                        + (snapshot == null ? "?" : "?sharesnapshot=" + snapshot + "&") + "fileid=" + pair[1])));
+    }
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url)

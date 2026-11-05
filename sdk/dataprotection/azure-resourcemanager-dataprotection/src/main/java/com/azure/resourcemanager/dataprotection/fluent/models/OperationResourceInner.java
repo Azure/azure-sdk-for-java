@@ -29,7 +29,7 @@ public final class OperationResourceInner implements JsonSerializable<OperationR
     /*
      * Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will
      * go into the v2.2 Azure REST API guidelines.
-     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the `Error Response` section.
      */
     private ManagementError error;
 
@@ -39,7 +39,7 @@ public final class OperationResourceInner implements JsonSerializable<OperationR
     private String id;
 
     /*
-     * It must match the last segment of the "id" field, and will typically be a GUID / system generated value
+     * It must match the last segment of the `id` field, and will typically be a GUID / system generated value.
      */
     private String name;
 
@@ -76,7 +76,7 @@ public final class OperationResourceInner implements JsonSerializable<OperationR
     /**
      * Get the error property: Required if status == failed or status == canceled. This is the OData v4 error format,
      * used by the RPC and will go into the v2.2 Azure REST API guidelines.
-     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the `Error Response` section.
      * 
      * @return the error value.
      */
@@ -94,7 +94,7 @@ public final class OperationResourceInner implements JsonSerializable<OperationR
     }
 
     /**
-     * Get the name property: It must match the last segment of the "id" field, and will typically be a GUID / system
+     * Get the name property: It must match the last segment of the `id` field, and will typically be a GUID / system
      * generated value.
      * 
      * @return the name value.

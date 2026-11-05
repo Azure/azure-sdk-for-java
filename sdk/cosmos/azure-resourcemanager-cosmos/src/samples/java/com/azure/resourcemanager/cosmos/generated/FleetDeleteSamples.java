@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class FleetDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetDelete.json
+     * x-ms-original-file: 2026-04-01-preview/fleet/CosmosDBFleetDelete.json
      */
     /**
      * Sample code: CosmosDB Fleet Delete.

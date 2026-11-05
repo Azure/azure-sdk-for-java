@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -321,6 +322,24 @@ public final class SchedulersClientImpl implements SchedulersClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("schedulerName") String schedulerName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/restart")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> restart(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("schedulerName") String schedulerName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/restart")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> restartSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("schedulerName") String schedulerName,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -2152,6 +2171,70 @@ public final class SchedulersClientImpl implements SchedulersClient {
         return new PagedIterable<>(
             () -> listPrivateEndpointConnectionsSinglePage(resourceGroupName, schedulerName, context),
             nextLink -> listPrivateEndpointConnectionsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> restartWithResponseAsync(String resourceGroupName, String schedulerName) {
+        return FluxUtil
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, schedulerName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restartAsync(String resourceGroupName, String schedulerName) {
+        return restartWithResponseAsync(resourceGroupName, schedulerName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> restartWithResponse(String resourceGroupName, String schedulerName, Context context) {
+        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, schedulerName, context);
+    }
+
+    /**
+     * Restart a Scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restart(String resourceGroupName, String schedulerName) {
+        restartWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**

@@ -14,10 +14,12 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingPro
 import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
+import com.azure.resourcemanager.compute.models.ImageMetadataProfile;
 import com.azure.resourcemanager.compute.models.ImageVersionSecurityProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.azure.resourcemanager.compute.models.ValidationsProfile;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Describes the properties of a gallery image version.
@@ -63,6 +65,11 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
      * This is the validations profile of a Gallery Image Version.
      */
     private ValidationsProfile validationsProfile;
+
+    /*
+     * The image metadata profiles associated with the gallery image version.
+     */
+    private List<ImageMetadataProfile> imageMetadataProfiles;
 
     /**
      * Creates an instance of GalleryImageVersionProperties class.
@@ -198,6 +205,15 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
     }
 
     /**
+     * Get the imageMetadataProfiles property: The image metadata profiles associated with the gallery image version.
+     * 
+     * @return the imageMetadataProfiles value.
+     */
+    public List<ImageMetadataProfile> imageMetadataProfiles() {
+        return this.imageMetadataProfiles;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -224,6 +240,9 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
         }
         if (validationsProfile() != null) {
             validationsProfile().validate();
+        }
+        if (imageMetadataProfiles() != null) {
+            imageMetadataProfiles().forEach(e -> e.validate());
         }
     }
 
@@ -281,6 +300,10 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
                     deserializedGalleryImageVersionProperties.restore = reader.getNullable(JsonReader::getBoolean);
                 } else if ("validationsProfile".equals(fieldName)) {
                     deserializedGalleryImageVersionProperties.validationsProfile = ValidationsProfile.fromJson(reader);
+                } else if ("imageMetadataProfiles".equals(fieldName)) {
+                    List<ImageMetadataProfile> imageMetadataProfiles
+                        = reader.readArray(reader1 -> ImageMetadataProfile.fromJson(reader1));
+                    deserializedGalleryImageVersionProperties.imageMetadataProfiles = imageMetadataProfiles;
                 } else {
                     reader.skipChildren();
                 }

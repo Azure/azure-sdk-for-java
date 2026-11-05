@@ -117,6 +117,20 @@ public interface CognitiveServicesManagementClient {
     SubscriptionRaiPoliciesClient getSubscriptionRaiPolicies();
 
     /**
+     * Gets the RaiRegosClient object to access its operations.
+     * 
+     * @return the RaiRegosClient object.
+     */
+    RaiRegosClient getRaiRegos();
+
+    /**
+     * Gets the RaiBindingsClient object to access its operations.
+     * 
+     * @return the RaiBindingsClient object.
+     */
+    RaiBindingsClient getRaiBindings();
+
+    /**
      * Gets the RaiBlocklistItemsClient object to access its operations.
      * 
      * @return the RaiBlocklistItemsClient object.
@@ -215,6 +229,13 @@ public interface CognitiveServicesManagementClient {
     ManagedComputeDeploymentsClient getManagedComputeDeployments();
 
     /**
+     * Gets the AdapterDeploymentsClient object to access its operations.
+     * 
+     * @return the AdapterDeploymentsClient object.
+     */
+    AdapterDeploymentsClient getAdapterDeployments();
+
+    /**
      * Gets the ComputeOperationsClient object to access its operations.
      * 
      * @return the ComputeOperationsClient object.
@@ -248,6 +269,13 @@ public interface CognitiveServicesManagementClient {
      * @return the ManagedComputeCapacitiesClient object.
      */
     ManagedComputeCapacitiesClient getManagedComputeCapacities();
+
+    /**
+     * Gets the CostControlsClient object to access its operations.
+     * 
+     * @return the CostControlsClient object.
+     */
+    CostControlsClient getCostControls();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.

@@ -11,7 +11,7 @@ public final class ResourceUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsageInner model = BinaryData.fromString(
-            "{\"limit\":1861224364,\"unit\":\"gusl\",\"currentValue\":1007983036,\"name\":{\"value\":\"ygqukyhejh\",\"localizedValue\":\"sx\"}}")
+            "{\"limit\":802563740,\"unit\":\"bfvoowvrv\",\"currentValue\":1441436450,\"name\":{\"value\":\"ppyostronzmyhgf\",\"localizedValue\":\"nsxkmcwaekrrjr\"}}")
             .toObject(ResourceUsageInner.class);
     }
 }

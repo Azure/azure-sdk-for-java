@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.models.HibernateResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class HibernateResourceOperationResponseImpl implements HibernateResourceOperationResponse {
     private HibernateResourceOperationResponseInner innerObject;
@@ -34,9 +36,11 @@ public final class HibernateResourceOperationResponseImpl implements HibernateRe
     }
 
     public List<ResourceOperation> results() {
-        List<ResourceOperation> inner = this.innerModel().results();
+        List<ResourceOperationInner> inner = this.innerModel().results();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ResourceOperationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

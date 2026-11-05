@@ -12,7 +12,7 @@ public final class PreValidationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreValidationResponseInner model
-            = BinaryData.fromString("{\"validationStatus\":\"yocf\"}").toObject(PreValidationResponseInner.class);
-        Assertions.assertEquals("yocf", model.validationStatus());
+            = BinaryData.fromString("{\"validationStatus\":\"fkts\"}").toObject(PreValidationResponseInner.class);
+        Assertions.assertEquals("fkts", model.validationStatus());
     }
 }

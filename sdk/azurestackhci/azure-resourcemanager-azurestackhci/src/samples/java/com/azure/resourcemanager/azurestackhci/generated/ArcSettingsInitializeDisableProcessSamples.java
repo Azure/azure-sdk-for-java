@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsInitializeDisableProcessSamples {
     /*
-     * x-ms-original-file: 2026-04-30/InitializeDisableProcess.json
+     * x-ms-original-file: 2026-10-01/InitializeDisableProcess.json
      */
     /**
      * Sample code: Trigger ARC Disable.

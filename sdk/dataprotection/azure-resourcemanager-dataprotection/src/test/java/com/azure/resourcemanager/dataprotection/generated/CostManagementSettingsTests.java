@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CostManagementSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementSettings model
-            = BinaryData.fromString("{\"granularityLevel\":\"VaultLevel\"}").toObject(CostManagementSettings.class);
-        Assertions.assertEquals(GranularityLevel.VAULT_LEVEL, model.granularityLevel());
+        CostManagementSettings model = BinaryData.fromString("{\"granularityLevel\":\"ProtectedItemWithParentTag\"}")
+            .toObject(CostManagementSettings.class);
+        Assertions.assertEquals(GranularityLevel.PROTECTED_ITEM_WITH_PARENT_TAG, model.granularityLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostManagementSettings model = new CostManagementSettings().withGranularityLevel(GranularityLevel.VAULT_LEVEL);
+        CostManagementSettings model
+            = new CostManagementSettings().withGranularityLevel(GranularityLevel.PROTECTED_ITEM_WITH_PARENT_TAG);
         model = BinaryData.fromObject(model).toObject(CostManagementSettings.class);
-        Assertions.assertEquals(GranularityLevel.VAULT_LEVEL, model.granularityLevel());
+        Assertions.assertEquals(GranularityLevel.PROTECTED_ITEM_WITH_PARENT_TAG, model.granularityLevel());
     }
 }

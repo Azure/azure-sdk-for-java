@@ -23,7 +23,7 @@ public final class ImportJobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"wzjbh\",\"zsxjrkambtrneg\"],\"conflictResolutionMode\":\"OverwriteIfDirty\",\"maximumErrors\":1133584859,\"status\":{\"state\":\"CompletedPartial\",\"statusMessage\":\"lds\",\"totalBlobsWalked\":1340829025950051949,\"blobsWalkedPerSecond\":3866986596847957683,\"totalBlobsImported\":4713994872634084575,\"importedFiles\":3638902775538009803,\"importedDirectories\":3963298330756380,\"importedSymlinks\":3734568678043826451,\"preexistingFiles\":5804902301213475723,\"preexistingDirectories\":6506157078923372574,\"preexistingSymlinks\":4547037683855462225,\"blobsImportedPerSecond\":3644482320292863264,\"lastCompletionTime\":\"2020-12-23T19:56:30Z\",\"lastStartedTime\":\"2021-06-18T15:44:53Z\",\"totalErrors\":107848050,\"totalConflicts\":438274031}},\"location\":\"uziycsl\",\"tags\":{\"ztcktyh\":\"f\",\"rqzz\":\"tqedcgzulwm\",\"toepryu\":\"rjvpglydzgkrvqee\",\"pzdm\":\"nwy\"},\"id\":\"vzvfvaawzqadfl\",\"name\":\"z\",\"type\":\"riglaec\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"adminStatus\":\"Active\",\"importPrefixes\":[\"gfcwqmpimaqxzhem\",\"yhohujswtwkozzwc\"],\"conflictResolutionMode\":\"Fail\",\"maximumErrors\":2000086586,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"jnjwltlwt\",\"totalBlobsWalked\":3416986726528985836,\"blobsWalkedPerSecond\":6543011935862310483,\"totalBlobsImported\":3500461113555760194,\"importedFiles\":8848282968778843918,\"importedDirectories\":5505955768043549507,\"importedSymlinks\":2349522236511468691,\"preexistingFiles\":7498172814547210028,\"preexistingDirectories\":8150514790276720893,\"preexistingSymlinks\":3743017470080783529,\"blobsImportedPerSecond\":8338858691212529220,\"lastCompletionTime\":\"2021-11-13T05:04:42Z\",\"lastStartedTime\":\"2021-10-17T16:51:19Z\",\"totalErrors\":953526660,\"totalConflicts\":835106090}},\"location\":\"cse\",\"tags\":{\"fb\":\"wnpjhlfzswpchwa\",\"l\":\"usnfepgfewet\"},\"id\":\"xgncxyk\",\"name\":\"hdjhlimmbcx\",\"type\":\"h\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class ImportJobsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImportJob response = manager.importJobs()
-            .getWithResponse("vofqzhvfc", "byfmowuxr", "jpvd", com.azure.core.util.Context.NONE)
+            .getWithResponse("zjcjbtr", "aehvvibrxjjstoq", "eitpkxztmo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uziycsl", response.location());
-        Assertions.assertEquals("f", response.tags().get("ztcktyh"));
-        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, response.adminStatus());
-        Assertions.assertEquals("wzjbh", response.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_IF_DIRTY, response.conflictResolutionMode());
-        Assertions.assertEquals(1133584859, response.maximumErrors());
+        Assertions.assertEquals("cse", response.location());
+        Assertions.assertEquals("wnpjhlfzswpchwa", response.tags().get("fb"));
+        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, response.adminStatus());
+        Assertions.assertEquals("gfcwqmpimaqxzhem", response.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.FAIL, response.conflictResolutionMode());
+        Assertions.assertEquals(2000086586, response.maximumErrors());
     }
 }

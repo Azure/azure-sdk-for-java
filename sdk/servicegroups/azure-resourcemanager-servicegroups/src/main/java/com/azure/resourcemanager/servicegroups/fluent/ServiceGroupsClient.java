@@ -8,7 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupCollectionResponseInner;
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 
 /**
@@ -39,29 +38,4 @@ public interface ServiceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServiceGroupInner get(String serviceGroupName);
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceGroupCollectionResponseInner> listAncestorsWithResponse(String serviceGroupName, Context context);
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceGroupCollectionResponseInner listAncestors(String serviceGroupName);
 }

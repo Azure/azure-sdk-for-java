@@ -16,28 +16,28 @@ public final class ElasticBackupPolicyUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupPolicyUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"gpikqmh\":\"ov\",\"jrmzvupor\":\"ao\",\"qpswokmvkhlggdhb\":\"zdfuydzvkfvxcnqm\",\"zu\":\"mzqkz\"},\"properties\":{\"dailyBackupsToKeep\":1115368168,\"weeklyBackupsToKeep\":1977172976,\"monthlyBackupsToKeep\":556178422,\"policyState\":\"Enabled\"}}")
+            "{\"tags\":{\"uxlxqzvners\":\"ghgshejjtbxqmu\",\"qbsms\":\"ycucrwnamikzeb\"},\"properties\":{\"dailyBackupsToKeep\":273840468,\"weeklyBackupsToKeep\":1274607788,\"monthlyBackupsToKeep\":1915069665,\"policyState\":\"Enabled\"}}")
             .toObject(ElasticBackupPolicyUpdate.class);
-        Assertions.assertEquals("ov", model.tags().get("gpikqmh"));
-        Assertions.assertEquals(1115368168, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(1977172976, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(556178422, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("ghgshejjtbxqmu", model.tags().get("uxlxqzvners"));
+        Assertions.assertEquals(273840468, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(1274607788, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(1915069665, model.properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.properties().policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticBackupPolicyUpdate model = new ElasticBackupPolicyUpdate()
-            .withTags(mapOf("gpikqmh", "ov", "jrmzvupor", "ao", "qpswokmvkhlggdhb", "zdfuydzvkfvxcnqm", "zu", "mzqkz"))
-            .withProperties(new ElasticBackupPolicyUpdateProperties().withDailyBackupsToKeep(1115368168)
-                .withWeeklyBackupsToKeep(1977172976)
-                .withMonthlyBackupsToKeep(556178422)
+            .withTags(mapOf("uxlxqzvners", "ghgshejjtbxqmu", "qbsms", "ycucrwnamikzeb"))
+            .withProperties(new ElasticBackupPolicyUpdateProperties().withDailyBackupsToKeep(273840468)
+                .withWeeklyBackupsToKeep(1274607788)
+                .withMonthlyBackupsToKeep(1915069665)
                 .withPolicyState(ElasticBackupPolicyState.ENABLED));
         model = BinaryData.fromObject(model).toObject(ElasticBackupPolicyUpdate.class);
-        Assertions.assertEquals("ov", model.tags().get("gpikqmh"));
-        Assertions.assertEquals(1115368168, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(1977172976, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(556178422, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("ghgshejjtbxqmu", model.tags().get("uxlxqzvners"));
+        Assertions.assertEquals(273840468, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(1274607788, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(1915069665, model.properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.properties().policyState());
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalAssignments_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/GoalAssignments_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_List_MaximumSet.
@@ -18,11 +18,11 @@ public final class GoalAssignmentsListSamples {
      */
     public static void goalAssignmentsListMaximumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalAssignments().list("zldmpkvqzifygkqau", "xntbyoswztnmvitj", 69, com.azure.core.util.Context.NONE);
+        manager.goalAssignments().list("production-sg", "xntbyoswztnmvitj", 69, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalAssignments_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/GoalAssignments_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_List_MinimumSet.
@@ -31,6 +31,6 @@ public final class GoalAssignmentsListSamples {
      */
     public static void goalAssignmentsListMinimumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalAssignments().list("sg1", null, null, com.azure.core.util.Context.NONE);
+        manager.goalAssignments().list("production-sg", null, null, com.azure.core.util.Context.NONE);
     }
 }

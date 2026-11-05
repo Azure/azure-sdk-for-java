@@ -4,17 +4,18 @@
 
 package com.azure.resourcemanager.durabletask.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of Task Hub.
  */
-@Immutable
+@Fluent
 public final class TaskHubProperties implements JsonSerializable<TaskHubProperties> {
     /*
      * The status of the last operation
@@ -25,6 +26,11 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
      * URL of the durable task scheduler dashboard
      */
     private String dashboardUrl;
+
+    /*
+     * A set of Task Hub capabilities that can be enabled or disabled for a Task Hub
+     */
+    private List<String> capabilities;
 
     /**
      * Creates an instance of TaskHubProperties class.
@@ -51,11 +57,32 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
     }
 
     /**
+     * Get the capabilities property: A set of Task Hub capabilities that can be enabled or disabled for a Task Hub.
+     * 
+     * @return the capabilities value.
+     */
+    public List<String> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Set the capabilities property: A set of Task Hub capabilities that can be enabled or disabled for a Task Hub.
+     * 
+     * @param capabilities the capabilities value to set.
+     * @return the TaskHubProperties object itself.
+     */
+    public TaskHubProperties withCapabilities(List<String> capabilities) {
+        this.capabilities = capabilities;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -78,6 +105,9 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
                     deserializedTaskHubProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("dashboardUrl".equals(fieldName)) {
                     deserializedTaskHubProperties.dashboardUrl = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<String> capabilities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTaskHubProperties.capabilities = capabilities;
                 } else {
                     reader.skipChildren();
                 }

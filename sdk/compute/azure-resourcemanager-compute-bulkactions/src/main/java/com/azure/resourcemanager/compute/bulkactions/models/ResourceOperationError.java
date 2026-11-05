@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * These describe errors that occur at the resource level.
+ * An error that occurred while processing one virtual machine.
  */
 @Immutable
 public final class ResourceOperationError implements JsonSerializable<ResourceOperationError> {
     /*
-     * Code for the error eg 404, 500
+     * A code that identifies the error.
      */
     private String errorCode;
 
     /*
-     * Detailed message about the error
+     * A message that describes the error.
      */
     private String errorDetails;
 
@@ -33,7 +33,7 @@ public final class ResourceOperationError implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the errorCode property: Code for the error eg 404, 500.
+     * Get the errorCode property: A code that identifies the error.
      * 
      * @return the errorCode value.
      */
@@ -42,7 +42,7 @@ public final class ResourceOperationError implements JsonSerializable<ResourceOp
     }
 
     /**
-     * Get the errorDetails property: Detailed message about the error.
+     * Get the errorDetails property: A message that describes the error.
      * 
      * @return the errorDetails value.
      */

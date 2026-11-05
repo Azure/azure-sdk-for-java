@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityInfo model
-            = BinaryData.fromString("{\"id\":\"ugjzzdatqxhocdge\",\"displayName\":\"lgphu\",\"entityType\":\"Group\"}")
-                .toObject(EntityInfo.class);
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.id());
-        Assertions.assertEquals("lgphu", model.displayName());
-        Assertions.assertEquals(EntityType.GROUP, model.entityType());
+        EntityInfo model = BinaryData
+            .fromString("{\"id\":\"eqsrxybzqqedqyt\",\"displayName\":\"iqfouflmmnkz\",\"entityType\":\"User\"}")
+            .toObject(EntityInfo.class);
+        Assertions.assertEquals("eqsrxybzqqedqyt", model.id());
+        Assertions.assertEquals("iqfouflmmnkz", model.displayName());
+        Assertions.assertEquals(EntityType.USER, model.entityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityInfo model
-            = new EntityInfo().withId("ugjzzdatqxhocdge").withDisplayName("lgphu").withEntityType(EntityType.GROUP);
+        EntityInfo model = new EntityInfo().withId("eqsrxybzqqedqyt")
+            .withDisplayName("iqfouflmmnkz")
+            .withEntityType(EntityType.USER);
         model = BinaryData.fromObject(model).toObject(EntityInfo.class);
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.id());
-        Assertions.assertEquals("lgphu", model.displayName());
-        Assertions.assertEquals(EntityType.GROUP, model.entityType());
+        Assertions.assertEquals("eqsrxybzqqedqyt", model.id());
+        Assertions.assertEquals("iqfouflmmnkz", model.displayName());
+        Assertions.assertEquals(EntityType.USER, model.entityType());
     }
 }

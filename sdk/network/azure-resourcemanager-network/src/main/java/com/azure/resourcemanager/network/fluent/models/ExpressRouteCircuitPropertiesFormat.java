@@ -69,6 +69,11 @@ public final class ExpressRouteCircuitPropertiesFormat
     private SubResource expressRoutePort;
 
     /*
+     * The reference to the ExpressRouteLag resource when the circuit is provisioned on an ExpressRouteLag resource.
+     */
+    private SubResource expressRouteLag;
+
+    /*
      * The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
      */
     private Float bandwidthInGbps;
@@ -315,6 +320,28 @@ public final class ExpressRouteCircuitPropertiesFormat
     }
 
     /**
+     * Get the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @return the expressRouteLag value.
+     */
+    public SubResource expressRouteLag() {
+        return this.expressRouteLag;
+    }
+
+    /**
+     * Set the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @param expressRouteLag the expressRouteLag value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withExpressRouteLag(SubResource expressRouteLag) {
+        this.expressRouteLag = expressRouteLag;
+        return this;
+    }
+
+    /**
      * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
      * 
@@ -528,6 +555,7 @@ public final class ExpressRouteCircuitPropertiesFormat
         jsonWriter.writeStringField("serviceProviderNotes", this.serviceProviderNotes);
         jsonWriter.writeJsonField("serviceProviderProperties", this.serviceProviderProperties);
         jsonWriter.writeJsonField("expressRoutePort", this.expressRoutePort);
+        jsonWriter.writeJsonField("expressRouteLag", this.expressRouteLag);
         jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
         jsonWriter.writeStringField("partnerAccountId", this.partnerAccountId);
         jsonWriter.writeStringField("activationKey", this.activationKey);
@@ -579,6 +607,8 @@ public final class ExpressRouteCircuitPropertiesFormat
                         = ExpressRouteCircuitServiceProviderProperties.fromJson(reader);
                 } else if ("expressRoutePort".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.expressRoutePort = SubResource.fromJson(reader);
+                } else if ("expressRouteLag".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.expressRouteLag = SubResource.fromJson(reader);
                 } else if ("bandwidthInGbps".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.bandwidthInGbps
                         = reader.getNullable(JsonReader::getFloat);

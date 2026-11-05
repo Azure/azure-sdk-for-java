@@ -1,0 +1,106 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TripAdvisor Location Search",
+    "version": "1.0.0",
+    "description": "Search for hotels, attractions, restaurants, and places using the TripAdvisor Content API."
+  },
+  "servers": [
+    {
+      "url": "https://api.content.tripadvisor.com/api"
+    }
+  ],
+  "paths": {
+    "/v1/location/search": {
+      "get": {
+        "operationId": "searchForLocations",
+        "summary": "Search for locations",
+        "description": "Returns up to 10 locations matching the search query and optional category.",
+        "parameters": [
+          {
+            "name": "searchQuery",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["hotels", "attractions", "restaurants", "geos"]
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Location search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "location_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "address_obj": {
+                            "type": "object",
+                            "properties": {
+                              "address_string": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cosoLocationApiLambdaAuthorizer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cosoLocationApiLambdaAuthorizer": {
+        "type": "apiKey",
+        "name": "key",
+        "in": "query"
+      }
+    }
+  }
+}

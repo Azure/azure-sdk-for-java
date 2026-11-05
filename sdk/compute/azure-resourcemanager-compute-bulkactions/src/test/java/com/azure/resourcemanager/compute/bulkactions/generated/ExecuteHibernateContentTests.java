@@ -13,14 +13,17 @@ import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ExecuteHibernateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteHibernateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":2139410059,\"retryWindowInMinutes\":870158563,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"osfln\",\"osfqpteehzzv\"],\"desiredSizes\":[\"qrimzinpv\",\"wjdk\"],\"availabilityZones\":true}},\"resources\":{\"ids\":[\"dqxhcrmnohjtckwh\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"ifiyipjxsqwpgrj\",\"resourceContext\":\"znorcj\"},{\"resourceId\":\"vsnb\",\"resourceContext\":\"xqabnmocpcysh\"},{\"resourceId\":\"rzafbljjgpbtoqcj\",\"resourceContext\":\"klj\"},{\"resourceId\":\"vbqid\",\"resourceContext\":\"qajzyulpkudjkr\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":2139410059,\"retryWindowInMinutes\":870158563,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"osfln\",\"osfqpteehzzv\"],\"desiredSizes\":[\"qrimzinpv\",\"wjdk\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"soifiyipjxsqw\":\"\\\"datadqxhcrmnohjtckwh\\\"\"}},\"resources\":{\"ids\":[\"jbznorc\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"snb\",\"resourceContext\":\"xqabnmocpcysh\"}]}}")
             .toObject(ExecuteHibernateContent.class);
         Assertions.assertEquals(2139410059, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(870158563, model.executionParameters().retryPolicy().retryWindowInMinutes());
@@ -32,9 +35,9 @@ public final class ExecuteHibernateContentTests {
         Assertions.assertEquals("qrimzinpv",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.resources().ids().get(0));
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("znorcj", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("jbznorc", model.resources().ids().get(0));
+        Assertions.assertEquals("snb", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("xqabnmocpcysh", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
@@ -49,13 +52,12 @@ public final class ExecuteHibernateContentTests {
                     .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
                         .withDesiredLocations(Arrays.asList("osfln", "osfqpteehzzv"))
                         .withDesiredSizes(Arrays.asList("qrimzinpv", "wjdk"))
-                        .withAvailabilityZones(true)))
-                .withResources(new Resources().withIds(Arrays.asList("dqxhcrmnohjtckwh")))
-                .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
-                    new ResourceWithContext().withResourceId("ifiyipjxsqwpgrj").withResourceContext("znorcj"),
-                    new ResourceWithContext().withResourceId("vsnb").withResourceContext("xqabnmocpcysh"),
-                    new ResourceWithContext().withResourceId("rzafbljjgpbtoqcj").withResourceContext("klj"),
-                    new ResourceWithContext().withResourceId("vbqid").withResourceContext("qajzyulpkudjkr"))));
+                        .withAvailabilityZones(true))
+                    .withAdditionalCreateParameters(mapOf("soifiyipjxsqw",
+                        BinaryData.fromBytes("\"datadqxhcrmnohjtckwh\"".getBytes(StandardCharsets.UTF_8)))))
+                .withResources(new Resources().withIds(Arrays.asList("jbznorc")))
+                .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays
+                    .asList(new ResourceWithContext().withResourceId("snb").withResourceContext("xqabnmocpcysh"))));
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateContent.class);
         Assertions.assertEquals(2139410059, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(870158563, model.executionParameters().retryPolicy().retryWindowInMinutes());
@@ -67,8 +69,20 @@ public final class ExecuteHibernateContentTests {
         Assertions.assertEquals("qrimzinpv",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.resources().ids().get(0));
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("znorcj", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("jbznorc", model.resources().ids().get(0));
+        Assertions.assertEquals("snb", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("xqabnmocpcysh", model.resourcesWithContext().resources().get(0).resourceContext());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

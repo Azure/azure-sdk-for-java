@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -161,8 +160,7 @@ public final class JdkHttpClientLocalTestServer {
 
     private static LocalTestServer initializeProxyServer() {
         LocalTestServer proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getRequestURL().toString();
-            if (!Objects.equals(requestUrl, "/default")) {
+            if (!"/default".equals(req.getServletPath())) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 

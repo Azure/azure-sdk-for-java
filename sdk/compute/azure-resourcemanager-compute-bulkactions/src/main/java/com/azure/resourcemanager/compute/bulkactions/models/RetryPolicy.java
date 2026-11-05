@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The retry policy for the user request.
+ * The retry settings for a bulk action.
  */
 @Fluent
 public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     /*
-     * Retry count for user request
+     * The maximum number of retry attempts.
      */
     private Integer retryCount;
 
     /*
-     * Retry window in minutes for user request
+     * The period, in minutes, during which Bulk Actions can retry the operation.
      */
     private Integer retryWindowInMinutes;
 
     /*
-     * Action to take on failure
+     * The operation that Bulk Actions attempts when the requested operation fails.
      */
     private ResourceOperationType onFailureAction;
 
@@ -38,7 +38,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Get the retryCount property: Retry count for user request.
+     * Get the retryCount property: The maximum number of retry attempts.
      * 
      * @return the retryCount value.
      */
@@ -47,7 +47,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Set the retryCount property: Retry count for user request.
+     * Set the retryCount property: The maximum number of retry attempts.
      * 
      * @param retryCount the retryCount value to set.
      * @return the RetryPolicy object itself.
@@ -58,7 +58,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Get the retryWindowInMinutes property: Retry window in minutes for user request.
+     * Get the retryWindowInMinutes property: The period, in minutes, during which Bulk Actions can retry the operation.
      * 
      * @return the retryWindowInMinutes value.
      */
@@ -67,7 +67,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Set the retryWindowInMinutes property: Retry window in minutes for user request.
+     * Set the retryWindowInMinutes property: The period, in minutes, during which Bulk Actions can retry the operation.
      * 
      * @param retryWindowInMinutes the retryWindowInMinutes value to set.
      * @return the RetryPolicy object itself.
@@ -78,7 +78,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Get the onFailureAction property: Action to take on failure.
+     * Get the onFailureAction property: The operation that Bulk Actions attempts when the requested operation fails.
      * 
      * @return the onFailureAction value.
      */
@@ -87,7 +87,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Set the onFailureAction property: Action to take on failure.
+     * Set the onFailureAction property: The operation that Bulk Actions attempts when the requested operation fails.
      * 
      * @param onFailureAction the onFailureAction value to set.
      * @return the RetryPolicy object itself.

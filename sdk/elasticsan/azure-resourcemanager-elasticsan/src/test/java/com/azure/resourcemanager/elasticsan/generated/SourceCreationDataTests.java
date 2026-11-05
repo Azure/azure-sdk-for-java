@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SourceCreationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SourceCreationData model = BinaryData.fromString("{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"jixhbk\"}")
-            .toObject(SourceCreationData.class);
-        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.createSource());
-        Assertions.assertEquals("jixhbk", model.sourceId());
+        SourceCreationData model
+            = BinaryData.fromString("{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"txukcdmp\"}")
+                .toObject(SourceCreationData.class);
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.createSource());
+        Assertions.assertEquals("txukcdmp", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceCreationData model
-            = new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT).withSourceId("jixhbk");
+            = new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("txukcdmp");
         model = BinaryData.fromObject(model).toObject(SourceCreationData.class);
-        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.createSource());
-        Assertions.assertEquals("jixhbk", model.sourceId());
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.createSource());
+        Assertions.assertEquals("txukcdmp", model.sourceId());
     }
 }

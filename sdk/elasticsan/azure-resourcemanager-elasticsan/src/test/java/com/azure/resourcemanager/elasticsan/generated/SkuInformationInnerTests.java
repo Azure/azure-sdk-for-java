@@ -14,9 +14,9 @@ public final class SkuInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuInformationInner model = BinaryData.fromString(
-            "{\"name\":\"Premium_LRS\",\"tier\":\"Premium\",\"resourceType\":\"wxzvlvqhjkb\",\"locations\":[\"btn\",\"xiebwwaloayqcg\",\"rtzju\",\"gwyzm\"],\"locationInfo\":[{\"location\":\"ngmtsavjcb\",\"zones\":[\"qpsrknftguvri\",\"hprwmdyv\",\"qtayri\"]},{\"location\":\"ro\",\"zones\":[\"exrmcqibycnojvk\",\"mefqsgzvahapjyzh\"]},{\"location\":\"gqzcjr\",\"zones\":[\"jzlmw\",\"xkvugfhzov\"]},{\"location\":\"jvzunluthnnp\",\"zones\":[\"i\",\"eilpjzuaejxdu\",\"tskzbbtdzumveek\",\"pwo\"]}],\"capabilities\":[{\"name\":\"fpbsjyofdxl\",\"value\":\"sd\"},{\"name\":\"ouwaboekqvkeln\",\"value\":\"vbxwyjsflhh\"}]}")
+            "{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"fwdsj\",\"locations\":[\"ljuti\",\"swacffgdkzz\",\"wkfvhqcrailvp\"],\"locationInfo\":[{\"location\":\"uflrwd\",\"zones\":[\"lxyjr\",\"sag\"],\"zoneDetails\":[{\"name\":[\"hgw\",\"apnedgfbcvkc\",\"q\",\"pkeqdcvdrhvoo\"],\"capabilities\":[{},{},{}]},{\"name\":[\"obzdopcjwvnhdl\",\"wmgxcxrsl\",\"mutwuoe\",\"rpkhjwn\"],\"capabilities\":[{},{}]},{\"name\":[\"uicpd\",\"gk\",\"zl\",\"mbmpaxmodfvuefy\"],\"capabilities\":[{},{}]},{\"name\":[\"vmwy\",\"rfouyftaakcpw\"],\"capabilities\":[{},{},{}]}]},{\"location\":\"qtmnubexkpzk\",\"zones\":[\"ndjmquxvyp\",\"mg\"],\"zoneDetails\":[{\"name\":[\"hojvpajqgxysmocm\",\"qfqvmkc\"],\"capabilities\":[{},{}]},{\"name\":[\"vhelxprglyatdd\",\"kcbcue\",\"rjxgciqib\"],\"capabilities\":[{}]},{\"name\":[\"sdqrhzoymibmrq\",\"ibahwflus\",\"dtmhrkwofyyvoqa\",\"piexpbtgiw\"],\"capabilities\":[{},{}]}]}],\"capabilities\":[{\"name\":\"ashrt\",\"value\":\"kcnqxwbpo\"},{\"name\":\"lpiujwaa\",\"value\":\"pqiiobyuqe\"}]}")
             .toObject(SkuInformationInner.class);
-        Assertions.assertEquals(SkuName.PREMIUM_LRS, model.name());
+        Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }
 }

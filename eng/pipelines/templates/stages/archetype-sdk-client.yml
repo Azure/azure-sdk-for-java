@@ -49,6 +49,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: LiveTestStages
     type: stageList
     default: []
@@ -118,6 +121,7 @@ extends:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestPipeline: ${{ parameters.TestPipeline }}
               SDKType: ${{ parameters.SDKType }}
+              IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
               Artifacts: ${{ parameters.Artifacts }}
               ExcludePaths: ${{parameters.ExcludePaths}}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
@@ -208,4 +212,3 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
               PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
-

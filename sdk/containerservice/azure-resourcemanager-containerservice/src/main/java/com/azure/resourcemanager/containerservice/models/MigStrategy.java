@@ -13,18 +13,20 @@ import java.util.Collection;
  */
 public final class MigStrategy extends ExpandableStringEnum<MigStrategy> {
     /**
-     * Don't set a MIG strategy. If you previously had one set, this will override it and set remove the set MIG
-     * strategy.
+     * No MIG partitioning is applied; the GPU is exposed as a single unified whole-device instance. Specifying this
+     * value removes any previously active MIG strategy.
      */
     public static final MigStrategy NONE = fromString("None");
 
     /**
-     * Set the MIG strategy for managed MIG as single.
+     * All MIG partitions on every GPU in the pool are the same size (`nvidia.com/mig.strategy: single`). The uniform
+     * partition size is controlled by `nvidia.migProfiles` (exactly one element required).
      */
     public static final MigStrategy SINGLE = fromString("Single");
 
     /**
-     * Set the MIG strategy for managed MIG as mixed.
+     * Each GPU in the pool can host heterogeneous partitions of different sizes simultaneously
+     * (`nvidia.com/mig.strategy: mixed`). The exact partition mix per GPU is declared via `nvidia.migProfiles`.
      */
     public static final MigStrategy MIXED = fromString("Mixed");
 

@@ -29,16 +29,15 @@ public final class TokenIssuerProfile implements JsonSerializable<TokenIssuerPro
     private String url;
 
     /*
-     * This configures the acceptable audiences the JWT token, issued by the identity
-     * provider, must be issued to. At least one of the entries must match the
-     * 'aud' claim in the JWT token.
+     * This configures the acceptable audiences for JWT tokens issued by the identity provider.
+     * At least one of the entries must match the 'aud' claim in the JWT token.
      * 
-     * audiences must contain at least one entry and must not exceed ten entries.
+     * Audiences must contain at least one entry and must not exceed ten entries.
      */
     private List<String> audiences;
 
     /*
-     * The issuer of the token
+     * The issuer of the token.
      * 
      * Certificate bundle to use to validate server certificates for the configured URL.
      * It must be PEM encoded and when not specified, the system trust is used.
@@ -80,11 +79,11 @@ public final class TokenIssuerProfile implements JsonSerializable<TokenIssuerPro
     }
 
     /**
-     * Get the audiences property: This configures the acceptable audiences the JWT token, issued by the identity
-     * provider, must be issued to. At least one of the entries must match the
-     * 'aud' claim in the JWT token.
+     * Get the audiences property: This configures the acceptable audiences for JWT tokens issued by the identity
+     * provider.
+     * At least one of the entries must match the 'aud' claim in the JWT token.
      * 
-     * audiences must contain at least one entry and must not exceed ten entries.
+     * Audiences must contain at least one entry and must not exceed ten entries.
      * 
      * @return the audiences value.
      */
@@ -93,11 +92,11 @@ public final class TokenIssuerProfile implements JsonSerializable<TokenIssuerPro
     }
 
     /**
-     * Set the audiences property: This configures the acceptable audiences the JWT token, issued by the identity
-     * provider, must be issued to. At least one of the entries must match the
-     * 'aud' claim in the JWT token.
+     * Set the audiences property: This configures the acceptable audiences for JWT tokens issued by the identity
+     * provider.
+     * At least one of the entries must match the 'aud' claim in the JWT token.
      * 
-     * audiences must contain at least one entry and must not exceed ten entries.
+     * Audiences must contain at least one entry and must not exceed ten entries.
      * 
      * @param audiences the audiences value to set.
      * @return the TokenIssuerProfile object itself.
@@ -108,7 +107,7 @@ public final class TokenIssuerProfile implements JsonSerializable<TokenIssuerPro
     }
 
     /**
-     * Get the ca property: The issuer of the token
+     * Get the ca property: The issuer of the token.
      * 
      * Certificate bundle to use to validate server certificates for the configured URL.
      * It must be PEM encoded and when not specified, the system trust is used.
@@ -120,7 +119,7 @@ public final class TokenIssuerProfile implements JsonSerializable<TokenIssuerPro
     }
 
     /**
-     * Set the ca property: The issuer of the token
+     * Set the ca property: The issuer of the token.
      * 
      * Certificate bundle to use to validate server certificates for the configured URL.
      * It must be PEM encoded and when not specified, the system trust is used.

@@ -12,19 +12,19 @@ public final class PrivateEndpointOutboundRuleDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointOutboundRuleDestination model
-            = BinaryData.fromString("{\"serviceResourceId\":\"pp\",\"subresourceTarget\":\"aohoqkpjtnq\"}")
+            = BinaryData.fromString("{\"serviceResourceId\":\"aieswhddzy\",\"subresourceTarget\":\"snuepywyjln\"}")
                 .toObject(PrivateEndpointOutboundRuleDestination.class);
-        Assertions.assertEquals("pp", model.serviceResourceId());
-        Assertions.assertEquals("aohoqkpjtnq", model.subresourceTarget());
+        Assertions.assertEquals("aieswhddzy", model.serviceResourceId());
+        Assertions.assertEquals("snuepywyjln", model.subresourceTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointOutboundRuleDestination model
-            = new PrivateEndpointOutboundRuleDestination().withServiceResourceId("pp")
-                .withSubresourceTarget("aohoqkpjtnq");
+            = new PrivateEndpointOutboundRuleDestination().withServiceResourceId("aieswhddzy")
+                .withSubresourceTarget("snuepywyjln");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointOutboundRuleDestination.class);
-        Assertions.assertEquals("pp", model.serviceResourceId());
-        Assertions.assertEquals("aohoqkpjtnq", model.subresourceTarget());
+        Assertions.assertEquals("aieswhddzy", model.serviceResourceId());
+        Assertions.assertEquals("snuepywyjln", model.subresourceTarget());
     }
 }

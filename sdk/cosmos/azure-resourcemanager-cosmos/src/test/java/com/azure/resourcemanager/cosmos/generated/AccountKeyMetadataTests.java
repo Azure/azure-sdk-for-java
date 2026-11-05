@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.AccountKeyMetadata;
 public final class AccountKeyMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountKeyMetadata model
-            = BinaryData.fromString("{\"generationTime\":\"2021-12-09T00:28:10Z\"}").toObject(AccountKeyMetadata.class);
+        AccountKeyMetadata model = BinaryData
+            .fromString(
+                "{\"generationTime\":\"2021-06-23T19:38:39Z\",\"approximateLastUsageTime\":\"2021-08-08T12:50:25Z\"}")
+            .toObject(AccountKeyMetadata.class);
     }
 }

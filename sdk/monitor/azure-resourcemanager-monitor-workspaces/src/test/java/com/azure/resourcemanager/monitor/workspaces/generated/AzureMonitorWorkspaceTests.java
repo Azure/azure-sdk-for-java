@@ -6,27 +6,35 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceActions;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceMetrics;
+import com.azure.resourcemanager.monitor.workspaces.models.DefaultActionGroupResource;
 import com.azure.resourcemanager.monitor.workspaces.models.PublicNetworkAccess;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureMonitorWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorWorkspace model = BinaryData.fromString(
-            "{\"accountId\":\"bzqqedqytbciq\",\"metrics\":{\"prometheusQueryEndpoint\":\"flmmnk\",\"internalId\":\"modmglougpb\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Failed\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"uqktap\",\"dataCollectionEndpointResourceId\":\"wgcu\",\"dataCollectionRuleImmutableId\":\"tumkdosvqwhbm\",\"ingestionEndpoints\":{\"metrics\":\"bjf\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"bexppb\"],\"privateEndpoint\":{\"id\":\"qrolfpf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"gbquxigj\",\"actionsRequired\":\"gzjaoyfhrtxilne\"},\"provisioningState\":\"Creating\"},\"id\":\"ysvlejuvf\",\"name\":\"awrlyx\",\"type\":\"jkcpr\"},{\"properties\":{\"groupIds\":[\"xgjvtbv\"],\"privateEndpoint\":{\"id\":\"szdnr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"uhmuouqfprwzwbn\",\"actionsRequired\":\"itnwuizgazxufi\"},\"provisioningState\":\"Creating\"},\"id\":\"y\",\"name\":\"i\",\"type\":\"rfidfvzwdz\"},{\"properties\":{\"groupIds\":[\"mwisdkfthwxmnt\",\"i\",\"aop\"],\"privateEndpoint\":{\"id\":\"ijcmmx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"uf\",\"actionsRequired\":\"pymzidnsezcxtbzs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cs\",\"name\":\"ewmdw\",\"type\":\"jeiachboosfl\"}],\"publicNetworkAccess\":\"Disabled\"}")
+            "{\"accountId\":\"pemvtzfkufubljof\",\"metrics\":{\"prometheusQueryEndpoint\":\"ofjaeqjhqjb\",\"internalId\":\"v\",\"enableAccessUsingResourcePermissions\":true},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"ngsntnbybk\",\"dataCollectionEndpointResourceId\":\"cwrwclxxwrljdous\",\"dataCollectionRuleImmutableId\":\"qvkoc\",\"ingestionEndpoints\":{\"metrics\":\"dkwt\"}},\"endpoints\":{\"query\":\"bnjbiksqrglssain\"},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"lljfmppeeb\",\"mgxsab\",\"yqduujit\",\"jczdzevndh\"],\"privateEndpoint\":{\"id\":\"pdappds\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"wrwjfeu\",\"actionsRequired\":\"hutje\"},\"provisioningState\":\"Creating\"},\"id\":\"ldhugjzzdatqxh\",\"name\":\"cdgea\",\"type\":\"lgphu\"},{\"properties\":{\"groupIds\":[\"dvkaozw\"],\"privateEndpoint\":{\"id\":\"tyhxhurokft\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"niwpwcukj\",\"actionsRequired\":\"giawx\"},\"provisioningState\":\"Failed\"},\"id\":\"plwckbas\",\"name\":\"ypnddhsgcb\",\"type\":\"cph\"},{\"properties\":{\"groupIds\":[\"tynqgoul\"],\"privateEndpoint\":{\"id\":\"likwyqkgfgib\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"akeqs\",\"actionsRequired\":\"yb\"},\"provisioningState\":\"Failed\"},\"id\":\"dqytbciqfouflmm\",\"name\":\"kzsmodm\",\"type\":\"lougpbkw\"}],\"publicNetworkAccess\":\"Disabled\",\"actions\":{\"defaultActionGroups\":[{\"id\":\"ktapspwgcuertu\"},{\"id\":\"dosvqwhbmdgbbjf\"}]}}")
             .toObject(AzureMonitorWorkspace.class);
-        Assertions.assertFalse(model.metrics().enableAccessUsingResourcePermissions());
+        Assertions.assertTrue(model.metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("ktapspwgcuertu", model.actions().defaultActionGroups().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMonitorWorkspace model = new AzureMonitorWorkspace()
-            .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(false))
-            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+            .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withActions(new AzureMonitorWorkspaceActions()
+                .withDefaultActionGroups(Arrays.asList(new DefaultActionGroupResource().withId("ktapspwgcuertu"),
+                    new DefaultActionGroupResource().withId("dosvqwhbmdgbbjf"))));
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspace.class);
-        Assertions.assertFalse(model.metrics().enableAccessUsingResourcePermissions());
+        Assertions.assertTrue(model.metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("ktapspwgcuertu", model.actions().defaultActionGroups().get(0).id());
     }
 }

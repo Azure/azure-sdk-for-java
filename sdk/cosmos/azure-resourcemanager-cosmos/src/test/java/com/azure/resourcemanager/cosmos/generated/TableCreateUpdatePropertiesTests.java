@@ -18,36 +18,36 @@ public final class TableCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"rottjzcfyjzptw\",\"restoreParameters\":{\"restoreSource\":\"h\",\"restoreTimestampInUtc\":\"2021-03-15T17:03:59Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1335089450,\"autoscaleSettings\":{\"maxThroughput\":1933149866}}}")
+            "{\"resource\":{\"id\":\"mtuowogtgitsqhzv\",\"restoreParameters\":{\"restoreSource\":\"cdb\",\"restoreTimestampInUtc\":\"2021-09-14T13:57:27Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"},\"options\":{\"throughput\":1628332910,\"autoscaleSettings\":{\"maxThroughput\":505838668}}}")
             .toObject(TableCreateUpdateProperties.class);
-        Assertions.assertEquals("rottjzcfyjzptw", model.resource().id());
-        Assertions.assertEquals("h", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T17:03:59Z"),
+        Assertions.assertEquals("mtuowogtgitsqhzv", model.resource().id());
+        Assertions.assertEquals("cdb", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T13:57:27Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(1335089450, model.options().throughput());
-        Assertions.assertEquals(1933149866, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
+        Assertions.assertEquals(1628332910, model.options().throughput());
+        Assertions.assertEquals(505838668, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TableCreateUpdateProperties model = new TableCreateUpdateProperties()
-            .withResource(new TableResource().withId("rottjzcfyjzptw")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("h")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-15T17:03:59Z"))
+            .withResource(new TableResource().withId("mtuowogtgitsqhzv")
+                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("cdb")
+                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-09-14T13:57:27Z"))
                     .withRestoreWithTtlDisabled(true))
-                .withCreateMode(CreateMode.RESTORE))
-            .withOptions(new CreateUpdateOptions().withThroughput(1335089450)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1933149866)));
+                .withCreateMode(CreateMode.DEFAULT))
+            .withOptions(new CreateUpdateOptions().withThroughput(1628332910)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(505838668)));
         model = BinaryData.fromObject(model).toObject(TableCreateUpdateProperties.class);
-        Assertions.assertEquals("rottjzcfyjzptw", model.resource().id());
-        Assertions.assertEquals("h", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T17:03:59Z"),
+        Assertions.assertEquals("mtuowogtgitsqhzv", model.resource().id());
+        Assertions.assertEquals("cdb", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T13:57:27Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(1335089450, model.options().throughput());
-        Assertions.assertEquals(1933149866, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
+        Assertions.assertEquals(1628332910, model.options().throughput());
+        Assertions.assertEquals(505838668, model.options().autoscaleSettings().maxThroughput());
     }
 }

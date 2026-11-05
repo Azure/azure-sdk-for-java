@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteStartRequest request for executeStart operations.
+ * The virtual machines and execution settings for a bulk start action.
  */
 @Fluent
 public final class ExecuteStartContent implements JsonSerializable<ExecuteStartContent> {
     /*
-     * The execution parameters for the request
+     * The execution settings for the bulk action.
      */
     private ExecutionParameters executionParameters;
 
     /*
-     * The resources for the request
+     * The target virtual machines.
      */
     private Resources resources;
 
@@ -39,7 +39,7 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
     }
 
     /**
-     * Get the executionParameters property: The execution parameters for the request.
+     * Get the executionParameters property: The execution settings for the bulk action.
      * 
      * @return the executionParameters value.
      */
@@ -48,7 +48,7 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
     }
 
     /**
-     * Set the executionParameters property: The execution parameters for the request.
+     * Set the executionParameters property: The execution settings for the bulk action.
      * 
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteStartContent object itself.
@@ -59,7 +59,7 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
     }
 
     /**
-     * Get the resources property: The resources for the request.
+     * Get the resources property: The target virtual machines.
      * 
      * @return the resources value.
      */
@@ -68,7 +68,7 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
     }
 
     /**
-     * Set the resources property: The resources for the request.
+     * Set the resources property: The target virtual machines.
      * 
      * @param resources the resources value to set.
      * @return the ExecuteStartContent object itself.

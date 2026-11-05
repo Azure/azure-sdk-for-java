@@ -13,10 +13,10 @@ public final class RpSkuDetailsForExistingResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RpSkuDetailsForExistingResourceInner model = BinaryData
-            .fromString("{\"resourceType\":\"icndvkaozwyifty\",\"sku\":{\"name\":\"xhurok\",\"tier\":\"Fabric\"}}")
+            .fromString("{\"resourceType\":\"je\",\"sku\":{\"name\":\"tmrldhugjzzdatq\",\"tier\":\"Fabric\"}}")
             .toObject(RpSkuDetailsForExistingResourceInner.class);
-        Assertions.assertEquals("icndvkaozwyifty", model.resourceType());
-        Assertions.assertEquals("xhurok", model.sku().name());
+        Assertions.assertEquals("je", model.resourceType());
+        Assertions.assertEquals("tmrldhugjzzdatq", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
     }
 }

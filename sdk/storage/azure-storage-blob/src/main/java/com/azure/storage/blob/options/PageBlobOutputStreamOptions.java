@@ -7,13 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when opening an output stream to a page blob.
  */
 @Fluent
-public final class PageBlobOutputStreamOptions {
+public final class PageBlobOutputStreamOptions implements ValidatableContent {
     private final PageRange pageRange;
     private BlobRequestConditions requestConditions;
     private ContentValidationAlgorithm contentValidationAlgorithm;
@@ -64,6 +65,7 @@ public final class PageBlobOutputStreamOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -75,6 +77,7 @@ public final class PageBlobOutputStreamOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public PageBlobOutputStreamOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

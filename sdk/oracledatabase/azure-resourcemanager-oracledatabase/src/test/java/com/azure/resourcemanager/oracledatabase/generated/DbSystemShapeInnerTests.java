@@ -13,32 +13,32 @@ public final class DbSystemShapeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbSystemShapeInner model = BinaryData.fromString(
-            "{\"properties\":{\"shapeFamily\":\"vpdbodaciz\",\"shapeName\":\"j\",\"availableCoreCount\":1933405509,\"minimumCoreCount\":588632763,\"runtimeMinimumCoreCount\":218475539,\"coreCountIncrement\":268834532,\"minStorageCount\":991301746,\"maxStorageCount\":180588113,\"availableDataStoragePerServerInTbs\":79.38383675850163,\"availableMemoryPerNodeInGbs\":840101476,\"availableDbNodePerNodeInGbs\":2080529192,\"minCoreCountPerNode\":1573874006,\"availableMemoryInGbs\":1070567995,\"minMemoryPerNodeInGbs\":485906823,\"availableDbNodeStorageInGbs\":74498684,\"minDbNodeStoragePerNodeInGbs\":1472757866,\"availableDataStorageInTbs\":1155749150,\"minDataStorageInTbs\":754811246,\"minimumNodeCount\":1983061775,\"maximumNodeCount\":1789165646,\"availableCoreCountPerNode\":1363843436,\"computeModel\":\"OCPU\",\"areServerTypesSupported\":true,\"displayName\":\"ij\",\"shapeAttributes\":[\"vfxzsjab\",\"bsystawfsdjpvk\",\"p\",\"jxbkzbzkdvn\"]},\"id\":\"abudurgk\",\"name\":\"kmokz\",\"type\":\"jjklff\"}")
+            "{\"properties\":{\"shapeFamily\":\"qtnqtt\",\"shapeName\":\"zlwfffiakp\",\"availableCoreCount\":1860291958,\"minimumCoreCount\":658417740,\"runtimeMinimumCoreCount\":1896813749,\"coreCountIncrement\":147103484,\"minStorageCount\":925858179,\"maxStorageCount\":610682904,\"availableDataStoragePerServerInTbs\":61.849930366347806,\"availableMemoryPerNodeInGbs\":1482322760,\"availableDbNodePerNodeInGbs\":968506113,\"minCoreCountPerNode\":448290186,\"availableMemoryInGbs\":689960691,\"minMemoryPerNodeInGbs\":1760801565,\"availableDbNodeStorageInGbs\":404997188,\"minDbNodeStoragePerNodeInGbs\":84771050,\"availableDataStorageInTbs\":1385853585,\"minDataStorageInTbs\":210534625,\"minimumNodeCount\":2143760681,\"maximumNodeCount\":227653729,\"availableCoreCountPerNode\":1266707989,\"computeModel\":\"ECPU\",\"areServerTypesSupported\":true,\"displayName\":\"upev\",\"shapeAttributes\":[\"stotxh\"]},\"id\":\"ujbypelmcuvhixb\",\"name\":\"xyfwnylrcool\",\"type\":\"ttpkiwkkbnujrywv\"}")
             .toObject(DbSystemShapeInner.class);
-        Assertions.assertEquals("vpdbodaciz", model.properties().shapeFamily());
-        Assertions.assertEquals("j", model.properties().shapeName());
-        Assertions.assertEquals(1933405509, model.properties().availableCoreCount());
-        Assertions.assertEquals(588632763, model.properties().minimumCoreCount());
-        Assertions.assertEquals(218475539, model.properties().runtimeMinimumCoreCount());
-        Assertions.assertEquals(268834532, model.properties().coreCountIncrement());
-        Assertions.assertEquals(991301746, model.properties().minStorageCount());
-        Assertions.assertEquals(180588113, model.properties().maxStorageCount());
-        Assertions.assertEquals(79.38383675850163D, model.properties().availableDataStoragePerServerInTbs());
-        Assertions.assertEquals(840101476, model.properties().availableMemoryPerNodeInGbs());
-        Assertions.assertEquals(2080529192, model.properties().availableDbNodePerNodeInGbs());
-        Assertions.assertEquals(1573874006, model.properties().minCoreCountPerNode());
-        Assertions.assertEquals(1070567995, model.properties().availableMemoryInGbs());
-        Assertions.assertEquals(485906823, model.properties().minMemoryPerNodeInGbs());
-        Assertions.assertEquals(74498684, model.properties().availableDbNodeStorageInGbs());
-        Assertions.assertEquals(1472757866, model.properties().minDbNodeStoragePerNodeInGbs());
-        Assertions.assertEquals(1155749150, model.properties().availableDataStorageInTbs());
-        Assertions.assertEquals(754811246, model.properties().minDataStorageInTbs());
-        Assertions.assertEquals(1983061775, model.properties().minimumNodeCount());
-        Assertions.assertEquals(1789165646, model.properties().maximumNodeCount());
-        Assertions.assertEquals(1363843436, model.properties().availableCoreCountPerNode());
-        Assertions.assertEquals(ComputeModel.OCPU, model.properties().computeModel());
+        Assertions.assertEquals("qtnqtt", model.properties().shapeFamily());
+        Assertions.assertEquals("zlwfffiakp", model.properties().shapeName());
+        Assertions.assertEquals(1860291958, model.properties().availableCoreCount());
+        Assertions.assertEquals(658417740, model.properties().minimumCoreCount());
+        Assertions.assertEquals(1896813749, model.properties().runtimeMinimumCoreCount());
+        Assertions.assertEquals(147103484, model.properties().coreCountIncrement());
+        Assertions.assertEquals(925858179, model.properties().minStorageCount());
+        Assertions.assertEquals(610682904, model.properties().maxStorageCount());
+        Assertions.assertEquals(61.849930366347806D, model.properties().availableDataStoragePerServerInTbs());
+        Assertions.assertEquals(1482322760, model.properties().availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(968506113, model.properties().availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(448290186, model.properties().minCoreCountPerNode());
+        Assertions.assertEquals(689960691, model.properties().availableMemoryInGbs());
+        Assertions.assertEquals(1760801565, model.properties().minMemoryPerNodeInGbs());
+        Assertions.assertEquals(404997188, model.properties().availableDbNodeStorageInGbs());
+        Assertions.assertEquals(84771050, model.properties().minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(1385853585, model.properties().availableDataStorageInTbs());
+        Assertions.assertEquals(210534625, model.properties().minDataStorageInTbs());
+        Assertions.assertEquals(2143760681, model.properties().minimumNodeCount());
+        Assertions.assertEquals(227653729, model.properties().maximumNodeCount());
+        Assertions.assertEquals(1266707989, model.properties().availableCoreCountPerNode());
+        Assertions.assertEquals(ComputeModel.ECPU, model.properties().computeModel());
         Assertions.assertTrue(model.properties().areServerTypesSupported());
-        Assertions.assertEquals("ij", model.properties().displayName());
-        Assertions.assertEquals("vfxzsjab", model.properties().shapeAttributes().get(0));
+        Assertions.assertEquals("upev", model.properties().displayName());
+        Assertions.assertEquals("stotxh", model.properties().shapeAttributes().get(0));
     }
 }

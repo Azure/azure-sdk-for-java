@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class AutoscaleSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2022-10-01/deleteAutoscaleSetting.json
+     * x-ms-original-file: 2025-09-01-preview/deleteAutoscaleSetting.json
      */
     /**
      * Sample code: Delete an autoscale setting.

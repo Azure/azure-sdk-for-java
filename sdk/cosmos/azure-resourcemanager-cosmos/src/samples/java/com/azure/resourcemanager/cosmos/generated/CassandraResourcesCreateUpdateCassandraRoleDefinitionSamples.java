@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class CassandraResourcesCreateUpdateCassandraRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraRoleDefinitionCreateUpdate.

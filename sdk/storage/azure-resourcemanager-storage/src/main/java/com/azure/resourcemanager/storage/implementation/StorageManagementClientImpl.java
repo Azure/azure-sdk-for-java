@@ -10,10 +10,14 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.storage.fluent.AdvancedPlatformMetricsClient;
+import com.azure.resourcemanager.storage.fluent.BlobAccessPointConfigurationsClient;
+import com.azure.resourcemanager.storage.fluent.BlobAccessPointConnectionTestsClient;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import com.azure.resourcemanager.storage.fluent.ConnectorsClient;
+import com.azure.resourcemanager.storage.fluent.ContextCacheContainersClient;
+import com.azure.resourcemanager.storage.fluent.ContextCachesClient;
 import com.azure.resourcemanager.storage.fluent.DataSharesClient;
 import com.azure.resourcemanager.storage.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
@@ -367,6 +371,62 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The ContextCachesClient object to access its operations.
+     */
+    private final ContextCachesClient contextCaches;
+
+    /**
+     * Gets the ContextCachesClient object to access its operations.
+     * 
+     * @return the ContextCachesClient object.
+     */
+    public ContextCachesClient getContextCaches() {
+        return this.contextCaches;
+    }
+
+    /**
+     * The ContextCacheContainersClient object to access its operations.
+     */
+    private final ContextCacheContainersClient contextCacheContainers;
+
+    /**
+     * Gets the ContextCacheContainersClient object to access its operations.
+     * 
+     * @return the ContextCacheContainersClient object.
+     */
+    public ContextCacheContainersClient getContextCacheContainers() {
+        return this.contextCacheContainers;
+    }
+
+    /**
+     * The BlobAccessPointConfigurationsClient object to access its operations.
+     */
+    private final BlobAccessPointConfigurationsClient blobAccessPointConfigurations;
+
+    /**
+     * Gets the BlobAccessPointConfigurationsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConfigurationsClient object.
+     */
+    public BlobAccessPointConfigurationsClient getBlobAccessPointConfigurations() {
+        return this.blobAccessPointConfigurations;
+    }
+
+    /**
+     * The BlobAccessPointConnectionTestsClient object to access its operations.
+     */
+    private final BlobAccessPointConnectionTestsClient blobAccessPointConnectionTests;
+
+    /**
+     * Gets the BlobAccessPointConnectionTestsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConnectionTestsClient object.
+     */
+    public BlobAccessPointConnectionTestsClient getBlobAccessPointConnectionTests() {
+        return this.blobAccessPointConnectionTests;
+    }
+
+    /**
      * The AdvancedPlatformMetricsClient object to access its operations.
      */
     private final AdvancedPlatformMetricsClient advancedPlatformMetrics;
@@ -524,7 +584,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-01";
+        this.apiVersion = "2026-09-01";
         this.operations = new OperationsClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);
         this.blobServices = new BlobServicesClientImpl(this);
@@ -542,6 +602,10 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.storageTaskAssignments = new StorageTaskAssignmentsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
         this.dataShares = new DataSharesClientImpl(this);
+        this.contextCaches = new ContextCachesClientImpl(this);
+        this.contextCacheContainers = new ContextCacheContainersClientImpl(this);
+        this.blobAccessPointConfigurations = new BlobAccessPointConfigurationsClientImpl(this);
+        this.blobAccessPointConnectionTests = new BlobAccessPointConnectionTestsClientImpl(this);
         this.advancedPlatformMetrics = new AdvancedPlatformMetricsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.storageTaskAssignmentsInstancesReports = new StorageTaskAssignmentsInstancesReportsClientImpl(this);

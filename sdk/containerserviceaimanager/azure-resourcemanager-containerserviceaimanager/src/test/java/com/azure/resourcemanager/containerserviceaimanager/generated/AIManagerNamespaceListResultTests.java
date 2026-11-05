@@ -12,10 +12,10 @@ public final class AIManagerNamespaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerNamespaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"labels\":{\"qyeg\":\"zj\",\"hejjz\":\"alhbx\",\"udgwdslfho\":\"v\",\"npwlbjnpg\":\"wmc\"},\"annotations\":{\"suesnzw\":\"tadehxnltyfsopp\",\"avo\":\"ej\",\"vudwx\":\"xzdmohctb\",\"gujjugwdkcglh\":\"ndnvo\"}},\"eTag\":\"azjdyggd\",\"id\":\"ixhbkuofqweykhm\",\"name\":\"n\",\"type\":\"vfyexfw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"labels\":{\"tynnaamdectehfi\":\"vyvdcs\",\"ezrkgqhcjrefo\":\"scjeypv\",\"qsl\":\"gm\"},\"annotations\":{\"cczsq\":\"vxyqjpkcattpngjc\",\"mdajv\":\"jh\"}},\"eTag\":\"sounqecanoaeu\",\"id\":\"hy\",\"name\":\"ltrpmopj\",\"type\":\"cma\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"uaodsfcpk\":\"fu\",\"xbezyiuokktwh\":\"xodpuozmyzydagfu\",\"o\":\"dxwzywqsmbsurexi\"},\"annotations\":{\"s\":\"cfsf\"}},\"eTag\":\"ddystkiiuxhqy\",\"id\":\"xorrqnb\",\"name\":\"oczvy\",\"type\":\"fqrvkdvjsllrmvvd\"}],\"nextLink\":\"atkpnp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"labels\":{\"xibqeojnx\":\"exhd\",\"dntwndeicbtw\":\"bzv\"},\"annotations\":{\"hcffcyddglmjthjq\":\"aoqvuh\"}},\"eTag\":\"pyeicxm\",\"id\":\"iwqvhkh\",\"name\":\"xuigdtopbobj\",\"type\":\"ghmewuam\"},{\"properties\":{\"provisioningState\":\"Creating\",\"labels\":{\"kftutqxlngxlefg\":\"yvvtpgvdfgio\",\"rvqdra\":\"gnxkrxdqmidtth\",\"skanyk\":\"hjybigehoqfbo\"},\"annotations\":{\"ndrvynhzg\":\"cuiywgqyw\",\"ecfvmm\":\"phrcgyncoc\",\"sxlzevgbmqj\":\"oo\",\"lzu\":\"abcypmivk\"}},\"eTag\":\"c\",\"id\":\"nfnbacfionlebxe\",\"name\":\"qgtz\",\"type\":\"dpnqbq\"}],\"nextLink\":\"xrjfeallnwsub\"}")
             .toObject(AIManagerNamespaceListResult.class);
-        Assertions.assertEquals("zj", model.value().get(0).properties().labels().get("qyeg"));
-        Assertions.assertEquals("tadehxnltyfsopp", model.value().get(0).properties().annotations().get("suesnzw"));
-        Assertions.assertEquals("atkpnp", model.nextLink());
+        Assertions.assertEquals("exhd", model.value().get(0).properties().labels().get("xibqeojnx"));
+        Assertions.assertEquals("aoqvuh", model.value().get(0).properties().annotations().get("hcffcyddglmjthjq"));
+        Assertions.assertEquals("xrjfeallnwsub", model.nextLink());
     }
 }

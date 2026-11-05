@@ -10,6 +10,7 @@ module com.azure.ai.openai.realtime {
     requires io.netty.transport;
     requires io.netty.handler;
     requires io.netty.codec;
+    requires io.netty.codec.compression;
     requires io.netty.codec.http;
 
     exports com.azure.ai.openai.realtime;

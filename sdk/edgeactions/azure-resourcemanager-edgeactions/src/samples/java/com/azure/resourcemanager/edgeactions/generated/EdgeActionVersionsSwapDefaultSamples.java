@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionVersionsSwapDefaultSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_SwapDefault.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_SwapDefault.json
      */
     /**
      * Sample code: Swap Default Version.
@@ -17,6 +17,6 @@ public final class EdgeActionVersionsSwapDefaultSamples {
      * @param manager Entry point to EdgeActionsManager.
      */
     public static void swapDefaultVersion(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
-        manager.edgeActionVersions().swapDefault("testrg", "edgeAction1", "1.0", com.azure.core.util.Context.NONE);
+        manager.edgeActionVersions().swapDefault("testrg", "edgeAction1", "version1", com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,7 @@ public final class AIModelsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"modelId\":\"m\",\"description\":\"cvokotllxdyhg\",\"spec\":{\"license\":\"ocogj\",\"isRestricted\":true,\"maxContextLength\":1628620903}},\"id\":\"bnnhadoocrkvcik\",\"name\":\"nvpamq\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"modelId\":\"cktqumiekkezzi\",\"description\":\"ly\",\"spec\":{\"license\":\"hdgqggeb\",\"isRestricted\":true,\"maxContextLength\":1059730193}},\"id\":\"g\",\"name\":\"eqidbqfatpx\",\"type\":\"lr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class AIModelsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AIModel> response = manager.aIModels().list("lwwrl", com.azure.core.util.Context.NONE);
+        PagedIterable<AIModel> response = manager.aIModels().list("tcs", com.azure.core.util.Context.NONE);
 
     }
 }

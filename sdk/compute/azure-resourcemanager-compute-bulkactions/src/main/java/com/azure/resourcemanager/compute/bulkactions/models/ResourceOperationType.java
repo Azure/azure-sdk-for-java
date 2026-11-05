@@ -8,31 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The kind of bulk operation that can be performed on resources using Bulkactions API.
+ * The type of operation performed by Bulk Actions.
  */
 public final class ResourceOperationType extends ExpandableStringEnum<ResourceOperationType> {
     /**
-     * Start operations on the resources.
+     * Starts the specified virtual machines.
      */
     public static final ResourceOperationType START = fromString("Start");
 
     /**
-     * Deallocate operations on the resources.
+     * Deallocates the specified virtual machines.
      */
     public static final ResourceOperationType DEALLOCATE = fromString("Deallocate");
 
     /**
-     * Hibernate operations on the resources.
+     * Hibernates the specified virtual machines.
      */
     public static final ResourceOperationType HIBERNATE = fromString("Hibernate");
 
     /**
-     * Create operations on the resources.
+     * Creates the specified virtual machines.
      */
     public static final ResourceOperationType CREATE = fromString("Create");
 
     /**
-     * Delete operations on the resources.
+     * Deletes the specified virtual machines.
      */
     public static final ResourceOperationType DELETE = fromString("Delete");
 

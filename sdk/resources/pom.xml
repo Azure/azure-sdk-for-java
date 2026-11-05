@@ -15,5 +15,6 @@
     <module>azure-resourcemanager-resources-deployments</module>
     <module>azure-resourcemanager-resources-deploymentstacks</module>
     <module>azure-resourcemanager-resources-policy</module>
+    <module>azure-resourcemanager-resources-templatespecs</module>
   </modules>
 </project>

@@ -156,8 +156,12 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     ExperimentImpl(ExperimentInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.experimentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "experiments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
+        this.experimentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
     }
 
     public Experiment refresh() {

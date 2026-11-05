@@ -30,8 +30,8 @@ public final class ConfigureSourceScansExecuteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.configureSourceScans()
-            .execute("ggkrehbf", "n", "ybff", "jfiimreoa", "sqtaadusrexxfa",
-                new ProtectedItemConfigureSourceScanRequest().withSourceScanAction(SourceScanAction.ENABLE),
+            .execute("zkjthfceyjn", "jmlfuyfjbp", "iddhlrufzc", "yjmqrf", "iocuselqkr",
+                new ProtectedItemConfigureSourceScanRequest().withSourceScanAction(SourceScanAction.DISABLE),
                 com.azure.core.util.Context.NONE);
 
     }

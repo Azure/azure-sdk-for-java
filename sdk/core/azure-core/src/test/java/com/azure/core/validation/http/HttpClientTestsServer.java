@@ -36,6 +36,7 @@ import static com.azure.core.validation.http.HttpValidatonUtils.md5;
 @Execution(ExecutionMode.SAME_THREAD)
 public final class HttpClientTestsServer {
     static final String PLAIN_RESPONSE = "plainBytesNoHeader";
+    static final String PARTIAL_RESPONSE = "partialResponse";
     static final String HEADER_RESPONSE = "plainBytesWithHeader";
     static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
     static final String UTF_8_BOM_RESPONSE = "utf8BomBytes";
@@ -56,6 +57,7 @@ public final class HttpClientTestsServer {
 
     private static final String HELLO_WORLD = "Hello World!";
     static final byte[] RETURN_BYTES = HELLO_WORLD.getBytes(StandardCharsets.UTF_8);
+    static final byte[] PARTIAL_RESPONSE_BYTES = "data: hello\n\n".getBytes(StandardCharsets.UTF_8);
     static final HttpHeaderName HUGE_HEADER_NAME = HttpHeaderName.fromString("x-huge-header");
     static final String HUGE_HEADER_VALUE;
 
@@ -119,6 +121,17 @@ public final class HttpClientTestsServer {
                 resp.getHttpOutput().complete(Callback.NOOP);
             } else if (get && pathMatches(path, PLAIN_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", RETURN_BYTES);
+            } else if (get && pathMatches(path, PARTIAL_RESPONSE)) {
+                resp.setContentType("text/event-stream");
+                resp.getHttpOutput().write(PARTIAL_RESPONSE_BYTES);
+                resp.getHttpOutput().flush();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new ServletException(e);
+                }
+                resp.getHttpOutput().complete(Callback.NOOP);
             } else if (get && pathMatches(path, HEADER_RESPONSE)) {
                 handleRequest(resp, "charset=UTF-16BE", RETURN_BYTES);
             } else if (get && pathMatches(path, INVALID_HEADER_RESPONSE)) {

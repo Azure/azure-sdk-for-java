@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicegroups.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicegroups.models.ParentServiceGroupProperties;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,18 +14,21 @@ public final class ServiceGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceGroupProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Running\",\"displayName\":\"lhjxr\",\"parent\":{\"resourceId\":\"wmrvktsizntocipa\"}}")
+            "{\"provisioningState\":\"Running\",\"displayName\":\"ufo\",\"attributes\":{\"criticality\":744579051},\"parent\":{\"resourceId\":\"fsqesaagdfmglzlh\"}}")
             .toObject(ServiceGroupProperties.class);
-        Assertions.assertEquals("lhjxr", model.displayName());
-        Assertions.assertEquals("wmrvktsizntocipa", model.parent().resourceId());
+        Assertions.assertEquals("ufo", model.displayName());
+        Assertions.assertEquals(744579051, model.attributes().criticality());
+        Assertions.assertEquals("fsqesaagdfmglzlh", model.parent().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceGroupProperties model = new ServiceGroupProperties().withDisplayName("lhjxr")
-            .withParent(new ParentServiceGroupProperties().withResourceId("wmrvktsizntocipa"));
+        ServiceGroupProperties model = new ServiceGroupProperties().withDisplayName("ufo")
+            .withAttributes(new ServiceGroupAttributes().withCriticality(744579051))
+            .withParent(new ParentServiceGroupProperties().withResourceId("fsqesaagdfmglzlh"));
         model = BinaryData.fromObject(model).toObject(ServiceGroupProperties.class);
-        Assertions.assertEquals("lhjxr", model.displayName());
-        Assertions.assertEquals("wmrvktsizntocipa", model.parent().resourceId());
+        Assertions.assertEquals("ufo", model.displayName());
+        Assertions.assertEquals(744579051, model.attributes().criticality());
+        Assertions.assertEquals("fsqesaagdfmglzlh", model.parent().resourceId());
     }
 }

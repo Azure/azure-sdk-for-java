@@ -35,6 +35,11 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
     private String condition;
 
     /*
+     * The data schema reference that is used to interpret the message body.
+     */
+    private String dataSchema;
+
+    /*
      * The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is
      * allowed.
      */
@@ -118,6 +123,26 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
     }
 
     /**
+     * Get the dataSchema property: The data schema reference that is used to interpret the message body.
+     * 
+     * @return the dataSchema value.
+     */
+    public String dataSchema() {
+        return this.dataSchema;
+    }
+
+    /**
+     * Set the dataSchema property: The data schema reference that is used to interpret the message body.
+     * 
+     * @param dataSchema the dataSchema value to set.
+     * @return the RouteProperties object itself.
+     */
+    public RouteProperties withDataSchema(String dataSchema) {
+        this.dataSchema = dataSchema;
+        return this;
+    }
+
+    /**
      * Get the endpointNames property: The list of endpoints to which messages that satisfy the condition are routed.
      * Currently only one endpoint is allowed.
      * 
@@ -171,6 +196,7 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
         jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeStringField("dataSchema", this.dataSchema);
         return jsonWriter.writeEndObject();
     }
 
@@ -201,6 +227,8 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
                     deserializedRouteProperties.isEnabled = reader.getBoolean();
                 } else if ("condition".equals(fieldName)) {
                     deserializedRouteProperties.condition = reader.getString();
+                } else if ("dataSchema".equals(fieldName)) {
+                    deserializedRouteProperties.dataSchema = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

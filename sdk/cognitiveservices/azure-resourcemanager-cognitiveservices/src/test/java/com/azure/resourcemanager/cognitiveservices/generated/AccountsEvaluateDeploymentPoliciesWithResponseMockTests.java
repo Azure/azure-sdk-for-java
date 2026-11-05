@@ -27,7 +27,7 @@ public final class AccountsEvaluateDeploymentPoliciesWithResponseMockTests {
     @Test
     public void testEvaluateDeploymentPoliciesWithResponse() throws Exception {
         String responseStr
-            = "{\"results\":{\"tgirnb\":{\"evaluationOutcome\":\"NonCompliant\",\"errorMessage\":\"xi\",\"nonCompliantAssignments\":[{\"assignmentId\":\"fyzavfrbypicdb\",\"policyDefinitionId\":\"dj\",\"policySetDefinitionId\":\"qh\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"zpdgonjhxshthmgp\",\"effect\":\"qulpt\",\"expressionEvaluations\":[{},{},{},{}]},{\"assignmentId\":\"pxtzhigqqbtimpk\",\"policyDefinitionId\":\"lornsihqh\",\"policySetDefinitionId\":\"smusuaawj\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"jnfczmnniixy\",\"effect\":\"qban\",\"expressionEvaluations\":[{},{}]}]}}}";
+            = "{\"results\":{\"kxrkemjpeq\":{\"evaluationOutcome\":\"NonCompliant\",\"errorMessage\":\"mumk\",\"nonCompliantAssignments\":[{\"assignmentId\":\"czd\",\"policyDefinitionId\":\"wnhkgq\",\"policySetDefinitionId\":\"oxsstc\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"kfrrynj\",\"effect\":\"mhlym\",\"expressionEvaluations\":[{},{}]}]},\"walzyxwhoeamoeo\":{\"evaluationOutcome\":\"NonCompliant\",\"errorMessage\":\"zaudgjtfbclakkuc\",\"nonCompliantAssignments\":[{\"assignmentId\":\"hczbuto\",\"policyDefinitionId\":\"gjtirjwayhic\",\"policySetDefinitionId\":\"wwvg\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"vlizedvb\",\"effect\":\"bvn\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"kzyqxadyfhbmw\",\"policyDefinitionId\":\"ojqttbsp\",\"policySetDefinitionId\":\"hg\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"sgyzstujrzxr\",\"effect\":\"sf\",\"expressionEvaluations\":[{},{},{},{}]},{\"assignmentId\":\"uyehiiittugyuqwr\",\"policyDefinitionId\":\"axu\",\"policySetDefinitionId\":\"qa\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"zjvxdzcigg\",\"effect\":\"vt\",\"expressionEvaluations\":[{},{},{},{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,34 +36,49 @@ public final class AccountsEvaluateDeploymentPoliciesWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        EvaluateDeploymentPoliciesResponse response = manager.accounts()
-            .evaluateDeploymentPoliciesWithResponse("ztsdetjygow", "fcqpol",
-                new EvaluateDeploymentPoliciesRequest()
-                    .withDeployments(Arrays.asList(new EvaluateDeploymentPoliciesDeployment().withName("gysdgzyyb")
-                        .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
-                            .withModel(new DeploymentModel().withPublisher("xlvocptvdx")
-                                .withFormat("eigmlil")
-                                .withName("ghjhjvmabzzbwa")
-                                .withVersion("fmdafbgymqtnap")
-                                .withSource("ojxrjnbsconxavi")
-                                .withSourceAccount("eychbji"))
-                            .withRaiPolicyName("sgnwdxzedpq")))),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        EvaluateDeploymentPoliciesResponse response
+            = manager.accounts()
+                .evaluateDeploymentPoliciesWithResponse("oqtrotpvclpo", "yrlmwkptsk",
+                    new EvaluateDeploymentPoliciesRequest()
+                        .withDeployments(
+                            Arrays
+                                .asList(
+                                    new EvaluateDeploymentPoliciesDeployment().withName("jgvhxcc")
+                                        .withProperties(
+                                            new EvaluateDeploymentPoliciesDeploymentProperties()
+                                                .withModel(new DeploymentModel().withPublisher("kakmkookbputmgvm")
+                                                    .withFormat("akmlwktfowzkroyr")
+                                                    .withName("r")
+                                                    .withVersion("lzqjimejtgzjxx")
+                                                    .withSource("e")
+                                                    .withSourceAccount("zuqloiwyayyzivr"))
+                                                .withRaiPolicyName("cdq")),
+                                    new EvaluateDeploymentPoliciesDeployment().withName("hchwhrktjleif")
+                                        .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
+                                            .withModel(new DeploymentModel().withPublisher("fiplhx")
+                                                .withFormat("smyc")
+                                                .withName("wlyeyz")
+                                                .withVersion("dsqcmhnxl")
+                                                .withSource("uwod")
+                                                .withSourceAccount("c"))
+                                            .withRaiPolicyName("vnrpbjrmvg")))),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals(PolicyEvaluationOutcome.NON_COMPLIANT,
-            response.results().get("tgirnb").evaluationOutcome());
-        Assertions.assertEquals("xi", response.results().get("tgirnb").errorMessage());
-        Assertions.assertEquals("fyzavfrbypicdb",
-            response.results().get("tgirnb").nonCompliantAssignments().get(0).assignmentId());
-        Assertions.assertEquals("dj",
-            response.results().get("tgirnb").nonCompliantAssignments().get(0).policyDefinitionId());
-        Assertions.assertEquals("qh",
-            response.results().get("tgirnb").nonCompliantAssignments().get(0).policySetDefinitionId());
-        Assertions.assertEquals(PolicyEvaluationOutcome.COMPLIANT,
-            response.results().get("tgirnb").nonCompliantAssignments().get(0).evaluationOutcome());
-        Assertions.assertEquals("zpdgonjhxshthmgp",
-            response.results().get("tgirnb").nonCompliantAssignments().get(0).nonComplianceReason());
-        Assertions.assertEquals("qulpt", response.results().get("tgirnb").nonCompliantAssignments().get(0).effect());
+            response.results().get("kxrkemjpeq").evaluationOutcome());
+        Assertions.assertEquals("mumk", response.results().get("kxrkemjpeq").errorMessage());
+        Assertions.assertEquals("czd",
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).assignmentId());
+        Assertions.assertEquals("wnhkgq",
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).policyDefinitionId());
+        Assertions.assertEquals("oxsstc",
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).policySetDefinitionId());
+        Assertions.assertEquals(PolicyEvaluationOutcome.ERROR,
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).evaluationOutcome());
+        Assertions.assertEquals("kfrrynj",
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).nonComplianceReason());
+        Assertions.assertEquals("mhlym",
+            response.results().get("kxrkemjpeq").nonCompliantAssignments().get(0).effect());
     }
 }

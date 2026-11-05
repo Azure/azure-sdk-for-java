@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class MachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15/extension/Extension_Delete.json
+     * x-ms-original-file: 2026-09-01/extension/Extension_Delete.json
      */
     /**
      * Sample code: Delete a Machine Extension.

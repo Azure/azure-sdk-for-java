@@ -54,6 +54,13 @@ public interface DurableTaskManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the DetectorsClient object to access its operations.
+     * 
+     * @return the DetectorsClient object.
+     */
+    DetectorsClient getDetectors();
+
+    /**
      * Gets the SchedulersClient object to access its operations.
      * 
      * @return the SchedulersClient object.
@@ -68,9 +75,30 @@ public interface DurableTaskManagementClient {
     TaskHubsClient getTaskHubs();
 
     /**
+     * Gets the TaskQueuesClient object to access its operations.
+     * 
+     * @return the TaskQueuesClient object.
+     */
+    TaskQueuesClient getTaskQueues();
+
+    /**
      * Gets the RetentionPoliciesClient object to access its operations.
      * 
      * @return the RetentionPoliciesClient object.
      */
     RetentionPoliciesClient getRetentionPolicies();
+
+    /**
+     * Gets the TransparentDataEncryptionsClient object to access its operations.
+     * 
+     * @return the TransparentDataEncryptionsClient object.
+     */
+    TransparentDataEncryptionsClient getTransparentDataEncryptions();
+
+    /**
+     * Gets the FailoverInstancesClient object to access its operations.
+     * 
+     * @return the FailoverInstancesClient object.
+     */
+    FailoverInstancesClient getFailoverInstances();
 }

@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Rule model
-            = BinaryData.fromString("{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"aex\"}")
-                .toObject(Rule.class);
-        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP, model.property());
-        Assertions.assertEquals(Operator.CONTAINS, model.operator());
-        Assertions.assertEquals("aex", model.value());
+        Rule model = BinaryData.fromString("{\"property\":\"region\",\"operator\":\"doesNotEqual\",\"value\":\"xpkd\"}")
+            .toObject(Rule.class);
+        Assertions.assertEquals(RuleProperty.REGION, model.property());
+        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.operator());
+        Assertions.assertEquals("xpkd", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Rule model
-            = new Rule().withProperty(RuleProperty.RESOURCE_GROUP).withOperator(Operator.CONTAINS).withValue("aex");
+            = new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.DOES_NOT_EQUAL).withValue("xpkd");
         model = BinaryData.fromObject(model).toObject(Rule.class);
-        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP, model.property());
-        Assertions.assertEquals(Operator.CONTAINS, model.operator());
-        Assertions.assertEquals("aex", model.value());
+        Assertions.assertEquals(RuleProperty.REGION, model.property());
+        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.operator());
+        Assertions.assertEquals("xpkd", model.value());
     }
 }

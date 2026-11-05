@@ -18,42 +18,41 @@ public final class ConfigurationAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationAssignmentInner model = BinaryData.fromString(
-            "{\"properties\":{\"maintenanceConfigurationId\":\"v\",\"resourceId\":\"m\",\"filter\":{\"resourceTypes\":[\"bcypmi\",\"kwlzuvccfwnfn\",\"acfi\"],\"resourceGroups\":[\"ebxetqgtzxdp\"],\"osTypes\":[\"qqwx\",\"jfeallnwsub\"],\"locations\":[\"jampmngnzscxaqw\",\"ochcbonqvpkvl\"],\"tagSettings\":{\"tags\":{\"pheoflokeyy\":[\"ase\"],\"zj\":[\"nj\",\"dlwtgrhpdj\",\"jumasx\"]},\"filterOperator\":\"All\"}}},\"location\":\"gual\",\"id\":\"xxhejjzzvd\",\"name\":\"dgwdslfhot\",\"type\":\"mcy\"}")
+            "{\"properties\":{\"maintenanceConfigurationId\":\"v\",\"resourceId\":\"m\",\"filter\":{\"resourceTypes\":[\"bcypmi\",\"kwlzuvccfwnfn\",\"acfi\"],\"resourceGroups\":[\"ebxetqgtzxdp\"],\"osTypes\":[\"qqwx\",\"jfeallnwsub\"],\"locations\":[\"jampmngnzscxaqw\",\"ochcbonqvpkvl\"],\"tagSettings\":{\"tags\":{\"enjbdlwtgrhp\":[\"ase\"],\"masxazjpqyegu\":[\"pj\"]},\"filterOperator\":\"All\"}}},\"location\":\"xxhejjzzvd\",\"id\":\"gwdslfhotwm\",\"name\":\"ynpwlbj\",\"type\":\"pgacftadehxnlty\"}")
             .toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("gual", model.location());
+        Assertions.assertEquals("xxhejjzzvd", model.location());
         Assertions.assertEquals("v", model.maintenanceConfigurationId());
         Assertions.assertEquals("m", model.resourceId());
         Assertions.assertEquals("bcypmi", model.filter().resourceTypes().get(0));
         Assertions.assertEquals("ebxetqgtzxdp", model.filter().resourceGroups().get(0));
         Assertions.assertEquals("qqwx", model.filter().osTypes().get(0));
         Assertions.assertEquals("jampmngnzscxaqw", model.filter().locations().get(0));
-        Assertions.assertEquals("ase", model.filter().tagSettings().tags().get("pheoflokeyy").get(0));
+        Assertions.assertEquals("ase", model.filter().tagSettings().tags().get("enjbdlwtgrhp").get(0));
         Assertions.assertEquals(TagOperators.ALL, model.filter().tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationAssignmentInner model
-            = new ConfigurationAssignmentInner().withLocation("gual")
-                .withMaintenanceConfigurationId("v")
-                .withResourceId("m")
-                .withFilter(new ConfigurationAssignmentFilterProperties()
-                    .withResourceTypes(Arrays.asList("bcypmi", "kwlzuvccfwnfn", "acfi"))
-                    .withResourceGroups(Arrays.asList("ebxetqgtzxdp"))
-                    .withOsTypes(Arrays.asList("qqwx", "jfeallnwsub"))
-                    .withLocations(Arrays.asList("jampmngnzscxaqw", "ochcbonqvpkvl"))
-                    .withTagSettings(new TagSettingsProperties().withTags(
-                        mapOf("pheoflokeyy", Arrays.asList("ase"), "zj", Arrays.asList("nj", "dlwtgrhpdj", "jumasx")))
-                        .withFilterOperator(TagOperators.ALL)));
+        ConfigurationAssignmentInner model = new ConfigurationAssignmentInner().withLocation("xxhejjzzvd")
+            .withMaintenanceConfigurationId("v")
+            .withResourceId("m")
+            .withFilter(new ConfigurationAssignmentFilterProperties()
+                .withResourceTypes(Arrays.asList("bcypmi", "kwlzuvccfwnfn", "acfi"))
+                .withResourceGroups(Arrays.asList("ebxetqgtzxdp"))
+                .withOsTypes(Arrays.asList("qqwx", "jfeallnwsub"))
+                .withLocations(Arrays.asList("jampmngnzscxaqw", "ochcbonqvpkvl"))
+                .withTagSettings(new TagSettingsProperties()
+                    .withTags(mapOf("enjbdlwtgrhp", Arrays.asList("ase"), "masxazjpqyegu", Arrays.asList("pj")))
+                    .withFilterOperator(TagOperators.ALL)));
         model = BinaryData.fromObject(model).toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("gual", model.location());
+        Assertions.assertEquals("xxhejjzzvd", model.location());
         Assertions.assertEquals("v", model.maintenanceConfigurationId());
         Assertions.assertEquals("m", model.resourceId());
         Assertions.assertEquals("bcypmi", model.filter().resourceTypes().get(0));
         Assertions.assertEquals("ebxetqgtzxdp", model.filter().resourceGroups().get(0));
         Assertions.assertEquals("qqwx", model.filter().osTypes().get(0));
         Assertions.assertEquals("jampmngnzscxaqw", model.filter().locations().get(0));
-        Assertions.assertEquals("ase", model.filter().tagSettings().tags().get("pheoflokeyy").get(0));
+        Assertions.assertEquals("ase", model.filter().tagSettings().tags().get("enjbdlwtgrhp").get(0));
         Assertions.assertEquals(TagOperators.ALL, model.filter().tagSettings().filterOperator());
     }
 
