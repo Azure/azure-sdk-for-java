@@ -175,6 +175,12 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
                     return VoiceAgentSessionHandoffStartedEvent.fromJson(readerToUse.reset());
                 } else if ("session.handoff.aborted".equals(discriminatorValue)) {
                     return VoiceAgentSessionHandoffAbortedEvent.fromJson(readerToUse.reset());
+                } else if ("response.system_tool_arguments.delta".equals(discriminatorValue)) {
+                    return VoiceAgentServerEventSystemToolArgumentsDelta.fromJson(readerToUse.reset());
+                } else if ("response.system_tool_arguments.done".equals(discriminatorValue)) {
+                    return VoiceAgentServerEventSystemToolArgumentsDone.fromJson(readerToUse.reset());
+                } else if ("input_collection.status".equals(discriminatorValue)) {
+                    return VoiceAgentServerEventInputCollectionStatus.fromJson(readerToUse.reset());
                 } else if ("session.subagent.started".equals(discriminatorValue)) {
                     return VoiceAgentSessionSubagentStartedEvent.fromJson(readerToUse.reset());
                 } else if ("session.subagent.completed".equals(discriminatorValue)) {

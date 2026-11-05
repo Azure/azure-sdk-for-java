@@ -93,6 +93,8 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                     return RealtimeMcpToolCall.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_request".equals(discriminatorValue)) {
                     return RealtimeMcpApprovalInput.fromJson(readerToUse.reset());
+                } else if ("system_tool".equals(discriminatorValue)) {
+                    return VoiceAgentSystemToolItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

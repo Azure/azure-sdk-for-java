@@ -86,4 +86,10 @@ public final class RealtimeConversationItemType extends ExpandableStringEnum<Rea
     public static Collection<RealtimeConversationItemType> values() {
         return values(RealtimeConversationItemType.class);
     }
+
+    /**
+     * A service-managed system-tool intent, not a provider result.
+     */
+    @Generated
+    public static final RealtimeConversationItemType SYSTEM_TOOL = fromString("system_tool");
 }
