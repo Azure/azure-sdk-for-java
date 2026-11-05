@@ -471,8 +471,13 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     }
 
     public MachineImpl withClientPublicKey(String clientPublicKey) {
-        this.innerModel().withClientPublicKey(clientPublicKey);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClientPublicKey(clientPublicKey);
+            return this;
+        } else {
+            this.updateParameters.withClientPublicKey(clientPublicKey);
+            return this;
+        }
     }
 
     public MachineImpl withIdentityKeyStore(IdentityKeyStore identityKeyStore) {
