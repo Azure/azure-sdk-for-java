@@ -3,6 +3,7 @@
 ## 12.38.0-beta.1 (2026-11-05)
 
 ### Features Added
+- Added support for service version 2027-03-07.
 - Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
   `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
   requires an HTTP client that withholds the request body until the service responds.

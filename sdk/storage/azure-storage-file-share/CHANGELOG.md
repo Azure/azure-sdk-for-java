@@ -3,6 +3,7 @@
 ## 12.34.0-beta.1 (2026-11-05)
 
 ### Features Added
+- Added support for service version 2027-03-07.
 - Added support for retrieving file and directory properties by file ID
 - Added support for retrieving a file's hard links by file ID on SMB shares.
 - Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,

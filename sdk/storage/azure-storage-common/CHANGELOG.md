@@ -3,6 +3,7 @@
 ## 12.37.0-beta.1 (2026-11-05)
 
 ### Features Added
+- Added support for service version 2027-03-07.
 - Added `AutoRefreshingCache`, a generic, thread-safe cache for a single expiring value with jittered proactive
   background refresh and single-flight creation, for internal use by clients that need to cache a value obtained
   from a service call that is valid for a limited time (for example, layout/routing information for locality-aware
