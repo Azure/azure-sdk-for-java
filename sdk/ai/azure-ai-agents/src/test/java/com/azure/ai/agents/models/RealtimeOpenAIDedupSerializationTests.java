@@ -38,6 +38,29 @@ public class RealtimeOpenAIDedupSerializationTests {
             + "\"usage\":" + USAGE_JSON + "}";
 
     @Test
+    public void testConversationItemObjectTypeRoundTripsPolymorphically() throws IOException {
+        String[] variants = {
+            "\"type\":\"message\",\"role\":\"system\",\"content\":[]",
+            "\"type\":\"message\",\"role\":\"user\",\"content\":[]",
+            "\"type\":\"message\",\"role\":\"assistant\",\"content\":[]",
+            "\"type\":\"function_call\",\"call_id\":\"call\",\"name\":\"fn\",\"arguments\":\"{}\"",
+            "\"type\":\"function_call_output\",\"call_id\":\"call\",\"output\":\"done\"" };
+
+        for (String variant : variants) {
+            RealtimeConversationItem item;
+            try (JsonReader reader = JsonProviders.createReader(
+                "{" + variant + ",\"object\":\"realtime.item\"}")) {
+                item = RealtimeConversationItem.fromJson(reader);
+            }
+            String json = serialize(item);
+            assertTrue(json.contains("\"object\":\"realtime.item\""));
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                assertEquals(json, serialize(RealtimeConversationItem.fromJson(reader)));
+            }
+        }
+    }
+
+    @Test
     public void testRealtimeReasoningAndPromptRoundTrip() throws IOException {
         RealtimeReasoningEffort[] efforts = {
             RealtimeReasoningEffort.MINIMAL,

@@ -243,24 +243,8 @@ public class AgentsCustomizations extends Customization {
                 "json.startsWith(\"{\")"));
         List<String[]> voice = Arrays.asList(
             stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
-            modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
-                "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
-        List<String[]> transcriptionUsage = Arrays.asList(
-            discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageTokens} usage to set"),
-            discriminatedModelUnionVariant("TranscriptTextUsageDuration", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageDuration} usage to set"));
-        List<String[]> voiceAgentSessionResponse = Arrays.<String[]>asList(
-            modelUnionVariant("VoiceAgentSessionResponseConfiguration",
-                "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
-
-        customizeImmutableUnionProperty(customization,
-            "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
-            "Usage statistics for the transcription.", transcriptionUsage, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionCreatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
+            modelUnionVariant("RealtimeSessionAudioOutputVoice",
+                "the {@link RealtimeSessionAudioOutputVoice} custom voice to set"));
 
         customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
             tracing, true, false, logger);

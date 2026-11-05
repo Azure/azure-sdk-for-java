@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.ConversationItemInputAudioTranscriptionCompletedEvent.Usage;
 import com.openai.models.realtime.LogProbProperties;
 import java.io.IOException;
 import java.util.List;
@@ -79,7 +80,7 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
      * realtime model's pricing.
      */
     @Generated
-    private final BinaryData usage;
+    private final Usage usage;
 
     /*
      * Phrase-level transcription timing and confidence details.
@@ -96,52 +97,14 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
      * @param transcript the transcript value to set.
      * @param usage the usage value to set.
      */
-    RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId, long contentIndex,
-        String transcript, BinaryData usage) {
-        // AI Tooling: union type
+    public RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId,
+        long contentIndex, String transcript, Usage usage) {
+        // AI Tooling: openai-java de-dup
         this.eventId = eventId;
         this.itemId = itemId;
         this.contentIndex = contentIndex;
         this.transcript = transcript;
         this.usage = usage;
-    }
-
-    /**
-     * Creates an instance of RealtimeConversationItemInputAudioTranscriptionCompletedEvent class.
-     *
-     * @param eventId the eventId value to set.
-     * @param itemId the itemId value to set.
-     * @param contentIndex the contentIndex value to set.
-     * @param transcript the transcript value to set.
-     * @param usage the {@link TranscriptTextUsageTokens} usage to set.
-     */
-    public RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId,
-        long contentIndex, String transcript, TranscriptTextUsageTokens usage) {
-        // AI Tooling: union type
-        this.eventId = eventId;
-        this.itemId = itemId;
-        this.contentIndex = contentIndex;
-        this.transcript = transcript;
-        this.usage = usage == null ? null : BinaryData.fromObject(usage);
-    }
-
-    /**
-     * Creates an instance of RealtimeConversationItemInputAudioTranscriptionCompletedEvent class.
-     *
-     * @param eventId the eventId value to set.
-     * @param itemId the itemId value to set.
-     * @param contentIndex the contentIndex value to set.
-     * @param transcript the transcript value to set.
-     * @param usage the {@link TranscriptTextUsageDuration} usage to set.
-     */
-    public RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId,
-        long contentIndex, String transcript, TranscriptTextUsageDuration usage) {
-        // AI Tooling: union type
-        this.eventId = eventId;
-        this.itemId = itemId;
-        this.contentIndex = contentIndex;
-        this.transcript = transcript;
-        this.usage = usage == null ? null : BinaryData.fromObject(usage);
     }
 
     /**
@@ -222,8 +185,8 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
      *
      * @return the usage value.
      */
-    BinaryData getUsage() {
-        // AI Tooling: union type
+    @Generated
+    public Usage getUsage() {
         return this.usage;
     }
 
@@ -248,7 +211,12 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
         jsonWriter.writeLongField("content_index", this.contentIndex);
         jsonWriter.writeStringField("transcript", this.transcript);
         jsonWriter.writeFieldName("usage");
-        this.usage.writeTo(jsonWriter);
+        // AI Tooling: openai-java de-dup
+        if (this.usage == null) {
+            jsonWriter.writeNull();
+        } else {
+            OpenAIJsonHelper.toBinaryData(this.usage).writeTo(jsonWriter);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
         // AI Tooling: openai-java de-dup
@@ -280,7 +248,7 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
             String itemId = null;
             long contentIndex = 0L;
             String transcript = null;
-            BinaryData usage = null;
+            Usage usage = null;
             RealtimeServerEventType type
                 = RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED;
             List<TranscriptionLanguage> languages = null;
@@ -298,7 +266,10 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
                 } else if ("transcript".equals(fieldName)) {
                     transcript = reader.getString();
                 } else if ("usage".equals(fieldName)) {
-                    usage = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    // AI Tooling: openai-java de-dup
+                    BinaryData usageData
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    usage = OpenAIJsonHelper.fromBinaryData(usageData, Usage.class);
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else if ("languages".equals(fieldName)) {
@@ -325,41 +296,5 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
             deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.phrases = phrases;
             return deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent;
         });
-    }
-
-    /**
-     * Get the usage property: Usage statistics for the transcription.
-     *
-     * @return the usage value as a {@link TranscriptTextUsageTokens}, or {@code null} when it is not set or holds
-     * another variant.
-     */
-    public TranscriptTextUsageTokens getUsageAsTranscriptTextUsageTokens() {
-        // AI Tooling: union type
-        if (this.usage == null) {
-            return null;
-        }
-        TranscriptTextUsage unionValue = this.usage.toObject(TranscriptTextUsage.class);
-        if (!(unionValue instanceof TranscriptTextUsageTokens)) {
-            return null;
-        }
-        return (TranscriptTextUsageTokens) unionValue;
-    }
-
-    /**
-     * Get the usage property: Usage statistics for the transcription.
-     *
-     * @return the usage value as a {@link TranscriptTextUsageDuration}, or {@code null} when it is not set or holds
-     * another variant.
-     */
-    public TranscriptTextUsageDuration getUsageAsTranscriptTextUsageDuration() {
-        // AI Tooling: union type
-        if (this.usage == null) {
-            return null;
-        }
-        TranscriptTextUsage unionValue = this.usage.toObject(TranscriptTextUsage.class);
-        if (!(unionValue instanceof TranscriptTextUsageDuration)) {
-            return null;
-        }
-        return (TranscriptTextUsageDuration) unionValue;
     }
 }

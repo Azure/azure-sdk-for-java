@@ -36,12 +36,6 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     @Generated
     private String id;
 
-    /*
-     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
-     */
-    @Generated
-    private RealtimeConversationItemObjectType object;
-
     // AI Tooling: openai-java de-dup
     private Status status;
 
@@ -119,17 +113,6 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     public RealtimeConversationItemFunctionCall setId(String id) {
         this.id = id;
         return this;
-    }
-
-    /**
-     * Get the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public RealtimeConversationItemObjectType getObject() {
-        return this.object;
     }
 
     /**
@@ -219,7 +202,7 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         jsonWriter.writeStringField("call_id", this.callId);
         jsonWriter.writeNumberField("created_at", this.createdAt);
@@ -277,7 +260,7 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
                 = new RealtimeConversationItemFunctionCall(name, arguments);
             deserializedRealtimeConversationItemFunctionCall.type = type;
             deserializedRealtimeConversationItemFunctionCall.id = id;
-            deserializedRealtimeConversationItemFunctionCall.object = object;
+            deserializedRealtimeConversationItemFunctionCall.objectType = object;
             deserializedRealtimeConversationItemFunctionCall.status = status;
             deserializedRealtimeConversationItemFunctionCall.callId = callId;
             deserializedRealtimeConversationItemFunctionCall.createdAt = createdAt;
@@ -298,16 +281,33 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
         return this;
     }
 
+    /*
+     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
+     */
+    @Generated
+    private RealtimeConversationItemObjectType objectType;
+
     /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * Get the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
      * creating a new item.
      *
-     * @param object the object value to set.
+     * @return the objectType value.
+     */
+    @Generated
+    public RealtimeConversationItemObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Set the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param objectType the objectType value to set.
      * @return the RealtimeConversationItemFunctionCall object itself.
      */
     @Generated
-    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObjectType object) {
-        this.object = object;
+    public RealtimeConversationItemFunctionCall setObjectType(RealtimeConversationItemObjectType objectType) {
+        this.objectType = objectType;
         return this;
     }
 }

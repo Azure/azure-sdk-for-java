@@ -189,10 +189,10 @@ public final class RealtimeSessionAudioOutput implements JsonSerializable<Realti
     /**
      * Set the voice property: The built-in or custom voice used for audio output.
      *
-     * @param voice the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set.
+     * @param voice the {@link RealtimeSessionAudioOutputVoice} custom voice to set.
      * @return the RealtimeSessionAudioOutput object itself.
      */
-    public RealtimeSessionAudioOutput setVoice(RealtimeSessionCreateRequestGAAudioOutputVoice voice) {
+    public RealtimeSessionAudioOutput setVoice(RealtimeSessionAudioOutputVoice voice) {
         // AI Tooling: union type
         this.voice = voice == null ? null : BinaryData.fromObject(voice);
         return this;
@@ -201,10 +201,10 @@ public final class RealtimeSessionAudioOutput implements JsonSerializable<Realti
     /**
      * Get the voice property: The built-in or custom voice used for audio output.
      *
-     * @return the voice value as a {@link RealtimeSessionCreateRequestGAAudioOutputVoice}, or {@code null} when it is
+     * @return the voice value as a {@link RealtimeSessionAudioOutputVoice}, or {@code null} when it is
      * not set or holds another variant.
      */
-    public RealtimeSessionCreateRequestGAAudioOutputVoice getVoiceAsRealtimeSessionCreateRequestGAAudioOutputVoice() {
+    public RealtimeSessionAudioOutputVoice getVoiceAsRealtimeSessionAudioOutputVoice() {
         // AI Tooling: union type
         if (this.voice == null) {
             return null;
@@ -213,6 +213,6 @@ public final class RealtimeSessionAudioOutput implements JsonSerializable<Realti
         if (!(json.startsWith("{"))) {
             return null;
         }
-        return this.voice.toObject(RealtimeSessionCreateRequestGAAudioOutputVoice.class);
+        return this.voice.toObject(RealtimeSessionAudioOutputVoice.class);
     }
 }

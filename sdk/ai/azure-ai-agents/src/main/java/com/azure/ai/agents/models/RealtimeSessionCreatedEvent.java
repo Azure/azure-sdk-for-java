@@ -6,7 +6,6 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -37,7 +36,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
      * The session configuration.
      */
     @Generated
-    private final BinaryData session;
+    private final VoiceAgentSessionResponseConfiguration session;
 
     /*
      * The session-scoped conversation id. When present, responses attached to the session conversation use the same
@@ -45,18 +44,6 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
      */
     @Generated
     private String conversationId;
-
-    /**
-     * Creates an instance of RealtimeSessionCreatedEvent class.
-     *
-     * @param eventId the eventId value to set.
-     * @param session the session value to set.
-     */
-    RealtimeSessionCreatedEvent(String eventId, BinaryData session) {
-        // AI Tooling: union type
-        this.eventId = eventId;
-        this.session = session;
-    }
 
     /**
      * Get the type property: The type property.
@@ -80,16 +67,6 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     }
 
     /**
-     * Get the session property: The session configuration.
-     *
-     * @return the session value.
-     */
-    BinaryData getSession() {
-        // AI Tooling: union type
-        return this.session;
-    }
-
-    /**
      * Get the conversationId property: The session-scoped conversation id. When present, responses attached to the
      * session conversation use the same value in `response.created` and `response.done`.
      *
@@ -108,8 +85,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("event_id", this.eventId);
-        jsonWriter.writeFieldName("session");
-        this.session.writeTo(jsonWriter);
+        jsonWriter.writeJsonField("session", this.session);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("conversation_id", this.conversationId);
         return jsonWriter.writeEndObject();
@@ -128,7 +104,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     public static RealtimeSessionCreatedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            BinaryData session = null;
+            VoiceAgentSessionResponseConfiguration session = null;
             RealtimeServerEventType type = RealtimeServerEventType.SESSION_CREATED;
             String conversationId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -137,7 +113,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
                 if ("event_id".equals(fieldName)) {
                     eventId = reader.getString();
                 } else if ("session".equals(fieldName)) {
-                    session = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    session = VoiceAgentSessionResponseConfiguration.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else if ("conversation_id".equals(fieldName)) {
@@ -155,32 +131,24 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     }
 
     /**
-     * Get the session property: The session configuration.
-     *
-     * @return the session value as a {@link VoiceAgentSessionResponseConfiguration}, or {@code null} when it is not set
-     * or holds another variant.
-     */
-    public VoiceAgentSessionResponseConfiguration getSessionAsVoiceAgentSessionResponseConfiguration() {
-        // AI Tooling: union type
-        if (this.session == null) {
-            return null;
-        }
-        String json = this.session.toString().trim();
-        if (!(json.startsWith("{"))) {
-            return null;
-        }
-        return this.session.toObject(VoiceAgentSessionResponseConfiguration.class);
-    }
-
-    /**
      * Creates an instance of RealtimeSessionCreatedEvent class.
      *
      * @param eventId the eventId value to set.
-     * @param session the {@link VoiceAgentSessionResponseConfiguration} session to set.
+     * @param session the session value to set.
      */
     public RealtimeSessionCreatedEvent(String eventId, VoiceAgentSessionResponseConfiguration session) {
-        // AI Tooling: union type
+        // AI Tooling: typed session
         this.eventId = eventId;
-        this.session = session == null ? null : BinaryData.fromObject(session);
+        this.session = session;
+    }
+
+    /**
+     * Get the session property: The session configuration.
+     *
+     * @return the session value.
+     */
+    @Generated
+    public VoiceAgentSessionResponseConfiguration getSession() {
+        return this.session;
     }
 }

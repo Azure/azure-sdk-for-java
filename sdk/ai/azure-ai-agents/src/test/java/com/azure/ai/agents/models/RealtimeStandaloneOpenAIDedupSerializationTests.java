@@ -8,6 +8,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.AudioTranscription.Delay;
+import com.openai.models.realtime.ConversationItemInputAudioTranscriptionCompletedEvent.Usage;
 import com.openai.models.realtime.RateLimitsUpdatedEvent.RateLimit;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection.SemanticVad.Eagerness;
 import com.openai.models.realtime.RealtimeResponse;
@@ -322,12 +323,13 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     public void testTranscriptionTokenDetailsRoundTripPolymorphically() throws IOException {
         String json = "{\"type\":\"tokens\",\"input_tokens\":10,\"output_tokens\":5,\"total_tokens\":15,"
             + "\"input_token_details\":{\"audio_tokens\":7,\"text_tokens\":3}}";
-        TranscriptTextUsageTokens usage
-            = assertInstanceOf(TranscriptTextUsageTokens.class, deserialize(json, TranscriptTextUsage::fromJson));
-        TranscriptTextInputTokenDetails details = usage.getInputTokenDetails();
-        assertEquals(7L, details.getAudioTokens());
-        assertEquals(3L, details.getTextTokens());
-        assertStable(usage, TranscriptTextUsage::fromJson);
+        RealtimeConversationItemInputAudioTranscriptionCompletedEvent event = deserialize(
+            "{\"usage\":" + json + "}", RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
+        Usage.TranscriptTextUsageTokens usage = event.getUsage().asTranscriptTextUsageTokens();
+        Usage.TranscriptTextUsageTokens.InputTokenDetails details = usage.inputTokenDetails().get();
+        assertEquals(7L, details.audioTokens().get().longValue());
+        assertEquals(3L, details.textTokens().get().longValue());
+        assertStable(event, RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
     }
 
     @Test

@@ -13,12 +13,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RealtimeSessionCreateRequestGAAudioOutputVoice model.
+ * The RealtimeSessionAudioOutputVoice model.
  */
 @Immutable
 @Beta(warningText = "Preview API.")
-public final class RealtimeSessionCreateRequestGAAudioOutputVoice
-    implements JsonSerializable<RealtimeSessionCreateRequestGAAudioOutputVoice> {
+public final class RealtimeSessionAudioOutputVoice implements JsonSerializable<RealtimeSessionAudioOutputVoice> {
 
     /*
      * The id property.
@@ -27,12 +26,12 @@ public final class RealtimeSessionCreateRequestGAAudioOutputVoice
     private final String id;
 
     /**
-     * Creates an instance of RealtimeSessionCreateRequestGAAudioOutputVoice class.
+     * Creates an instance of RealtimeSessionAudioOutputVoice class.
      *
      * @param id the id value to set.
      */
     @Generated
-    public RealtimeSessionCreateRequestGAAudioOutputVoice(String id) {
+    public RealtimeSessionAudioOutputVoice(String id) {
         this.id = id;
     }
 
@@ -58,16 +57,16 @@ public final class RealtimeSessionCreateRequestGAAudioOutputVoice
     }
 
     /**
-     * Reads an instance of RealtimeSessionCreateRequestGAAudioOutputVoice from the JsonReader.
+     * Reads an instance of RealtimeSessionAudioOutputVoice from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeSessionCreateRequestGAAudioOutputVoice if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of RealtimeSessionAudioOutputVoice if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeSessionCreateRequestGAAudioOutputVoice.
+     * @throws IOException If an error occurs while reading the RealtimeSessionAudioOutputVoice.
      */
     @Generated
-    public static RealtimeSessionCreateRequestGAAudioOutputVoice fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeSessionAudioOutputVoice fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -79,7 +78,7 @@ public final class RealtimeSessionCreateRequestGAAudioOutputVoice
                     reader.skipChildren();
                 }
             }
-            return new RealtimeSessionCreateRequestGAAudioOutputVoice(id);
+            return new RealtimeSessionAudioOutputVoice(id);
         });
     }
 }

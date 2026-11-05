@@ -24,20 +24,20 @@ public class RealtimeSessionAudioOutputSerializationTests {
 
         assertTrue(json.contains("\"voice\":\"alloy\""));
         assertEquals(VoiceIds.ALLOY, result.getVoiceAsVoiceIds());
-        assertNull(result.getVoiceAsRealtimeSessionCreateRequestGAAudioOutputVoice());
+        assertNull(result.getVoiceAsRealtimeSessionAudioOutputVoice());
     }
 
     @Test
     public void customVoiceRoundTrips() throws IOException {
         RealtimeSessionAudioOutput output
-            = new RealtimeSessionAudioOutput().setVoice(new RealtimeSessionCreateRequestGAAudioOutputVoice("voice-id"));
+            = new RealtimeSessionAudioOutput().setVoice(new RealtimeSessionAudioOutputVoice("voice-id"));
 
         String json = UnionTypeSerializationTestUtils.serialize(output);
         RealtimeSessionAudioOutput result
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionAudioOutput::fromJson);
 
         assertTrue(json.contains("\"voice\":{\"id\":\"voice-id\"}"));
-        assertEquals("voice-id", result.getVoiceAsRealtimeSessionCreateRequestGAAudioOutputVoice().getId());
+        assertEquals("voice-id", result.getVoiceAsRealtimeSessionAudioOutputVoice().getId());
         assertNull(result.getVoiceAsVoiceIds());
     }
 
@@ -46,7 +46,7 @@ public class RealtimeSessionAudioOutputSerializationTests {
         RealtimeSessionAudioOutput output
             = UnionTypeSerializationTestUtils.deserialize("{}", RealtimeSessionAudioOutput::fromJson);
         assertNull(output.getVoiceAsVoiceIds());
-        assertNull(output.getVoiceAsRealtimeSessionCreateRequestGAAudioOutputVoice());
+        assertNull(output.getVoiceAsRealtimeSessionAudioOutputVoice());
 
         output.setVoice(VoiceIds.ALLOY).setVoice((VoiceIds) null);
         assertNull(output.getVoiceAsVoiceIds());
