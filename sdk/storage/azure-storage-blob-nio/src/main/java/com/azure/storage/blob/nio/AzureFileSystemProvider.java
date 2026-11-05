@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -839,12 +840,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Checks the existence, and optionally the accessibility, of a file.
      * <p>
-     * This method may be used to check the existence of a file and, optionally, whether it can be read. Checking
-     * existence requires reading the properties of the file, so a successful check implies that
-     * {@link AccessMode#READ} access is granted. For root directories, {@link AccessMode#READ} is verified by listing
-     * the container. It is not possible to determine write or execute permissions granted to a given client without
-     * side effects, so if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is specified, an
-     * {@link AccessDeniedException} will be thrown.
+     * This method may be used to check the existence of a file and, optionally, whether it can be read. How
+     * {@link AccessMode#READ} is verified depends on the type of the path:
+     * <ul>
+     * <li>For files, existence is checked by reading the blob's properties, so a successful check implies that
+     * {@link AccessMode#READ} access is granted.</li>
+     * <li>For directories, including root directories, {@link AccessMode#READ} is verified by listing the
+     * directory's contents, which requires list permission.</li>
+     * </ul>
+     * It is not possible to determine write or execute permissions granted to a given client without side effects, so
+     * if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is specified, an {@link AccessDeniedException} will
+     * be thrown.
      *
      * @param path the path to the file to check
      * @param accessModes The access modes to check; may have zero elements
@@ -870,19 +876,22 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         Some static utility methods in the jdk require checking access on a root. ReadAttributes is not supported on
         roots as they are containers. Furthermore, we always assume that roots exist as they are verified at creation
         and cannot be deleted by the file system. Thus, we prefer a short circuit for existence-only checks on roots.
-        Only READ can reach this point, and it is verified by listing the container since the container check at
-        creation may have been skipped.
+        READ is verified by listing the container since the container check at creation may have been skipped.
          */
         if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
             if (accessModes != null && accessModes.length != 0) {
-                checkRootReadAccess((AzurePath) path);
+                String containerName = path.toString().substring(0, path.toString().length() - 1);
+                AzureFileStore fileStore
+                    = (AzureFileStore) ((AzureFileSystem) path.getFileSystem()).getFileStore(containerName);
+                checkListAccess(fileStore.getContainerClient(), null, path);
             }
             return;
         }
 
         // Read attributes already wraps BlobStorageException in an IOException.
+        AzureBlobFileAttributes attributes;
         try {
-            readAttributes(path, BasicFileAttributes.class);
+            attributes = readAttributes(path, AzureBlobFileAttributes.class);
         } catch (IOException e) {
             Throwable cause = e.getCause();
             if (cause instanceof BlobStorageException
@@ -892,21 +901,32 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
             }
         }
+
+        /*
+        Reading a directory requires listing its contents. Virtual directories were already listed while reading
+        attributes, but concrete directories are marker blobs whose properties can be read without list permission.
+         */
+        if (accessModes != null
+            && accessModes.length != 0
+            && attributes.isDirectory()
+            && !attributes.isVirtualDirectory()) {
+            AzureResource resource = new AzureResource(path);
+            checkListAccess(resource.getContainerClient(),
+                resource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR, path);
+        }
     }
 
-    private static void checkRootReadAccess(AzurePath root) throws IOException {
-        String containerName = root.toString().substring(0, root.toString().length() - 1);
-        AzureFileSystem afs = (AzureFileSystem) root.getFileSystem();
+    private static void checkListAccess(BlobContainerClient containerClient, String prefix, Path path)
+        throws IOException {
         try {
-            ((AzureFileStore) afs.getFileStore(containerName)).getContainerClient()
-                .listBlobs(new ListBlobsOptions().setMaxResultsPerPage(1), null)
+            containerClient.listBlobs(new ListBlobsOptions().setPrefix(prefix).setMaxResultsPerPage(1), null)
                 .iterator()
                 .hasNext();
         } catch (BlobStorageException e) {
             if (BlobErrorCode.CONTAINER_NOT_FOUND.equals(e.getErrorCode())) {
-                throw new NoSuchFileException(root.toString());
+                throw new NoSuchFileException(path.toString());
             }
-            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IOException("Path: " + root, e));
+            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IOException("Path: " + path, e));
         }
     }
 

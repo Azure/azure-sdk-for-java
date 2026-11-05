@@ -1159,6 +1159,49 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @Test
+    public void checkAccessDirectoryRead() throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+        fs.provider().createDirectory(path);
+
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertTrue(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessDirectoryReadDenied() throws IOException {
+        AzureFileSystem fs = createFS(config);
+        String dirName = generateBlobName();
+        String virtualDirName = generateBlobName();
+        String fileName = generateBlobName();
+        fs.provider().createDirectory(fs.getPath(dirName));
+        ((AzurePath) fs.getPath(virtualDirName, generateBlobName())).toBlobClient().upload(DATA.getDefaultBinaryData());
+        fs.provider().newOutputStream(fs.getPath(fileName)).close();
+
+        // Read without list permission allows getting properties but not listing directory contents.
+        Map<String, Object> sasConfig = initializeConfigMap();
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+            new AzureSasCredential(primaryBlobServiceClient
+                .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
+                    AccountSasPermission.parse("r"), new AccountSasService().setBlobAccess(true),
+                    new AccountSasResourceType().setContainer(true).setObject(true)))));
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, rootNameToContainerName(getDefaultDir(fs)));
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem sasFs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), sasConfig);
+        Path dir = sasFs.getPath(dirName);
+        Path virtualDir = sasFs.getPath(virtualDirName);
+        Path file = sasFs.getPath(fileName);
+
+        assertDoesNotThrow(() -> sasFs.provider().checkAccess(file, AccessMode.READ));
+        assertDoesNotThrow(() -> sasFs.provider().checkAccess(dir));
+        IOException e = assertThrows(IOException.class, () -> sasFs.provider().checkAccess(dir, AccessMode.READ));
+        assertFalse(e instanceof NoSuchFileException);
+        assertFalse(Files.isReadable(dir));
+        assertFalse(Files.isReadable(virtualDir));
+    }
+
+    @Test
     public void checkAccessRootRead() {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(getDefaultDir(fs));
