@@ -4,14 +4,14 @@
 
 ### Features Added
 
-- Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authentication using GitHub Actions OIDC federation.
+- Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authentication using GitHub Actions OIDC federation. ([#50916](https://github.com/Azure/azure-sdk-for-java/pull/50916))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed an initial OIDC request failure preventing later authentication attempts with the same `AzurePipelinesCredential` or `GitHubActionsCredential` instance.
-- Fixed client-credentials authentication to acquire a new token when handling a Continuous Access Evaluation (CAE) claims challenge.
+- Fixed an initial OIDC request failure preventing later authentication attempts with the same `AzurePipelinesCredential` or `GitHubActionsCredential` instance. ([#50916](https://github.com/Azure/azure-sdk-for-java/pull/50916))
+- Fixed client-credentials authentication to acquire a new token when handling a Continuous Access Evaluation (CAE) claims challenge. ([#50916](https://github.com/Azure/azure-sdk-for-java/pull/50916))`
 
 ### Other Changes
 
