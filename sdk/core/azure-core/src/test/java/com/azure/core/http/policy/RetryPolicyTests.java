@@ -44,12 +44,18 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -900,5 +906,124 @@ public class RetryPolicyTests {
             Arguments.of(new RequestRetryCondition(
                 new MockHttpResponse(null, 503, new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "notanumber")),
                 null, 0, null), retryStrategy, Duration.ofSeconds(1)));
+    }
+
+    @Test
+    public void syncRetryOnHttpResponseInterruptDuringBackoffRestoresInterruptFlag() throws Exception {
+        CountDownLatch retryableResponseSent = new CountDownLatch(1);
+        AtomicBoolean interruptFlagPreserved = new AtomicBoolean(false);
+        AtomicReference<Throwable> caughtException = new AtomicReference<>();
+
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(1, Duration.ofSeconds(60))))
+                .httpClient(new NoOpHttpClient() {
+                    @Override
+                    public Mono<HttpResponse> send(HttpRequest request) {
+                        throw new IllegalStateException("Expected sync path");
+                    }
+
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        retryableResponseSent.countDown();
+                        return new MockHttpResponse(request, 503);
+                    }
+                })
+                .build();
+
+        Thread worker = new Thread(() -> {
+            try {
+                pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
+            } catch (RuntimeException e) {
+                caughtException.set(e);
+                interruptFlagPreserved.set(Thread.currentThread().isInterrupted());
+            }
+        });
+        worker.setDaemon(true);
+        worker.start();
+
+        try {
+            assertTrue(retryableResponseSent.await(5, TimeUnit.SECONDS),
+                "Timed out waiting for retryable 503 response");
+
+            worker.interrupt();
+            worker.join(5000);
+            assertFalse(worker.isAlive(), "Worker thread should have terminated");
+
+            assertNotNull(caughtException.get(), "Expected a RuntimeException wrapping InterruptedException");
+            assertTrue(caughtException.get().getCause() instanceof InterruptedException,
+                "Expected cause to be InterruptedException");
+
+            assertTrue(interruptFlagPreserved.get(),
+                "Thread interrupt flag should be preserved after InterruptedException during HTTP response retry backoff");
+        } finally {
+            if (worker.isAlive()) {
+                worker.interrupt();
+                worker.join(1000);
+            }
+        }
+    }
+
+    @Test
+    public void syncRetryOnExceptionInterruptDuringBackoffRestoresInterruptFlag() throws Exception {
+        CountDownLatch retryableExceptionThrown = new CountDownLatch(1);
+        AtomicBoolean interruptFlagPreserved = new AtomicBoolean(false);
+        AtomicReference<Throwable> caughtException = new AtomicReference<>();
+        RuntimeException retryableError = new RuntimeException("transient failure");
+
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(1, Duration.ofSeconds(60))))
+                .httpClient(new NoOpHttpClient() {
+                    @Override
+                    public Mono<HttpResponse> send(HttpRequest request) {
+                        throw new IllegalStateException("Expected sync path");
+                    }
+
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        retryableExceptionThrown.countDown();
+                        throw retryableError;
+                    }
+                })
+                .build();
+
+        Thread worker = new Thread(() -> {
+            try {
+                pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
+            } catch (RuntimeException e) {
+                caughtException.set(e);
+                interruptFlagPreserved.set(Thread.currentThread().isInterrupted());
+            }
+        });
+        worker.setDaemon(true);
+        worker.start();
+
+        try {
+            assertTrue(retryableExceptionThrown.await(5, TimeUnit.SECONDS),
+                "Timed out waiting for retryable exception");
+
+            worker.interrupt();
+            worker.join(5000);
+            assertFalse(worker.isAlive(), "Worker thread should have terminated");
+
+            assertNotNull(caughtException.get(), "Expected the original RuntimeException");
+
+            boolean hasInterruptedSuppressed = false;
+            for (Throwable suppressed : caughtException.get().getSuppressed()) {
+                if (suppressed instanceof InterruptedException) {
+                    hasInterruptedSuppressed = true;
+                    break;
+                }
+            }
+            assertTrue(hasInterruptedSuppressed,
+                "Expected InterruptedException as a suppressed exception on the original error");
+
+            assertTrue(interruptFlagPreserved.get(),
+                "Thread interrupt flag should be preserved after InterruptedException during exception retry backoff");
+        } finally {
+            if (worker.isAlive()) {
+                worker.interrupt();
+                worker.join(1000);
+            }
+        }
     }
 }

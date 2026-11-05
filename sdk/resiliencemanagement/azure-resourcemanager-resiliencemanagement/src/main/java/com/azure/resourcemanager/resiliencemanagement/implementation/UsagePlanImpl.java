@@ -127,8 +127,12 @@ public final class UsagePlanImpl implements UsagePlan, UsagePlan.Definition, Usa
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.usagePlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "usagePlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "resourceGroupName");
+        this.usagePlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "usagePlanName");
     }
 
     public UsagePlan refresh() {

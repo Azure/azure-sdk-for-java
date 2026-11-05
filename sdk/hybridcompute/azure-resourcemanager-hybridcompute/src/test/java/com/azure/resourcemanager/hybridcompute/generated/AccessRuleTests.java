@@ -10,8 +10,8 @@ import com.azure.resourcemanager.hybridcompute.models.AccessRule;
 public final class AccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessRule model = BinaryData.fromString(
-            "{\"name\":\"dzf\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"l\",\"rqttbajlkatnw\"]}}")
+        AccessRule model = BinaryData
+            .fromString("{\"name\":\"b\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"vvib\"]}}")
             .toObject(AccessRule.class);
     }
 }

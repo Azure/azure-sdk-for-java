@@ -3,10 +3,12 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
@@ -14,13 +16,19 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -28,12 +36,13 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -47,6 +56,9 @@ public class FeedRangeQueryTests extends TestSuiteBase {
     private final List<JsonNode> createdDocuments = new ArrayList<>();
     private CosmosAsyncContainer createdContainer;
     private CosmosAsyncClient client;
+    private FeedRangeTestData scopedData;
+    private CosmosAsyncContainer hierarchicalContainer;
+    private boolean expectThinClient;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public FeedRangeQueryTests(CosmosClientBuilder clientBuilder) {
@@ -157,9 +169,71 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         return value.get();
     }
 
-    @BeforeClass(groups = {"query"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    @DataProvider
+    public Object[][] scopedQueries() {
+        List<Object[]> cases = new ArrayList<>();
+        for (Object[] scope : FeedRangeTestData.scopes()) {
+            cases.add(new Object[] {scope[0], false});
+            cases.add(new Object[] {scope[0], true});
+        }
+        return cases.toArray(new Object[0][]);
+    }
+
+    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, dataProvider = "scopedQueries", timeOut = TIMEOUT)
+    public void queryPreservesScopeAcrossContinuation(String scope, boolean ordered) {
+        Range<String> range = scopedData.rangeFor(scope);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setFeedRange(new FeedRangeEpkImpl(range));
+        String query = ordered ? "SELECT * FROM c ORDER BY c.id" : "SELECT * FROM c";
+        assertThat(drainScopedQuery(scopedData.getContainer(), options, query))
+            .containsExactlyInAnyOrderElementsOf(scopedData.expectedIds(range));
+    }
+
+    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
+    public void hierarchicalPrefixesDoNotLeakAcrossContinuation() {
+        for (int tenant = 0; tenant < 9; tenant++) {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions()
+                .setPartitionKey(new PartitionKeyBuilder().add("tenant-" + tenant).build());
+            List<String> expected = new ArrayList<>();
+            if (tenant < 8) {
+                for (int user = 0; user < 4; user++) {
+                    expected.add("tenant-" + tenant + "-user-" + user);
+                }
+            }
+            assertThat(drainScopedQuery(hierarchicalContainer, options, "SELECT * FROM c"))
+                .containsExactlyInAnyOrderElementsOf(expected);
+        }
+    }
+
+    private List<String> drainScopedQuery(
+        CosmosAsyncContainer container, CosmosQueryRequestOptions options, String query) {
+        List<String> ids = new ArrayList<>();
+        String continuation = null;
+        for (int pageNumber = 0; pageNumber < 100; pageNumber++) {
+            FeedResponse<ObjectNode> page = container.queryItems(query, options, ObjectNode.class)
+                .byPage(continuation, 1).blockFirst(FeedRangeTestData.REQUEST_TIMEOUT);
+            assertThat(page).isNotNull();
+            if (expectThinClient) {
+                assertThinClientEndpointUsed(page.getCosmosDiagnostics());
+            }
+            page.getResults().forEach(document -> ids.add(document.get("id").asText()));
+            continuation = page.getContinuationToken();
+            if (continuation == null) {
+                assertThat(new HashSet<>(ids)).as("No duplicate IDs after query resumption").hasSize(ids.size());
+                if (ids.size() > 1) {
+                    assertThat(pageNumber).as("Must exercise resumed query pages").isPositive();
+                }
+                return ids;
+            }
+        }
+        throw new AssertionError("Query did not drain in 100 resumed pages");
+    }
+
+    @BeforeClass(groups = {"query", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT * 2)
+    public void beforeClass(ITestContext context) throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
+        expectThinClient = getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY
+            && (Boolean.TRUE.equals(Configs.isThinClientEnabled())
+                || Arrays.asList(context.getIncludedGroups()).contains("thinclientEndpointProbe"));
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         cleanUpContainer(createdContainer);
 
@@ -171,6 +245,23 @@ public class FeedRangeQueryTests extends TestSuiteBase {
             DEFAULT_NUM_DOCUMENTS_PER_PKEY,
             Collections.singletonList(PK_2),
             createdContainer));
+
+        scopedData = new FeedRangeTestData(client, "query-range");
+        hierarchicalContainer = scopedData.createHierarchicalContainer();
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+    }
+
+    @AfterClass(groups = {"query", "thinclient", "thinclientEndpointProbe"}, alwaysRun = true, timeOut = SHUTDOWN_TIMEOUT)
+    public void afterClass() {
+        try {
+            if (scopedData != null) {
+                scopedData.close();
+            }
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
     }
 
     private List<JsonNode> insertDocuments(

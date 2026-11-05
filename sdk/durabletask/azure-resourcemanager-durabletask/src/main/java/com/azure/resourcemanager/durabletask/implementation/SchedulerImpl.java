@@ -132,8 +132,12 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     SchedulerImpl(SchedulerInner innerObject, com.azure.resourcemanager.durabletask.DurableTaskManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schedulerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedulers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}",
+            "resourceGroupName");
+        this.schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}",
+            "schedulerName");
     }
 
     public Scheduler refresh() {

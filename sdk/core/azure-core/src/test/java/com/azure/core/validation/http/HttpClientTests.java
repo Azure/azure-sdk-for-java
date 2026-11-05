@@ -99,6 +99,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -114,6 +115,8 @@ import static com.azure.core.validation.http.HttpClientTestsServer.HUGE_HEADER_R
 import static com.azure.core.validation.http.HttpClientTestsServer.HUGE_HEADER_VALUE;
 import static com.azure.core.validation.http.HttpClientTestsServer.INVALID_HEADER_RESPONSE;
 import static com.azure.core.validation.http.HttpClientTestsServer.PLAIN_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.PARTIAL_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.PARTIAL_RESPONSE_BYTES;
 import static com.azure.core.validation.http.HttpClientTestsServer.RETURN_BYTES;
 import static com.azure.core.validation.http.HttpClientTestsServer.UTF_16BE_BOM_RESPONSE;
 import static com.azure.core.validation.http.HttpClientTestsServer.UTF_16LE_BOM_RESPONSE;
@@ -131,6 +134,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -201,6 +205,23 @@ public abstract class HttpClientTests {
             = SyncAsyncExtension.execute(() -> sendRequestSync(PLAIN_RESPONSE), () -> sendRequest(PLAIN_RESPONSE));
 
         assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests that a partial response is emitted without waiting for the response to end.
+     */
+    @SyncAsyncTest
+    public void partialResponseEmittedBeforeEndOfStream() {
+        byte[] actual = SyncAsyncExtension.execute(() -> assertTimeoutPreemptively(Duration.ofSeconds(3), () -> {
+            HttpResponse response = createHttpClient()
+                .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(PARTIAL_RESPONSE)), Context.NONE);
+            return collectPartialResponse(response).block();
+        }), () -> createHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUrl(PARTIAL_RESPONSE)))
+            .flatMap(this::collectPartialResponse)
+            .timeout(Duration.ofSeconds(3)));
+
+        assertNotNull(actual);
+        assertArraysEqual(PARTIAL_RESPONSE_BYTES, actual);
     }
 
     /**
@@ -813,6 +834,14 @@ public abstract class HttpClientTests {
     private Mono<String> sendRequest(String requestPath) {
         return createHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
             .flatMap(HttpResponse::getBodyAsString);
+    }
+
+    private Mono<byte[]> collectPartialResponse(HttpResponse response) {
+        AtomicInteger received = new AtomicInteger();
+        Flux<ByteBuffer> responseBody = response.getBody()
+            .takeUntil(buffer -> received.addAndGet(buffer.remaining()) >= PARTIAL_RESPONSE_BYTES.length);
+
+        return FluxUtil.collectBytesInByteBufferStream(responseBody).doFinally(ignored -> response.close());
     }
 
     private String sendRequestSync(String requestPath) {
