@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
@@ -46,11 +47,14 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
@@ -74,6 +78,7 @@ import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -81,6 +86,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -117,9 +123,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -2753,7 +2762,9 @@ public class BlobApiTests extends BlobTestBase {
 
         bc.setAccessTier(tier);
         assertEquals(tier, bc.getProperties().getAccessTier());
-        assertEquals(tier, cc.listBlobs().iterator().next().getProperties().getAccessTier());
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        assertEquals(tier, cc.listBlobs(options, null).iterator().next().getProperties().getAccessTier());
 
         // cleanup:
         cc.delete();
@@ -3199,6 +3210,112 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void sharedSessionContextUsesSameLiveTokenAcrossIndependentClients() {
+        String blobName = generateBlobName();
+        String content = "shared-session-context";
+        cc.getBlobClient(blobName).upload(BinaryData.fromString(content), true);
+
+        AtomicInteger sessionDownloads = new AtomicInteger();
+        AtomicReference<String> sharedSessionToken = new AtomicReference<>();
+        AtomicBoolean sessionTokenMismatch = new AtomicBoolean();
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), request -> {
+            String path = request.getUrl().getPath();
+            if (request.getHttpMethod() == HttpMethod.GET && path != null && path.endsWith("/" + blobName)) {
+                String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                if (authorization != null && authorization.startsWith("Session ")) {
+                    sessionDownloads.incrementAndGet();
+                    int signatureDelimiter = authorization.lastIndexOf(':');
+                    if (signatureDelimiter <= "Session ".length()) {
+                        sessionTokenMismatch.set(true);
+                        return;
+                    }
+                    String sessionToken = authorization.substring("Session ".length(), signatureDelimiter);
+                    String firstToken = sharedSessionToken.get();
+                    if (firstToken == null) {
+                        if (!sharedSessionToken.compareAndSet(null, sessionToken)
+                            && !sessionToken.equals(sharedSessionToken.get())) {
+                            sessionTokenMismatch.set(true);
+                        }
+                    } else if (!sessionToken.equals(firstToken)) {
+                        sessionTokenMismatch.set(true);
+                    }
+                }
+            }
+        });
+        SessionContext sharedContext
+            = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
+
+        BlobClient first
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+        BlobClient second
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        assertEquals(content, first.downloadContent().toString());
+        assertEquals(1, sessionDownloads.get(), "The first client should use session authentication.");
+        assertEquals(content, second.downloadContent().toString());
+        assertEquals(2, sessionDownloads.get(), "The second client should also use session authentication.");
+        assertNotNull(sharedSessionToken.get(), "A live session token must have been captured.");
+        assertFalse(sessionTokenMismatch.get(), "The independent clients used different live session tokens.");
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        BlobClient blobClient = cc.getBlobClient(blobName);
+        blobClient.getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
+            }
+        });
+
+        BlobClient sessionBlob
+            = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        File outFile = new File(prefix + "-session-download.tmp");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null, null,
+            false, null, null);
+
+        assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+        assertTrue(downloadAuthSchemesByRange.size() > 1,
+            "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+        assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+            "Expected every chunked blob download range to attempt Session auth; saw " + downloadAuthSchemesByRange);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
