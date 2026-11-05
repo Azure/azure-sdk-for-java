@@ -1,14 +1,59 @@
 # Release History
 
-## 12.37.0-beta.1 (Unreleased)
+## 12.38.0-beta.1 (2026-11-05)
 
 ### Features Added
+- Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
+  `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
+  requires an HTTP client that withholds the request body until the service responds.
+
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed the default response serialization format for `listBlobs` and `listBlobsByHierarchy` from XML to Apache Arrow
+  for both synchronous and asynchronous clients, with support for XML fallback responses from the service. To explicitly
+  request XML, use `new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.22.2` to version `12.23.0-beta.1`.
+
+## 12.37.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the block size.
+
+## 12.37.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-storage-internal-avro` from `12.21.0` to version `12.22.1`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.36.1`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+## 12.36.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
 
 ## 12.36.0 (2026-10-07)
 
@@ -47,6 +92,12 @@
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
+
+- Updated the documentation of `BlobContainerClient`/`BlobContainerAsyncClient` `delete`, `deleteWithResponse`,
+  `deleteIfExists`, and `deleteIfExistsWithResponse`, and `BlobServiceClient`/`BlobServiceAsyncClient`
+  `deleteBlobContainer`, `deleteBlobContainerWithResponse`, `deleteBlobContainerIfExists`, and
+  `deleteBlobContainerIfExistsWithResponse` to note that operations on blobs within a deleted container, including reads
+  and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
 
 ## 12.35.2 (2026-10-06)
 

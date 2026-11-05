@@ -96,6 +96,11 @@ jobs:
             binaryLanguages: java
             compiled:
               enabled: true
+          sbom:
+            ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk
+            ${{ else }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
     pool:
       name: $(LINUXPOOL)

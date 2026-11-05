@@ -556,10 +556,19 @@ You can load the certificate in the file system as a trusted certificate by conf
 
 | Certificate Type       | Description                                 | Usage                                                                                     |
 |------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|
-| Well-Known Certificate | The file path to the well-known certificate | `System.setProperty("azure.cert-path.well-known", "<well-known-certificate-file-path>")]` |
-| Custom Certificate     | The file path to the custom certificate     | `System.setProperty("azure.cert-path.custom", "<custom-certificate-file-path>")`          |
+| Well-Known Certificate | The directory containing well-known certificates | `System.setProperty("azure.cert-path.well-known", "<well-known-certificate-directory>")` |
+| Custom Certificate     | The directory containing custom certificates     | `System.setProperty("azure.cert-path.custom", "<custom-certificate-directory>")`         |
 
 Note: These properties support certificate files only (e.g., `.cer`, `.pem`, `.der`, `.crt`). Private keys are not supported.
+
+Each keystore loads its own snapshot of these directories when it is constructed and whenever either `KeyStore.load(...)`
+overload is called. Added, replaced, and removed certificate files are reflected after the next load. Calling
+`load(null, null)` or `load((KeyStore.LoadStoreParameter) null)` retains the keystore's configured paths, including paths
+previously supplied through `KeyVaultLoadStoreParameter`; it does not reread system properties.
+
+After changing certificate files, reload the keystore and rebuild the trust managers and `SSLContext` that use it.
+Existing trust managers, TLS connections, and TLS sessions are not automatically refreshed. Directory changes are not
+watched, and the Key Vault certificate refresh interval does not reload these filesystem sources.
 
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
@@ -915,4 +924,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-

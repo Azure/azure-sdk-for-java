@@ -24,9 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.FINE;
@@ -62,16 +60,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final JreCertificates jreCertificates;
 
     /**
-     * Store well Know certificates loaded from specific path.
-     */
-    private SpecificPathCertificates wellKnowCertificates;
-
-    /**
-     * Store custom certificates loaded from specific path.
-     */
-    private SpecificPathCertificates customCertificates;
-
-    /**
      * Store certificates loaded from KeyVault.
      */
     private final KeyVaultCertificates keyVaultCertificates;
@@ -84,7 +72,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores all the certificates.
      */
-    private List<AzureCertificates> allCertificates;
+    private volatile List<AzureCertificates> allCertificates;
 
     /**
      * Stores the creation date.
@@ -142,12 +130,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         certPathWellKnown = parameter.getCertPathWellKnown();
         certPathCustom = parameter.getCertPathCustom();
 
-        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathWellKnown);
+        loadCertificatesFromSpecificPaths();
+    }
+
+    private void loadCertificatesFromSpecificPaths() {
+        SpecificPathCertificates wellKnowCertificates
+            = SpecificPathCertificates.getSpecificPathCertificates(certPathWellKnown);
         LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
 
-        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathCustom);
+        SpecificPathCertificates customCertificates
+            = SpecificPathCertificates.getSpecificPathCertificates(certPathCustom);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
+        // Publish both filesystem snapshots together without modifying sources retained by other keystores.
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates,
             classpathCertificates);
     }
@@ -386,7 +381,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
-        * A {@link KeyVaultLoadStoreParameter} replaces the complete configuration captured by the constructor.
+     * A {@link KeyVaultLoadStoreParameter} replaces the complete configuration captured by the constructor.
+     * Reloads certificates from the configured filesystem paths. Existing trust managers and SSL contexts
+     * must be rebuilt to use the updated certificates.
      *
      * @param param the {@code KeyStore.LoadStoreParameter}
      *          that specifies how to load the keystore,
@@ -399,6 +396,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
             keyVaultCertificates.updateKeyVaultClient(parameter);
             updateKeyStoreConfiguration(parameter);
+        } else {
+            loadCertificatesFromSpecificPaths();
         }
 
         classpathCertificates.loadCertificatesFromClasspath();
@@ -406,31 +405,30 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore from the given input stream.
+     * Reloads certificates from the configured filesystem paths without changing the configuration.
+     * Existing trust managers and SSL contexts must be rebuilt to use the updated certificates.
      *
      * @param stream the input stream from which the keystore is loaded,or {@code null}
      * @param password the password
      */
     @Override
     public void engineLoad(InputStream stream, char[] password) {
+        loadCertificatesFromSpecificPaths();
         classpathCertificates.loadCertificatesFromClasspath();
     }
 
     private List<String> getAllAliases() {
-        List<String> allAliases = new ArrayList<>(jreCertificates.getAliases());
-        Map<String, List<String>> aliasLists = new HashMap<>();
-
-        aliasLists.put("well known certificates", wellKnowCertificates.getAliases());
-        aliasLists.put("custom certificates", customCertificates.getAliases());
-        aliasLists.put("key vault certificates", keyVaultCertificates.getAliases());
-        aliasLists.put("class path certificates", classpathCertificates.getAliases());
-
-        aliasLists.forEach((certificatesType, certificates) -> certificates.forEach(alias -> {
-            if (allAliases.contains(alias)) {
-                LOGGER.log(FINE, String.format("The certificate %s under %s already exists", alias, certificatesType));
-            } else {
-                allAliases.add(alias);
+        List<String> allAliases = new ArrayList<>();
+        for (AzureCertificates certificatesSource : allCertificates) {
+            for (String alias : certificatesSource.getAliases()) {
+                if (allAliases.contains(alias)) {
+                    LOGGER.log(FINE, "The certificate {0} under {1} already exists",
+                        new Object[] { alias, certificatesSource.getClass().getSimpleName() });
+                } else {
+                    allAliases.add(alias);
+                }
             }
-        }));
+        }
 
         return allAliases;
     }

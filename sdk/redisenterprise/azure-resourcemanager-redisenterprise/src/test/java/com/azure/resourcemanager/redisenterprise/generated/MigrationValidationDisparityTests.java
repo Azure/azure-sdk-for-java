@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationValidationDisparityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationValidationDisparity model = BinaryData.fromString("{\"category\":\"xhvpmoue\",\"message\":\"hd\"}")
-            .toObject(MigrationValidationDisparity.class);
-        Assertions.assertEquals("xhvpmoue", model.category());
-        Assertions.assertEquals("hd", model.message());
+        MigrationValidationDisparity model
+            = BinaryData.fromString("{\"category\":\"lovmclwhijcoe\",\"message\":\"ctbzaq\"}")
+                .toObject(MigrationValidationDisparity.class);
+        Assertions.assertEquals("lovmclwhijcoe", model.category());
+        Assertions.assertEquals("ctbzaq", model.message());
     }
 }

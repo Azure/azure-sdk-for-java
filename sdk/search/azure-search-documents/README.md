@@ -52,7 +52,7 @@ See the [knowledge base configuration sample](https://github.com/Azure/azure-sdk
 [retrieval streaming sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
 [file knowledge source sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
 See [the changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/CHANGELOG.md) for additions, breaking changes, and fixes relative to the previous GA release,
-`12.0.2`. The [sample feature-coverage table](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md#new-ga-feature-coverage) maps the new capabilities
+`12.1.1`. The [sample feature-coverage table](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md#new-ga-feature-coverage) maps the new capabilities
 to runnable examples and configuration snippets, including document permissions, indexed SQL and SharePoint sources,
 and content-understanding chunking.
 
@@ -112,7 +112,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0</version>
+    <version>12.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

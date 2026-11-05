@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-edgeactions</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,6 +80,9 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide][cg].
+
+For the API `2026-10-01` integration tests, including Azure setup, recording, and offline playback, see
+[testing instructions](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/edgeactions/azure-resourcemanager-edgeactions/TESTING.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 

@@ -4,17 +4,20 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -164,6 +167,7 @@ public class StorageImplUtils {
 
     /**
      * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
+    
      * Storage historically exposed service-returned ETags without quotes, so both that legacy representation and the
      * RFC-compliant representation are accepted. Response values remain unchanged for customer compatibility.
      *
@@ -296,6 +300,38 @@ public class StorageImplUtils {
     }
 
     /**
+     * Replaces a storage service subdomain in an endpoint while leaving account names containing the same text intact.
+     *
+     * @param endpoint The endpoint to convert.
+     * @param desiredEndpoint The desired service subdomain.
+     * @param currentEndpoint The current service subdomain.
+     * @return The converted endpoint, or the original endpoint if it already targets the desired service or doesn't
+     * contain the current service subdomain.
+     */
+    public static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
+        String desiredStringToMatch = "." + desiredEndpoint + ".";
+        String currentRegexToMatch = "\\." + currentEndpoint + "\\.";
+        if (endpoint.contains(desiredStringToMatch)) {
+            return endpoint;
+        } else {
+            return endpoint.replaceFirst(currentRegexToMatch, desiredStringToMatch);
+        }
+    }
+
+    /**
+     * Determines whether a host contains the given storage service subdomain.
+     *
+     * @param host The host string to check.
+     * @param serviceSubDomain The service subdomain (e.g., "blob", "file", "queue", or "dfs").
+     * @return {@code true} if the host contains the service subdomain.
+     */
+    public static boolean isServiceEndpoint(String host, String serviceSubDomain) {
+        return !CoreUtils.isNullOrEmpty(host)
+            && !CoreUtils.isNullOrEmpty(serviceSubDomain)
+            && host.toLowerCase(Locale.ROOT).contains("." + serviceSubDomain + ".");
+    }
+
+    /**
      * Gets the account name from a host string, stripping IPv6, dualstack, and secondary suffixes.
      * <p>
      * For IPv6/dualstack endpoints, hosts look like {@code accountname-ipv6.blob.core.windows.net} or
@@ -316,8 +352,7 @@ public class StorageImplUtils {
 
         int accountEndIndex = host.indexOf('.');
         if (accountEndIndex >= 0) {
-            int serviceStartIndex = host.indexOf(serviceSubDomain, accountEndIndex);
-            if (serviceStartIndex > -1) {
+            if (isServiceEndpoint(host, serviceSubDomain)) {
                 String accountName = host.substring(0, accountEndIndex);
 
                 // Note: The suffixes are specifically checked/trimmed in this order to
@@ -342,6 +377,28 @@ public class StorageImplUtils {
         return null;
     }
 
+    /**
+     * Gets the account name from the first recognized storage service subdomain in a host.
+     *
+     * @param host The host string from a URL.
+     * @param serviceSubDomains The recognized service subdomains in matching order.
+     * @return The account name, or {@code null} if the host doesn't contain a recognized service subdomain.
+     */
+    public static String getAccountNameFromKnownServiceHost(String host, String... serviceSubDomains) {
+        if (serviceSubDomains == null) {
+            return null;
+        }
+
+        for (String serviceSubDomain : serviceSubDomains) {
+            String accountName = getAccountNameFromHost(host, serviceSubDomain);
+            if (accountName != null) {
+                return accountName;
+            }
+        }
+
+        return null;
+    }
+
     /** Returns an empty string if value is {@code null}, otherwise returns value
      * @param value The value to check and return.
      * @return The value or empty string.
@@ -363,6 +420,60 @@ public class StorageImplUtils {
             logger.info(STRING_TO_SIGN_LOG_INFO_MESSAGE, stringToSign, System.lineSeparator());
             logger.warning(STRING_TO_SIGN_LOG_WARNING_MESSAGE, Constants.STORAGE_LOG_STRING_TO_SIGN);
         }
+    }
+
+    /**
+     * Adds a data locality endpoint to the given {@link Context} so that {@link DataLocalityPolicy} routes the
+     * request to that endpoint.
+     *
+     * @param context The call context. May be null.
+     * @param dataLocalityEndpoint The absolute or authority-only URI the request should be routed to. May be null or
+     * empty, in which case the context is returned unchanged.
+     * @return The context carrying the data locality endpoint, or the original context if no endpoint was supplied.
+     */
+    public static Context addDataLocalityEndpoint(Context context, URI dataLocalityEndpoint) {
+        if (dataLocalityEndpoint == null || dataLocalityEndpoint.toString().isEmpty()) {
+            return context;
+        }
+
+        String endpoint = dataLocalityEndpoint.getRawAuthority() == null
+            ? dataLocalityEndpoint.toString()
+            : dataLocalityEndpoint.getRawAuthority();
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint);
+    }
+
+    /**
+     * Checks whether the provided pipeline can consume data locality context.
+     *
+     * <p>Data locality is deliberately NOT supported for client-side encrypted clients for two reasons:</p>
+     * <ol>
+     * <li>{@code EncryptedBlobClientBuilder} neither retains nor installs {@link DataLocalityPolicy}, so a resolved
+     * endpoint placed in the request context has nothing to act on it and the {@code getLayout} round trip is pure
+     * waste.</li>
+     * <li>Layout ranges are expressed in ciphertext offsets as stored by the service, while endpoint resolution is
+     * driven by the caller's plaintext offset. For client-side encryption v2 these are different coordinate spaces,
+     * so routing would be wrong at region boundaries.</li>
+     * </ol>
+     *
+     * <p>Whether the combination should ever be supported is an open design question; gating on the policy's presence
+     * keeps the suppression automatic and trivially reversible.</p>
+     *
+     * @param pipeline The pipeline to inspect. May be null.
+     * @return {@code true} if the pipeline contains a {@link DataLocalityPolicy}; otherwise {@code false}.
+     */
+    public static boolean pipelineSupportsDataLocality(HttpPipeline pipeline) {
+        if (pipeline == null) {
+            return false;
+        }
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof DataLocalityPolicy) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

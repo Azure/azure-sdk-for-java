@@ -131,8 +131,12 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "cloudAccountName");
     }
 
     public CloudAccount refresh() {

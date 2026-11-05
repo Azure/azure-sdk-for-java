@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
@@ -26,6 +27,7 @@ import io.netty.util.internal.SystemPropertyUtil;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.HttpDecoderSpec;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -41,11 +43,15 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * <p>
@@ -132,6 +138,7 @@ public class NettyAsyncHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -161,6 +168,37 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder(HttpClient nettyHttpClient) {
         this.baseHttpClient = Objects.requireNonNull(nettyHttpClient, "'nettyHttpClient' cannot be null.");
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback. HTTP/2 is negotiated over TLS; plain HTTP
+     * requests continue to use HTTP/1.1.
+     * <p>
+     * By default, the client uses HTTP/1.1, or the protocols configured on the Reactor Netty client passed to
+     * {@link #NettyAsyncHttpClientBuilder(HttpClient)}. An explicit maximum overrides those protocols. Passing null
+     * clears the maximum and restores that default behavior.
+     * <p>
+     * A custom SSL context supplied in the Reactor Netty client is retained. Configure its ALPN protocols to match the
+     * requested maximum HTTP version.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated NettyAsyncHttpClientBuilder object.
+     */
+    public NettyAsyncHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -203,6 +241,12 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
+        } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11, HttpProtocol.H2);
+        }
+
         // Keep the pooled default while respecting allocator choices made by the application.
         if (!nettyHttpClient.configuration().options().containsKey(ChannelOption.ALLOCATOR)
             && !SystemPropertyUtil.contains("io.netty.allocator.type")) {
@@ -219,15 +263,22 @@ public class NettyAsyncHttpClientBuilder {
             setDefaultAddressResolverGroup = true;
         }
 
-        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+        long writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT)
+                .toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+            DEFAULT_RESPONSE_TIMEOUT).toMillis();
+        long readTimeout
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT)
+                .toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        long connectTimeoutMillis = getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis();
+        long connectTimeoutMillis
+            = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT)
+                .toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {
@@ -431,8 +482,10 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store used to
      * @return The updated NettyAsyncHttpClientBuilder object.

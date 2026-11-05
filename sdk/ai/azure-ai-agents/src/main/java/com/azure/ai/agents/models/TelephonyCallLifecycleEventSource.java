@@ -21,12 +21,6 @@ public final class TelephonyCallLifecycleEventSource extends ExpandableStringEnu
     public static final TelephonyCallLifecycleEventSource GATEWAY = fromString("gateway");
 
     /**
-     * Microsoft Teams Phone Extension supplied the observation.
-     */
-    @Generated
-    public static final TelephonyCallLifecycleEventSource TEAMS_PHONE_EXTENSION = fromString("teams_phone_extension");
-
-    /**
      * Twilio supplied the observation.
      */
     @Generated
@@ -68,4 +62,11 @@ public final class TelephonyCallLifecycleEventSource extends ExpandableStringEnu
     public static Collection<TelephonyCallLifecycleEventSource> values() {
         return values(TelephonyCallLifecycleEventSource.class);
     }
+
+    /**
+     * Microsoft Teams Phone extensibility supplied the observation.
+     */
+    @Generated
+    public static final TelephonyCallLifecycleEventSource TEAMS_PHONE_EXTENSIBILITY
+        = fromString("teams_phone_extensibility");
 }

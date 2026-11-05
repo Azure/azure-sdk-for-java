@@ -134,8 +134,12 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
         com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deidServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deidServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}",
+            "resourceGroupName");
+        this.deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}",
+            "deidServiceName");
     }
 
     public DeidService refresh() {

@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PerDiskEncryptionSetIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PerDiskEncryptionSetId model
-            = BinaryData.fromString("{\"lun\":1610520770,\"diskEncryptionSetId\":\"bzuwfmdurag\"}")
-                .toObject(PerDiskEncryptionSetId.class);
-        Assertions.assertEquals(1610520770, model.lun());
-        Assertions.assertEquals("bzuwfmdurag", model.diskEncryptionSetId());
+        PerDiskEncryptionSetId model = BinaryData.fromString("{\"lun\":722001458,\"diskEncryptionSetId\":\"jsi\"}")
+            .toObject(PerDiskEncryptionSetId.class);
+        Assertions.assertEquals(722001458, model.lun());
+        Assertions.assertEquals("jsi", model.diskEncryptionSetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PerDiskEncryptionSetId model
-            = new PerDiskEncryptionSetId().withLun(1610520770).withDiskEncryptionSetId("bzuwfmdurag");
+        PerDiskEncryptionSetId model = new PerDiskEncryptionSetId().withLun(722001458).withDiskEncryptionSetId("jsi");
         model = BinaryData.fromObject(model).toObject(PerDiskEncryptionSetId.class);
-        Assertions.assertEquals(1610520770, model.lun());
-        Assertions.assertEquals("bzuwfmdurag", model.diskEncryptionSetId());
+        Assertions.assertEquals(722001458, model.lun());
+        Assertions.assertEquals("jsi", model.diskEncryptionSetId());
     }
 }

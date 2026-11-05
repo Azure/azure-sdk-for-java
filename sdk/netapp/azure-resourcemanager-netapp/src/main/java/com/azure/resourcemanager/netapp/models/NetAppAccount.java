@@ -410,7 +410,7 @@ public interface NetAppAccount {
              * @param encryption Encryption settings.
              * @return the next definition stage.
              */
-            Update withEncryption(AccountEncryption encryption);
+            Update withEncryption(AccountEncryptionPatch encryption);
         }
 
         /**

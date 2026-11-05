@@ -129,8 +129,8 @@ public class CreateTelephonyBindingInput implements JsonSerializable<CreateTelep
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("teams_phone_extension".equals(discriminatorValue)) {
-                    return CreateTeamsPhoneExtensionTelephonyBindingInput.fromJson(readerToUse.reset());
+                if ("teams_phone_extensibility".equals(discriminatorValue)) {
+                    return CreateTeamsPhoneExtensibilityTelephonyBindingInput.fromJson(readerToUse.reset());
                 } else if ("twilio".equals(discriminatorValue)) {
                     return CreateTwilioTelephonyBindingInput.fromJson(readerToUse.reset());
                 } else {

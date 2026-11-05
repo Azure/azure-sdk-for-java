@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An enablement override for a GitHub Copilot built-in tool.
+ * The legacy per-tool enablement override retained for compatibility. Use `MicrosoftCopilotToolsetConfiguration` for
+ * new integrations.
  */
 @Fluent
 public final class GitHubCopilotToolsetConfig implements JsonSerializable<GitHubCopilotToolsetConfig> {

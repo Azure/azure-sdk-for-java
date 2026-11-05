@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>12.1.0</version>
+    <version>12.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -103,7 +103,7 @@ The following sections provide several code snippets covering some of the most c
 ### Knowledge bases and knowledge sources
 
 These samples target the `2026-10-01` GA service API. Knowledge bases, retrieval, and the earlier knowledge source
-types already existed in `12.0.2`; the table below identifies the additional `12.1.0` scenarios.
+types already existed in `12.1.1`; the table below identifies the additional `12.2.0` scenarios.
 
 - [Knowledge base CRUD](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseCrudExample.java)
 - [Knowledge source CRUD and source-specific configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java)
@@ -115,7 +115,7 @@ types already existed in `12.0.2`; the table below identifies the additional `12
 
 ### New GA feature coverage
 
-| Feature added since `12.0.2` | Sample and intended flow |
+| Feature added since `12.1.1` | Sample and intended flow |
 | --- | --- |
 | Similar-document queries (`moreLikeThis`) | [SearchOptionsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SearchOptionsExample.java) queries a document key without search text and limits search fields to top-level text fields. |
 | Permission-aware queries and document lookup | [DocumentPermissionsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/DocumentPermissionsExample.java) passes the end user's query-source token to search, lookup, and retrieval with elevated reads disabled. |

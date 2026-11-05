@@ -15,27 +15,27 @@ public final class TokenClaimMappingsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TokenClaimMappingsProfile model = BinaryData.fromString(
-            "{\"username\":{\"claim\":\"jdhtldwkyzxu\",\"prefix\":\"kn\",\"prefixPolicy\":\"Prefix\"},\"groups\":{\"claim\":\"wsvlxotogtwrupqs\",\"prefix\":\"nmic\"}}")
+            "{\"username\":{\"claim\":\"wfudwpzntxhdzhl\",\"prefix\":\"jbhckfrlhr\",\"prefixPolicy\":\"Prefix\"},\"groups\":{\"claim\":\"yvpycanuzbpzk\",\"prefix\":\"kuwbcrnwb\"}}")
             .toObject(TokenClaimMappingsProfile.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.username().claim());
-        Assertions.assertEquals("kn", model.username().prefix());
+        Assertions.assertEquals("wfudwpzntxhdzhl", model.username().claim());
+        Assertions.assertEquals("jbhckfrlhr", model.username().prefix());
         Assertions.assertEquals(UsernameClaimPrefixPolicy.PREFIX, model.username().prefixPolicy());
-        Assertions.assertEquals("wsvlxotogtwrupqs", model.groups().claim());
-        Assertions.assertEquals("nmic", model.groups().prefix());
+        Assertions.assertEquals("yvpycanuzbpzk", model.groups().claim());
+        Assertions.assertEquals("kuwbcrnwb", model.groups().prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TokenClaimMappingsProfile model = new TokenClaimMappingsProfile()
-            .withUsername(new UsernameClaimProfile().withClaim("jdhtldwkyzxu")
-                .withPrefix("kn")
+            .withUsername(new UsernameClaimProfile().withClaim("wfudwpzntxhdzhl")
+                .withPrefix("jbhckfrlhr")
                 .withPrefixPolicy(UsernameClaimPrefixPolicy.PREFIX))
-            .withGroups(new GroupClaimProfile().withClaim("wsvlxotogtwrupqs").withPrefix("nmic"));
+            .withGroups(new GroupClaimProfile().withClaim("yvpycanuzbpzk").withPrefix("kuwbcrnwb"));
         model = BinaryData.fromObject(model).toObject(TokenClaimMappingsProfile.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.username().claim());
-        Assertions.assertEquals("kn", model.username().prefix());
+        Assertions.assertEquals("wfudwpzntxhdzhl", model.username().claim());
+        Assertions.assertEquals("jbhckfrlhr", model.username().prefix());
         Assertions.assertEquals(UsernameClaimPrefixPolicy.PREFIX, model.username().prefixPolicy());
-        Assertions.assertEquals("wsvlxotogtwrupqs", model.groups().claim());
-        Assertions.assertEquals("nmic", model.groups().prefix());
+        Assertions.assertEquals("yvpycanuzbpzk", model.groups().claim());
+        Assertions.assertEquals("kuwbcrnwb", model.groups().prefix());
     }
 }

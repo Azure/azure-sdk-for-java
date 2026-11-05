@@ -27,6 +27,11 @@ public final class NfsVersion extends ExpandableStringEnum<NfsVersion> {
     public static final NfsVersion NFSV4 = fromString("NFSv4");
 
     /**
+     * Static value NFSv4_1 for NfsVersion.
+     */
+    public static final NfsVersion NFSV4_1 = fromString("NFSv4_1");
+
+    /**
      * Creates a new instance of NfsVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

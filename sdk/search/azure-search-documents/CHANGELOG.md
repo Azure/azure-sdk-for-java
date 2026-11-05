@@ -1,8 +1,8 @@
 # Release History
 
-## 12.1.0 (Unreleased)
+## 12.2.0 (Unreleased)
 
-These release notes compare `12.1.0` with the previous GA release, `12.0.2`. Changes that apply only when upgrading
+These release notes compare `12.2.0` with the previous GA release, `12.1.1`. Changes that apply only when upgrading
 from a preview release are not included.
 
 ### Features Added
@@ -63,7 +63,7 @@ were not supported by the previous GA service API. The specification correction 
 Removing these published Java APIs remains a source and binary compatibility break, despite the lack of supported
 service behavior.
 
-The following APIs were public in GA `12.0.2` and have been removed in `12.1.0`:
+The following APIs were public in GA `12.1.1` and have been removed in `12.2.0`:
 
 - Removed `AIFoundryModelCatalogName`, `AzureMachineLearningParameters`, and `AzureMachineLearningVectorizer`.
 - Removed `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery`, along with `VectorQueryKind.IMAGE_BINARY`
@@ -77,6 +77,15 @@ The following APIs were public in GA `12.0.2` and have been removed in `12.1.0`:
 
 - Fixed knowledge source status deserialization for compact synchronization intervals such as `1d`, while
   preserving the existing Java `Duration` API.
+
+## 12.1.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 ## 12.1.0-beta.2 (2026-08-28)
 
