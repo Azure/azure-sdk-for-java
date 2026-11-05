@@ -12,47 +12,48 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A Microsoft Teams destination for a telephony transfer target.
+ * Phone-number address used by supported source and destination roles.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class TeamsTelephonyTransferDestination extends TelephonyTransferDestination {
+public final class TelephonyPhoneNumber extends TelephonyAddress {
 
     /*
-     * The telephony transfer destination type.
+     * Endpoint address type.
      */
     @Generated
-    private TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.TEAMS;
+    private TelephonyAddressType type = TelephonyAddressType.PHONE_NUMBER;
 
     /*
-     * The Microsoft Teams user or resource-account identifier.
+     * E.164 phone number.
      */
     @Generated
     private final String value;
 
     /**
-     * Creates an instance of TeamsTelephonyTransferDestination class.
+     * Creates an instance of TelephonyPhoneNumber class.
      *
      * @param value the value value to set.
      */
     @Generated
-    public TeamsTelephonyTransferDestination(String value) {
+    public TelephonyPhoneNumber(String value) {
+        super(value);
         this.value = value;
     }
 
     /**
-     * Get the kind property: The telephony transfer destination type.
+     * Get the type property: Endpoint address type.
      *
-     * @return the kind value.
+     * @return the type value.
      */
     @Generated
     @Override
-    public TelephonyTransferDestinationKind getKind() {
-        return this.kind;
+    public TelephonyAddressType getType() {
+        return this.type;
     }
 
     /**
-     * Get the value property: The Microsoft Teams user or resource-account identifier.
+     * Get the value property: E.164 phone number.
      *
      * @return the value value.
      */
@@ -69,39 +70,38 @@ public final class TeamsTelephonyTransferDestination extends TelephonyTransferDe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of TeamsTelephonyTransferDestination from the JsonReader.
+     * Reads an instance of TelephonyPhoneNumber from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TeamsTelephonyTransferDestination if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of TelephonyPhoneNumber if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TeamsTelephonyTransferDestination.
+     * @throws IOException If an error occurs while reading the TelephonyPhoneNumber.
      */
     @Generated
-    public static TeamsTelephonyTransferDestination fromJson(JsonReader jsonReader) throws IOException {
+    public static TelephonyPhoneNumber fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String value = null;
-            TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.TEAMS;
+            TelephonyAddressType type = TelephonyAddressType.PHONE_NUMBER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
                     value = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = TelephonyTransferDestinationKind.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = TelephonyAddressType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            TeamsTelephonyTransferDestination deserializedTeamsTelephonyTransferDestination
-                = new TeamsTelephonyTransferDestination(value);
-            deserializedTeamsTelephonyTransferDestination.kind = kind;
-            return deserializedTeamsTelephonyTransferDestination;
+            TelephonyPhoneNumber deserializedTelephonyPhoneNumber = new TelephonyPhoneNumber(value);
+            deserializedTelephonyPhoneNumber.type = type;
+            return deserializedTelephonyPhoneNumber;
         });
     }
 }

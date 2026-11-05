@@ -38,33 +38,10 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     private String label;
 
     /*
-     * The lifecycle status.
-     */
-    @Generated
-    private final TelephonyBindingStatus status;
-
-    /*
-     * The service-generated webhook URL to configure with the telephony provider. For SIP bindings, this is a SIP URI.
+     * The service-generated HTTPS webhook or SIP/SIPS ingress URI to configure with the telephony provider.
      */
     @Generated
     private final String incomingCallUrl;
-
-    /**
-     * Creates an instance of TelephonyBindingListItem class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     */
-    @Generated
-    protected TelephonyBindingListItem(String id, String connectionName, TelephonyBindingStatus status,
-        String incomingCallUrl) {
-        this.id = id;
-        this.connectionName = connectionName;
-        this.status = status;
-        this.incomingCallUrl = incomingCallUrl;
-    }
 
     /**
      * Get the provider property: The telephony provider.
@@ -109,18 +86,8 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     }
 
     /**
-     * Get the status property: The lifecycle status.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public TelephonyBindingStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the incomingCallUrl property: The service-generated webhook URL to configure with the telephony provider. For
-     * SIP bindings, this is a SIP URI.
+     * Get the incomingCallUrl property: The service-generated HTTPS webhook or SIP/SIPS ingress URI to configure with
+     * the telephony provider.
      *
      * @return the incomingCallUrl value.
      */
@@ -138,7 +105,6 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("connection_name", this.connectionName);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("incoming_call_url", this.incomingCallUrl);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
         jsonWriter.writeStringField("label", this.label);
@@ -190,7 +156,6 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String eTag = null;
             TelephonyProvider provider = null;
@@ -202,8 +167,6 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
@@ -217,7 +180,7 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
                 }
             }
             TelephonyBindingListItem deserializedTelephonyBindingListItem
-                = new TelephonyBindingListItem(id, connectionName, status, incomingCallUrl);
+                = new TelephonyBindingListItem(id, connectionName, incomingCallUrl);
             deserializedTelephonyBindingListItem.eTag = eTag;
             deserializedTelephonyBindingListItem.provider = provider;
             deserializedTelephonyBindingListItem.label = label;
@@ -267,5 +230,19 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     TelephonyBindingListItem setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    /**
+     * Creates an instance of TelephonyBindingListItem class.
+     *
+     * @param id the id value to set.
+     * @param connectionName the connectionName value to set.
+     * @param incomingCallUrl the incomingCallUrl value to set.
+     */
+    @Generated
+    protected TelephonyBindingListItem(String id, String connectionName, String incomingCallUrl) {
+        this.id = id;
+        this.connectionName = connectionName;
+        this.incomingCallUrl = incomingCallUrl;
     }
 }

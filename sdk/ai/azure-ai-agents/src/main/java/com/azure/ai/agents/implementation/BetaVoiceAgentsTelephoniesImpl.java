@@ -96,7 +96,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Mono<Response<BinaryData>> createTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData binding, RequestOptions requestOptions, Context context);
 
         @Post("/agents/{agent_name}/telephony/bindings")
         @ExpectedResponses({ 201 })
@@ -107,7 +107,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> createTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData binding, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/telephony/bindings")
         @ExpectedResponses({ 200 })
@@ -333,7 +333,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @BodyParam("application/json") BinaryData replaceTelephonyTransferTargetsRequest,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs")
+        @Post("/agents/{agent_name}/telephony_call_jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -342,10 +342,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Mono<Response<BinaryData>> createTelephonyCallJob(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs")
+        @Post("/agents/{agent_name}/telephony_call_jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -354,10 +354,50 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> createTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/telephony/call_jobs/{call_job_id}")
+        @Get("/agents/{agent_name}/telephony_call_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listTelephonyCallJobs(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_call_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTelephonyCallJobsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteTelephonyCallJob(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -368,7 +408,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/telephony/call_jobs/{call_job_id}")
+        @Get("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -379,7 +419,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs/{call_job_id}:cancel")
+        @Post("/agents/{agent_name}/telephony_call_jobs/{call_job_id}:cancel")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -390,7 +430,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs/{call_job_id}:cancel")
+        @Post("/agents/{agent_name}/telephony_call_jobs/{call_job_id}:cancel")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -421,8 +461,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
+     *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
+     *     incoming_call_url: String (Required)
      * }
      * }
      * </pre>
@@ -436,7 +478,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -451,7 +492,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      *
      * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
+     * @param binding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -461,8 +502,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTelephonyBindingWithResponseAsync(String agentName,
-        BinaryData telephonyBinding, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTelephonyBindingWithResponseAsync(String agentName, BinaryData binding,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -480,8 +521,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             }
         });
         return FluxUtil.withContext(context -> service.createTelephonyBinding(this.client.getEndpoint(), agentName,
-            this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
-            context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, binding, requestOptionsLocal, context));
     }
 
     /**
@@ -503,8 +543,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
+     *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
+     *     incoming_call_url: String (Required)
      * }
      * }
      * </pre>
@@ -518,7 +560,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -533,7 +574,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      *
      * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
+     * @param binding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -542,7 +583,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a telephony binding owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData telephonyBinding,
+    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData binding,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -561,7 +602,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             }
         });
         return service.createTelephonyBindingSync(this.client.getEndpoint(), agentName,
-            this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
+            this.client.getServiceVersion().getVersion(), contentType, accept, binding, requestOptionsLocal,
             Context.NONE);
     }
 
@@ -575,8 +616,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
      * "teams_phone_extensibility", "twilio", "sip".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -602,7 +641,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -639,8 +677,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
      * "teams_phone_extensibility", "twilio", "sip".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -666,7 +702,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -724,8 +759,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
      * "teams_phone_extensibility", "twilio", "sip".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -751,7 +784,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -785,8 +817,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
      * "teams_phone_extensibility", "twilio", "sip".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -812,7 +842,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -873,7 +902,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -920,7 +948,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -962,7 +989,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
@@ -982,7 +1008,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -1028,7 +1053,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
@@ -1048,7 +1072,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -2037,7 +2060,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2086,7 +2110,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2134,7 +2159,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2152,7 +2178,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2204,7 +2231,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2222,7 +2250,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2262,18 +2291,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Create an outbound telephony call job
      *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
+     * Creates one durable outbound CallJob. Each attempt pins the Agent endpoint's execution version for validation and
+     * its voice session.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2286,6 +2315,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         type: String(fixed_interval) (Required)
      *         max_attempts: Integer (Optional)
      *     }
+     *     source (Required): (recursive schema, see source above)
      * }
      * }
      * </pre>
@@ -2296,11 +2326,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2310,7 +2339,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2329,6 +2357,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2337,15 +2367,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
      * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
+     * @param idempotencyKey Customer retry key. Equivalent requests return the same job; retained keys for deleted jobs
+     * return 409 call_job_deleted, never redial.
+     * @param job The direct outbound call to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2356,29 +2389,29 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTelephonyCallJobWithResponseAsync(String agentName, String idempotencyKey,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createTelephonyCallJob(this.client.getEndpoint(), agentName, idempotencyKey,
-                this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+                this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
     /**
      * Create an outbound telephony call job
      *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
+     * Creates one durable outbound CallJob. Each attempt pins the Agent endpoint's execution version for validation and
+     * its voice session.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2391,6 +2424,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         type: String(fixed_interval) (Required)
      *         max_attempts: Integer (Optional)
      *     }
+     *     source (Required): (recursive schema, see source above)
      * }
      * }
      * </pre>
@@ -2401,11 +2435,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2415,7 +2448,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2434,6 +2466,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2442,15 +2476,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
      * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
+     * @param idempotencyKey Customer retry key. Equivalent requests return the same job; retained keys for deleted jobs
+     * return 409 call_job_deleted, never redial.
+     * @param job The direct outbound call to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2460,11 +2497,466 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTelephonyCallJobWithResponse(String agentName, String idempotencyKey,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createTelephonyCallJobSync(this.client.getEndpoint(), agentName, idempotencyKey,
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listTelephonyCallJobsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listTelephonyCallJobs(this.client.getEndpoint(), agentName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyCallJobsAsync(String agentName, RequestOptions requestOptions) {
+        return listTelephonyCallJobsAsync(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyCallJobsAsync(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listTelephonyCallJobsSinglePageAsync(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listTelephonyCallJobsSinglePageAsync(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTelephonyCallJobsSinglePage(String agentName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listTelephonyCallJobsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTelephonyCallJobs(String agentName, RequestOptions requestOptions) {
+        return listTelephonyCallJobs(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTelephonyCallJobs(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listTelephonyCallJobsSinglePage(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listTelephonyCallJobsSinglePage(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Delete an outbound telephony call job
+     *
+     * Deletes a terminal, reconciled job (otherwise 409), without cancelling calls or removing Campaign outcomes/call
+     * history. Later GET returns 404; repeated DELETE returns 204.
+     *
+     * @param agentName The owning voice agent.
+     * @param callJobId The call-job identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteTelephonyCallJobWithResponseAsync(String agentName, String callJobId,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteTelephonyCallJob(this.client.getEndpoint(), agentName,
+            callJobId, this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete an outbound telephony call job
+     *
+     * Deletes a terminal, reconciled job (otherwise 409), without cancelling calls or removing Campaign outcomes/call
+     * history. Later GET returns 404; repeated DELETE returns 204.
+     *
+     * @param agentName The owning voice agent.
+     * @param callJobId The call-job identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTelephonyCallJobWithResponse(String agentName, String callJobId,
+        RequestOptions requestOptions) {
+        return service.deleteTelephonyCallJobSync(this.client.getEndpoint(), agentName, callJobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     /**
@@ -2477,11 +2969,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2491,7 +2982,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2510,6 +3000,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2518,11 +3010,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2551,11 +3044,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2565,7 +3057,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2584,6 +3075,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2592,11 +3085,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2617,18 +3111,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Cancel an outbound telephony call job
      *
-     * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
+     * Cancels future attempts using If-Match; completion may be asynchronous. New cancellation after connection returns
+     * 409 and lets the active call finish.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2638,7 +3132,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2657,6 +3150,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2665,13 +3160,16 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to cancel.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2693,18 +3191,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Cancel an outbound telephony call job
      *
-     * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
+     * Cancels future attempts using If-Match; completion may be asynchronous. New cancellation after connection returns
+     * 409 and lets the active call finish.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2714,7 +3212,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2733,6 +3230,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2741,13 +3240,16 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to cancel.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -26,7 +26,7 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
      * discriminating its content (e.g. `spec`, `tools`, `context`).
      */
     @Generated
-    private final DatasetReference dataset;
+    private final VersionedDatasetReference dataset;
 
     /*
      * The kinds of rows present in `dataset`. Always contains `"spec"` (the generated evaluation specification, a
@@ -38,18 +38,6 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
     private final List<String> kinds;
 
     /**
-     * Creates an instance of EvaluatorGenerationArtifacts class.
-     *
-     * @param dataset the dataset value to set.
-     * @param kinds the kinds value to set.
-     */
-    @Generated
-    private EvaluatorGenerationArtifacts(DatasetReference dataset, List<String> kinds) {
-        this.dataset = dataset;
-        this.kinds = kinds;
-    }
-
-    /**
      * Get the dataset property: Reference to the single Foundry Dataset (one combined JSONL file, version-aligned to
      * `EvaluatorVersion.version`) holding all artifacts produced by the generation pipeline. Each row in the JSONL
      * carries a `kind` field discriminating its content (e.g. `spec`, `tools`, `context`).
@@ -57,7 +45,7 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
      * @return the dataset value.
      */
     @Generated
-    public DatasetReference getDataset() {
+    public VersionedDatasetReference getDataset() {
         return this.dataset;
     }
 
@@ -98,13 +86,13 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
     @Generated
     public static EvaluatorGenerationArtifacts fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DatasetReference dataset = null;
+            VersionedDatasetReference dataset = null;
             List<String> kinds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dataset".equals(fieldName)) {
-                    dataset = DatasetReference.fromJson(reader);
+                    dataset = VersionedDatasetReference.fromJson(reader);
                 } else if ("kinds".equals(fieldName)) {
                     kinds = reader.readArray(reader1 -> reader1.getString());
                 } else {
@@ -113,5 +101,17 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
             }
             return new EvaluatorGenerationArtifacts(dataset, kinds);
         });
+    }
+
+    /**
+     * Creates an instance of EvaluatorGenerationArtifacts class.
+     *
+     * @param dataset the dataset value to set.
+     * @param kinds the kinds value to set.
+     */
+    @Generated
+    private EvaluatorGenerationArtifacts(VersionedDatasetReference dataset, List<String> kinds) {
+        this.dataset = dataset;
+        this.kinds = kinds;
     }
 }

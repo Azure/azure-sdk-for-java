@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * A telephony binding owned by a voice agent.
  */
-@Immutable
+@Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
 
@@ -29,7 +29,7 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
      * The service-generated binding identifier.
      */
     @Generated
-    private final String id;
+    private String id;
 
     /*
      * The optional display label for the binding.
@@ -38,33 +38,11 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     private String label;
 
     /*
-     * The lifecycle status.
+     * The service-generated incoming address: an HTTPS webhook for webhook-based providers or a SIP/SIPS ingress URI
+     * for SIP.
      */
     @Generated
-    private final TelephonyBindingStatus status;
-
-    /*
-     * The service-generated webhook URL to configure with the telephony provider. For SIP bindings, this is a SIP URI.
-     */
-    @Generated
-    private final String incomingCallUrl;
-
-    /**
-     * Creates an instance of TelephonyBinding class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     */
-    @Generated
-    protected TelephonyBinding(String id, String connectionName, TelephonyBindingStatus status,
-        String incomingCallUrl) {
-        this.id = id;
-        this.connectionName = connectionName;
-        this.status = status;
-        this.incomingCallUrl = incomingCallUrl;
-    }
+    private String incomingCallUrl;
 
     /**
      * Get the provider property: The telephony provider.
@@ -103,24 +81,14 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
      * @return the TelephonyBinding object itself.
      */
     @Generated
-    TelephonyBinding setLabel(String label) {
+    public TelephonyBinding setLabel(String label) {
         this.label = label;
         return this;
     }
 
     /**
-     * Get the status property: The lifecycle status.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public TelephonyBindingStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the incomingCallUrl property: The service-generated webhook URL to configure with the telephony provider. For
-     * SIP bindings, this is a SIP URI.
+     * Get the incomingCallUrl property: The service-generated incoming address: an HTTPS webhook for webhook-based
+     * providers or a SIP/SIPS ingress URI for SIP.
      *
      * @return the incomingCallUrl value.
      */
@@ -136,10 +104,7 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("connection_name", this.connectionName);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("incoming_call_url", this.incomingCallUrl);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
         jsonWriter.writeStringField("label", this.label);
         return jsonWriter.writeEndObject();
@@ -190,7 +155,6 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             TelephonyProvider provider = null;
             String label = null;
@@ -201,8 +165,6 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("provider".equals(fieldName)) {
@@ -213,8 +175,9 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
                     reader.skipChildren();
                 }
             }
-            TelephonyBinding deserializedTelephonyBinding
-                = new TelephonyBinding(id, connectionName, status, incomingCallUrl);
+            TelephonyBinding deserializedTelephonyBinding = new TelephonyBinding(connectionName);
+            deserializedTelephonyBinding.id = id;
+            deserializedTelephonyBinding.incomingCallUrl = incomingCallUrl;
             deserializedTelephonyBinding.provider = provider;
             deserializedTelephonyBinding.label = label;
             return deserializedTelephonyBinding;
@@ -235,5 +198,40 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     @Generated
     public String getConnectionName() {
         return this.connectionName;
+    }
+
+    /**
+     * Creates an instance of TelephonyBinding class.
+     *
+     * @param connectionName the connectionName value to set.
+     */
+    @Generated
+    public TelephonyBinding(String connectionName) {
+        this.connectionName = connectionName;
+    }
+
+    /**
+     * Set the id property: The service-generated binding identifier.
+     *
+     * @param id the id value to set.
+     * @return the TelephonyBinding object itself.
+     */
+    @Generated
+    TelephonyBinding setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Set the incomingCallUrl property: The service-generated incoming address: an HTTPS webhook for webhook-based
+     * providers or a SIP/SIPS ingress URI for SIP.
+     *
+     * @param incomingCallUrl the incomingCallUrl value to set.
+     * @return the TelephonyBinding object itself.
+     */
+    @Generated
+    TelephonyBinding setIncomingCallUrl(String incomingCallUrl) {
+        this.incomingCallUrl = incomingCallUrl;
+        return this;
     }
 }

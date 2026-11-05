@@ -66,6 +66,7 @@ import java.util.stream.Collectors;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaVoiceAgentsCampaignsClient.class,
         BetaVoiceAgentsConversationsClient.class,
         BetaVoiceAgentsLiveConversationsClient.class,
         BetaVoiceAgentsTelephonyClient.class,
@@ -73,6 +74,7 @@ import java.util.stream.Collectors;
         BetaAgentsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
+        BetaVoiceAgentsCampaignsAsyncClient.class,
         BetaVoiceAgentsConversationsAsyncClient.class,
         BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
@@ -602,6 +604,7 @@ public final class AgentsClientBuilder
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
      * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
+     * {@link BetaVoiceAgentsCampaignsClient}, {@link BetaVoiceAgentsCampaignsAsyncClient},
      * {@link BetaVoiceAgentsTelephonyClient}, {@link BetaVoiceAgentsTelephonyAsyncClient},
      * {@link BetaVoiceAgentsConversationsClient}, {@link BetaVoiceAgentsConversationsAsyncClient},
      * {@link BetaVoiceAgentsLiveConversationsClient}, or {@link BetaVoiceAgentsLiveConversationsAsyncClient}.
@@ -630,12 +633,14 @@ public final class AgentsClientBuilder
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
             BetaVoiceAgentWebSocketClient.class,
+            BetaVoiceAgentsCampaignsClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaVoiceAgentsLiveConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
             BetaVoiceAgentWebSocketAsyncClient.class,
+            BetaVoiceAgentsCampaignsAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class,
             BetaVoiceAgentsLiveConversationsAsyncClient.class })
@@ -676,6 +681,20 @@ public final class AgentsClientBuilder
         public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
             return new BetaMemoryStoresAsyncClient(
                 buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        }
+
+        /**
+         * Builds an asynchronous beta client for voice-agent telephony campaigns.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsCampaignsAsyncClient.
+         */
+        @Beta
+        public BetaVoiceAgentsCampaignsAsyncClient buildBetaVoiceAgentsCampaignsAsyncClient() {
+            return new BetaVoiceAgentsCampaignsAsyncClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsCampaigns());
         }
 
         /**
@@ -784,6 +803,20 @@ public final class AgentsClientBuilder
         @Beta
         public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
             return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds a synchronous beta client for voice-agent telephony campaigns.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsCampaignsClient.
+         */
+        @Beta
+        public BetaVoiceAgentsCampaignsClient buildBetaVoiceAgentsCampaignsClient() {
+            return new BetaVoiceAgentsCampaignsClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsCampaigns());
         }
 
         /**
@@ -1012,5 +1045,23 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
         return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsCampaignsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsCampaignsAsyncClient.
+     */
+    private BetaVoiceAgentsCampaignsAsyncClient buildBetaVoiceAgentsCampaignsAsyncClient() {
+        return new BetaVoiceAgentsCampaignsAsyncClient(buildInnerClient().getBetaVoiceAgentsCampaigns());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsCampaignsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsCampaignsClient.
+     */
+    private BetaVoiceAgentsCampaignsClient buildBetaVoiceAgentsCampaignsClient() {
+        return new BetaVoiceAgentsCampaignsClient(buildInnerClient().getBetaVoiceAgentsCampaigns());
     }
 }

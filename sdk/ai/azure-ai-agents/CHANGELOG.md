@@ -13,9 +13,11 @@
 - Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
   voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
 - Added preview voice-agent system tools, transfer routing, and system-tool intent and input-collection events.
+- Added preview voice-agent telephony campaigns with recipient validation and scheduling.
 
 ### Breaking Changes
 
+- Updated preview telephony binding, call-job, transfer, and retry model shapes to match the redesigned service contract.
 - Standardized preview system-tool names with `VoiceAgent*Event`, `outputReference`, and `objectType`, and exposed
   system-tool and transfer-ring timeouts as `Duration` through `timeout` and `ringTimeout`. System-tool items are
   service-generated and no longer expose public constructors or setters.

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A SIP binding returned in a list, including its entity tag.
+ * An inbound SIP binding returned in a list, including its current entity tag.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -26,30 +26,16 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
     private TelephonyProvider provider = TelephonyProvider.SIP;
 
     /*
-     * For UI display only.
+     * Optional display phone metadata, not a routing key.
      */
     @Generated
     private String phoneNumber;
 
     /*
-     * Omit or send [] to allow any caller. Entries match the entire normalized E.164 caller number.
+     * Current exact E.164 caller numbers or restricted fully anchored patterns.
      */
     @Generated
     private List<String> allowedCallingNumbers;
-
-    /**
-     * Creates an instance of SipTelephonyBindingListItem class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     */
-    @Generated
-    private SipTelephonyBindingListItem(String id, String connectionName, TelephonyBindingStatus status,
-        String incomingCallUrl) {
-        super(id, connectionName, status, incomingCallUrl);
-    }
 
     /**
      * Get the provider property: The telephony provider.
@@ -63,7 +49,7 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
     }
 
     /**
-     * Get the phoneNumber property: For UI display only.
+     * Get the phoneNumber property: Optional display phone metadata, not a routing key.
      *
      * @return the phoneNumber value.
      */
@@ -73,8 +59,7 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
     }
 
     /**
-     * Get the allowedCallingNumbers property: Omit or send [] to allow any caller. Entries match the entire normalized
-     * E.164 caller number.
+     * Get the allowedCallingNumbers property: Current exact E.164 caller numbers or restricted fully anchored patterns.
      *
      * @return the allowedCallingNumbers value.
      */
@@ -92,7 +77,6 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("connection_name", getConnectionName());
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -116,7 +100,6 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String eTag = null;
             String label = null;
@@ -130,8 +113,6 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
@@ -149,7 +130,7 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
                 }
             }
             SipTelephonyBindingListItem deserializedSipTelephonyBindingListItem
-                = new SipTelephonyBindingListItem(id, connectionName, status, incomingCallUrl);
+                = new SipTelephonyBindingListItem(id, connectionName, incomingCallUrl);
             deserializedSipTelephonyBindingListItem.setETag(eTag);
             deserializedSipTelephonyBindingListItem.setLabel(label);
             deserializedSipTelephonyBindingListItem.provider = provider;
@@ -157,5 +138,17 @@ public final class SipTelephonyBindingListItem extends TelephonyBindingListItem 
             deserializedSipTelephonyBindingListItem.allowedCallingNumbers = allowedCallingNumbers;
             return deserializedSipTelephonyBindingListItem;
         });
+    }
+
+    /**
+     * Creates an instance of SipTelephonyBindingListItem class.
+     *
+     * @param id the id value to set.
+     * @param connectionName the connectionName value to set.
+     * @param incomingCallUrl the incomingCallUrl value to set.
+     */
+    @Generated
+    private SipTelephonyBindingListItem(String id, String connectionName, String incomingCallUrl) {
+        super(id, connectionName, incomingCallUrl);
     }
 }
