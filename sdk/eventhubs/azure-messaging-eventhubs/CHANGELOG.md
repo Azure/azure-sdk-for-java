@@ -24,7 +24,9 @@
   the next batch or reset the connection ("IO Sink was interrupted before reactor closed").
 - Fixed `maxWaitTime` of the buffered producer clients being restarted by every enqueued event. While events kept
   arriving faster than `maxWaitTime`, a partially full batch was only published once it was full, which could take
-  tens of seconds or more. `maxWaitTime` is now measured from the first event added to a batch.
+  tens of seconds or more. `maxWaitTime` is now measured from the first event added to a batch. This replaces
+  inactivity-based batching, so sustained traffic may produce smaller batches more frequently. The interval controls
+  batch building, not the time from enqueueing an event to service acknowledgement.
 
 ### Other Changes
 

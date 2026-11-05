@@ -33,7 +33,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * Aggregates {@link EventData} into {@link EventDataBatch} and pushes them downstream when:
  *
  * <ul>
- *     <li>{@link BufferedProducerClientOptions#getMaxWaitTime()} elapses between events.</li>
+ *     <li>{@link BufferedProducerClientOptions#getMaxWaitTime()} elapses since the first event was added to the batch.
+ *     Later events in the same batch do not restart the wait.</li>
  *     <li>{@link EventDataBatch} cannot hold any more events.</li>
  * </ul>
  */
