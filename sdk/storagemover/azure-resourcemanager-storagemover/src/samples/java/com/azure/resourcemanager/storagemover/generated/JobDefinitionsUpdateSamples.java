@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class JobDefinitionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/JobDefinitions_Update.json
+     * x-ms-original-file: 2026-05-01/JobDefinitions_Update.json
      */
     /**
      * Sample code: JobDefinitions_Update.
