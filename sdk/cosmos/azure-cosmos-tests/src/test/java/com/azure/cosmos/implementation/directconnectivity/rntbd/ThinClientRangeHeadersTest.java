@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -23,6 +24,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
@@ -31,6 +33,7 @@ import org.testng.annotations.Test;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +41,55 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThinClientRangeHeadersTest {
+    @DataProvider
+    public Object[][] sessionTokens() {
+        String compound = "0:1#100,1:1#200";
+        return new Object[][] {
+            {true, compound, compound, "1#200", "1:1#200"},
+            {true, compound, compound, null, null},
+            {true, compound, null, "1#200", null},
+            {true, compound, "", "1#200", null},
+            {false, compound, "1:1#200", "1#300", "1:1#200"},
+            {false, compound, compound, null, compound},
+            {true, "1:1#200", "1:1#200", "1#300", "1:1#200"},
+            {true, null, "1:1#300", "1#300", "1:1#300"},
+            {true, null, compound, null, compound}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "sessionTokens")
+    public void sessionEncodingDoesNotMutateHeaders(
+        boolean thin, String original, String header, String localToken, String expected) {
+        RxDocumentServiceRequest request = Mockito.spy(createRequest(OperationType.Read, "80", "FF"));
+        request.useThinClientMode = thin;
+        request.setOriginalSessionToken(original);
+        request.requestContext.resolvedPartitionKeyRange.setId("1");
+        request.requestContext.sessionToken = localToken == null ? null : SessionTokenHelper.parse(localToken);
+        if (header != null) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, header);
+        }
+        Map<String, String> headers = Collections.unmodifiableMap(new HashMap<>(request.getHeaders()));
+        Mockito.doReturn(headers).when(request).getHeaders();
+
+        for (int attempt = 0; attempt < 2; attempt++) {
+            ByteBuf buffer = Unpooled.buffer();
+            try {
+                RntbdRequest.from(new RntbdRequestArgs(request)).encode(buffer, thin);
+                Map<Short, byte[]> tokens = decodeTokens(ByteBufUtil.getBytes(buffer));
+                if (expected == null) {
+                    assertThat(tokens).doesNotContainKey(RntbdRequestHeader.SessionToken.id());
+                } else {
+                    assertThat(tokens.get(RntbdRequestHeader.SessionToken.id()))
+                        .containsExactly(expected.getBytes(StandardCharsets.UTF_8));
+                }
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(header);
+                assertThat(request.getOriginalSessionToken()).isEqualTo(original);
+            } finally {
+                buffer.release();
+            }
+        }
+    }
+
     @DataProvider
     public Object[][] ranges() {
         return new Object[][] {

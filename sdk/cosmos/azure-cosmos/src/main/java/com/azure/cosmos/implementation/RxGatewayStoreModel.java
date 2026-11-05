@@ -1303,7 +1303,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION;
     }
 
-    protected boolean shouldApplySessionToken(RxDocumentServiceRequest request) {
+    private boolean shouldApplySessionToken(RxDocumentServiceRequest request) {
         return !isMasterOperation(request.getResourceType(), request.getOperationType())
             && isEffectiveSessionConsistency(request)
             && (request.isReadOnlyRequest() || request.getOperationType() == OperationType.Batch
@@ -1322,6 +1322,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (request.useThinClientMode
+                && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+                return SessionTokenHelper.resolveExplicitSessionToken(request, this.collectionCache,
+                    this.partitionKeyRangeCache);
+            }
             return Mono.empty(); //User is explicitly controlling the session.
         }
 

@@ -3,12 +3,20 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,9 +34,99 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    static boolean isCompoundSessionToken(String sessionToken) {
+    public static boolean isCompoundSessionToken(String sessionToken) {
         // Classify without parsing; validation happens when selecting partition-local progress.
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
+    }
+
+    static Mono<Void> resolveExplicitSessionToken(
+        RxDocumentServiceRequest request, RxCollectionCache collectionCache, RxPartitionKeyRangeCache rangeCache) {
+        return Mono.defer(() -> {
+            request.requestContext.sessionToken = null;
+            MetadataDiagnosticsContext diagnostics =
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            return collectionCache.resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
+                if (collectionHolder.v == null) {
+                    return Mono.error(new NotFoundException("Collection could not be resolved."));
+                }
+                DocumentCollection collection = collectionHolder.v;
+                return rangeCache.tryLookupAsync(diagnostics, collection.getResourceId(), null, request.properties)
+                    .flatMap(mapHolder -> {
+                        if (mapHolder.v == null) {
+                            return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
+                        }
+                        PartitionKeyRange target = resolveSessionTokenRange(request, collection, mapHolder.v);
+                        if (target == null) {
+                            return Mono.error(new GatewayV2SessionTokenRetryPolicy.GatewayFallbackRequiredException());
+                        }
+                        request.requestContext.resolvedPartitionKeyRange = target;
+                        request.requestContext.sessionToken =
+                            getLocalSessionToken(request, request.getOriginalSessionToken(), target.getId());
+                        return Mono.empty();
+                    });
+            });
+        });
+    }
+
+    private static PartitionKeyRange resolveSessionTokenRange(
+        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
+        if (!collection.getResourceId().equals(routingMap.getCollectionUniqueId())) {
+            return null;
+        }
+
+        PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
+        if (identity != null && identity.getCollectionRid() != null
+            && !identity.getCollectionRid().equals(collection.getResourceId())) {
+            return null;
+        }
+        String rangeId = identity == null ? null : identity.getPartitionKeyRangeId();
+        String rangeHeader = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        if (!Strings.isNullOrEmpty(rangeHeader)) {
+            String[] parts = rangeHeader.split(",", -1);
+            if (parts.length > 2 || parts[parts.length - 1].isEmpty()
+                || (parts.length == 2 && !parts[0].equals(collection.getResourceId()))
+                || (rangeId != null && !rangeId.equals(parts[parts.length - 1]))) {
+                return null;
+            }
+            rangeId = parts[parts.length - 1];
+        }
+
+        PartitionKeyRange target = rangeId == null ? null : routingMap.tryGetRangeByPartitionKeyRangeId(rangeId);
+        if (rangeId != null && target == null) {
+            throw new PartitionKeyRangeGoneException();
+        }
+
+        String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+        String end = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+        PartitionKeyInternal key = request.getPartitionKeyInternal();
+        PartitionKeyRange scopeTarget = null;
+        if (start != null || end != null) {
+            if (start == null || end == null || start.compareTo(end) >= 0
+                || !ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
+                    request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
+                return null;
+            }
+            List<PartitionKeyRange> overlapping =
+                routingMap.getOverlappingRanges(new Range<>(start, end, true, false));
+            if (overlapping.size() != 1) {
+                return null;
+            }
+            scopeTarget = overlapping.get(0);
+        } else if (key != null) {
+            if (collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
+                && key.getComponents().size() < collection.getPartitionKey().getPaths().size()) {
+                return null;
+            }
+            String epk = key.getEffectivePartitionKeyString(key, collection.getPartitionKey());
+            scopeTarget = routingMap.getRangeByEffectivePartitionKey(epk);
+        } else if (target == null && request.requestContext.resolvedPartitionKeyRange != null) {
+            scopeTarget = routingMap.tryGetRangeByPartitionKeyRangeId(
+                request.requestContext.resolvedPartitionKeyRange.getId());
+        }
+        if (target != null && scopeTarget != null && !target.getId().equals(scopeTarget.getId())) {
+            return null;
+        }
+        return scopeTarget == null ? target : scopeTarget;
     }
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {

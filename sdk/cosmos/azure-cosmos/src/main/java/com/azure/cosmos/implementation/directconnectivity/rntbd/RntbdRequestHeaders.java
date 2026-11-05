@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.MigrateCollectionDirective;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RMResources;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RemoteStorageType;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.IndexingDirective;
@@ -177,7 +179,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getRestoreParams, BackendHeaders.RESTORE_PARAMS);
         this.fillTokenFromHeader(headers, this::getSecondaryMasterKey, BackendHeaders.SECONDARY_MASTER_KEY);
         this.fillTokenFromHeader(headers, this::getSecondaryReadonlyKey, BackendHeaders.SECONDARY_READONLY_KEY);
-        this.fillTokenFromHeader(headers, this::getSessionToken, HttpHeaders.SESSION_TOKEN);
+        this.addSessionToken(request, headers);
         this.fillTokenFromHeader(headers, this::getSharedOfferThroughput, HttpHeaders.SHARED_OFFER_THROUGHPUT);
         this.fillTokenFromHeader(headers, this::getTargetGlobalCommittedLsn, HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN);
         this.fillTokenFromHeader(headers, this::getTargetLsn, HttpHeaders.TARGET_LSN);
@@ -575,6 +577,20 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getSessionToken() {
         return this.get(RntbdRequestHeader.SessionToken);
+    }
+
+    private void addSessionToken(RxDocumentServiceRequest request, Map<String, String> headers) {
+        if (request.useThinClientMode
+            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            // Eligibility was applied by the gateway session stage. Never restore a removed token.
+            ISessionToken localToken = request.requestContext.sessionToken;
+            if (localToken != null && StringUtils.isNotEmpty(headers.get(HttpHeaders.SESSION_TOKEN))) {
+                this.getSessionToken().setValue(SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+                    request.requestContext.resolvedPartitionKeyRange.getId(), localToken.convertToString()));
+            }
+        } else {
+            this.fillTokenFromHeader(headers, this::getSessionToken, HttpHeaders.SESSION_TOKEN);
+        }
     }
 
     private RntbdToken getShareThroughput() {
