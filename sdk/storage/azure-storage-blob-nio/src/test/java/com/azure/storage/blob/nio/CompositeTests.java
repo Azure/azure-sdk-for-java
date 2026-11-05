@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio;
 
 import com.azure.storage.blob.BlobClient;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -78,6 +79,20 @@ public class CompositeTests extends BlobNioTestBase {
         fs.provider().newInputStream(dest3).read(resultArr);
 
         assertArraysEqual(DATA.getDefaultBytes(), resultArr);
+    }
+
+    // Bug: https://github.com/Azure/azure-sdk-for-java/issues/48069
+    @Test
+    public void filesCopyToForeignTarget(@TempDir Path tempDir) throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path source = fs.getPath(generateBlobName());
+        Files.copy(DATA.getDefaultInputStream(), source);
+        Path target = tempDir.resolve("target");
+
+        assertTrue(Files.isReadable(source));
+        Files.copy(source, target);
+
+        assertArraysEqual(DATA.getDefaultBytes(), Files.readAllBytes(target));
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325

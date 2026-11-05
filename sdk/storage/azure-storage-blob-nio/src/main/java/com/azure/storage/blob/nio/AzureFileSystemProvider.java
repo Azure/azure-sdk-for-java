@@ -838,9 +838,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Checks the existence, and optionally the accessibility, of a file.
      * <p>
-     * This method may only be used to check the existence of a file. It is not possible to determine the permissions
-     * granted to a given client, so if any mode argument is specified, an {@link UnsupportedOperationException} will be
-     * thrown.
+     * This method may be used to check the existence of a file and, optionally, whether it can be read. Checking
+     * existence requires reading the properties of the file, so a successful check implies that
+     * {@link AccessMode#READ} access is granted. It is not possible to determine write or execute permissions granted
+     * to a given client without side effects, so if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is
+     * specified, an {@link AccessDeniedException} will be thrown.
      *
      * @param path the path to the file to check
      * @param accessModes The access modes to check; may have zero elements
@@ -852,9 +854,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-        if (accessModes != null && accessModes.length != 0) {
-            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new AccessDeniedException("The access cannot be determined."));
+        if (accessModes != null) {
+            for (AccessMode accessMode : accessModes) {
+                if (accessMode != AccessMode.READ) {
+                    throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
+                        new AccessDeniedException("The access cannot be determined."));
+                }
+            }
         }
         AzurePath.ensureFileSystemOpen(path);
 

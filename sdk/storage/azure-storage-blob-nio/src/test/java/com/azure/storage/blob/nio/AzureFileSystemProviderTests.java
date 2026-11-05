@@ -1141,14 +1141,38 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         assertDoesNotThrow(() -> fs.provider().checkAccess(path));
     }
 
-    @ParameterizedTest
-    @EnumSource(value = AccessMode.class, names = { "READ", "WRITE", "EXECUTE" })
-    public void checkAccessAccessDenied(AccessMode mode) throws IOException {
+    @Test
+    public void checkAccessRead() throws IOException {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
         fs.provider().newOutputStream(path).close();
 
-        assertThrows(AccessDeniedException.class, () -> fs.provider().checkAccess(path, mode));
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
+    @Test
+    public void checkAccessReadNoFile() {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+
+        assertThrows(NoSuchFileException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkAccessAccessDeniedSupplier")
+    public void checkAccessAccessDenied(AccessMode[] modes) throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+        fs.provider().newOutputStream(path).close();
+
+        assertThrows(AccessDeniedException.class, () -> fs.provider().checkAccess(path, modes));
+    }
+
+    private static Stream<Arguments> checkAccessAccessDeniedSupplier() {
+        return Stream.of(Arguments.of((Object) new AccessMode[] { AccessMode.WRITE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.EXECUTE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.READ, AccessMode.WRITE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.READ, AccessMode.EXECUTE }));
     }
 
     @Test
