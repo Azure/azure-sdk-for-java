@@ -82,6 +82,8 @@ public class CompositeTests extends BlobNioTestBase {
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/48069
+    // Record this test on Java 21.0.x+ (JDK-8073061), where Files.copy issues an extra checkAccess HEAD request.
+    // Older JDKs skip that request and play back the recording without consuming it.
     @Test
     public void filesCopyToForeignTarget(@TempDir Path tempDir) throws IOException {
         AzureFileSystem fs = createFS(config);
