@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -105,6 +106,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @Disabled("TODO: Re-record with MicrosoftCopilot=V1Preview in the Foundry-Features header.")
     public void bindingLifecycleLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String model = getRecordedModel(configuration);
@@ -154,6 +156,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @Disabled("TODO: Re-record with MicrosoftCopilot=V1Preview in the Foundry-Features header.")
     public void twilioBindingAndOutboundCallLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String model = getRecordedModel(configuration);

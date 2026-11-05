@@ -14,6 +14,8 @@ import com.azure.resourcemanager.durabletask.models.TaskHub;
 import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +23,7 @@ public final class TaskHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"vwvxyslqbhsfx\"},\"id\":\"lyt\",\"name\":\"blmpewww\",\"type\":\"bkrvrnsvshqj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"wr\",\"capabilities\":[\"wagohbuffk\",\"rqemvvhmxt\",\"rjfut\",\"coebjvewzcj\"]},\"id\":\"m\",\"name\":\"cpmguaadraufact\",\"type\":\"ahzovajjziuxxp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +33,11 @@ public final class TaskHubsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TaskHub response = manager.taskHubs()
-            .define("tswb")
-            .withExistingScheduler("mjh", "xjyngudivk")
-            .withProperties(new TaskHubProperties())
+            .define("fqjbvleo")
+            .withExistingScheduler("dyg", "ookk")
+            .withProperties(new TaskHubProperties().withCapabilities(Arrays.asList("aryeu")))
             .create();
 
+        Assertions.assertEquals("wagohbuffk", response.properties().capabilities().get(0));
     }
 }

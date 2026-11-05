@@ -16,38 +16,70 @@ public final class EvaluateDeploymentPoliciesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EvaluateDeploymentPoliciesRequest model = BinaryData.fromString(
-            "{\"deployments\":[{\"name\":\"pgn\",\"properties\":{\"model\":{\"publisher\":\"txhp\",\"format\":\"bzpfzab\",\"name\":\"cuh\",\"version\":\"tcty\",\"source\":\"klbb\",\"sourceAccount\":\"plwzbhvgyugu\",\"callRateLimit\":{\"count\":90.33446,\"renewalPeriod\":73.602875,\"rules\":[{}]}},\"raiPolicyName\":\"qukkfp\"}}]}")
+            "{\"deployments\":[{\"name\":\"walm\",\"properties\":{\"model\":{\"publisher\":\"yoxa\",\"format\":\"dkzjancuxrh\",\"name\":\"bavxbniwdjswzt\",\"version\":\"bpg\",\"source\":\"ytxhp\",\"sourceAccount\":\"bzpfzab\",\"callRateLimit\":{\"count\":99.19059,\"renewalPeriod\":98.16212,\"rules\":[{}]}},\"raiPolicyName\":\"tyq\"}},{\"name\":\"klbb\",\"properties\":{\"model\":{\"publisher\":\"plwzbhvgyugu\",\"format\":\"vmkfssxqu\",\"name\":\"fpl\",\"version\":\"gsxnkjzkdeslpv\",\"source\":\"pwiyig\",\"sourceAccount\":\"pkdwzbai\",\"callRateLimit\":{\"count\":81.695045,\"renewalPeriod\":31.908703,\"rules\":[{},{},{},{}]}},\"raiPolicyName\":\"qupedeojnab\"}},{\"name\":\"khsmtxpsiebt\",\"properties\":{\"model\":{\"publisher\":\"vpesapskrdqmhjjd\",\"format\":\"ldwkyzxuutkn\",\"name\":\"scwsv\",\"version\":\"otogtwrupqs\",\"source\":\"nmic\",\"sourceAccount\":\"vce\",\"callRateLimit\":{\"count\":40.508373,\"renewalPeriod\":97.97487,\"rules\":[{},{},{},{}]}},\"raiPolicyName\":\"tyfjfcnjbkcnxdhb\"}},{\"name\":\"tkphywpnvjtoqn\",\"properties\":{\"model\":{\"publisher\":\"mclfplphoxuscr\",\"format\":\"bgyepsbj\",\"name\":\"zq\",\"version\":\"xywpmueefjzwfqkq\",\"source\":\"ids\",\"sourceAccount\":\"onobglaocqx\",\"callRateLimit\":{\"count\":90.26907,\"renewalPeriod\":62.299984,\"rules\":[{}]}},\"raiPolicyName\":\"ytlmoyrxvwfud\"}}]}")
             .toObject(EvaluateDeploymentPoliciesRequest.class);
-        Assertions.assertEquals("pgn", model.deployments().get(0).name());
-        Assertions.assertEquals("txhp", model.deployments().get(0).properties().model().publisher());
-        Assertions.assertEquals("bzpfzab", model.deployments().get(0).properties().model().format());
-        Assertions.assertEquals("cuh", model.deployments().get(0).properties().model().name());
-        Assertions.assertEquals("tcty", model.deployments().get(0).properties().model().version());
-        Assertions.assertEquals("klbb", model.deployments().get(0).properties().model().source());
-        Assertions.assertEquals("plwzbhvgyugu", model.deployments().get(0).properties().model().sourceAccount());
-        Assertions.assertEquals("qukkfp", model.deployments().get(0).properties().raiPolicyName());
+        Assertions.assertEquals("walm", model.deployments().get(0).name());
+        Assertions.assertEquals("yoxa", model.deployments().get(0).properties().model().publisher());
+        Assertions.assertEquals("dkzjancuxrh", model.deployments().get(0).properties().model().format());
+        Assertions.assertEquals("bavxbniwdjswzt", model.deployments().get(0).properties().model().name());
+        Assertions.assertEquals("bpg", model.deployments().get(0).properties().model().version());
+        Assertions.assertEquals("ytxhp", model.deployments().get(0).properties().model().source());
+        Assertions.assertEquals("bzpfzab", model.deployments().get(0).properties().model().sourceAccount());
+        Assertions.assertEquals("tyq", model.deployments().get(0).properties().raiPolicyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EvaluateDeploymentPoliciesRequest model = new EvaluateDeploymentPoliciesRequest()
-            .withDeployments(Arrays.asList(new EvaluateDeploymentPoliciesDeployment().withName("pgn")
-                .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
-                    .withModel(new DeploymentModel().withPublisher("txhp")
-                        .withFormat("bzpfzab")
-                        .withName("cuh")
-                        .withVersion("tcty")
-                        .withSource("klbb")
-                        .withSourceAccount("plwzbhvgyugu"))
-                    .withRaiPolicyName("qukkfp"))));
+        EvaluateDeploymentPoliciesRequest model
+            = new EvaluateDeploymentPoliciesRequest()
+                .withDeployments(
+                    Arrays
+                        .asList(
+                            new EvaluateDeploymentPoliciesDeployment().withName("walm")
+                                .withProperties(
+                                    new EvaluateDeploymentPoliciesDeploymentProperties()
+                                        .withModel(new DeploymentModel().withPublisher("yoxa")
+                                            .withFormat("dkzjancuxrh")
+                                            .withName("bavxbniwdjswzt")
+                                            .withVersion("bpg")
+                                            .withSource("ytxhp")
+                                            .withSourceAccount("bzpfzab"))
+                                        .withRaiPolicyName("tyq")),
+                            new EvaluateDeploymentPoliciesDeployment().withName("klbb")
+                                .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties().withModel(
+                                    new DeploymentModel().withPublisher("plwzbhvgyugu")
+                                        .withFormat("vmkfssxqu")
+                                        .withName("fpl")
+                                        .withVersion("gsxnkjzkdeslpv")
+                                        .withSource("pwiyig")
+                                        .withSourceAccount("pkdwzbai"))
+                                    .withRaiPolicyName("qupedeojnab")),
+                            new EvaluateDeploymentPoliciesDeployment().withName("khsmtxpsiebt")
+                                .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
+                                    .withModel(new DeploymentModel().withPublisher("vpesapskrdqmhjjd")
+                                        .withFormat("ldwkyzxuutkn")
+                                        .withName("scwsv")
+                                        .withVersion("otogtwrupqs")
+                                        .withSource("nmic")
+                                        .withSourceAccount("vce"))
+                                    .withRaiPolicyName("tyfjfcnjbkcnxdhb")),
+                            new EvaluateDeploymentPoliciesDeployment().withName("tkphywpnvjtoqn")
+                                .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
+                                    .withModel(new DeploymentModel().withPublisher("mclfplphoxuscr")
+                                        .withFormat("bgyepsbj")
+                                        .withName("zq")
+                                        .withVersion("xywpmueefjzwfqkq")
+                                        .withSource("ids")
+                                        .withSourceAccount("onobglaocqx"))
+                                    .withRaiPolicyName("ytlmoyrxvwfud"))));
         model = BinaryData.fromObject(model).toObject(EvaluateDeploymentPoliciesRequest.class);
-        Assertions.assertEquals("pgn", model.deployments().get(0).name());
-        Assertions.assertEquals("txhp", model.deployments().get(0).properties().model().publisher());
-        Assertions.assertEquals("bzpfzab", model.deployments().get(0).properties().model().format());
-        Assertions.assertEquals("cuh", model.deployments().get(0).properties().model().name());
-        Assertions.assertEquals("tcty", model.deployments().get(0).properties().model().version());
-        Assertions.assertEquals("klbb", model.deployments().get(0).properties().model().source());
-        Assertions.assertEquals("plwzbhvgyugu", model.deployments().get(0).properties().model().sourceAccount());
-        Assertions.assertEquals("qukkfp", model.deployments().get(0).properties().raiPolicyName());
+        Assertions.assertEquals("walm", model.deployments().get(0).name());
+        Assertions.assertEquals("yoxa", model.deployments().get(0).properties().model().publisher());
+        Assertions.assertEquals("dkzjancuxrh", model.deployments().get(0).properties().model().format());
+        Assertions.assertEquals("bavxbniwdjswzt", model.deployments().get(0).properties().model().name());
+        Assertions.assertEquals("bpg", model.deployments().get(0).properties().model().version());
+        Assertions.assertEquals("ytxhp", model.deployments().get(0).properties().model().source());
+        Assertions.assertEquals("bzpfzab", model.deployments().get(0).properties().model().sourceAccount());
+        Assertions.assertEquals("tyq", model.deployments().get(0).properties().raiPolicyName());
     }
 }

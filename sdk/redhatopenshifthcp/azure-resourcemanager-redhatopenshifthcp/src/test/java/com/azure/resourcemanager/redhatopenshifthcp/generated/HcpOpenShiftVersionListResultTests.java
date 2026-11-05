@@ -13,12 +13,12 @@ public final class HcpOpenShiftVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOpenShiftVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"channelGroup\":\"ndnhj\",\"enabled\":true,\"endOfLifeTimestamp\":\"2021-02-14T21:50:58Z\"},\"id\":\"hvylwzbt\",\"name\":\"h\",\"type\":\"ujznb\"}],\"nextLink\":\"ow\"}")
+            "{\"value\":[{\"properties\":{\"channelGroup\":\"qzvszjf\",\"enabled\":true,\"endOfLifeTimestamp\":\"2021-03-12T20:34:44Z\"},\"id\":\"fdxxivetvtcqaqtd\",\"name\":\"qmcbxvwvxyslqbhs\",\"type\":\"xoblytkbl\"}],\"nextLink\":\"ewwwfbkrvrnsv\"}")
             .toObject(HcpOpenShiftVersionListResult.class);
-        Assertions.assertEquals("ndnhj", model.value().get(0).properties().channelGroup());
+        Assertions.assertEquals("qzvszjf", model.value().get(0).properties().channelGroup());
         Assertions.assertTrue(model.value().get(0).properties().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T21:50:58Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T20:34:44Z"),
             model.value().get(0).properties().endOfLifeTimestamp());
-        Assertions.assertEquals("ow", model.nextLink());
+        Assertions.assertEquals("ewwwfbkrvrnsv", model.nextLink());
     }
 }

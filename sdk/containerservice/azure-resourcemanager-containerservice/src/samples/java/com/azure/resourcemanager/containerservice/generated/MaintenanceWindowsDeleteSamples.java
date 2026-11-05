@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceWindowsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-02-preview/MaintenanceWindowsDelete.json
+     * x-ms-original-file: 2026-08-02-preview/MaintenanceWindowsDelete.json
      */
     /**
      * Sample code: Delete Maintenance Window.

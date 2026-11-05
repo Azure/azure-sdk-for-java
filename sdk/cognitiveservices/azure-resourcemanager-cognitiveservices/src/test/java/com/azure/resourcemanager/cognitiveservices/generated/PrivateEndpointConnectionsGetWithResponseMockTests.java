@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"dhlltqstqkqsyg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ecovagzkheubanlx\",\"actionsRequired\":\"pqcckqiawzlz\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"gacizuxlrarw\"]},\"etag\":\"wsaudoejtighsxj\",\"location\":\"tnkqbala\",\"id\":\"vuuwxhmeh\",\"name\":\"nhjiotiffb\",\"type\":\"cngkegxcypxb\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"kderf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ikwepwogggicw\",\"actionsRequired\":\"htfmcqbsudzpgc\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"qumjdjxhzghgod\"]},\"etag\":\"nrceqavfdbdfmmx\",\"location\":\"naj\",\"id\":\"pjyyqmkwlhvc\",\"name\":\"loqd\",\"type\":\"jk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("ehqwhitxnmxgn", "guzbuw", "orbalkj", com.azure.core.util.Context.NONE)
+            .getWithResponse("bn", "x", "ypfqpgaixw", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ecovagzkheubanlx",
+        Assertions.assertEquals("ikwepwogggicw",
             response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("pqcckqiawzlz",
+        Assertions.assertEquals("htfmcqbsudzpgc",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("gacizuxlrarw", response.properties().groupIds().get(0));
-        Assertions.assertEquals("tnkqbala", response.location());
+        Assertions.assertEquals("qumjdjxhzghgod", response.properties().groupIds().get(0));
+        Assertions.assertEquals("naj", response.location());
     }
 }

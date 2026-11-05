@@ -11,7 +11,7 @@ public final class AzureMonitorWorkspaceDefaultIngestionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorWorkspaceDefaultIngestionSettings model = BinaryData.fromString(
-            "{\"dataCollectionRuleResourceId\":\"dkirsoodqxhcr\",\"dataCollectionEndpointResourceId\":\"ohjtckw\",\"dataCollectionRuleImmutableId\":\"soifiyipjxsqw\",\"ingestionEndpoints\":{\"metrics\":\"jbznorc\"}}")
+            "{\"dataCollectionRuleResourceId\":\"gbquxigj\",\"dataCollectionEndpointResourceId\":\"gzjaoyfhrtxilne\",\"dataCollectionRuleImmutableId\":\"ujysvle\",\"ingestionEndpoints\":{\"metrics\":\"fqawrlyxw\"}}")
             .toObject(AzureMonitorWorkspaceDefaultIngestionSettings.class);
     }
 }

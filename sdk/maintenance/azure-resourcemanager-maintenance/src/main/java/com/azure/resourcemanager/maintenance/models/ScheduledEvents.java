@@ -12,35 +12,70 @@ import com.azure.core.util.Context;
  */
 public interface ScheduledEvents {
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge along with {@link Response}.
+     * @return response of ScheduledEvents acknowledge along with {@link Response}.
      */
-    Response<ScheduledEventApproveResponse> acknowledgeWithResponse(String resourceGroupName, String resourceType,
+    Response<ScheduledEventsApproveResponse> acknowledgeWithResponse(String resourceGroupName, String resourceType,
         String resourceName, String scheduledEventId, Context context);
 
     /**
-     * Post Scheduled Event Acknowledgement.
+     * Post ScheduledEvents Acknowledgement.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceType Resource type.
      * @param resourceName Resource Name.
-     * @param scheduledEventId Scheduled Event Id. This is a GUID-formatted string (e.g.
+     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of scheduled event acknowledge.
+     * @return response of ScheduledEvents acknowledge.
      */
-    ScheduledEventApproveResponse acknowledge(String resourceGroupName, String resourceType, String resourceName,
+    ScheduledEventsApproveResponse acknowledge(String resourceGroupName, String resourceType, String resourceName,
         String scheduledEventId);
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge along with {@link Response}.
+     */
+    Response<ScheduledEventsApproveResponse> acknowledgeListWithResponse(String resourceGroupName, String resourceType,
+        String resourceName, ScheduledEventsIdList scheduledEventsIdList, Context context);
+
+    /**
+     * Post ScheduledEvents List Acknowledgement
+     * 
+     * Post List of ScheduledEvents Acknowledgement.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceType Resource type.
+     * @param resourceName Resource name.
+     * @param scheduledEventsIdList List of ScheduledEvents Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of ScheduledEvents acknowledge.
+     */
+    ScheduledEventsApproveResponse acknowledgeList(String resourceGroupName, String resourceType, String resourceName,
+        ScheduledEventsIdList scheduledEventsIdList);
 }

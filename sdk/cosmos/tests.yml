@@ -99,6 +99,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_Http2NetworkFault'
+          # Tests and cleanup use a fixed account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:
@@ -144,6 +146,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient'
+          # Tests and cleanup use a fixed account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:
@@ -183,6 +187,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_EndpointProbe'
+          # Tests and cleanup use a fixed account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:
@@ -226,6 +232,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
+          # Tests and cleanup use a fixed account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:
@@ -265,6 +273,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiMaster'
+          # Tests and cleanup use the fixed thin-client canary account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:
@@ -304,6 +314,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_GSI'
+          # Tests and cleanup use a fixed account, not ARM-created accounts.
+          DisableAzureResourceCreation: true
           # Long lived shared account: nothing tears it down at the end of the run, so leaked
           # databases stay forever. Delete this job's databases even if the job failed.
           PostSteps:

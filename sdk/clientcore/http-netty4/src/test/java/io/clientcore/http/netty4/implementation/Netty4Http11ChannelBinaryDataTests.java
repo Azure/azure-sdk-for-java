@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -260,6 +261,7 @@ public class Netty4Http11ChannelBinaryDataTests {
         TestMockChannel realChannel = new TestMockChannel();
         new DefaultEventLoop().register(realChannel);
         Channel spiedChannel = spy(realChannel);
+        doReturn(realChannel.pipeline()).when(spiedChannel).pipeline();
         Runnable cleanupTask = () -> {
             spiedChannel.disconnect();
             spiedChannel.close();

@@ -128,9 +128,15 @@ public final class FleetUpdateStrategyImpl
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.updateStrategyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateStrategies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
+        this.updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
     }
 
     public FleetUpdateStrategy refresh() {

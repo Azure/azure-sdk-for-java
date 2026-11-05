@@ -14,25 +14,25 @@ public final class ElasticBackupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupInner model = BinaryData.fromString(
-            "{\"properties\":{\"creationDate\":\"2021-03-12T20:12:26Z\",\"snapshotCreationDate\":\"2021-09-16T21:13:37Z\",\"completionDate\":\"2021-05-10T03:21:21Z\",\"provisioningState\":\"Updating\",\"size\":8704016164056262603,\"label\":\"nulaiywzejywhsl\",\"backupType\":\"Scheduled\",\"failureReason\":\"pllndnp\",\"elasticVolumeResourceId\":\"wrpqafgfugsnnf\",\"snapshotUsage\":\"UseExistingSnapshot\",\"elasticSnapshotResourceId\":\"efy\",\"elasticBackupPolicyResourceId\":\"coc\",\"volumeSize\":\"Large\"},\"id\":\"tixr\",\"name\":\"vzuyturmlmu\",\"type\":\"wolba\"}")
+            "{\"properties\":{\"creationDate\":\"2021-09-08T22:56:02Z\",\"snapshotCreationDate\":\"2021-03-31T04:09:34Z\",\"completionDate\":\"2021-08-02T11:55:53Z\",\"provisioningState\":\"Moving\",\"size\":1447562918838442967,\"label\":\"iirhgfgrwsd\",\"backupType\":\"Manual\",\"failureReason\":\"t\",\"elasticVolumeResourceId\":\"vzbglbyvi\",\"snapshotUsage\":\"CreateNewSnapshot\",\"elasticSnapshotResourceId\":\"brxkjzwr\",\"elasticBackupPolicyResourceId\":\"ffm\",\"volumeSize\":\"Large\"},\"id\":\"fbkgozxwopdby\",\"name\":\"p\",\"type\":\"zqaclna\"}")
             .toObject(ElasticBackupInner.class);
-        Assertions.assertEquals("nulaiywzejywhsl", model.properties().label());
-        Assertions.assertEquals("wrpqafgfugsnnf", model.properties().elasticVolumeResourceId());
-        Assertions.assertEquals(SnapshotUsage.USE_EXISTING_SNAPSHOT, model.properties().snapshotUsage());
-        Assertions.assertEquals("efy", model.properties().elasticSnapshotResourceId());
+        Assertions.assertEquals("iirhgfgrwsd", model.properties().label());
+        Assertions.assertEquals("vzbglbyvi", model.properties().elasticVolumeResourceId());
+        Assertions.assertEquals(SnapshotUsage.CREATE_NEW_SNAPSHOT, model.properties().snapshotUsage());
+        Assertions.assertEquals("brxkjzwr", model.properties().elasticSnapshotResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticBackupInner model
-            = new ElasticBackupInner().withProperties(new ElasticBackupProperties().withLabel("nulaiywzejywhsl")
-                .withElasticVolumeResourceId("wrpqafgfugsnnf")
-                .withSnapshotUsage(SnapshotUsage.USE_EXISTING_SNAPSHOT)
-                .withElasticSnapshotResourceId("efy"));
+            = new ElasticBackupInner().withProperties(new ElasticBackupProperties().withLabel("iirhgfgrwsd")
+                .withElasticVolumeResourceId("vzbglbyvi")
+                .withSnapshotUsage(SnapshotUsage.CREATE_NEW_SNAPSHOT)
+                .withElasticSnapshotResourceId("brxkjzwr"));
         model = BinaryData.fromObject(model).toObject(ElasticBackupInner.class);
-        Assertions.assertEquals("nulaiywzejywhsl", model.properties().label());
-        Assertions.assertEquals("wrpqafgfugsnnf", model.properties().elasticVolumeResourceId());
-        Assertions.assertEquals(SnapshotUsage.USE_EXISTING_SNAPSHOT, model.properties().snapshotUsage());
-        Assertions.assertEquals("efy", model.properties().elasticSnapshotResourceId());
+        Assertions.assertEquals("iirhgfgrwsd", model.properties().label());
+        Assertions.assertEquals("vzbglbyvi", model.properties().elasticVolumeResourceId());
+        Assertions.assertEquals(SnapshotUsage.CREATE_NEW_SNAPSHOT, model.properties().snapshotUsage());
+        Assertions.assertEquals("brxkjzwr", model.properties().elasticSnapshotResourceId());
     }
 }

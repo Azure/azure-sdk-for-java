@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NodePoolVersionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodePoolVersionProfile model = BinaryData.fromString("{\"id\":\"mdajv\",\"channelGroup\":\"sounqecanoaeu\"}")
-            .toObject(NodePoolVersionProfile.class);
-        Assertions.assertEquals("mdajv", model.id());
-        Assertions.assertEquals("sounqecanoaeu", model.channelGroup());
+        NodePoolVersionProfile model
+            = BinaryData.fromString("{\"id\":\"pngjcrcczsqpjhvm\",\"channelGroup\":\"jvnysounqe\"}")
+                .toObject(NodePoolVersionProfile.class);
+        Assertions.assertEquals("pngjcrcczsqpjhvm", model.id());
+        Assertions.assertEquals("jvnysounqe", model.channelGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodePoolVersionProfile model = new NodePoolVersionProfile().withId("mdajv").withChannelGroup("sounqecanoaeu");
+        NodePoolVersionProfile model
+            = new NodePoolVersionProfile().withId("pngjcrcczsqpjhvm").withChannelGroup("jvnysounqe");
         model = BinaryData.fromObject(model).toObject(NodePoolVersionProfile.class);
-        Assertions.assertEquals("mdajv", model.id());
-        Assertions.assertEquals("sounqecanoaeu", model.channelGroup());
+        Assertions.assertEquals("pngjcrcczsqpjhvm", model.id());
+        Assertions.assertEquals("jvnysounqe", model.channelGroup());
     }
 }

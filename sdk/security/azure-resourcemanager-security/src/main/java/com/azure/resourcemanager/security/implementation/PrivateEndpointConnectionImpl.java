@@ -127,10 +127,15 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinks");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.privateLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateLinkName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public PrivateEndpointConnection refresh() {

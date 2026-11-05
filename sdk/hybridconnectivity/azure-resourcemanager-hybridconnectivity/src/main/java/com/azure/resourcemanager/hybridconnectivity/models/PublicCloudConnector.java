@@ -57,6 +57,13 @@ public interface PublicCloudConnector {
     PublicCloudConnectorProperties properties();
 
     /**
+     * Gets the kind property: The kind of the public cloud connector.
+     * 
+     * @return the kind value.
+     */
+    HostType kind();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -264,7 +271,7 @@ public interface PublicCloudConnector {
     PublicCloudConnector refresh(Context context);
 
     /**
-     * The testPermissions operation.
+     * A long-running resource action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,7 +280,7 @@ public interface PublicCloudConnector {
     OperationStatusResult testPermissions();
 
     /**
-     * The testPermissions operation.
+     * A long-running resource action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

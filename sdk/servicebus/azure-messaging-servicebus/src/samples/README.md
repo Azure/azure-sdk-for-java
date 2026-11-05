@@ -36,6 +36,7 @@ connection string value can be obtained by:
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
 - [Process all messages using processor][ServiceBusProcessorPeekLockReceiveSample]
 - [Close a processor with a drain timeout][ServiceBusProcessorDrainTimeoutSample]
+- [Process messages with reactive handlers and manual settlement][ServiceBusProcessorAsyncSample]
 - [Processor client Java doc code samples][ServiceBusProcessorClientJavaDocCodeSamples]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
 - [Receive and manually settle messages][ReceiveMessageAndSettleAsyncSample]
@@ -55,6 +56,28 @@ The sample uses `close()` to demonstrate the documented drain and resource-clean
 ### Synchronous sending and receiving
 - [Send message batches synchronously][SendMessageBatchSyncSample]
 - [Receive messages synchronously][ReceiveMessageSample]
+
+### Reactive processor
+
+Run `ServiceBusProcessorAsyncSample.main` with `AZURE_SERVICEBUS_FULLY_QUALIFIED_NAMESPACE`
+(for example, `your-namespace.servicebus.windows.net`) and `AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME`.
+Use an empty test queue and an identity with Send and Listen permissions. The sample sends a message before starting
+the processor. For a session-enabled queue, pass `session` as the program argument.
+
+The handler returns a `Mono` covering all downstream work and manual settlement. Replace the illustrative delay with
+the asynchronous durable write or flush in your application, and complete the Service Bus message only after it succeeds.
+Do not return `Mono.empty()` while a detached callback is still working: the processor uses the returned operation's
+lifetime to bound concurrency, track processing spans, and drain handlers on shutdown.
+Automatic settlement is also reactive; when enabled, successful handler completion triggers message completion.
+On failure, the processing span includes the error handler and automatic abandonment. Recovery checks run every ten
+seconds so persistent receive failures cannot create a tight restart loop.
+The session processor's `maxConcurrentCalls` bounds total concurrent handlers across sessions, not handlers per session.
+For ordered work, use sessions and set `maxConcurrentCalls` to one. Higher values allow handlers for the same session
+to overlap. Setting concurrency to one on a non-session queue does not guarantee ordering.
+Session idle timeout starts when no accepted handlers or settlements remain pending; it does not interrupt a
+long-running handler. Configure lock renewal to cover the full processing time.
+`stop()` pauses new handler dispatch without cancelling accepted work. Subscribe to `start()` to resume, or call
+`close()` from a controlling thread to drain accepted work and release the receivers.
 
 ### Message sessions
 - [Send messages to a session][SendSessionMessageSample]
@@ -97,6 +120,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md#next-steps
 
 [PeekMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
+[ServiceBusProcessorAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorAsyncSample.java
 [ListSessionsAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ListSessionsAsyncSample.java
 [ListSessionsSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ListSessionsSample.java
 [ReceiveMessageAndSettleAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java

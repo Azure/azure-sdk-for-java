@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cdn.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -36,7 +37,6 @@ import com.azure.resourcemanager.cdn.fluent.models.RuleSetInner;
 import com.azure.resourcemanager.cdn.fluent.models.UsageInner;
 import com.azure.resourcemanager.cdn.implementation.models.RuleSetListResult;
 import com.azure.resourcemanager.cdn.implementation.models.UsagesListResult;
-import com.azure.resourcemanager.cdn.models.RuleSetsCreateResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -85,10 +85,11 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<RuleSetsCreateResponse> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RuleSetInner resource, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}")
@@ -279,21 +280,22 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Creates a new rule set within the specified profile.
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
      * unique within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information on successful completion
-     * of {@link Mono}.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleSetsCreateResponse> createWithResponseAsync(String resourceGroupName, String profileName,
-        String ruleSetName) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, RuleSetInner resource) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -312,30 +314,33 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         if (ruleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
         }
+        if (resource != null) {
+            resource.validate();
+        }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, profileName, ruleSetName, accept, context))
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, profileName, ruleSetName, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates a new rule set within the specified profile.
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
      * unique within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information on successful completion
-     * of {@link Mono}.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleSetsCreateResponse> createWithResponseAsync(String resourceGroupName, String profileName,
-        String ruleSetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, RuleSetInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -354,14 +359,150 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         if (ruleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
         }
+        if (resource != null) {
+            resource.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, profileName, ruleSetName, accept, context);
+            resourceGroupName, profileName, ruleSetName, accept, resource, context);
     }
 
     /**
-     * Creates a new rule set within the specified profile.
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly RuleSet name mapping to the any RuleSet or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RuleSetInner>, RuleSetInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String ruleSetName, RuleSetInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, ruleSetName, resource);
+        return this.client.<RuleSetInner, RuleSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RuleSetInner.class, RuleSetInner.class, this.client.getContext());
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly RuleSet name mapping to the any RuleSet or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RuleSetInner>, RuleSetInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String ruleSetName) {
+        final RuleSetInner resource = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, ruleSetName, resource);
+        return this.client.<RuleSetInner, RuleSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RuleSetInner.class, RuleSetInner.class, this.client.getContext());
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly RuleSet name mapping to the any RuleSet or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RuleSetInner>, RuleSetInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String ruleSetName, RuleSetInner resource, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, ruleSetName, resource, context);
+        return this.client.<RuleSetInner, RuleSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RuleSetInner.class, RuleSetInner.class, context);
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly RuleSet name mapping to the any RuleSet or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RuleSetInner>, RuleSetInner> beginCreate(String resourceGroupName, String profileName,
+        String ruleSetName) {
+        final RuleSetInner resource = null;
+        return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, resource).getSyncPoller();
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly RuleSet name mapping to the any RuleSet or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RuleSetInner>, RuleSetInner> beginCreate(String resourceGroupName, String profileName,
+        String ruleSetName, RuleSetInner resource, Context context) {
+        return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, resource, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName,
+        RuleSetInner resource) {
+        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -375,31 +516,35 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName) {
-        return createWithResponseAsync(resourceGroupName, profileName, ruleSetName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final RuleSetInner resource = null;
+        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a new rule set within the specified profile.
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
      * unique within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleSetsCreateResponse createWithResponse(String resourceGroupName, String profileName, String ruleSetName,
-        Context context) {
-        return createWithResponseAsync(resourceGroupName, profileName, ruleSetName, context).block();
+    private Mono<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName,
+        RuleSetInner resource, Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, resource, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a new rule set within the specified profile.
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -412,7 +557,28 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName) {
-        return createWithResponse(resourceGroupName, profileName, ruleSetName, Context.NONE).getValue();
+        final RuleSetInner resource = null;
+        return createAsync(resourceGroupName, profileName, ruleSetName, resource).block();
+    }
+
+    /**
+     * Creates or update a batch rule set within the specified profile along with the rules associate to it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     * unique within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner resource,
+        Context context) {
+        return createAsync(resourceGroupName, profileName, ruleSetName, resource, context).block();
     }
 
     /**

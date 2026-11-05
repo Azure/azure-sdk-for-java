@@ -758,6 +758,7 @@ public final class DatasetsClient {
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -868,6 +869,7 @@ public final class DatasetsClient {
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -980,6 +982,7 @@ public final class DatasetsClient {
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1061,6 +1064,7 @@ public final class DatasetsClient {
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1159,51 +1163,6 @@ public final class DatasetsClient {
      *
      * Returns a list of data generation jobs.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataGenerationJob> listGenerationJobs(Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listGenerationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listGenerationJobs(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
-    }
-
-    /**
-     * List data generation jobs
-     *
-     * Returns a list of data generation jobs.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1216,7 +1175,7 @@ public final class DatasetsClient {
     public PagedIterable<DataGenerationJob> listGenerationJobs() {
         // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listGenerationJobs(requestOptions)
+        return serviceClient.listGenerationJobs(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 
@@ -1312,5 +1271,47 @@ public final class DatasetsClient {
         // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteGenerationJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * List data generation jobs
+     *
+     * Returns a list of data generation jobs.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataGenerationJob> listGenerationJobs(Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listGenerationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listGenerationJobs(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 }

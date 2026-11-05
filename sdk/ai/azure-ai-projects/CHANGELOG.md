@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
+
+## 2.9.0 (2026-10-30)
+
+### Bugs Fixed
+
+- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
+  through its constructor or `setMaxSamples(int)`, while preserving the no-argument constructor for backward
+  compatibility.
+- Fixed cursor-based list operations that stopped after the first page, including data-generation jobs,
+  evaluator-generation jobs, skills and skill versions, and agent insight monitors, runs, and insights.
+  Paging now follows the service's `last_id` cursor and supports resuming from a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
+### Other Changes
+
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` from `2.8.0` to `2.9.0`.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+
+## 2.8.0 (2026-10-19)
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` to `2.8.0` and `azure-storage-blob` to `12.36.0`.
 
 ## 2.7.0 (2026-10-06)
 

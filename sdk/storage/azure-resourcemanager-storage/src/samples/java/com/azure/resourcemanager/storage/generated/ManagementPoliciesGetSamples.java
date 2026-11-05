@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyName;
  */
 public final class ManagementPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountGetManagementPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountGetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountGetManagementPolicies.

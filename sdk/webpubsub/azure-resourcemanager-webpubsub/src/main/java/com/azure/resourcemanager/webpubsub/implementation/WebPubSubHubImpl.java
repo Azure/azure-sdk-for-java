@@ -101,9 +101,15 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}",
+            "resourceName");
+        this.hubName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}",
+            "hubName");
     }
 
     public WebPubSubHub refresh() {

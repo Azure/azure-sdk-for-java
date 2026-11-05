@@ -25,68 +25,72 @@ public final class RaiEgressPolicyConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiEgressPolicyConfig model = BinaryData.fromString(
-            "{\"mode\":\"Enforced\",\"defaultAction\":\"Allow\",\"description\":\"onmacjekniz\",\"rules\":[{\"name\":\"vcimpev\",\"description\":\"mblrrilbywd\",\"ruleType\":\"Fqdn\",\"match\":{\"host\":\"ccwr\",\"path\":\"scjfnyns\"},\"action\":{\"actionType\":\"Deny\",\"headers\":[{\"operation\":\"Remove\",\"name\":\"zdvoqytibyowbb\",\"value\":\"yavutpthjoxois\",\"valueRef\":{}},{\"operation\":\"Insert\",\"name\":\"sbpimlq\",\"value\":\"jxkcgxxlxsff\",\"valueRef\":{}},{\"operation\":\"Set\",\"name\":\"izqzdwlvwlyou\",\"value\":\"gfbkjubdyh\",\"valueRef\":{}}],\"rewrite\":{\"scheme\":\"http\",\"host\":\"sgow\",\"path\":\"ttsttktlahbqact\"}}}]}")
+            "{\"mode\":\"Enforced\",\"defaultAction\":\"Allow\",\"description\":\"iwrxgkn\",\"rules\":[{\"name\":\"yinzqodfvpgs\",\"description\":\"xgsg\",\"ruleType\":\"Fqdn\",\"match\":{\"host\":\"zdjtxvzflbqv\",\"path\":\"qvlgafcqusrdvetn\"},\"action\":{\"actionType\":\"Transform\",\"headers\":[{\"operation\":\"Insert\",\"name\":\"tnwlduycv\",\"value\":\"hyrmewipmvekdx\",\"valueRef\":{}},{\"operation\":\"Set\",\"name\":\"qgsjjxun\",\"value\":\"gketwzhhzjhf\",\"valueRef\":{}},{\"operation\":\"Set\",\"name\":\"vvmu\",\"value\":\"pmuneqsx\",\"valueRef\":{}},{\"operation\":\"Insert\",\"name\":\"fbuzjyihs\",\"value\":\"bhu\",\"valueRef\":{}}],\"rewrite\":{\"scheme\":\"https\",\"host\":\"uemsly\",\"path\":\"qyrp\"}}}]}")
             .toObject(RaiEgressPolicyConfig.class);
         Assertions.assertEquals(RaiEgressMode.ENFORCED, model.mode());
         Assertions.assertEquals(RaiEgressDefaultAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("onmacjekniz", model.description());
-        Assertions.assertEquals("vcimpev", model.rules().get(0).name());
-        Assertions.assertEquals("mblrrilbywd", model.rules().get(0).description());
+        Assertions.assertEquals("iwrxgkn", model.description());
+        Assertions.assertEquals("yinzqodfvpgs", model.rules().get(0).name());
+        Assertions.assertEquals("xgsg", model.rules().get(0).description());
         Assertions.assertEquals(RaiEgressRuleType.FQDN, model.rules().get(0).ruleType());
-        Assertions.assertEquals("ccwr", model.rules().get(0).match().host());
-        Assertions.assertEquals("scjfnyns", model.rules().get(0).match().path());
-        Assertions.assertEquals(RaiEgressRuleActionType.DENY, model.rules().get(0).action().actionType());
-        Assertions.assertEquals(RaiEgressHeaderOperation.REMOVE,
+        Assertions.assertEquals("zdjtxvzflbqv", model.rules().get(0).match().host());
+        Assertions.assertEquals("qvlgafcqusrdvetn", model.rules().get(0).match().path());
+        Assertions.assertEquals(RaiEgressRuleActionType.TRANSFORM, model.rules().get(0).action().actionType());
+        Assertions.assertEquals(RaiEgressHeaderOperation.INSERT,
             model.rules().get(0).action().headers().get(0).operation());
-        Assertions.assertEquals("zdvoqytibyowbb", model.rules().get(0).action().headers().get(0).name());
-        Assertions.assertEquals("yavutpthjoxois", model.rules().get(0).action().headers().get(0).value());
-        Assertions.assertEquals(RaiEgressScheme.HTTP, model.rules().get(0).action().rewrite().scheme());
-        Assertions.assertEquals("sgow", model.rules().get(0).action().rewrite().host());
-        Assertions.assertEquals("ttsttktlahbqact", model.rules().get(0).action().rewrite().path());
+        Assertions.assertEquals("tnwlduycv", model.rules().get(0).action().headers().get(0).name());
+        Assertions.assertEquals("hyrmewipmvekdx", model.rules().get(0).action().headers().get(0).value());
+        Assertions.assertEquals(RaiEgressScheme.HTTPS, model.rules().get(0).action().rewrite().scheme());
+        Assertions.assertEquals("uemsly", model.rules().get(0).action().rewrite().host());
+        Assertions.assertEquals("qyrp", model.rules().get(0).action().rewrite().path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiEgressPolicyConfig model = new RaiEgressPolicyConfig().withMode(RaiEgressMode.ENFORCED)
             .withDefaultAction(RaiEgressDefaultAction.ALLOW)
-            .withDescription("onmacjekniz")
-            .withRules(Arrays.asList(new RaiEgressRule().withName("vcimpev")
-                .withDescription("mblrrilbywd")
+            .withDescription("iwrxgkn")
+            .withRules(Arrays.asList(new RaiEgressRule().withName("yinzqodfvpgs")
+                .withDescription("xgsg")
                 .withRuleType(RaiEgressRuleType.FQDN)
-                .withMatch(new RaiEgressRuleMatch().withHost("ccwr").withPath("scjfnyns"))
-                .withAction(new RaiEgressRuleAction().withActionType(RaiEgressRuleActionType.DENY)
+                .withMatch(new RaiEgressRuleMatch().withHost("zdjtxvzflbqv").withPath("qvlgafcqusrdvetn"))
+                .withAction(new RaiEgressRuleAction().withActionType(RaiEgressRuleActionType.TRANSFORM)
                     .withHeaders(Arrays.asList(
-                        new RaiEgressHeaderTransform().withOperation(RaiEgressHeaderOperation.REMOVE)
-                            .withName("zdvoqytibyowbb")
-                            .withValue("yavutpthjoxois")
-                            .withValueRef(new RaiEgressHeaderValueRef()),
                         new RaiEgressHeaderTransform().withOperation(RaiEgressHeaderOperation.INSERT)
-                            .withName("sbpimlq")
-                            .withValue("jxkcgxxlxsff")
+                            .withName("tnwlduycv")
+                            .withValue("hyrmewipmvekdx")
                             .withValueRef(new RaiEgressHeaderValueRef()),
                         new RaiEgressHeaderTransform().withOperation(RaiEgressHeaderOperation.SET)
-                            .withName("izqzdwlvwlyou")
-                            .withValue("gfbkjubdyh")
+                            .withName("qgsjjxun")
+                            .withValue("gketwzhhzjhf")
+                            .withValueRef(new RaiEgressHeaderValueRef()),
+                        new RaiEgressHeaderTransform().withOperation(RaiEgressHeaderOperation.SET)
+                            .withName("vvmu")
+                            .withValue("pmuneqsx")
+                            .withValueRef(new RaiEgressHeaderValueRef()),
+                        new RaiEgressHeaderTransform().withOperation(RaiEgressHeaderOperation.INSERT)
+                            .withName("fbuzjyihs")
+                            .withValue("bhu")
                             .withValueRef(new RaiEgressHeaderValueRef())))
-                    .withRewrite(new RaiEgressRewriteTarget().withScheme(RaiEgressScheme.HTTP)
-                        .withHost("sgow")
-                        .withPath("ttsttktlahbqact")))));
+                    .withRewrite(new RaiEgressRewriteTarget().withScheme(RaiEgressScheme.HTTPS)
+                        .withHost("uemsly")
+                        .withPath("qyrp")))));
         model = BinaryData.fromObject(model).toObject(RaiEgressPolicyConfig.class);
         Assertions.assertEquals(RaiEgressMode.ENFORCED, model.mode());
         Assertions.assertEquals(RaiEgressDefaultAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("onmacjekniz", model.description());
-        Assertions.assertEquals("vcimpev", model.rules().get(0).name());
-        Assertions.assertEquals("mblrrilbywd", model.rules().get(0).description());
+        Assertions.assertEquals("iwrxgkn", model.description());
+        Assertions.assertEquals("yinzqodfvpgs", model.rules().get(0).name());
+        Assertions.assertEquals("xgsg", model.rules().get(0).description());
         Assertions.assertEquals(RaiEgressRuleType.FQDN, model.rules().get(0).ruleType());
-        Assertions.assertEquals("ccwr", model.rules().get(0).match().host());
-        Assertions.assertEquals("scjfnyns", model.rules().get(0).match().path());
-        Assertions.assertEquals(RaiEgressRuleActionType.DENY, model.rules().get(0).action().actionType());
-        Assertions.assertEquals(RaiEgressHeaderOperation.REMOVE,
+        Assertions.assertEquals("zdjtxvzflbqv", model.rules().get(0).match().host());
+        Assertions.assertEquals("qvlgafcqusrdvetn", model.rules().get(0).match().path());
+        Assertions.assertEquals(RaiEgressRuleActionType.TRANSFORM, model.rules().get(0).action().actionType());
+        Assertions.assertEquals(RaiEgressHeaderOperation.INSERT,
             model.rules().get(0).action().headers().get(0).operation());
-        Assertions.assertEquals("zdvoqytibyowbb", model.rules().get(0).action().headers().get(0).name());
-        Assertions.assertEquals("yavutpthjoxois", model.rules().get(0).action().headers().get(0).value());
-        Assertions.assertEquals(RaiEgressScheme.HTTP, model.rules().get(0).action().rewrite().scheme());
-        Assertions.assertEquals("sgow", model.rules().get(0).action().rewrite().host());
-        Assertions.assertEquals("ttsttktlahbqact", model.rules().get(0).action().rewrite().path());
+        Assertions.assertEquals("tnwlduycv", model.rules().get(0).action().headers().get(0).name());
+        Assertions.assertEquals("hyrmewipmvekdx", model.rules().get(0).action().headers().get(0).value());
+        Assertions.assertEquals(RaiEgressScheme.HTTPS, model.rules().get(0).action().rewrite().scheme());
+        Assertions.assertEquals("uemsly", model.rules().get(0).action().rewrite().host());
+        Assertions.assertEquals("qyrp", model.rules().get(0).action().rewrite().path());
     }
 }

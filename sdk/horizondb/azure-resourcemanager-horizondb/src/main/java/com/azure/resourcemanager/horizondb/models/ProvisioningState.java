@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**
-     * Provisioning completed successfully.
+     * Resource has been created.
      */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Provisioning failed.
+     * Resource creation failed.
      */
     public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Provisioning was canceled.
+     * Resource creation was canceled.
      */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Provisioning is in progress.
+     * The HorizonDB resource operation is actively running.
      */
     public static final ProvisioningState IN_PROGRESS = fromString("InProgress");
 
     /**
-     * Provisioning is in progress.
+     * The HorizonDB resource is still provisioning.
      */
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.30.0-beta.1 (Unreleased)
+## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,54 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.31.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
+
+## 12.30.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.1` to version `12.37.2`.
+
+## 12.30.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.29.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.36.1`.
 
 ## 12.29.0 (2026-10-07)
 
@@ -29,6 +77,11 @@
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
   `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
   Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+- Updated the documentation of `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` `delete`,
+  `deleteWithResponse`, `deleteIfExists`, and `deleteIfExistsWithResponse`, and
+  `DataLakeServiceClient`/`DataLakeServiceAsyncClient` `deleteFileSystem` and `deleteFileSystemWithResponse` to note
+  that operations on paths within a deleted file system, including reads and writes, may continue to succeed for up to
+  30 seconds after the delete request is accepted.
 
 #### Dependency Updates
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
@@ -921,4 +974,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-

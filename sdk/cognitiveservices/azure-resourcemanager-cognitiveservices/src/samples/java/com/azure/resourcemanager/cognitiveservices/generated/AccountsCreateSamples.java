@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountMin.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -44,7 +44,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccount.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -76,7 +76,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountWithAgentHostingConfiguration.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccountWithAgentHostingConfiguration.json
      */
     /**
      * Sample code: Create a Foundry account with customer-owned AKS hosting.

@@ -130,9 +130,15 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
         com.azure.resourcemanager.appnetwork.AppnetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.appLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinks");
-        this.appLinkMemberName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinkMembers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "resourceGroupName");
+        this.appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "appLinkName");
+        this.appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "appLinkMemberName");
     }
 
     public AppLinkMember refresh() {

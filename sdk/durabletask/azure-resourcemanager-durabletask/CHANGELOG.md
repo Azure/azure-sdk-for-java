@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,114 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2026-10-20)
+
+- Azure Resource Manager Durable Task client library for Java. This package contains Microsoft Azure SDK for Durable Task Management SDK.  Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.TaskQueueThroughput` was added
+
+* `models.DetectorDataset` was added
+
+* `models.TransparentDataEncryptionKeySource` was added
+
+* `models.TaskQueue$Definition` was added
+
+* `models.DetectorStatusId` was added
+
+* `models.DetectorMetadata` was added
+
+* `models.TaskQueue$UpdateStages` was added
+
+* `models.DetectorTableColumn` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.TaskQueue` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.DetectorRenderingProperties` was added
+
+* `models.DetectorStatus` was added
+
+* `models.ReplicationRole` was added
+
+* `models.FailoverState` was added
+
+* `models.TaskQueueUpdate` was added
+
+* `models.TaskQueues` was added
+
+* `models.FailoverInstanceProperties` was added
+
+* `models.FailoverInstances` was added
+
+* `models.DetectorType` was added
+
+* `models.TransparentDataEncryptionProperties` was added
+
+* `models.Detectors` was added
+
+* `models.DetectorProperties` was added
+
+* `models.TransparentDataEncryption` was added
+
+* `models.TaskQueue$DefinitionStages` was added
+
+* `models.TransparentDataEncryptions` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.TaskQueue$Update` was added
+
+* `models.FailoverInstance` was added
+
+* `models.TaskQueueProperties` was added
+
+* `models.DetectorRenderingType` was added
+
+* `models.DetectorTable` was added
+
+* `models.Detector` was added
+
+#### `models.Scheduler$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Schedulers` was modified
+
+* `restart(java.lang.String,java.lang.String)` was added
+* `restartWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `DurableTaskManager` was modified
+
+* `taskQueues()` was added
+* `detectors()` was added
+* `failoverInstances()` was added
+* `transparentDataEncryptions()` was added
+
+#### `models.Scheduler` was modified
+
+* `restart()` was added
+* `identity()` was added
+* `restartWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.Scheduler$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.TaskHubProperties` was modified
+
+* `withCapabilities(java.util.List)` was added
+* `capabilities()` was added
+
+#### `models.SchedulerUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
 
 ## 1.1.0 (2026-03-09)
 

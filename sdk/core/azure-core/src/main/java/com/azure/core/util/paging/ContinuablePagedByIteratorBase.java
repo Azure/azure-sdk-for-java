@@ -8,6 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Internal class that is a blocking iterator base class.
@@ -28,6 +30,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     private final ContinuationState<C> continuationState;
     private final Integer defaultPageSize;
     private final ClientLogger logger;
+    private final Lock pageRequestLock = new ReentrantLock();
 
     private volatile boolean done;
 
@@ -83,35 +86,40 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
      */
     abstract E getNext();
 
-    synchronized void requestPage() {
-        AtomicBoolean receivedPages = new AtomicBoolean(false);
-        if (pageRetriever != null) {
+    void requestPage() {
+        // A monitor would pin virtual-thread carriers while page retrieval waits for authentication or I/O on Java 21.
+        pageRequestLock.lock();
+        try {
+            AtomicBoolean receivedPages = new AtomicBoolean(false);
+            if (pageRetriever != null) {
+                /*
+                 * In the scenario where multiple threads were waiting on synchronization, check that no earlier
+                 * thread made a request that would satisfy the current element request. Additionally, check to make
+                 * sure that any earlier requests didn't consume the paged responses to completion.
+                 */
+                if (isNextAvailable() || done) {
+                    return;
+                }
+
+                pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize).map(page -> {
+                    receivePage(receivedPages, page);
+                    return page;
+                }).blockLast();
+            } else if (pageRetrieverSync != null) {
+                P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
+                if (page != null) {
+                    receivePage(receivedPages, page);
+                }
+            }
+
             /*
-             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made
-             * a
-             * request that would satisfy the current element request. Additionally, check to make sure that any earlier
-             * requests didn't consume the paged responses to completion.
+             * In the scenario when the subscription completes without emitting an element indicate we are done by
+             * checking if we have any additional elements to return.
              */
-            if (isNextAvailable() || done) {
-                return;
-            }
-
-            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize).map(page -> {
-                receivePage(receivedPages, page);
-                return page;
-            }).blockLast();
-        } else if (pageRetrieverSync != null) {
-            P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
-            if (page != null) {
-                receivePage(receivedPages, page);
-            }
+            this.done = done || (!receivedPages.get() && !isNextAvailable());
+        } finally {
+            pageRequestLock.unlock();
         }
-
-        /*
-         * In the scenario when the subscription completes without emitting an element indicate we are done by checking
-         * if we have any additional elements to return.
-         */
-        this.done = done || (!receivedPages.get() && !isNextAvailable());
     }
 
     /*

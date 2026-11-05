@@ -12,8 +12,8 @@ public final class ElasticSnapshotListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSnapshotListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\"},\"id\":\"yhsgz\",\"name\":\"czbgomfgbeg\",\"type\":\"qgleohibetnluank\"}],\"nextLink\":\"fxeeebtijvacvbm\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"id\":\"zbgomfgbeg\",\"name\":\"qgleohibetnluank\",\"type\":\"rfxeeebtij\"},{\"properties\":{\"provisioningState\":\"Accepted\"},\"id\":\"mq\",\"name\":\"bqqxlaj\",\"type\":\"nw\"}],\"nextLink\":\"cevehjkuyxoafg\"}")
             .toObject(ElasticSnapshotListResult.class);
-        Assertions.assertEquals("fxeeebtijvacvbm", model.nextLink());
+        Assertions.assertEquals("cevehjkuyxoafg", model.nextLink());
     }
 }

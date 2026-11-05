@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An MCP tool available to a voice agent.
+ * An MCP tool available to a voice agent. Server endpoints use `server_url`; connector and tunnel identifiers are not
+ * supported.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -92,7 +93,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     private Map<String, ToolConfig> toolConfigs;
 
     /*
-     * The URL for the MCP server.
+     * The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      */
     @Generated
     private String serverUrl;
@@ -339,7 +341,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     }
 
     /**
-     * Get the serverUrl property: The URL for the MCP server.
+     * Get the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @return the serverUrl value.
      */
@@ -349,7 +352,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     }
 
     /**
-     * Set the serverUrl property: The URL for the MCP server.
+     * Set the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @param serverUrl the serverUrl value to set.
      * @return the VoiceAgentMcpTool object itself.
@@ -393,6 +397,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("server_label", this.serverLabel);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("authorization", this.authorization);
         jsonWriter.writeStringField("server_description", this.serverDescription);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
@@ -409,7 +414,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
         jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("response_scheduling",
             this.responseScheduling == null ? null : this.responseScheduling.toString());
         return jsonWriter.writeEndObject();
@@ -429,6 +433,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
             String type = "mcp";
+            String serverUrl = null;
             String authorization = null;
             String serverDescription = null;
             Map<String, String> headers = null;
@@ -438,7 +443,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             Boolean deferLoading = null;
             String projectConnectionId = null;
             Map<String, ToolConfig> toolConfigs = null;
-            String serverUrl = null;
             VoiceAgentToolResponseScheduling responseScheduling = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -447,6 +451,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
                     serverLabel = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("server_url".equals(fieldName)) {
+                    serverUrl = reader.getString();
                 } else if ("authorization".equals(fieldName)) {
                     authorization = reader.getString();
                 } else if ("server_description".equals(fieldName)) {
@@ -468,8 +474,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
                     projectConnectionId = reader.getString();
                 } else if ("tool_configs".equals(fieldName)) {
                     toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                } else if ("server_url".equals(fieldName)) {
-                    serverUrl = reader.getString();
                 } else if ("response_scheduling".equals(fieldName)) {
                     responseScheduling = VoiceAgentToolResponseScheduling.fromString(reader.getString());
                 } else {
@@ -478,6 +482,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             }
             VoiceAgentMcpTool deserializedVoiceAgentMcpTool = new VoiceAgentMcpTool(serverLabel);
             deserializedVoiceAgentMcpTool.type = type;
+            deserializedVoiceAgentMcpTool.serverUrl = serverUrl;
             deserializedVoiceAgentMcpTool.authorization = authorization;
             deserializedVoiceAgentMcpTool.serverDescription = serverDescription;
             deserializedVoiceAgentMcpTool.headers = headers;
@@ -487,7 +492,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             deserializedVoiceAgentMcpTool.deferLoading = deferLoading;
             deserializedVoiceAgentMcpTool.projectConnectionId = projectConnectionId;
             deserializedVoiceAgentMcpTool.toolConfigs = toolConfigs;
-            deserializedVoiceAgentMcpTool.serverUrl = serverUrl;
             deserializedVoiceAgentMcpTool.responseScheduling = responseScheduling;
             return deserializedVoiceAgentMcpTool;
         });

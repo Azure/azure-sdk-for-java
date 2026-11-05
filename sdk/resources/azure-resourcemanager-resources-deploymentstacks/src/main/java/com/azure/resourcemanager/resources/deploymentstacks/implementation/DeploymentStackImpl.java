@@ -126,8 +126,22 @@ public final class DeploymentStackImpl implements DeploymentStack, DeploymentSta
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentStackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deploymentStacks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+            "resourceGroupName");
+        this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+            "deploymentStackName");
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
     }
 
     public DeploymentStack refresh() {

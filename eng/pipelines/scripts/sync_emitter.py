@@ -23,7 +23,6 @@ sdk_root: str
 script_root: str = os.path.dirname(os.path.realpath(__file__))
 
 skip_artifacts: List[str] = [
-    "azure-ai-anomalydetector",  # deprecated
     # expect failure on below
     # emitter generates inconsistent code for id-parameterized subclients (LargePersonGroup,
     # LargeFaceList): wrapper clients call the removed plural getLargePersonGroups()/getLargeFaceLists()

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * Properties of a scheduled action occurrence.
+ * Properties of a recurring bulk action occurrence.
  */
 @Immutable
 public final class OccurrenceProperties implements JsonSerializable<OccurrenceProperties> {

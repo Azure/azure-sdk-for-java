@@ -1,0 +1,59 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.kindChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName"
+          },
+          "justification": "ManagedHsmSkuName changed from a closed enum to an ExpandableStringEnum in API version 2026-05-15 so that new Managed HSM SKUs can be added without a breaking change. Approved by the Azure Breaking Changes Board."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old": {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName"
+          },
+          "justification": "ManagedHsmSkuName changed from a closed enum to an ExpandableStringEnum, so the interfaces implicitly implemented by java.lang.Enum (Comparable, Serializable, Constable) are no longer implemented."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName"
+          },
+          "justification": "ManagedHsmSkuName now extends ExpandableStringEnum, which is supplied by azure-core rather than by this archive."
+        },
+        {
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName::<init>\\(.*\\)"
+          },
+          "justification": "ExpandableStringEnum requires a public no-argument constructor; the former enum constructor was implicitly private."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .*com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName.*"
+          },
+          "justification": "ManagedHsmSkuName changed from a closed enum to an ExpandableStringEnum, so the enum-specific members (values, valueOf, name, ordinal, compareTo, getDeclaringClass, describeConstable) are no longer present. Use ManagedHsmSkuName.fromString(String) and ManagedHsmSkuName.values() instead."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName\\[\\] com\\.azure\\.resourcemanager\\.keyvault\\.models\\.ManagedHsmSkuName::values\\(\\)"
+          },
+          "justification": "ExpandableStringEnum.values() returns a Collection rather than an array."
+        }
+      ]
+    }
+  }
+]

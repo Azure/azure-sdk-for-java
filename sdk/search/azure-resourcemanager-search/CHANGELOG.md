@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0 (2026-11-01)
+## 2.56.0 (2026-11-06)
 
 - Package api-version 2026-11-01.
 
@@ -166,6 +166,14 @@
 #### `models.IdentityType` was modified
 
 * `IdentityType()` was added
+
+## 2.55.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
 
 ## 2.54.11 (2026-10-09)
 

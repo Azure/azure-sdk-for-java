@@ -25,15 +25,23 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.durabletask.fluent.DurableTaskManagementClient;
+import com.azure.resourcemanager.durabletask.implementation.DetectorsImpl;
 import com.azure.resourcemanager.durabletask.implementation.DurableTaskManagementClientBuilder;
+import com.azure.resourcemanager.durabletask.implementation.FailoverInstancesImpl;
 import com.azure.resourcemanager.durabletask.implementation.OperationsImpl;
 import com.azure.resourcemanager.durabletask.implementation.RetentionPoliciesImpl;
 import com.azure.resourcemanager.durabletask.implementation.SchedulersImpl;
 import com.azure.resourcemanager.durabletask.implementation.TaskHubsImpl;
+import com.azure.resourcemanager.durabletask.implementation.TaskQueuesImpl;
+import com.azure.resourcemanager.durabletask.implementation.TransparentDataEncryptionsImpl;
+import com.azure.resourcemanager.durabletask.models.Detectors;
+import com.azure.resourcemanager.durabletask.models.FailoverInstances;
 import com.azure.resourcemanager.durabletask.models.Operations;
 import com.azure.resourcemanager.durabletask.models.RetentionPolicies;
 import com.azure.resourcemanager.durabletask.models.Schedulers;
 import com.azure.resourcemanager.durabletask.models.TaskHubs;
+import com.azure.resourcemanager.durabletask.models.TaskQueues;
+import com.azure.resourcemanager.durabletask.models.TransparentDataEncryptions;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -48,11 +56,19 @@ import java.util.stream.Collectors;
 public final class DurableTaskManager {
     private Operations operations;
 
+    private Detectors detectors;
+
     private Schedulers schedulers;
 
     private TaskHubs taskHubs;
 
+    private TaskQueues taskQueues;
+
     private RetentionPolicies retentionPolicies;
+
+    private TransparentDataEncryptions transparentDataEncryptions;
+
+    private FailoverInstances failoverInstances;
 
     private final DurableTaskManagementClient clientObject;
 
@@ -282,6 +298,18 @@ public final class DurableTaskManager {
     }
 
     /**
+     * Gets the resource collection API of Detectors.
+     * 
+     * @return Resource collection API of Detectors.
+     */
+    public Detectors detectors() {
+        if (this.detectors == null) {
+            this.detectors = new DetectorsImpl(clientObject.getDetectors(), this);
+        }
+        return detectors;
+    }
+
+    /**
      * Gets the resource collection API of Schedulers. It manages Scheduler, PrivateEndpointConnection.
      * 
      * @return Resource collection API of Schedulers.
@@ -306,6 +334,18 @@ public final class DurableTaskManager {
     }
 
     /**
+     * Gets the resource collection API of TaskQueues. It manages TaskQueue.
+     * 
+     * @return Resource collection API of TaskQueues.
+     */
+    public TaskQueues taskQueues() {
+        if (this.taskQueues == null) {
+            this.taskQueues = new TaskQueuesImpl(clientObject.getTaskQueues(), this);
+        }
+        return taskQueues;
+    }
+
+    /**
      * Gets the resource collection API of RetentionPolicies.
      * 
      * @return Resource collection API of RetentionPolicies.
@@ -315,6 +355,31 @@ public final class DurableTaskManager {
             this.retentionPolicies = new RetentionPoliciesImpl(clientObject.getRetentionPolicies(), this);
         }
         return retentionPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of TransparentDataEncryptions.
+     * 
+     * @return Resource collection API of TransparentDataEncryptions.
+     */
+    public TransparentDataEncryptions transparentDataEncryptions() {
+        if (this.transparentDataEncryptions == null) {
+            this.transparentDataEncryptions
+                = new TransparentDataEncryptionsImpl(clientObject.getTransparentDataEncryptions(), this);
+        }
+        return transparentDataEncryptions;
+    }
+
+    /**
+     * Gets the resource collection API of FailoverInstances.
+     * 
+     * @return Resource collection API of FailoverInstances.
+     */
+    public FailoverInstances failoverInstances() {
+        if (this.failoverInstances == null) {
+            this.failoverInstances = new FailoverInstancesImpl(clientObject.getFailoverInstances(), this);
+        }
+        return failoverInstances;
     }
 
     /**

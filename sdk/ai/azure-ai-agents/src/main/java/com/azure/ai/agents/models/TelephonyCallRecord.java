@@ -49,7 +49,7 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
     private String callerNumber;
 
     /*
-     * The Teams Phone Extension or Twilio number that received the call.
+     * The Teams Phone extensibility or Twilio number that received the call.
      */
     @Generated
     private String providerNumber;
@@ -222,7 +222,7 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
     }
 
     /**
-     * Get the providerNumber property: The Teams Phone Extension or Twilio number that received the call.
+     * Get the providerNumber property: The Teams Phone extensibility or Twilio number that received the call.
      *
      * @return the providerNumber value.
      */

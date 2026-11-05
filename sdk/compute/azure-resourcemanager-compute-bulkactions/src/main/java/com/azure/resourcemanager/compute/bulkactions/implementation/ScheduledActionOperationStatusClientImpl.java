@@ -77,14 +77,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation along with {@link Response} on successful
+     * @return the status of the specified recurring bulk action operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -97,14 +97,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation on successful completion of {@link Mono}.
+     * @return the status of the specified recurring bulk action operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> getAsync(String location, String operationId) {
@@ -112,7 +112,7 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
@@ -120,7 +120,7 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation along with {@link Response}.
+     * @return the status of the specified recurring bulk action operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
@@ -130,14 +130,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation.
+     * @return the status of the specified recurring bulk action operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {
