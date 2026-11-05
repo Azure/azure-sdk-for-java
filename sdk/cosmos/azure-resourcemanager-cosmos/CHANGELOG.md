@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0 (2026-11-03)
+## 2.57.0 (2026-11-06)
 
 - Package api-version 2026-07-15.
 
@@ -35,6 +35,14 @@
 
 * `throughputBuckets()` was added
 * `withThroughputBuckets(java.util.List)` was added
+
+## 2.56.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
 
 ## 2.55.3 (2026-10-09)
 
