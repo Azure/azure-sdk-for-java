@@ -46,7 +46,6 @@ public final class RealtimeResponseInputMessageUser extends RealtimeResponseInpu
     /*
      * The content property.
      */
-    @Generated
     private final List<RealtimeResponseInputContent> content;
 
     /**
@@ -54,8 +53,8 @@ public final class RealtimeResponseInputMessageUser extends RealtimeResponseInpu
      *
      * @param content the content value to set.
      */
-    @Generated
     public RealtimeResponseInputMessageUser(List<RealtimeResponseInputContent> content) {
+        // AI Tooling: union type
         this.content = content;
     }
 
@@ -117,17 +116,17 @@ public final class RealtimeResponseInputMessageUser extends RealtimeResponseInpu
      *
      * @return the content value.
      */
-    @Generated
     public List<RealtimeResponseInputContent> getContent() {
+        // AI Tooling: union type
         return this.content;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: union type
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
@@ -146,8 +145,8 @@ public final class RealtimeResponseInputMessageUser extends RealtimeResponseInpu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RealtimeResponseInputMessageUser.
      */
-    @Generated
     public static RealtimeResponseInputMessageUser fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: union type
         return jsonReader.readObject(reader -> {
             List<RealtimeResponseInputContent> content = null;
             RealtimeResponseInputMessageType role = RealtimeResponseInputMessageType.USER;
