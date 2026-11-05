@@ -3,9 +3,9 @@
 ## 12.31.0-beta.1 (2026-11-05)
 
 ### Features Added
-- Added support for service version 2027-03-07.
 - Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
   it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
 
 ### Other Changes
 
