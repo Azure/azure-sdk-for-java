@@ -1158,6 +1158,47 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         assertThrows(NoSuchFileException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
     }
 
+    @Test
+    public void checkAccessRootRead() {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertTrue(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessRootReadDenied() throws IOException {
+        String containerName = generateContainerName();
+        primaryBlobServiceClient.createBlobContainer(containerName);
+        config
+            .put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                new AzureSasCredential(primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+                    testResourceNamer.now().plusDays(2), AccountSasPermission.parse("d"),
+                    new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setContainer(true)))));
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, containerName);
+        config.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        IOException e = assertThrows(IOException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertFalse(e instanceof NoSuchFileException);
+        assertFalse(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessRootReadNoContainer() throws IOException {
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
+        config.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        assertThrows(NoSuchFileException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
     @ParameterizedTest
     @MethodSource("checkAccessAccessDeniedSupplier")
     public void checkAccessAccessDenied(AccessMode[] modes) throws IOException {

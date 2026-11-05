@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -840,9 +841,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * This method may be used to check the existence of a file and, optionally, whether it can be read. Checking
      * existence requires reading the properties of the file, so a successful check implies that
-     * {@link AccessMode#READ} access is granted. It is not possible to determine write or execute permissions granted
-     * to a given client without side effects, so if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is
-     * specified, an {@link AccessDeniedException} will be thrown.
+     * {@link AccessMode#READ} access is granted. For root directories, {@link AccessMode#READ} is verified by listing
+     * the container. It is not possible to determine write or execute permissions granted to a given client without
+     * side effects, so if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is specified, an
+     * {@link AccessDeniedException} will be thrown.
      *
      * @param path the path to the file to check
      * @param accessModes The access modes to check; may have zero elements
@@ -867,9 +869,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         /*
         Some static utility methods in the jdk require checking access on a root. ReadAttributes is not supported on
         roots as they are containers. Furthermore, we always assume that roots exist as they are verified at creation
-        and cannot be deleted by the file system. Thus, we prefer a short circuit for roots.
+        and cannot be deleted by the file system. Thus, we prefer a short circuit for existence-only checks on roots.
+        Only READ can reach this point, and it is verified by listing the container since the container check at
+        creation may have been skipped.
          */
         if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
+            if (accessModes != null && accessModes.length != 0) {
+                checkRootReadAccess((AzurePath) path);
+            }
             return;
         }
 
@@ -884,6 +891,22 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             } else {
                 throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
             }
+        }
+    }
+
+    private static void checkRootReadAccess(AzurePath root) throws IOException {
+        String containerName = root.toString().substring(0, root.toString().length() - 1);
+        AzureFileSystem afs = (AzureFileSystem) root.getFileSystem();
+        try {
+            ((AzureFileStore) afs.getFileStore(containerName)).getContainerClient()
+                .listBlobs(new ListBlobsOptions().setMaxResultsPerPage(1), null)
+                .iterator()
+                .hasNext();
+        } catch (BlobStorageException e) {
+            if (BlobErrorCode.CONTAINER_NOT_FOUND.equals(e.getErrorCode())) {
+                throw new NoSuchFileException(root.toString());
+            }
+            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IOException("Path: " + root, e));
         }
     }
 
