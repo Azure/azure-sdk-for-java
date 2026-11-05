@@ -47,6 +47,26 @@ mvn install -f sdk/appconfiguration/pom.xml -Dgpg.skip -Drevapi.skip -DskipTests
 Remove `-DskipTests` from the build commands above. Remove `-Djacoco.skip` as well if you want coverage reports.
 Spring integration tests have a separate switch, `-DskipSpringITs=false`, and require their own test setup.
 
+### Test-only Java module dependencies
+
+On JDK 9 and later, tests run as part of their library's named module. When tests directly use classes
+from a dependency that the production module does not read, add a narrow `--add-reads` option to the
+package's `javaModulesSurefireArgLine` property. Failsafe inherits this property through
+`javaModulesFailsafeArgLine`.
+
+For example, tests using Netty's `HttpResponseStatus` need to read the explicit `io.netty.codec.http`
+module in Netty 4.2:
+
+```xml
+<javaModulesSurefireArgLine>
+  --add-reads com.azure.ai.documentintelligence=io.netty.codec.http
+</javaModulesSurefireArgLine>
+```
+
+Keep these test-only reads out of production `module-info.java` descriptors. Preserve any existing
+options in the property, and add reads for each module directly used by the tests. These options are
+only applied by the Java 9+ build profile and do not affect Java 8 test runs.
+
 ### Build selected client libraries
 
 Select libraries from the root reactor by their Maven coordinates. For example, build App Configuration

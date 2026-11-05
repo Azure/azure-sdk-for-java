@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ApplicationGatewayGetBasicWafV2.json
+     * x-ms-original-file: 2026-03-01/ApplicationGatewayGetBasicWafV2.json
      */
     /**
      * Sample code: Get Basic_WAF_v2 Application Gateway.
@@ -23,7 +23,7 @@ public final class ApplicationGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ApplicationGatewayGetBasicV2.json
+     * x-ms-original-file: 2026-03-01/ApplicationGatewayGetBasicV2.json
      */
     /**
      * Sample code: Get Basic_v2 Application Gateway.
@@ -37,7 +37,7 @@ public final class ApplicationGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ApplicationGatewayGet.json
+     * x-ms-original-file: 2026-03-01/ApplicationGatewayGet.json
      */
     /**
      * Sample code: Get ApplicationGateway.

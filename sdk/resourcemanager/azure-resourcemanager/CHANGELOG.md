@@ -1,5 +1,57 @@
 # Release History
 
+## 2.67.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.66.0 (2026-11-04)
+
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.
+
+### azure-resourcemanager-storage
+
+#### Dependency Updates
+
+- Package api-version 2026-09-01.
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2026-03-03, ComputeSku: 2021-07-01.
+
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Package api-version 2026-05-15.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Package api-version 2026-08-01.
+
+### azure-resourcemanager-cdn
+
+#### Dependency Updates
+
+- Package api-version 2026-10-01.
+
+### Other Changes
+
+- Updated dependencies from resources.
+
 ## 2.65.0 (2026-10-09)
 
 ### azure-resourcemanager-resources

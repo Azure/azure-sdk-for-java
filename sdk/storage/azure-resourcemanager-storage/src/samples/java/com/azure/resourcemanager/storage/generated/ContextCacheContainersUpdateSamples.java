@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.ContextCacheContainerUpdate;
  */
 public final class ContextCacheContainersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Update.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Update.json
      */
     /**
      * Sample code: Update a Context Cache Container.

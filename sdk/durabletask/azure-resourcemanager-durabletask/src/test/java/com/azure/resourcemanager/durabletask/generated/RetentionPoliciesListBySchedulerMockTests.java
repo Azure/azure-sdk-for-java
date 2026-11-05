@@ -23,7 +23,7 @@ public final class RetentionPoliciesListBySchedulerMockTests {
     @Test
     public void testListByScheduler() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1057230399,\"orchestrationState\":\"Canceled\"}]},\"id\":\"vwiwubmwmbesld\",\"name\":\"k\",\"type\":\"wtppjflcxogaoko\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1232794646,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":359778244,\"orchestrationState\":\"Failed\"},{\"retentionPeriodInDays\":2103360732,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":810708616,\"orchestrationState\":\"Failed\"}]},\"id\":\"j\",\"name\":\"xccybvpa\",\"type\":\"akkud\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class RetentionPoliciesListBySchedulerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RetentionPolicy> response
-            = manager.retentionPolicies().listByScheduler("tmweriofzpyq", "emwabnet", com.azure.core.util.Context.NONE);
+            = manager.retentionPolicies().listByScheduler("t", "gkxnyedabg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1057230399,
+        Assertions.assertEquals(1232794646,
             response.iterator().next().properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED,
             response.iterator().next().properties().retentionPolicies().get(0).orchestrationState());
     }
 }

@@ -22,6 +22,7 @@ public final class ShareFileProperties {
     private final String fileType;
     private final Long contentLength;
     private final String contentType;
+    private final String contentLanguage;
     private final byte[] contentMd5;
     private final String contentEncoding;
     private final String cacheControl;
@@ -38,6 +39,7 @@ public final class ShareFileProperties {
     private final Boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
     private final FilePosixProperties posixProperties;
+    private final String fileName;
 
     /**
      * Creates an instance of property information about a specific File.
@@ -138,6 +140,7 @@ public final class ShareFileProperties {
         this.fileType = fileType;
         this.contentLength = contentLength;
         this.contentType = contentType;
+        this.contentLanguage = null;
         this.contentMd5 = CoreUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.cacheControl = cacheControl;
@@ -154,21 +157,23 @@ public final class ShareFileProperties {
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = null;
+        this.fileName = null;
     }
 
     //Internal constructor to support FilePosixProperties class.
     private ShareFileProperties(String eTag, OffsetDateTime lastModified, Map<String, String> metadata, String fileType,
-        Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
-        String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
+        Long contentLength, String contentType, String contentLanguage, byte[] contentMd5, String contentEncoding,
+        String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
         LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime, String copyStatusDescription,
         String copyId, String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
-        FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        FileSmbProperties smbProperties, FilePosixProperties posixProperties, String fileName) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
         this.fileType = fileType;
         this.contentLength = contentLength;
         this.contentType = contentType;
+        this.contentLanguage = contentLanguage;
         this.contentMd5 = CoreUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.cacheControl = cacheControl;
@@ -185,6 +190,7 @@ public final class ShareFileProperties {
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = posixProperties;
+        this.fileName = fileName;
     }
 
     static {
@@ -243,6 +249,15 @@ public final class ShareFileProperties {
      */
     public String getContentType() {
         return contentType;
+    }
+
+    /**
+     * Gets the content language specified for the file.
+     *
+     * @return The content language.
+     */
+    public String getContentLanguage() {
+        return contentLanguage;
     }
 
     /**
@@ -397,5 +412,14 @@ public final class ShareFileProperties {
      */
     public FilePosixProperties getPosixProperties() {
         return posixProperties;
+    }
+
+    /**
+     * Gets the name of the file returned by a request addressed by file ID.
+     *
+     * @return The file name, or {@code null} when the service did not return it.
+     */
+    public String getFileName() {
+        return fileName;
     }
 }

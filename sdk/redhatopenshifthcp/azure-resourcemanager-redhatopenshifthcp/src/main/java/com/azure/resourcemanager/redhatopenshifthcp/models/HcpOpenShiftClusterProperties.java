@@ -84,7 +84,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
      * Valid values are in minutes and from 0 to 10080 minutes (1 week).
      * 0 means that the MachinePool can be drained without any time limitation.
      * 
-     * This is the value is used a default for all NodePools. It can be overridden
+     * This value is used as a default for all NodePools. It can be overridden
      * by specifying nodeDrainTimeoutMinutes for a given NodePool
      */
     private Integer nodeDrainTimeoutMinutes;
@@ -97,7 +97,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
     /*
      * Status of the cluster resource
      */
-    private ResourceStatus status;
+    private ClusterResourceStatus status;
 
     /*
      * Cryptographic restrictions for kernel and userspace libraries
@@ -324,7 +324,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
      * Valid values are in minutes and from 0 to 10080 minutes (1 week).
      * 0 means that the MachinePool can be drained without any time limitation.
      * 
-     * This is the value is used a default for all NodePools. It can be overridden
+     * This value is used as a default for all NodePools. It can be overridden
      * by specifying nodeDrainTimeoutMinutes for a given NodePool.
      * 
      * @return the nodeDrainTimeoutMinutes value.
@@ -343,7 +343,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
      * Valid values are in minutes and from 0 to 10080 minutes (1 week).
      * 0 means that the MachinePool can be drained without any time limitation.
      * 
-     * This is the value is used a default for all NodePools. It can be overridden
+     * This value is used as a default for all NodePools. It can be overridden
      * by specifying nodeDrainTimeoutMinutes for a given NodePool.
      * 
      * @param nodeDrainTimeoutMinutes the nodeDrainTimeoutMinutes value to set.
@@ -379,7 +379,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
      * 
      * @return the status value.
      */
-    public ResourceStatus status() {
+    public ClusterResourceStatus status() {
         return this.status;
     }
 
@@ -475,7 +475,7 @@ public final class HcpOpenShiftClusterProperties implements JsonSerializable<Hcp
                     deserializedHcpOpenShiftClusterProperties.clusterImageRegistry
                         = ClusterImageRegistryProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    deserializedHcpOpenShiftClusterProperties.status = ResourceStatus.fromJson(reader);
+                    deserializedHcpOpenShiftClusterProperties.status = ClusterResourceStatus.fromJson(reader);
                 } else if ("cryptoRestrictions".equals(fieldName)) {
                     deserializedHcpOpenShiftClusterProperties.cryptoRestrictions
                         = CryptoRestrictions.fromString(reader.getString());

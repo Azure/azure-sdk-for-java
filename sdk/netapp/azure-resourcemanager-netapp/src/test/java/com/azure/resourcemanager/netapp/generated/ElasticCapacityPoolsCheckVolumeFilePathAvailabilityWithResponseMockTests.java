@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class ElasticCapacityPoolsCheckVolumeFilePathAvailabilityWithResponseMockTests {
     @Test
     public void testCheckVolumeFilePathAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":\"True\",\"reason\":\"Invalid\",\"message\":\"flecominxojjl\"}";
+        String responseStr = "{\"isAvailable\":\"True\",\"reason\":\"AlreadyExists\",\"message\":\"dt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ElasticCapacityPoolsCheckVolumeFilePathAvailabilityWithRespon
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckElasticResourceAvailabilityResponse response = manager.elasticCapacityPools()
-            .checkVolumeFilePathAvailabilityWithResponse("bdl", "zgdyrcvuqbs", "zlrqhbjnqogdx",
-                new CheckElasticVolumeFilePathAvailabilityRequest().withFilePath("bsfp"),
+            .checkVolumeFilePathAvailabilityWithResponse("lpgidn", "cehaqi", "oyzlt",
+                new CheckElasticVolumeFilePathAvailabilityRequest().withFilePath("iomqoqpepiaea"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(CheckElasticResourceAvailabilityStatus.TRUE, response.isAvailable());
-        Assertions.assertEquals(CheckElasticResourceAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("flecominxojjl", response.message());
+        Assertions.assertEquals(CheckElasticResourceAvailabilityReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("dt", response.message());
     }
 }

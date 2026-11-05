@@ -24,7 +24,7 @@ public final class ProtectionGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"plan\":\"gseinq\",\"resources\":{\"manual\":[\"fxqknpirgneptt\",\"qmsniffcdmqnro\",\"lpijnkrxfrd\",\"hcrat\"],\"matchRules\":{\"rules\":[{\"property\":\"name\",\"operator\":\"equals\",\"value\":\"nasx\"},{\"property\":\"resourceGroup\",\"operator\":\"doesNotContains\",\"value\":\"ozqyzh\"},{\"property\":\"tagValue\",\"operator\":\"equals\",\"value\":\"esgogc\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"all\",\"numberOfProtectedItems\":557997155,\"lastBackUpTime\":944538746812596310,\"backupActivityStatus\":\"nyhmossxkkgthr\",\"provisioningState\":\"Succeeded\"},\"id\":\"jbdhqxvc\",\"name\":\"gf\",\"type\":\"pdso\"}";
+            = "{\"properties\":{\"plan\":\"rbgyefry\",\"resources\":{\"manual\":[\"aojfm\",\"nc\"],\"matchRules\":{\"rules\":[{\"property\":\"region\",\"operator\":\"equals\",\"value\":\"hirctymoxoftpipi\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"zuhx\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"qjlihhyuspska\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"discovered\",\"numberOfProtectedItems\":2119274239,\"lastBackUpTime\":8981770461637201272,\"backupActivityStatus\":\"dgzxulucvpamrsr\",\"provisioningState\":\"Failed\"},\"id\":\"xurisjnhnyt\",\"name\":\"ifqjz\",\"type\":\"xmrhu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,17 @@ public final class ProtectionGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionGroup response = manager.protectionGroups()
-            .getWithResponse("umwctondz", "luudfdlwggytsb", "tov", com.azure.core.util.Context.NONE)
+            .getWithResponse("rujbzbomvzzbtdc", "vp", "iyujviylwdshfs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gseinq", response.properties().plan());
-        Assertions.assertEquals("fxqknpirgneptt", response.properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.NAME,
+        Assertions.assertEquals("rbgyefry", response.properties().plan());
+        Assertions.assertEquals("aojfm", response.properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.REGION,
             response.properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.EQUALS,
             response.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("nasx", response.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("hirctymoxoftpipi",
+            response.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, response.properties().resources().matchRules().matchType());
     }
 }

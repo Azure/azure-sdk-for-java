@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class PublicMaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
+     * x-ms-original-file: 2025-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
      */
     /**
      * Sample code: PublicMaintenanceConfigurations_GetForResource.

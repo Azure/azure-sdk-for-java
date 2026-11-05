@@ -28,7 +28,7 @@ public final class ProjectsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"dvucfvvra\",\"description\":\"eurdeewlsuxp\",\"endpoints\":{\"fmfta\":\"kdwjyjiznioro\",\"trnighm\":\"pmcreihu\",\"gwfmsxjwdylwxm\":\"nuwqxungro\",\"ugeerclbltbhpwac\":\"zjow\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"jwmvwryvdi\",\"vectorStore\":\"ii\",\"blobStore\":\"pruccwme\"}},\"tags\":{\"jywiwhvyc\":\"xsytrtexegwmr\",\"uriarsbcl\":\"jncindiloqkajw\",\"knjxizbaxdy\":\"anhz\",\"xfexwacy\":\"zkz\"},\"location\":\"mlxppdndzkfevuii\",\"etag\":\"ibfkcjytq\",\"identity\":{\"type\":\"None\",\"tenantId\":\"qqfopvno\",\"principalId\":\"otdsfhoxq\",\"userAssignedIdentities\":{\"gbqkvhyejthgeecb\":{\"principalId\":\"zyfbkmvldzmxojz\",\"clientId\":\"ma\"},\"npu\":{\"principalId\":\"rgwlc\",\"clientId\":\"hbamyqsok\"}}},\"id\":\"jwdizcrjixiujz\",\"name\":\"c\",\"type\":\"exgkrsw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ebzqz\",\"description\":\"sviujojzd\",\"endpoints\":{\"etqhdbitqsby\":\"naosxsxoxvimd\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"mrihu\",\"vectorStore\":\"rmsdbvqxgfyg\",\"blobStore\":\"gxbdpbcehwbdpse\"}},\"tags\":{\"orrvk\":\"ynpyt\",\"npjnezjighdumltp\":\"tfctanetinqxd\",\"xvfhuqhn\":\"rzwvwetqff\",\"clmr\":\"qqxjbsot\"},\"location\":\"u\",\"etag\":\"deatwxpx\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"xbboceksramqch\",\"principalId\":\"gfnlvvkswurxd\",\"userAssignedIdentities\":{\"ivlqcwyzhndqkzst\":{\"principalId\":\"auimnntf\",\"clientId\":\"pwqcnbn\"},\"cimtcaumviud\":{\"principalId\":\"zecdlceirta\",\"clientId\":\"u\"},\"mpjbh\":{\"principalId\":\"sjqrmlujmtun\",\"clientId\":\"fwuzebfq\"},\"xocjcd\":{\"principalId\":\"enfspetxeu\",\"clientId\":\"khdlckd\"}}},\"id\":\"zpf\",\"name\":\"eortwwyjmgvr\",\"type\":\"hfxmrhjnnhbcj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,29 +39,31 @@ public final class ProjectsCreateMockTests {
 
         Project response
             = manager.projects()
-                .define("qukr")
-                .withExistingAccount("ruptsyqcjnq", "wxdowum")
-                .withRegion("ufytdxmly")
-                .withTags(mapOf("cmyhrhjvszfqb", "zvbwfcnjhbpoelh", "pqwojoev", "kndwp"))
-                .withProperties(new ProjectProperties().withDisplayName("clqddnhfknebw")
-                    .withDescription("dpnyzcwyjsmkaql")
-                    .withCapabilitySettings(new CapabilitySettings().withDocumentStore("pa")
-                        .withVectorStore("edbfo")
-                        .withBlobStore("czvothmkh")))
+                .define("lwruklfq")
+                .withExistingAccount("khhk", "mrvkxeojtdyulglh")
+                .withRegion("nyjtuqgzyvextchs")
+                .withTags(mapOf("uayiqyl", "orjvudyhgtrtt", "q", "kmmxzifbqgqexo", "fy", "rtgqrqkk", "inpgobothxiew",
+                    "kuobpw"))
+                .withProperties(new ProjectProperties().withDisplayName("gogypbztgaex")
+                    .withDescription("skvctvu")
+                    .withCapabilitySettings(new CapabilitySettings().withDocumentStore("zjggkwd")
+                        .withVectorStore("emzia")
+                        .withBlobStore("iqii")))
                 .withIdentity(
-                    new Identity().withType(ResourceIdentityType.NONE)
-                        .withUserAssignedIdentities(mapOf("tevrntfknwac", new UserAssignedIdentity(), "qwcublehhk",
+                    new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("cfgdwzauz", new UserAssignedIdentity(), "lykqadfge",
+                            new UserAssignedIdentity(), "iljqovqmx", new UserAssignedIdentity(), "kgltsxooiobhieb",
                             new UserAssignedIdentity())))
                 .create();
 
-        Assertions.assertEquals("dvucfvvra", response.properties().displayName());
-        Assertions.assertEquals("eurdeewlsuxp", response.properties().description());
-        Assertions.assertEquals("jwmvwryvdi", response.properties().capabilitySettings().documentStore());
-        Assertions.assertEquals("ii", response.properties().capabilitySettings().vectorStore());
-        Assertions.assertEquals("pruccwme", response.properties().capabilitySettings().blobStore());
-        Assertions.assertEquals("xsytrtexegwmr", response.tags().get("jywiwhvyc"));
-        Assertions.assertEquals("mlxppdndzkfevuii", response.location());
-        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("ebzqz", response.properties().displayName());
+        Assertions.assertEquals("sviujojzd", response.properties().description());
+        Assertions.assertEquals("mrihu", response.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("rmsdbvqxgfyg", response.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("gxbdpbcehwbdpse", response.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals("ynpyt", response.tags().get("orrvk"));
+        Assertions.assertEquals("u", response.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

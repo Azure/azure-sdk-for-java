@@ -17,12 +17,16 @@ import java.io.IOException;
 @Fluent
 public final class EdgeActionVersionUpdateProperties implements JsonSerializable<EdgeActionVersionUpdateProperties> {
     /*
-     * The deployment type
+     * The deployment type for the Edge Action version. Set this value when creating the version. When updating an
+     * existing version, any supplied value must match the existing value.
      */
     private EdgeActionVersionDeploymentType deploymentType;
 
     /*
-     * The active state
+     * Indicates whether this is the default version. When creating a version, if the Edge Action has no default
+     * version, the service makes the new version the default even when false is supplied. If another default version
+     * exists, supplying true is rejected. When updating an existing version, any supplied value must match the existing
+     * value. Use swapDefault to change the default version.
      */
     private EdgeActionIsDefaultVersion isDefaultVersion;
 
@@ -33,7 +37,8 @@ public final class EdgeActionVersionUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Get the deploymentType property: The deployment type.
+     * Get the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
+     * the version. When updating an existing version, any supplied value must match the existing value.
      * 
      * @return the deploymentType value.
      */
@@ -42,7 +47,8 @@ public final class EdgeActionVersionUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Set the deploymentType property: The deployment type.
+     * Set the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
+     * the version. When updating an existing version, any supplied value must match the existing value.
      * 
      * @param deploymentType the deploymentType value to set.
      * @return the EdgeActionVersionUpdateProperties object itself.
@@ -53,7 +59,10 @@ public final class EdgeActionVersionUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Get the isDefaultVersion property: The active state.
+     * Get the isDefaultVersion property: Indicates whether this is the default version. When creating a version, if the
+     * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
+     * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
+     * must match the existing value. Use swapDefault to change the default version.
      * 
      * @return the isDefaultVersion value.
      */
@@ -62,7 +71,10 @@ public final class EdgeActionVersionUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Set the isDefaultVersion property: The active state.
+     * Set the isDefaultVersion property: Indicates whether this is the default version. When creating a version, if the
+     * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
+     * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
+     * must match the existing value. Use swapDefault to change the default version.
      * 
      * @param isDefaultVersion the isDefaultVersion value to set.
      * @return the EdgeActionVersionUpdateProperties object itself.

@@ -187,7 +187,7 @@ public final class IotDpsManagementClientImpl implements IotDpsManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-31";
+        this.apiVersion = "2026-11-01";
         this.operations = new OperationsClientImpl(this);
         this.dpsCertificates = new DpsCertificatesClientImpl(this);
         this.iotDpsResources = new IotDpsResourcesClientImpl(this);

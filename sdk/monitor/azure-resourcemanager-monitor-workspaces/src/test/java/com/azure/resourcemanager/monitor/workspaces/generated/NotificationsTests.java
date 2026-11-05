@@ -14,21 +14,20 @@ public final class NotificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Notifications model = BinaryData.fromString(
-            "{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"ojvknmefqsgzvaha\",\"jyzhpvgq\",\"cjrvxdjzlmwlxkv\"],\"excludeDefaultActionGroups\":true}")
+            "{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"txfvgx\",\"fsm\",\"nehmpvecx\",\"odebfqkkrbmpu\"],\"excludeDefaultActionGroups\":true}")
             .toObject(Notifications.class);
-        Assertions.assertEquals("ojvknmefqsgzvaha", model.actionGroupIds().get(0));
+        Assertions.assertEquals("txfvgx", model.actionGroupIds().get(0));
         Assertions.assertTrue(model.excludeDefaultActionGroups());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Notifications model = new Notifications()
-            .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType(),
-                new IssueNotificationType(), new IssueNotificationType()))
-            .withActionGroupIds(Arrays.asList("ojvknmefqsgzvaha", "jyzhpvgq", "cjrvxdjzlmwlxkv"))
+            .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType()))
+            .withActionGroupIds(Arrays.asList("txfvgx", "fsm", "nehmpvecx", "odebfqkkrbmpu"))
             .withExcludeDefaultActionGroups(true);
         model = BinaryData.fromObject(model).toObject(Notifications.class);
-        Assertions.assertEquals("ojvknmefqsgzvaha", model.actionGroupIds().get(0));
+        Assertions.assertEquals("txfvgx", model.actionGroupIds().get(0));
         Assertions.assertTrue(model.excludeDefaultActionGroups());
     }
 }

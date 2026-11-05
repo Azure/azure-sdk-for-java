@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Summary of results for a scheduled action occurrence.
+ * Summary of results for a recurring bulk action occurrence.
  */
 @Immutable
 public final class OccurrenceResultSummary implements JsonSerializable<OccurrenceResultSummary> {

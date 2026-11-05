@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,8 +37,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.storage.fluent.ContextCachesClient;
+import com.azure.resourcemanager.storage.fluent.models.ContextCacheCheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.storage.fluent.models.ContextCacheInner;
 import com.azure.resourcemanager.storage.implementation.models.ContextCacheListResult;
+import com.azure.resourcemanager.storage.models.ContextCacheCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.storage.models.ContextCacheUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -131,6 +134,15 @@ public final class ContextCachesClientImpl implements InnerSupportsGet<ContextCa
         Mono<Response<ContextCacheListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/contextCacheCheckNameAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ContextCacheCheckNameAvailabilityResultInner>> checkNameAvailability(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ContextCacheCheckNameAvailabilityParameters body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1177,6 +1189,120 @@ public final class ContextCachesClientImpl implements InnerSupportsGet<ContextCa
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContextCacheInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ContextCacheCheckNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(ContextCacheCheckNameAvailabilityParameters body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ContextCacheCheckNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(ContextCacheCheckNameAvailabilityParameters body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, context);
+    }
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContextCacheCheckNameAvailabilityResultInner>
+        checkNameAvailabilityAsync(ContextCacheCheckNameAvailabilityParameters body) {
+        return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ContextCacheCheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(ContextCacheCheckNameAvailabilityParameters body, Context context) {
+        return checkNameAvailabilityWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContextCacheCheckNameAvailabilityResultInner
+        checkNameAvailability(ContextCacheCheckNameAvailabilityParameters body) {
+        return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
     }
 
     /**

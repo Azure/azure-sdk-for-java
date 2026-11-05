@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectionMonitorsStopSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkWatcherConnectionMonitorStop.json
+     * x-ms-original-file: 2026-03-01/NetworkWatcherConnectionMonitorStop.json
      */
     /**
      * Sample code: Stop connection monitor.

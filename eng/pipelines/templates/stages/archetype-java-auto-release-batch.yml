@@ -158,6 +158,12 @@ stages:
                 PackagePropertiesFolder: $(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo
                 ForRelease: true
 
+          - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+            parameters:
+              TokenOwners:
+                - Azure
+              Condition: and(succeededOrFailed(), ne(variables['Skip.Verify-RestApiSpecLocation'], 'true'))
+
           - pwsh: |
               $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
               foreach ($artifact in $artifacts) {
@@ -169,7 +175,7 @@ stages:
               }
             displayName: Verify REST API spec locations
             env:
-              GH_TOKEN: $(azuresdk-github-pat)
+              GH_TOKEN: $(GH_TOKEN)
             condition: and(succeededOrFailed(), ne(variables['Skip.Verify-RestApiSpecLocation'], 'true'))
 
           - task: PowerShell@2

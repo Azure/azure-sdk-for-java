@@ -17,7 +17,26 @@ import java.util.Map;
  */
 public final class WorkbenchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/PutWorkbenchPending.json
+     */
+    /**
+     * Sample code: PutWorkbenchPending.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        putWorkbenchPending(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.workbenches()
+            .define("myWorkbench")
+            .withExistingProject("rgcognitiveservices", "myAccount", "myProject")
+            .withProperties(new WorkbenchProperties().withTargetClusterId(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+                .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutWorkbench.json
      */
     /**
      * Sample code: PutWorkbench.
@@ -29,12 +48,13 @@ public final class WorkbenchesCreateOrUpdateSamples {
             .define("myWorkbench")
             .withExistingProject("rgcognitiveservices", "myAccount", "myProject")
             .withProperties(new WorkbenchProperties().withTargetClusterId(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc")
                 .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest")
+                .withInstanceType("Singularity.ND12_H100_v5-n1")
+                .withGpuCount(1)
                 .withIdleTimeBeforeShutdown("PT30M")
                 .withDatasetId("dataset-12345")
                 .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-            .withRegion("eastus")
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",

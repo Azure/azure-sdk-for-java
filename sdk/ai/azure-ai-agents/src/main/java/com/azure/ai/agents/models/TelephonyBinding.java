@@ -171,8 +171,8 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("teams_phone_extension".equals(discriminatorValue)) {
-                    return TeamsPhoneExtensionTelephonyBinding.fromJson(readerToUse.reset());
+                if ("teams_phone_extensibility".equals(discriminatorValue)) {
+                    return TeamsPhoneExtensibilityTelephonyBinding.fromJson(readerToUse.reset());
                 } else if ("twilio".equals(discriminatorValue)) {
                     return TwilioTelephonyBinding.fromJson(readerToUse.reset());
                 } else {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ArcDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListArcDeployments.json
+     * x-ms-original-file: 2026-09-15-preview/ListArcDeployments.json
      */
     /**
      * Sample code: ListArcDeployments.

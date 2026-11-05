@@ -108,10 +108,38 @@ public interface Migrations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void cancel(String resourceGroupName, String clusterName);
+    void undo(String resourceGroupName, String clusterName);
 
     /**
      * Cancel or rollback the migration operation in a Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void undo(String resourceGroupName, String clusterName, MigrationUndoRequest body, Context context);
+
+    /**
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void unlinkMigratedEndpoint(String resourceGroupName, String clusterName);
+
+    /**
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
@@ -121,7 +149,7 @@ public interface Migrations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void cancel(String resourceGroupName, String clusterName, Context context);
+    void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Validates if a source Azure Cache for Redis resource can be migrated to a target Azure Managed Redis resource.

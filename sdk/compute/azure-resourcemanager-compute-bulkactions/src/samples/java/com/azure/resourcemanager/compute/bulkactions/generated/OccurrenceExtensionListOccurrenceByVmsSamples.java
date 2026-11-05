@@ -12,11 +12,11 @@ public final class OccurrenceExtensionListOccurrenceByVmsSamples {
      * x-ms-original-file: 2026-10-06-preview/OccurrenceExtension_ListOccurrenceByVms_BasicSuccess.json
      */
     /**
-     * Sample code: List recurring scheduled action occurrences for a virtual machine.
+     * Sample code: List recurring bulk action occurrences for a virtual machine.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listRecurringScheduledActionOccurrencesForAVirtualMachine(
+    public static void listRecurringBulkActionOccurrencesForAVirtualMachine(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrenceExtensions()
             .listOccurrenceByVms(

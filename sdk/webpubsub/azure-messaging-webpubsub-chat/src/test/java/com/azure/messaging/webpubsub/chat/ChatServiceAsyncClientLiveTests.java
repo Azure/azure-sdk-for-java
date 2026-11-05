@@ -50,7 +50,7 @@ public class ChatServiceAsyncClientLiveTests extends ChatServiceClientTestBase {
             List<ChatRole> roles = asyncClient.listRoles().collectList().block();
             assertTrue(roles.stream().anyMatch(role -> firstRoleName.equals(role.getName())));
 
-            List<PagedResponse<ChatRole>> pages = asyncClient.listRoles().byPage(1).take(2).collectList().block();
+            List<PagedResponse<ChatRole>> pages = asyncClient.listRoles().byPage().take(2).collectList().block();
             assertFalse(pages.isEmpty());
             PagedResponse<ChatRole> firstPage = pages.get(0);
             assertFalse(firstPage.getValue().isEmpty());

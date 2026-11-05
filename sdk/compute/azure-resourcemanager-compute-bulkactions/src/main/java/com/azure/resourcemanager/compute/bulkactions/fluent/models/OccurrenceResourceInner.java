@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Scheduling and status details for a resource included in a scheduled action occurrence.
+ * Scheduling and status details for a resource included in a recurring bulk action occurrence.
  */
 @Immutable
 public final class OccurrenceResourceInner implements JsonSerializable<OccurrenceResourceInner> {

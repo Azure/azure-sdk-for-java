@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkCreateCustomResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkCreateCustomResource model = BinaryData
-            .fromString("{\"virtualMachineInfo\":{\"name\":\"na\",\"vmSize\":\"mhjrunmpxttdbhr\",\"zone\":\"l\"}}")
+        BulkCreateCustomResource model = BinaryData.fromString(
+            "{\"virtualMachineInfo\":{\"name\":\"debfqkkrbmpukgri\",\"vmSize\":\"lzlfbxzpuz\",\"zone\":\"ispnqzahmgkbrp\"}}")
             .toObject(BulkCreateCustomResource.class);
-        Assertions.assertEquals("na", model.virtualMachineInfo().name());
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.virtualMachineInfo().vmSize());
-        Assertions.assertEquals("l", model.virtualMachineInfo().zone());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.virtualMachineInfo().name());
+        Assertions.assertEquals("lzlfbxzpuz", model.virtualMachineInfo().vmSize());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.virtualMachineInfo().zone());
     }
 }

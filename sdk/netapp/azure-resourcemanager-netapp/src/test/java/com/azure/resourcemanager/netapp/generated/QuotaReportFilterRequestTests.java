@@ -13,21 +13,21 @@ public final class QuotaReportFilterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaReportFilterRequest model = BinaryData.fromString(
-            "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"cjefuzmu\",\"usageThresholdPercentage\":1018285327}")
+            "{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"dsjnka\",\"usageThresholdPercentage\":215049895}")
             .toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("cjefuzmu", model.quotaTarget());
-        Assertions.assertEquals(1018285327, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("dsjnka", model.quotaTarget());
+        Assertions.assertEquals(215049895, model.usageThresholdPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("cjefuzmu")
-            .withUsageThresholdPercentage(1018285327);
+        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("dsjnka")
+            .withUsageThresholdPercentage(215049895);
         model = BinaryData.fromObject(model).toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("cjefuzmu", model.quotaTarget());
-        Assertions.assertEquals(1018285327, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("dsjnka", model.quotaTarget());
+        Assertions.assertEquals(215049895, model.usageThresholdPercentage());
     }
 }

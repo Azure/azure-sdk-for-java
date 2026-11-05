@@ -154,10 +154,16 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolverPolicies");
-        this.dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
+        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
+        this.dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
     }
 
     public DnsResolverPolicyVirtualNetworkLink refresh() {

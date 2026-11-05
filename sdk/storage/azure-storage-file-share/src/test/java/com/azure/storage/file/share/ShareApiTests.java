@@ -537,6 +537,16 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(1, getPropertiesResponse.getValue().getQuota());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getPropertiesIncludesCreationTime() {
+        primaryShareClient.create();
+
+        ShareProperties properties = primaryShareClient.getProperties();
+        assertNotNull(properties.getCreationTime());
+        assertNotNull(properties.getETag());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getPropertiesOAuth() {
@@ -1522,6 +1532,48 @@ public class ShareApiTests extends FileShareTestBase {
 
         //cleanup
         premiumFileServiceClient.getShareClient(shareName).delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createShareChangeFeedSupplier")
+    public void createShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareClient client = premiumFileServiceClient.getShareClient(shareName);
+        ShareCreateOptions options
+            = new ShareCreateOptions().setChangeFeedEnabled(enabled).setChangeFeedRetentionInDays(retentionInDays);
+
+        Response<ShareInfo> response = client.createWithResponse(options, null, null);
+        try {
+            assertEquals(201, response.getStatusCode());
+            FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+            FileShareTestHelper.assertShareChangeFeedProperties(client.getPropertiesWithResponse(null, null), enabled,
+                retentionInDays);
+        } finally {
+            client.delete();
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#setPropertiesShareChangeFeedSupplier")
+    public void setPropertiesShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareClient client = premiumFileServiceClient.getShareClient(shareName);
+        client.createWithResponse(new ShareCreateOptions().setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7),
+            null, null);
+        try {
+            ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setChangeFeedEnabled(enabled)
+                .setChangeFeedRetentionInDays(retentionInDays);
+            Response<ShareInfo> response = client.setPropertiesWithResponse(options, null, null);
+            assertEquals(200, response.getStatusCode());
+            FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+            FileShareTestHelper.assertShareChangeFeedProperties(client.getPropertiesWithResponse(null, null),
+                enabled == null ? true : enabled,
+                Boolean.FALSE.equals(enabled)
+                    ? retentionInDays
+                    : retentionInDays == null ? Integer.valueOf(7) : retentionInDays);
+        } finally {
+            client.delete();
+        }
     }
 
     @PlaybackOnly

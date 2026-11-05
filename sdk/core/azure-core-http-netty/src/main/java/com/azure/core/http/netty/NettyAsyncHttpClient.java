@@ -52,6 +52,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
 /**
@@ -95,6 +96,12 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
     private static final byte[] EMPTY_BYTES = new byte[0];
 
+    // Context key under which a caller may place an AtomicBoolean that this client sets to true when an interim
+    // "100 Continue" response is observed for the request. This is an opt-in contract usable by any caller that wants
+    // to learn whether the service engaged in the "Expect: 100-continue" handshake: the caller places a holder under
+    // this key before sending and reads it afterward. Callers must use this same key string.
+    private static final String EXPECT_CONTINUE_RECEIVED_KEY = "azure-http-client-expect-continue-received";
+
     final boolean disableBufferCopy;
     final boolean addProxyHandler;
     final reactor.netty.http.client.HttpClient nettyClient;
@@ -136,14 +143,18 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        AtomicBoolean expectContinueReceived = context.getData(EXPECT_CONTINUE_RECEIVED_KEY)
+            .filter(AtomicBoolean.class::isInstance)
+            .map(AtomicBoolean.class::cast)
+            .orElse(null);
 
         return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted, responseTimeout,
-            progressReporter, false);
+            progressReporter, expectContinueReceived, false);
     }
 
     private Mono<HttpResponse> attemptAsync(HttpRequest request, boolean eagerlyReadResponse,
         boolean ignoreResponseBody, boolean headersEagerlyConverted, Long responseTimeout,
-        ProgressReporter progressReporter, boolean proxyRetry) {
+        ProgressReporter progressReporter, AtomicBoolean expectContinueReceived, boolean proxyRetry) {
         Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest
             = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
                 .uri(request.getUrl().toString())
@@ -151,9 +162,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse,
                     ignoreResponseBody, headersEagerlyConverted));
 
-        if (responseTimeout != null || progressReporter != null) {
+        // Attach the per-request context only when something needs it: a response-timeout override, a progress
+        // reporter, or a holder to record whether an interim "100 Continue" response was observed.
+        if (responseTimeout != null || progressReporter != null || expectContinueReceived != null) {
             nettyRequest = nettyRequest.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
-                new AzureNettyHttpClientContext(responseTimeout, progressReporter)));
+                new AzureNettyHttpClientContext(responseTimeout, progressReporter, expectContinueReceived)));
         }
 
         return nettyRequest.single().flatMap(responseAndHeaders -> {
@@ -166,7 +179,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 } else {
                     // Retry the request.
                     return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                        responseTimeout, progressReporter, true);
+                        responseTimeout, progressReporter, expectContinueReceived, true);
                 }
             } else {
                 return Mono.just(response);
@@ -174,7 +187,7 @@ class NettyAsyncHttpClient implements HttpClient {
         })
             .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
                 ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                    responseTimeout, progressReporter, true)
+                    responseTimeout, progressReporter, expectContinueReceived, true)
                 : Mono.error(throwable));
     }
 

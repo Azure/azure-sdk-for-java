@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A compute resource associated with a scheduled action.
+ * A compute resource associated with a recurring bulk action.
  */
 @Immutable
 public final class ScheduledActionResourceInner implements JsonSerializable<ScheduledActionResourceInner> {

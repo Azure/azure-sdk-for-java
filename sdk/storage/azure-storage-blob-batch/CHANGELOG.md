@@ -1,6 +1,6 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
+## 12.34.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,12 +10,65 @@
 
 ### Other Changes
 
-## 12.31.3 (2026-10-06)
+## 12.34.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added support for service version 2027-03-07.
 
 ### Other Changes
 
 #### Dependency Updates
 
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
+
+## 12.33.2 (2026-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.1` to version `12.37.2`.
+
+## 12.33.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.32.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.36.1`.
+
+## 12.32.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Bugs Fixed
+- Fixed a header-injection issue where carriage-return (`\r`) or line-feed (`\n`) characters in a batch operation's
+  inner request header names or values (for example, a tag condition supplied via
+  `BlobRequestConditions.setTagsConditions`) were serialized into the multipart batch body without validation. Such
+  characters are now rejected with an `IllegalArgumentException` before serialization.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.36.0`.
+
+## 12.31.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
 - Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.

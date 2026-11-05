@@ -28,7 +28,7 @@ public final class StorageTargetOperationsResumeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.storageTargetOperations()
-            .resume("aqvlgafcqusr", "vetnwsdtutn", "lduycv", com.azure.core.util.Context.NONE);
+            .resume("eecjmeis", "stvasylwxdzaumw", "oohgu", com.azure.core.util.Context.NONE);
 
     }
 }

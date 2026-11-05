@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
+import com.azure.resourcemanager.storage.models.BlobAccessPointConfigurationConnection;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
@@ -298,6 +299,17 @@ public final class ListContainerItemInner extends AzureEntityResource {
      */
     public Boolean enableNfsV3AllSquash() {
         return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3AllSquash();
+    }
+
+    /**
+     * Get the blobAccessPointConfiguration property: Configuration that attaches this container to a Blob Access Point.
+     * If set, the container is a read-only virtual container whose read/list requests are forwarded to the connected
+     * backing data store. Cannot be changed, removed, or added after container creation.
+     * 
+     * @return the blobAccessPointConfiguration value.
+     */
+    public BlobAccessPointConfigurationConnection blobAccessPointConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().blobAccessPointConfiguration();
     }
 
     /**

@@ -28,7 +28,7 @@ public final class ProtectionContainersRefreshWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionContainers()
-            .refreshWithResponse("fa", "zwjcaye", "zrransyb", "lpolwzrghsrle", com.azure.core.util.Context.NONE);
+            .refreshWithResponse("sgnwdxzedpq", "rfbo", "xi", "mlnfyz", com.azure.core.util.Context.NONE);
 
     }
 }

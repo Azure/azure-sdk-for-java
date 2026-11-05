@@ -7,7 +7,6 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ChallengeHandler;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
@@ -28,12 +27,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static io.clientcore.core.implementation.utils.ImplUtils.getTimeout;
+
 /**
  * Builder class responsible for creating instances of {@link HttpClient} backed by OkHttp.
  */
 public class OkHttpHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClientBuilder.class);
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
@@ -89,8 +88,9 @@ public class OkHttpHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Missing timeout values fall back to the global store even when {@link Configuration#none()} is supplied.
      *
      * @param configuration The configuration store.
      * @return The updated {@link OkHttpHttpClientBuilder} object.
@@ -162,8 +162,9 @@ public class OkHttpHttpClientBuilder {
      * The call timeout spans the entire call: resolving DNS, connecting, writing the request body,
      * server processing, and reading the response body.
      * <p>
-     * Null or {@link Duration#ZERO} means no call timeout, otherwise values
-     * must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
+     * Null leaves the underlying client's call timeout unchanged. A duration less than or equal to zero disables the
+     * call timeout. Positive values less than one millisecond use one millisecond and must not exceed
+     * {@link Integer#MAX_VALUE} when converted to milliseconds.
      * <p>
      * By default, call timeout is not enabled.
      *
@@ -173,12 +174,7 @@ public class OkHttpHttpClientBuilder {
      */
     public OkHttpHttpClientBuilder callTimeout(Duration callTimeout) {
         // callTimeout can be null
-        if (callTimeout != null && callTimeout.isNegative()) {
-            throw LOGGER.throwableAtError().log("'callTimeout' cannot be negative", IllegalArgumentException::new);
-        }
-
         this.callTimeout = callTimeout;
-
         return this;
     }
 
@@ -329,6 +325,8 @@ public class OkHttpHttpClientBuilder {
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder
             = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -336,13 +334,17 @@ public class OkHttpHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
-            .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
-            .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
+        httpClientBuilder
+            .connectTimeout(getTimeout(connectionTimeout, configuration, Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS,
+                DEFAULT_CONNECT_TIMEOUT))
+            .writeTimeout(getTimeout(writeTimeout, configuration, Configuration.REQUEST_WRITE_TIMEOUT_IN_MS,
+                DEFAULT_WRITE_TIMEOUT))
+            .readTimeout(
+                getTimeout(readTimeout, configuration, Configuration.REQUEST_READ_TIMEOUT_IN_MS, DEFAULT_READ_TIMEOUT));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
-            httpClientBuilder.callTimeout(callTimeout);
+            httpClientBuilder.callTimeout(getTimeout(callTimeout, Duration.ZERO));
         }
 
         // If set use the configured connection pool.
@@ -369,9 +371,6 @@ public class OkHttpHttpClientBuilder {
             httpClientBuilder.protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1));
         }
 
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
@@ -392,30 +391,5 @@ public class OkHttpHttpClientBuilder {
         httpClientBuilder.followRedirects(this.followRedirects);
 
         return new OkHttpHttpClient(httpClientBuilder.build());
-    }
-
-    /*
-     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
-     *
-     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
-     */
-    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return Duration.ZERO;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
-            return MINIMUM_TIMEOUT;
-        } else {
-            return configuredTimeout;
-        }
     }
 }

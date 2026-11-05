@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteCrossConnectionsGetCircuitMigrationInfoSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
+     * x-ms-original-file: 2026-03-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
      */
     /**
      * Sample code: GetExpressRouteCircuitMigrationInfo.
