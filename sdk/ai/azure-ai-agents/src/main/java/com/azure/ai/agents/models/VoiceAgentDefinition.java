@@ -593,7 +593,6 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeJsonField("subagent_config", this.subagentConfiguration);
         jsonWriter.writeJsonField("post_call", this.postCall);
-        jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
 
@@ -665,8 +664,6 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
                         = VoiceAgentSubagentConfiguration.fromJson(reader);
                 } else if ("post_call".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.postCall = VoiceAgentPostCallConfiguration.fromJson(reader);
-                } else if ("store".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

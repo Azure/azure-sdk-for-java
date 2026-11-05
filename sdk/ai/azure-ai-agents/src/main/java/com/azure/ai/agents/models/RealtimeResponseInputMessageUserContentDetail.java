@@ -34,7 +34,7 @@ public enum RealtimeResponseInputMessageUserContentDetail {
 
     /**
      * Parses a serialized value to a RealtimeResponseInputMessageUserContentDetail instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeResponseInputMessageUserContentDetail object, or null if unable to parse.
      */

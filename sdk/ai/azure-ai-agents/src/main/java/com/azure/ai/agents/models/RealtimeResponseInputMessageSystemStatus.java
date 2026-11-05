@@ -29,7 +29,7 @@ public enum RealtimeResponseInputMessageSystemStatus {
 
     /**
      * Parses a serialized value to a RealtimeResponseInputMessageSystemStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeResponseInputMessageSystemStatus object, or null if unable to parse.
      */

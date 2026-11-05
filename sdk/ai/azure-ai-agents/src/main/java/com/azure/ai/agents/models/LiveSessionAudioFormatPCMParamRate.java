@@ -29,7 +29,7 @@ public enum LiveSessionAudioFormatPCMParamRate {
 
     /**
      * Parses a serialized value to a LiveSessionAudioFormatPCMParamRate instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LiveSessionAudioFormatPCMParamRate object, or null if unable to parse.
      */
@@ -45,7 +45,7 @@ public enum LiveSessionAudioFormatPCMParamRate {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
     public int toInt() {

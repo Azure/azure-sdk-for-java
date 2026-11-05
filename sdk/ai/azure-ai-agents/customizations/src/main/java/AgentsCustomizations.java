@@ -287,18 +287,17 @@ public class AgentsCustomizations extends Customization {
      * @param customization the library customization
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
-            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
-            "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
-            "TelephonyBinding", "TelephonyBindingListItem", "EvaluationVoiceModelConfiguration", "OptimizationContext",
-            "MemoryItem",
-            "MemoryStoreDefinition", "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
-            "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyAddress",
-            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
-            "VoiceAgentPostCallDestination",
-            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
-            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
+        List<String> classNames
+            = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase", "AgentOptimizationEvaluationSet",
+                "AgentOptimizationTargetCompletionDataSource", "AgentOptimizationTargetConfiguration",
+                "AgentOptimizationUserConversationSimulationDataSource", "TelephonyBinding", "TelephonyBindingListItem",
+                "EvaluationVoiceModelConfiguration", "OptimizationContext", "MemoryItem", "MemoryStoreDefinition",
+                "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
+                "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
+                "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyAddress",
+                "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+                "VoiceAgentPostCallDestination", "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool",
+                "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
