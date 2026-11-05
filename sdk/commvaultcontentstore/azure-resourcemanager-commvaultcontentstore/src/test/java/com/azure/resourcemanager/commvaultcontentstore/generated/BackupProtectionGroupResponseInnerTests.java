@@ -10,8 +10,9 @@ import com.azure.resourcemanager.commvaultcontentstore.fluent.models.BackupProte
 public final class BackupProtectionGroupResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupProtectionGroupResponseInner model
-            = BinaryData.fromString("{\"taskId\":922093704,\"jobIds\":[\"nkww\",\"pp\",\"flcxoga\",\"konzmnsik\"]}")
-                .toObject(BackupProtectionGroupResponseInner.class);
+        BackupProtectionGroupResponseInner model = BinaryData
+            .fromString(
+                "{\"taskId\":842537299,\"jobIds\":[\"mnubexkpzksmond\",\"mquxvypo\",\"gkopkwhojvpajqgx\",\"smocmbq\"]}")
+            .toObject(BackupProtectionGroupResponseInner.class);
     }
 }
