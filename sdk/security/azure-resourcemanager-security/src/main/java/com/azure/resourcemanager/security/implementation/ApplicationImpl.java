@@ -112,6 +112,11 @@ public final class ApplicationImpl implements Application, Application.Definitio
         this.applicationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
             "applicationId");
+        if (this.applicationId == null) {
+            this.applicationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}",
+                "applicationId");
+        }
     }
 
     public Application refresh() {
