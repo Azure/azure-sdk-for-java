@@ -1113,7 +1113,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          GlobalEndpointManager globalEndpointManager,
                                          HttpClient httpClient,
                                          Map<String, String> additionalHeaders) {
-        ThinClientStoreModel thinClientStoreModel = new ThinClientStoreModel(
+        return new ThinClientStoreModel(
             this,
             sessionContainer,
             consistencyLevel,
@@ -1122,8 +1122,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             httpClient,
             additionalHeaders,
             this.clientTelemetryConfig);
-        thinClientStoreModel.setGatewayStoreModel(this.gatewayProxy);
-        return thinClientStoreModel;
     }
 
     private HttpClient httpClient() {

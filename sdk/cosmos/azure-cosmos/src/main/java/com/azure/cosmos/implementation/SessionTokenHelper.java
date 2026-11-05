@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
@@ -13,10 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,86 +26,9 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    static ISessionToken tryScopeExplicitSessionToken(
-        String originalToken, PartitionKeyRange target, CollectionRoutingMap routingMap) {
-        if (target == null || routingMap == null || !isActiveRange(target, routingMap)) {
-            return null;
-        }
-
-        Set<String> sources = new HashSet<>();
-        sources.add(target.getId());
-        if (target.getParents() != null) {
-            sources.addAll(target.getParents());
-        }
-
-        Map<String, ISessionToken> tokens = new HashMap<>();
-        for (String segment : originalToken.split(",", -1)) {
-            String[] parts = segment.trim().split(":", -1);
-            if (parts.length != 2 || parts[0].isEmpty() || tokens.containsKey(parts[0])) {
-                return null;
-            }
-
-            PartitionKeyRange range = routingMap.tryGetRangeByPartitionKeyRangeId(parts[0]);
-            if (range == null ? !sources.contains(parts[0]) : !isActiveRange(range, routingMap)) {
-                return null;
-            }
-
-            if (!isUnambiguousVectorToken(parts[1])) {
-                return null;
-            }
-            ValueHolder<ISessionToken> parsed = ValueHolder.initialize(null);
-            if (!VectorSessionToken.tryCreate(parts[1], parsed)) {
-                return null;
-            }
-            tokens.put(parts[0], parsed.v);
-        }
-
-        ISessionToken merged = null;
-        for (String source : sources) {
-            ISessionToken token = tokens.get(source);
-            if (token != null) {
-                if (merged != null) {
-                    VectorSessionToken left = (VectorSessionToken) merged;
-                    VectorSessionToken right = (VectorSessionToken) token;
-                    if (left.getVersion() == right.getVersion()
-                        && !left.getLocalLsnByRegion().keySet().equals(right.getLocalLsnByRegion().keySet())) {
-                        return null;
-                    }
-                }
-                merged = merged == null ? token : merged.merge(token);
-            }
-        }
-        return merged;
-    }
-
-    private static boolean isActiveRange(PartitionKeyRange range, CollectionRoutingMap routingMap) {
-        String status = range.getString("status");
-        return routingMap.tryGetRangeByPartitionKeyRangeId(range.getId()) != null
-            && !routingMap.isGone(range.getId())
-            && (status == null || "online".equalsIgnoreCase(status));
-    }
-
-    private static boolean isUnambiguousVectorToken(String token) {
-        // The general parser skips empty fields and accepts repeated region IDs. Narrowing must not lose progress.
-        String[] fields = token.split("#", -1);
-        if (fields.length < 2) {
-            return false;
-        }
-        try {
-            Long.parseLong(fields[0]);
-            Long.parseLong(fields[1]);
-            Set<Integer> regions = new HashSet<>();
-            for (int i = 2; i < fields.length; i++) {
-                String[] progress = fields[i].split("=", -1);
-                if (progress.length != 2 || !regions.add(Integer.parseInt(progress[0]))) {
-                    return false;
-                }
-                Long.parseLong(progress[1]);
-            }
-            return true;
-        } catch (NumberFormatException invalidToken) {
-            return false;
-        }
+    static boolean isCompoundSessionToken(String sessionToken) {
+        // Classify without parsing; validation happens when selecting partition-local progress.
+        return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {
@@ -156,7 +76,7 @@ public class SessionTokenHelper {
         }
     }
 
-    private static ISessionToken getLocalSessionToken(
+    static ISessionToken getLocalSessionToken(
             RxDocumentServiceRequest request,
             String globalSessionToken,
             String partitionKeyRangeId) {

@@ -18,18 +18,75 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTokenHelperTests {
+    @DataProvider
+    public Object[][] compoundSessionTokens() {
+        return new Object[][] {
+            {null, false}, {"", false}, {" ", false}, {"0:1#100", false},
+            {"0:1#100#1=90#2=-1", false}, {"0:future-format", false},
+            {"0:1#100,1:1#200", true}, {"0:1#100#1=90,1:1#200#2=180", true},
+            {"0:1#100,", true}, {",0:1#100", true}, {",", true}, {"0:1#100,1:future-format", true}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "compoundSessionTokens")
+    public void detectsCompoundTokensWithoutParsing(String token, boolean expected) {
+        assertThat(SessionTokenHelper.isCompoundSessionToken(token)).isEqualTo(expected);
+    }
+
+    @DataProvider
+    public Object[][] localTokenTargets() {
+        return new Object[][] {
+            {new PartitionKeyRange("0", "", "80"), "1#100#1=90#2=-1"},
+            {new PartitionKeyRange("1", "80", "FF"), "1#200#1=180#2=150"},
+            {new PartitionKeyRange("2", "", "80", Arrays.asList("0")), "1#100#1=90#2=-1"}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "localTokenTargets")
+    public void explicitScopingMatchesDirectModeForKnownTargetAndParent(
+        PartitionKeyRange target, String expected) {
+        String original = "0:1#100#1=90#2=-1,1:1#200#1=180#2=150";
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        request.requestContext.resolvedPartitionKeyRange = target;
+        request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, original);
+
+        ISessionToken scoped = SessionTokenHelper.getLocalSessionToken(request, original, target.getId());
+        assertThat(scoped.convertToString()).isEqualTo(expected);
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
+        SessionTokenHelper.setPartitionLocalSessionToken(request, Mockito.mock(ISessionContainer.class));
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+            .isEqualTo(target.getId() + ":" + expected);
+    }
+
+    @Test(groups = "unit")
+    public void unmatchedTokenUsesDirectModeDiagnosticsAndRemoval() {
+        PartitionKeyRange target = new PartitionKeyRange("2", "", "FF");
+        String original = "0:1#100,1:1#200";
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        request.requestContext.resolvedPartitionKeyRange = target;
+        request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, original);
+
+        assertThat(SessionTokenHelper.getLocalSessionToken(request, original, target.getId())).isNull();
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
+        SessionTokenHelper.setPartitionLocalSessionToken(request, Mockito.mock(ISessionContainer.class));
+        assertThat(request.getHeaders()).doesNotContainKey(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+    }
+
     @Test(groups = "unit")
     public void scopesCompleteVectorsWithoutChangingCallerProgress() {
         PartitionKeyRange first = new PartitionKeyRange("0", "", "80");
         PartitionKeyRange second = new PartitionKeyRange("1", "80", "FF");
-        CollectionRoutingMap map = routingMap(first, second);
         String original = "0:1#100#1=90#2=-1,1:2#20#3=18";
 
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken(original, first, map).convertToString())
+        assertThat(selectToken(original, first).convertToString())
             .isEqualTo("1#100#1=90#2=-1");
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken(original, second, map).convertToString())
+        assertThat(selectToken(original, second).convertToString())
             .isEqualTo("2#20#3=18");
         assertThat(original).isEqualTo("0:1#100#1=90#2=-1,1:2#20#3=18");
     }
@@ -38,7 +95,7 @@ public class SessionTokenHelperTests {
     public void mergesAllKnownParentsAndTargetUsingJavaVectorSemantics() {
         PartitionKeyRange target = new PartitionKeyRange("2", "", "FF", Arrays.asList("0", "1"));
         String original = "0:1#100#1=90#2=5,1:1#110#1=80#2=100,2:1#105#1=95#2=50";
-        ISessionToken result = SessionTokenHelper.tryScopeExplicitSessionToken(original, target, routingMap(target));
+        ISessionToken result = selectToken(original, target);
         VectorSessionToken vector = (VectorSessionToken) result;
         assertThat(vector.getVersion()).isEqualTo(1);
         assertThat(vector.getLSN()).isEqualTo(110);
@@ -49,43 +106,26 @@ public class SessionTokenHelperTests {
     public void splitChildrenInheritOriginalParentProgress() {
         PartitionKeyRange left = new PartitionKeyRange("2", "", "40", Arrays.asList("0"));
         PartitionKeyRange right = new PartitionKeyRange("3", "40", "80", Arrays.asList("0"));
-        CollectionRoutingMap map = routingMap(left, right, new PartitionKeyRange("1", "80", "FF"));
         String original = "0:1#100#1=90,1:1#200#2=150";
         for (PartitionKeyRange child : Arrays.asList(left, right)) {
-            assertThat(SessionTokenHelper.tryScopeExplicitSessionToken(original, child, map).convertToString())
+            assertThat(selectToken(original, child).convertToString())
                 .isEqualTo("1#100#1=90");
         }
     }
 
-    @DataProvider
-    public Object[][] unsafeTokens() {
-        return new Object[][] {
-            {"0:1#100,unknown:1#200"}, {"1:1#100,1:1#200"}, {"0:1#100#1=90#01=1,1:1#200"},
-            {"0:1#100##1=90,1:1#200"}, {"0:1#100,1:future-format"}, {"0:1#100,"},
-            {":1#100,1:1#200"}, {"0:1#100,1:1#200:extra"}, {"0:1#100#1==90,1:1#200"},
-            {"0:100,1:200"}, {"1:1#100"}
-        };
-    }
-
-    @Test(groups = "unit", dataProvider = "unsafeTokens")
-    public void declinesUnsafeScoping(String token) {
-        PartitionKeyRange target = new PartitionKeyRange("0", "", "80");
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken(
-            token, target, routingMap(target, new PartitionKeyRange("1", "80", "FF")))).isNull();
-    }
-
     @Test(groups = "unit")
-    public void declinesUnknownLineageOfflineRangesAndIncompatibleVectors() {
+    public void unrelatedRangesAreIgnoredAndIncompatibleVectorsFailLikeDirectMode() {
         PartitionKeyRange target = new PartitionKeyRange("2", "", "80", Arrays.asList("1"));
-        PartitionKeyRange other = new PartitionKeyRange("3", "80", "FF", Arrays.asList("0"));
-        CollectionRoutingMap map = routingMap(target, other);
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken("0:1#300,2:1#100", target, map)).isNull();
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken(
-            "1:1#100#1=90,2:1#110#2=100", target, map)).isNull();
-        target.set("status", "offline");
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken("1:1#300,2:1#100", target, map)).isNull();
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken("1:1#300,2:1#100", target, null)).isNull();
-        assertThat(SessionTokenHelper.tryScopeExplicitSessionToken("1:1#300,2:1#100", null, map)).isNull();
+        assertThat(selectToken("0:1#300,2:1#100", target).convertToString()).isEqualTo("1#100");
+        assertThatThrownBy(() -> selectToken("1:1#100#1=90,2:1#110#2=100", target))
+            .isInstanceOf(InternalServerErrorException.class);
+    }
+
+    private static ISessionToken selectToken(String original, PartitionKeyRange target) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        request.requestContext.resolvedPartitionKeyRange = target;
+        return SessionTokenHelper.getLocalSessionToken(request, original, target.getId());
     }
 
     static CollectionRoutingMap routingMap(PartitionKeyRange... ranges) {

@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -51,7 +50,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private volatile String globalDatabaseAccountName = null;
     private final Map<String, String> defaultHeaders;
-    private RxGatewayStoreModel gatewayStoreModel;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -97,52 +95,44 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        return Mono.defer(() -> {
-            request.captureOriginalSessionToken();
-            String originalToken = request.getOriginalSessionToken();
+        request.captureOriginalSessionToken();
+        String originalToken = request.getOriginalSessionToken();
+        if (!SessionTokenHelper.isCompoundSessionToken(originalToken)) {
             request.useThinClientMode = true;
-            if (originalToken == null || !originalToken.contains(",") || !shouldApplySessionToken(request)) {
+            return super.processMessage(request);
+        }
+
+        return Mono.defer(() -> {
+            request.useThinClientMode = true;
+            if (!shouldApplySessionToken(request)) {
                 return super.processMessage(request);
             }
 
             request.requestContext.sessionToken = null;
-            if (getCollectionCache() == null || getPartitionKeyRangeCache() == null) {
-                return processWithGateway(request);
-            }
-
             MetadataDiagnosticsContext diagnostics =
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
             return getCollectionCache().resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
                 if (collectionHolder.v == null) {
-                    return processWithGateway(request);
+                    return Mono.error(new NotFoundException("Collection could not be resolved."));
                 }
                 DocumentCollection collection = collectionHolder.v;
                 return getPartitionKeyRangeCache()
                     .tryLookupAsync(diagnostics, collection.getResourceId(), null, request.properties)
                     .flatMap(mapHolder -> {
+                        if (mapHolder.v == null) {
+                            return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
+                        }
                         PartitionKeyRange target = resolveSessionTokenRange(request, collection, mapHolder.v);
-                        ISessionToken scoped =
-                            SessionTokenHelper.tryScopeExplicitSessionToken(originalToken, target, mapHolder.v);
-                        if (scoped == null) {
-                            return processWithGateway(request);
+                        if (target == null) {
+                            return Mono.error(new GatewayV2SessionTokenRetryPolicy.GatewayFallbackRequiredException());
                         }
                         request.requestContext.resolvedPartitionKeyRange = target;
-                        request.requestContext.sessionToken = scoped;
+                        request.requestContext.sessionToken =
+                            SessionTokenHelper.getLocalSessionToken(request, originalToken, target.getId());
                         return super.processMessage(request);
                     });
             });
         });
-    }
-
-    void setGatewayStoreModel(RxGatewayStoreModel gatewayStoreModel) {
-        this.gatewayStoreModel = gatewayStoreModel;
-    }
-
-    private Mono<RxDocumentServiceResponse> processWithGateway(RxDocumentServiceRequest request) {
-        logger.debug("Using classic Gateway because explicit compound session progress cannot be safely scoped");
-        request.useThinClientMode = false;
-        return Objects.requireNonNull(this.gatewayStoreModel, "Classic Gateway store is required for session fallback")
-            .processMessage(request);
     }
 
     private static PartitionKeyRange resolveSessionTokenRange(
@@ -171,7 +161,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         PartitionKeyRange target = rangeId == null ? null : routingMap.tryGetRangeByPartitionKeyRangeId(rangeId);
         if (rangeId != null && target == null) {
-            return null;
+            throw new PartitionKeyRangeGoneException();
         }
 
         String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
@@ -210,7 +200,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
         // ThinClient does not use the Gateway V1 server-side 449 retry loop.
-        request.getHeaders().remove(HttpConstants.HttpHeaders.NO_RETRY_449);
     }
 
     @Override
@@ -376,16 +365,23 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
-        RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
-
-        String originalToken = request.getOriginalSessionToken();
-        if (originalToken != null && originalToken.contains(",") && request.requestContext.sessionToken != null
+        RntbdRequest rntbdRequest;
+        if (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
             && shouldApplySessionToken(request)) {
-            // Keep the caller's header intact so retries and hedges never inherit narrowed progress.
-            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.SessionToken,
-                SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+            ISessionToken localToken = request.requestContext.sessionToken;
+            String header = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            try {
+                SessionTokenHelper.setOriginalSessionToken(request, localToken == null ? null
+                    : SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
                     request.requestContext.resolvedPartitionKeyRange.getId(),
-                    request.requestContext.sessionToken.convertToString()));
+                    localToken.convertToString()));
+                rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
+            } finally {
+                // Preserve caller progress for retries and request clones, including unmatched-token attempts.
+                SessionTokenHelper.setOriginalSessionToken(request, header);
+            }
+        } else {
+            rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
         }
 
         String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);

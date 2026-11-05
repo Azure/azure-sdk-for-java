@@ -16,6 +16,7 @@ import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.ConsistencyTestsBase;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -47,6 +48,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -82,6 +84,7 @@ public class ThinClientSessionTokenE2ETest {
     @BeforeClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 300000)
     public void setup() {
         writer = builder.buildAsyncClient();
+        awaitThinClientProbe(writer);
         DatabaseAccount account = ReflectionUtils.getGlobalEndpointManager(
             (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(writer)).getLatestDatabaseAccount();
         assertThat(account.getThinClientReadableLocations()).as("Account must advertise Gateway V2").isNotEmpty();
@@ -119,6 +122,7 @@ public class ThinClientSessionTokenE2ETest {
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "metadataModes", timeOut = 180000)
     public void replayMapThroughPointReadsAndResumedQuery(boolean preloadMetadata) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
+            awaitThinClientProbe(reader);
             CosmosAsyncContainer container = reader.getDatabase(database.getId()).getContainer("items");
             if (preloadMetadata) {
                 container.getFeedRanges().block(WAIT);
@@ -161,18 +165,29 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 90000)
-    public void unknownRangeUsesClassicGatewayWithoutDroppingProgress() {
+    @DataProvider
+    public Object[][] targetProgress() {
+        return new Object[][] {{true}, {false}};
+    }
+
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "targetProgress", timeOut = 90000)
+    public void unrelatedProgressDoesNotChangeTransport(boolean includeTargetProgress) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
-            ObjectNode item = representatives.values().iterator().next();
-            String original = compoundToken + ",2147483647:1#0";
+            awaitThinClientProbe(reader);
+            Map.Entry<String, ObjectNode> target = representatives.entrySet().iterator().next();
+            ObjectNode item = target.getValue();
+            Map<String, ISessionToken> progress = new LinkedHashMap<>(tokens);
+            if (!includeTargetProgress) {
+                progress.remove(target.getKey());
+            }
+            String original = combine(progress) + ",2147483647:1#0";
             CosmosItemRequestOptions options = new CosmosItemRequestOptions().setSessionToken(original)
                 .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
             CosmosItemResponse<ObjectNode> response = reader.getDatabase(database.getId()).getContainer("items")
                 .readItem(item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
                 .block(WAIT);
             assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));
-            ThinClientTestBase.assertGatewayEndpointUsed(response.getDiagnostics());
+            TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
             assertThat(options.getSessionToken()).isEqualTo(original);
         }
     }
@@ -180,6 +195,7 @@ public class ThinClientSessionTokenE2ETest {
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 90000)
     public void advancedTargetProgressIsNotSilentlyDropped() throws Exception {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
+            awaitThinClientProbe(reader);
             Map.Entry<String, ObjectNode> target = representatives.entrySet().iterator().next();
             Map<String, ISessionToken> advanced = new LinkedHashMap<>(tokens);
             ISessionToken token = advanced.get(target.getKey());
@@ -203,6 +219,7 @@ public class ThinClientSessionTokenE2ETest {
             throw new SkipException("Forced live hedging requires two Gateway V2 regions");
         }
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
+            awaitThinClientProbe(reader);
             CosmosAsyncContainer container = reader.getDatabase(database.getId()).getContainer("items");
             ObjectNode item = representatives.values().iterator().next();
             for (FaultInjectionOperationType operation : new FaultInjectionOperationType[] {
@@ -263,6 +280,15 @@ public class ThinClientSessionTokenE2ETest {
             if (writer != null) {
                 writer.close();
             }
+        }
+    }
+
+    private static void awaitThinClientProbe(CosmosAsyncClient client) {
+        if (Configs.isThinClientEnabled() == null) {
+            Flux.interval(Duration.ZERO, Duration.ofMillis(100))
+                .filter(ignored -> Boolean.TRUE.equals(ReflectionUtils.getGlobalEndpointManager(
+                    (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client)).getProxyProbeDecision()))
+                .next().block(WAIT);
         }
     }
 
