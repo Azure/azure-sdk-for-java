@@ -82,14 +82,14 @@ public class RealtimeResponseInputMessage implements JsonSerializable<RealtimeRe
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("developer".equals(discriminatorValue)) {
+                if ("system".equals(discriminatorValue)) {
+                    return RealtimeResponseInputMessageSystem.fromJson(readerToUse.reset());
+                } else if ("developer".equals(discriminatorValue)) {
                     return RealtimeResponseInputMessageDeveloper.fromJson(readerToUse.reset());
                 } else if ("user".equals(discriminatorValue)) {
                     return RealtimeResponseInputMessageUser.fromJson(readerToUse.reset());
                 } else if ("assistant".equals(discriminatorValue)) {
                     return RealtimeResponseInputMessageAssistant.fromJson(readerToUse.reset());
-                } else if ("system".equals(discriminatorValue)) {
-                    return RealtimeResponseInputMessageSystem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

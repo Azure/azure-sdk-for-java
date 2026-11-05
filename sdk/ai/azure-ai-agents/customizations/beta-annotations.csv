@@ -157,7 +157,7 @@ class;com.azure.ai.agents.models.RealtimeResponseInputFunctionCall;Preview API. 
 class;com.azure.ai.agents.models.RealtimeResponseInputFunctionCallOutput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputImage;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputItem;Preview API.;
-class;com.azure.ai.agents.models.RealtimeResponseInputItemStatus;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.RealtimeResponseInputItemStatus;Preview API.;
 class;com.azure.ai.agents.models.RealtimeResponseInputMessage;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputMessageAssistant;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputMessageAssistantContent;Preview API. VoiceAgents=V1Preview;
