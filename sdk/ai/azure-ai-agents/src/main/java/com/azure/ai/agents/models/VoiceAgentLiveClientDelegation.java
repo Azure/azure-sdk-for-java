@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Delegates work to the application using native client delegation.
@@ -23,16 +24,6 @@ public final class VoiceAgentLiveClientDelegation extends VoiceAgentLiveDelegati
      */
     @Generated
     private VoiceAgentLiveDelegationType type = VoiceAgentLiveDelegationType.CLIENT;
-
-    /*
-     * Milliseconds to wait before requesting an automatic spoken acknowledgement for a delegation. The model may still
-     * speak before this delay. Any commentary or thinking appended to the session cancels all pending acknowledgements,
-     * including those for other delegations. Defaults to 400 for Decisions sessions and 0 (request immediately) for
-     * other sessions. Omission in a session update preserves the current value. Updates apply to subsequent
-     * delegations.
-     */
-    @Generated
-    private Long acknowledgementDelayMs;
 
     /**
      * Creates an instance of VoiceAgentLiveClientDelegation class.
@@ -53,36 +44,6 @@ public final class VoiceAgentLiveClientDelegation extends VoiceAgentLiveDelegati
     }
 
     /**
-     * Get the acknowledgementDelayMs property: Milliseconds to wait before requesting an automatic spoken
-     * acknowledgement for a delegation. The model may still speak before this delay. Any commentary or thinking
-     * appended to the session cancels all pending acknowledgements, including those for other delegations. Defaults to
-     * 400 for Decisions sessions and 0 (request immediately) for other sessions. Omission in a session update preserves
-     * the current value. Updates apply to subsequent delegations.
-     *
-     * @return the acknowledgementDelayMs value.
-     */
-    @Generated
-    public Long getAcknowledgementDelayMs() {
-        return this.acknowledgementDelayMs;
-    }
-
-    /**
-     * Set the acknowledgementDelayMs property: Milliseconds to wait before requesting an automatic spoken
-     * acknowledgement for a delegation. The model may still speak before this delay. Any commentary or thinking
-     * appended to the session cancels all pending acknowledgements, including those for other delegations. Defaults to
-     * 400 for Decisions sessions and 0 (request immediately) for other sessions. Omission in a session update preserves
-     * the current value. Updates apply to subsequent delegations.
-     *
-     * @param acknowledgementDelayMs the acknowledgementDelayMs value to set.
-     * @return the VoiceAgentLiveClientDelegation object itself.
-     */
-    @Generated
-    public VoiceAgentLiveClientDelegation setAcknowledgementDelayMs(Long acknowledgementDelayMs) {
-        this.acknowledgementDelayMs = acknowledgementDelayMs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -90,7 +51,7 @@ public final class VoiceAgentLiveClientDelegation extends VoiceAgentLiveDelegati
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("acknowledgement_delay_ms", this.acknowledgementDelayMs);
+        jsonWriter.writeNumberField("acknowledgement_delay_ms", this.acknowledgementDelay);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,7 +75,7 @@ public final class VoiceAgentLiveClientDelegation extends VoiceAgentLiveDelegati
                     deserializedVoiceAgentLiveClientDelegation.type
                         = VoiceAgentLiveDelegationType.fromString(reader.getString());
                 } else if ("acknowledgement_delay_ms".equals(fieldName)) {
-                    deserializedVoiceAgentLiveClientDelegation.acknowledgementDelayMs
+                    deserializedVoiceAgentLiveClientDelegation.acknowledgementDelay
                         = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
@@ -122,5 +83,52 @@ public final class VoiceAgentLiveClientDelegation extends VoiceAgentLiveDelegati
             }
             return deserializedVoiceAgentLiveClientDelegation;
         });
+    }
+
+    /*
+     * Milliseconds to wait before requesting an automatic spoken acknowledgement for a delegation. The model may still
+     * speak before this delay. Any commentary or thinking appended to the session cancels all pending acknowledgements,
+     * including those for other delegations. Defaults to 400 for Decisions sessions and 0 (request immediately) for
+     * other sessions. Omission in a session update preserves the current value. Updates apply to subsequent
+     * delegations.
+     */
+    @Generated
+    private Long acknowledgementDelay;
+
+    /**
+     * Get the acknowledgementDelay property: Milliseconds to wait before requesting an automatic spoken acknowledgement
+     * for a delegation. The model may still speak before this delay. Any commentary or thinking appended to the session
+     * cancels all pending acknowledgements, including those for other delegations. Defaults to 400 for Decisions
+     * sessions and 0 (request immediately) for other sessions. Omission in a session update preserves the current
+     * value. Updates apply to subsequent delegations.
+     *
+     * @return the acknowledgementDelay value.
+     */
+    @Generated
+    public Duration getAcknowledgementDelay() {
+        if (this.acknowledgementDelay == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.acknowledgementDelay);
+    }
+
+    /**
+     * Set the acknowledgementDelay property: Milliseconds to wait before requesting an automatic spoken acknowledgement
+     * for a delegation. The model may still speak before this delay. Any commentary or thinking appended to the session
+     * cancels all pending acknowledgements, including those for other delegations. Defaults to 400 for Decisions
+     * sessions and 0 (request immediately) for other sessions. Omission in a session update preserves the current
+     * value. Updates apply to subsequent delegations.
+     *
+     * @param acknowledgementDelay the acknowledgementDelay value to set.
+     * @return the VoiceAgentLiveClientDelegation object itself.
+     */
+    @Generated
+    public VoiceAgentLiveClientDelegation setAcknowledgementDelay(Duration acknowledgementDelay) {
+        if (acknowledgementDelay == null) {
+            this.acknowledgementDelay = null;
+        } else {
+            this.acknowledgementDelay = acknowledgementDelay.toMillis();
+        }
+        return this;
     }
 }

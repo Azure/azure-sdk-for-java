@@ -15,6 +15,9 @@
 
 ### Breaking Changes
 
+- Moved preview Live-conversation client factories under `AgentsClientBuilder.beta()`.
+- Changed preview Live delegation acknowledgement delays to `Duration` with unit-free `acknowledgementDelay`
+  accessors, and renamed the managed-delegation duration property from `offsetMs` to `offset`.
 - Replaced the numeric/string token-limit accessors on preview voice and realtime models with
   `getMaxOutputTokens()` and `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. `InlineVoiceSubagent` uses
   the same type through `getMaxResponseOutputTokens()` and `setMaxResponseOutputTokens(VoiceAgentMaxOutputTokens)`.

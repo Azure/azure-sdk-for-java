@@ -29,7 +29,7 @@ public class VoiceAgentLiveDelegation implements JsonSerializable<VoiceAgentLive
      * Creates an instance of VoiceAgentLiveDelegation class.
      */
     @Generated
-    public VoiceAgentLiveDelegation() {
+    protected VoiceAgentLiveDelegation() {
     }
 
     /**

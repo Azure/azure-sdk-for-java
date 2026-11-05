@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.live.ResponsesDelegationConfig;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Delegates work to a Responses backend using native Responses settings.
@@ -26,16 +27,6 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
      */
     @Generated
     private VoiceAgentLiveDelegationType type = VoiceAgentLiveDelegationType.RESPONSES;
-
-    /*
-     * Milliseconds to wait before requesting an automatic spoken acknowledgement for a delegation. The model may still
-     * speak before this delay. Any commentary or thinking appended to the session cancels all pending acknowledgements,
-     * including those for other delegations. Defaults to 400 for Decisions sessions and 0 (request immediately) for
-     * other sessions. Omission in a session update preserves the current value. Updates apply to subsequent
-     * delegations.
-     */
-    @Generated
-    private Long acknowledgementDelayMs;
 
     /*
      * Backend model, prompt, and tools used when the Live session delegates a task to Responses.
@@ -65,36 +56,6 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
     }
 
     /**
-     * Get the acknowledgementDelayMs property: Milliseconds to wait before requesting an automatic spoken
-     * acknowledgement for a delegation. The model may still speak before this delay. Any commentary or thinking
-     * appended to the session cancels all pending acknowledgements, including those for other delegations. Defaults to
-     * 400 for Decisions sessions and 0 (request immediately) for other sessions. Omission in a session update preserves
-     * the current value. Updates apply to subsequent delegations.
-     *
-     * @return the acknowledgementDelayMs value.
-     */
-    @Generated
-    public Long getAcknowledgementDelayMs() {
-        return this.acknowledgementDelayMs;
-    }
-
-    /**
-     * Set the acknowledgementDelayMs property: Milliseconds to wait before requesting an automatic spoken
-     * acknowledgement for a delegation. The model may still speak before this delay. Any commentary or thinking
-     * appended to the session cancels all pending acknowledgements, including those for other delegations. Defaults to
-     * 400 for Decisions sessions and 0 (request immediately) for other sessions. Omission in a session update preserves
-     * the current value. Updates apply to subsequent delegations.
-     *
-     * @param acknowledgementDelayMs the acknowledgementDelayMs value to set.
-     * @return the VoiceAgentLiveResponsesDelegation object itself.
-     */
-    @Generated
-    public VoiceAgentLiveResponsesDelegation setAcknowledgementDelayMs(Long acknowledgementDelayMs) {
-        this.acknowledgementDelayMs = acknowledgementDelayMs;
-        return this;
-    }
-
-    /**
      * Get the responses property: Backend model, prompt, and tools used when the Live session delegates a task to
      * Responses.
      *
@@ -116,7 +77,7 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
             OpenAIJsonHelper.toBinaryData(this.responses).writeTo(jsonWriter);
         }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("acknowledgement_delay_ms", this.acknowledgementDelayMs);
+        jsonWriter.writeNumberField("acknowledgement_delay_ms", this.acknowledgementDelay);
         return jsonWriter.writeEndObject();
     }
 
@@ -133,7 +94,7 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
         return jsonReader.readObject(reader -> {
             ResponsesDelegationConfig responses = null;
             VoiceAgentLiveDelegationType type = VoiceAgentLiveDelegationType.RESPONSES;
-            Long acknowledgementDelayMs = null;
+            Long acknowledgementDelay = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -144,7 +105,7 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
                 } else if ("type".equals(fieldName)) {
                     type = VoiceAgentLiveDelegationType.fromString(reader.getString());
                 } else if ("acknowledgement_delay_ms".equals(fieldName)) {
-                    acknowledgementDelayMs = reader.getNullable(JsonReader::getLong);
+                    acknowledgementDelay = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -152,8 +113,55 @@ public final class VoiceAgentLiveResponsesDelegation extends VoiceAgentLiveDeleg
             VoiceAgentLiveResponsesDelegation deserializedVoiceAgentLiveResponsesDelegation
                 = new VoiceAgentLiveResponsesDelegation(responses);
             deserializedVoiceAgentLiveResponsesDelegation.type = type;
-            deserializedVoiceAgentLiveResponsesDelegation.acknowledgementDelayMs = acknowledgementDelayMs;
+            deserializedVoiceAgentLiveResponsesDelegation.acknowledgementDelay = acknowledgementDelay;
             return deserializedVoiceAgentLiveResponsesDelegation;
         });
+    }
+
+    /*
+     * Milliseconds to wait before requesting an automatic spoken acknowledgement for a delegation. The model may still
+     * speak before this delay. Any commentary or thinking appended to the session cancels all pending acknowledgements,
+     * including those for other delegations. Defaults to 400 for Decisions sessions and 0 (request immediately) for
+     * other sessions. Omission in a session update preserves the current value. Updates apply to subsequent
+     * delegations.
+     */
+    @Generated
+    private Long acknowledgementDelay;
+
+    /**
+     * Get the acknowledgementDelay property: Milliseconds to wait before requesting an automatic spoken acknowledgement
+     * for a delegation. The model may still speak before this delay. Any commentary or thinking appended to the session
+     * cancels all pending acknowledgements, including those for other delegations. Defaults to 400 for Decisions
+     * sessions and 0 (request immediately) for other sessions. Omission in a session update preserves the current
+     * value. Updates apply to subsequent delegations.
+     *
+     * @return the acknowledgementDelay value.
+     */
+    @Generated
+    public Duration getAcknowledgementDelay() {
+        if (this.acknowledgementDelay == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.acknowledgementDelay);
+    }
+
+    /**
+     * Set the acknowledgementDelay property: Milliseconds to wait before requesting an automatic spoken acknowledgement
+     * for a delegation. The model may still speak before this delay. Any commentary or thinking appended to the session
+     * cancels all pending acknowledgements, including those for other delegations. Defaults to 400 for Decisions
+     * sessions and 0 (request immediately) for other sessions. Omission in a session update preserves the current
+     * value. Updates apply to subsequent delegations.
+     *
+     * @param acknowledgementDelay the acknowledgementDelay value to set.
+     * @return the VoiceAgentLiveResponsesDelegation object itself.
+     */
+    @Generated
+    public VoiceAgentLiveResponsesDelegation setAcknowledgementDelay(Duration acknowledgementDelay) {
+        if (acknowledgementDelay == null) {
+            this.acknowledgementDelay = null;
+        } else {
+            this.acknowledgementDelay = acknowledgementDelay.toMillis();
+        }
+        return this;
     }
 }

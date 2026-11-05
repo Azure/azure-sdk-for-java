@@ -57,7 +57,9 @@ public class FoundryFeaturesHeaderVerificationTest {
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsClient.class,
-            BetaVoiceAgentsConversationsAsyncClient.class }) {
+            BetaVoiceAgentsConversationsAsyncClient.class,
+            BetaVoiceAgentsLiveConversationsClient.class,
+            BetaVoiceAgentsLiveConversationsAsyncClient.class }) {
             String methodName = "build" + clientType.getSimpleName();
             assertThrows(NoSuchMethodException.class, () -> AgentsClientBuilder.class.getMethod(methodName));
             assertTrue(clientType.isInstance(
@@ -72,6 +74,13 @@ public class FoundryFeaturesHeaderVerificationTest {
             AgentsClientBuilder builder
                 = customPipeline ? createBuilder(createCustomPipeline(httpClient)) : createBuilder(httpClient);
             List<Runnable> requests = Arrays.asList(
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsLiveConversationsClient()
+                    .getAgentConversationWithResponse("agent", "conversation", new RequestOptions()),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsLiveConversationsAsyncClient()
+                    .getAgentConversationWithResponse("agent", "conversation", new RequestOptions())
+                    .block(),
                 () -> builder.beta()
                     .buildBetaVoiceAgentsTelephonyClient()
                     .getTelephonyBindingWithResponse("agent", "binding", new RequestOptions()),
@@ -308,6 +317,20 @@ public class FoundryFeaturesHeaderVerificationTest {
             .buildAgentsClient()
             .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), requestOptions);
 
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        AgentsClientBuilder builder = createBuilder(customPipeline);
+        builder.beta()
+            .buildBetaVoiceAgentsLiveConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", requestOptions);
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsLiveConversationsAsyncClient()
+            .getAgentConversationWithResponse("agent", "conversation", requestOptions)
+            .block();
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
     }

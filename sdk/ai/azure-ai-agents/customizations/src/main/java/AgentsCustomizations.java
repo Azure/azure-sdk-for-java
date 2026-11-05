@@ -171,15 +171,15 @@ public class AgentsCustomizations extends Customization {
 
     private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
         ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
-            .filter(clazz -> "ToolFunctionToolType1".equals(clazz.getClassName()))
+            .filter(clazz -> "ToolFunctionToolType3".equals(clazz.getClassName()))
             .findFirst()
             .orElse(null);
         if (enumCustomization == null) {
-            logger.info("ToolFunctionToolType1 is not generated; no enum visibility change is needed.");
+            logger.info("ToolFunctionToolType3 is not generated; no enum visibility change is needed.");
             return;
         }
-        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType1")
-            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType1 was not generated"))
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType3")
+            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType3 was not generated"))
             .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
@@ -200,9 +200,10 @@ public class AgentsCustomizations extends Customization {
             "RealtimeConversationItemMessage", "RealtimeResponseInputMessage", "RealtimeMcpError",
             "RealtimeSessionConfigurationBase",
             "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
-            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentBaseDefinition",
+            "VoiceAgentGreetingConfiguration",
             "VoiceAgentPostCallDestination",
-            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentLiveDelegation", "VoiceAgentSystemTool", "VoiceAgentTool",
             "VoiceAgentSubagentConfiguration", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {

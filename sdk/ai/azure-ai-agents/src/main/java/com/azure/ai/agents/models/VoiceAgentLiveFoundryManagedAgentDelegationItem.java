@@ -48,12 +48,6 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
     private final String agentVersion;
 
     /*
-     * Native delegation offset from session start, in milliseconds.
-     */
-    @Generated
-    private final long offsetMs;
-
-    /*
      * Backend conversation ID, distinct from the voice conversation and Live session IDs.
      */
     @Generated
@@ -85,21 +79,21 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
      * @param createdAt the createdAt value to set.
      * @param agentName the agentName value to set.
      * @param agentVersion the agentVersion value to set.
-     * @param offsetMs the offsetMs value to set.
+     * @param offset the offset value to set.
      * @param output the output value to set.
      * @param status the status value to set.
      */
     @Generated
     private VoiceAgentLiveFoundryManagedAgentDelegationItem(String id, OffsetDateTime createdAt, String agentName,
-        String agentVersion, Duration offsetMs, List<VoiceAgentLiveDelegationResultItem> output,
+        String agentVersion, Duration offset, List<VoiceAgentLiveDelegationResultItem> output,
         VoiceAgentLiveDelegationStatus status) {
         super(id, createdAt);
         this.agentName = agentName;
         this.agentVersion = agentVersion;
-        if (offsetMs == null) {
-            this.offsetMs = 0L;
+        if (offset == null) {
+            this.offset = 0L;
         } else {
-            this.offsetMs = offsetMs.toMillis();
+            this.offset = offset.toMillis();
         }
         this.output = output;
         this.status = status;
@@ -145,16 +139,6 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
     @Generated
     public String getAgentVersion() {
         return this.agentVersion;
-    }
-
-    /**
-     * Get the offsetMs property: Native delegation offset from session start, in milliseconds.
-     *
-     * @return the offsetMs value.
-     */
-    @Generated
-    public Duration getOffsetMs() {
-        return Duration.ofMillis(this.offsetMs);
     }
 
     /**
@@ -215,7 +199,7 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
         jsonWriter.writeStringField("response_id", getResponseId());
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("agent_version", this.agentVersion);
-        jsonWriter.writeLongField("offset_ms", this.offsetMs);
+        jsonWriter.writeLongField("offset_ms", this.offset);
         jsonWriter.writeArrayField("output", this.output, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("target", this.target == null ? null : this.target.toString());
@@ -241,7 +225,7 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
             String responseId = null;
             String agentName = null;
             String agentVersion = null;
-            Duration offsetMs = null;
+            Duration offset = null;
             List<VoiceAgentLiveDelegationResultItem> output = null;
             VoiceAgentLiveDelegationStatus status = null;
             VoiceAgentLiveDelegationTarget target = VoiceAgentLiveDelegationTarget.FOUNDRY_MANAGED_AGENT;
@@ -261,7 +245,7 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
                 } else if ("agent_version".equals(fieldName)) {
                     agentVersion = reader.getString();
                 } else if ("offset_ms".equals(fieldName)) {
-                    offsetMs = Duration.ofMillis(reader.getLong());
+                    offset = Duration.ofMillis(reader.getLong());
                 } else if ("output".equals(fieldName)) {
                     output = reader.readArray(reader1 -> VoiceAgentLiveDelegationResultItem.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
@@ -277,7 +261,7 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
                 }
             }
             VoiceAgentLiveFoundryManagedAgentDelegationItem deserializedVoiceAgentLiveFoundryManagedAgentDelegationItem
-                = new VoiceAgentLiveFoundryManagedAgentDelegationItem(id, createdAt, agentName, agentVersion, offsetMs,
+                = new VoiceAgentLiveFoundryManagedAgentDelegationItem(id, createdAt, agentName, agentVersion, offset,
                     output, status);
             deserializedVoiceAgentLiveFoundryManagedAgentDelegationItem.setResponseId(responseId);
             deserializedVoiceAgentLiveFoundryManagedAgentDelegationItem.target = target;
@@ -285,5 +269,21 @@ public final class VoiceAgentLiveFoundryManagedAgentDelegationItem extends Voice
             deserializedVoiceAgentLiveFoundryManagedAgentDelegationItem.delegationContext = delegationContext;
             return deserializedVoiceAgentLiveFoundryManagedAgentDelegationItem;
         });
+    }
+
+    /*
+     * Native delegation offset from session start, in milliseconds.
+     */
+    @Generated
+    private final long offset;
+
+    /**
+     * Get the offset property: Native delegation offset from session start, in milliseconds.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public Duration getOffset() {
+        return Duration.ofMillis(this.offset);
     }
 }

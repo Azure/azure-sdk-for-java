@@ -55,7 +55,7 @@ public class VoiceAgentBaseDefinition extends AgentDefinition {
      * Creates an instance of VoiceAgentBaseDefinition class.
      */
     @Generated
-    public VoiceAgentBaseDefinition() {
+    protected VoiceAgentBaseDefinition() {
     }
 
     /**

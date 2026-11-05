@@ -10,6 +10,7 @@ import com.openai.models.live.ResponsesDelegationConfig.ToolChoice.LiveToolChoic
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -28,17 +29,18 @@ public class VoiceAgentLiveResponsesDelegationSerializationTests {
             .toolChoice(LiveToolChoiceEnum.AUTO)
             .build();
         VoiceAgentLiveResponsesDelegation original
-            = new VoiceAgentLiveResponsesDelegation(responses).setAcknowledgementDelayMs(400L);
+            = new VoiceAgentLiveResponsesDelegation(responses).setAcknowledgementDelay(Duration.ofMillis(400));
 
         String json = UnionTypeSerializationTestUtils.serialize(original);
         assertTrue(json.contains("\"responses\":{"));
         assertTrue(json.contains("\"tools\":[{\""));
         assertTrue(json.contains("\"type\":\"function\""));
         assertTrue(json.contains("\"tool_choice\":\"auto\""));
+        assertTrue(json.contains("\"acknowledgement_delay_ms\":400"));
         VoiceAgentLiveResponsesDelegation result = assertInstanceOf(VoiceAgentLiveResponsesDelegation.class,
             UnionTypeSerializationTestUtils.deserialize(json, VoiceAgentLiveDelegation::fromJson));
         assertEquals(VoiceAgentLiveDelegationType.RESPONSES, result.getType());
-        assertEquals(400L, result.getAcknowledgementDelayMs());
+        assertEquals(Duration.ofMillis(400), result.getAcknowledgementDelay());
         assertEquals(responses, result.getResponses());
         assertEquals("get_weather", result.getResponses().tools().get().get(0).asFunction().name());
         assertEquals(LiveToolChoiceEnum.AUTO, result.getResponses().toolChoice().get().asLiveToolChoiceEnum());
@@ -68,6 +70,22 @@ public class VoiceAgentLiveResponsesDelegationSerializationTests {
             VoiceAgentLiveResponsesDelegation result = UnionTypeSerializationTestUtils.deserialize(
                 UnionTypeSerializationTestUtils.serialize(value), VoiceAgentLiveResponsesDelegation::fromJson);
             assertNull(result.getResponses());
+        }
+    }
+
+    @Test
+    public void acknowledgementDelayPreservesNullAndZeroInCustomizedSerializer() throws IOException {
+        for (String delay : new String[] {
+            "",
+            ",\"acknowledgement_delay_ms\":null",
+            ",\"acknowledgement_delay_ms\":0" }) {
+            VoiceAgentLiveResponsesDelegation value = UnionTypeSerializationTestUtils
+                .deserialize("{\"type\":\"responses\"" + delay + "}", VoiceAgentLiveResponsesDelegation::fromJson);
+            Duration expected = delay.endsWith(":0") ? Duration.ZERO : null;
+            assertEquals(expected, value.getAcknowledgementDelay());
+            VoiceAgentLiveResponsesDelegation result = UnionTypeSerializationTestUtils.deserialize(
+                UnionTypeSerializationTestUtils.serialize(value), VoiceAgentLiveResponsesDelegation::fromJson);
+            assertEquals(expected, result.getAcknowledgementDelay());
         }
     }
 }
