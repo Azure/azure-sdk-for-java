@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,15 +37,15 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     private String label;
 
     /*
-     * The replacement Foundry connection name. This property is valid only for a Teams Phone extensibility binding; a
+     * The replacement Foundry connection name. This property is valid for Teams Phone extensibility and SIP bindings; a
      * Twilio binding's connection is immutable.
      */
     @Generated
     private String connectionName;
 
     /*
-     * The replacement Teams Phone extensibility display phone number. Omit it to preserve the current value; use null
-     * to clear it. This property is valid only for a Teams Phone extensibility binding.
+     * The replacement Teams Phone extensibility or SIP display phone number. Omit it to preserve the current value; use
+     * null to clear it. This property is valid only for Teams Phone extensibility and SIP bindings.
      */
     @Generated
     private String phoneNumber;
@@ -137,8 +138,8 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Get the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone extensibility binding; a Twilio binding's connection is immutable.
+     * Get the connectionName property: The replacement Foundry connection name. This property is valid for Teams Phone
+     * extensibility and SIP bindings; a Twilio binding's connection is immutable.
      *
      * @return the connectionName value.
      */
@@ -148,8 +149,8 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Set the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone extensibility binding; a Twilio binding's connection is immutable.
+     * Set the connectionName property: The replacement Foundry connection name. This property is valid for Teams Phone
+     * extensibility and SIP bindings; a Twilio binding's connection is immutable.
      *
      * @param connectionName the connectionName value to set.
      * @return the UpdateTelephonyBindingInput object itself.
@@ -162,8 +163,9 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Get the phoneNumber property: The replacement Teams Phone extensibility display phone number. Omit it to preserve
-     * the current value; use null to clear it. This property is valid only for a Teams Phone extensibility binding.
+     * Get the phoneNumber property: The replacement Teams Phone extensibility or SIP display phone number. Omit it to
+     * preserve the current value; use null to clear it. This property is valid only for Teams Phone extensibility and
+     * SIP bindings.
      *
      * @return the phoneNumber value.
      */
@@ -173,8 +175,9 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Set the phoneNumber property: The replacement Teams Phone extensibility display phone number. Omit it to preserve
-     * the current value; use null to clear it. This property is valid only for a Teams Phone extensibility binding.
+     * Set the phoneNumber property: The replacement Teams Phone extensibility or SIP display phone number. Omit it to
+     * preserve the current value; use null to clear it. This property is valid only for Teams Phone extensibility and
+     * SIP bindings.
      *
      * @param phoneNumber the phoneNumber value to set.
      * @return the UpdateTelephonyBindingInput object itself.
@@ -200,6 +203,8 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
             jsonWriter.writeStringField("label", this.label);
             jsonWriter.writeStringField("connection_name", this.connectionName);
             jsonWriter.writeStringField("phone_number", this.phoneNumber);
+            jsonWriter.writeArrayField("allowed_calling_numbers", this.allowedCallingNumbers,
+                (writer, element) -> writer.writeString(element));
             return jsonWriter.writeEndObject();
         }
     }
@@ -235,6 +240,14 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
                 jsonWriter.writeStringField("phone_number", this.phoneNumber);
             }
         }
+        if (updatedProperties.contains("allowedCallingNumbers")) {
+            if (this.allowedCallingNumbers == null) {
+                jsonWriter.writeNullField("allowed_calling_numbers");
+            } else {
+                jsonWriter.writeArrayField("allowed_calling_numbers", this.allowedCallingNumbers,
+                    (writer, element) -> writer.writeString(element));
+            }
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -262,11 +275,43 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
                     deserializedUpdateTelephonyBindingInput.connectionName = reader.getString();
                 } else if ("phone_number".equals(fieldName)) {
                     deserializedUpdateTelephonyBindingInput.phoneNumber = reader.getString();
+                } else if ("allowed_calling_numbers".equals(fieldName)) {
+                    List<String> allowedCallingNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpdateTelephonyBindingInput.allowedCallingNumbers = allowedCallingNumbers;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedUpdateTelephonyBindingInput;
         });
+    }
+
+    /*
+     * SIP only. Omit to preserve the restriction; send [] to allow any caller.
+     */
+    @Generated
+    private List<String> allowedCallingNumbers;
+
+    /**
+     * Get the allowedCallingNumbers property: SIP only. Omit to preserve the restriction; send [] to allow any caller.
+     *
+     * @return the allowedCallingNumbers value.
+     */
+    @Generated
+    public List<String> getAllowedCallingNumbers() {
+        return this.allowedCallingNumbers;
+    }
+
+    /**
+     * Set the allowedCallingNumbers property: SIP only. Omit to preserve the restriction; send [] to allow any caller.
+     *
+     * @param allowedCallingNumbers the allowedCallingNumbers value to set.
+     * @return the UpdateTelephonyBindingInput object itself.
+     */
+    @Generated
+    public UpdateTelephonyBindingInput setAllowedCallingNumbers(List<String> allowedCallingNumbers) {
+        this.allowedCallingNumbers = allowedCallingNumbers;
+        this.updatedProperties.add("allowedCallingNumbers");
+        return this;
     }
 }

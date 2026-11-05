@@ -395,8 +395,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     }
 
     /*
-     * The Foundry connection name in the current project used to originate the call. Its category selects Twilio or
-     * Azure Communication Services / Teams Phone extensibility. No inbound telephony binding is required.
+     * The Foundry connection name in the current project used to originate the call. Its category selects Twilio, Azure
+     * Communication Services / Teams Phone extensibility, or SIP. No inbound telephony binding is required.
      */
     @Generated
     private final String connectionName;
@@ -412,8 +412,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
 
     /**
      * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
-     * Its category selects Twilio or Azure Communication Services / Teams Phone extensibility. No inbound telephony
-     * binding is required.
+     * Its category selects Twilio, Azure Communication Services / Teams Phone extensibility, or SIP. No inbound
+     * telephony binding is required.
      *
      * @return the connectionName value.
      */

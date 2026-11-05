@@ -13,10 +13,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -199,9 +195,9 @@ public final class VoiceAgentSessionResponseConfiguration
      *
      * @return the maxOutputTokens value.
      */
-    BinaryData getMaxOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxOutputTokens() {
         // AI Tooling: union type
-        return this.maxOutputTokens;
+        return this.maxOutputTokens == null ? null : this.maxOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -257,11 +253,10 @@ public final class VoiceAgentSessionResponseConfiguration
     /**
      * Get the toolChoice property: Tool-selection behavior for the session.
      *
-     * @return the toolChoice value.
+     * @return the tool choice, or {@code null} when absent or JSON null.
      */
-    BinaryData getToolChoice() {
-        // AI Tooling: union type
-        return this.toolChoice;
+    public VoiceAgentToolChoice getToolChoice() {
+        return this.toolChoice == null ? null : this.toolChoice.toObject(VoiceAgentToolChoice.class);
     }
 
     /**
@@ -404,6 +399,7 @@ public final class VoiceAgentSessionResponseConfiguration
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("interim_response", this.interimResponse);
         jsonWriter.writeJsonField("greeting", this.greeting);
+        jsonWriter.writeJsonField("handoff", this.handoff);
         jsonWriter.writeNumberField("expires_at", this.expiresAt);
         return jsonWriter.writeEndObject();
     }
@@ -437,6 +433,7 @@ public final class VoiceAgentSessionResponseConfiguration
             Map<String, String> metadata = null;
             VoiceAgentInterimResponseConfiguration interimResponse = null;
             VoiceAgentGreetingConfiguration greeting = null;
+            VoiceAgentHandoffState handoff = null;
             Long expiresAt = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -481,6 +478,8 @@ public final class VoiceAgentSessionResponseConfiguration
                     interimResponse = VoiceAgentInterimResponseConfiguration.fromJson(reader);
                 } else if ("greeting".equals(fieldName)) {
                     greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
+                } else if ("handoff".equals(fieldName)) {
+                    handoff = VoiceAgentHandoffState.fromJson(reader);
                 } else if ("expires_at".equals(fieldName)) {
                     expiresAt = reader.getNullable(JsonReader::getLong);
                 } else {
@@ -504,106 +503,25 @@ public final class VoiceAgentSessionResponseConfiguration
             deserializedVoiceAgentSessionResponseConfiguration.metadata = metadata;
             deserializedVoiceAgentSessionResponseConfiguration.interimResponse = interimResponse;
             deserializedVoiceAgentSessionResponseConfiguration.greeting = greeting;
+            deserializedVoiceAgentSessionResponseConfiguration.handoff = handoff;
             deserializedVoiceAgentSessionResponseConfiguration.expiresAt = expiresAt;
             return deserializedVoiceAgentSessionResponseConfiguration;
         });
     }
 
-    /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
+    /*
+     * The effective handoff topology and runtime state, when handoff is configured.
      */
-    public Long getMaxOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(Long.class);
-    }
+    @Generated
+    private VoiceAgentHandoffState handoff;
 
     /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
+     * Get the handoff property: The effective handoff topology and runtime state, when handoff is configured.
      *
-     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
+     * @return the handoff value.
      */
-    public String getMaxOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(String.class);
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: Tool-selection behavior for the
-     * session.
-     *
-     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isFunction()) {
-            return null;
-        }
-        return choice.asFunction();
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: Tool-selection behavior for the session.
-     *
-     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isMcp()) {
-            return null;
-        }
-        return choice.asMcp();
-    }
-
-    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!json.startsWith("{")) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ResponseCreateParams.ToolChoice.class);
-    }
-
-    /**
-     * Get the toolChoice property: Tool-selection behavior for the session.
-     *
-     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ToolChoiceOptions.class);
+    @Generated
+    public VoiceAgentHandoffState getHandoff() {
+        return this.handoff;
     }
 }

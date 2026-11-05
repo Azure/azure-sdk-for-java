@@ -420,7 +420,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
      * }
@@ -432,7 +432,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -502,7 +502,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
      * }
@@ -514,7 +514,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -574,7 +574,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
      * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
@@ -598,7 +598,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -638,7 +638,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
      * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
@@ -662,7 +662,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -723,7 +723,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
      * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
@@ -747,7 +747,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -784,7 +784,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
      * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
@@ -808,7 +808,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -869,7 +869,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -916,7 +916,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -966,6 +966,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
+     *     allowed_calling_numbers (Optional): [
+     *         String (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -975,7 +978,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -1029,6 +1032,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
+     *     allowed_calling_numbers (Optional): [
+     *         String (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -1038,7 +1044,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -1132,7 +1138,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1161,7 +1167,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1210,7 +1216,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1239,7 +1245,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1309,7 +1315,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1338,7 +1344,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1384,7 +1390,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1413,7 +1419,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1484,7 +1490,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1572,7 +1578,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1669,7 +1675,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1768,7 +1774,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1856,7 +1862,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1942,7 +1948,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)

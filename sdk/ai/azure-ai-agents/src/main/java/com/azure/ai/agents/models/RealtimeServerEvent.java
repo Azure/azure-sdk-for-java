@@ -171,8 +171,14 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
                     return RealtimeResponseMcpCallFailedEvent.fromJson(readerToUse.reset());
                 } else if ("error".equals(discriminatorValue)) {
                     return RealtimeErrorEvent.fromJson(readerToUse.reset());
+                } else if ("session.handoff.started".equals(discriminatorValue)) {
+                    return VoiceAgentSessionHandoffStartedEvent.fromJson(readerToUse.reset());
+                } else if ("session.handoff.aborted".equals(discriminatorValue)) {
+                    return VoiceAgentSessionHandoffAbortedEvent.fromJson(readerToUse.reset());
                 } else if ("session.subagent.started".equals(discriminatorValue)) {
                     return VoiceAgentSessionSubagentStartedEvent.fromJson(readerToUse.reset());
+                } else if ("session.subagent.completed".equals(discriminatorValue)) {
+                    return VoiceAgentSessionSubagentCompletedEvent.fromJson(readerToUse.reset());
                 } else if ("session.subagent.aborted".equals(discriminatorValue)) {
                     return VoiceAgentSessionSubagentAbortedEvent.fromJson(readerToUse.reset());
                 } else if ("warning".equals(discriminatorValue)) {
@@ -201,8 +207,8 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
                     return VoiceAgentResponseAnimationVisemeDoneEvent.fromJson(readerToUse.reset());
                 } else if ("response.video.delta".equals(discriminatorValue)) {
                     return VoiceAgentResponseVideoDeltaEvent.fromJson(readerToUse.reset());
-                } else if ("session.subagent.completed".equals(discriminatorValue)) {
-                    return VoiceAgentSessionSubagentCompletedEvent.fromJson(readerToUse.reset());
+                } else if ("session.handoff.completed".equals(discriminatorValue)) {
+                    return VoiceAgentSessionHandoffCompletedEvent.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

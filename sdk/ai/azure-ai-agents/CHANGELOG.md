@@ -8,13 +8,26 @@
   voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
 - Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
   destinations.
+- Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
+- Added preview SIP telephony bindings.
 
 ### Breaking Changes
 
 - Changed the preview `VoiceAgentResponseCreateOptions` input list to `List<RealtimeResponseInputItem>`.
+- Replaced the numeric/string token-limit accessors on preview voice and realtime models with
+  `getMaxOutputTokens()` and `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. `InlineVoiceSubagent` uses
+  the same type through `getMaxResponseOutputTokens()` and `setMaxResponseOutputTokens(VoiceAgentMaxOutputTokens)`.
+  Use `VoiceAgentMaxOutputTokens.of(count)` for a numeric limit or `VoiceAgentMaxOutputTokens.MAXIMUM` for `"inf"`, and
+  inspect the value with `getCount()` or `isMaximum()`. Passing `null` to a setter clears the property.
+- Replaced the per-variant tool-choice accessors on preview voice and realtime models with
+  `getToolChoice()` and `setToolChoice(VoiceAgentToolChoice)`, where writable. Use `VoiceAgentToolChoice.ofMode`,
+  `ofFunction`, or `ofMcp` to create a choice, and `getMode`, `getFunction`, or `getMcp` to inspect it. Getters for
+  other variants return `null`. Passing `null` to the setter clears the property; the factories reject null arguments.
+  `PromptAgentDefinition` is unchanged.
 
 ### Bugs Fixed
 
+- Preserved handoff state when serializing and deserializing voice-agent session response configurations.
 ### Other Changes
 
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
