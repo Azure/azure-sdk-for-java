@@ -28,7 +28,8 @@ public final class VolumesResyncReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .resyncReplication("lxynpdkvgf", "buiyji", "uzphdugnei", "n", com.azure.core.util.Context.NONE);
+            .resyncReplication("qnoowsbedenrex", "xbhxvucnulgmnhj", "vdyznf", "jsvkskmqozzkivy",
+                com.azure.core.util.Context.NONE);
 
     }
 }

@@ -173,8 +173,12 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     AutomationImpl(AutomationInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}",
+            "resourceGroupName");
+        this.automationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}",
+            "automationName");
     }
 
     public Automation refresh() {

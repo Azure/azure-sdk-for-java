@@ -127,10 +127,18 @@ public final class SCClusterRecordImpl implements SCClusterRecord, SCClusterReco
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.environmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
-        this.clusterId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "organizationName");
+        this.environmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "environmentId");
+        this.clusterId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "clusterId");
     }
 
     public SCClusterRecordImpl withKind(String kind) {

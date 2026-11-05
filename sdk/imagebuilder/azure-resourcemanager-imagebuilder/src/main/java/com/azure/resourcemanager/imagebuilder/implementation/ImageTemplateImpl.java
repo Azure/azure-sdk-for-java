@@ -224,8 +224,12 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "imageTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
+            "resourceGroupName");
+        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
+            "imageTemplateName");
     }
 
     public ImageTemplate refresh() {

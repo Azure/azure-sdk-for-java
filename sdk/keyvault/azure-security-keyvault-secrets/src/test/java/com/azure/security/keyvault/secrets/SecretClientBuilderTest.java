@@ -50,13 +50,18 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
+        assertEquals("2026-04-01", SecretServiceVersion.getLatest().getVersion());
         SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(request -> {
+                assertEquals("api-version=2026-04-01", request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            })
             .buildClient();
 
         assertNotNull(secretClient);
         assertEquals(SecretClient.class.getSimpleName(), secretClient.getClass().getSimpleName());
+        assertThrows(HttpResponseException.class, () -> secretClient.getSecret(secretName));
     }
 
     @Test
@@ -73,13 +78,18 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
+        assertEquals("2026-04-01", SecretServiceVersion.getLatest().getVersion());
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(request -> {
+                assertEquals("api-version=2026-04-01", request.getUrl().getQuery());
+                return Mono.just(new MockHttpResponse(request, 404));
+            })
             .buildAsyncClient();
 
         assertNotNull(secretAsyncClient);
         assertEquals(SecretAsyncClient.class.getSimpleName(), secretAsyncClient.getClass().getSimpleName());
+        assertThrows(HttpResponseException.class, () -> secretAsyncClient.getSecret(secretName).block());
     }
 
     @Test

@@ -108,10 +108,18 @@ public final class TaskQueueImpl implements TaskQueue, TaskQueue.Definition, Tas
     TaskQueueImpl(TaskQueueInner innerObject, com.azure.resourcemanager.durabletask.DurableTaskManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schedulerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedulers");
-        this.taskHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "taskHubs");
-        this.taskQueueName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "taskQueues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
+            "resourceGroupName");
+        this.schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
+            "schedulerName");
+        this.taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
+            "taskHubName");
+        this.taskQueueName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
+            "taskQueueName");
     }
 
     public TaskQueue refresh() {

@@ -11,7 +11,23 @@ import com.azure.resourcemanager.redisenterprise.models.MigrationValidationReque
  */
 public final class MigrationsValidateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseMigrationValidate.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationValidateWithDataMigration.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationValidateWithDataMigration.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseMigrationValidateWithDataMigration(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .validateWithResponse("rg1", "cache1", new MigrationValidationRequest().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                .withSkipDataMigration(false), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationValidate.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationValidate.
@@ -22,8 +38,7 @@ public final class MigrationsValidateSamples {
         redisEnterpriseMigrationValidate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrations()
             .validateWithResponse("rg1", "cache1", new MigrationValidationRequest().withSourceResourceId(
-                "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
-                .withSkipDataMigration(true)
-                .withForceMigrate(false), com.azure.core.util.Context.NONE);
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                .withSkipDataMigration(true), com.azure.core.util.Context.NONE);
     }
 }

@@ -43,12 +43,16 @@ public final class ManifestsImpl implements Manifests {
     }
 
     public ManifestInfo getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "providerNamespace");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String environment = ResourceManagerUtils.getValueFromIdByName(id, "manifests");
+        String environment = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "environment");
         if (environment == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'manifests'.", id)));
@@ -57,12 +61,16 @@ public final class ManifestsImpl implements Manifests {
     }
 
     public Response<ManifestInfo> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "providerNamespace");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String environment = ResourceManagerUtils.getValueFromIdByName(id, "manifests");
+        String environment = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "environment");
         if (environment == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'manifests'.", id)));

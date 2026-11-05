@@ -95,7 +95,9 @@ public final class WorkspaceSettingImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaceSettings");
+        this.workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
     }
 
     public WorkspaceSetting refresh() {

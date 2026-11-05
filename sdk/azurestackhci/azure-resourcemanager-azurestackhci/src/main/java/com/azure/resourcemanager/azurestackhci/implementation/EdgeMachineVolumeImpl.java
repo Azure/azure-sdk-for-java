@@ -102,9 +102,15 @@ public final class EdgeMachineVolumeImpl
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeMachines");
-        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/volumes/{volumeName}",
+            "resourceGroupName");
+        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/volumes/{volumeName}",
+            "edgeMachineName");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/volumes/{volumeName}",
+            "volumeName");
     }
 
     public EdgeMachineVolume refresh() {
