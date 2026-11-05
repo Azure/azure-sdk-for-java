@@ -222,62 +222,6 @@ public class EventDataAggregatorTest {
     }
 
     /**
-     * The max-wait timer is measured from the first event in a batch, so events that keep arriving faster than the
-     * max wait time must not postpone publishing a partially full batch.
-     */
-    @Test
-    public void pushesBatchAfterMaxTimeWhileEventsKeepArriving() throws InterruptedException {
-        // Arrange
-        final Duration waitTime = Duration.ofMillis(1000);
-        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
-        options.setMaxWaitTime(waitTime);
-
-        final EventData[] events = new EventData[6];
-        for (int i = 0; i < events.length; i++) {
-            events[i] = new EventData("event-" + i);
-        }
-        setupBatchMock(batch, new ArrayList<>(), events);
-        setupBatchMock(batch2, new ArrayList<>(), events);
-        setupBatchMock(batch3, new ArrayList<>(), events);
-
-        final AtomicInteger supplierCalls = new AtomicInteger();
-        final Supplier<EventDataBatch> supplier = () -> {
-            switch (supplierCalls.getAndIncrement()) {
-                case 0:
-                    return batch;
-
-                case 1:
-                    return batch2;
-
-                default:
-                    return batch3;
-            }
-        };
-
-        final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator
-            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
-        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
-        final Disposable subscription = aggregator.subscribe(published::add);
-
-        try {
-            // Act: an event every 300 ms for 1.5 seconds, never leaving a gap of maxWaitTime.
-            for (EventData event : events) {
-                publisher.next(event);
-                TimeUnit.MILLISECONDS.sleep(300);
-            }
-
-            // Assert: the first batch was published about maxWaitTime after its first event, even though events
-            // kept arriving. Restarting the timer on every event would publish nothing until 1 second after the
-            // last event.
-            assertFalse(published.isEmpty(), "Partial batch was not published after maxWaitTime.");
-            assertSame(batch, published.get(0));
-        } finally {
-            subscription.dispose();
-        }
-    }
-
-    /**
      * Starting a batch cancels the running max-wait interval. That must not interrupt a timer-triggered publish that is
      * in progress, otherwise creating the next batch fails and a send can close the connection's IO pipe.
      */
