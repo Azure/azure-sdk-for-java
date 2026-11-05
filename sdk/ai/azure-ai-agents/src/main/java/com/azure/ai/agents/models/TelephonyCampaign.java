@@ -96,12 +96,6 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     private long updatedAt;
 
     /*
-     * Conditional-action token, not a cache validator. Changes with control state, not progress.
-     */
-    @Generated
-    private String etag;
-
-    /*
      * Latest accepted action, for discovery only. Poll the initiating response's Operation-Id/Operation-Location
      * instead.
      */
@@ -310,16 +304,6 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     }
 
     /**
-     * Get the etag property: Conditional-action token, not a cache validator. Changes with control state, not progress.
-     *
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
      * Get the operationId property: Latest accepted action, for discovery only. Poll the initiating response's
      * Operation-Id/Operation-Location instead.
      *
@@ -399,7 +383,7 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
             String name = null;
             long createdAt = 0L;
             long updatedAt = 0L;
-            String etag = null;
+            String eTag = null;
             String operationId = null;
             TelephonyCampaignProgress progress = null;
             List<TelephonyRecipient> recipients = null;
@@ -425,7 +409,7 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
                 } else if ("updated_at".equals(fieldName)) {
                     updatedAt = reader.getLong();
                 } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
+                    eTag = reader.getString();
                 } else if ("operation_id".equals(fieldName)) {
                     operationId = reader.getString();
                 } else if ("progress".equals(fieldName)) {
@@ -453,7 +437,7 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
             deserializedTelephonyCampaign.name = name;
             deserializedTelephonyCampaign.createdAt = createdAt;
             deserializedTelephonyCampaign.updatedAt = updatedAt;
-            deserializedTelephonyCampaign.etag = etag;
+            deserializedTelephonyCampaign.eTag = eTag;
             deserializedTelephonyCampaign.operationId = operationId;
             deserializedTelephonyCampaign.progress = progress;
             deserializedTelephonyCampaign.recipients = recipients;
@@ -465,5 +449,21 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
             deserializedTelephonyCampaign.lockedAgentVersion = lockedAgentVersion;
             return deserializedTelephonyCampaign;
         });
+    }
+
+    /*
+     * Conditional-action token, not a cache validator. Changes with control state, not progress.
+     */
+    @Generated
+    private String eTag;
+
+    /**
+     * Get the eTag property: Conditional-action token, not a cache validator. Changes with control state, not progress.
+     *
+     * @return the eTag value.
+     */
+    @Generated
+    public String getETag() {
+        return this.eTag;
     }
 }

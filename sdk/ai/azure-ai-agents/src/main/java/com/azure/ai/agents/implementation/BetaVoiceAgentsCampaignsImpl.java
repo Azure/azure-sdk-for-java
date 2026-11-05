@@ -97,7 +97,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData campaign,
@@ -109,7 +109,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData campaign,
@@ -121,7 +121,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -132,9 +132,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("campaign_name") String campaignName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/telephony_campaigns")
         @ExpectedResponses({ 200 })
@@ -142,7 +143,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listCampaigns(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -152,9 +153,9 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> listCampaignsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/agents/{agent_name}/telephony_campaigns/{campaign_name}:cancel")
         @ExpectedResponses({ 202 })
@@ -162,7 +163,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancel(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> cancelCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -173,7 +174,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -184,9 +185,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("campaign_name") String campaignName, @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+        Mono<Response<Void>> deleteCampaign(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
         @ExpectedResponses({ 202, 204 })
@@ -194,9 +196,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("campaign_name") String campaignName, @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+        Response<Void> deleteCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}/validation_errors")
         @ExpectedResponses({ 200 })
@@ -204,7 +207,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listValidationErrors(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listCampaignValidationErrors(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -215,7 +218,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listValidationErrorsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listCampaignValidationErrorsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -226,7 +229,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperation(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCampaignOperation(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @PathParam("operation_id") String operationId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -237,7 +240,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCampaignOperationSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
             @PathParam("operation_id") String operationId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -422,12 +425,13 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return agent-owned outbound call Campaign along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createWithResponseAsync(String agentName, String campaignName,
+    private Mono<Response<BinaryData>> createCampaignWithResponseAsync(String agentName, String campaignName,
         BinaryData campaign, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), agentName, campaignName,
-            this.client.getServiceVersion().getVersion(), contentType, accept, campaign, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.createCampaign(this.client.getEndpoint(), agentName, campaignName,
+                this.client.getServiceVersion().getVersion(), contentType, accept, campaign, requestOptions, context));
     }
 
     /**
@@ -609,11 +613,11 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return agent-owned outbound call Campaign along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createWithResponse(String agentName, String campaignName, BinaryData campaign,
+    private Response<BinaryData> createCampaignWithResponse(String agentName, String campaignName, BinaryData campaign,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), agentName, campaignName,
+        return service.createCampaignSync(this.client.getEndpoint(), agentName, campaignName,
             this.client.getServiceVersion().getVersion(), contentType, accept, campaign, requestOptions, Context.NONE);
     }
 
@@ -796,10 +800,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link PollerFlux} for polling of agent-owned outbound call Campaign.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreateWithModelAsync(String agentName,
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaignWithModelAsync(String agentName,
         String campaignName, BinaryData campaign, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createWithResponseAsync(agentName, campaignName, campaign, requestOptions),
+            () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -989,10 +993,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link SyncPoller} for polling of agent-owned outbound call Campaign.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreateWithModel(String agentName,
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaignWithModel(String agentName,
         String campaignName, BinaryData campaign, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createWithResponse(agentName, campaignName, campaign, requestOptions),
+            () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1182,10 +1186,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link PollerFlux} for polling of agent-owned outbound call Campaign.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateAsync(String agentName, String campaignName,
+    public PollerFlux<BinaryData, BinaryData> beginCreateCampaignAsync(String agentName, String campaignName,
         BinaryData campaign, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createWithResponseAsync(agentName, campaignName, campaign, requestOptions),
+            () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1374,10 +1378,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link SyncPoller} for polling of agent-owned outbound call Campaign.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreate(String agentName, String campaignName, BinaryData campaign,
-        RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCampaign(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createWithResponse(agentName, campaignName, campaign, requestOptions),
+            () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1489,10 +1493,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String agentName, String campaignName,
+    public Mono<Response<BinaryData>> getCampaignWithResponseAsync(String agentName, String campaignName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), agentName, campaignName,
+        return FluxUtil.withContext(context -> service.getCampaign(this.client.getEndpoint(), agentName, campaignName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1597,9 +1601,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * Gets Campaign configuration and execution state without inline recipients along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String agentName, String campaignName, RequestOptions requestOptions) {
+    public Response<BinaryData> getCampaignWithResponse(String agentName, String campaignName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), agentName, campaignName,
+        return service.getCampaignSync(this.client.getEndpoint(), agentName, campaignName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1711,10 +1716,11 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String agentName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listCampaignsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), agentName,
+            .withContext(context -> service.listCampaigns(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
@@ -1828,12 +1834,12 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(String agentName, RequestOptions requestOptions) {
-        return listAsync(null, agentName, requestOptions);
+    public PagedFlux<BinaryData> listCampaignsAsync(String agentName, RequestOptions requestOptions) {
+        return listCampaignsAsync(null, agentName, requestOptions);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(String initialContinuationToken, String agentName,
+    public PagedFlux<BinaryData> listCampaignsAsync(String initialContinuationToken, String agentName,
         RequestOptions requestOptions) {
         return new PagedFlux<>(() -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1845,7 +1851,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (initialContinuationToken != null) {
                 requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
             }
-            return listSinglePageAsync(agentName, requestOptionsLocal);
+            return listCampaignsSinglePageAsync(agentName, requestOptionsLocal);
         }, (after) -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1856,7 +1862,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (after != null) {
                 requestOptionsLocal.addQueryParam("after", after, false);
             }
-            return listSinglePageAsync(agentName, requestOptionsLocal);
+            return listCampaignsSinglePageAsync(agentName, requestOptionsLocal);
         });
     }
 
@@ -1968,9 +1974,9 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(String agentName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listCampaignsSinglePage(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(), agentName,
+        Response<BinaryData> res = service.listCampaignsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
@@ -2084,12 +2090,12 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return list(null, agentName, requestOptions);
+    public PagedIterable<BinaryData> listCampaigns(String agentName, RequestOptions requestOptions) {
+        return listCampaigns(null, agentName, requestOptions);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(String initialContinuationToken, String agentName,
+    public PagedIterable<BinaryData> listCampaigns(String initialContinuationToken, String agentName,
         RequestOptions requestOptions) {
         return new PagedIterable<>(() -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2101,7 +2107,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (initialContinuationToken != null) {
                 requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
             }
-            return listSinglePage(agentName, requestOptionsLocal);
+            return listCampaignsSinglePage(agentName, requestOptionsLocal);
         }, (after) -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -2112,7 +2118,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (after != null) {
                 requestOptionsLocal.addQueryParam("after", after, false);
             }
-            return listSinglePage(agentName, requestOptionsLocal);
+            return listCampaignsSinglePage(agentName, requestOptionsLocal);
         });
     }
 
@@ -2180,11 +2186,11 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * actions along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> cancelWithResponseAsync(String agentName, String campaignName, String ifMatch,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> cancelCampaignWithResponseAsync(String agentName, String campaignName,
+        String ifMatch, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancel(this.client.getEndpoint(), agentName, campaignName,
-            ifMatch, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelCampaign(this.client.getEndpoint(), agentName,
+            campaignName, ifMatch, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2251,10 +2257,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * actions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String agentName, String campaignName, String ifMatch,
+    private Response<BinaryData> cancelCampaignWithResponse(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
+        return service.cancelCampaignSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2322,10 +2328,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * instance/round, independent of later actions.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancelWithModelAsync(String agentName,
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaignWithModelAsync(String agentName,
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cancelWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2400,10 +2406,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * instance/round, independent of later actions.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancelWithModel(String agentName,
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaignWithModel(String agentName,
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cancelWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2478,10 +2484,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * instance/round, independent of later actions.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCancelAsync(String agentName, String campaignName, String ifMatch,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCancelCampaignAsync(String agentName, String campaignName,
+        String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cancelWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2555,10 +2561,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * instance/round, independent of later actions.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCancel(String agentName, String campaignName, String ifMatch,
+    public SyncPoller<BinaryData, BinaryData> beginCancelCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cancelWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2596,10 +2602,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String agentName, String campaignName, String ifMatch,
+    private Mono<Response<Void>> deleteCampaignWithResponseAsync(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), agentName, campaignName,
-            ifMatch, this.client.getServiceVersion().getVersion(), requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteCampaign(this.client.getEndpoint(), agentName,
+            campaignName, ifMatch, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -2630,9 +2636,9 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> deleteWithResponse(String agentName, String campaignName, String ifMatch,
+    private Response<Void> deleteCampaignWithResponse(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
+        return service.deleteCampaignSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
@@ -2664,10 +2670,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, Void> beginDeleteWithModelAsync(String agentName, String campaignName,
-        String ifMatch, RequestOptions requestOptions) {
+    public PollerFlux<TelephonyCampaignOperation, Void> beginDeleteCampaignWithModelAsync(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deleteWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2705,10 +2711,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, Void> beginDeleteWithModel(String agentName, String campaignName,
-        String ifMatch, RequestOptions requestOptions) {
+    public SyncPoller<TelephonyCampaignOperation, Void> beginDeleteCampaignWithModel(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deleteWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2746,10 +2752,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteAsync(String agentName, String campaignName, String ifMatch,
+    public PollerFlux<BinaryData, Void> beginDeleteCampaignAsync(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deleteWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2787,10 +2793,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDelete(String agentName, String campaignName, String ifMatch,
+    public SyncPoller<BinaryData, Void> beginDeleteCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deleteWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2864,12 +2870,12 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return error-only page along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listValidationErrorsSinglePageAsync(String agentName, String campaignName,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listCampaignValidationErrorsSinglePageAsync(String agentName,
+        String campaignName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listValidationErrors(this.client.getEndpoint(), agentName, campaignName,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listCampaignValidationErrors(this.client.getEndpoint(), agentName,
+                campaignName, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
@@ -2938,13 +2944,13 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return error-only page as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listValidationErrorsAsync(String agentName, String campaignName,
+    public PagedFlux<BinaryData> listCampaignValidationErrorsAsync(String agentName, String campaignName,
         RequestOptions requestOptions) {
-        return listValidationErrorsAsync(null, agentName, campaignName, requestOptions);
+        return listCampaignValidationErrorsAsync(null, agentName, campaignName, requestOptions);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listValidationErrorsAsync(String initialContinuationToken, String agentName,
+    public PagedFlux<BinaryData> listCampaignValidationErrorsAsync(String initialContinuationToken, String agentName,
         String campaignName, RequestOptions requestOptions) {
         return new PagedFlux<>(() -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2956,7 +2962,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (initialContinuationToken != null) {
                 requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
             }
-            return listValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
+            return listCampaignValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
         }, (after) -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -2967,7 +2973,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (after != null) {
                 requestOptionsLocal.addQueryParam("after", after, false);
             }
-            return listValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
+            return listCampaignValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
         });
     }
 
@@ -3035,11 +3041,11 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return error-only page along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listValidationErrorsSinglePage(String agentName, String campaignName,
+    private PagedResponse<BinaryData> listCampaignValidationErrorsSinglePage(String agentName, String campaignName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listValidationErrorsSync(this.client.getEndpoint(), agentName, campaignName,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listCampaignValidationErrorsSync(this.client.getEndpoint(), agentName,
+            campaignName, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
@@ -3108,13 +3114,13 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * @return error-only page as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listValidationErrors(String agentName, String campaignName,
+    public PagedIterable<BinaryData> listCampaignValidationErrors(String agentName, String campaignName,
         RequestOptions requestOptions) {
-        return listValidationErrors(null, agentName, campaignName, requestOptions);
+        return listCampaignValidationErrors(null, agentName, campaignName, requestOptions);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listValidationErrors(String initialContinuationToken, String agentName,
+    public PagedIterable<BinaryData> listCampaignValidationErrors(String initialContinuationToken, String agentName,
         String campaignName, RequestOptions requestOptions) {
         return new PagedIterable<>(() -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -3126,7 +3132,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (initialContinuationToken != null) {
                 requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
             }
-            return listValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
+            return listCampaignValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
         }, (after) -> {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -3137,7 +3143,7 @@ public final class BetaVoiceAgentsCampaignsImpl {
             if (after != null) {
                 requestOptionsLocal.addQueryParam("after", after, false);
             }
-            return listValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
+            return listCampaignValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
         });
     }
 
@@ -3204,11 +3210,11 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * Gets the initiating operation's status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponseAsync(String agentName, String campaignName,
+    public Mono<Response<BinaryData>> getCampaignOperationWithResponseAsync(String agentName, String campaignName,
         String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), agentName, campaignName,
-            operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getCampaignOperation(this.client.getEndpoint(), agentName,
+            campaignName, operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3274,10 +3280,10 @@ public final class BetaVoiceAgentsCampaignsImpl {
      * Gets the initiating operation's status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String agentName, String campaignName, String operationId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getCampaignOperationWithResponse(String agentName, String campaignName,
+        String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOperationSync(this.client.getEndpoint(), agentName, campaignName, operationId,
+        return service.getCampaignOperationSync(this.client.getEndpoint(), agentName, campaignName, operationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

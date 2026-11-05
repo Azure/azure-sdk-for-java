@@ -39,7 +39,7 @@ public class TelephonyAddress implements JsonSerializable<TelephonyAddress> {
      * @param value the value value to set.
      */
     @Generated
-    public TelephonyAddress(String value) {
+    protected TelephonyAddress(String value) {
         this.value = value;
     }
 

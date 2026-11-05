@@ -26,7 +26,7 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
      * discriminating its content (e.g. `spec`, `tools`, `context`).
      */
     @Generated
-    private final VersionedDatasetReference dataset;
+    private final DatasetReference dataset;
 
     /*
      * The kinds of rows present in `dataset`. Always contains `"spec"` (the generated evaluation specification, a
@@ -45,7 +45,7 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
      * @return the dataset value.
      */
     @Generated
-    public VersionedDatasetReference getDataset() {
+    public DatasetReference getDataset() {
         return this.dataset;
     }
 
@@ -86,13 +86,13 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
     @Generated
     public static EvaluatorGenerationArtifacts fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VersionedDatasetReference dataset = null;
+            DatasetReference dataset = null;
             List<String> kinds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dataset".equals(fieldName)) {
-                    dataset = VersionedDatasetReference.fromJson(reader);
+                    dataset = DatasetReference.fromJson(reader);
                 } else if ("kinds".equals(fieldName)) {
                     kinds = reader.readArray(reader1 -> reader1.getString());
                 } else {
@@ -110,7 +110,7 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
      * @param kinds the kinds value to set.
      */
     @Generated
-    private EvaluatorGenerationArtifacts(VersionedDatasetReference dataset, List<String> kinds) {
+    private EvaluatorGenerationArtifacts(DatasetReference dataset, List<String> kinds) {
         this.dataset = dataset;
         this.kinds = kinds;
     }

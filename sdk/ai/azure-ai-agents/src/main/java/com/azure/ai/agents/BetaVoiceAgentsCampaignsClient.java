@@ -225,9 +225,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreate(String agentName, String campaignName, BinaryData campaign,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginCreate(agentName, campaignName, campaign, requestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginCreateCampaign(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCampaign(agentName, campaignName, campaign, requestOptions);
     }
 
     /**
@@ -332,8 +332,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String agentName, String campaignName, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(agentName, campaignName, requestOptions);
+    public Response<BinaryData> getCampaignWithResponse(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getCampaignWithResponse(agentName, campaignName, requestOptions);
     }
 
     /**
@@ -445,8 +446,8 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.list(agentName, requestOptions);
+    public PagedIterable<BinaryData> listCampaigns(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listCampaigns(agentName, requestOptions);
     }
 
     /**
@@ -514,9 +515,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCancel(String agentName, String campaignName, String ifMatch,
+    public SyncPoller<BinaryData, BinaryData> beginCancelCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCancel(agentName, campaignName, ifMatch, requestOptions);
+        return this.serviceClient.beginCancelCampaign(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -548,9 +549,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDelete(String agentName, String campaignName, String ifMatch,
+    public SyncPoller<BinaryData, Void> beginDeleteCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginDelete(agentName, campaignName, ifMatch, requestOptions);
+        return this.serviceClient.beginDeleteCampaign(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -618,9 +619,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listValidationErrors(String agentName, String campaignName,
+    public PagedIterable<BinaryData> listCampaignValidationErrors(String agentName, String campaignName,
         RequestOptions requestOptions) {
-        return this.serviceClient.listValidationErrors(agentName, campaignName, requestOptions);
+        return this.serviceClient.listCampaignValidationErrors(agentName, campaignName, requestOptions);
     }
 
     /**
@@ -687,9 +688,10 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String agentName, String campaignName, String operationId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponse(agentName, campaignName, operationId, requestOptions);
+    public Response<BinaryData> getCampaignOperationWithResponse(String agentName, String campaignName,
+        String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getCampaignOperationWithResponse(agentName, campaignName, operationId,
+            requestOptions);
     }
 
     /**
@@ -717,9 +719,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreate(String agentName, String campaignName,
-        TelephonyCampaign campaign, String operationId, String ifMatch) {
-        // Generated convenience method for beginCreateWithModel
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaign(String agentName,
+        String campaignName, TelephonyCampaign campaign, String operationId, String ifMatch) {
+        // Generated convenience method for beginCreateCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
@@ -727,7 +729,7 @@ public final class BetaVoiceAgentsCampaignsClient {
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
-        return serviceClient.beginCreateWithModel(agentName, campaignName, BinaryData.fromObject(campaign),
+        return serviceClient.beginCreateCampaignWithModel(agentName, campaignName, BinaryData.fromObject(campaign),
             requestOptions);
     }
 
@@ -751,11 +753,11 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreate(String agentName, String campaignName,
-        TelephonyCampaign campaign) {
-        // Generated convenience method for beginCreateWithModel
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaign(String agentName,
+        String campaignName, TelephonyCampaign campaign) {
+        // Generated convenience method for beginCreateCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateWithModel(agentName, campaignName, BinaryData.fromObject(campaign),
+        return serviceClient.beginCreateCampaignWithModel(agentName, campaignName, BinaryData.fromObject(campaign),
             requestOptions);
     }
 
@@ -781,13 +783,14 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign get(String agentName, String campaignName, String operationId) {
-        // Generated convenience method for getWithResponse
+    public TelephonyCampaign getCampaign(String agentName, String campaignName, String operationId) {
+        // Generated convenience method for getCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.addQueryParam("operation_id", operationId, false);
         }
-        return getWithResponse(agentName, campaignName, requestOptions).getValue().toObject(TelephonyCampaign.class);
+        return getCampaignWithResponse(agentName, campaignName, requestOptions).getValue()
+            .toObject(TelephonyCampaign.class);
     }
 
     /**
@@ -810,10 +813,11 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign get(String agentName, String campaignName) {
-        // Generated convenience method for getWithResponse
+    public TelephonyCampaign getCampaign(String agentName, String campaignName) {
+        // Generated convenience method for getCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(agentName, campaignName, requestOptions).getValue().toObject(TelephonyCampaign.class);
+        return getCampaignWithResponse(agentName, campaignName, requestOptions).getValue()
+            .toObject(TelephonyCampaign.class);
     }
 
     /**
@@ -839,9 +843,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCampaign> list(String agentName, Integer limit, PageOrder order, String before,
-        TelephonyCampaignStatus status) {
-        // Generated convenience method for list
+    public PagedIterable<TelephonyCampaign> listCampaigns(String agentName, Integer limit, PageOrder order,
+        String before, TelephonyCampaignStatus status) {
+        // Generated convenience method for listCampaigns
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -855,7 +859,7 @@ public final class BetaVoiceAgentsCampaignsClient {
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
         }
-        return serviceClient.list(null, agentName, requestOptions)
+        return serviceClient.listCampaigns(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCampaign.class));
     }
 
@@ -876,10 +880,10 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCampaign> list(String agentName) {
-        // Generated convenience method for list
+    public PagedIterable<TelephonyCampaign> listCampaigns(String agentName) {
+        // Generated convenience method for listCampaigns
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(null, agentName, requestOptions)
+        return serviceClient.listCampaigns(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCampaign.class));
     }
 
@@ -907,14 +911,14 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancel(String agentName, String campaignName,
-        String ifMatch, String operationId) {
-        // Generated convenience method for beginCancelWithModel
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaign(String agentName,
+        String campaignName, String ifMatch, String operationId) {
+        // Generated convenience method for beginCancelCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return serviceClient.beginCancelWithModel(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginCancelCampaignWithModel(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -938,11 +942,11 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancel(String agentName, String campaignName,
-        String ifMatch) {
-        // Generated convenience method for beginCancelWithModel
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaign(String agentName,
+        String campaignName, String ifMatch) {
+        // Generated convenience method for beginCancelCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCancelWithModel(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginCancelCampaignWithModel(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -968,14 +972,14 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, Void> beginDelete(String agentName, String campaignName,
+    public SyncPoller<TelephonyCampaignOperation, Void> beginDeleteCampaign(String agentName, String campaignName,
         String ifMatch, String operationId) {
-        // Generated convenience method for beginDeleteWithModel
+        // Generated convenience method for beginDeleteCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return serviceClient.beginDeleteWithModel(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginDeleteCampaignWithModel(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -999,11 +1003,11 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyCampaignOperation, Void> beginDelete(String agentName, String campaignName,
+    public SyncPoller<TelephonyCampaignOperation, Void> beginDeleteCampaign(String agentName, String campaignName,
         String ifMatch) {
-        // Generated convenience method for beginDeleteWithModel
+        // Generated convenience method for beginDeleteCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginDeleteWithModel(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginDeleteCampaignWithModel(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -1028,9 +1032,9 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCampaignValidationError> listValidationErrors(String agentName, String campaignName,
-        Integer limit, String before, PageOrder order) {
-        // Generated convenience method for listValidationErrors
+    public PagedIterable<TelephonyCampaignValidationError> listCampaignValidationErrors(String agentName,
+        String campaignName, Integer limit, String before, PageOrder order) {
+        // Generated convenience method for listCampaignValidationErrors
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1041,7 +1045,7 @@ public final class BetaVoiceAgentsCampaignsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        return serviceClient.listValidationErrors(null, agentName, campaignName, requestOptions)
+        return serviceClient.listCampaignValidationErrors(null, agentName, campaignName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCampaignValidationError.class));
     }
 
@@ -1063,10 +1067,11 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCampaignValidationError> listValidationErrors(String agentName, String campaignName) {
-        // Generated convenience method for listValidationErrors
+    public PagedIterable<TelephonyCampaignValidationError> listCampaignValidationErrors(String agentName,
+        String campaignName) {
+        // Generated convenience method for listCampaignValidationErrors
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listValidationErrors(null, agentName, campaignName, requestOptions)
+        return serviceClient.listCampaignValidationErrors(null, agentName, campaignName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCampaignValidationError.class));
     }
 
@@ -1092,10 +1097,10 @@ public final class BetaVoiceAgentsCampaignsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaignOperation getOperation(String agentName, String campaignName, String operationId) {
-        // Generated convenience method for getOperationWithResponse
+    public TelephonyCampaignOperation getCampaignOperation(String agentName, String campaignName, String operationId) {
+        // Generated convenience method for getCampaignOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(agentName, campaignName, operationId, requestOptions).getValue()
+        return getCampaignOperationWithResponse(agentName, campaignName, operationId, requestOptions).getValue()
             .toObject(TelephonyCampaignOperation.class);
     }
 }

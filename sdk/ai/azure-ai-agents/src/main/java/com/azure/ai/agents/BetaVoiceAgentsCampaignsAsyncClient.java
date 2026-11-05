@@ -231,9 +231,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreate(String agentName, String campaignName, BinaryData campaign,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateAsync(agentName, campaignName, campaign, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginCreateCampaign(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCampaignAsync(agentName, campaignName, campaign, requestOptions);
     }
 
     /**
@@ -339,9 +339,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String agentName, String campaignName,
+    public Mono<Response<BinaryData>> getCampaignWithResponse(String agentName, String campaignName,
         RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(agentName, campaignName, requestOptions);
+        return this.serviceClient.getCampaignWithResponseAsync(agentName, campaignName, requestOptions);
     }
 
     /**
@@ -453,8 +453,8 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(agentName, requestOptions);
+    public PagedFlux<BinaryData> listCampaigns(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listCampaignsAsync(agentName, requestOptions);
     }
 
     /**
@@ -522,9 +522,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCancel(String agentName, String campaignName, String ifMatch,
+    public PollerFlux<BinaryData, BinaryData> beginCancelCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCancelAsync(agentName, campaignName, ifMatch, requestOptions);
+        return this.serviceClient.beginCancelCampaignAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -556,9 +556,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDelete(String agentName, String campaignName, String ifMatch,
+    public PollerFlux<BinaryData, Void> beginDeleteCampaign(String agentName, String campaignName, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginDeleteAsync(agentName, campaignName, ifMatch, requestOptions);
+        return this.serviceClient.beginDeleteCampaignAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -626,9 +626,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listValidationErrors(String agentName, String campaignName,
+    public PagedFlux<BinaryData> listCampaignValidationErrors(String agentName, String campaignName,
         RequestOptions requestOptions) {
-        return this.serviceClient.listValidationErrorsAsync(agentName, campaignName, requestOptions);
+        return this.serviceClient.listCampaignValidationErrorsAsync(agentName, campaignName, requestOptions);
     }
 
     /**
@@ -695,9 +695,10 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String agentName, String campaignName,
+    public Mono<Response<BinaryData>> getCampaignOperationWithResponse(String agentName, String campaignName,
         String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(agentName, campaignName, operationId, requestOptions);
+        return this.serviceClient.getCampaignOperationWithResponseAsync(agentName, campaignName, operationId,
+            requestOptions);
     }
 
     /**
@@ -725,9 +726,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreate(String agentName, String campaignName,
-        TelephonyCampaign campaign, String operationId, String ifMatch) {
-        // Generated convenience method for beginCreateWithModel
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaign(String agentName,
+        String campaignName, TelephonyCampaign campaign, String operationId, String ifMatch) {
+        // Generated convenience method for beginCreateCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
@@ -735,7 +736,7 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
-        return serviceClient.beginCreateWithModelAsync(agentName, campaignName, BinaryData.fromObject(campaign),
+        return serviceClient.beginCreateCampaignWithModelAsync(agentName, campaignName, BinaryData.fromObject(campaign),
             requestOptions);
     }
 
@@ -759,11 +760,11 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreate(String agentName, String campaignName,
-        TelephonyCampaign campaign) {
-        // Generated convenience method for beginCreateWithModel
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaign(String agentName,
+        String campaignName, TelephonyCampaign campaign) {
+        // Generated convenience method for beginCreateCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateWithModelAsync(agentName, campaignName, BinaryData.fromObject(campaign),
+        return serviceClient.beginCreateCampaignWithModelAsync(agentName, campaignName, BinaryData.fromObject(campaign),
             requestOptions);
     }
 
@@ -790,13 +791,13 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> get(String agentName, String campaignName, String operationId) {
-        // Generated convenience method for getWithResponse
+    public Mono<TelephonyCampaign> getCampaign(String agentName, String campaignName, String operationId) {
+        // Generated convenience method for getCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.addQueryParam("operation_id", operationId, false);
         }
-        return getWithResponse(agentName, campaignName, requestOptions).flatMap(FluxUtil::toMono)
+        return getCampaignWithResponse(agentName, campaignName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -821,10 +822,10 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> get(String agentName, String campaignName) {
-        // Generated convenience method for getWithResponse
+    public Mono<TelephonyCampaign> getCampaign(String agentName, String campaignName) {
+        // Generated convenience method for getCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(agentName, campaignName, requestOptions).flatMap(FluxUtil::toMono)
+        return getCampaignWithResponse(agentName, campaignName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -851,9 +852,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCampaign> list(String agentName, Integer limit, PageOrder order, String before,
+    public PagedFlux<TelephonyCampaign> listCampaigns(String agentName, Integer limit, PageOrder order, String before,
         TelephonyCampaignStatus status) {
-        // Generated convenience method for list
+        // Generated convenience method for listCampaigns
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -867,7 +868,7 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listCampaignsAsync(null, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -906,10 +907,10 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCampaign> list(String agentName) {
-        // Generated convenience method for list
+    public PagedFlux<TelephonyCampaign> listCampaigns(String agentName) {
+        // Generated convenience method for listCampaigns
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listCampaignsAsync(null, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -955,14 +956,14 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancel(String agentName, String campaignName,
-        String ifMatch, String operationId) {
-        // Generated convenience method for beginCancelWithModel
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaign(String agentName,
+        String campaignName, String ifMatch, String operationId) {
+        // Generated convenience method for beginCancelCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return serviceClient.beginCancelWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginCancelCampaignWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -986,11 +987,11 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancel(String agentName, String campaignName,
-        String ifMatch) {
-        // Generated convenience method for beginCancelWithModel
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaign(String agentName,
+        String campaignName, String ifMatch) {
+        // Generated convenience method for beginCancelCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCancelWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginCancelCampaignWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -1016,14 +1017,14 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, Void> beginDelete(String agentName, String campaignName,
+    public PollerFlux<TelephonyCampaignOperation, Void> beginDeleteCampaign(String agentName, String campaignName,
         String ifMatch, String operationId) {
-        // Generated convenience method for beginDeleteWithModel
+        // Generated convenience method for beginDeleteCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return serviceClient.beginDeleteWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginDeleteCampaignWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -1047,11 +1048,11 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyCampaignOperation, Void> beginDelete(String agentName, String campaignName,
+    public PollerFlux<TelephonyCampaignOperation, Void> beginDeleteCampaign(String agentName, String campaignName,
         String ifMatch) {
-        // Generated convenience method for beginDeleteWithModel
+        // Generated convenience method for beginDeleteCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginDeleteWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
+        return serviceClient.beginDeleteCampaignWithModelAsync(agentName, campaignName, ifMatch, requestOptions);
     }
 
     /**
@@ -1076,9 +1077,9 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCampaignValidationError> listValidationErrors(String agentName, String campaignName,
-        Integer limit, String before, PageOrder order) {
-        // Generated convenience method for listValidationErrors
+    public PagedFlux<TelephonyCampaignValidationError> listCampaignValidationErrors(String agentName,
+        String campaignName, Integer limit, String before, PageOrder order) {
+        // Generated convenience method for listCampaignValidationErrors
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1090,7 +1091,7 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listValidationErrorsAsync(null, agentName, campaignName, requestOptions);
+            = serviceClient.listCampaignValidationErrorsAsync(null, agentName, campaignName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1130,11 +1131,12 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCampaignValidationError> listValidationErrors(String agentName, String campaignName) {
-        // Generated convenience method for listValidationErrors
+    public PagedFlux<TelephonyCampaignValidationError> listCampaignValidationErrors(String agentName,
+        String campaignName) {
+        // Generated convenience method for listCampaignValidationErrors
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listValidationErrorsAsync(null, agentName, campaignName, requestOptions);
+            = serviceClient.listCampaignValidationErrorsAsync(null, agentName, campaignName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1178,10 +1180,12 @@ public final class BetaVoiceAgentsCampaignsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaignOperation> getOperation(String agentName, String campaignName, String operationId) {
-        // Generated convenience method for getOperationWithResponse
+    public Mono<TelephonyCampaignOperation> getCampaignOperation(String agentName, String campaignName,
+        String operationId) {
+        // Generated convenience method for getCampaignOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(agentName, campaignName, operationId, requestOptions).flatMap(FluxUtil::toMono)
+        return getCampaignOperationWithResponse(agentName, campaignName, operationId, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaignOperation.class));
     }
 }

@@ -39,7 +39,7 @@ public class TelephonyCampaignSchedule implements JsonSerializable<TelephonyCamp
      * Creates an instance of TelephonyCampaignSchedule class.
      */
     @Generated
-    public TelephonyCampaignSchedule() {
+    protected TelephonyCampaignSchedule() {
     }
 
     /**

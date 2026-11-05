@@ -199,7 +199,8 @@ public class AgentsCustomizations extends Customization {
             "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
             "RealtimeConversationItemMessage", "RealtimeResponseInputMessage", "RealtimeMcpError",
             "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
+            "RealtimeTurnDetection", "TelephonyAddress", "TelephonyBinding", "TelephonyCampaignSchedule",
+            "TelephonyOutboundRetryPolicy",
             "UserConversationSimulationInterruptionConfiguration", "VoiceAgentBaseDefinition",
             "VoiceAgentGreetingConfiguration",
             "VoiceAgentPostCallDestination",
@@ -208,11 +209,12 @@ public class AgentsCustomizations extends Customization {
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
+            classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
                 .getConstructors()
                 .stream()
                 .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
         }
     }
 

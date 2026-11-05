@@ -24,6 +24,7 @@ class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview;draft
+class;com.azure.ai.agents.models.DatasetReference;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.ExternalAgentDefinition;Preview API. ExternalAgents=V1Preview;
 class;com.azure.ai.agents.models.FabricDataAgentToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.FabricDataAgentToolCallOutput;Preview API. preview_tool;

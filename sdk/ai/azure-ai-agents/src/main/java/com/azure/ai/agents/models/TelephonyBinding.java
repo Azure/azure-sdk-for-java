@@ -206,7 +206,7 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
      * @param connectionName the connectionName value to set.
      */
     @Generated
-    public TelephonyBinding(String connectionName) {
+    protected TelephonyBinding(String connectionName) {
         this.connectionName = connectionName;
     }
 
