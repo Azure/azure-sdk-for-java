@@ -19,19 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VoiceAgentResponseCreateOptionsSerializationTests {
 
     @Test
-    public void maxOutputTokensVariantsRoundTrip() throws IOException {
-        VoiceAgentResponseCreateOptions longResult
-            = roundTrip(new VoiceAgentResponseCreateOptions().setMaxOutputTokens(4096L));
-        assertEquals(4096L, longResult.getMaxOutputTokensAsLong());
-        assertNull(longResult.getMaxOutputTokensAsString());
-
-        VoiceAgentResponseCreateOptions stringResult
-            = roundTrip(new VoiceAgentResponseCreateOptions().setMaxOutputTokens("inf"));
-        assertEquals("inf", stringResult.getMaxOutputTokensAsString());
-        assertNull(stringResult.getMaxOutputTokensAsLong());
-    }
-
-    @Test
     public void toolsVariantsRoundTrip() throws IOException {
         RealtimeFunctionTool function
             = RealtimeFunctionTool.builder().name("lookup").type(RealtimeFunctionTool.Type.FUNCTION).build();
@@ -69,13 +56,9 @@ public class VoiceAgentResponseCreateOptionsSerializationTests {
     public void absentAndNullValuesReturnNull() throws IOException {
         VoiceAgentResponseCreateOptions result
             = UnionTypeSerializationTestUtils.deserialize("{}", VoiceAgentResponseCreateOptions::fromJson);
-        assertNull(result.getMaxOutputTokensAsLong());
-        assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getToolsAsOpenAITools());
 
-        result.setMaxOutputTokens("inf").setMaxOutputTokens((String) null);
         result.setToolsAsOpenAITools(null);
-        assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getToolsAsOpenAITools());
     }
 

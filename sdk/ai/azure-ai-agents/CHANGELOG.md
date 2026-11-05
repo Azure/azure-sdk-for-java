@@ -11,6 +11,11 @@
 
 ### Breaking Changes
 
+- Replaced the numeric/string token-limit accessors on preview voice and realtime models with
+  `getMaxOutputTokens()` and `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. `InlineVoiceSubagent` uses
+  the same type through `getMaxResponseOutputTokens()` and `setMaxResponseOutputTokens(VoiceAgentMaxOutputTokens)`.
+  Use `VoiceAgentMaxOutputTokens.of(count)` for a numeric limit or `VoiceAgentMaxOutputTokens.MAXIMUM` for `"inf"`, and
+  inspect the value with `getCount()` or `isMaximum()`. Passing `null` to a setter clears the property.
 - Replaced the per-variant tool-choice accessors on preview voice and realtime models with
   `getToolChoice()` and `setToolChoice(VoiceAgentToolChoice)`, where writable. Use `VoiceAgentToolChoice.ofMode`,
   `ofFunction`, or `ofMcp` to create a choice, and `getMode`, `getFunction`, or `getMcp` to inspect it. Getters for

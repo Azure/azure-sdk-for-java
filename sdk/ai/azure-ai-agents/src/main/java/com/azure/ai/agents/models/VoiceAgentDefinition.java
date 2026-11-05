@@ -323,9 +323,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      *
      * @return the maxOutputTokens value.
      */
-    BinaryData getMaxOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxOutputTokens() {
         // AI Tooling: union type
-        return this.maxOutputTokens;
+        return this.maxOutputTokens == null ? null : this.maxOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -334,9 +334,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentDefinition object itself.
      */
-    VoiceAgentDefinition setMaxOutputTokens(BinaryData maxOutputTokens) {
+    public VoiceAgentDefinition setMaxOutputTokens(VoiceAgentMaxOutputTokens maxOutputTokens) {
         // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens;
+        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
         return this;
     }
 
@@ -643,64 +643,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             }
             return deserializedVoiceAgentDefinition;
         });
-    }
-
-    /**
-     * Set the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @param maxOutputTokens the maximum number of output tokens to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setMaxOutputTokens(long maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
-     */
-    public Long getMaxOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(Long.class);
-    }
-
-    /**
-     * Set the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @param maxOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setMaxOutputTokens(String maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
-     */
-    public String getMaxOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(String.class);
     }
 
     /*

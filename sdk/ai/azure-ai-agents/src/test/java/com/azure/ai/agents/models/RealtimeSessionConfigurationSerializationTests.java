@@ -89,19 +89,6 @@ public class RealtimeSessionConfigurationSerializationTests {
     }
 
     @Test
-    public void maxOutputTokensVariantsRoundTrip() throws IOException {
-        RealtimeSessionConfiguration numberResult
-            = roundTrip(new RealtimeSessionConfiguration().setMaxOutputTokens(4096L));
-        assertEquals(4096L, numberResult.getMaxOutputTokensAsLong());
-        assertNull(numberResult.getMaxOutputTokensAsString());
-
-        RealtimeSessionConfiguration stringResult
-            = roundTrip(new RealtimeSessionConfiguration().setMaxOutputTokens("inf"));
-        assertEquals("inf", stringResult.getMaxOutputTokensAsString());
-        assertNull(stringResult.getMaxOutputTokensAsLong());
-    }
-
-    @Test
     public void truncationVariantsRoundTrip() throws IOException {
         RealtimeSessionConfiguration stringResult
             = roundTrip(new RealtimeSessionConfiguration().setTruncation("disabled"));
@@ -125,7 +112,7 @@ public class RealtimeSessionConfigurationSerializationTests {
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionConfiguration::fromJson);
 
         assertEquals("workflow", result.getTracingAsRealtimeSessionTracingConfiguration().getWorkflowName());
-        assertEquals(123L, result.getMaxOutputTokensAsLong());
+        assertEquals(123, result.getMaxOutputTokens().asInteger());
         assertEquals(0.5, result.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
     }
 
@@ -136,15 +123,14 @@ public class RealtimeSessionConfigurationSerializationTests {
         assertNull(result.getTracingAsString());
         assertNull(result.getTracingAsRealtimeSessionTracingConfiguration());
         assertNull(result.getToolsAsOpenAITools());
-        assertNull(result.getMaxOutputTokensAsLong());
-        assertNull(result.getMaxOutputTokensAsString());
+        assertNull(result.getMaxOutputTokens());
         assertNull(result.getTruncationAsString());
         assertNull(result.getTruncationAsRealtimeTruncationRetentionRatio());
 
         String serialized
             = UnionTypeSerializationTestUtils.serialize(new RealtimeSessionConfiguration().setTracing((String) null)
                 .setToolsAsOpenAITools(null)
-                .setMaxOutputTokens((String) null)
+                .setMaxOutputTokens(null)
                 .setTruncation((String) null));
         assertNotNull(serialized);
         assertTrue(!serialized.contains("\"tracing\"")

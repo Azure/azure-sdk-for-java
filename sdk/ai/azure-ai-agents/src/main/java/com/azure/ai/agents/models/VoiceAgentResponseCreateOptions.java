@@ -288,9 +288,9 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      *
      * @return the maxOutputTokens value.
      */
-    BinaryData getMaxOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxOutputTokens() {
         // AI Tooling: union type
-        return this.maxOutputTokens;
+        return this.maxOutputTokens == null ? null : this.maxOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -302,9 +302,9 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentResponseCreateOptions object itself.
      */
-    VoiceAgentResponseCreateOptions setMaxOutputTokens(BinaryData maxOutputTokens) {
+    public VoiceAgentResponseCreateOptions setMaxOutputTokens(VoiceAgentMaxOutputTokens maxOutputTokens) {
         // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens;
+        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
         return this;
     }
 
@@ -566,64 +566,6 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
             }
             return deserializedVoiceAgentResponseCreateOptions;
         });
-    }
-
-    /**
-     * Set the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
-     *
-     * @param maxOutputTokens the maximum number of output tokens to set.
-     * @return the VoiceAgentResponseCreateOptions object itself.
-     */
-    public VoiceAgentResponseCreateOptions setMaxOutputTokens(long maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
-     *
-     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
-     */
-    public Long getMaxOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(Long.class);
-    }
-
-    /**
-     * Set the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
-     *
-     * @param maxOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count.
-     * @return the VoiceAgentResponseCreateOptions object itself.
-     */
-    public VoiceAgentResponseCreateOptions setMaxOutputTokens(String maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
-     *
-     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
-     */
-    public String getMaxOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(String.class);
     }
 
     /**

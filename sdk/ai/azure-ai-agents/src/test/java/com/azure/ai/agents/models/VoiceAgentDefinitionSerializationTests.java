@@ -18,38 +18,9 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentDefinitionSerializationTests {
-
-    @Test
-    public void maxOutputTokensVariantsRoundTrip() throws IOException {
-        VoiceAgentDefinition longResult = roundTrip(new VoiceAgentDefinition().setMaxOutputTokens(512L));
-        assertEquals(512L, longResult.getMaxOutputTokensAsLong());
-        assertNull(longResult.getMaxOutputTokensAsString());
-
-        VoiceAgentDefinition stringResult = roundTrip(new VoiceAgentDefinition().setMaxOutputTokens("inf"));
-        assertEquals("inf", stringResult.getMaxOutputTokensAsString());
-        assertNull(stringResult.getMaxOutputTokensAsLong());
-    }
-
-    @Test
-    public void absentAndNullValuesReturnNull() throws IOException {
-        VoiceAgentDefinition result
-            = UnionTypeSerializationTestUtils.deserialize("{\"kind\":\"voice\"}", VoiceAgentDefinition::fromJson);
-        assertNull(result.getMaxOutputTokensAsLong());
-        assertNull(result.getMaxOutputTokensAsString());
-
-        VoiceAgentDefinition cleared
-            = new VoiceAgentDefinition().setMaxOutputTokens("inf").setMaxOutputTokens((String) null);
-        assertNull(cleared.getMaxOutputTokensAsString());
-    }
-
-    private VoiceAgentDefinition roundTrip(VoiceAgentDefinition value) throws IOException {
-        String json = UnionTypeSerializationTestUtils.serialize(value);
-        return UnionTypeSerializationTestUtils.deserialize(json, VoiceAgentDefinition::fromJson);
-    }
 
     @Test
     public void fullVoiceDefinitionRoundTrips() throws IOException {

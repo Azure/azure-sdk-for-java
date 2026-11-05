@@ -354,9 +354,11 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      *
      * @return the maxResponseOutputTokens value.
      */
-    BinaryData getMaxResponseOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxResponseOutputTokens() {
         // AI Tooling: union type
-        return this.maxResponseOutputTokens;
+        return this.maxResponseOutputTokens == null
+            ? null
+            : this.maxResponseOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -366,9 +368,10 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
      * @param maxResponseOutputTokens the maxResponseOutputTokens value to set.
      * @return the InlineVoiceSubagent object itself.
      */
-    InlineVoiceSubagent setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
+    public InlineVoiceSubagent setMaxResponseOutputTokens(VoiceAgentMaxOutputTokens maxResponseOutputTokens) {
         // AI Tooling: union type
-        this.maxResponseOutputTokens = maxResponseOutputTokens;
+        this.maxResponseOutputTokens
+            = maxResponseOutputTokens == null ? null : BinaryData.fromObject(maxResponseOutputTokens);
         return this;
     }
 
@@ -612,70 +615,5 @@ public final class InlineVoiceSubagent implements JsonSerializable<InlineVoiceSu
     public InlineVoiceSubagent setParallelToolCallsEnabled(Boolean parallelToolCallsEnabled) {
         this.parallelToolCallsEnabled = parallelToolCallsEnabled;
         return this;
-    }
-
-    /**
-     * Set the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
-     * active.
-     *
-     * @param maxResponseOutputTokens the maximum number of output tokens to set.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    public InlineVoiceSubagent setMaxResponseOutputTokens(long maxResponseOutputTokens) {
-        // AI Tooling: union type
-        this.maxResponseOutputTokens = BinaryData.fromObject(maxResponseOutputTokens);
-        return this;
-    }
-
-    /**
-     * Set the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
-     * active.
-     *
-     * @param maxResponseOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count,
-     * or null to clear.
-     * @return the InlineVoiceSubagent object itself.
-     */
-    public InlineVoiceSubagent setMaxResponseOutputTokens(String maxResponseOutputTokens) {
-        // AI Tooling: union type
-        this.maxResponseOutputTokens
-            = maxResponseOutputTokens == null ? null : BinaryData.fromObject(maxResponseOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
-     * active.
-     *
-     * @return the maxResponseOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
-     */
-    public Long getMaxResponseOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxResponseOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxResponseOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxResponseOutputTokens.toObject(Long.class);
-    }
-
-    /**
-     * Get the maxResponseOutputTokens property: The maximum output-token count for one response while this subagent is
-     * active.
-     *
-     * @return the maxResponseOutputTokens value as a String, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public String getMaxResponseOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxResponseOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxResponseOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxResponseOutputTokens.toObject(String.class);
     }
 }
