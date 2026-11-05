@@ -406,7 +406,6 @@ public class SessionTests {
         assertNull(sent.get(0).getHeaders().getValue(HttpHeaderName.HOST));
     }
 
-
     /**
      * Verifies that a 401 from the service invalidates the cached session and retries the request
      * using bearer authentication. No WWW-Authenticate header is required to trigger this fallback;
@@ -1433,7 +1432,6 @@ public class SessionTests {
             instant = instant.plus(duration);
         }
     }
-
 
     private boolean isAddressedToAccount(HttpRequest request) {
         return ACCOUNT_AUTHORITY.equals(request.getUrl().getAuthority());

@@ -11,10 +11,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
@@ -49,6 +45,7 @@ import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -224,9 +221,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void downloadToFileWithEnabledDataLocalityRoutesChunksToLayoutEndpoint() throws IOException {
-        List<RequestHostRecord> records = new CopyOnWriteArrayList<>();
-        BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
-            recordRequestHostsPolicy(records));
+        List<RequestRecord> records = new CopyOnWriteArrayList<>();
+        BlobClient downloadClient = getRecordingBlobClient(bc.getBlobUrl(), records);
 
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
@@ -242,11 +238,11 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         URI accountUri = URI.create(bc.getBlobUrl());
         String accountHost = accountUri.getHost();
         String accountAuthority = accountUri.getAuthority();
-        List<RequestHostRecord> rewrittenRecords = getRewrittenRecords(records, accountHost);
+        List<RequestRecord> rewrittenRecords = getRewrittenRecords(records, accountHost);
 
         assertFalse(rewrittenRecords.isEmpty(),
             "Expected at least one chunk request to be routed to a layout endpoint. Observed requests: " + records);
-        for (RequestHostRecord record : rewrittenRecords) {
+        for (RequestRecord record : rewrittenRecords) {
             assertEquals(accountAuthority, record.hostHeader,
                 "Layout-routed request must preserve the original account authority in the Host header.");
         }
@@ -267,11 +263,59 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
                 layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
             }
         }
-        for (RequestHostRecord record : rewrittenRecords) {
-            assertTrue(layoutEndpointHosts.contains(record.requestHost.toLowerCase(Locale.ROOT)),
-                "Chunk host '" + record.requestHost + "' not in layout endpoints " + layoutEndpointHosts
+        for (RequestRecord record : rewrittenRecords) {
+            assertTrue(layoutEndpointHosts.contains(record.urlHost.toLowerCase(Locale.ROOT)),
+                "Chunk host '" + record.urlHost + "' not in layout endpoints " + layoutEndpointHosts
                     + ". Observed requests: " + records);
         }
+    }
+
+    /**
+     * Layout-routed chunks are signed with the session, the same as reads sent to the account endpoint. Requests are
+     * recorded per retry, after the authentication policy, so the {@code Authorization} header observed is the one
+     * sent, including any fallback to bearer.
+     */
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void liveDownloadToFileWithSessionsSignsLayoutRoutedChunks() throws IOException {
+        List<RequestRecord> records = new CopyOnWriteArrayList<>();
+        BlobClient downloadClient = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED),
+            recordingHttpClient(records)).getBlobContainerClient(bc.getContainerName()).getBlobClient(bc.getBlobName());
+
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        downloadClient.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setBlockSizeLong((long) LIVE_DOWNLOAD_BLOCK_SIZE)),
+            null, null);
+
+        assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
+
+        URI accountUri = URI.create(bc.getBlobUrl());
+        List<RequestRecord> sessionRequests = new ArrayList<>();
+        List<RequestRecord> dataRequests = new ArrayList<>();
+        for (RequestRecord record : records) {
+            if (record.url.contains("comp=session")) {
+                sessionRequests.add(record);
+            } else if (!record.url.contains("comp=")) {
+                dataRequests.add(record);
+            }
+        }
+
+        assertEquals(1, sessionRequests.size(), "Expected a single CreateSession call. Observed: " + records);
+        assertEquals(accountUri.getHost(), sessionRequests.get(0).urlHost);
+        assertNull(sessionRequests.get(0).hostHeader);
+
+        boolean anyRouted = false;
+        for (RequestRecord record : dataRequests) {
+            assertEquals("Session", record.authScheme, "Every blob read must use the session. Observed: " + records);
+            anyRouted |= !accountUri.getHost().equalsIgnoreCase(record.urlHost);
+        }
+        assertTrue(anyRouted,
+            "Expected at least one chunk request to be routed to a layout endpoint. Observed: " + records);
     }
 
     /**
@@ -288,9 +332,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         BlobClient smallBlobClient = cc.getBlobClient(generateBlobName());
         smallBlobClient.getBlockBlobClient().upload(new java.io.ByteArrayInputStream(data), data.length, true);
 
-        List<RequestHostRecord> records = new CopyOnWriteArrayList<>();
-        BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            smallBlobClient.getBlobUrl(), recordRequestHostsPolicy(records));
+        List<RequestRecord> records = new CopyOnWriteArrayList<>();
+        BlobClient downloadClient = getRecordingBlobClient(smallBlobClient.getBlobUrl(), records);
 
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
@@ -308,7 +351,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             "Small blob must not trigger comp=layout. Observed requests: " + records);
         assertTrue(getRewrittenRecords(records, accountHost).isEmpty(),
             "All requests must stay on the account host. Observed requests: " + records);
-        for (RequestHostRecord record : records) {
+        for (RequestRecord record : records) {
             assertNull(record.hostHeader, "No Host header rewriting expected. Observed: " + record);
         }
         assertArrayEquals(data, Files.readAllBytes(testFile));
@@ -458,8 +501,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     public void routedReadAcquiresSessionFromAccountEndpoint() {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY);
         BlobClient client = sessionMockBuilder(httpClient).buildClient();
-        Context routed
-            = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://" + DATA_LOCALITY_HOST + ":443");
+        Context routed = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://" + DATA_LOCALITY_HOST + ":443");
 
         client.downloadContentWithResponse((DownloadRetryOptions) null, null, new BlobRange(0, 8L), false, null,
             routed);
@@ -505,7 +547,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(testContent, Files.readAllBytes(testFile));
         assertEquals(0, httpClient.getLayoutRequestCount());
         for (RequestRecord record : httpClient.getDataRequestRecords()) {
-            assertEquals("account.blob.core.windows.net", record.requestHost);
             assertEquals("account.blob.core.windows.net", record.urlHost);
             assertNull(record.hostHeader);
         }
@@ -1068,18 +1109,34 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final class RequestRecord {
         private final String url;
         private final String urlHost;
-        private final String requestHost;
         private final String hostHeader;
         private final String authScheme;
 
         private RequestRecord(HttpRequest request) {
             this.url = request.getUrl().toString();
             this.urlHost = request.getUrl().getHost();
-            this.requestHost = request.getUrl().getHost();
             this.hostHeader = request.getHeaders().getValue(HttpHeaderName.HOST);
             String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             this.authScheme = authorization == null ? null : authorization.split(" ", 2)[0];
         }
+
+        @Override
+        public String toString() {
+            return "RequestRecord{url='" + url + "', hostHeader='" + hostHeader + "', authScheme='" + authScheme + "'}";
+        }
+    }
+
+    private WireTapHttpClient recordingHttpClient(List<RequestRecord> records) {
+        return new WireTapHttpClient(getHttpClient(), request -> records.add(new RequestRecord(request)));
+    }
+
+    private BlobClient getRecordingBlobClient(String endpoint, List<RequestRecord> records) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
+        instrument(builder);
+
+        return builder.httpClient(recordingHttpClient(records))
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .buildClient();
     }
 
     private static int getTestContentLength() {
@@ -1090,10 +1147,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? PLAYBACK_DOWNLOAD_BLOCK_SIZE : LIVE_DOWNLOAD_BLOCK_SIZE;
     }
 
-    private static List<RequestHostRecord> getRewrittenRecords(List<RequestHostRecord> records, String accountHost) {
-        List<RequestHostRecord> rewrittenRecords = new ArrayList<>();
-        for (RequestHostRecord record : records) {
-            if (record.requestHost != null && !record.requestHost.equalsIgnoreCase(accountHost)) {
+    private static List<RequestRecord> getRewrittenRecords(List<RequestRecord> records, String accountHost) {
+        List<RequestRecord> rewrittenRecords = new ArrayList<>();
+        for (RequestRecord record : records) {
+            if (record.urlHost != null && !record.urlHost.equalsIgnoreCase(accountHost)) {
                 rewrittenRecords.add(record);
             }
         }
@@ -1101,9 +1158,9 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         return rewrittenRecords;
     }
 
-    private static long countLayoutRequests(List<RequestHostRecord> records) {
+    private static long countLayoutRequests(List<RequestRecord> records) {
         long count = 0;
-        for (RequestHostRecord record : records) {
+        for (RequestRecord record : records) {
             if (isLayoutRequest(record)) {
                 count++;
             }
@@ -1116,58 +1173,18 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
      * continuation page is also a {@code comp=layout} request, so only the marker-less request that starts an
      * enumeration is counted.
      */
-    private static long countLayoutEnumerations(List<RequestHostRecord> records) {
+    private static long countLayoutEnumerations(List<RequestRecord> records) {
         long count = 0;
-        for (RequestHostRecord record : records) {
-            if (isLayoutRequest(record) && !record.requestUrl.contains("marker=")) {
+        for (RequestRecord record : records) {
+            if (isLayoutRequest(record) && !record.url.contains("marker=")) {
                 count++;
             }
         }
         return count;
     }
 
-    private static boolean isLayoutRequest(RequestHostRecord record) {
-        return record.requestUrl != null && record.requestUrl.contains("comp=layout");
-    }
-
-    private static HttpPipelinePolicy recordRequestHostsPolicy(List<RequestHostRecord> records) {
-        return new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                recordRequest(context);
-                return next.process();
-            }
-
-            @Override
-            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-                recordRequest(context);
-                return next.processSync();
-            }
-
-            private void recordRequest(HttpPipelineCallContext context) {
-                records.add(new RequestHostRecord(context.getHttpRequest().getUrl().getHost(),
-                    context.getHttpRequest().getHeaders().getValue(HttpHeaderName.HOST),
-                    context.getHttpRequest().getUrl().toString()));
-            }
-        };
-    }
-
-    private static final class RequestHostRecord {
-        private final String requestHost;
-        private final String hostHeader;
-        private final String requestUrl;
-
-        private RequestHostRecord(String requestHost, String hostHeader, String requestUrl) {
-            this.requestHost = requestHost;
-            this.hostHeader = hostHeader;
-            this.requestUrl = requestUrl;
-        }
-
-        @Override
-        public String toString() {
-            return "RequestHostRecord{requestHost='" + requestHost + "', hostHeader='" + hostHeader + "', requestUrl='"
-                + requestUrl + "'}";
-        }
+    private static boolean isLayoutRequest(RequestRecord record) {
+        return record.url != null && record.url.contains("comp=layout");
     }
 
     // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
