@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content.Detail;
 import java.io.IOException;
 
 /**
@@ -35,7 +36,7 @@ public final class RealtimeResponseInputImage implements JsonSerializable<Realti
      * The detail property.
      */
     @Generated
-    private RealtimeResponseInputImageDetail detail;
+    private Detail detail;
 
     /**
      * Creates an instance of RealtimeResponseInputImage class.
@@ -73,7 +74,7 @@ public final class RealtimeResponseInputImage implements JsonSerializable<Realti
      * @return the detail value.
      */
     @Generated
-    public RealtimeResponseInputImageDetail getDetail() {
+    public Detail getDetail() {
         return this.detail;
     }
 
@@ -84,7 +85,7 @@ public final class RealtimeResponseInputImage implements JsonSerializable<Realti
      * @return the RealtimeResponseInputImage object itself.
      */
     @Generated
-    public RealtimeResponseInputImage setDetail(RealtimeResponseInputImageDetail detail) {
+    public RealtimeResponseInputImage setDetail(Detail detail) {
         this.detail = detail;
         return this;
     }
@@ -92,13 +93,12 @@ public final class RealtimeResponseInputImage implements JsonSerializable<Realti
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("image_url", this.imageUrl);
-        jsonWriter.writeStringField("detail", this.detail == null ? null : this.detail.toString());
+        jsonWriter.writeStringField("detail", this.detail == null ? null : this.detail.asString());
         return jsonWriter.writeEndObject();
     }
 
@@ -111,18 +111,17 @@ public final class RealtimeResponseInputImage implements JsonSerializable<Realti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RealtimeResponseInputImage.
      */
-    @Generated
     public static RealtimeResponseInputImage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String imageUrl = null;
-            RealtimeResponseInputImageDetail detail = null;
+            Detail detail = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("image_url".equals(fieldName)) {
                     imageUrl = reader.getString();
                 } else if ("detail".equals(fieldName)) {
-                    detail = RealtimeResponseInputImageDetail.fromString(reader.getString());
+                    detail = reader.getNullable(r -> Detail.of(r.getString()));
                 } else {
                     reader.skipChildren();
                 }

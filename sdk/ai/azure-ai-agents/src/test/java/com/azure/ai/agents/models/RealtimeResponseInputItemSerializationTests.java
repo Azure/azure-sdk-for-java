@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.models;
 
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content.Detail;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,12 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RealtimeResponseInputItemSerializationTests {
     @Test
     public void heterogeneousResponseInputRoundTrips() throws IOException {
-        List<RealtimeResponseInputContent> content
-            = Arrays.asList(RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("hello")),
-                RealtimeResponseInputContent
-                    .fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
-                RealtimeResponseInputContent.fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=")
-                    .setDetail(RealtimeResponseInputImageDetail.HIGH)));
+        List<RealtimeResponseInputContent> content = Arrays.asList(
+            RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("hello")),
+            RealtimeResponseInputContent.fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
+            RealtimeResponseInputContent
+                .fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
         List<RealtimeResponseInputItem> input = Arrays.asList(RealtimeResponseInputItem.fromMessage(
             new RealtimeResponseInputMessageSystem(Collections.singletonList(new RealtimeResponseInputText("system")))
                 .setStatus(RealtimeResponseInputItemStatus.COMPLETED)),
@@ -66,7 +66,7 @@ public class RealtimeResponseInputItemSerializationTests {
         assertEquals("YXVkaW8=", user.getContent().get(1).getAudio().getAudio());
         assertEquals("audio", user.getContent().get(1).getAudio().getTranscript());
         assertEquals("data:image/png;base64,aW1hZ2U=", user.getContent().get(2).getImage().getImageUrl());
-        assertEquals(RealtimeResponseInputImageDetail.HIGH, user.getContent().get(2).getImage().getDetail());
+        assertEquals(Detail.HIGH, user.getContent().get(2).getImage().getDetail());
         RealtimeResponseInputMessageAssistant assistant
             = assertInstanceOf(RealtimeResponseInputMessageAssistant.class, result.getInput().get(3).getMessage());
         assertEquals("assistant", assistant.getContent().get(0).getText());

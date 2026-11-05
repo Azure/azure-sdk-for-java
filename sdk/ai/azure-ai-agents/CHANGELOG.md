@@ -5,8 +5,7 @@
 ### Features Added
 
 - Added preview typed factories `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
-  voice-agent response input and user-message content, with shared `RealtimeResponseInputItemStatus` and
-  `RealtimeResponseInputImageDetail` enums.
+  voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
 
 ### Breaking Changes
 

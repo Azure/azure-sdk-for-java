@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.models;
 
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content.Detail;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,12 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RealtimeResponseInputContentSerializationTests {
     @Test
     public void heterogeneousUserContentRoundTrips() throws IOException {
-        List<RealtimeResponseInputContent> content
-            = Arrays.asList(RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("text")),
-                RealtimeResponseInputContent
-                    .fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
-                RealtimeResponseInputContent.fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=")
-                    .setDetail(RealtimeResponseInputImageDetail.HIGH)));
+        List<RealtimeResponseInputContent> content = Arrays.asList(
+            RealtimeResponseInputContent.fromText(new RealtimeResponseInputText("text")),
+            RealtimeResponseInputContent.fromAudio(new RealtimeResponseInputAudio("YXVkaW8=").setTranscript("audio")),
+            RealtimeResponseInputContent
+                .fromImage(new RealtimeResponseInputImage("data:image/png;base64,aW1hZ2U=").setDetail(Detail.HIGH)));
         String json = UnionTypeSerializationTestUtils.serialize(new RealtimeResponseInputMessageUser(content));
         RealtimeResponseInputMessageUser result
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeResponseInputMessageUser::fromJson);
@@ -33,7 +33,7 @@ public class RealtimeResponseInputContentSerializationTests {
         assertEquals("YXVkaW8=", result.getContent().get(1).getAudio().getAudio());
         assertEquals("audio", result.getContent().get(1).getAudio().getTranscript());
         assertEquals("data:image/png;base64,aW1hZ2U=", result.getContent().get(2).getImage().getImageUrl());
-        assertEquals(RealtimeResponseInputImageDetail.HIGH, result.getContent().get(2).getImage().getDetail());
+        assertEquals(Detail.HIGH, result.getContent().get(2).getImage().getDetail());
         assertTrue(json.contains("\"type\":\"input_text\""));
         assertTrue(json.contains("\"type\":\"input_audio\""));
         assertTrue(json.contains("\"type\":\"input_image\""));
@@ -70,11 +70,11 @@ public class RealtimeResponseInputContentSerializationTests {
 
     @Test
     public void imageDetailValuesRoundTrip() throws IOException {
-        for (RealtimeResponseInputImageDetail detail : RealtimeResponseInputImageDetail.values()) {
+        for (Detail detail : Arrays.asList(Detail.LOW, Detail.HIGH, Detail.AUTO)) {
             RealtimeResponseInputContent content = RealtimeResponseInputContent
                 .fromImage(new RealtimeResponseInputImage("data:image/png;base64,YQ==").setDetail(detail));
             String json = UnionTypeSerializationTestUtils.serialize(content);
-            assertTrue(json.contains("\"detail\":\"" + detail + "\""));
+            assertTrue(json.contains("\"detail\":\"" + detail.asString() + "\""));
             RealtimeResponseInputContent result
                 = UnionTypeSerializationTestUtils.deserialize(json, RealtimeResponseInputContent::fromJson);
             assertEquals(detail, result.getImage().getDetail());
