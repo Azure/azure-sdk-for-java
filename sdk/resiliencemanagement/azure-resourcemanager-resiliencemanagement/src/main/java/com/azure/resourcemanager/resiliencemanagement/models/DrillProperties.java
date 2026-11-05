@@ -40,6 +40,11 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
     private RecoveryPlanPropertiesOfDrill recoveryPlanProperties;
 
     /*
+     * Goal Assignment properties.
+     */
+    private GoalAssignmentPropertiesOfDrill goalAssignmentProperties;
+
+    /*
      * Properties for internal resources that are created for the Drill.
      */
     private AssetPropertiesOfDrill drillAssetProperties;
@@ -93,6 +98,16 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
      * Monitoring properties of the Drill.
      */
     private MonitoringPropertiesOfDrill monitoringProperties;
+
+    /*
+     * Azure Health Model monitoring properties of the Drill.
+     */
+    private HealthModelMonitoringProperties healthModelMonitoringProperties;
+
+    /*
+     * SLI monitoring properties of the Drill.
+     */
+    private SliMonitoringProperties sliMonitoringProperties;
 
     /*
      * Error details associated with the resource.
@@ -171,6 +186,26 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
      */
     public DrillProperties withRecoveryPlanProperties(RecoveryPlanPropertiesOfDrill recoveryPlanProperties) {
         this.recoveryPlanProperties = recoveryPlanProperties;
+        return this;
+    }
+
+    /**
+     * Get the goalAssignmentProperties property: Goal Assignment properties.
+     * 
+     * @return the goalAssignmentProperties value.
+     */
+    public GoalAssignmentPropertiesOfDrill goalAssignmentProperties() {
+        return this.goalAssignmentProperties;
+    }
+
+    /**
+     * Set the goalAssignmentProperties property: Goal Assignment properties.
+     * 
+     * @param goalAssignmentProperties the goalAssignmentProperties value to set.
+     * @return the DrillProperties object itself.
+     */
+    public DrillProperties withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill goalAssignmentProperties) {
+        this.goalAssignmentProperties = goalAssignmentProperties;
         return this;
     }
 
@@ -395,6 +430,47 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
     }
 
     /**
+     * Get the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill.
+     * 
+     * @return the healthModelMonitoringProperties value.
+     */
+    public HealthModelMonitoringProperties healthModelMonitoringProperties() {
+        return this.healthModelMonitoringProperties;
+    }
+
+    /**
+     * Set the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill.
+     * 
+     * @param healthModelMonitoringProperties the healthModelMonitoringProperties value to set.
+     * @return the DrillProperties object itself.
+     */
+    public DrillProperties
+        withHealthModelMonitoringProperties(HealthModelMonitoringProperties healthModelMonitoringProperties) {
+        this.healthModelMonitoringProperties = healthModelMonitoringProperties;
+        return this;
+    }
+
+    /**
+     * Get the sliMonitoringProperties property: SLI monitoring properties of the Drill.
+     * 
+     * @return the sliMonitoringProperties value.
+     */
+    public SliMonitoringProperties sliMonitoringProperties() {
+        return this.sliMonitoringProperties;
+    }
+
+    /**
+     * Set the sliMonitoringProperties property: SLI monitoring properties of the Drill.
+     * 
+     * @param sliMonitoringProperties the sliMonitoringProperties value to set.
+     * @return the DrillProperties object itself.
+     */
+    public DrillProperties withSliMonitoringProperties(SliMonitoringProperties sliMonitoringProperties) {
+        this.sliMonitoringProperties = sliMonitoringProperties;
+        return this;
+    }
+
+    /**
      * Get the errorDetails property: Error details associated with the resource.
      * 
      * @return the errorDetails value.
@@ -422,10 +498,13 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("drillType", this.drillType == null ? null : this.drillType.toString());
         jsonWriter.writeJsonField("recoveryPlanProperties", this.recoveryPlanProperties);
+        jsonWriter.writeJsonField("goalAssignmentProperties", this.goalAssignmentProperties);
         jsonWriter.writeJsonField("drillAssetProperties", this.drillAssetProperties);
         jsonWriter.writeJsonField("chaosResourceProperties", this.chaosResourceProperties);
         jsonWriter.writeStringField("rbacSetupMode", this.rbacSetupMode == null ? null : this.rbacSetupMode.toString());
         jsonWriter.writeJsonField("monitoringProperties", this.monitoringProperties);
+        jsonWriter.writeJsonField("healthModelMonitoringProperties", this.healthModelMonitoringProperties);
+        jsonWriter.writeJsonField("sliMonitoringProperties", this.sliMonitoringProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -479,6 +558,9 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
                     deserializedDrillProperties.serviceGroupId = reader.getString();
                 } else if ("recoveryPlanProperties".equals(fieldName)) {
                     deserializedDrillProperties.recoveryPlanProperties = RecoveryPlanPropertiesOfDrill.fromJson(reader);
+                } else if ("goalAssignmentProperties".equals(fieldName)) {
+                    deserializedDrillProperties.goalAssignmentProperties
+                        = GoalAssignmentPropertiesOfDrill.fromJson(reader);
                 } else if ("drillAssetProperties".equals(fieldName)) {
                     deserializedDrillProperties.drillAssetProperties = AssetPropertiesOfDrill.fromJson(reader);
                 } else if ("chaosResourceProperties".equals(fieldName)) {
@@ -505,6 +587,11 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("monitoringProperties".equals(fieldName)) {
                     deserializedDrillProperties.monitoringProperties = MonitoringPropertiesOfDrill.fromJson(reader);
+                } else if ("healthModelMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillProperties.healthModelMonitoringProperties
+                        = HealthModelMonitoringProperties.fromJson(reader);
+                } else if ("sliMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillProperties.sliMonitoringProperties = SliMonitoringProperties.fromJson(reader);
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedDrillProperties.errorDetails = ManagementError.fromJson(reader);
                 } else {

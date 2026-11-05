@@ -13,7 +13,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterContinueUpdateVersio
  */
 public final class ClustersContinueUpdateVersionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ContinueUpdateVersion.json
+     * x-ms-original-file: 2026-07-01/Clusters_ContinueUpdateVersion.json
      */
     /**
      * Sample code: Continue update cluster version.

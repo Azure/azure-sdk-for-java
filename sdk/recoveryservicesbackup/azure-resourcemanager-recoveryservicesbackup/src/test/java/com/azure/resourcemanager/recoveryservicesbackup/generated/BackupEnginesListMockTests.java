@@ -23,7 +23,7 @@ public final class BackupEnginesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"jusuzgfjzc\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"oialahfxwccokdx\",\"backupEngineState\":\"kmkcz\",\"healthStatus\":\"uhhoqeqshavlj\",\"canReRegister\":false,\"backupEngineId\":\"rqolnthbb\",\"dpmVersion\":\"gzukw\",\"azureBackupAgentVersion\":\"nzkjthfceyjn\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":false,\"extendedInfo\":{\"databaseName\":\"fjbpfiddhlrufzcq\",\"protectedItemsCount\":430682583,\"protectedServersCount\":320326560,\"diskCount\":1676386230,\"usedDiskSpace\":46.732044728278154,\"availableDiskSpace\":84.89601927923036,\"refreshedAt\":\"2021-09-29T23:22:43Z\",\"azureProtectedInstances\":64246620}},\"tags\":{\"isjm\":\"zrhxuddqmdtf\",\"tja\":\"kkhmwdmdlgyqixok\"},\"location\":\"vagnqfqqdlcvmyo\",\"eTag\":\"aymjchtvsnvlaq\",\"id\":\"z\",\"name\":\"zawatuwqkokbc\",\"type\":\"othymgobl\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"cfkumcfjxo\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"syasvfnkwmygjjek\",\"backupEngineState\":\"nfdrugjqyck\",\"healthStatus\":\"xkrdtul\",\"canReRegister\":false,\"backupEngineId\":\"dklotcsubmzo\",\"dpmVersion\":\"svobchkxfp\",\"azureBackupAgentVersion\":\"dyslbklglmnn\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"hwyqxridttbsa\",\"protectedItemsCount\":1745940243,\"protectedServersCount\":765983940,\"diskCount\":2117461107,\"usedDiskSpace\":23.717448996920453,\"availableDiskSpace\":45.49459954461717,\"refreshedAt\":\"2021-11-07T10:40:46Z\",\"azureProtectedInstances\":403090142}},\"tags\":{\"fkhkqtwqlep\":\"iizevjykofvez\"},\"location\":\"zkca\",\"eTag\":\"wz\",\"id\":\"togffjwajnrtwz\",\"name\":\"aqkifmxawostfz\",\"type\":\"nhrkmjqncfvdsc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,37 +33,36 @@ public final class BackupEnginesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupEngineBaseResource> response = manager.backupEngines()
-            .list("jigawgaz", "xjqifhujjsbc", "lzaahzbhuroolk", "lirh", com.azure.core.util.Context.NONE);
+            .list("jfwtgdfkkaui", "vmuafmc", "fedyuep", "vpltidajjvy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jusuzgfjzc", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
+        Assertions.assertEquals("cfkumcfjxo", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("oialahfxwccokdx", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("kmkcz", response.iterator().next().properties().backupEngineState());
-        Assertions.assertEquals("uhhoqeqshavlj", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("syasvfnkwmygjjek", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("nfdrugjqyck", response.iterator().next().properties().backupEngineState());
+        Assertions.assertEquals("xkrdtul", response.iterator().next().properties().healthStatus());
         Assertions.assertFalse(response.iterator().next().properties().canReRegister());
-        Assertions.assertEquals("rqolnthbb", response.iterator().next().properties().backupEngineId());
-        Assertions.assertEquals("gzukw", response.iterator().next().properties().dpmVersion());
-        Assertions.assertEquals("nzkjthfceyjn", response.iterator().next().properties().azureBackupAgentVersion());
+        Assertions.assertEquals("dklotcsubmzo", response.iterator().next().properties().backupEngineId());
+        Assertions.assertEquals("svobchkxfp", response.iterator().next().properties().dpmVersion());
+        Assertions.assertEquals("dyslbklglmnn", response.iterator().next().properties().azureBackupAgentVersion());
         Assertions.assertTrue(response.iterator().next().properties().isAzureBackupAgentUpgradeAvailable());
-        Assertions.assertFalse(response.iterator().next().properties().isDpmUpgradeAvailable());
-        Assertions.assertEquals("fjbpfiddhlrufzcq",
-            response.iterator().next().properties().extendedInfo().databaseName());
-        Assertions.assertEquals(430682583,
+        Assertions.assertTrue(response.iterator().next().properties().isDpmUpgradeAvailable());
+        Assertions.assertEquals("hwyqxridttbsa", response.iterator().next().properties().extendedInfo().databaseName());
+        Assertions.assertEquals(1745940243,
             response.iterator().next().properties().extendedInfo().protectedItemsCount());
-        Assertions.assertEquals(320326560,
+        Assertions.assertEquals(765983940,
             response.iterator().next().properties().extendedInfo().protectedServersCount());
-        Assertions.assertEquals(1676386230, response.iterator().next().properties().extendedInfo().diskCount());
-        Assertions.assertEquals(46.732044728278154D,
+        Assertions.assertEquals(2117461107, response.iterator().next().properties().extendedInfo().diskCount());
+        Assertions.assertEquals(23.717448996920453D,
             response.iterator().next().properties().extendedInfo().usedDiskSpace());
-        Assertions.assertEquals(84.89601927923036D,
+        Assertions.assertEquals(45.49459954461717D,
             response.iterator().next().properties().extendedInfo().availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T23:22:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T10:40:46Z"),
             response.iterator().next().properties().extendedInfo().refreshedAt());
-        Assertions.assertEquals(64246620,
+        Assertions.assertEquals(403090142,
             response.iterator().next().properties().extendedInfo().azureProtectedInstances());
-        Assertions.assertEquals("zrhxuddqmdtf", response.iterator().next().tags().get("isjm"));
-        Assertions.assertEquals("vagnqfqqdlcvmyo", response.iterator().next().location());
-        Assertions.assertEquals("aymjchtvsnvlaq", response.iterator().next().etag());
+        Assertions.assertEquals("iizevjykofvez", response.iterator().next().tags().get("fkhkqtwqlep"));
+        Assertions.assertEquals("zkca", response.iterator().next().location());
+        Assertions.assertEquals("wz", response.iterator().next().etag());
     }
 }

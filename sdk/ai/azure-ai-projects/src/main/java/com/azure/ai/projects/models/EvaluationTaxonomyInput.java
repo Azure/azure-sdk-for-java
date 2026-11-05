@@ -29,7 +29,7 @@ public class EvaluationTaxonomyInput implements JsonSerializable<EvaluationTaxon
      * Creates an instance of EvaluationTaxonomyInput class.
      */
     @Generated
-    public EvaluationTaxonomyInput() {
+    protected EvaluationTaxonomyInput() {
     }
 
     /**

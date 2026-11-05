@@ -25,23 +25,51 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbManagementClient;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbClustersImpl;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbFirewallRulesImpl;
+import com.azure.resourcemanager.horizondb.implementation.AuthenticationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.CapabilitiesImpl;
+import com.azure.resourcemanager.horizondb.implementation.ChangeDataCaptureCapabilitiesImpl;
+import com.azure.resourcemanager.horizondb.implementation.ChangeDataCaptureConfigurationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.ChangeDataCaptureDestinationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.ClustersImpl;
+import com.azure.resourcemanager.horizondb.implementation.DefaultParameterGroupsImpl;
+import com.azure.resourcemanager.horizondb.implementation.EndpointsImpl;
+import com.azure.resourcemanager.horizondb.implementation.FirewallRulesImpl;
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbManagementClientBuilder;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbParameterGroupsImpl;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbPoolsImpl;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbPrivateEndpointConnectionsImpl;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbPrivateLinkResourcesImpl;
-import com.azure.resourcemanager.horizondb.implementation.HorizonDbReplicasImpl;
+import com.azure.resourcemanager.horizondb.implementation.IdentityAssignmentsImpl;
+import com.azure.resourcemanager.horizondb.implementation.LogCaptureConfigurationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.LogFilesImpl;
+import com.azure.resourcemanager.horizondb.implementation.MaintenanceEventsImpl;
+import com.azure.resourcemanager.horizondb.implementation.MicrosoftEntraAdministratorsImpl;
+import com.azure.resourcemanager.horizondb.implementation.MicrosoftEntraAuthenticationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.NodesImpl;
 import com.azure.resourcemanager.horizondb.implementation.OperationsImpl;
-import com.azure.resourcemanager.horizondb.models.HorizonDbClusters;
-import com.azure.resourcemanager.horizondb.models.HorizonDbFirewallRules;
-import com.azure.resourcemanager.horizondb.models.HorizonDbParameterGroups;
-import com.azure.resourcemanager.horizondb.models.HorizonDbPools;
-import com.azure.resourcemanager.horizondb.models.HorizonDbPrivateEndpointConnections;
-import com.azure.resourcemanager.horizondb.models.HorizonDbPrivateLinkResources;
-import com.azure.resourcemanager.horizondb.models.HorizonDbReplicas;
+import com.azure.resourcemanager.horizondb.implementation.ParameterGroupsImpl;
+import com.azure.resourcemanager.horizondb.implementation.PasswordAuthenticationsImpl;
+import com.azure.resourcemanager.horizondb.implementation.PoolsImpl;
+import com.azure.resourcemanager.horizondb.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.horizondb.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.horizondb.models.Authentications;
+import com.azure.resourcemanager.horizondb.models.Capabilities;
+import com.azure.resourcemanager.horizondb.models.ChangeDataCaptureCapabilities;
+import com.azure.resourcemanager.horizondb.models.ChangeDataCaptureConfigurations;
+import com.azure.resourcemanager.horizondb.models.ChangeDataCaptureDestinations;
+import com.azure.resourcemanager.horizondb.models.Clusters;
+import com.azure.resourcemanager.horizondb.models.DefaultParameterGroups;
+import com.azure.resourcemanager.horizondb.models.Endpoints;
+import com.azure.resourcemanager.horizondb.models.FirewallRules;
+import com.azure.resourcemanager.horizondb.models.IdentityAssignments;
+import com.azure.resourcemanager.horizondb.models.LogCaptureConfigurations;
+import com.azure.resourcemanager.horizondb.models.LogFiles;
+import com.azure.resourcemanager.horizondb.models.MaintenanceEvents;
+import com.azure.resourcemanager.horizondb.models.MicrosoftEntraAdministrators;
+import com.azure.resourcemanager.horizondb.models.MicrosoftEntraAuthentications;
+import com.azure.resourcemanager.horizondb.models.Nodes;
 import com.azure.resourcemanager.horizondb.models.Operations;
+import com.azure.resourcemanager.horizondb.models.ParameterGroups;
+import com.azure.resourcemanager.horizondb.models.PasswordAuthentications;
+import com.azure.resourcemanager.horizondb.models.Pools;
+import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.horizondb.models.PrivateLinkResources;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -52,24 +80,52 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to HorizonDbManager.
- * Azure Resource Provider API for managing HorizonDb clusters, pools, replicas, and firewall rules.
+ * Azure Resource Provider API for managing HorizonDB clusters, pools, endpoints, nodes, and firewall rules.
  */
 public final class HorizonDbManager {
     private Operations operations;
 
-    private HorizonDbClusters horizonDbClusters;
+    private Capabilities capabilities;
 
-    private HorizonDbPools horizonDbPools;
+    private Clusters clusters;
 
-    private HorizonDbReplicas horizonDbReplicas;
+    private Pools pools;
 
-    private HorizonDbFirewallRules horizonDbFirewallRules;
+    private FirewallRules firewallRules;
 
-    private HorizonDbPrivateEndpointConnections horizonDbPrivateEndpointConnections;
+    private PrivateEndpointConnections privateEndpointConnections;
 
-    private HorizonDbPrivateLinkResources horizonDbPrivateLinkResources;
+    private PrivateLinkResources privateLinkResources;
 
-    private HorizonDbParameterGroups horizonDbParameterGroups;
+    private ParameterGroups parameterGroups;
+
+    private DefaultParameterGroups defaultParameterGroups;
+
+    private MicrosoftEntraAdministrators microsoftEntraAdministrators;
+
+    private Authentications authentications;
+
+    private PasswordAuthentications passwordAuthentications;
+
+    private MicrosoftEntraAuthentications microsoftEntraAuthentications;
+
+    private ChangeDataCaptureCapabilities changeDataCaptureCapabilities;
+
+    private ChangeDataCaptureDestinations changeDataCaptureDestinations;
+
+    private IdentityAssignments identityAssignments;
+
+    private ChangeDataCaptureConfigurations changeDataCaptureConfigurations;
+
+    private Endpoints endpoints;
+
+    private MaintenanceEvents maintenanceEvents;
+
+    private Nodes nodes;
+
+    private LogCaptureConfigurations logCaptureConfigurations;
+
+    private LogFiles logFiles;
 
     private final HorizonDbManagementClient clientObject;
 
@@ -299,91 +355,264 @@ public final class HorizonDbManager {
     }
 
     /**
-     * Gets the resource collection API of HorizonDbClusters. It manages HorizonDbCluster.
+     * Gets the resource collection API of Capabilities.
      * 
-     * @return Resource collection API of HorizonDbClusters.
+     * @return Resource collection API of Capabilities.
      */
-    public HorizonDbClusters horizonDbClusters() {
-        if (this.horizonDbClusters == null) {
-            this.horizonDbClusters = new HorizonDbClustersImpl(clientObject.getHorizonDbClusters(), this);
+    public Capabilities capabilities() {
+        if (this.capabilities == null) {
+            this.capabilities = new CapabilitiesImpl(clientObject.getCapabilities(), this);
         }
-        return horizonDbClusters;
+        return capabilities;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbPools.
+     * Gets the resource collection API of Clusters. It manages Cluster.
      * 
-     * @return Resource collection API of HorizonDbPools.
+     * @return Resource collection API of Clusters.
      */
-    public HorizonDbPools horizonDbPools() {
-        if (this.horizonDbPools == null) {
-            this.horizonDbPools = new HorizonDbPoolsImpl(clientObject.getHorizonDbPools(), this);
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
         }
-        return horizonDbPools;
+        return clusters;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbReplicas. It manages HorizonDbReplica.
+     * Gets the resource collection API of Pools. It manages Pool.
      * 
-     * @return Resource collection API of HorizonDbReplicas.
+     * @return Resource collection API of Pools.
      */
-    public HorizonDbReplicas horizonDbReplicas() {
-        if (this.horizonDbReplicas == null) {
-            this.horizonDbReplicas = new HorizonDbReplicasImpl(clientObject.getHorizonDbReplicas(), this);
+    public Pools pools() {
+        if (this.pools == null) {
+            this.pools = new PoolsImpl(clientObject.getPools(), this);
         }
-        return horizonDbReplicas;
+        return pools;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbFirewallRules. It manages HorizonDbFirewallRule.
+     * Gets the resource collection API of FirewallRules. It manages FirewallRule.
      * 
-     * @return Resource collection API of HorizonDbFirewallRules.
+     * @return Resource collection API of FirewallRules.
      */
-    public HorizonDbFirewallRules horizonDbFirewallRules() {
-        if (this.horizonDbFirewallRules == null) {
-            this.horizonDbFirewallRules
-                = new HorizonDbFirewallRulesImpl(clientObject.getHorizonDbFirewallRules(), this);
+    public FirewallRules firewallRules() {
+        if (this.firewallRules == null) {
+            this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
         }
-        return horizonDbFirewallRules;
+        return firewallRules;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbPrivateEndpointConnections.
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnectionResource.
      * 
-     * @return Resource collection API of HorizonDbPrivateEndpointConnections.
+     * @return Resource collection API of PrivateEndpointConnections.
      */
-    public HorizonDbPrivateEndpointConnections horizonDbPrivateEndpointConnections() {
-        if (this.horizonDbPrivateEndpointConnections == null) {
-            this.horizonDbPrivateEndpointConnections = new HorizonDbPrivateEndpointConnectionsImpl(
-                clientObject.getHorizonDbPrivateEndpointConnections(), this);
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
-        return horizonDbPrivateEndpointConnections;
+        return privateEndpointConnections;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbPrivateLinkResources.
+     * Gets the resource collection API of PrivateLinkResources.
      * 
-     * @return Resource collection API of HorizonDbPrivateLinkResources.
+     * @return Resource collection API of PrivateLinkResources.
      */
-    public HorizonDbPrivateLinkResources horizonDbPrivateLinkResources() {
-        if (this.horizonDbPrivateLinkResources == null) {
-            this.horizonDbPrivateLinkResources
-                = new HorizonDbPrivateLinkResourcesImpl(clientObject.getHorizonDbPrivateLinkResources(), this);
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
-        return horizonDbPrivateLinkResources;
+        return privateLinkResources;
     }
 
     /**
-     * Gets the resource collection API of HorizonDbParameterGroups. It manages HorizonDbParameterGroup.
+     * Gets the resource collection API of ParameterGroups. It manages ParameterGroup.
      * 
-     * @return Resource collection API of HorizonDbParameterGroups.
+     * @return Resource collection API of ParameterGroups.
      */
-    public HorizonDbParameterGroups horizonDbParameterGroups() {
-        if (this.horizonDbParameterGroups == null) {
-            this.horizonDbParameterGroups
-                = new HorizonDbParameterGroupsImpl(clientObject.getHorizonDbParameterGroups(), this);
+    public ParameterGroups parameterGroups() {
+        if (this.parameterGroups == null) {
+            this.parameterGroups = new ParameterGroupsImpl(clientObject.getParameterGroups(), this);
         }
-        return horizonDbParameterGroups;
+        return parameterGroups;
+    }
+
+    /**
+     * Gets the resource collection API of DefaultParameterGroups.
+     * 
+     * @return Resource collection API of DefaultParameterGroups.
+     */
+    public DefaultParameterGroups defaultParameterGroups() {
+        if (this.defaultParameterGroups == null) {
+            this.defaultParameterGroups
+                = new DefaultParameterGroupsImpl(clientObject.getDefaultParameterGroups(), this);
+        }
+        return defaultParameterGroups;
+    }
+
+    /**
+     * Gets the resource collection API of MicrosoftEntraAdministrators. It manages MicrosoftEntraAdministrator.
+     * 
+     * @return Resource collection API of MicrosoftEntraAdministrators.
+     */
+    public MicrosoftEntraAdministrators microsoftEntraAdministrators() {
+        if (this.microsoftEntraAdministrators == null) {
+            this.microsoftEntraAdministrators
+                = new MicrosoftEntraAdministratorsImpl(clientObject.getMicrosoftEntraAdministrators(), this);
+        }
+        return microsoftEntraAdministrators;
+    }
+
+    /**
+     * Gets the resource collection API of Authentications.
+     * 
+     * @return Resource collection API of Authentications.
+     */
+    public Authentications authentications() {
+        if (this.authentications == null) {
+            this.authentications = new AuthenticationsImpl(clientObject.getAuthentications(), this);
+        }
+        return authentications;
+    }
+
+    /**
+     * Gets the resource collection API of PasswordAuthentications.
+     * 
+     * @return Resource collection API of PasswordAuthentications.
+     */
+    public PasswordAuthentications passwordAuthentications() {
+        if (this.passwordAuthentications == null) {
+            this.passwordAuthentications
+                = new PasswordAuthenticationsImpl(clientObject.getPasswordAuthentications(), this);
+        }
+        return passwordAuthentications;
+    }
+
+    /**
+     * Gets the resource collection API of MicrosoftEntraAuthentications.
+     * 
+     * @return Resource collection API of MicrosoftEntraAuthentications.
+     */
+    public MicrosoftEntraAuthentications microsoftEntraAuthentications() {
+        if (this.microsoftEntraAuthentications == null) {
+            this.microsoftEntraAuthentications
+                = new MicrosoftEntraAuthenticationsImpl(clientObject.getMicrosoftEntraAuthentications(), this);
+        }
+        return microsoftEntraAuthentications;
+    }
+
+    /**
+     * Gets the resource collection API of ChangeDataCaptureCapabilities.
+     * 
+     * @return Resource collection API of ChangeDataCaptureCapabilities.
+     */
+    public ChangeDataCaptureCapabilities changeDataCaptureCapabilities() {
+        if (this.changeDataCaptureCapabilities == null) {
+            this.changeDataCaptureCapabilities
+                = new ChangeDataCaptureCapabilitiesImpl(clientObject.getChangeDataCaptureCapabilities(), this);
+        }
+        return changeDataCaptureCapabilities;
+    }
+
+    /**
+     * Gets the resource collection API of ChangeDataCaptureDestinations. It manages ChangeDataCaptureDestination.
+     * 
+     * @return Resource collection API of ChangeDataCaptureDestinations.
+     */
+    public ChangeDataCaptureDestinations changeDataCaptureDestinations() {
+        if (this.changeDataCaptureDestinations == null) {
+            this.changeDataCaptureDestinations
+                = new ChangeDataCaptureDestinationsImpl(clientObject.getChangeDataCaptureDestinations(), this);
+        }
+        return changeDataCaptureDestinations;
+    }
+
+    /**
+     * Gets the resource collection API of IdentityAssignments. It manages IdentityAssignment.
+     * 
+     * @return Resource collection API of IdentityAssignments.
+     */
+    public IdentityAssignments identityAssignments() {
+        if (this.identityAssignments == null) {
+            this.identityAssignments = new IdentityAssignmentsImpl(clientObject.getIdentityAssignments(), this);
+        }
+        return identityAssignments;
+    }
+
+    /**
+     * Gets the resource collection API of ChangeDataCaptureConfigurations. It manages ChangeDataCaptureConfiguration.
+     * 
+     * @return Resource collection API of ChangeDataCaptureConfigurations.
+     */
+    public ChangeDataCaptureConfigurations changeDataCaptureConfigurations() {
+        if (this.changeDataCaptureConfigurations == null) {
+            this.changeDataCaptureConfigurations
+                = new ChangeDataCaptureConfigurationsImpl(clientObject.getChangeDataCaptureConfigurations(), this);
+        }
+        return changeDataCaptureConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of Endpoints.
+     * 
+     * @return Resource collection API of Endpoints.
+     */
+    public Endpoints endpoints() {
+        if (this.endpoints == null) {
+            this.endpoints = new EndpointsImpl(clientObject.getEndpoints(), this);
+        }
+        return endpoints;
+    }
+
+    /**
+     * Gets the resource collection API of MaintenanceEvents.
+     * 
+     * @return Resource collection API of MaintenanceEvents.
+     */
+    public MaintenanceEvents maintenanceEvents() {
+        if (this.maintenanceEvents == null) {
+            this.maintenanceEvents = new MaintenanceEventsImpl(clientObject.getMaintenanceEvents(), this);
+        }
+        return maintenanceEvents;
+    }
+
+    /**
+     * Gets the resource collection API of Nodes.
+     * 
+     * @return Resource collection API of Nodes.
+     */
+    public Nodes nodes() {
+        if (this.nodes == null) {
+            this.nodes = new NodesImpl(clientObject.getNodes(), this);
+        }
+        return nodes;
+    }
+
+    /**
+     * Gets the resource collection API of LogCaptureConfigurations.
+     * 
+     * @return Resource collection API of LogCaptureConfigurations.
+     */
+    public LogCaptureConfigurations logCaptureConfigurations() {
+        if (this.logCaptureConfigurations == null) {
+            this.logCaptureConfigurations
+                = new LogCaptureConfigurationsImpl(clientObject.getLogCaptureConfigurations(), this);
+        }
+        return logCaptureConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of LogFiles.
+     * 
+     * @return Resource collection API of LogFiles.
+     */
+    public LogFiles logFiles() {
+        if (this.logFiles == null) {
+            this.logFiles = new LogFilesImpl(clientObject.getLogFiles(), this);
+        }
+        return logFiles;
     }
 
     /**

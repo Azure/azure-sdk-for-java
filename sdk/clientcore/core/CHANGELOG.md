@@ -5,13 +5,24 @@
 ### Features Added
 
 ### Breaking Changes
+
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
   `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
   of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+- Removed `SharedExecutorService`. HTTP transports now use their native default executors unless one is explicitly
+  configured.
 
 ### Bugs Fixed
 
+- Restricted JDK HTTP proxy credentials to authentication challenges from the configured proxy host and port,
+  preventing destination servers or other proxies from receiving them.
+- Fixed HTTP timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults. Global timeouts are resolved when needed rather than cached at class
+  initialization. Nonpositive JDK HTTP timeouts now disable the timeout, including the connection timeout.
+
 ### Other Changes
+
+- Documented the JDK `Host` header configuration and HTTP/2 authority limitations.
 
 ## 1.0.0-beta.11 (2025-07-21)
 

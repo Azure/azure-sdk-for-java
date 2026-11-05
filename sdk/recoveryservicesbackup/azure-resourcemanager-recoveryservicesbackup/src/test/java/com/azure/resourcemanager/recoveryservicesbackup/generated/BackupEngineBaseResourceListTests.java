@@ -14,33 +14,33 @@ public final class BackupEngineBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupEngineBaseResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"vgbgatzuuvbxng\",\"backupManagementType\":\"AzureStorage\",\"registrationStatus\":\"ggahtt\",\"backupEngineState\":\"swvajqfu\",\"healthStatus\":\"x\",\"canReRegister\":true,\"backupEngineId\":\"asunwqrjzfrgq\",\"dpmVersion\":\"ohcmbu\",\"azureBackupAgentVersion\":\"njrohmbpy\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":false,\"extendedInfo\":{\"databaseName\":\"l\",\"protectedItemsCount\":608034238,\"protectedServersCount\":1723060163,\"diskCount\":2057319587,\"usedDiskSpace\":53.839705556178686,\"availableDiskSpace\":15.106018458179339,\"refreshedAt\":\"2021-05-28T22:41Z\",\"azureProtectedInstances\":400790615}},\"tags\":{\"vyuns\":\"odlfpyapucygvo\"},\"location\":\"lghieegjlgvvpase\",\"eTag\":\"gbuxantuygdh\",\"id\":\"qipir\",\"name\":\"iwrqofulopmjnl\",\"type\":\"x\"},{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"bjpi\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"hu\",\"backupEngineState\":\"erctatoyin\",\"healthStatus\":\"pbrlcyrduczkgofx\",\"canReRegister\":true,\"backupEngineId\":\"uc\",\"dpmVersion\":\"rrp\",\"azureBackupAgentVersion\":\"ttbst\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"mvvfko\",\"protectedItemsCount\":559476164,\"protectedServersCount\":508390105,\"diskCount\":916621053,\"usedDiskSpace\":43.273813285901184,\"availableDiskSpace\":2.1562950488967725,\"refreshedAt\":\"2021-09-13T15:19:56Z\",\"azureProtectedInstances\":1581444330}},\"tags\":{\"mzvlazipbh\":\"wex\",\"uuzivensrpmeyyvp\":\"wvqsgny\",\"gsksrfhf\":\"patlbijp\",\"bnxwc\":\"olmk\"},\"location\":\"mmpvf\",\"eTag\":\"wzfgbrttuiaclkie\",\"id\":\"ajlfnthiqfyu\",\"name\":\"t\",\"type\":\"iygbpvn\"},{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"mtx\",\"backupManagementType\":\"AzureWorkload\",\"registrationStatus\":\"wwgzwxjlmecvog\",\"backupEngineState\":\"zyvneezaifghtmo\",\"healthStatus\":\"tlffhzbkr\",\"canReRegister\":false,\"backupEngineId\":\"avfqnvhnqoewdogi\",\"dpmVersion\":\"tesypvidbztjh\",\"azureBackupAgentVersion\":\"fbov\",\"isAzureBackupAgentUpgradeAvailable\":false,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"tnjuhpsprkzyaupi\",\"protectedItemsCount\":1005928957,\"protectedServersCount\":253099074,\"diskCount\":113725069,\"usedDiskSpace\":22.331797191070212,\"availableDiskSpace\":97.34527428148589,\"refreshedAt\":\"2021-10-29T23:21:15Z\",\"azureProtectedInstances\":1011868952}},\"tags\":{\"ihpvecmslclblyj\":\"aonurjtumg\",\"sjuscvsfxigctmg\":\"lt\"},\"location\":\"upbezqccydrt\",\"eTag\":\"ukdqkkyihztg\",\"id\":\"mgqzgwldoyc\",\"name\":\"illcecfehu\",\"type\":\"aoaguhicqlli\"},{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"ac\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"rweft\",\"backupEngineState\":\"qejpmvssehaepwa\",\"healthStatus\":\"xtczhupeuknijd\",\"canReRegister\":true,\"backupEngineId\":\"spyd\",\"dpmVersion\":\"bocyvhhul\",\"azureBackupAgentVersion\":\"ywikd\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":false,\"extendedInfo\":{\"databaseName\":\"lgbhgauacdi\",\"protectedItemsCount\":825768893,\"protectedServersCount\":79202020,\"diskCount\":665007263,\"usedDiskSpace\":18.025093855472196,\"availableDiskSpace\":42.73005394019875,\"refreshedAt\":\"2021-08-22T18:10:50Z\",\"azureProtectedInstances\":658215610}},\"tags\":{\"hntasfaymx\":\"eoqbvjhvefgwbmqj\"},\"location\":\"lpzealbmqkyojwyv\",\"eTag\":\"mbtsuahxsg\",\"id\":\"cmmzrrs\",\"name\":\"ubiwsdrnpxq\",\"type\":\"odiffjxcjrmmua\"}],\"nextLink\":\"ibvjogjonmcy\"}")
+            "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"uqqiqezxlhd\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"cadwvpsozjii\",\"backupEngineState\":\"riybmrz\",\"healthStatus\":\"pnx\",\"canReRegister\":false,\"backupEngineId\":\"njkgvfnmx\",\"dpmVersion\":\"rsqftib\",\"azureBackupAgentVersion\":\"ibuyvpirf\",\"isAzureBackupAgentUpgradeAvailable\":false,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"owsbedenrexkxbh\",\"protectedItemsCount\":83115,\"protectedServersCount\":597932404,\"diskCount\":1049789640,\"usedDiskSpace\":60.381739063388196,\"availableDiskSpace\":48.54549062602398,\"refreshedAt\":\"2021-08-16T20:07:13Z\",\"azureProtectedInstances\":1228263449}},\"tags\":{\"kmq\":\"ajsvk\"},\"location\":\"zkivyhjrliizjix\",\"eTag\":\"fhefk\",\"id\":\"bsolronqqlmg\",\"name\":\"lqxsjxtelex\",\"type\":\"vuqbozoo\"}],\"nextLink\":\"qocarkuzlbc\"}")
             .toObject(BackupEngineBaseResourceList.class);
-        Assertions.assertEquals("ibvjogjonmcy", model.nextLink());
-        Assertions.assertEquals("vgbgatzuuvbxng", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+        Assertions.assertEquals("qocarkuzlbc", model.nextLink());
+        Assertions.assertEquals("uqqiqezxlhd", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP,
             model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("ggahtt", model.value().get(0).properties().registrationStatus());
-        Assertions.assertEquals("swvajqfu", model.value().get(0).properties().backupEngineState());
-        Assertions.assertEquals("x", model.value().get(0).properties().healthStatus());
-        Assertions.assertTrue(model.value().get(0).properties().canReRegister());
-        Assertions.assertEquals("asunwqrjzfrgq", model.value().get(0).properties().backupEngineId());
-        Assertions.assertEquals("ohcmbu", model.value().get(0).properties().dpmVersion());
-        Assertions.assertEquals("njrohmbpy", model.value().get(0).properties().azureBackupAgentVersion());
-        Assertions.assertTrue(model.value().get(0).properties().isAzureBackupAgentUpgradeAvailable());
-        Assertions.assertFalse(model.value().get(0).properties().isDpmUpgradeAvailable());
-        Assertions.assertEquals("l", model.value().get(0).properties().extendedInfo().databaseName());
-        Assertions.assertEquals(608034238, model.value().get(0).properties().extendedInfo().protectedItemsCount());
-        Assertions.assertEquals(1723060163, model.value().get(0).properties().extendedInfo().protectedServersCount());
-        Assertions.assertEquals(2057319587, model.value().get(0).properties().extendedInfo().diskCount());
-        Assertions.assertEquals(53.839705556178686D, model.value().get(0).properties().extendedInfo().usedDiskSpace());
-        Assertions.assertEquals(15.106018458179339D,
+        Assertions.assertEquals("cadwvpsozjii", model.value().get(0).properties().registrationStatus());
+        Assertions.assertEquals("riybmrz", model.value().get(0).properties().backupEngineState());
+        Assertions.assertEquals("pnx", model.value().get(0).properties().healthStatus());
+        Assertions.assertFalse(model.value().get(0).properties().canReRegister());
+        Assertions.assertEquals("njkgvfnmx", model.value().get(0).properties().backupEngineId());
+        Assertions.assertEquals("rsqftib", model.value().get(0).properties().dpmVersion());
+        Assertions.assertEquals("ibuyvpirf", model.value().get(0).properties().azureBackupAgentVersion());
+        Assertions.assertFalse(model.value().get(0).properties().isAzureBackupAgentUpgradeAvailable());
+        Assertions.assertTrue(model.value().get(0).properties().isDpmUpgradeAvailable());
+        Assertions.assertEquals("owsbedenrexkxbh", model.value().get(0).properties().extendedInfo().databaseName());
+        Assertions.assertEquals(83115, model.value().get(0).properties().extendedInfo().protectedItemsCount());
+        Assertions.assertEquals(597932404, model.value().get(0).properties().extendedInfo().protectedServersCount());
+        Assertions.assertEquals(1049789640, model.value().get(0).properties().extendedInfo().diskCount());
+        Assertions.assertEquals(60.381739063388196D, model.value().get(0).properties().extendedInfo().usedDiskSpace());
+        Assertions.assertEquals(48.54549062602398D,
             model.value().get(0).properties().extendedInfo().availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T22:41Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T20:07:13Z"),
             model.value().get(0).properties().extendedInfo().refreshedAt());
-        Assertions.assertEquals(400790615, model.value().get(0).properties().extendedInfo().azureProtectedInstances());
-        Assertions.assertEquals("odlfpyapucygvo", model.value().get(0).tags().get("vyuns"));
-        Assertions.assertEquals("lghieegjlgvvpase", model.value().get(0).location());
-        Assertions.assertEquals("gbuxantuygdh", model.value().get(0).etag());
+        Assertions.assertEquals(1228263449, model.value().get(0).properties().extendedInfo().azureProtectedInstances());
+        Assertions.assertEquals("ajsvk", model.value().get(0).tags().get("kmq"));
+        Assertions.assertEquals("zkivyhjrliizjix", model.value().get(0).location());
+        Assertions.assertEquals("fhefk", model.value().get(0).etag());
     }
 }

@@ -14,14 +14,14 @@ public final class SignalHistoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalHistoryResponseInner model = BinaryData.fromString(
-            "{\"entityName\":\"ccybvp\",\"signalName\":\"yakk\",\"history\":[{\"occurredAt\":\"2021-07-27T17:18:09Z\",\"value\":91.30333284933613,\"healthState\":\"Deleted\",\"additionalContext\":\"plmag\"},{\"occurredAt\":\"2021-01-17T07:38:08Z\",\"value\":98.8252906927025,\"healthState\":\"Unknown\",\"additionalContext\":\"fkyrk\"},{\"occurredAt\":\"2021-09-01T09:28:39Z\",\"value\":81.52493620632941,\"healthState\":\"Degraded\",\"additionalContext\":\"sjkmnwqj\"}],\"nextMarker\":\"baiyhddviaceg\"}")
+            "{\"entityName\":\"qqybarye\",\"signalName\":\"ayjkqa\",\"history\":[{\"occurredAt\":\"2021-06-04T05:22:52Z\",\"value\":75.26670617204802,\"healthState\":\"Unhealthy\",\"additionalContext\":\"jcbhern\"},{\"occurredAt\":\"2021-02-23T04:37:37Z\",\"value\":73.53538429605008,\"healthState\":\"Healthy\",\"additionalContext\":\"cv\"}],\"nextMarker\":\"uwrbehwagoh\"}")
             .toObject(SignalHistoryResponseInner.class);
-        Assertions.assertEquals("ccybvp", model.entityName());
-        Assertions.assertEquals("yakk", model.signalName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T17:18:09Z"), model.history().get(0).occurredAt());
-        Assertions.assertEquals(91.30333284933613D, model.history().get(0).value());
-        Assertions.assertEquals(HealthState.DELETED, model.history().get(0).healthState());
-        Assertions.assertEquals("plmag", model.history().get(0).additionalContext());
-        Assertions.assertEquals("baiyhddviaceg", model.nextMarker());
+        Assertions.assertEquals("qqybarye", model.entityName());
+        Assertions.assertEquals("ayjkqa", model.signalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T05:22:52Z"), model.history().get(0).occurredAt());
+        Assertions.assertEquals(75.26670617204802D, model.history().get(0).value());
+        Assertions.assertEquals(HealthState.UNHEALTHY, model.history().get(0).healthState());
+        Assertions.assertEquals("jcbhern", model.history().get(0).additionalContext());
+        Assertions.assertEquals("uwrbehwagoh", model.nextMarker());
     }
 }

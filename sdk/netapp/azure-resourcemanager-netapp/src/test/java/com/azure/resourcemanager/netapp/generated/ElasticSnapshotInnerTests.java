@@ -12,7 +12,7 @@ public final class ElasticSnapshotInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSnapshotInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"eyzihgrky\",\"name\":\"i\",\"type\":\"absnmfpp\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"nmdxotngfd\",\"name\":\"ugeyzihgrkyuiza\",\"type\":\"snmfpphojeevy\"}")
             .toObject(ElasticSnapshotInner.class);
     }
 

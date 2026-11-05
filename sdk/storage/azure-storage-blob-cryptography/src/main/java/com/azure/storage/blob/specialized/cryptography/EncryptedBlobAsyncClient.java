@@ -36,6 +36,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -60,7 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
@@ -68,6 +69,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_NONCE_VALIDATOR_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -78,6 +80,9 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * <p> Please refer to the
  * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
+ *
+ * <p>Layout-aware routing is not supported for client-side encrypted downloads. Downloads use the client's configured
+ * endpoint and log a warning when {@link LayoutAwareRouting#ENABLED} is requested.</p>
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
@@ -743,20 +748,19 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         if (EncryptedBlobClient.isRangeRequest(range)) {
             return populateRequestConditionsAndContext(requestConditions,
-                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
+                finalConditions -> super.downloadStreamWithResponse(range, options, finalConditions,
+                    getRangeContentMd5));
         } else {
             return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
     }
 
     private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
-        Supplier<Mono<T>> downloadCall) {
+        Function<BlobRequestConditions, Mono<T>> downloadCall) {
         return this.getPropertiesWithResponse(requestConditions).flatMap(response -> {
             BlobRequestConditions requestConditionsFinal
-                = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
-            requestConditionsFinal.setIfMatch(response.getValue().getETag());
-            Mono<T> result = downloadCall.get();
+                = EncryptedBlobClient.applyETagLock(requestConditions, response.getValue().getETag());
+            Mono<T> result = downloadCall.apply(requestConditionsFinal);
 
             String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
             if (encryptionDataKey != null) {
@@ -764,6 +768,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     = EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption);
 
                 result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY, encryptionData))
+                    .contextWrite(context -> context.put(GCM_NONCE_VALIDATOR_KEY, new CseV2NonceOrderValidator()))
                     .contextWrite(context -> context.put(Constants.ADJUSTED_BLOB_LENGTH_KEY, EncryptedBlobLength
                         .computeAdjustedBlobLength(encryptionData, response.getValue().getBlobSize())));
             }
@@ -777,7 +782,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         return populateRequestConditionsAndContext(requestConditions,
-            () -> super.downloadContentWithResponse(options, requestConditions));
+            finalConditions -> super.downloadContentWithResponse(options, finalConditions));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -831,8 +836,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
         options.setRequestConditions(
             options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions());
-        return populateRequestConditionsAndContext(options.getRequestConditions(),
-            () -> super.downloadToFileWithResponse(options));
+        return populateRequestConditionsAndContext(options.getRequestConditions(), finalConditions -> {
+            options.setRequestConditions(finalConditions);
+            return super.downloadToFileWithResponse(options);
+        });
     }
 
     /**

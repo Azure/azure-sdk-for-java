@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public final class AIManagersListCredentialWithResponseMockTests {
     @Test
     public void testListCredentialWithResponse() throws Exception {
-        String responseStr
-            = "{\"kubeconfigs\":[{\"name\":\"gylgqgitxmedjvcs\"},{\"name\":\"qwwncw\"},{\"name\":\"xgk\"},{\"name\":\"gucnapkte\"}]}";
+        String responseStr = "{\"kubeconfigs\":[{\"name\":\"gmifthnzd\"},{\"name\":\"l\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +29,7 @@ public final class AIManagersListCredentialWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CredentialResults response = manager.aIManagers()
-            .listCredentialWithResponse("bnxknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
+            .listCredentialWithResponse("tjrybnwjewgdr", "ervnaenqpehi", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

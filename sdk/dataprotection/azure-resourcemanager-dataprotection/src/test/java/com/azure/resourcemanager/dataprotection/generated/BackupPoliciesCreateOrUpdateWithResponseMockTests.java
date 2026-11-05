@@ -23,7 +23,7 @@ public final class BackupPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"d\",\"cpfnznthjtwkja\"]},\"id\":\"rxuzvoam\",\"name\":\"tcqiosmg\",\"type\":\"zah\"}";
+            = "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"mzvupor\",\"zdfuydzvkfvxcnqm\"]},\"id\":\"psw\",\"name\":\"kmvkhl\",\"type\":\"gdhbe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class BackupPoliciesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BaseBackupPolicyResource response = manager.backupPolicies()
-            .define("e")
-            .withExistingBackupVault("xpelnjetagltsx", "atftgzpnpbsw")
-            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("ccsrmozihmipgaw", "xxpkyjcxc")))
+            .define("khpzvuqdflv")
+            .withExistingBackupVault("nkvxlxpaglqi", "bgkc")
+            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("yp", "pubcpzgpxtivhjk")))
             .create();
 
-        Assertions.assertEquals("d", response.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("mzvupor", response.properties().datasourceTypes().get(0));
     }
 }

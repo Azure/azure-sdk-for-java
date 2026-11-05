@@ -13,18 +13,18 @@ public final class CacheUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheUpgradeSettings model
-            = BinaryData.fromString("{\"upgradeScheduleEnabled\":false,\"scheduledTime\":\"2021-05-27T06:39:02Z\"}")
+            = BinaryData.fromString("{\"upgradeScheduleEnabled\":true,\"scheduledTime\":\"2021-04-14T12:48:39Z\"}")
                 .toObject(CacheUpgradeSettings.class);
-        Assertions.assertFalse(model.upgradeScheduleEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T06:39:02Z"), model.scheduledTime());
+        Assertions.assertTrue(model.upgradeScheduleEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T12:48:39Z"), model.scheduledTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheUpgradeSettings model = new CacheUpgradeSettings().withUpgradeScheduleEnabled(false)
-            .withScheduledTime(OffsetDateTime.parse("2021-05-27T06:39:02Z"));
+        CacheUpgradeSettings model = new CacheUpgradeSettings().withUpgradeScheduleEnabled(true)
+            .withScheduledTime(OffsetDateTime.parse("2021-04-14T12:48:39Z"));
         model = BinaryData.fromObject(model).toObject(CacheUpgradeSettings.class);
-        Assertions.assertFalse(model.upgradeScheduleEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T06:39:02Z"), model.scheduledTime());
+        Assertions.assertTrue(model.upgradeScheduleEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T12:48:39Z"), model.scheduledTime());
     }
 }

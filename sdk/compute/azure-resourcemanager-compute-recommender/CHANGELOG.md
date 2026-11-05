@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2026-08-28)
+
+- Azure Resource Manager Compute Recommender client library for Java. This package contains Microsoft Azure SDK for Compute Recommender Management SDK. The Compute Recommender Resource Provider Client. Package api-version 2026-09-05-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SkuMixPlacementItem` was modified
+
+* `capacityMax()` was removed
+
+#### `models.SkuMixPlacementDeploymentChoice` was modified
+
+* `id()` was removed
+
+### Features Added
+
+* `models.SkuMixPlacementCapacityLimit` was added
+
+* `models.SkuMixPlacementCapacityLimitReason` was added
+
+#### `models.SkuMixPlacementResponse` was modified
+
+* `id()` was added
+* `capacityLimits()` was added
 
 ## 1.0.0-beta.2 (2026-08-03)
 

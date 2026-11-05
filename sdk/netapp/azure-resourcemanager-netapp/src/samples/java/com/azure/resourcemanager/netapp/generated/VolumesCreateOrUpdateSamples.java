@@ -4,14 +4,20 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDeleteStatus;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import java.util.Arrays;
 
 /**
  * Samples for Volumes CreateOrUpdate.
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-15-preview/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -28,6 +34,35 @@ public final class VolumesCreateOrUpdateSamples {
             .withSubnetId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
             .withServiceLevel(ServiceLevel.PREMIUM)
+            .withAsyncDirectoryDelete(
+                new AsyncDirectoryDelete().withStatus(AsyncDirectoryDeleteStatus.ENABLED).withTrashBinName("trash"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-15-preview/Volumes_CreateOrUpdate_SMB.json
+     */
+    /**
+     * Sample code: Volumes_CreateOrUpdate_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesCreateOrUpdateSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .define("volume1")
+            .withRegion("eastus")
+            .withExistingCapacityPool("myRG", "account1", "pool1")
+            .withCreationToken("my-smb-volume")
+            .withUsageThreshold(107374182400L)
+            .withSubnetId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withProtocolTypes(Arrays.asList("CIFS"))
+            .withSmbEncryption(true)
+            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.ENABLED)
+            .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
+            .withSmbContinuouslyAvailable(true)
+            .withSmbOplocks(SmbOplocks.ENABLED)
             .create();
     }
 }

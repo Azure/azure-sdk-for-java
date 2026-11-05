@@ -14,6 +14,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReason
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a knowledge base definition.
@@ -215,9 +216,11 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("retrievalInstructions", this.retrievalInstructions);
         jsonWriter.writeStringField("answerInstructions", this.answerInstructions);
         jsonWriter.writeJsonField("corsOptions", this.corsOptions);
+        jsonWriter.writeJsonField("retrieveDefaults", this.retrieveDefaults);
         return jsonWriter.writeEndObject();
     }
 
@@ -241,9 +244,11 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             String description = null;
+            Map<String, String> tags = null;
             String retrievalInstructions = null;
             String answerInstructions = null;
             CorsOptions corsOptions = null;
+            KnowledgeBaseRetrieveDefaults retrieveDefaults = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -263,12 +268,16 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("retrievalInstructions".equals(fieldName)) {
                     retrievalInstructions = reader.getString();
                 } else if ("answerInstructions".equals(fieldName)) {
                     answerInstructions = reader.getString();
                 } else if ("corsOptions".equals(fieldName)) {
                     corsOptions = CorsOptions.fromJson(reader);
+                } else if ("retrieveDefaults".equals(fieldName)) {
+                    retrieveDefaults = KnowledgeBaseRetrieveDefaults.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -280,9 +289,11 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
             deserializedKnowledgeBase.eTag = eTag;
             deserializedKnowledgeBase.encryptionKey = encryptionKey;
             deserializedKnowledgeBase.description = description;
+            deserializedKnowledgeBase.tags = tags;
             deserializedKnowledgeBase.retrievalInstructions = retrievalInstructions;
             deserializedKnowledgeBase.answerInstructions = answerInstructions;
             deserializedKnowledgeBase.corsOptions = corsOptions;
+            deserializedKnowledgeBase.retrieveDefaults = retrieveDefaults;
             return deserializedKnowledgeBase;
         });
     }
@@ -424,6 +435,67 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     @Generated
     public KnowledgeBase setCorsOptions(CorsOptions corsOptions) {
         this.corsOptions = corsOptions;
+        return this;
+    }
+
+    /*
+     * User-defined key-value pairs for categorizing the knowledge base and attributing its usage and costs.
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Persisted request-wide retrieve defaults for this knowledge base. These values apply to retrieve requests that
+     * omit the corresponding fields; request-time values take precedence when present.
+     */
+    @Generated
+    private KnowledgeBaseRetrieveDefaults retrieveDefaults;
+
+    /**
+     * Get the tags property: User-defined key-value pairs for categorizing the knowledge base and attributing its usage
+     * and costs.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: User-defined key-value pairs for categorizing the knowledge base and attributing its usage
+     * and costs.
+     *
+     * @param tags the tags value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the retrieveDefaults property: Persisted request-wide retrieve defaults for this knowledge base. These values
+     * apply to retrieve requests that omit the corresponding fields; request-time values take precedence when present.
+     *
+     * @return the retrieveDefaults value.
+     */
+    @Generated
+    public KnowledgeBaseRetrieveDefaults getRetrieveDefaults() {
+        return this.retrieveDefaults;
+    }
+
+    /**
+     * Set the retrieveDefaults property: Persisted request-wide retrieve defaults for this knowledge base. These values
+     * apply to retrieve requests that omit the corresponding fields; request-time values take precedence when present.
+     *
+     * @param retrieveDefaults the retrieveDefaults value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setRetrieveDefaults(KnowledgeBaseRetrieveDefaults retrieveDefaults) {
+        this.retrieveDefaults = retrieveDefaults;
         return this;
     }
 }

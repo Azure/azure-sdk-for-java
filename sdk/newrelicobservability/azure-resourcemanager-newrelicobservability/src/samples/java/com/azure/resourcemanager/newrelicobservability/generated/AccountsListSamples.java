@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Accounts_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Accounts_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class AccountsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Accounts_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Accounts_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MaximumSet_Gen.

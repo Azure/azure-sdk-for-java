@@ -101,12 +101,6 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     private final BatchJobSpecification jobSpecification;
 
     /*
-     * Information about Jobs that have been and will be run under this schedule.
-     */
-    @Generated
-    private BatchJobScheduleExecutionInfo executionInfo;
-
-    /*
      * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any
      * meaning to metadata; it is solely for the use of user code.
      */
@@ -265,16 +259,6 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     }
 
     /**
-     * Get the executionInfo property: Information about Jobs that have been and will be run under this schedule.
-     *
-     * @return the executionInfo value.
-     */
-    @Generated
-    public BatchJobScheduleExecutionInfo getExecutionInfo() {
-        return this.executionInfo;
-    }
-
-    /**
      * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
      * does not assign any meaning to metadata; it is solely for the use of user code.
      *
@@ -331,7 +315,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
             BatchJobScheduleState state = null;
             OffsetDateTime stateTransitionTime = null;
             BatchJobSpecification jobSpecification = null;
-            BatchJobScheduleExecutionInfo executionInfo = null;
+            BatchJobScheduleExecutionDetails executionDetails = null;
             String displayName = null;
             BatchJobScheduleState previousState = null;
             OffsetDateTime previousStateTransitionTime = null;
@@ -361,7 +345,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
                 } else if ("jobSpecification".equals(fieldName)) {
                     jobSpecification = BatchJobSpecification.fromJson(reader);
                 } else if ("executionInfo".equals(fieldName)) {
-                    executionInfo = BatchJobScheduleExecutionInfo.fromJson(reader);
+                    executionDetails = BatchJobScheduleExecutionDetails.fromJson(reader);
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("previousState".equals(fieldName)) {
@@ -387,7 +371,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
             deserializedBatchJobSchedule.creationTime = creationTime;
             deserializedBatchJobSchedule.state = state;
             deserializedBatchJobSchedule.stateTransitionTime = stateTransitionTime;
-            deserializedBatchJobSchedule.executionInfo = executionInfo;
+            deserializedBatchJobSchedule.executionDetails = executionDetails;
             deserializedBatchJobSchedule.displayName = displayName;
             deserializedBatchJobSchedule.previousState = previousState;
             deserializedBatchJobSchedule.previousStateTransitionTime = previousStateTransitionTime;
@@ -415,5 +399,21 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     @Generated
     public BatchJobScheduleStatistics getJobScheduleStatistics() {
         return this.jobScheduleStatistics;
+    }
+
+    /*
+     * Information about Jobs that have been and will be run under this schedule.
+     */
+    @Generated
+    private BatchJobScheduleExecutionDetails executionDetails;
+
+    /**
+     * Get the executionDetails property: Information about Jobs that have been and will be run under this schedule.
+     *
+     * @return the executionDetails value.
+     */
+    @Generated
+    public BatchJobScheduleExecutionDetails getExecutionDetails() {
+        return this.executionDetails;
     }
 }

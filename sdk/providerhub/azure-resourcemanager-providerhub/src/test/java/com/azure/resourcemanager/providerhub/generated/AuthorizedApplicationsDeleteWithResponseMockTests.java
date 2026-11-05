@@ -29,7 +29,7 @@ public final class AuthorizedApplicationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.authorizedApplications()
-            .deleteWithResponse("gtnse", UUID.fromString("886cc3c9-5627-46cb-ab31-0b43f43008eb"),
+            .deleteWithResponse("lpbyxroiduyq", UUID.fromString("9cd4e2b9-0af3-4078-ad7c-18bf14b28180"),
                 com.azure.core.util.Context.NONE);
 
     }

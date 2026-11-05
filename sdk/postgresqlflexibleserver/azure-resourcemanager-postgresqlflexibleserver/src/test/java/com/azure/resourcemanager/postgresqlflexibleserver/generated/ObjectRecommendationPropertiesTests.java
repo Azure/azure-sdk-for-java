@@ -14,19 +14,19 @@ public final class ObjectRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ObjectRecommendationProperties model = BinaryData.fromString(
-            "{\"initialRecommendedTime\":\"2021-07-31T02:44:44Z\",\"lastRecommendedTime\":\"2021-07-04T00:14:41Z\",\"timesRecommended\":32473122,\"improvedQueryIds\":[1887689540352270929,6944098235734812543,1553799518740160274,516044894361658997],\"recommendationReason\":\"jdqnsdfzpbgt\",\"currentState\":\"ylkdghrje\",\"recommendationType\":\"DropIndex\",\"implementationDetails\":{\"method\":\"xezw\",\"script\":\"okvbwnhhtqlgehg\"},\"analyzedWorkload\":{\"startTime\":\"2021-06-28T11:23:36Z\",\"endTime\":\"2021-08-28T07:02:54Z\",\"queryCount\":2121481482},\"estimatedImpact\":[{\"dimensionName\":\"ajvgcxtxjcsheafi\",\"unit\":\"tugsresmkssjh\",\"queryId\":6709597160075018242,\"absoluteValue\":1.977243778101645}],\"details\":{\"databaseName\":\"egprhptil\",\"schema\":\"cbiqtgdqoh\",\"table\":\"wsldrizetpwbr\",\"indexType\":\"llibphbqzmizak\",\"indexName\":\"ankjpdnjzh\",\"indexColumns\":[\"ylhjlm\",\"oyxprimr\",\"opteecj\",\"eislstvasylwx\"],\"includedColumns\":[\"umweoohguufuzboy\",\"athwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"]}}")
+            "{\"initialRecommendedTime\":\"2021-07-23T04:24:07Z\",\"lastRecommendedTime\":\"2020-12-22T10:55:39Z\",\"timesRecommended\":954228901,\"improvedQueryIds\":[7931419591420767379],\"recommendationReason\":\"ljeamu\",\"currentState\":\"zmlovuanash\",\"recommendationType\":\"DropIndex\",\"implementationDetails\":{\"method\":\"jerbdkelvidizozs\",\"script\":\"ccxjm\"},\"analyzedWorkload\":{\"startTime\":\"2021-10-01T00:52:35Z\",\"endTime\":\"2021-03-14T12:33:12Z\",\"queryCount\":258073184},\"estimatedImpact\":[{\"dimensionName\":\"uuwwltv\",\"unit\":\"jctzenkei\",\"queryId\":3883485074610487115,\"absoluteValue\":98.14634375644947},{\"dimensionName\":\"svflyhbxcudch\",\"unit\":\"srboldforobw\",\"queryId\":9089138785694463975,\"absoluteValue\":63.48389442668607},{\"dimensionName\":\"fovvacqpbtuodxes\",\"unit\":\"bbelawumuaslzk\",\"queryId\":2589313714101269318,\"absoluteValue\":47.13898853939812},{\"dimensionName\":\"ucwyhahno\",\"unit\":\"rkywuhpsvfuu\",\"queryId\":6918467599956487615,\"absoluteValue\":91.51955288175284}],\"details\":{\"databaseName\":\"lalniex\",\"schema\":\"rzpgep\",\"table\":\"yb\",\"indexType\":\"wpgdak\",\"indexName\":\"zyvli\",\"indexColumns\":[\"rkcxkj\",\"bn\"],\"includedColumns\":[\"suxswqrntvlwijp\"]}}")
             .toObject(ObjectRecommendationProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T02:44:44Z"), model.initialRecommendedTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T00:14:41Z"), model.lastRecommendedTime());
-        Assertions.assertEquals(32473122, model.timesRecommended());
-        Assertions.assertEquals(1887689540352270929L, model.improvedQueryIds().get(0));
-        Assertions.assertEquals("jdqnsdfzpbgt", model.recommendationReason());
-        Assertions.assertEquals("ylkdghrje", model.currentState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T04:24:07Z"), model.initialRecommendedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T10:55:39Z"), model.lastRecommendedTime());
+        Assertions.assertEquals(954228901, model.timesRecommended());
+        Assertions.assertEquals(7931419591420767379L, model.improvedQueryIds().get(0));
+        Assertions.assertEquals("ljeamu", model.recommendationReason());
+        Assertions.assertEquals("zmlovuanash", model.currentState());
         Assertions.assertEquals(RecommendationTypeEnum.DROP_INDEX, model.recommendationType());
-        Assertions.assertEquals("xezw", model.implementationDetails().method());
-        Assertions.assertEquals("okvbwnhhtqlgehg", model.implementationDetails().script());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T11:23:36Z"), model.analyzedWorkload().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T07:02:54Z"), model.analyzedWorkload().endTime());
-        Assertions.assertEquals(2121481482, model.analyzedWorkload().queryCount());
+        Assertions.assertEquals("jerbdkelvidizozs", model.implementationDetails().method());
+        Assertions.assertEquals("ccxjm", model.implementationDetails().script());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T00:52:35Z"), model.analyzedWorkload().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T12:33:12Z"), model.analyzedWorkload().endTime());
+        Assertions.assertEquals(258073184, model.analyzedWorkload().queryCount());
     }
 }

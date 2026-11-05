@@ -44,7 +44,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     public DigitalTwinsAsyncClient createDigitalTwinsAsyncClient() {
 
-        String tenantId = getTenenatId();
+        String tenantId = getTenantId();
         String clientId = getClientId();
         String clientSecret = getClientSecret();
         String digitalTwinsEndpointUrl = getEndpointUrl();

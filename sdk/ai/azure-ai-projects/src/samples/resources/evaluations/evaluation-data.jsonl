@@ -1,0 +1,3 @@
+{"query":"What is the capital of France?","response":"Paris is the capital of France.","ground_truth":"Paris is the capital of France."}
+{"query":"How many days are in a week?","response":"There are seven days in a week.","ground_truth":"There are seven days in a week."}
+{"query":"What is the capital of Japan?","response":"The capital of Japan is Osaka.","ground_truth":"The capital of Japan is Tokyo."}

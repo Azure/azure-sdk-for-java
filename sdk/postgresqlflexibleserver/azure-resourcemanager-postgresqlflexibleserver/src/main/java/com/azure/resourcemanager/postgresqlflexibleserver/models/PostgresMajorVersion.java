@@ -12,6 +12,11 @@ import java.util.Collection;
  */
 public final class PostgresMajorVersion extends ExpandableStringEnum<PostgresMajorVersion> {
     /**
+     * PostgreSQL 19.
+     */
+    public static final PostgresMajorVersion ONE_NINE = fromString("19");
+
+    /**
      * PostgreSQL 18.
      */
     public static final PostgresMajorVersion ONE_EIGHT = fromString("18");

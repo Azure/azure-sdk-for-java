@@ -19,31 +19,31 @@ public final class ProtectionGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupProperties model = BinaryData.fromString(
-            "{\"plan\":\"ye\",\"resources\":{\"manual\":[\"jta\",\"qugxywpmueefjzwf\",\"kqujidsuyono\",\"glaocq\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"contains\",\"value\":\"g\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":1613065996,\"lastBackUpTime\":5579898580342682580,\"backupActivityStatus\":\"rxv\",\"provisioningState\":\"Failed\"}")
+            "{\"plan\":\"rhdwbavxbniw\",\"resources\":{\"manual\":[\"wz\",\"s\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"doesNotEqual\",\"value\":\"xytxhpzxbz\"}],\"matchType\":\"all\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":999930307,\"lastBackUpTime\":1128579127863386058,\"backupActivityStatus\":\"cuh\",\"provisioningState\":\"Failed\"}")
             .toObject(ProtectionGroupProperties.class);
-        Assertions.assertEquals("ye", model.plan());
-        Assertions.assertEquals("jta", model.resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME, model.resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.CONTAINS, model.resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("g", model.resources().matchRules().rules().get(0).value());
-        Assertions.assertEquals(MatchType.ANY, model.resources().matchRules().matchType());
+        Assertions.assertEquals("rhdwbavxbniw", model.plan());
+        Assertions.assertEquals("wz", model.resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.TAG_VALUE, model.resources().matchRules().rules().get(0).property());
+        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.resources().matchRules().rules().get(0).operator());
+        Assertions.assertEquals("xytxhpzxbz", model.resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals(MatchType.ALL, model.resources().matchRules().matchType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionGroupProperties model
-            = new ProtectionGroupProperties().withPlan("ye")
-                .withResources(new ProtectionGroupResources()
-                    .withManual(Arrays.asList("jta", "qugxywpmueefjzwf", "kqujidsuyono", "glaocq"))
-                    .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
-                        new Rule().withProperty(RuleProperty.TAG_NAME).withOperator(Operator.CONTAINS).withValue("g")))
-                        .withMatchType(MatchType.ANY)));
+        ProtectionGroupProperties model = new ProtectionGroupProperties().withPlan("rhdwbavxbniw")
+            .withResources(new ProtectionGroupResources().withManual(Arrays.asList("wz", "s"))
+                .withMatchRules(new ProtectionGroupResourcesMatchRules()
+                    .withRules(Arrays.asList(new Rule().withProperty(RuleProperty.TAG_VALUE)
+                        .withOperator(Operator.DOES_NOT_EQUAL)
+                        .withValue("xytxhpzxbz")))
+                    .withMatchType(MatchType.ALL)));
         model = BinaryData.fromObject(model).toObject(ProtectionGroupProperties.class);
-        Assertions.assertEquals("ye", model.plan());
-        Assertions.assertEquals("jta", model.resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME, model.resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.CONTAINS, model.resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("g", model.resources().matchRules().rules().get(0).value());
-        Assertions.assertEquals(MatchType.ANY, model.resources().matchRules().matchType());
+        Assertions.assertEquals("rhdwbavxbniw", model.plan());
+        Assertions.assertEquals("wz", model.resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.TAG_VALUE, model.resources().matchRules().rules().get(0).property());
+        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.resources().matchRules().rules().get(0).operator());
+        Assertions.assertEquals("xytxhpzxbz", model.resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals(MatchType.ALL, model.resources().matchRules().matchType());
     }
 }

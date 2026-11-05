@@ -142,8 +142,8 @@ public class DataLakeFileSystemClient {
      * Initializes a new DataLakeFileClient object by concatenating fileName to the end of DataLakeFileSystemClient's
      * URL. The new DataLakeFileClient uses the same request policy pipeline as the DataLakeFileSystemClient.
      *
-     * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
-     * pass in the url encoded version of the path name.
+     * @param fileName A {@code String} representing the name of the file. Pass the name unencoded; the client
+     * percent-encodes it when building the request URL.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -170,8 +170,8 @@ public class DataLakeFileSystemClient {
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
-     * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
-     * characters, pass in the url encoded version of the path name.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -399,6 +399,14 @@ public class DataLakeFileSystemClient {
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.delete -->
@@ -423,6 +431,14 @@ public class DataLakeFileSystemClient {
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -455,6 +471,14 @@ public class DataLakeFileSystemClient {
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists -->
@@ -473,6 +497,14 @@ public class DataLakeFileSystemClient {
      * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1151,8 +1183,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1173,8 +1205,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
@@ -1210,8 +1242,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
@@ -1274,8 +1306,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1305,8 +1337,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1344,8 +1376,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1376,8 +1408,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String -->
      *
-     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDirectory(String directoryName) {
@@ -1403,8 +1435,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -1431,8 +1463,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
      *
-     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1466,8 +1498,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

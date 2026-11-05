@@ -12,20 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiEgressRewriteTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiEgressRewriteTarget model = BinaryData.fromString("{\"scheme\":\"https\",\"host\":\"k\",\"path\":\"zshq\"}")
-            .toObject(RaiEgressRewriteTarget.class);
+        RaiEgressRewriteTarget model
+            = BinaryData.fromString("{\"scheme\":\"https\",\"host\":\"vjskgfmoc\",\"path\":\"hpqgatjeaahhvj\"}")
+                .toObject(RaiEgressRewriteTarget.class);
         Assertions.assertEquals(RaiEgressScheme.HTTPS, model.scheme());
-        Assertions.assertEquals("k", model.host());
-        Assertions.assertEquals("zshq", model.path());
+        Assertions.assertEquals("vjskgfmoc", model.host());
+        Assertions.assertEquals("hpqgatjeaahhvj", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiEgressRewriteTarget model
-            = new RaiEgressRewriteTarget().withScheme(RaiEgressScheme.HTTPS).withHost("k").withPath("zshq");
+        RaiEgressRewriteTarget model = new RaiEgressRewriteTarget().withScheme(RaiEgressScheme.HTTPS)
+            .withHost("vjskgfmoc")
+            .withPath("hpqgatjeaahhvj");
         model = BinaryData.fromObject(model).toObject(RaiEgressRewriteTarget.class);
         Assertions.assertEquals(RaiEgressScheme.HTTPS, model.scheme());
-        Assertions.assertEquals("k", model.host());
-        Assertions.assertEquals("zshq", model.path());
+        Assertions.assertEquals("vjskgfmoc", model.host());
+        Assertions.assertEquals("hpqgatjeaahhvj", model.path());
     }
 }

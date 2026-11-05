@@ -14,13 +14,13 @@ public final class EntityHistoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityHistoryResponseInner model = BinaryData.fromString(
-            "{\"entityName\":\"cbgoor\",\"history\":[{\"previousState\":\"Deleted\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-10-30T08:46:10Z\",\"reason\":\"fhjxakvvjgs\"}],\"nextMarker\":\"r\"}")
+            "{\"entityName\":\"gzibthostgktstv\",\"history\":[{\"previousState\":\"Degraded\",\"newState\":\"Unhealthy\",\"occurredAt\":\"2021-01-30T12:26:40Z\",\"reason\":\"edqbc\"},{\"previousState\":\"Unknown\",\"newState\":\"Healthy\",\"occurredAt\":\"2021-05-30T06:38:55Z\",\"reason\":\"plodqkdlwwqfbu\"},{\"previousState\":\"Healthy\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-01-09T13:22:40Z\",\"reason\":\"rqjfsmlm\"},{\"previousState\":\"Degraded\",\"newState\":\"Unhealthy\",\"occurredAt\":\"2021-11-04T06:43:27Z\",\"reason\":\"gfwsrtaw\"}],\"nextMarker\":\"ezbrhubskh\"}")
             .toObject(EntityHistoryResponseInner.class);
-        Assertions.assertEquals("cbgoor", model.entityName());
-        Assertions.assertEquals(HealthState.DELETED, model.history().get(0).previousState());
-        Assertions.assertEquals(HealthState.DEGRADED, model.history().get(0).newState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T08:46:10Z"), model.history().get(0).occurredAt());
-        Assertions.assertEquals("fhjxakvvjgs", model.history().get(0).reason());
-        Assertions.assertEquals("r", model.nextMarker());
+        Assertions.assertEquals("gzibthostgktstv", model.entityName());
+        Assertions.assertEquals(HealthState.DEGRADED, model.history().get(0).previousState());
+        Assertions.assertEquals(HealthState.UNHEALTHY, model.history().get(0).newState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T12:26:40Z"), model.history().get(0).occurredAt());
+        Assertions.assertEquals("edqbc", model.history().get(0).reason());
+        Assertions.assertEquals("ezbrhubskh", model.nextMarker());
     }
 }

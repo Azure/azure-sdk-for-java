@@ -14,10 +14,12 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingPro
 import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
+import com.azure.resourcemanager.compute.models.ImageMetadataProfile;
 import com.azure.resourcemanager.compute.models.ImageVersionSecurityProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.azure.resourcemanager.compute.models.ValidationsProfile;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -262,6 +264,15 @@ public final class GalleryImageVersionInner extends Resource {
      */
     public ValidationsProfile validationsProfile() {
         return this.innerProperties() == null ? null : this.innerProperties().validationsProfile();
+    }
+
+    /**
+     * Get the imageMetadataProfiles property: The image metadata profiles associated with the gallery image version.
+     * 
+     * @return the imageMetadataProfiles value.
+     */
+    public List<ImageMetadataProfile> imageMetadataProfiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().imageMetadataProfiles();
     }
 
     /**

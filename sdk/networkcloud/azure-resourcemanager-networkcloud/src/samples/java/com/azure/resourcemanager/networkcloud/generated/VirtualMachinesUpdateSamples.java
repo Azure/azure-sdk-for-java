@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentialsPatch;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class VirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Patch.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Patch.json
      */
     /**
      * Sample code: Patch virtual machine.
@@ -34,7 +34,7 @@ public final class VirtualMachinesUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1",
                     new UserAssignedIdentity())))
-            .withVmImageRepositoryCredentials(new ImageRepositoryCredentials().withPassword("fakeTokenPlaceholder")
+            .withVmImageRepositoryCredentials(new ImageRepositoryCredentialsPatch().withPassword("fakeTokenPlaceholder")
                 .withRegistryUrl("myacr.azurecr.io")
                 .withUsername("myuser"))
             .apply();

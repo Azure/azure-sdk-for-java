@@ -28,7 +28,7 @@ public final class BackupInstancesResumeProtectionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .resumeProtection("qxzhem", "yhohujswtwkozzwc", "lkb", com.azure.core.util.Context.NONE);
+            .resumeProtection("nsymoyqhlwigd", "vbkbxgomf", "juwasqvdaeyyguxa", com.azure.core.util.Context.NONE);
 
     }
 }

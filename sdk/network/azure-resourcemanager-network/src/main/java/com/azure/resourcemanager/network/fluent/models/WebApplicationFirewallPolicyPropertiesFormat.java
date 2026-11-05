@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyTier;
 import java.io.IOException;
 import java.util.List;
 
@@ -70,6 +71,11 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
      * A collection of references to application gateway for containers.
      */
     private List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers;
+
+    /*
+     * Tier of a web application firewall policy.
+     */
+    private WebApplicationFirewallPolicyTier tier;
 
     /**
      * Creates an instance of WebApplicationFirewallPolicyPropertiesFormat class.
@@ -194,6 +200,26 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
     }
 
     /**
+     * Get the tier property: Tier of a web application firewall policy.
+     * 
+     * @return the tier value.
+     */
+    public WebApplicationFirewallPolicyTier tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Tier of a web application firewall policy.
+     * 
+     * @param tier the tier value to set.
+     * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
+     */
+    public WebApplicationFirewallPolicyPropertiesFormat withTier(WebApplicationFirewallPolicyTier tier) {
+        this.tier = tier;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,6 +257,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
         jsonWriter.writeJsonField("managedRules", this.managedRules);
         jsonWriter.writeJsonField("policySettings", this.policySettings);
         jsonWriter.writeArrayField("customRules", this.customRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -282,6 +309,9 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
                         .readArray(reader1 -> ApplicationGatewayForContainersReferenceDefinition.fromJson(reader1));
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.applicationGatewayForContainers
                         = applicationGatewayForContainers;
+                } else if ("tier".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyPropertiesFormat.tier
+                        = WebApplicationFirewallPolicyTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -188,25 +188,25 @@ cfgCondUpdate = {"spark.cosmos.accountEndpoint": cosmosEndpoint,
                  "spark.cosmos.write.patch.filter": predicate
                  }
 
-pulmonogyDoctorId = "<pulmonology-doctor-id>"
+pulmonologyDoctorId = "<pulmonology-doctor-id>"
 urologyDoctorId = "<urology-doctor-id>"
 
 # precondition failure will occur if the df doesn't satisfy the predicate
-# data = [{"id": pulmonogyDoctorId,  "vaccinated": "false"}, {"id": urologyDoctorId,  "vaccinated": "false"}]
+# data = [{"id": pulmonologyDoctorId,  "vaccinated": "false"}, {"id": urologyDoctorId,  "vaccinated": "false"}]
 
-data = [{"id": pulmonogyDoctorId,  "vaccinated": "false"}]
+data = [{"id": pulmonologyDoctorId,  "vaccinated": "false"}]
 patchDf = spark.createDataFrame(data)
 
 patchDf.write.format("cosmos.oltp").mode(
     "Append").options(**cfgCondUpdate).save()
 
-pulmonogyDoctor = spark.sql("select * from cosmosCatalog.{}.{} where id = '{}';".format(
-    cosmosDatabaseName, cosmosContainerName, pulmonogyDoctorId))
+pulmonologyDoctor = spark.sql("select * from cosmosCatalog.{}.{} where id = '{}';".format(
+    cosmosDatabaseName, cosmosContainerName, pulmonologyDoctorId))
 urologyDoctor = spark.sql("select * from cosmosCatalog.{}.{} where id = '{}';".format(
     cosmosDatabaseName, cosmosContainerName, urologyDoctorId))
 
-print("vaccination status of pulmonogy doctor")
-pulmonogyDoctor.show()
+print("vaccination status of pulmonology doctor")
+pulmonologyDoctor.show()
 
 print("vaccination status of urology doctor")
 urologyDoctor.show()

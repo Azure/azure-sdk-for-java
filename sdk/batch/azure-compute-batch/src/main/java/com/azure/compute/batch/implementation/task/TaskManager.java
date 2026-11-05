@@ -3,7 +3,6 @@
 package com.azure.compute.batch.implementation.task;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -203,8 +202,8 @@ public class TaskManager {
      * @param taskList The list of tasks to be submitted.
      * @param taskCreateOptions Options for configuring the task creation.
      */
-    public static void createTasks(TaskSubmitter taskSubmitter, String jobId,
-        Collection<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions taskCreateOptions) {
+    public static void createTasks(TaskSubmitter taskSubmitter, String jobId, List<BatchTaskCreateParameters> taskList,
+        BatchTaskBulkCreateOptions taskCreateOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 
@@ -221,8 +220,8 @@ public class TaskManager {
         List<ThreadPairInfo> semaphoreThreads = new ArrayList<>();
         Exception innerException = null;
 
-        // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
-        while (!pendingList.isEmpty() || taskSemaphore.availablePermits() < threadNumber) {
+        // Check workers first so tasks requeued before their permits are released cannot be missed.
+        while (taskSemaphore.availablePermits() < threadNumber || !pendingList.isEmpty()) {
             try {
                 if (taskSemaphore.tryAcquire(30, TimeUnit.SECONDS)) {
                     if (!pendingList.isEmpty()) {

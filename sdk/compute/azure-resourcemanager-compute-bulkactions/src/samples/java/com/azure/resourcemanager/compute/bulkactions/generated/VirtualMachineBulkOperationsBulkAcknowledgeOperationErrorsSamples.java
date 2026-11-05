@@ -13,37 +13,57 @@ import java.util.Arrays;
 public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsSamples {
     /*
      * x-ms-original-file:
-     * 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_OperationNotFoundError.json
      */
     /**
-     * Sample code: VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.
+     * Sample code: 03 - Acknowledge operation errors with an unknown operationId resulting in not found.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsMinimumSetGen(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceAcknowledgeSpaceoperationSpaceerrorsSpacewithSpaceanSpaceunknownSpaceoperationIdSpaceresultingSpaceinSpacenotSpacefound(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.virtualMachineBulkOperations()
-            .bulkAcknowledgeOperationErrorsWithResponse("rgBulkactions", "useast2euap",
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
                 new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
-                    Arrays.asList("af449548-8e1a-4079-874e-2caa4ff783cc")),
+                    Arrays.asList("dddddddd-dddd-dddd-dddd-dddddddddddd")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_BasicSuccess.json
      */
     /**
-     * Sample code: VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_Example.
+     * Sample code: 01 - Acknowledge multiple operation errors.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsExample(
+    public static void zeroOneSpaceHyphenMinusSpaceAcknowledgeSpacemultipleSpaceoperationSpaceerrors(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.virtualMachineBulkOperations()
-            .bulkAcknowledgeOperationErrorsWithResponse("rgBulkactions", "useast2euap",
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
                 new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
-                    Arrays.asList("af449548-8e1a-4079-874e-2caa4ff783cc")),
+                    Arrays.asList("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MixedResults.json
+     */
+    /**
+     * Sample code: 02 - Acknowledge operation errors with mixed results.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroTwoSpaceHyphenMinusSpaceAcknowledgeSpaceoperationSpaceerrorsSpacewithSpacemixedSpaceresults(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
+                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
+                    Arrays.asList("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+                        "cccccccc-cccc-cccc-cccc-cccccccccccc")),
                 com.azure.core.util.Context.NONE);
     }
 }

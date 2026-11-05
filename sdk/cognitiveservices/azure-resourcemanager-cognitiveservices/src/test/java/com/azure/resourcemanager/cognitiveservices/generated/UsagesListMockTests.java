@@ -25,7 +25,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"unit\":\"Count\",\"name\":{\"value\":\"weacfxaubu\",\"localizedValue\":\"uetcnx\"},\"quotaPeriod\":\"qzzdckhsq\",\"limit\":52.85072457031858,\"currentValue\":82.20062413283634,\"nextResetTime\":\"owo\",\"status\":\"Unknown\",\"scopeType\":\"DataZone\",\"scopeId\":\"yokohlsfjfouq\"}]}";
+            = "{\"value\":[{\"id\":\"jvvcrsmwojm\",\"type\":\"c\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"utqnkeqjftvlt\",\"localizedValue\":\"pec\"},\"quotaPeriod\":\"kbzltnowpajfhx\",\"limit\":89.60906229402926,\"currentValue\":52.95746381716644,\"nextResetTime\":\"zglmuuz\",\"status\":\"Blocked\",\"scopeType\":\"Global\",\"scopeId\":\"pxm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,17 @@ public final class UsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Usage> response = manager.usages().list("i", "zhpjgqz", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response = manager.usages().list("cykzz", "gctygbbmu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UnitType.COUNT, response.iterator().next().unit());
-        Assertions.assertEquals("weacfxaubu", response.iterator().next().name().value());
-        Assertions.assertEquals("uetcnx", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("qzzdckhsq", response.iterator().next().quotaPeriod());
-        Assertions.assertEquals(52.85072457031858D, response.iterator().next().limit());
-        Assertions.assertEquals(82.20062413283634D, response.iterator().next().currentValue());
-        Assertions.assertEquals("owo", response.iterator().next().nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.iterator().next().status());
-        Assertions.assertEquals(QuotaScopeType.DATA_ZONE, response.iterator().next().scopeType());
-        Assertions.assertEquals("yokohlsfjfouq", response.iterator().next().scopeId());
+        Assertions.assertEquals(UnitType.MILLISECONDS, response.iterator().next().unit());
+        Assertions.assertEquals("utqnkeqjftvlt", response.iterator().next().name().value());
+        Assertions.assertEquals("pec", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("kbzltnowpajfhx", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(89.60906229402926D, response.iterator().next().limit());
+        Assertions.assertEquals(52.95746381716644D, response.iterator().next().currentValue());
+        Assertions.assertEquals("zglmuuz", response.iterator().next().nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, response.iterator().next().status());
+        Assertions.assertEquals(QuotaScopeType.GLOBAL, response.iterator().next().scopeType());
+        Assertions.assertEquals("pxm", response.iterator().next().scopeId());
     }
 }

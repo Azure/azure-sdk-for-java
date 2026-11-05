@@ -27,13 +27,13 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
      * The virtual machine extension.
      */
     @Generated
-    private VMExtension vmExtension;
+    private VirtualMachineExtension vmExtension;
 
     /*
      * The vm extension instance view.
      */
     @Generated
-    private VMExtensionInstanceView instanceView;
+    private VirtualMachineExtensionInstanceView instanceView;
 
     /**
      * Creates an instance of BatchNodeVMExtension class.
@@ -58,7 +58,7 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
      * @return the vmExtension value.
      */
     @Generated
-    public VMExtension getVmExtension() {
+    public VirtualMachineExtension getVmExtension() {
         return this.vmExtension;
     }
 
@@ -68,7 +68,7 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
      * @return the instanceView value.
      */
     @Generated
-    public VMExtensionInstanceView getInstanceView() {
+    public VirtualMachineExtensionInstanceView getInstanceView() {
         return this.instanceView;
     }
 
@@ -103,9 +103,10 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
                 if ("provisioningState".equals(fieldName)) {
                     deserializedBatchNodeVMExtension.provisioningState = reader.getString();
                 } else if ("vmExtension".equals(fieldName)) {
-                    deserializedBatchNodeVMExtension.vmExtension = VMExtension.fromJson(reader);
+                    deserializedBatchNodeVMExtension.vmExtension = VirtualMachineExtension.fromJson(reader);
                 } else if ("instanceView".equals(fieldName)) {
-                    deserializedBatchNodeVMExtension.instanceView = VMExtensionInstanceView.fromJson(reader);
+                    deserializedBatchNodeVMExtension.instanceView
+                        = VirtualMachineExtensionInstanceView.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

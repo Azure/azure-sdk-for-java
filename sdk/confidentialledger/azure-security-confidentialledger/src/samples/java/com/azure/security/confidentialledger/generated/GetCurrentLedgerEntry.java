@@ -15,7 +15,7 @@ public class GetCurrentLedgerEntry {
             .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
             .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.get-current-ledger-entry.get-current-ledger-entry
-        LedgerEntry response = confidentialLedgerClient.getCurrentLedgerEntry(null);
+        LedgerEntry response = confidentialLedgerClient.getCurrentLedgerEntry((String) null);
         // END:com.azure.security.confidentialledger.generated.get-current-ledger-entry.get-current-ledger-entry
     }
 }

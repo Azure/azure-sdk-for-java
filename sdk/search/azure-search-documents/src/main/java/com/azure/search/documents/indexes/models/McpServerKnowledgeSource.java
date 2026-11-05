@@ -100,6 +100,8 @@ public final class McpServerKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("mcpServerParameters", this.mcpServerParameters);
@@ -121,6 +123,7 @@ public final class McpServerKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             McpServerKnowledgeSourceParameters mcpServerParameters = null;
@@ -132,6 +135,8 @@ public final class McpServerKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -147,10 +152,21 @@ public final class McpServerKnowledgeSource extends KnowledgeSource {
             McpServerKnowledgeSource deserializedMcpServerKnowledgeSource
                 = new McpServerKnowledgeSource(name, mcpServerParameters);
             deserializedMcpServerKnowledgeSource.setDescription(description);
+            deserializedMcpServerKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedMcpServerKnowledgeSource.setETag(eTag);
             deserializedMcpServerKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedMcpServerKnowledgeSource.kind = kind;
             return deserializedMcpServerKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public McpServerKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

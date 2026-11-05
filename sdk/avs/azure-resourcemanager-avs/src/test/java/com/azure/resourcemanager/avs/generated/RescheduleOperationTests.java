@@ -11,7 +11,7 @@ public final class RescheduleOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RescheduleOperation model = BinaryData.fromString(
-            "{\"kind\":\"Reschedule\",\"isDisabled\":true,\"disabledReason\":\"jznb\",\"constraints\":[{\"kind\":\"RescheduleOperationConstraint\"}]}")
+            "{\"kind\":\"Reschedule\",\"isDisabled\":false,\"disabledReason\":\"lynqwwncwzzh\",\"constraints\":[{\"kind\":\"RescheduleOperationConstraint\"},{\"kind\":\"RescheduleOperationConstraint\"},{\"kind\":\"RescheduleOperationConstraint\"}],\"recommendation\":{\"maintenanceWindows\":[{\"startTime\":\"2021-08-05T04:43:36Z\",\"reason\":\"cnapkteoell\"},{\"startTime\":\"2021-12-03T17:14:16Z\",\"reason\":\"fdygpfqbuaceopz\"}]}}")
             .toObject(RescheduleOperation.class);
     }
 }

@@ -15,18 +15,19 @@ public final class RelatedAlertsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelatedAlertsInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"vuefywsbpfvmwyh\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"ouyftaakc\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-11-11T05:47:16Z\",\"lastModifiedAt\":\"2021-08-10T17:39:06Z\"}]}")
+            "{\"value\":[{\"id\":\"yjpkiidzyexz\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"lixhnrztfol\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-01-02T16:04:01Z\",\"lastModifiedAt\":\"2021-12-04T17:09:45Z\"},{\"id\":\"knalaulppg\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"tpnapnyiropuhpig\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-05-18T16:57:02Z\",\"lastModifiedAt\":\"2021-04-21T01:46:14Z\"}]}")
             .toObject(RelatedAlertsInner.class);
-        Assertions.assertEquals("vuefywsbpfvmwyh", model.value().get(0).id());
+        Assertions.assertEquals("yjpkiidzyexz", model.value().get(0).id());
         Assertions.assertEquals(Relevance.NONE, model.value().get(0).relevance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelatedAlertsInner model = new RelatedAlertsInner()
-            .withValue(Arrays.asList(new RelatedAlert().withId("vuefywsbpfvmwyh").withRelevance(Relevance.NONE)));
+            .withValue(Arrays.asList(new RelatedAlert().withId("yjpkiidzyexz").withRelevance(Relevance.NONE),
+                new RelatedAlert().withId("knalaulppg").withRelevance(Relevance.NONE)));
         model = BinaryData.fromObject(model).toObject(RelatedAlertsInner.class);
-        Assertions.assertEquals("vuefywsbpfvmwyh", model.value().get(0).id());
+        Assertions.assertEquals("yjpkiidzyexz", model.value().get(0).id());
         Assertions.assertEquals(Relevance.NONE, model.value().get(0).relevance());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class MonitorsLatestLinkedSaaSSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_LatestLinkedSaaS_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_LatestLinkedSaaS_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_LatestLinkedSaaS_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class MonitorsLatestLinkedSaaSSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_LatestLinkedSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_LatestLinkedSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_LatestLinkedSaaS_MaximumSet_Gen.

@@ -1,0 +1,17 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.visibilityIncreased",
+          "old": "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "new": "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "justification": "Output-only immutable model's constructor visibility increased."
+        }
+      ]
+    }
+  }
+]

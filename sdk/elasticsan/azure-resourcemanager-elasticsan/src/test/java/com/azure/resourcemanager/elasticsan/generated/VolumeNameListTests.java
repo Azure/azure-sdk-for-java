@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeNameListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeNameList model = BinaryData.fromString("{\"volumeNames\":[\"iu\",\"kktwhrdxw\",\"ywqsmbsurexim\"]}")
-            .toObject(VolumeNameList.class);
-        Assertions.assertEquals("iu", model.volumeNames().get(0));
+        VolumeNameList model
+            = BinaryData.fromString("{\"volumeNames\":[\"fclhaaxdbabphlwr\"]}").toObject(VolumeNameList.class);
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.volumeNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeNameList model = new VolumeNameList().withVolumeNames(Arrays.asList("iu", "kktwhrdxw", "ywqsmbsurexim"));
+        VolumeNameList model = new VolumeNameList().withVolumeNames(Arrays.asList("fclhaaxdbabphlwr"));
         model = BinaryData.fromObject(model).toObject(VolumeNameList.class);
-        Assertions.assertEquals("iu", model.volumeNames().get(0));
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.volumeNames().get(0));
     }
 }

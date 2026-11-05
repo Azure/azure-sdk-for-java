@@ -150,6 +150,13 @@ public final class ServiceBusTracer {
      * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
      */
     public void reportMessageSpan(ServiceBusMessage serviceBusMessage) {
+        reportMessageSpan(serviceBusMessage, Context.NONE);
+    }
+
+    /**
+     * Starts a producer message span, preserving an explicit message parent ahead of the subscriber parent.
+     */
+    public void reportMessageSpan(ServiceBusMessage serviceBusMessage, Context subscriberContext) {
         if (!isEnabled()) {
             return;
         }
@@ -165,6 +172,13 @@ public final class ServiceBusTracer {
         if (traceparent != null) {
             // if message has context (in case of retries) or if user supplied it, don't start a message span or add a new context
             return;
+        }
+
+        if (!messageContext.getData(Tracer.PARENT_TRACE_CONTEXT_KEY).isPresent()) {
+            final Optional<Object> parent = subscriberContext.getData(Tracer.PARENT_TRACE_CONTEXT_KEY);
+            if (parent.isPresent()) {
+                messageContext = messageContext.addData(Tracer.PARENT_TRACE_CONTEXT_KEY, parent.get());
+            }
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)

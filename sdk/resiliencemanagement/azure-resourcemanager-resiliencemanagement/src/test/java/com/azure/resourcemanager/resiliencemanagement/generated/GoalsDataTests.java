@@ -6,26 +6,15 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalsData;
-import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
-import com.azure.resourcemanager.resiliencemanagement.models.ResilienceHealthStatus;
-import com.azure.resourcemanager.resiliencemanagement.models.UnifiedResilienceItemRequirementSelected;
 import org.junit.jupiter.api.Assertions;
 
 public final class GoalsDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GoalsData model = BinaryData.fromString(
-            "{\"templateId\":\"um\",\"assignmentId\":\"qwazlnqnmcjngzq\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Healthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryTimeActualInMinutes\":\"PT15M\",\"regionalRecoveryTimeObjectiveStatus\":\"NotEvaluated\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"Required\"}")
-            .toObject(GoalsData.class);
-        Assertions.assertEquals("um", model.templateId());
-        Assertions.assertEquals("qwazlnqnmcjngzq", model.assignmentId());
-        Assertions.assertEquals(IsoDuration.PT24H, model.regionalRecoveryPointObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT4H, model.regionalRecoveryPointEstimatedInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.HEALTHY, model.regionalRecoveryPointObjectiveStatus());
-        Assertions.assertEquals(IsoDuration.PT15M, model.regionalRecoveryTimeObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT15M, model.regionalRecoveryTimeActualInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.NOT_EVALUATED, model.regionalRecoveryTimeObjectiveStatus());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED, model.requireHighAvailability());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED, model.requireDisasterRecovery());
+        GoalsData model
+            = BinaryData.fromString("{\"assignmentId\":\"cpopmxel\",\"zonalResiliency\":{\"required\":false}}")
+                .toObject(GoalsData.class);
+        Assertions.assertEquals("cpopmxel", model.assignmentId());
+        Assertions.assertFalse(model.zonalResiliency().required());
     }
 }

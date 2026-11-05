@@ -229,7 +229,7 @@ public class CosmosAsyncDatabase {
      * @param throughputProperties the throughput properties for the container.
      * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
-     * @throws IllegalArgumentException thown if containerProerties are null.
+     * @throws IllegalArgumentException thrown if containerProperties are null.
      */
     public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
@@ -489,7 +489,7 @@ public class CosmosAsyncDatabase {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
      * The throughput properties will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -554,7 +554,7 @@ public class CosmosAsyncDatabase {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
      * The throughput properties will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the

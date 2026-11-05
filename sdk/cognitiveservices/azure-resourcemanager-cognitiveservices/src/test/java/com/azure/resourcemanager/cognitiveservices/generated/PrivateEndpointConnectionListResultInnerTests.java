@@ -13,15 +13,15 @@ public final class PrivateEndpointConnectionListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"bpodxunkbebxm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ntwlrbqtkoie\",\"actionsRequired\":\"eotg\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"muwlauwzizxbm\",\"gcj\",\"fuzmuvpbtt\"]},\"etag\":\"morppxebmnzbtbh\",\"location\":\"glkfg\",\"id\":\"dneu\",\"name\":\"lfphsdyhtozfikd\",\"type\":\"wwquuvxzxclvithh\"}]}")
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"oegrpkhjwn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"luicpdggkzzlvmbm\",\"actionsRequired\":\"xmodf\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"wsbpfvm\"]},\"etag\":\"hrfou\",\"location\":\"taakc\",\"id\":\"iyzvqtmnub\",\"name\":\"xkp\",\"type\":\"ksmond\"}]}")
             .toObject(PrivateEndpointConnectionListResultInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ntwlrbqtkoie",
+        Assertions.assertEquals("luicpdggkzzlvmbm",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("eotg",
+        Assertions.assertEquals("xmodf",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("muwlauwzizxbm", model.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("glkfg", model.value().get(0).location());
+        Assertions.assertEquals("wsbpfvm", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("taakc", model.value().get(0).location());
     }
 }

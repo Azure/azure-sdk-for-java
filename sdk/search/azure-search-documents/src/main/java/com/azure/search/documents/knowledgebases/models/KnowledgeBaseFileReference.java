@@ -74,6 +74,7 @@ public final class KnowledgeBaseFileReference extends KnowledgeBaseReference {
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docName", this.docName);
+        jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +96,7 @@ public final class KnowledgeBaseFileReference extends KnowledgeBaseReference {
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.FILE;
             String docName = null;
+            String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -110,6 +112,8 @@ public final class KnowledgeBaseFileReference extends KnowledgeBaseReference {
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docName".equals(fieldName)) {
                     docName = reader.getString();
+                } else if ("citationUrl".equals(fieldName)) {
+                    citationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -120,7 +124,25 @@ public final class KnowledgeBaseFileReference extends KnowledgeBaseReference {
             deserializedKnowledgeBaseFileReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseFileReference.type = type;
             deserializedKnowledgeBaseFileReference.docName = docName;
+            deserializedKnowledgeBaseFileReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseFileReference;
         });
+    }
+
+    /*
+     * A Search-owned URL that points at the backing document for this reference, usable as a citation target.
+     */
+    @Generated
+    private String citationUrl;
+
+    /**
+     * Get the citationUrl property: A Search-owned URL that points at the backing document for this reference, usable
+     * as a citation target.
+     *
+     * @return the citationUrl value.
+     */
+    @Generated
+    public String getCitationUrl() {
+        return this.citationUrl;
     }
 }

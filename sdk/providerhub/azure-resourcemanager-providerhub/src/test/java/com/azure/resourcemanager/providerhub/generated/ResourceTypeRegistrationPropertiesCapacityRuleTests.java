@@ -13,19 +13,19 @@ public final class ResourceTypeRegistrationPropertiesCapacityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesCapacityRule model
-            = BinaryData.fromString("{\"capacityPolicy\":\"Default\",\"skuAlias\":\"lzo\"}")
+            = BinaryData.fromString("{\"capacityPolicy\":\"Restricted\",\"skuAlias\":\"yzunbixxrtikv\"}")
                 .toObject(ResourceTypeRegistrationPropertiesCapacityRule.class);
-        Assertions.assertEquals(CapacityPolicy.DEFAULT, model.capacityPolicy());
-        Assertions.assertEquals("lzo", model.skuAlias());
+        Assertions.assertEquals(CapacityPolicy.RESTRICTED, model.capacityPolicy());
+        Assertions.assertEquals("yzunbixxrtikv", model.skuAlias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesCapacityRule model
-            = new ResourceTypeRegistrationPropertiesCapacityRule().withCapacityPolicy(CapacityPolicy.DEFAULT)
-                .withSkuAlias("lzo");
+            = new ResourceTypeRegistrationPropertiesCapacityRule().withCapacityPolicy(CapacityPolicy.RESTRICTED)
+                .withSkuAlias("yzunbixxrtikv");
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesCapacityRule.class);
-        Assertions.assertEquals(CapacityPolicy.DEFAULT, model.capacityPolicy());
-        Assertions.assertEquals("lzo", model.skuAlias());
+        Assertions.assertEquals(CapacityPolicy.RESTRICTED, model.capacityPolicy());
+        Assertions.assertEquals("yzunbixxrtikv", model.skuAlias());
     }
 }

@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Information used to connect to an Azure Fileshare.
@@ -64,6 +66,19 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
         this.accountKey = accountKey;
         this.azureFileUrl = azureFileUrl;
         this.relativeMountPath = relativeMountPath;
+    }
+
+    /**
+     * Creates an instance of AzureFileShareConfiguration class.
+     *
+     * @param accountName the accountName value to set.
+     * @param accountKey the accountKey value to set.
+     * @param azureFileUrl the azureFileUrl value to set.
+     * @param relativeMountPath the relativeMountPath value to set.
+     */
+    public AzureFileShareConfiguration(String accountName, String accountKey, String azureFileUrl,
+        Path relativeMountPath) {
+        this(accountName, accountKey, azureFileUrl, Objects.toString(relativeMountPath, null));
     }
 
     /**

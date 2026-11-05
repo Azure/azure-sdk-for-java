@@ -32,11 +32,6 @@ public final class SkuMixPlacementItem implements JsonSerializable<SkuMixPlaceme
     private int capacity;
 
     /*
-     * Upper range of recommended allocation capacity.
-     */
-    private Integer capacityMax;
-
-    /*
      * Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional deployments.
      */
     private String zone;
@@ -75,15 +70,6 @@ public final class SkuMixPlacementItem implements JsonSerializable<SkuMixPlaceme
     }
 
     /**
-     * Get the capacityMax property: Upper range of recommended allocation capacity.
-     * 
-     * @return the capacityMax value.
-     */
-    public Integer capacityMax() {
-        return this.capacityMax;
-    }
-
-    /**
      * Get the zone property: Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional deployments.
      * 
      * @return the zone value.
@@ -101,7 +87,6 @@ public final class SkuMixPlacementItem implements JsonSerializable<SkuMixPlaceme
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
         jsonWriter.writeIntField("capacity", this.capacity);
-        jsonWriter.writeNumberField("capacityMax", this.capacityMax);
         jsonWriter.writeStringField("zone", this.zone);
         return jsonWriter.writeEndObject();
     }
@@ -128,8 +113,6 @@ public final class SkuMixPlacementItem implements JsonSerializable<SkuMixPlaceme
                     deserializedSkuMixPlacementItem.priority = SkuMixPlacementPriority.fromString(reader.getString());
                 } else if ("capacity".equals(fieldName)) {
                     deserializedSkuMixPlacementItem.capacity = reader.getInt();
-                } else if ("capacityMax".equals(fieldName)) {
-                    deserializedSkuMixPlacementItem.capacityMax = reader.getNullable(JsonReader::getInt);
                 } else if ("zone".equals(fieldName)) {
                     deserializedSkuMixPlacementItem.zone = reader.getString();
                 } else {

@@ -24,7 +24,7 @@ public final class RelationshipsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"cfdmmcpugmehqe\",\"parentEntityName\":\"vufhbzehewhoq\",\"childEntityName\":\"nlbqnbldxeaclg\",\"tags\":{\"rsrrmoucsofldp\":\"orim\",\"mxuq\":\"viyfcaabeolhbhlv\"},\"discoveredBy\":\"s\"},\"id\":\"kcudfbsfarfsiowl\",\"name\":\"jxnqp\",\"type\":\"wgfstmhqykizm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"gpiudeug\",\"parentEntityName\":\"sxze\",\"childEntityName\":\"paxwkufyk\",\"tags\":{\"aobn\":\"hxepmrutzna\",\"uihywart\":\"lujdjltymkmv\"},\"discoveredBy\":\"phkixkykxdssjpe\"},\"id\":\"ucfx\",\"name\":\"i\",\"type\":\"kflrmymy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class RelationshipsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relationship response = manager.relationships()
-            .define("zqcyknap")
-            .withExistingHealthmodel("d", "dtfgxqbawpcbb")
-            .withProperties(new RelationshipProperties().withDisplayName("icdhz")
-                .withParentEntityName("dyb")
-                .withChildEntityName("wgbdvibidmhmwffp")
-                .withTags(mapOf("apckccrrvw", "u", "ukphaimmoiroq", "yoxoy")))
+            .define("vhb")
+            .withExistingHealthmodel("swkacvej", "fdv")
+            .withProperties(new RelationshipProperties().withDisplayName("tgddpqthehnmnaoy")
+                .withParentEntityName("nkcoeqswankltyt")
+                .withChildEntityName("hdroznnh")
+                .withTags(mapOf("sggux", "ktgj", "ywaeeczgf", "eml")))
             .create();
 
-        Assertions.assertEquals("cfdmmcpugmehqe", response.properties().displayName());
-        Assertions.assertEquals("vufhbzehewhoq", response.properties().parentEntityName());
-        Assertions.assertEquals("nlbqnbldxeaclg", response.properties().childEntityName());
-        Assertions.assertEquals("orim", response.properties().tags().get("rsrrmoucsofldp"));
+        Assertions.assertEquals("gpiudeug", response.properties().displayName());
+        Assertions.assertEquals("sxze", response.properties().parentEntityName());
+        Assertions.assertEquals("paxwkufyk", response.properties().childEntityName());
+        Assertions.assertEquals("hxepmrutzna", response.properties().tags().get("aobn"));
     }
 
     // Use "Map.of" if available

@@ -15,9 +15,6 @@ import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentI
 import com.azure.resourcemanager.providerhub.models.Operations;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinition;
 import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class OperationsImpl implements Operations {
     private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
@@ -42,25 +39,20 @@ public final class OperationsImpl implements Operations {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationsDefinitionImpl(inner1, this.manager()));
     }
 
-    public Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(String providerNamespace,
+    public Response<OperationsPutContent> listByProviderRegistrationWithResponse(String providerNamespace,
         Context context) {
-        Response<List<OperationsDefinitionInner>> inner
+        Response<OperationsPutContentInner> inner
             = this.serviceClient().listByProviderRegistrationWithResponse(providerNamespace, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+            new OperationsPutContentImpl(inner.getValue(), this.manager()));
     }
 
-    public List<OperationsDefinition> listByProviderRegistration(String providerNamespace) {
-        List<OperationsDefinitionInner> inner = this.serviceClient().listByProviderRegistration(providerNamespace);
+    public OperationsPutContent listByProviderRegistration(String providerNamespace) {
+        OperationsPutContentInner inner = this.serviceClient().listByProviderRegistration(providerNamespace);
         if (inner != null) {
-            return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+            return new OperationsPutContentImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 

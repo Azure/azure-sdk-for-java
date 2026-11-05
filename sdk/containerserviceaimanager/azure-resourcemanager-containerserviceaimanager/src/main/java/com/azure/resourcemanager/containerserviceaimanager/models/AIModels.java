@@ -79,15 +79,13 @@ public interface AIModels {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for the AI model `calculateCost` action along with {@link Response}.
      */
-    Response<CalculateCostResponse> calculateCostWithResponse(String location, String aiModelName,
-        CalculateCostRequest body, Context context);
+    Response<CalculateCostResponse> calculateCostWithResponse(String location, String aiModelName, Context context);
 
     /**
      * Returns a ranked list of GPU SKU pricing plans for deploying this model in the target region, each annotated with
@@ -100,11 +98,10 @@ public interface AIModels {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for the AI model `calculateCost` action.
      */
-    CalculateCostResponse calculateCost(String location, String aiModelName, CalculateCostRequest body);
+    CalculateCostResponse calculateCost(String location, String aiModelName);
 }

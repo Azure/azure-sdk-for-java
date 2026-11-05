@@ -13,9 +13,9 @@ public final class ResourceSkuRestrictionInfoTests {
     public void testDeserialize() throws Exception {
         ResourceSkuRestrictionInfo model = BinaryData
             .fromString(
-                "{\"locations\":[\"ncaqttiekoifu\"],\"zones\":[\"ttzgixgyrihlg\",\"gbehlqtxnr\",\"lkndrndpgfjodh\"]}")
+                "{\"locations\":[\"hsxjpytnkqbalaho\",\"uuwxhmehjnhjioti\"],\"zones\":[\"bcngkegxc\",\"pxbbfe\"]}")
             .toObject(ResourceSkuRestrictionInfo.class);
-        Assertions.assertEquals("ncaqttiekoifu", model.locations().get(0));
-        Assertions.assertEquals("ttzgixgyrihlg", model.zones().get(0));
+        Assertions.assertEquals("hsxjpytnkqbalaho", model.locations().get(0));
+        Assertions.assertEquals("bcngkegxc", model.zones().get(0));
     }
 }

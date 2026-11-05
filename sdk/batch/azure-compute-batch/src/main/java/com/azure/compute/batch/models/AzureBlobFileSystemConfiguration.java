@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Information used to connect to an Azure Storage Container using Blobfuse.
@@ -76,6 +78,17 @@ public final class AzureBlobFileSystemConfiguration implements JsonSerializable<
         this.accountName = accountName;
         this.containerName = containerName;
         this.relativeMountPath = relativeMountPath;
+    }
+
+    /**
+     * Creates an instance of AzureBlobFileSystemConfiguration class.
+     *
+     * @param accountName the accountName value to set.
+     * @param containerName the containerName value to set.
+     * @param relativeMountPath the relativeMountPath value to set.
+     */
+    public AzureBlobFileSystemConfiguration(String accountName, String containerName, Path relativeMountPath) {
+        this(accountName, containerName, Objects.toString(relativeMountPath, null));
     }
 
     /**

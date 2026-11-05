@@ -5,34 +5,55 @@
 package com.azure.resourcemanager.purestorageblock.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAccessSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSubnet;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolProperties;
 import com.azure.resourcemanager.purestorageblock.models.VnetInjection;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class StoragePoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePoolProperties model = BinaryData.fromString(
-            "{\"storagePoolInternalId\":\"iertgccymvaolp\",\"availabilityZone\":\"slqlfmmdn\",\"vnetInjection\":{\"subnetId\":\"bglzpswi\",\"vnetId\":\"d\"},\"dataRetentionPeriod\":6855898880348717340,\"provisionedBandwidthMbPerSec\":2986988161676305406,\"provisionedIops\":3868778507667885775,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"bzmnvdfznud\"},\"provisioningState\":\"Failed\",\"reservationResourceId\":\"vxzbncb\"}")
+            "{\"storagePoolInternalId\":\"laocqxtccmg\",\"availabilityZone\":\"udxytlmoyrx\",\"vnetInjection\":{\"subnetId\":\"wfudwpzntxhdzhl\",\"vnetId\":\"qj\"},\"dataRetentionPeriod\":1196903059215633177,\"provisionedBandwidthMbPerSec\":4544642130176849463,\"provisionedIops\":6543879944519090498,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"kyv\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"anuzbpzkafkuw\",\"platformConsoleSettings\":{\"enabled\":false,\"gui\":{\"enabled\":false},\"api\":{\"enabled\":true},\"cli\":{\"enabled\":false},\"subnets\":[{\"id\":\"yvjusrtslhsp\",\"managementIpAddress\":\"eemaofmxagkvtme\",\"serviceBackendIps\":[\"krh\",\"hvljuahaquh\",\"dhmdua\"]},{\"id\":\"aex\",\"managementIpAddress\":\"vfadmws\",\"serviceBackendIps\":[\"gvxp\"]},{\"id\":\"gomz\",\"managementIpAddress\":\"misgwbnb\",\"serviceBackendIps\":[\"dawkzbali\",\"urqhaka\",\"hashsfwxosow\",\"xcug\"]},{\"id\":\"cjooxdjebwpucwwf\",\"managementIpAddress\":\"vbvmeu\",\"serviceBackendIps\":[\"vyhzceuojgjrwj\",\"eiotwmcdytdx\",\"it\",\"nrjawgqwg\"]}],\"defaultUsername\":\"ni\"}}")
             .toObject(StoragePoolProperties.class);
-        Assertions.assertEquals("slqlfmmdn", model.availabilityZone());
-        Assertions.assertEquals("bglzpswi", model.vnetInjection().subnetId());
-        Assertions.assertEquals("d", model.vnetInjection().vnetId());
-        Assertions.assertEquals(2986988161676305406L, model.provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("vxzbncb", model.reservationResourceId());
+        Assertions.assertEquals("udxytlmoyrx", model.availabilityZone());
+        Assertions.assertEquals("wfudwpzntxhdzhl", model.vnetInjection().subnetId());
+        Assertions.assertEquals("qj", model.vnetInjection().vnetId());
+        Assertions.assertEquals(4544642130176849463L, model.provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("anuzbpzkafkuw", model.reservationResourceId());
+        Assertions.assertFalse(model.platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("yvjusrtslhsp", model.platformConsoleSettings().subnets().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolProperties model = new StoragePoolProperties().withAvailabilityZone("slqlfmmdn")
-            .withVnetInjection(new VnetInjection().withSubnetId("bglzpswi").withVnetId("d"))
-            .withProvisionedBandwidthMbPerSec(2986988161676305406L)
-            .withReservationResourceId("vxzbncb");
+        StoragePoolProperties model = new StoragePoolProperties().withAvailabilityZone("udxytlmoyrx")
+            .withVnetInjection(new VnetInjection().withSubnetId("wfudwpzntxhdzhl").withVnetId("qj"))
+            .withProvisionedBandwidthMbPerSec(4544642130176849463L)
+            .withReservationResourceId("anuzbpzkafkuw")
+            .withPlatformConsoleSettings(new PlatformConsoleSettings().withEnabled(false)
+                .withGui(new PlatformConsoleAccessSettings().withEnabled(false))
+                .withApi(new PlatformConsoleAccessSettings().withEnabled(true))
+                .withCli(new PlatformConsoleAccessSettings().withEnabled(false))
+                .withSubnets(Arrays.asList(new PlatformConsoleSubnet().withId("yvjusrtslhsp"),
+                    new PlatformConsoleSubnet().withId("aex"), new PlatformConsoleSubnet().withId("gomz"),
+                    new PlatformConsoleSubnet().withId("cjooxdjebwpucwwf"))));
         model = BinaryData.fromObject(model).toObject(StoragePoolProperties.class);
-        Assertions.assertEquals("slqlfmmdn", model.availabilityZone());
-        Assertions.assertEquals("bglzpswi", model.vnetInjection().subnetId());
-        Assertions.assertEquals("d", model.vnetInjection().vnetId());
-        Assertions.assertEquals(2986988161676305406L, model.provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("vxzbncb", model.reservationResourceId());
+        Assertions.assertEquals("udxytlmoyrx", model.availabilityZone());
+        Assertions.assertEquals("wfudwpzntxhdzhl", model.vnetInjection().subnetId());
+        Assertions.assertEquals("qj", model.vnetInjection().vnetId());
+        Assertions.assertEquals(4544642130176849463L, model.provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("anuzbpzkafkuw", model.reservationResourceId());
+        Assertions.assertFalse(model.platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("yvjusrtslhsp", model.platformConsoleSettings().subnets().get(0).id());
     }
 }

@@ -167,6 +167,7 @@ public final class SearchIndexKnowledgeSourceParameters
         jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("semanticConfigurationName", this.semanticConfigurationName);
         jsonWriter.writeStringField("baseFilter", this.baseFilter);
+        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -187,6 +188,7 @@ public final class SearchIndexKnowledgeSourceParameters
             List<SearchIndexFieldReference> searchFields = null;
             String semanticConfigurationName = null;
             String baseFilter = null;
+            SearchIndexKnowledgeSourceQueryHints queryHints = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -200,6 +202,8 @@ public final class SearchIndexKnowledgeSourceParameters
                     semanticConfigurationName = reader.getString();
                 } else if ("baseFilter".equals(fieldName)) {
                     baseFilter = reader.getString();
+                } else if ("queryHints".equals(fieldName)) {
+                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -210,6 +214,7 @@ public final class SearchIndexKnowledgeSourceParameters
             deserializedSearchIndexKnowledgeSourceParameters.searchFields = searchFields;
             deserializedSearchIndexKnowledgeSourceParameters.semanticConfigurationName = semanticConfigurationName;
             deserializedSearchIndexKnowledgeSourceParameters.baseFilter = baseFilter;
+            deserializedSearchIndexKnowledgeSourceParameters.queryHints = queryHints;
             return deserializedSearchIndexKnowledgeSourceParameters;
         });
     }
@@ -242,6 +247,37 @@ public final class SearchIndexKnowledgeSourceParameters
     @Generated
     public SearchIndexKnowledgeSourceParameters setBaseFilter(String baseFilter) {
         this.baseFilter = baseFilter;
+        return this;
+    }
+
+    /*
+     * Default hints that guide query planning toward useful filters and boosts for this search index knowledge source.
+     * Request-time query hints replace these defaults as a complete object.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHints;
+
+    /**
+     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * search index knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @return the queryHints value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
+        return this.queryHints;
+    }
+
+    /**
+     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * search index knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @param queryHints the queryHints value to set.
+     * @return the SearchIndexKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
+        this.queryHints = queryHints;
         return this;
     }
 }

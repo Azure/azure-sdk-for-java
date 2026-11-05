@@ -12,11 +12,12 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -34,41 +35,41 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     PartitionReceiver receiver;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws EventHubException, IOException {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
         }
     }
 
-    @Before
+    @BeforeEach
     public void initializeTest() throws EventHubException {
         receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
     }
 
-    @Test(expected = TimeoutException.class)
+    @Test
     public void testInvokeOnTimeoutKnobDefault() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
         receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal));
-        invokeSignal.get(3, TimeUnit.SECONDS);
+        Assertions.assertThrows(TimeoutException.class, () -> invokeSignal.get(3, TimeUnit.SECONDS));
     }
 
-    @Test(expected = TimeoutException.class)
+    @Test
     public void testInvokeOnTimeoutKnobFalse() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
         receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal), false);
-        invokeSignal.get(3, TimeUnit.SECONDS);
+        Assertions.assertThrows(TimeoutException.class, () -> invokeSignal.get(3, TimeUnit.SECONDS));
     }
 
-    @Test()
+    @Test
     public void testInvokeOnTimeoutKnobTrue() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -76,28 +77,31 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
         invokeSignal.get(3, TimeUnit.SECONDS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvokeWithInvalidArgs() throws Throwable {
         final CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
-        receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal, PartitionReceiver.DEFAULT_PREFETCH_COUNT + 1), true);
-        try {
-            invokeSignal.get(3, TimeUnit.SECONDS);
-        } catch (ExecutionException executionException) {
-            throw executionException.getCause();
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal, PartitionReceiver.DEFAULT_PREFETCH_COUNT + 1), true);
+            try {
+                invokeSignal.get(3, TimeUnit.SECONDS);
+            } catch (ExecutionException executionException) {
+                throw executionException.getCause();
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSetReceiveHandlerMultipleTimes() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
         receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal), true);
 
-        receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal), true);
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal), true));
     }
 
-    @Test()
+    @Test
     public void testGraceFullCloseReceivePump() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -110,7 +114,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
         invokeSignal.get(3, TimeUnit.SECONDS);
     }
 
-    @After
+    @AfterEach
     public void cleanupTest() throws EventHubException {
         if (receiver != null) {
             receiver.closeSync();

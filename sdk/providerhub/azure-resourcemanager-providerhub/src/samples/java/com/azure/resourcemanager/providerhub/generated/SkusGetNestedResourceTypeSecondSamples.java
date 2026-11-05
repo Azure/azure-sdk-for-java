@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class SkusGetNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_GetNestedResourceTypeSecond.json
+     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeSecond.

@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class StoragePoolsGetAvsStatusWithResponseMockTests {
     @Test
     public void testGetAvsStatusWithResponse() throws Exception {
-        String responseStr = "{\"avsEnabled\":true,\"currentConnectionStatus\":\"u\",\"sddcResourceId\":\"cp\"}";
+        String responseStr
+            = "{\"avsEnabled\":false,\"currentConnectionStatus\":\"yrneizjcpeo\",\"sddcResourceId\":\"hnmgbroux\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +31,11 @@ public final class StoragePoolsGetAvsStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsStatus response = manager.storagePools()
-            .getAvsStatusWithResponse("tgkbugrjqctojc", "isofieypefojyqd", com.azure.core.util.Context.NONE)
+            .getAvsStatusWithResponse("khgb", "qtanarfdlpuk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.avsEnabled());
-        Assertions.assertEquals("u", response.currentConnectionStatus());
-        Assertions.assertEquals("cp", response.clusterResourceId());
+        Assertions.assertFalse(response.avsEnabled());
+        Assertions.assertEquals("yrneizjcpeo", response.currentConnectionStatus());
+        Assertions.assertEquals("hnmgbroux", response.clusterResourceId());
     }
 }

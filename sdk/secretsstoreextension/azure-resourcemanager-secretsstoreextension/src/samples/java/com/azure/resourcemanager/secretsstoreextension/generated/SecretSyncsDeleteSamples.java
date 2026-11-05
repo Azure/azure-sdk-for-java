@@ -9,7 +9,7 @@ package com.azure.resourcemanager.secretsstoreextension.generated;
  */
 public final class SecretSyncsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Delete.

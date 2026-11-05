@@ -13,19 +13,19 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WindowsVMGuestPatchAutomaticByPlatformSettings model
-            = BinaryData.fromString("{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}")
+            = BinaryData.fromString("{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
                 .toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WindowsVMGuestPatchAutomaticByPlatformSettings model = new WindowsVMGuestPatchAutomaticByPlatformSettings()
             .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
-            .withBypassPlatformSafetyChecksOnUserSchedule(true);
+            .withBypassPlatformSafetyChecksOnUserSchedule(false);
         model = BinaryData.fromObject(model).toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

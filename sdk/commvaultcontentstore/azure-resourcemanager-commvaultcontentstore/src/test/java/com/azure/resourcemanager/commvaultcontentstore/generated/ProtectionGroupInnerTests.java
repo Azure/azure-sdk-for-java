@@ -20,34 +20,41 @@ public final class ProtectionGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"plan\":\"otogtwrupqs\",\"resources\":{\"manual\":[\"micykvceoveilo\"],\"matchRules\":{\"rules\":[{\"property\":\"region\",\"operator\":\"startsWith\",\"value\":\"fj\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":197964626,\"lastBackUpTime\":6237049222679473595,\"backupActivityStatus\":\"hbttkphyw\",\"provisioningState\":\"Canceled\"},\"id\":\"t\",\"name\":\"qnermclfplphoxu\",\"type\":\"crpab\"}")
+            "{\"properties\":{\"plan\":\"btkcxywnytnrsyn\",\"resources\":{\"manual\":[\"dybyxczfclhaa\",\"dbabp\",\"lwrq\"],\"matchRules\":{\"rules\":[{\"property\":\"region\",\"operator\":\"startsWith\",\"value\":\"thsu\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"mnyyazt\"},{\"property\":\"status\",\"operator\":\"equals\",\"value\":\"wwrq\"},{\"property\":\"tagValue\",\"operator\":\"endsWith\",\"value\":\"dckzywbiexz\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"not_protected\",\"numberOfProtectedItems\":315634017,\"lastBackUpTime\":5184713929986968832,\"backupActivityStatus\":\"ibx\",\"provisioningState\":\"Failed\"},\"id\":\"hqwa\",\"name\":\"muzyoxaepdk\",\"type\":\"jancu\"}")
             .toObject(ProtectionGroupInner.class);
-        Assertions.assertEquals("otogtwrupqs", model.properties().plan());
-        Assertions.assertEquals("micykvceoveilo", model.properties().resources().manual().get(0));
+        Assertions.assertEquals("btkcxywnytnrsyn", model.properties().plan());
+        Assertions.assertEquals("dybyxczfclhaa", model.properties().resources().manual().get(0));
         Assertions.assertEquals(RuleProperty.REGION,
             model.properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.STARTS_WITH,
             model.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("fj", model.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("thsu", model.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, model.properties().resources().matchRules().matchType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionGroupInner model = new ProtectionGroupInner().withProperties(new ProtectionGroupProperties()
-            .withPlan("otogtwrupqs")
-            .withResources(new ProtectionGroupResources().withManual(Arrays.asList("micykvceoveilo"))
+            .withPlan("btkcxywnytnrsyn")
+            .withResources(new ProtectionGroupResources().withManual(Arrays.asList("dybyxczfclhaa", "dbabp", "lwrq"))
                 .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
-                    new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.STARTS_WITH).withValue("fj")))
+                    new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.STARTS_WITH).withValue("thsu"),
+                    new Rule().withProperty(RuleProperty.RESOURCE_GROUP)
+                        .withOperator(Operator.CONTAINS)
+                        .withValue("mnyyazt"),
+                    new Rule().withProperty(RuleProperty.STATUS).withOperator(Operator.EQUALS).withValue("wwrq"),
+                    new Rule().withProperty(RuleProperty.TAG_VALUE)
+                        .withOperator(Operator.ENDS_WITH)
+                        .withValue("dckzywbiexz")))
                     .withMatchType(MatchType.ANY))));
         model = BinaryData.fromObject(model).toObject(ProtectionGroupInner.class);
-        Assertions.assertEquals("otogtwrupqs", model.properties().plan());
-        Assertions.assertEquals("micykvceoveilo", model.properties().resources().manual().get(0));
+        Assertions.assertEquals("btkcxywnytnrsyn", model.properties().plan());
+        Assertions.assertEquals("dybyxczfclhaa", model.properties().resources().manual().get(0));
         Assertions.assertEquals(RuleProperty.REGION,
             model.properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.STARTS_WITH,
             model.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("fj", model.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("thsu", model.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, model.properties().resources().matchRules().matchType());
     }
 }

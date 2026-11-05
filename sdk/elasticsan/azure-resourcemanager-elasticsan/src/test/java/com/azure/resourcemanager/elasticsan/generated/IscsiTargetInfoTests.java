@@ -13,8 +13,8 @@ public final class IscsiTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiTargetInfo model = BinaryData.fromString(
-            "{\"targetIqn\":\"fqweykhmene\",\"targetPortalHostname\":\"yexfwh\",\"targetPortalPort\":1506978127,\"provisioningState\":\"Deleted\",\"status\":\"Running\"}")
+            "{\"targetIqn\":\"cryuan\",\"targetPortalHostname\":\"uxzdxtay\",\"targetPortalPort\":295835174,\"provisioningState\":\"Deleted\",\"status\":\"Invalid\"}")
             .toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.RUNNING, model.status());
+        Assertions.assertEquals(OperationalStatus.INVALID, model.status());
     }
 }

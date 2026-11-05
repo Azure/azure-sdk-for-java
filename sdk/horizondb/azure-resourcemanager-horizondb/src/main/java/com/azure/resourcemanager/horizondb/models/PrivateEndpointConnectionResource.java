@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.horizondb.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
 
 /**
@@ -47,9 +48,142 @@ public interface PrivateEndpointConnectionResource {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner object.
      * 
      * @return the inner object.
      */
     PrivateEndpointConnectionResourceInner innerModel();
+
+    /**
+     * The entirety of the PrivateEndpointConnectionResource definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The PrivateEndpointConnectionResource definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the PrivateEndpointConnectionResource definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, clusterName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param clusterName The name of the HorizonDB cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingCluster(String resourceGroupName, String clusterName);
+        }
+
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition which contains all the minimum required
+         * properties for the resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            PrivateEndpointConnectionResource create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            PrivateEndpointConnectionResource create(Context context);
+        }
+
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The private endpoint connection properties.
+             * 
+             * @param properties The private endpoint connection properties.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(PrivateEndpointConnectionProperties properties);
+        }
+    }
+
+    /**
+     * Begins update for the PrivateEndpointConnectionResource resource.
+     * 
+     * @return the stage of resource update.
+     */
+    PrivateEndpointConnectionResource.Update update();
+
+    /**
+     * The template for PrivateEndpointConnectionResource update.
+     */
+    interface Update extends UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        PrivateEndpointConnectionResource apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        PrivateEndpointConnectionResource apply(Context context);
+    }
+
+    /**
+     * The PrivateEndpointConnectionResource update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the PrivateEndpointConnectionResource update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The private endpoint connection properties.
+             * 
+             * @param properties The private endpoint connection properties.
+             * @return the next definition stage.
+             */
+            Update withProperties(PrivateEndpointConnectionProperties properties);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    PrivateEndpointConnectionResource refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    PrivateEndpointConnectionResource refresh(Context context);
 }

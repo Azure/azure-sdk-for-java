@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeIdentityManagementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeIdentityManagement model
-            = BinaryData.fromString("{\"type\":\"SystemAssigned\"}").toObject(ResourceTypeIdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.SYSTEM_ASSIGNED, model.type());
+        ResourceTypeIdentityManagement model = BinaryData.fromString("{\"type\":\"DelegatedResourceIdentity\"}")
+            .toObject(ResourceTypeIdentityManagement.class);
+        Assertions.assertEquals(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY, model.type());
     }
 }

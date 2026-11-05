@@ -24,10 +24,10 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -56,44 +56,44 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     private final Consumer<EventData> validateAmqpPropertiesInEventData = new Consumer<EventData>() {
         @Override
         public void accept(EventData eData) {
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_MESSAGE_ID)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_MESSAGE_ID)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_MESSAGE_ID).equals(ORIGINAL_MESSAGE.getMessageId()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_USER_ID)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_USER_ID)
                     && new String((byte[]) eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_USER_ID)).equals(new String(ORIGINAL_MESSAGE.getUserId())));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_TO)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_TO)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_TO).equals(ORIGINAL_MESSAGE.getAddress()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE).equals(ORIGINAL_MESSAGE.getContentType()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING).equals(ORIGINAL_MESSAGE.getContentEncoding()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CORRELATION_ID)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CORRELATION_ID)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_CORRELATION_ID).equals(ORIGINAL_MESSAGE.getCorrelationId()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CREATION_TIME)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_CREATION_TIME)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_CREATION_TIME).equals(ORIGINAL_MESSAGE.getCreationTime()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_SUBJECT)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_SUBJECT)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_SUBJECT).equals(ORIGINAL_MESSAGE.getSubject()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_GROUP_ID)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_GROUP_ID)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_GROUP_ID).equals(ORIGINAL_MESSAGE.getGroupId()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID).equals(ORIGINAL_MESSAGE.getReplyToGroupId()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_REPLY_TO)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_REPLY_TO)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_REPLY_TO).equals(ORIGINAL_MESSAGE.getReplyTo()));
-            Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME)
                     && eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME).equals(ORIGINAL_MESSAGE.getExpiryTime()));
 
-            Assert.assertTrue(eData.getSystemProperties().containsKey(MESSAGE_ANNOTATION)
+            Assertions.assertTrue(eData.getSystemProperties().containsKey(MESSAGE_ANNOTATION)
                     && eData.getSystemProperties().get(MESSAGE_ANNOTATION).equals(ORIGINAL_MESSAGE.getMessageAnnotations().getValue().get(Symbol.getSymbol(MESSAGE_ANNOTATION))));
 
-            Assert.assertTrue(eData.getProperties().containsKey(APPLICATION_PROPERTY)
+            Assertions.assertTrue(eData.getProperties().containsKey(APPLICATION_PROPERTY)
                     && eData.getProperties().get(APPLICATION_PROPERTY).equals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(APPLICATION_PROPERTY)));
 
-            Assert.assertTrue(eData.getProperties().size() == 1);
+            Assertions.assertTrue(eData.getProperties().size() == 1);
 
-            Assert.assertTrue(new String(eData.getBytes()).equals(PAYLOAD));
+            Assertions.assertTrue(new String(eData.getBytes()).equals(PAYLOAD));
         }
     };
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         final String connectionString = connStrBuilder.toString();
@@ -145,7 +145,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         reSendAndReceivedMessage = msgReceiver.receive(10).get().iterator().next();
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (msgReceiver != null) {
             msgReceiver.closeSync();
@@ -184,28 +184,28 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     @Test
     public void resentAmqpMessageShouldRetainAllOriginalProps() {
-        Assert.assertTrue(reSendAndReceivedMessage.getMessageId().equals(ORIGINAL_MESSAGE.getMessageId()));
-        Assert.assertTrue(reSendAndReceivedMessage.getAddress().equals(ORIGINAL_MESSAGE.getAddress()));
-        Assert.assertTrue(reSendAndReceivedMessage.getContentEncoding().equals(ORIGINAL_MESSAGE.getContentEncoding()));
-        Assert.assertTrue(reSendAndReceivedMessage.getContentType().equals(ORIGINAL_MESSAGE.getContentType()));
-        Assert.assertTrue(new String(reSendAndReceivedMessage.getUserId()).equals(new String(ORIGINAL_MESSAGE.getUserId())));
-        Assert.assertTrue(reSendAndReceivedMessage.getCorrelationId().equals(ORIGINAL_MESSAGE.getCorrelationId()));
-        Assert.assertTrue(reSendAndReceivedMessage.getGroupId().equals(ORIGINAL_MESSAGE.getGroupId()));
-        Assert.assertTrue(reSendAndReceivedMessage.getReplyTo().equals(ORIGINAL_MESSAGE.getReplyTo()));
-        Assert.assertTrue(reSendAndReceivedMessage.getReplyToGroupId().equals(ORIGINAL_MESSAGE.getReplyToGroupId()));
-        Assert.assertTrue(reSendAndReceivedMessage.getSubject().equals(ORIGINAL_MESSAGE.getSubject()));
-        Assert.assertTrue(reSendAndReceivedMessage.getExpiryTime() == ORIGINAL_MESSAGE.getExpiryTime());
-        Assert.assertTrue(reSendAndReceivedMessage.getCreationTime() == ORIGINAL_MESSAGE.getCreationTime());
-        Assert.assertTrue(reSendAndReceivedMessage.getExpiryTime() == ORIGINAL_MESSAGE.getExpiryTime());
-        Assert.assertTrue(reSendAndReceivedMessage.getGroupSequence() == ORIGINAL_MESSAGE.getGroupSequence());
+        Assertions.assertTrue(reSendAndReceivedMessage.getMessageId().equals(ORIGINAL_MESSAGE.getMessageId()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getAddress().equals(ORIGINAL_MESSAGE.getAddress()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getContentEncoding().equals(ORIGINAL_MESSAGE.getContentEncoding()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getContentType().equals(ORIGINAL_MESSAGE.getContentType()));
+        Assertions.assertTrue(new String(reSendAndReceivedMessage.getUserId()).equals(new String(ORIGINAL_MESSAGE.getUserId())));
+        Assertions.assertTrue(reSendAndReceivedMessage.getCorrelationId().equals(ORIGINAL_MESSAGE.getCorrelationId()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getGroupId().equals(ORIGINAL_MESSAGE.getGroupId()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getReplyTo().equals(ORIGINAL_MESSAGE.getReplyTo()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getReplyToGroupId().equals(ORIGINAL_MESSAGE.getReplyToGroupId()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getSubject().equals(ORIGINAL_MESSAGE.getSubject()));
+        Assertions.assertTrue(reSendAndReceivedMessage.getExpiryTime() == ORIGINAL_MESSAGE.getExpiryTime());
+        Assertions.assertTrue(reSendAndReceivedMessage.getCreationTime() == ORIGINAL_MESSAGE.getCreationTime());
+        Assertions.assertTrue(reSendAndReceivedMessage.getExpiryTime() == ORIGINAL_MESSAGE.getExpiryTime());
+        Assertions.assertTrue(reSendAndReceivedMessage.getGroupSequence() == ORIGINAL_MESSAGE.getGroupSequence());
 
-        Assert.assertTrue(reSendAndReceivedMessage.getApplicationProperties().getValue().get(APPLICATION_PROPERTY)
+        Assertions.assertTrue(reSendAndReceivedMessage.getApplicationProperties().getValue().get(APPLICATION_PROPERTY)
                 .equals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(APPLICATION_PROPERTY)));
 
-        Assert.assertTrue(reSendAndReceivedMessage.getMessageAnnotations().getValue().get(Symbol.getSymbol(MESSAGE_ANNOTATION))
+        Assertions.assertTrue(reSendAndReceivedMessage.getMessageAnnotations().getValue().get(Symbol.getSymbol(MESSAGE_ANNOTATION))
                 .equals(ORIGINAL_MESSAGE.getMessageAnnotations().getValue().get(Symbol.getSymbol(MESSAGE_ANNOTATION))));
 
         Binary payloadBytes = ((Data) reSendAndReceivedMessage.getBody()).getValue();
-        Assert.assertTrue(new String(payloadBytes.getArray(), payloadBytes.getArrayOffset(), payloadBytes.getLength()).equals(PAYLOAD));
+        Assertions.assertTrue(new String(payloadBytes.getArray(), payloadBytes.getArrayOffset(), payloadBytes.getLength()).equals(PAYLOAD));
     }
 }

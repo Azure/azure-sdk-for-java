@@ -12,11 +12,11 @@ public final class PerformancePolicyLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PerformancePolicyLimits model = BinaryData.fromString(
-            "{\"iopsLimit\":{\"min\":1374202645553660529,\"max\":2121697815416351815},\"bandwidthLimit\":{\"min\":57754051587633869,\"max\":495685925173240949}}")
+            "{\"iopsLimit\":{\"min\":5957914782999520303,\"max\":1424644879574037453},\"bandwidthLimit\":{\"min\":3642573438978350422,\"max\":7417380553588926362}}")
             .toObject(PerformancePolicyLimits.class);
-        Assertions.assertEquals(1374202645553660529L, model.iopsLimit().min());
-        Assertions.assertEquals(2121697815416351815L, model.iopsLimit().max());
-        Assertions.assertEquals(57754051587633869L, model.bandwidthLimit().min());
-        Assertions.assertEquals(495685925173240949L, model.bandwidthLimit().max());
+        Assertions.assertEquals(5957914782999520303L, model.iopsLimit().min());
+        Assertions.assertEquals(1424644879574037453L, model.iopsLimit().max());
+        Assertions.assertEquals(3642573438978350422L, model.bandwidthLimit().min());
+        Assertions.assertEquals(7417380553588926362L, model.bandwidthLimit().max());
     }
 }

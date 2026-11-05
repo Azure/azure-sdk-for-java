@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is the request to get operation status using operationids.
+ * The operation for which current status should be returned.
  */
 @Fluent
 public final class GetOperationStatusContent implements JsonSerializable<GetOperationStatusContent> {
     /*
-     * The list of operation ids to get the status of
+     * The Bulk Action Operation Ids that identify the operations for which current status should be returned.
      */
     private List<String> operationIds;
 
@@ -29,7 +29,8 @@ public final class GetOperationStatusContent implements JsonSerializable<GetOper
     }
 
     /**
-     * Get the operationIds property: The list of operation ids to get the status of.
+     * Get the operationIds property: The Bulk Action Operation Ids that identify the operations for which current
+     * status should be returned.
      * 
      * @return the operationIds value.
      */
@@ -38,7 +39,8 @@ public final class GetOperationStatusContent implements JsonSerializable<GetOper
     }
 
     /**
-     * Set the operationIds property: The list of operation ids to get the status of.
+     * Set the operationIds property: The Bulk Action Operation Ids that identify the operations for which current
+     * status should be returned.
      * 
      * @param operationIds the operationIds value to set.
      * @return the GetOperationStatusContent object itself.

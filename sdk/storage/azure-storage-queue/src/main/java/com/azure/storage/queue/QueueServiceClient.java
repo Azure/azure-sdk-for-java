@@ -301,7 +301,7 @@ public final class QueueServiceClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context -->
+     * <!-- src_embed com.azure.storage.queue.queueServiceClient.listQueues#queueSegmentOptions-duration-context -->
      * <pre>
      * client.listQueues&#40;new QueuesSegmentOptions&#40;&#41;.setPrefix&#40;&quot;azure&quot;&#41;, Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;.forEach&#40;
@@ -309,7 +309,7 @@ public final class QueueServiceClient {
      *         queueItem.getName&#40;&#41;, queueItem.getMetadata&#40;&#41;&#41;
      * &#41;;
      * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context -->
+     * <!-- end com.azure.storage.queue.queueServiceClient.listQueues#queueSegmentOptions-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>

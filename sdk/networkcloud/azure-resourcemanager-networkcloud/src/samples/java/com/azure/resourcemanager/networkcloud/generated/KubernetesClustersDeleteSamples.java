@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class KubernetesClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Delete.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes cluster.

@@ -21,7 +21,7 @@ public final class DbVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"bfe\",\"isLatestForMajorVersion\":true,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":true,\"supportsPdb\":false},\"id\":\"qlmfaewz\",\"name\":\"iudjp\",\"type\":\"pqht\"}";
+            = "{\"properties\":{\"version\":\"l\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":false,\"supportsPdb\":false},\"id\":\"owoxqmj\",\"name\":\"ajcxnyqgxhl\",\"type\":\"srv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,14 @@ public final class DbVersionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DbVersion response
-            = manager.dbVersions().getWithResponse("x", "qvn", com.azure.core.util.Context.NONE).getValue();
+        DbVersion response = manager.dbVersions()
+            .getWithResponse("dqacfrgnawbabgf", "ktyjmf", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("bfe", response.properties().version());
-        Assertions.assertTrue(response.properties().isLatestForMajorVersion());
+        Assertions.assertEquals("l", response.properties().version());
+        Assertions.assertFalse(response.properties().isLatestForMajorVersion());
         Assertions.assertTrue(response.properties().isPreviewDbVersion());
-        Assertions.assertTrue(response.properties().isUpgradeSupported());
+        Assertions.assertFalse(response.properties().isUpgradeSupported());
         Assertions.assertFalse(response.properties().supportsPdb());
     }
 }

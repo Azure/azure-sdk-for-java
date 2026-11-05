@@ -16,11 +16,11 @@ public final class FeatureSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureSettings model = BinaryData.fromString(
-            "{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}}")
+            "{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}}")
             .toObject(FeatureSettings.class);
         Assertions.assertEquals(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
             model.crossSubscriptionRestoreSettings().state());
-        Assertions.assertEquals(CrossRegionRestoreState.DISABLED, model.crossRegionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED, model.crossRegionRestoreSettings().state());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,10 +29,10 @@ public final class FeatureSettingsTests {
             .withCrossSubscriptionRestoreSettings(
                 new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED))
             .withCrossRegionRestoreSettings(
-                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.DISABLED));
+                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED));
         model = BinaryData.fromObject(model).toObject(FeatureSettings.class);
         Assertions.assertEquals(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
             model.crossSubscriptionRestoreSettings().state());
-        Assertions.assertEquals(CrossRegionRestoreState.DISABLED, model.crossRegionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED, model.crossRegionRestoreSettings().state());
     }
 }

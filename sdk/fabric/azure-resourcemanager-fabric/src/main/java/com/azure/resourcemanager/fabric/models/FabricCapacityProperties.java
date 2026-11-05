@@ -110,8 +110,8 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("administration", this.administration);
         jsonWriter.writeJsonField("overage", this.overage);
+        jsonWriter.writeJsonField("administration", this.administration);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,15 +131,15 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("administration".equals(fieldName)) {
+                if ("overage".equals(fieldName)) {
+                    deserializedFabricCapacityProperties.overage = CapacityOverageProperties.fromJson(reader);
+                } else if ("administration".equals(fieldName)) {
                     deserializedFabricCapacityProperties.administration = CapacityAdministration.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFabricCapacityProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
                     deserializedFabricCapacityProperties.state = ResourceState.fromString(reader.getString());
-                } else if ("overage".equals(fieldName)) {
-                    deserializedFabricCapacityProperties.overage = CapacityOverageProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

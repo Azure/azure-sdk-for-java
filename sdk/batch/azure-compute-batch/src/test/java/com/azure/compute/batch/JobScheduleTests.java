@@ -11,7 +11,7 @@ import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSpecification;
 import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.SyncAsyncExtension;
@@ -59,7 +59,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         // CREATE
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
+        BatchPoolDetails poolInfo = new BatchPoolDetails().setPoolId(poolId);
 
         BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
             .setDoNotRunAfter(now().plusHours(5))
@@ -138,7 +138,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         Assertions.assertEquals((Integer) 100, jobScheduleAfterUpdate.getJobSpecification().getPriority());
 
         // DELETE
-        SyncPoller<BatchJobSchedule, Void> poller = setPlaybackSyncPollerPollInterval(
+        SyncPoller<BatchJobSchedule, BatchJobSchedule> poller = setPlaybackSyncPollerPollInterval(
             SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
 
@@ -153,7 +153,9 @@ public class JobScheduleTests extends BatchClientTestBase {
         poller.waitForCompletion();
 
         PollResponse<BatchJobSchedule> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion.");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed job schedule state after deletion.");
+        Assertions.assertEquals(jobScheduleId, finalResponse.getValue().getId());
 
         try {
             SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
@@ -172,7 +174,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         // CREATE
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
+        BatchPoolDetails poolInfo = new BatchPoolDetails().setPoolId(poolId);
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
         BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
             .setDoNotRunAfter(now().plusHours(5))
@@ -218,7 +220,7 @@ public class JobScheduleTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJobSchedule, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchJobSchedule, BatchJobSchedule> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId), () -> Mono
                     .fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
 

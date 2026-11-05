@@ -1,0 +1,43 @@
+# Spell-check overrides for this SDK group.
+# Inherits the global config at the repo root.
+#
+# Add words that only appear in this folder here, in alphabetical order.
+# Cross-cutting terms should go in the root cspell.json instead.
+version: "0.2"
+import:
+  - ../../.vscode/cspell.json
+words:
+  - "aadservice"
+  - "abfss"
+  - "adla"
+  - "azsynapse"
+  - "byoa"
+  - "eloqua"
+  - "ename"
+  - "evalue"
+  - "fazure"
+  - "fbread"
+  - "fhdinsight"
+  - "ftoc"
+  - "hcatalog"
+  - "hdinsight"
+  - "ilearner"
+  - "magento"
+  - "mktorest"
+  - "myshopify"
+  - "netezza"
+  - "ondemand"
+  - "oozie"
+  - "soql"
+  - "sqlv"
+  - "ssis"
+  - "ssisdb"
+  - "sybase"
+  - "tswtz"
+  - "usql"
+  - "vertica"
+  - "vsts"
+  - "wtgctbg"
+  - "xero"
+  - "xlarge"
+  - "xxlarge"

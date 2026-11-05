@@ -6,9 +6,6 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
@@ -18,6 +15,7 @@ import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
 import com.azure.ai.agents.tools.ComputerUseUtil.SearchState;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
@@ -68,7 +66,6 @@ public class ComputerUseSync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // Initialize state machine
         SearchState currentState = SearchState.INITIAL;
@@ -104,9 +101,7 @@ public class ComputerUseSync {
             System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                 agent.getId(), agent.getName(), agent.getVersion());
 
-            // Create the AgentReference for the response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Initial request with screenshot - start with Bing search page
             System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
@@ -136,11 +131,11 @@ public class ComputerUseSync {
                         .build())
             );
 
-            Response response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .inputOfResponse(initialInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
             System.out.printf("Initial response received (ID: %s)%n", response.id());
 
@@ -193,12 +188,12 @@ public class ComputerUseSync {
                             .build())
                 );
 
-                response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                response = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .previousResponseId(response.id())
                         .inputOfResponse(followUpInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
                 System.out.printf("Follow-up response received (ID: %s)%n", response.id());
             }

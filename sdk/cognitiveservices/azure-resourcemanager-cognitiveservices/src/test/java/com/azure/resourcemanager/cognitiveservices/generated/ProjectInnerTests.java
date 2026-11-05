@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ProjectInner;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
@@ -18,30 +19,40 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ccxlzhcoxovnek\",\"description\":\"nlusfnrd\",\"endpoints\":{\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\",\"aqehg\":\"hwpusxj\"},\"isDefault\":true},\"tags\":{\"nwfepbnwg\":\"jqatucoigebxn\",\"jgcgbjbgdlfgtdys\":\"m\",\"zjrwdkqze\":\"aquflqbctqha\"},\"location\":\"jleziunjx\",\"etag\":\"zantkwceg\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"nseqacjjvp\",\"principalId\":\"guooqjagmdit\",\"userAssignedIdentities\":{\"lmotoebnfxofvcj\":{\"principalId\":\"ookjbsahrtdtpde\",\"clientId\":\"ac\"},\"excmjurbuhhl\":{\"principalId\":\"dirazf\",\"clientId\":\"ejwabmdujtmvco\"},\"kffdjktsys\":{\"principalId\":\"ql\",\"clientId\":\"srogtu\"}}},\"id\":\"fvcl\",\"name\":\"lxnfuijtkbusqogs\",\"type\":\"ikayiansharuj\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kak\",\"description\":\"ldtve\",\"endpoints\":{\"hzjkn\":\"cl\",\"pzaamrdixtreki\":\"uxgvttxpnr\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"kbr\",\"vectorStore\":\"fgllukkutvlx\",\"blobStore\":\"pqhvmblcouqehbhb\"}},\"tags\":{\"mbltoo\":\"ziryrandoy\",\"alsygao\":\"mkfqlwxldy\",\"sibjgs\":\"njpnnbmj\"},\"location\":\"xxahmrnadzyqegxy\",\"etag\":\"pinbmhwbjijkgqxn\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"znj\",\"principalId\":\"jvaannggiycwkd\",\"userAssignedIdentities\":{\"mrrqmbzmqkratb\":{\"principalId\":\"xw\",\"clientId\":\"ka\"},\"ijymrhbguzozky\":{\"principalId\":\"wbjsidbirkf\",\"clientId\":\"sokdgoge\"}}},\"id\":\"nfnzhhh\",\"name\":\"o\",\"type\":\"mffjkutycyarn\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
-        Assertions.assertEquals("nlusfnrd", model.properties().description());
-        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
-        Assertions.assertEquals("jleziunjx", model.location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("kak", model.properties().displayName());
+        Assertions.assertEquals("ldtve", model.properties().description());
+        Assertions.assertEquals("kbr", model.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("fgllukkutvlx", model.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("pqhvmblcouqehbhb", model.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals("ziryrandoy", model.tags().get("mbltoo"));
+        Assertions.assertEquals("xxahmrnadzyqegxy", model.location());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectInner model = new ProjectInner()
-            .withProperties(new ProjectProperties().withDisplayName("ccxlzhcoxovnek").withDescription("nlusfnrd"))
-            .withTags(mapOf("nwfepbnwg", "jqatucoigebxn", "jgcgbjbgdlfgtdys", "m", "zjrwdkqze", "aquflqbctqha"))
-            .withLocation("jleziunjx")
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("lmotoebnfxofvcj", new UserAssignedIdentity(), "excmjurbuhhl",
-                    new UserAssignedIdentity(), "kffdjktsys", new UserAssignedIdentity())));
+            .withProperties(new ProjectProperties().withDisplayName("kak")
+                .withDescription("ldtve")
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore("kbr")
+                    .withVectorStore("fgllukkutvlx")
+                    .withBlobStore("pqhvmblcouqehbhb")))
+            .withTags(mapOf("mbltoo", "ziryrandoy", "alsygao", "mkfqlwxldy", "sibjgs", "njpnnbmj"))
+            .withLocation("xxahmrnadzyqegxy")
+            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("mrrqmbzmqkratb", new UserAssignedIdentity(), "ijymrhbguzozky", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
-        Assertions.assertEquals("nlusfnrd", model.properties().description());
-        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
-        Assertions.assertEquals("jleziunjx", model.location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("kak", model.properties().displayName());
+        Assertions.assertEquals("ldtve", model.properties().description());
+        Assertions.assertEquals("kbr", model.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("fgllukkutvlx", model.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("pqhvmblcouqehbhb", model.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals("ziryrandoy", model.tags().get("mbltoo"));
+        Assertions.assertEquals("xxahmrnadzyqegxy", model.location());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

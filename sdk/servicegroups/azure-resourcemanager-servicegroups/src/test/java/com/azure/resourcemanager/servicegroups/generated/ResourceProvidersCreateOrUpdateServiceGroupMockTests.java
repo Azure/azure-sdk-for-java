@@ -13,6 +13,7 @@ import com.azure.resourcemanager.servicegroups.ServiceGroupsManager;
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import com.azure.resourcemanager.servicegroups.models.ParentServiceGroupProperties;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroup;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,7 +27,7 @@ public final class ResourceProvidersCreateOrUpdateServiceGroupMockTests {
     @Test
     public void testCreateOrUpdateServiceGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"yevc\",\"parent\":{\"resourceId\":\"ihnhun\"}},\"kind\":\"wjzrnfygxgisp\",\"tags\":{\"ofx\":\"tzfkufubl\"},\"id\":\"ofjaeqjhqjb\",\"name\":\"s\",\"type\":\"msmjqulngsntn\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"lluwfzitonpeq\",\"attributes\":{\"criticality\":813348790},\"parent\":{\"resourceId\":\"xofpdvhpfxxypi\"}},\"kind\":\"nmayhuybb\",\"tags\":{\"nuvamiheogna\":\"depoog\",\"usivye\":\"xzxtheo\",\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"ufubl\",\"name\":\"ofx\",\"type\":\"eofjaeqjh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +37,21 @@ public final class ResourceProvidersCreateOrUpdateServiceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceGroup response = manager.resourceProviders()
-            .createOrUpdateServiceGroup("sy",
+            .createOrUpdateServiceGroup("jnchgej",
                 new ServiceGroupInner()
-                    .withProperties(new ServiceGroupProperties().withDisplayName("ojakhmsbzjhcrze")
-                        .withParent(new ParentServiceGroupProperties().withResourceId("hlxaolthqtr")))
-                    .withKind("jbp")
-                    .withTags(mapOf("n", "s", "wzo", "gvfcj", "np", "xjtfelluwfzit", "lxofpdvhpfxxypin", "qfpjk")),
+                    .withProperties(new ServiceGroupProperties().withDisplayName("ailzydehojwyahu")
+                        .withAttributes(new ServiceGroupAttributes().withCriticality(1511051439))
+                        .withParent(new ParentServiceGroupProperties().withResourceId("njaqwixjspro")))
+                    .withKind("cputegjvwmfdats")
+                    .withTags(mapOf("kjozkrwfnd", "vpjhulsuuv", "vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc",
+                        "hcrzevd", "gexpaojakhmsbz")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yevc", response.properties().displayName());
-        Assertions.assertEquals("ihnhun", response.properties().parent().resourceId());
-        Assertions.assertEquals("wjzrnfygxgisp", response.kind());
-        Assertions.assertEquals("tzfkufubl", response.tags().get("ofx"));
+        Assertions.assertEquals("lluwfzitonpeq", response.properties().displayName());
+        Assertions.assertEquals(813348790, response.properties().attributes().criticality());
+        Assertions.assertEquals("xofpdvhpfxxypi", response.properties().parent().resourceId());
+        Assertions.assertEquals("nmayhuybb", response.kind());
+        Assertions.assertEquals("depoog", response.tags().get("nuvamiheogna"));
     }
 
     // Use "Map.of" if available

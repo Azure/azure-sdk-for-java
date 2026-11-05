@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class CommunityGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Community_Get.json
+     * x-ms-original-file: 2026-04-01/Community_Get.json
      */
     /**
      * Sample code: Community_Get.

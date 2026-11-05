@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FullTextIndexPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FullTextIndexPath model = BinaryData.fromString("{\"path\":\"px\"}").toObject(FullTextIndexPath.class);
-        Assertions.assertEquals("px", model.path());
+        FullTextIndexPath model
+            = BinaryData.fromString("{\"path\":\"dqmeqwigpibudq\"}").toObject(FullTextIndexPath.class);
+        Assertions.assertEquals("dqmeqwigpibudq", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FullTextIndexPath model = new FullTextIndexPath().withPath("px");
+        FullTextIndexPath model = new FullTextIndexPath().withPath("dqmeqwigpibudq");
         model = BinaryData.fromObject(model).toObject(FullTextIndexPath.class);
-        Assertions.assertEquals("px", model.path());
+        Assertions.assertEquals("dqmeqwigpibudq", model.path());
     }
 }

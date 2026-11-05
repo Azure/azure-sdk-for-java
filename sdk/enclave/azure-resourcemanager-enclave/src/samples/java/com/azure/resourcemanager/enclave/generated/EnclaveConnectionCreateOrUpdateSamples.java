@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/EnclaveConnection_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveConnection_CreateOrUpdate.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesDeleteGremlinGraphSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBGremlinGraphDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGremlinGraphDelete.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphDelete.

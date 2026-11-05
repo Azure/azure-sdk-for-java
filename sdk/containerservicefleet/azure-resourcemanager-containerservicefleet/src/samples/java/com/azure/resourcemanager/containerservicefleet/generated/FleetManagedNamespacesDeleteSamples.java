@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetManagedNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Delete.json
+     * x-ms-original-file: 2026-06-02-preview/FleetManagedNamespaces_Delete.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Delete.

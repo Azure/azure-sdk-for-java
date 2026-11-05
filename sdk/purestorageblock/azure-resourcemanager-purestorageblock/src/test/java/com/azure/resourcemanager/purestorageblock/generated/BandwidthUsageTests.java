@@ -13,10 +13,10 @@ public final class BandwidthUsageTests {
     public void testDeserialize() throws Exception {
         BandwidthUsage model = BinaryData
             .fromString(
-                "{\"current\":5679594705932183570,\"provisioned\":7427478878049317484,\"max\":4145471517526414946}")
+                "{\"current\":6352077335899529902,\"provisioned\":6736972913480201725,\"max\":7263870316289252450}")
             .toObject(BandwidthUsage.class);
-        Assertions.assertEquals(5679594705932183570L, model.current());
-        Assertions.assertEquals(7427478878049317484L, model.provisioned());
-        Assertions.assertEquals(4145471517526414946L, model.max());
+        Assertions.assertEquals(6352077335899529902L, model.current());
+        Assertions.assertEquals(6736972913480201725L, model.provisioned());
+        Assertions.assertEquals(7263870316289252450L, model.max());
     }
 }

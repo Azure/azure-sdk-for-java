@@ -14,6 +14,7 @@ import com.azure.resourcemanager.durabletask.DurableTaskManager;
 import com.azure.resourcemanager.durabletask.models.TaskHub;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class TaskHubsListBySchedulerMockTests {
     @Test
     public void testListByScheduler() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"hzxct\"},\"id\":\"gbkdmoizpos\",\"name\":\"mgrcfbu\",\"type\":\"rmfqjhhkxbpvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"mlkxtrqjfs\",\"capabilities\":[\"btx\",\"w\"]},\"id\":\"wsrt\",\"name\":\"wcoezbrhub\",\"type\":\"kh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +32,8 @@ public final class TaskHubsListBySchedulerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TaskHub> response
-            = manager.taskHubs().listByScheduler("pfqbuaceopzf", "rhhuaopppcqeqx", com.azure.core.util.Context.NONE);
+            = manager.taskHubs().listByScheduler("zedqbcvhzlhplo", "qkdlw", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("btx", response.iterator().next().properties().capabilities().get(0));
     }
 }

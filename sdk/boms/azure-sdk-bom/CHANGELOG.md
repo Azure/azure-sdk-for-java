@@ -1,5 +1,11 @@
 # Release History
 
+## 1.3.9 (2026-10-12)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.3.8 (2026-07-22)
 
 ### Dependency Updates
@@ -102,7 +108,7 @@
 
 ### Dependency Updates
 
-- Added a new libary entry to the BOM:
+- Added a new library entry to the BOM:
   - [azure-health-deidentification](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md)
 
 - Updated Azure SDK dependency versions to the latest releases.

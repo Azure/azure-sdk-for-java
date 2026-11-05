@@ -12,22 +12,22 @@ public final class MongoMIRoleAssignmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoMIRoleAssignmentResourceProperties model = BinaryData.fromString(
-            "{\"roleDefinitionId\":\"iuycsbskowk\",\"scope\":\"hzhrbkhtm\",\"principalId\":\"wiuasfg\",\"provisioningState\":\"ucyhfaimq\"}")
+            "{\"roleDefinitionId\":\"s\",\"scope\":\"zbevgbnrommkiqh\",\"principalId\":\"w\",\"provisioningState\":\"zyjj\"}")
             .toObject(MongoMIRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("iuycsbskowk", model.roleDefinitionId());
-        Assertions.assertEquals("hzhrbkhtm", model.scope());
-        Assertions.assertEquals("wiuasfg", model.principalId());
+        Assertions.assertEquals("s", model.roleDefinitionId());
+        Assertions.assertEquals("zbevgbnrommkiqh", model.scope());
+        Assertions.assertEquals("w", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoMIRoleAssignmentResourceProperties model
-            = new MongoMIRoleAssignmentResourceProperties().withRoleDefinitionId("iuycsbskowk")
-                .withScope("hzhrbkhtm")
-                .withPrincipalId("wiuasfg");
+            = new MongoMIRoleAssignmentResourceProperties().withRoleDefinitionId("s")
+                .withScope("zbevgbnrommkiqh")
+                .withPrincipalId("w");
         model = BinaryData.fromObject(model).toObject(MongoMIRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("iuycsbskowk", model.roleDefinitionId());
-        Assertions.assertEquals("hzhrbkhtm", model.scope());
-        Assertions.assertEquals("wiuasfg", model.principalId());
+        Assertions.assertEquals("s", model.roleDefinitionId());
+        Assertions.assertEquals("zbevgbnrommkiqh", model.scope());
+        Assertions.assertEquals("w", model.principalId());
     }
 }

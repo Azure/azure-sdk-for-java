@@ -94,6 +94,16 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends SubRe
     }
 
     /**
+     * Get the displayName property: Human-readable display name for the managed rule set version (e.g., 'Default
+     * Ruleset 2.2 (Latest, Recommended)').
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -35,11 +35,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purestorageblock.fluent.ReservationsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.LimitDetailsInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingStatusInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingUsageReportInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationInner;
 import com.azure.resourcemanager.purestorageblock.implementation.models.ReservationListResult;
+import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
 import com.azure.resourcemanager.purestorageblock.models.ReservationUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -244,6 +246,44 @@ public final class ReservationsClientImpl implements ReservationsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ReservationBillingUsageReportInner> getBillingReportSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("reservationName") String reservationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("reservationName") String reservationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") LinkSaaSRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> linkSaaSSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("reservationName") String reservationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") LinkSaaSRequest body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("reservationName") String reservationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("reservationName") String reservationName, @HeaderParam("Accept") String accept,
@@ -1267,6 +1307,269 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationBillingUsageReportInner getBillingReport(String resourceGroupName, String reservationName) {
         return getBillingReportWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkSaaSWithResponseAsync(String resourceGroupName, String reservationName,
+        LinkSaaSRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.linkSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String reservationName,
+        LinkSaaSRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, body,
+            Context.NONE);
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String reservationName,
+        LinkSaaSRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, body, context);
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ReservationInner>, ReservationInner> beginLinkSaaSAsync(String resourceGroupName,
+        String reservationName, LinkSaaSRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = linkSaaSWithResponseAsync(resourceGroupName, reservationName, body);
+        return this.client.<ReservationInner, ReservationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReservationInner.class, ReservationInner.class, this.client.getContext());
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
+        String reservationName, LinkSaaSRequest body) {
+        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, reservationName, body);
+        return this.client.<ReservationInner, ReservationInner>getLroResult(response, ReservationInner.class,
+            ReservationInner.class, Context.NONE);
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
+        String reservationName, LinkSaaSRequest body, Context context) {
+        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, reservationName, body, context);
+        return this.client.<ReservationInner, ReservationInner>getLroResult(response, ReservationInner.class,
+            ReservationInner.class, context);
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ReservationInner> linkSaaSAsync(String resourceGroupName, String reservationName,
+        LinkSaaSRequest body) {
+        return beginLinkSaaSAsync(resourceGroupName, reservationName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body) {
+        return beginLinkSaaS(resourceGroupName, reservationName, body).getFinalResult();
+    }
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body,
+        Context context) {
+        return beginLinkSaaS(resourceGroupName, reservationName, body, context).getFinalResult();
+    }
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaSWithResponseAsync(String resourceGroupName,
+        String reservationName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.latestLinkedSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LatestLinkedSaaSResponseInner> latestLinkedSaaSAsync(String resourceGroupName,
+        String reservationName) {
+        return latestLinkedSaaSWithResponseAsync(resourceGroupName, reservationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String reservationName, Context context) {
+        final String accept = "application/json";
+        return service.latestLinkedSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
+    }
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String reservationName) {
+        return latestLinkedSaaSWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
     }
 
     /**

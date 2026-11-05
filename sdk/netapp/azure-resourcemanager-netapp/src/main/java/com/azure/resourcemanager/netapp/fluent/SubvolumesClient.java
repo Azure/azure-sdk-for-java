@@ -57,7 +57,8 @@ public interface SubvolumesClient {
         String subvolumeName);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -76,7 +77,8 @@ public interface SubvolumesClient {
         String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -97,7 +99,8 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -116,7 +119,8 @@ public interface SubvolumesClient {
         String subvolumeName, SubvolumeInfoInner body);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CollectionRegionListMetricsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBRegionCollectionGetMetrics.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBRegionCollectionGetMetrics.json
      */
     /**
      * Sample code: CosmosDBRegionCollectionGetMetrics.

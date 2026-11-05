@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class EnclaveEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Get.json
+     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_Get.json
      */
     /**
      * Sample code: EnclaveEndpoints_Get.

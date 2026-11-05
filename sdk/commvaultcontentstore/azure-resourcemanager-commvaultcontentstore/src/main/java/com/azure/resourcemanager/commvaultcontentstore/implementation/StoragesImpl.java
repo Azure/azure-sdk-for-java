@@ -65,18 +65,77 @@ public final class StoragesImpl implements Storages {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageImpl(inner1, this.manager()));
     }
 
+    public Response<Storage> enableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        Response<StorageInner> inner = this.serviceClient()
+            .enableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage enableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner
+            = this.serviceClient().enableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Storage> disableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        Response<StorageInner> inner = this.serviceClient()
+            .disableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage disableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner
+            = this.serviceClient().disableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Storage> refreshWithResponse(String resourceGroupName, String cloudAccountName, String storageName,
+        Context context) {
+        Response<StorageInner> inner
+            = this.serviceClient().refreshWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage refresh(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner = this.serviceClient().refresh(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Storage getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
+        String cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
         if (cloudAccountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
         }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
+        String storageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
         if (storageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
@@ -85,17 +144,23 @@ public final class StoragesImpl implements Storages {
     }
 
     public Response<Storage> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
+        String cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
         if (cloudAccountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
         }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
+        String storageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
         if (storageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
@@ -104,17 +169,23 @@ public final class StoragesImpl implements Storages {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
+        String cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
         if (cloudAccountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
         }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
+        String storageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
         if (storageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
@@ -123,17 +194,23 @@ public final class StoragesImpl implements Storages {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
+        String cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
         if (cloudAccountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
         }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
+        String storageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
         if (storageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));

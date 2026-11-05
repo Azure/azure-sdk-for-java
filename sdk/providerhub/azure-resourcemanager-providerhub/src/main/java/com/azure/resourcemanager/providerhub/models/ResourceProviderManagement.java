@@ -48,11 +48,6 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     private String incidentContactEmail;
 
     /*
-     * The service tree infos.
-     */
-    private List<ServiceTreeInfo> serviceTreeInfos;
-
-    /*
      * The resource access policy.
      */
     private ResourceAccessPolicy resourceAccessPolicy;
@@ -91,6 +86,11 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
      * The profit center program id for the subscription.
      */
     private String profitCenterProgramId;
+
+    /*
+     * List of feature management owners.
+     */
+    private List<String> featureManagementOwners;
 
     /**
      * Creates an instance of ResourceProviderManagement class.
@@ -215,26 +215,6 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
      */
     public ResourceProviderManagement withIncidentContactEmail(String incidentContactEmail) {
         this.incidentContactEmail = incidentContactEmail;
-        return this;
-    }
-
-    /**
-     * Get the serviceTreeInfos property: The service tree infos.
-     * 
-     * @return the serviceTreeInfos value.
-     */
-    public List<ServiceTreeInfo> serviceTreeInfos() {
-        return this.serviceTreeInfos;
-    }
-
-    /**
-     * Set the serviceTreeInfos property: The service tree infos.
-     * 
-     * @param serviceTreeInfos the serviceTreeInfos value to set.
-     * @return the ResourceProviderManagement object itself.
-     */
-    public ResourceProviderManagement withServiceTreeInfos(List<ServiceTreeInfo> serviceTreeInfos) {
-        this.serviceTreeInfos = serviceTreeInfos;
         return this;
     }
 
@@ -401,14 +381,31 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
+     * Get the featureManagementOwners property: List of feature management owners.
+     * 
+     * @return the featureManagementOwners value.
+     */
+    public List<String> featureManagementOwners() {
+        return this.featureManagementOwners;
+    }
+
+    /**
+     * Set the featureManagementOwners property: List of feature management owners.
+     * 
+     * @param featureManagementOwners the featureManagementOwners value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withFeatureManagementOwners(List<String> featureManagementOwners) {
+        this.featureManagementOwners = featureManagementOwners;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (serviceTreeInfos() != null) {
-            serviceTreeInfos().forEach(e -> e.validate());
-        }
         if (resourceAccessRoles() != null) {
             resourceAccessRoles().forEach(e -> e.validate());
         }
@@ -434,8 +431,6 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
         jsonWriter.writeStringField("incidentRoutingService", this.incidentRoutingService);
         jsonWriter.writeStringField("incidentRoutingTeam", this.incidentRoutingTeam);
         jsonWriter.writeStringField("incidentContactEmail", this.incidentContactEmail);
-        jsonWriter.writeArrayField("serviceTreeInfos", this.serviceTreeInfos,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourceAccessPolicy",
             this.resourceAccessPolicy == null ? null : this.resourceAccessPolicy.toString());
         jsonWriter.writeArrayField("resourceAccessRoles", this.resourceAccessRoles,
@@ -448,6 +443,8 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("pcCode", this.pcCode);
         jsonWriter.writeStringField("profitCenterProgramId", this.profitCenterProgramId);
+        jsonWriter.writeArrayField("featureManagementOwners", this.featureManagementOwners,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -481,10 +478,6 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                     deserializedResourceProviderManagement.incidentRoutingTeam = reader.getString();
                 } else if ("incidentContactEmail".equals(fieldName)) {
                     deserializedResourceProviderManagement.incidentContactEmail = reader.getString();
-                } else if ("serviceTreeInfos".equals(fieldName)) {
-                    List<ServiceTreeInfo> serviceTreeInfos
-                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
-                    deserializedResourceProviderManagement.serviceTreeInfos = serviceTreeInfos;
                 } else if ("resourceAccessPolicy".equals(fieldName)) {
                     deserializedResourceProviderManagement.resourceAccessPolicy
                         = ResourceAccessPolicy.fromString(reader.getString());
@@ -508,6 +501,9 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                     deserializedResourceProviderManagement.pcCode = reader.getString();
                 } else if ("profitCenterProgramId".equals(fieldName)) {
                     deserializedResourceProviderManagement.profitCenterProgramId = reader.getString();
+                } else if ("featureManagementOwners".equals(fieldName)) {
+                    List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.featureManagementOwners = featureManagementOwners;
                 } else {
                     reader.skipChildren();
                 }

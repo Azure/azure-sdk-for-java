@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,17 +13,27 @@ public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"displayName\":\"xfz\",\"description\":\"qttv\",\"endpoints\":{\"qekewvnqvcd\":\"qhjpenuygbqe\",\"punj\":\"guaucmfdjwnla\",\"sserxhtvsoxhlwn\":\"ikczvvitacgxmf\",\"uuuybnchrsziz\":\"sjgqrsxyp\"},\"isDefault\":true}")
+            "{\"provisioningState\":\"Accepted\",\"displayName\":\"g\",\"description\":\"bzog\",\"endpoints\":{\"czhcoeocnh\":\"dp\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"tjzcfyjzpt\",\"vectorStore\":\"lohap\",\"blobStore\":\"nfszpyglqdhmrjz\"}}")
             .toObject(ProjectProperties.class);
-        Assertions.assertEquals("xfz", model.displayName());
-        Assertions.assertEquals("qttv", model.description());
+        Assertions.assertEquals("g", model.displayName());
+        Assertions.assertEquals("bzog", model.description());
+        Assertions.assertEquals("tjzcfyjzpt", model.capabilitySettings().documentStore());
+        Assertions.assertEquals("lohap", model.capabilitySettings().vectorStore());
+        Assertions.assertEquals("nfszpyglqdhmrjz", model.capabilitySettings().blobStore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDisplayName("xfz").withDescription("qttv");
+        ProjectProperties model = new ProjectProperties().withDisplayName("g")
+            .withDescription("bzog")
+            .withCapabilitySettings(new CapabilitySettings().withDocumentStore("tjzcfyjzpt")
+                .withVectorStore("lohap")
+                .withBlobStore("nfszpyglqdhmrjz"));
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("xfz", model.displayName());
-        Assertions.assertEquals("qttv", model.description());
+        Assertions.assertEquals("g", model.displayName());
+        Assertions.assertEquals("bzog", model.description());
+        Assertions.assertEquals("tjzcfyjzpt", model.capabilitySettings().documentStore());
+        Assertions.assertEquals("lohap", model.capabilitySettings().vectorStore());
+        Assertions.assertEquals("nfszpyglqdhmrjz", model.capabilitySettings().blobStore());
     }
 }

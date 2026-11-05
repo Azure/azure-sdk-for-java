@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Statistics about image serving during a retrieval activity.
@@ -100,6 +101,7 @@ public final class ImageServingStatistics implements JsonSerializable<ImageServi
         jsonWriter.writeNumberField("imagesSentToModel", this.imagesSentToModel);
         jsonWriter.writeNumberField("totalImageSizeBytes", this.totalImageSizeBytes);
         jsonWriter.writeBooleanField("verbalizationUsed", this.verbalizationUsed);
+        jsonWriter.writeArrayField("servedImages", this.servedImages, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -126,11 +128,31 @@ public final class ImageServingStatistics implements JsonSerializable<ImageServi
                     deserializedImageServingStatistics.totalImageSizeBytes = reader.getNullable(JsonReader::getLong);
                 } else if ("verbalizationUsed".equals(fieldName)) {
                     deserializedImageServingStatistics.verbalizationUsed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("servedImages".equals(fieldName)) {
+                    List<ServedImage> servedImages = reader.readArray(reader1 -> ServedImage.fromJson(reader1));
+                    deserializedImageServingStatistics.servedImages = servedImages;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedImageServingStatistics;
         });
+    }
+
+    /*
+     * The set of images the model selected to be served to the downstream model for this retrieval activity.
+     */
+    @Generated
+    private List<ServedImage> servedImages;
+
+    /**
+     * Get the servedImages property: The set of images the model selected to be served to the downstream model for this
+     * retrieval activity.
+     *
+     * @return the servedImages value.
+     */
+    @Generated
+    public List<ServedImage> getServedImages() {
+        return this.servedImages;
     }
 }

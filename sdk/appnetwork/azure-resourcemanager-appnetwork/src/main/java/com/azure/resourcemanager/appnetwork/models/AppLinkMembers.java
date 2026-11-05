@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface AppLinkMembers {
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -22,13 +22,13 @@ public interface AppLinkMembers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember along with {@link Response}.
+     * @return a member of an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     Response<AppLinkMember> getWithResponse(String resourceGroupName, String appLinkName, String appLinkMemberName,
         Context context);
 
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -36,12 +36,12 @@ public interface AppLinkMembers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember.
+     * @return a member of an Azure Kubernetes Application Network resource.
      */
     AppLinkMember get(String resourceGroupName, String appLinkName, String appLinkMemberName);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -53,7 +53,7 @@ public interface AppLinkMembers {
     void delete(String resourceGroupName, String appLinkName, String appLinkMemberName);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -66,7 +66,7 @@ public interface AppLinkMembers {
     void delete(String resourceGroupName, String appLinkName, String appLinkMemberName, Context context);
 
     /**
-     * List AppLinkMember resources by AppLink.
+     * List the members of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -78,7 +78,7 @@ public interface AppLinkMembers {
     PagedIterable<AppLinkMember> listByAppLink(String resourceGroupName, String appLinkName);
 
     /**
-     * List AppLinkMember resources by AppLink.
+     * List the members of an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -91,30 +91,30 @@ public interface AppLinkMembers {
     PagedIterable<AppLinkMember> listByAppLink(String resourceGroupName, String appLinkName, Context context);
 
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember along with {@link Response}.
+     * @return a member of an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     AppLinkMember getById(String id);
 
     /**
-     * Get an AppLinkMember.
+     * Get a member of an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLinkMember along with {@link Response}.
+     * @return a member of an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     Response<AppLinkMember> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +124,7 @@ public interface AppLinkMembers {
     void deleteById(String id);
 
     /**
-     * Delete an AppLinkMember.
+     * Remove a member from an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

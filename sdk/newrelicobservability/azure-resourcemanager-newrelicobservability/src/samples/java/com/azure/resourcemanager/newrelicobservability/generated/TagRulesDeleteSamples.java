@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TagRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/TagRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class TagRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/TagRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/TagRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MaximumSet_Gen.

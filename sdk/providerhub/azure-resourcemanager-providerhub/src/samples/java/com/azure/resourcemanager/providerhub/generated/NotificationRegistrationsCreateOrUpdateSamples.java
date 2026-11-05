@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class NotificationRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: NotificationRegistrations_CreateOrUpdate.

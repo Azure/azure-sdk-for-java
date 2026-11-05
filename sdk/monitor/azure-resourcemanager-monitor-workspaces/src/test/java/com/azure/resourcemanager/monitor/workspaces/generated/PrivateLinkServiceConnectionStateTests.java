@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model
-            = BinaryData.fromString("{\"status\":\"Approved\",\"description\":\"c\",\"actionsRequired\":\"pg\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("c", model.description());
-        Assertions.assertEquals("pg", model.actionsRequired());
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Pending\",\"description\":\"npvswjdkirso\",\"actionsRequired\":\"qxhcrmn\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("npvswjdkirso", model.description());
+        Assertions.assertEquals("qxhcrmn", model.actionsRequired());
     }
 }

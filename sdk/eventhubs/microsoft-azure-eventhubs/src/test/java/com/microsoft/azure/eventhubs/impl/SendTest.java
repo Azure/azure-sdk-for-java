@@ -17,12 +17,11 @@ import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import junit.framework.AssertionFailedError;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -47,7 +46,7 @@ public class SendTest extends ApiTestBase {
     private PartitionSender sender = null;
     private final List<PartitionReceiver> receivers = new LinkedList<>();
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
@@ -74,7 +73,7 @@ public class SendTest extends ApiTestBase {
             TestContext.EXECUTOR_SERVICE, factory).get();
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupClient() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
@@ -163,7 +162,7 @@ public class SendTest extends ApiTestBase {
         validateSignal.get(partitionCount * 5, TimeUnit.SECONDS);
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws EventHubException {
         if (sender != null) {
             sender.closeSync();
@@ -202,7 +201,7 @@ public class SendTest extends ApiTestBase {
                 for (EventData event : events) {
                     if (!partitionKey.equals(event.getSystemProperties().getPartitionKey())) {
                         this.validateSignal.completeExceptionally(
-                                new AssertionFailedError(String.format(Locale.US, "received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
+                                new AssertionError(String.format(Locale.US, "received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
                     }
 
                     this.currentEventCount++;

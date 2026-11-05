@@ -12,12 +12,12 @@ public final class ProjectCapabilityHostResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectCapabilityHostResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"gmnsghpxy\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"wjjkh\",\"yomacluzvxnqm\",\"rpqpd\",\"wmkoisq\"],\"vectorStoreConnections\":[\"f\",\"xuifmcsypobkdqz\"],\"storageConnections\":[\"sylollgtr\",\"zzydmxzjijpvua\",\"rkihcirld\"],\"threadStorageConnections\":[\"rdcoxnbkkj\",\"nurnnq\",\"nqbpi\"],\"provisioningState\":\"Creating\"},\"id\":\"tgrdogypx\",\"name\":\"x\",\"type\":\"bfihw\"},{\"properties\":{\"aiServicesConnections\":[\"ctafsrbxrblm\",\"iowxi\"],\"vectorStoreConnections\":[\"nxw\"],\"storageConnections\":[\"nepzwakls\",\"sbq\"],\"threadStorageConnections\":[\"gwwrxaomzis\",\"lrrcz\",\"zkhhltnjadhqo\"],\"provisioningState\":\"Canceled\"},\"id\":\"oyueayfbpcmsp\",\"name\":\"byrrueqth\",\"type\":\"mg\"}]}")
+            "{\"nextLink\":\"tsqhzvbrzcdban\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"cxmxeatkdb\",\"wnrdjyibqbnaom\"],\"vectorStoreConnections\":[\"mk\",\"hmaxljalfi\"],\"storageConnections\":[\"mobcan\",\"de\"],\"threadStorageConnections\":[\"cwg\",\"xf\",\"vaknokzwjj\",\"r\"],\"provisioningState\":\"Creating\"},\"id\":\"l\",\"name\":\"zyyfy\",\"type\":\"pqsixymmp\"},{\"properties\":{\"aiServicesConnections\":[\"vyqlkjuvsmbmslzo\",\"ovwzdbpqvybefg\",\"mx\",\"okcvtlubses\"],\"vectorStoreConnections\":[\"uartrhunlpiryky\"],\"storageConnections\":[\"zf\",\"ivjreuyk\",\"bmnwa\"],\"threadStorageConnections\":[\"bxoeeonql\",\"fwmyymv\"],\"provisioningState\":\"Deleting\"},\"id\":\"bhfckdvezcrcssb\",\"name\":\"hddubbnqfbl\",\"type\":\"kalehp\"},{\"properties\":{\"aiServicesConnections\":[\"wugiqjti\",\"gqgdminictteajoh\",\"ygspnbonhpczykm\"],\"vectorStoreConnections\":[\"vw\"],\"storageConnections\":[\"sehch\",\"hufmpq\",\"mqyjgy\"],\"threadStorageConnections\":[\"lod\",\"aeuzanh\",\"fnhsenwphp\",\"fngq\"],\"provisioningState\":\"Canceled\"},\"id\":\"dftujwjjufwbeqr\",\"name\":\"uorhtssruqnmdvh\",\"type\":\"zcvjytiqswbqerz\"}]}")
             .toObject(ProjectCapabilityHostResourceArmPaginatedResult.class);
-        Assertions.assertEquals("gmnsghpxy", model.nextLink());
-        Assertions.assertEquals("wjjkh", model.value().get(0).properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("f", model.value().get(0).properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("sylollgtr", model.value().get(0).properties().storageConnections().get(0));
-        Assertions.assertEquals("rdcoxnbkkj", model.value().get(0).properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("tsqhzvbrzcdban", model.nextLink());
+        Assertions.assertEquals("cxmxeatkdb", model.value().get(0).properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("mk", model.value().get(0).properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("mobcan", model.value().get(0).properties().storageConnections().get(0));
+        Assertions.assertEquals("cwg", model.value().get(0).properties().threadStorageConnections().get(0));
     }
 }

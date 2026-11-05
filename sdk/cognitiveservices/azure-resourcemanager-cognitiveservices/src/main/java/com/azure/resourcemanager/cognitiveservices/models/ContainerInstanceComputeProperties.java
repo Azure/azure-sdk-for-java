@@ -159,8 +159,18 @@ public final class ContainerInstanceComputeProperties extends ComputeProperties 
      * {@inheritDoc}
      */
     @Override
+    public ContainerInstanceComputeProperties withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
         jsonWriter.writeStringField("targetClusterId", this.targetClusterId);
         jsonWriter.writeStringField("imageLink", this.imageLink);
         jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
@@ -186,7 +196,9 @@ public final class ContainerInstanceComputeProperties extends ComputeProperties 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("provisioningState".equals(fieldName)) {
+                if ("location".equals(fieldName)) {
+                    deserializedContainerInstanceComputeProperties.withLocation(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
                     deserializedContainerInstanceComputeProperties
                         .withProvisioningState(ComputeProvisioningState.fromString(reader.getString()));
                 } else if ("errors".equals(fieldName)) {

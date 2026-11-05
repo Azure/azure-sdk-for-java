@@ -13,6 +13,7 @@ import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
 import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
+import com.azure.resourcemanager.sql.models.Sku;
 import java.io.IOException;
 
 /**
@@ -73,6 +74,11 @@ public final class ElasticPoolUpdateProperties implements JsonSerializable<Elast
      * Specifies the availability zone the pool's primary replica is pinned to.
      */
     private AvailabilityZoneType availabilityZone;
+
+    /*
+     * The name and tier of the current SKU.
+     */
+    private Sku currentSku;
 
     /**
      * Creates an instance of ElasticPoolUpdateProperties class.
@@ -291,6 +297,15 @@ public final class ElasticPoolUpdateProperties implements JsonSerializable<Elast
     }
 
     /**
+     * Get the currentSku property: The name and tier of the current SKU.
+     * 
+     * @return the currentSku value.
+     */
+    public Sku currentSku() {
+        return this.currentSku;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -298,6 +313,9 @@ public final class ElasticPoolUpdateProperties implements JsonSerializable<Elast
     public void validate() {
         if (perDatabaseSettings() != null) {
             perDatabaseSettings().validate();
+        }
+        if (currentSku() != null) {
+            currentSku().validate();
         }
     }
 
@@ -362,6 +380,8 @@ public final class ElasticPoolUpdateProperties implements JsonSerializable<Elast
                 } else if ("availabilityZone".equals(fieldName)) {
                     deserializedElasticPoolUpdateProperties.availabilityZone
                         = AvailabilityZoneType.fromString(reader.getString());
+                } else if ("currentSku".equals(fieldName)) {
+                    deserializedElasticPoolUpdateProperties.currentSku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

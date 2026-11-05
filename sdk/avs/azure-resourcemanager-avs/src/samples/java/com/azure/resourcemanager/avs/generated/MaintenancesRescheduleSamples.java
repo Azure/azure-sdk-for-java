@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class MaintenancesRescheduleSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Maintenances_Reschedule.json
+     * x-ms-original-file: 2026-03-01/Maintenances_Reschedule.json
      */
     /**
      * Sample code: Maintenances_Reschedule.

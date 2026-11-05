@@ -15,6 +15,9 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -36,6 +39,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
     private final BulkOperationStatusTracker bulkOperationStatusTracker;
+    private final AtomicReference<Map<String, Object>> serializedItem;
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
     private CosmosItemSerializer effectiveItemSerializerForResult;
@@ -57,6 +61,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         this.context = context;
         this.requestOptions = requestOptions;
         this.bulkOperationStatusTracker = new BulkOperationStatusTracker();
+        this.serializedItem = new AtomicReference<>(null);
     }
 
     @Override
@@ -110,11 +115,20 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                     internalDefaultSerializer(),
                     false);
             } else {
-                jsonSerializable.set(
-                    BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    this.getItemInternal(),
-                    this.getEffectiveItemSerializerForResult(),
-                    true);
+                Map<String, Object> cachedSerializedItem = this.getCachedSerializedItem();
+                if (cachedSerializedItem != null) {
+                    jsonSerializable.set(
+                        BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                        cachedSerializedItem,
+                        internalDefaultSerializer(),
+                        true);
+                } else {
+                    jsonSerializable.set(
+                        BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                        this.getItemInternal(),
+                        this.getEffectiveItemSerializerForResult(),
+                        true);
+                }
             }
         }
 
@@ -155,6 +169,21 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
 
     TInternal getItemInternal() {
         return this.item;
+    }
+
+    Map<String, Object> getCachedSerializedItem() {
+        return this.serializedItem.get();
+    }
+
+    synchronized Map<String, Object> serializeAndCacheItem(CosmosItemSerializer effectiveItemSerializer) {
+        if (this.serializedItem.get() == null) {
+            Map<String, Object> serialized = ImplementationBridgeHelpers.CosmosItemSerializerHelper
+                .getCosmosItemSerializerAccessor()
+                .serializeSafe(effectiveItemSerializer, this.item);
+            this.serializedItem.compareAndSet(null, checkNotNull(serialized, "expected non-null serialized item"));
+        }
+
+        return this.serializedItem.get();
     }
 
     @SuppressWarnings("unchecked")

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class StorageAccountsRestoreBlobRangesSamples {
     /*
-     * x-ms-original-file: 2026-04-01/BlobRangesRestore.json
+     * x-ms-original-file: 2026-09-01/BlobRangesRestore.json
      */
     /**
      * Sample code: BlobRangesRestore.

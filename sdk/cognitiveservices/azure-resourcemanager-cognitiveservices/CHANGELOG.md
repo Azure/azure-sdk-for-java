@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.4 (Unreleased)
+## 1.5.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,459 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.5 (2026-10-10)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-09-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Workbench$Definition` was modified
+
+* `withRegion(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `withRegion(com.azure.core.management.Region)` was removed
+
+#### `models.Workbench$Update` was modified
+
+* `withTags(java.util.Map)` was removed
+* `withProperties(models.WorkbenchProperties)` was removed
+
+#### `models.Compute$Update` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.WorkbenchProperties` was modified
+
+* `models.ComputeProvisioningState provisioningState()` -> `models.WorkbenchProvisioningState provisioningState()`
+
+#### `models.Compute$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.RaiPolicies` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Compute` was modified
+
+* `tags()` was removed
+
+#### `models.Workbench` was modified
+
+* `regionName()` was removed
+* `tags()` was removed
+* `location()` was removed
+* `region()` was removed
+
+### Features Added
+
+* `models.CostControlPatchProperties` was added
+
+* `models.CostControlPeriod` was added
+
+* `models.RaiAcsInterventionPoint` was added
+
+* `models.CostControlsCreateOrUpdateHeaders` was added
+
+* `models.RaiBinding$UpdateStages` was added
+
+* `models.RaiAcsPolicyTarget` was added
+
+* `models.RaiBindings` was added
+
+* `models.CostControlDimension` was added
+
+* `models.CostControlPatch` was added
+
+* `models.CostControlsGetHeaders` was added
+
+* `models.CostControlThresholdType` was added
+
+* `models.RaiPoliciesCreateOrUpdateResponse` was added
+
+* `models.WorkbenchProvisioningState` was added
+
+* `models.RaiRegos` was added
+
+* `models.RaiAcsManifest` was added
+
+* `models.RaiRegosGetHeaders` was added
+
+* `models.RaiAcsEmptyObject` was added
+
+* `models.RaiAcsPolicyDefinitionType` was added
+
+* `models.CostControlUnit` was added
+
+* `models.RaiBindingsCreateOrUpdateHeaders` was added
+
+* `models.AdapterDeployment$Update` was added
+
+* `models.AdapterDeployment$DefinitionStages` was added
+
+* `models.CostControlConnections` was added
+
+* `models.RaiBinding` was added
+
+* `models.RaiBindingProperties` was added
+
+* `models.RaiAcsInterventionPoints` was added
+
+* `models.RaiRegosCreateOrUpdateResponse` was added
+
+* `models.CostControl$Update` was added
+
+* `models.AdapterDeploymentsGetHeaders` was added
+
+* `models.RaiRegoReference` was added
+
+* `models.AdapterDeployment` was added
+
+* `models.WorkbenchUpdateProperties` was added
+
+* `models.RaiBindingsGetResponse` was added
+
+* `models.RaiRego$UpdateStages` was added
+
+* `models.CostControlRule` was added
+
+* `models.RaiAcsToolInterventionPoint` was added
+
+* `models.RaiAcsToolDefinition` was added
+
+* `models.CostControlThresholdAction` was added
+
+* `models.CostControl$Definition` was added
+
+* `models.AdapterDeploymentLastOperation` was added
+
+* `models.AdapterDeployment$UpdateStages` was added
+
+* `models.RaiPolicyFormat` was added
+
+* `models.CostControl$UpdateStages` was added
+
+* `models.RaiBindingsGetHeaders` was added
+
+* `models.RaiRegosGetResponse` was added
+
+* `models.RaiAcsModerationSubjectFormat` was added
+
+* `models.CostControlMatch` was added
+
+* `models.RaiAcsPolicyTargetKind` was added
+
+* `models.AdapterDeploymentOperationType` was added
+
+* `models.RaiBinding$Definition` was added
+
+* `models.RaiBinding$Update` was added
+
+* `models.AdapterDeploymentOperationState` was added
+
+* `models.RaiRegoEncoding` was added
+
+* `models.RaiBindingsCreateOrUpdateResponse` was added
+
+* `models.RaiAcsToolNameSelector` was added
+
+* `models.RaiPoliciesGetHeaders` was added
+
+* `models.CostControlProperties` was added
+
+* `models.RaiRego` was added
+
+* `models.WorkbenchUpdate` was added
+
+* `models.RaiRego$Definition` was added
+
+* `models.RaiAcsPolicyBinding` was added
+
+* `models.RaiAcsHarmConfiguration` was added
+
+* `models.AdapterDeployment$Definition` was added
+
+* `models.AdapterDeploymentProperties` was added
+
+* `models.AdapterDeploymentsGetResponse` was added
+
+* `models.CostControls` was added
+
+* `models.WorkbenchStatus` was added
+
+* `models.RaiPolicyCustomExternalSafetyProviderReference` was added
+
+* `models.CostControlDimensionType` was added
+
+* `models.CostControlsUpdateResponse` was added
+
+* `models.RaiPoliciesGetResponse` was added
+
+* `models.RaiBinding$DefinitionStages` was added
+
+* `models.CostControl$DefinitionStages` was added
+
+* `models.RaiRegoProperties` was added
+
+* `models.RaiAcsModerationBindingExtension` was added
+
+* `models.GatedModelAccessProperties` was added
+
+* `models.CostControlThreshold` was added
+
+* `models.RaiAcsRegoPolicyDefinition` was added
+
+* `models.RaiRego$DefinitionStages` was added
+
+* `models.RaiPoliciesCreateOrUpdateHeaders` was added
+
+* `models.CostControlsGetResponse` was added
+
+* `models.RaiRego$Update` was added
+
+* `models.RaiRegosCreateOrUpdateHeaders` was added
+
+* `models.CostControl` was added
+
+* `models.RaiAcsHarmCategory` was added
+
+* `models.CostControlsCreateOrUpdateResponse` was added
+
+* `models.AdapterDeployments` was added
+
+* `models.CostControlsUpdateHeaders` was added
+
+#### `models.RaiPolicy$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `costControls()` was added
+* `raiBindings()` was added
+* `adapterDeployments()` was added
+* `raiRegos()` was added
+
+#### `models.Workbench$Update` was modified
+
+* `withProperties(models.WorkbenchUpdateProperties)` was added
+
+#### `models.WorkbenchProperties` was modified
+
+* `withInstanceType(java.lang.String)` was added
+* `instanceType()` was added
+* `gpuCount()` was added
+* `status()` was added
+* `withGpuCount(java.lang.Integer)` was added
+
+#### `models.AccountProperties` was modified
+
+* `costControlIds()` was added
+* `costControlConnections()` was added
+* `withCostControlConnections(models.CostControlConnections)` was added
+* `withCostControlIds(java.util.List)` was added
+
+#### `models.ConnectionCategory` was modified
+
+* `OPEN_API` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `withFormat(models.RaiPolicyFormat)` was added
+* `withCustomExternalSafetyProviders(java.util.List)` was added
+* `withAcs(models.RaiAcsManifest)` was added
+* `acs()` was added
+* `withAcsRegos(java.util.List)` was added
+* `format()` was added
+* `acsRegos()` was added
+* `customExternalSafetyProviders()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withCostControlIds(java.util.List)` was added
+* `costControlIds()` was added
+
+#### `models.RaiPolicies` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ManagedComputeDeploymentProperties` was modified
+
+* `gatedModelAccess()` was added
+* `withGatedModelAccess(models.GatedModelAccessProperties)` was added
+
+#### `models.RaiPolicy$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.Usage` was modified
+
+* `type()` was added
+* `id()` was added
+
+## 1.5.0-beta.4 (2026-08-27)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-07-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.VmPriority` was modified
+
+* `LOW_PRIORITY` was removed
+
+#### `models.AccountConnections` was modified
+
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Compute$Definition` was modified
+
+* `withRegion(com.azure.core.management.Region)` was removed
+* `withRegion(java.lang.String)` was removed
+
+#### `models.ProjectConnections` was modified
+
+* `getById(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Compute` was modified
+
+* `regionName()` was removed
+* `location()` was removed
+* `region()` was removed
+
+### Features Added
+
+* `models.ArcDeployment$UpdateStages` was added
+
+* `models.ArcDeploymentRuntime` was added
+
+* `models.ArcDeployment$Definition` was added
+
+* `models.ArcDeployment$DefinitionStages` was added
+
+* `models.ArcDeployment` was added
+
+* `models.ArcDeploymentUpdate` was added
+
+* `models.AgentHostingType` was added
+
+* `models.ArcDeploymentPatchKubernetesResources` was added
+
+* `models.ArcDeploymentVllmParameters` was added
+
+* `models.ArcDeploymentSkuName` was added
+
+* `models.ArcDeploymentProvisioningDetails` was added
+
+* `models.ArcDeploymentKubernetesResources` was added
+
+* `models.ArcDeploymentUpdateProperties` was added
+
+* `models.CapabilitySettings` was added
+
+* `models.ArcDeploymentCpuMemoryResourceRequirements` was added
+
+* `models.ArcDeployment$Update` was added
+
+* `models.ArcDeployments` was added
+
+* `models.ArcDeploymentComputeType` was added
+
+* `models.ArcDeploymentModel` was added
+
+* `models.AgentHostingConfiguration` was added
+
+* `models.ArcDeploymentProperties` was added
+
+* `models.ArcDeploymentPatchCpuMemoryResourceRequirements` was added
+
+* `models.ManagedClusterAgentHostingConfiguration` was added
+
+* `models.ArcDeploymentSku` was added
+
+* `models.ArcDeploymentResourceRequirements` was added
+
+#### `models.VmPriority` was modified
+
+* `SPOT` was added
+
+#### `models.AccountConnections` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `arcDeployments()` was added
+
+#### `models.ComputeProperties` was modified
+
+* `location()` was added
+* `withLocation(java.lang.String)` was added
+
+#### `models.ProjectProperties` was modified
+
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `capabilitySettings()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withContextCacheContainerId(java.lang.String)` was added
+* `contextCacheContainerId()` was added
+
+#### `models.ProvisioningState` was modified
+
+* `EXTENSION_UNREACHABLE` was added
+
+#### `models.ProjectConnections` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `create(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
+
+#### `models.ContainerInstanceComputeProperties` was modified
+
+* `withLocation(java.lang.String)` was added
+
+#### `models.AccountProperties` was modified
+
+* `withA365LoggingEnabled(java.lang.Boolean)` was added
+* `a365LoggingEnabled()` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
+* `agentHostingConfigurations()` was added
+* `capabilitySettings()` was added
+
+#### `models.ClusterComputeProperties` was modified
+
+* `withLocation(java.lang.String)` was added
 
 ## 1.5.0-beta.3 (2026-06-26)
 

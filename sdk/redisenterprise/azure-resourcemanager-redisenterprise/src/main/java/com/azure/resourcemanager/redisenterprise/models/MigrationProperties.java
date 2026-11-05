@@ -48,6 +48,14 @@ public class MigrationProperties implements JsonSerializable<MigrationProperties
      */
     private OffsetDateTime lastModifiedTime;
 
+    /*
+     * The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+     * This property is only returned while the migration is in the Succeeded state, and is calculated from the time the
+     * migration succeeded plus the rollback window. After this time the source cache is released and the migration can
+     * no longer be undone.
+     */
+    private OffsetDateTime rollbackEligibleUntil;
+
     /**
      * Creates an instance of MigrationProperties class.
      */
@@ -164,6 +172,32 @@ public class MigrationProperties implements JsonSerializable<MigrationProperties
     }
 
     /**
+     * Get the rollbackEligibleUntil property: The timestamp until which a successful migration remains eligible to be
+     * undone (rolled back) to the source cache. This property is only returned while the migration is in the Succeeded
+     * state, and is calculated from the time the migration succeeded plus the rollback window. After this time the
+     * source cache is released and the migration can no longer be undone.
+     * 
+     * @return the rollbackEligibleUntil value.
+     */
+    public OffsetDateTime rollbackEligibleUntil() {
+        return this.rollbackEligibleUntil;
+    }
+
+    /**
+     * Set the rollbackEligibleUntil property: The timestamp until which a successful migration remains eligible to be
+     * undone (rolled back) to the source cache. This property is only returned while the migration is in the Succeeded
+     * state, and is calculated from the time the migration succeeded plus the rollback window. After this time the
+     * source cache is released and the migration can no longer be undone.
+     * 
+     * @param rollbackEligibleUntil the rollbackEligibleUntil value to set.
+     * @return the MigrationProperties object itself.
+     */
+    MigrationProperties withRollbackEligibleUntil(OffsetDateTime rollbackEligibleUntil) {
+        this.rollbackEligibleUntil = rollbackEligibleUntil;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -227,6 +261,9 @@ public class MigrationProperties implements JsonSerializable<MigrationProperties
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastModifiedTime".equals(fieldName)) {
                     deserializedMigrationProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rollbackEligibleUntil".equals(fieldName)) {
+                    deserializedMigrationProperties.rollbackEligibleUntil = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();

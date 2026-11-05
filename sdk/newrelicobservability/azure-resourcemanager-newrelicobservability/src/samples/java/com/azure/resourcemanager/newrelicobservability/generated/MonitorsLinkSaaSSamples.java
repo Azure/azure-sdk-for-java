@@ -11,7 +11,7 @@ import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
  */
 public final class MonitorsLinkSaaSSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_LinkSaaS.json
+     * x-ms-original-file: 2026-06-01/Monitors_LinkSaaS.json
      */
     /**
      * Sample code: Monitors_LinkSaaS.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class SecurityPoliciesInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/SecurityPolicyGet.json
+     * x-ms-original-file: 2026-03-01/SecurityPolicyGet.json
      */
     /**
      * Sample code: Get SecurityPolicy.

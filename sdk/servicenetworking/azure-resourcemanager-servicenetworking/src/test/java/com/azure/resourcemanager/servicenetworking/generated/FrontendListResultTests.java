@@ -6,20 +6,23 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.implementation.models.FrontendListResult;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
 
 public final class FrontendListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"fqdn\":\"dfdosygexp\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"akhmsbzjhcrz\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"dphlxaolt\"}},\"provisioningState\":\"Deleting\"},\"location\":\"gqjbpfzfsin\",\"tags\":{\"jrwzox\":\"f\"},\"id\":\"j\",\"name\":\"felluwfzitonpe\",\"type\":\"fpjkjlxofp\"},{\"properties\":{\"fqdn\":\"pfxxy\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"i\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ayhuy\"}},\"provisioningState\":\"Deleting\"},\"location\":\"odepoogin\",\"tags\":{\"gnarxzxtheo\":\"mihe\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\"},\"id\":\"xqeofjaeqjhqjba\",\"name\":\"v\",\"type\":\"smjqulngsntnbyb\"}],\"nextLink\":\"gc\"}")
+            "{\"value\":[{\"properties\":{\"fqdn\":\"v\",\"publicNetworkAccess\":\"Enabled\",\"association\":{\"id\":\"wzo\"},\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"tfell\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"fziton\"}},\"provisioningState\":\"Updating\"},\"location\":\"pjkjlxofpdv\",\"tags\":{\"uybbkpodep\":\"xxypininmay\",\"zxtheotusivyevcc\":\"oginuvamiheognar\",\"nhungbw\":\"qi\",\"gxg\":\"zrnf\"},\"id\":\"spemvtzfk\",\"name\":\"fublj\",\"type\":\"fxqeof\"}],\"nextLink\":\"e\"}")
             .toObject(FrontendListResult.class);
-        Assertions.assertEquals("gqjbpfzfsin", model.value().get(0).location());
-        Assertions.assertEquals("f", model.value().get(0).tags().get("jrwzox"));
-        Assertions.assertEquals("akhmsbzjhcrz",
+        Assertions.assertEquals("pjkjlxofpdv", model.value().get(0).location());
+        Assertions.assertEquals("xxypininmay", model.value().get(0).tags().get("uybbkpodep"));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).properties().publicNetworkAccess());
+        Assertions.assertEquals("wzo", model.value().get(0).properties().association().id());
+        Assertions.assertEquals("tfell",
             model.value().get(0).properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("dphlxaolt",
+        Assertions.assertEquals("fziton",
             model.value().get(0).properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
-        Assertions.assertEquals("gc", model.nextLink());
+        Assertions.assertEquals("e", model.nextLink());
     }
 }

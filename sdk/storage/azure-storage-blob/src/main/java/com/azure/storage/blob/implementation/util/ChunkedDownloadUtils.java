@@ -143,7 +143,10 @@ public class ChunkedDownloadUtils {
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
         // We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions().setIfModifiedSince(requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            // Preserve the original service-returned ETag value here. Normalizing via
+            // StorageImplUtils.toETagHeaderValue() would change the request wire format for retry/download locking and
+            // should be treated as a separate compatibility decision rather than part of this bug fix.
             .setIfMatch(etag)
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setLeaseId(requestConditions.getLeaseId());

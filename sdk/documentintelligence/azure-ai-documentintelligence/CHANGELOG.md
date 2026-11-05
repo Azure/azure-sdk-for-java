@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+## 1.0.11 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 
 ## 1.0.10 (2026-08-18)
 
@@ -199,8 +217,8 @@
 
 ### Features Added
 - Support `retry-header` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceClient` for retrying failed polling operations.
-- Added a property, `baseClassifierId` to `BuildDocumentClassfiierOptions` to specify the base classifier id to build upon.
-- Added a property, `baseClassifierId` to `DocumentClassifierDetails` to specify the base classfier if on top of which the classifier was trained.
+- Added a property, `baseClassifierId` to `BuildDocumentClassifierOptions` to specify the base classifier id to build upon.
+- Added a property, `baseClassifierId` to `DocumentClassifierDetails` to specify the base classifier if on top of which the classifier was trained.
 - Added a property, `warnings`, to `DocumentModelDetails` and `DocumentClassifierDetails`, to represent the list of warnings encountered when building the model.
 - Added a property, `valueSelectionGroup` to `DocumentField` model.
 

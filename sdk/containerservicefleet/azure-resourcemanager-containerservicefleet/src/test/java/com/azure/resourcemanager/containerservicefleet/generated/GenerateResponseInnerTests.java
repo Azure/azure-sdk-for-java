@@ -10,6 +10,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.models.GenerateRes
 public final class GenerateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateResponseInner model = BinaryData.fromString("{\"id\":\"jjxd\"}").toObject(GenerateResponseInner.class);
+        GenerateResponseInner model
+            = BinaryData.fromString("{\"id\":\"cealzxwh\"}").toObject(GenerateResponseInner.class);
     }
 }

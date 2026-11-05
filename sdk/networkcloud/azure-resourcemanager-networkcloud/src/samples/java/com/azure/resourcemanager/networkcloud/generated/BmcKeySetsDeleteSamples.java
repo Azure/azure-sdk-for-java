@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BmcKeySetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Delete.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Delete.json
      */
     /**
      * Sample code: Delete baseboard management controller key set of cluster.

@@ -187,7 +187,7 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-05-preview";
+        this.apiVersion = "2026-09-05-preview";
         this.operations = new OperationsClientImpl(this);
         this.skuMixPlacementScores = new SkuMixPlacementScoresClientImpl(this);
         this.spotPlacementScores = new SpotPlacementScoresClientImpl(this);

@@ -129,9 +129,9 @@ public final class Pool implements JsonSerializable<Pool> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("vmPriority", this.vmPriority == null ? null : this.vmPriority.toString());
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeIntField("nodeCount", this.nodeCount);
+        jsonWriter.writeStringField("vmPriority", this.vmPriority == null ? null : this.vmPriority.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -153,12 +153,12 @@ public final class Pool implements JsonSerializable<Pool> {
 
                 if ("name".equals(fieldName)) {
                     deserializedPool.name = reader.getString();
-                } else if ("vmPriority".equals(fieldName)) {
-                    deserializedPool.vmPriority = VmPriority.fromString(reader.getString());
                 } else if ("instanceType".equals(fieldName)) {
                     deserializedPool.instanceType = reader.getString();
                 } else if ("nodeCount".equals(fieldName)) {
                     deserializedPool.nodeCount = reader.getInt();
+                } else if ("vmPriority".equals(fieldName)) {
+                    deserializedPool.vmPriority = VmPriority.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

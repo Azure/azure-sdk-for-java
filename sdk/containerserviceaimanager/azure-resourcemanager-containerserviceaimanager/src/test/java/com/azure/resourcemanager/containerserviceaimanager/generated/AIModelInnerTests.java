@@ -11,7 +11,7 @@ public final class AIModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"modelId\":\"sovmyokacspkwl\",\"description\":\"dobpxjmflbvvn\",\"spec\":{\"license\":\"rkcciwwzjuqk\",\"isRestricted\":false,\"maxContextLength\":330822059}},\"id\":\"jiwkuofoskghsau\",\"name\":\"imjm\",\"type\":\"xieduugidyjrr\"}")
+            "{\"properties\":{\"modelId\":\"hcbonqvpkvlr\",\"description\":\"jease\",\"spec\":{\"license\":\"heoflokeyyienjbd\",\"isRestricted\":true,\"maxContextLength\":1289591857}},\"id\":\"rhpdjpjumas\",\"name\":\"azjpqyegualhbxxh\",\"type\":\"jj\"}")
             .toObject(AIModelInner.class);
     }
 }

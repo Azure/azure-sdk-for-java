@@ -32,7 +32,6 @@ import com.azure.core.util.Configuration;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
 import com.openai.models.responses.ResponseCreateParams;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -50,13 +49,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
-@Disabled("TODO: re-record once service no longer requires Foundry-Features opt-in keys for these operations.")
 public class HostedAgentContainerSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String REMOTE_FILE_PATH_1 = "/remote/data_file1.txt";
@@ -72,7 +71,6 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         return argumentsList.stream();
     }
 
-    @Disabled("Recordings need to be refreshed for the composite Foundry-Features preview header.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionsSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -104,7 +102,6 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         }
     }
 
-    @Disabled("Recordings need to be refreshed for the composite Foundry-Features preview header.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionFilesSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -139,7 +136,6 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         }
     }
 
-    @Disabled("Agent-scoped OpenAI Responses invocation returns 400: API version not supported.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void agentEndpointSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -168,7 +164,6 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         }
     }
 
-    @Disabled("Agent-scoped OpenAI Responses invocation returns 400: API version not supported.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionLogStreamSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
@@ -191,9 +186,8 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
                     .build());
             Assertions.assertNotNull(openAIResponse);
 
-            com.azure.core.http.rest.Response<BinaryData> rawStream
-                = agentsClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
-                    resources.getSession().getAgentSessionId(), new RequestOptions());
+            com.azure.core.http.rest.Response<BinaryData> rawStream = getRecordableSessionLogStream(agentsClient,
+                agentName, resources.getAgent().getVersion(), resources.getSession().getAgentSessionId());
             Assertions.assertNotNull(rawStream.getValue());
             printSseFrames(rawStream.getValue(), 5);
         } finally {
@@ -209,6 +203,39 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
         agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+    }
+
+    private com.azure.core.http.rest.Response<BinaryData> getRecordableSessionLogStream(AgentsClient agentsClient,
+        String agentName, String agentVersion, String sessionId) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            com.azure.core.http.rest.Response<BinaryData> response = agentsClient
+                .getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, new RequestOptions());
+            agentsClient.deleteSession(agentName, sessionId);
+            return response;
+        }
+
+        if (getTestMode() != TestMode.RECORD) {
+            return agentsClient.getSessionLogStreamWithResponse(agentName, agentVersion, sessionId,
+                new RequestOptions());
+        }
+
+        ScheduledExecutorService sessionDeleter = Executors.newSingleThreadScheduledExecutor();
+        java.util.concurrent.Future<?> deletion
+            = sessionDeleter.schedule(() -> agentsClient.deleteSession(agentName, sessionId),
+                STREAM_READ_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+        try {
+            com.azure.core.http.rest.Response<BinaryData> response = agentsClient
+                .getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, new RequestOptions());
+            deletion.get();
+            return response;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while closing the recorded session log stream.", e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Failed to close the recorded session log stream.", e.getCause());
+        } finally {
+            sessionDeleter.shutdownNow();
+        }
     }
 
     private static HostedAgentSessionResources createAgentAndSession(AgentsClient agentsClient, String agentName,

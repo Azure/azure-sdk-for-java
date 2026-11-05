@@ -90,7 +90,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.5 or h
 
     ![image](./media/attach-cluster-p.jpg)
 
-* In the `cosmosDBLiveMigrationList` csv, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate:
+* In the `cosmosDBLiveMigrationList` csv, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as appropriate:
 
     ![image](./media/metadata-p.jpg)
 

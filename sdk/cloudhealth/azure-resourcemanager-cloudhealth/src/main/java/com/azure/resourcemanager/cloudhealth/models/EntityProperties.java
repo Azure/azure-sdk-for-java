@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +57,14 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
      * Signal groups which are assigned to this entity
      */
     private SignalGroups signalGroups;
+
+    /*
+     * Logical aggregation groups over the signals on this entity. Overlap is allowed: the same signal may appear in
+     * more than one group's members. Each group is evaluated independently according to its strategy, and a shared
+     * signal can contribute to multiple group states and related per-group telemetry. Group states contribute alongside
+     * any ungrouped signals and the dependency-aggregated child health to the entity's overall worst-of composite.
+     */
+    private List<SignalAggregationGroup> signalAggregationGroups;
 
     /*
      * Discovered by which discovery rule. If set, the entity cannot be deleted manually.
@@ -228,6 +237,34 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
     }
 
     /**
+     * Get the signalAggregationGroups property: Logical aggregation groups over the signals on this entity. Overlap is
+     * allowed: the same signal may appear in more than one group's members. Each group is evaluated independently
+     * according to its strategy, and a shared signal can contribute to multiple group states and related per-group
+     * telemetry. Group states contribute alongside any ungrouped signals and the dependency-aggregated child health to
+     * the entity's overall worst-of composite.
+     * 
+     * @return the signalAggregationGroups value.
+     */
+    public List<SignalAggregationGroup> signalAggregationGroups() {
+        return this.signalAggregationGroups;
+    }
+
+    /**
+     * Set the signalAggregationGroups property: Logical aggregation groups over the signals on this entity. Overlap is
+     * allowed: the same signal may appear in more than one group's members. Each group is evaluated independently
+     * according to its strategy, and a shared signal can contribute to multiple group states and related per-group
+     * telemetry. Group states contribute alongside any ungrouped signals and the dependency-aggregated child health to
+     * the entity's overall worst-of composite.
+     * 
+     * @param signalAggregationGroups the signalAggregationGroups value to set.
+     * @return the EntityProperties object itself.
+     */
+    public EntityProperties withSignalAggregationGroups(List<SignalAggregationGroup> signalAggregationGroups) {
+        this.signalAggregationGroups = signalAggregationGroups;
+        return this;
+    }
+
+    /**
      * Get the discoveredBy property: Discovered by which discovery rule. If set, the entity cannot be deleted manually.
      * 
      * @return the discoveredBy value.
@@ -278,6 +315,8 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
         jsonWriter.writeStringField("impact", this.impact == null ? null : this.impact.toString());
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("signalGroups", this.signalGroups);
+        jsonWriter.writeArrayField("signalAggregationGroups", this.signalAggregationGroups,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("alerts", this.alerts);
         return jsonWriter.writeEndObject();
     }
@@ -315,6 +354,10 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
                     deserializedEntityProperties.tags = tags;
                 } else if ("signalGroups".equals(fieldName)) {
                     deserializedEntityProperties.signalGroups = SignalGroups.fromJson(reader);
+                } else if ("signalAggregationGroups".equals(fieldName)) {
+                    List<SignalAggregationGroup> signalAggregationGroups
+                        = reader.readArray(reader1 -> SignalAggregationGroup.fromJson(reader1));
+                    deserializedEntityProperties.signalAggregationGroups = signalAggregationGroups;
                 } else if ("discoveredBy".equals(fieldName)) {
                     deserializedEntityProperties.discoveredBy = reader.getString();
                 } else if ("healthState".equals(fieldName)) {

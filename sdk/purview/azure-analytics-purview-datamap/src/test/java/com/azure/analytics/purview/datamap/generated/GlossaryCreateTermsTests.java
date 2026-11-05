@@ -41,6 +41,6 @@ public final class GlossaryCreateTermsTests extends DataMapClientTestBase {
                             .setStatus(TermStatus.APPROVED)
                             .setResources(Arrays.asList(
                                 new ResourceLink().setDisplayName("Example Display Name").setUrl("Example Url")))),
-                    null);
+                    (Boolean) null);
     }
 }

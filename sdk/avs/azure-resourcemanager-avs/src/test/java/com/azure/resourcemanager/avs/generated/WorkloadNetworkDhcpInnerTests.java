@@ -13,18 +13,18 @@ public final class WorkloadNetworkDhcpInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpInner model = BinaryData.fromString(
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"ysuxmprafwgck\",\"segments\":[\"xvd\",\"ffwafq\",\"oudaspavehhrvk\",\"unzo\"],\"provisioningState\":\"Deleting\",\"revision\":5535477679816636437},\"id\":\"kmoyxcdyuibh\",\"name\":\"fdn\",\"type\":\"zydvfvf\"}")
+            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"kudzpxgwj\",\"segments\":[\"agst\"],\"provisioningState\":\"Canceled\",\"revision\":7553431900772779958},\"id\":\"yrkdbdgiogsjkmn\",\"name\":\"qjnobaiyhddviac\",\"type\":\"gfnmntfpmvmemfnc\"}")
             .toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("ysuxmprafwgck", model.properties().displayName());
-        Assertions.assertEquals(5535477679816636437L, model.properties().revision());
+        Assertions.assertEquals("kudzpxgwj", model.properties().displayName());
+        Assertions.assertEquals(7553431900772779958L, model.properties().revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDhcpInner model = new WorkloadNetworkDhcpInner().withProperties(
-            new WorkloadNetworkDhcpEntity().withDisplayName("ysuxmprafwgck").withRevision(5535477679816636437L));
+            new WorkloadNetworkDhcpEntity().withDisplayName("kudzpxgwj").withRevision(7553431900772779958L));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("ysuxmprafwgck", model.properties().displayName());
-        Assertions.assertEquals(5535477679816636437L, model.properties().revision());
+        Assertions.assertEquals("kudzpxgwj", model.properties().displayName());
+        Assertions.assertEquals(7553431900772779958L, model.properties().revision());
     }
 }

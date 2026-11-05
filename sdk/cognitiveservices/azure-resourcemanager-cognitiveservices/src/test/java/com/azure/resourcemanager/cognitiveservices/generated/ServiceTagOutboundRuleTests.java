@@ -17,33 +17,33 @@ public final class ServiceTagOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"zyqu\",\"protocol\":\"sqxutr\",\"portRanges\":\"rruyuu\",\"action\":\"Allow\",\"addressPrefixes\":[\"bjwcolbmx\",\"b\",\"w\"]},\"category\":\"UserDefined\",\"status\":\"Failed\",\"errorInformation\":\"pr\",\"parentRuleNames\":[\"xhmtfhocnxzc\",\"jhngxnoq\",\"xtdisnjevhd\",\"mydidwhepfw\"]}")
+            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"xottdiia\",\"protocol\":\"qibzji\",\"portRanges\":\"ee\",\"action\":\"Allow\",\"addressPrefixes\":[\"yv\"]},\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"qsratjhd\",\"parentRuleNames\":[\"b\",\"pijhfrzgdkk\",\"gv\"]}")
             .toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, model.category());
-        Assertions.assertEquals(RuleStatus.FAILED, model.status());
-        Assertions.assertEquals("zyqu", model.destination().serviceTag());
-        Assertions.assertEquals("sqxutr", model.destination().protocol());
-        Assertions.assertEquals("rruyuu", model.destination().portRanges());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.status());
+        Assertions.assertEquals("xottdiia", model.destination().serviceTag());
+        Assertions.assertEquals("qibzji", model.destination().protocol());
+        Assertions.assertEquals("ee", model.destination().portRanges());
         Assertions.assertEquals(RuleAction.ALLOW, model.destination().action());
-        Assertions.assertEquals("bjwcolbmx", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals("yv", model.destination().addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.USER_DEFINED)
-            .withStatus(RuleStatus.FAILED)
-            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("zyqu")
-                .withProtocol("sqxutr")
-                .withPortRanges("rruyuu")
+        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.DEPENDENCY)
+            .withStatus(RuleStatus.DELETING)
+            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("xottdiia")
+                .withProtocol("qibzji")
+                .withPortRanges("ee")
                 .withAction(RuleAction.ALLOW)
-                .withAddressPrefixes(Arrays.asList("bjwcolbmx", "b", "w")));
+                .withAddressPrefixes(Arrays.asList("yv")));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, model.category());
-        Assertions.assertEquals(RuleStatus.FAILED, model.status());
-        Assertions.assertEquals("zyqu", model.destination().serviceTag());
-        Assertions.assertEquals("sqxutr", model.destination().protocol());
-        Assertions.assertEquals("rruyuu", model.destination().portRanges());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.status());
+        Assertions.assertEquals("xottdiia", model.destination().serviceTag());
+        Assertions.assertEquals("qibzji", model.destination().protocol());
+        Assertions.assertEquals("ee", model.destination().portRanges());
         Assertions.assertEquals(RuleAction.ALLOW, model.destination().action());
-        Assertions.assertEquals("bjwcolbmx", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals("yv", model.destination().addressPrefixes().get(0));
     }
 }

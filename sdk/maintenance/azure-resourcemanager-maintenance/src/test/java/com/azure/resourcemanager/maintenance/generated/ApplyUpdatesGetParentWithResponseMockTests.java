@@ -22,7 +22,7 @@ public final class ApplyUpdatesGetParentWithResponseMockTests {
     @Test
     public void testGetParentWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"status\":\"RetryNow\",\"resourceId\":\"vq\",\"lastUpdateTime\":\"2021-01-29T19:24:17Z\"},\"id\":\"qdcvdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}";
+            = "{\"properties\":{\"status\":\"Completed\",\"resourceId\":\"pbtg\",\"lastUpdateTime\":\"2021-10-01T22:37:54Z\"},\"id\":\"oenwashr\",\"name\":\"dtkcnqxwbpokulp\",\"type\":\"ujw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ApplyUpdatesGetParentWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplyUpdate response = manager.applyUpdates()
-            .getParentWithResponse("kfvhqcrailvpn", "pfuflrw", "mh", "lxyjr", "sag", "fcnihgwq", "pnedgf",
+            .getParentWithResponse("dd", "kcbcue", "rjxgciqib", "hos", "sdqrhzoymibmrq", "ibahwflus", "dtmhrkwofyyvoqa",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(UpdateStatus.RETRY_NOW, response.status());
-        Assertions.assertEquals("vq", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T19:24:17Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.COMPLETED, response.status());
+        Assertions.assertEquals("pbtg", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T22:37:54Z"), response.lastUpdateTime());
     }
 }

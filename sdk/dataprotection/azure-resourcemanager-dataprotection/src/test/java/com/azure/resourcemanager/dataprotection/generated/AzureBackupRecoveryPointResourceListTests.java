@@ -12,8 +12,8 @@ public final class AzureBackupRecoveryPointResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRecoveryPointResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"tvsexsowuel\",\"name\":\"qhhahhxvrhmzkwpj\",\"type\":\"wws\"}],\"nextLink\":\"ghftqsxhqxujxuk\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"qp\",\"name\":\"y\",\"type\":\"s\"}],\"nextLink\":\"on\"}")
             .toObject(AzureBackupRecoveryPointResourceList.class);
-        Assertions.assertEquals("ghftqsxhqxujxuk", model.nextLink());
+        Assertions.assertEquals("on", model.nextLink());
     }
 }

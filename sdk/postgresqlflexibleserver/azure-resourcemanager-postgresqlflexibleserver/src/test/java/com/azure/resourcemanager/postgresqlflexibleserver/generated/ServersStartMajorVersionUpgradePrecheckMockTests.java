@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class ServersStartMajorVersionUpgradePrecheckMockTests {
     @Test
     public void testStartMajorVersionUpgradePrecheck() throws Exception {
-        String responseStr = "{\"name\":\"e\",\"createTime\":\"2021-06-01T19:02:43Z\",\"status\":\"Validating\"}";
+        String responseStr = "{\"name\":\"qwzdvpiwhxq\",\"createTime\":\"2021-10-11T03:55:37Z\",\"status\":\"Failed\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ServersStartMajorVersionUpgradePrecheckMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StartMajorVersionUpgradePrecheckResponse response = manager.servers()
-            .startMajorVersionUpgradePrecheck("wmxqhndvnoamlds", "haohdjhhflzokxc",
+            .startMajorVersionUpgradePrecheck("uunfprnjletlxsm", "pddouifamowaziyn",
                 new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_TWO),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("e", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-01T19:02:43Z"), response.createTime());
-        Assertions.assertEquals(MajorVersionUpgradePrecheckStatus.VALIDATING, response.status());
+        Assertions.assertEquals("qwzdvpiwhxq", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T03:55:37Z"), response.createTime());
+        Assertions.assertEquals(MajorVersionUpgradePrecheckStatus.FAILED, response.status());
     }
 }

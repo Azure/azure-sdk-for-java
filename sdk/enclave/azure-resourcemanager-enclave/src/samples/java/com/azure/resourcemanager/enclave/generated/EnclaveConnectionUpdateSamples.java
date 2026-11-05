@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Update.json
+     * x-ms-original-file: 2026-04-01/EnclaveConnection_Update.json
      */
     /**
      * Sample code: EnclaveConnection_Update.

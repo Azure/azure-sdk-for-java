@@ -13,15 +13,15 @@ public final class AutoUpgradeNodeImageSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoUpgradeNodeImageSelection model
-            = BinaryData.fromString("{\"type\":\"Latest\"}").toObject(AutoUpgradeNodeImageSelection.class);
-        Assertions.assertEquals(AutoUpgradeNodeImageSelectionType.LATEST, model.type());
+            = BinaryData.fromString("{\"type\":\"Consistent\"}").toObject(AutoUpgradeNodeImageSelection.class);
+        Assertions.assertEquals(AutoUpgradeNodeImageSelectionType.CONSISTENT, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoUpgradeNodeImageSelection model
-            = new AutoUpgradeNodeImageSelection().withType(AutoUpgradeNodeImageSelectionType.LATEST);
+            = new AutoUpgradeNodeImageSelection().withType(AutoUpgradeNodeImageSelectionType.CONSISTENT);
         model = BinaryData.fromObject(model).toObject(AutoUpgradeNodeImageSelection.class);
-        Assertions.assertEquals(AutoUpgradeNodeImageSelectionType.LATEST, model.type());
+        Assertions.assertEquals(AutoUpgradeNodeImageSelectionType.CONSISTENT, model.type());
     }
 }

@@ -292,7 +292,7 @@ public final class AzureEnclaveManagementClientImpl implements AzureEnclaveManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01-preview";
+        this.apiVersion = "2026-04-01";
         this.operations = new OperationsClientImpl(this);
         this.workloads = new WorkloadsClientImpl(this);
         this.virtualEnclaves = new VirtualEnclavesClientImpl(this);

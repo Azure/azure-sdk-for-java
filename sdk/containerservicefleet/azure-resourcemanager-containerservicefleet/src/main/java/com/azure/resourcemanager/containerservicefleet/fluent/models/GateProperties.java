@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateProvisioningSt
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateTarget;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartProperties;
 import java.io.IOException;
 
 /**
@@ -34,6 +35,11 @@ public final class GateProperties implements JsonSerializable<GateProperties> {
      * The type of the Gate determines how it is completed.
      */
     private GateType gateType;
+
+    /*
+     * Details for ScheduledStart gate
+     */
+    private ScheduledStartProperties scheduledStartProperties;
 
     /*
      * The target that the Gate is controlling, e.g. an Update Run.
@@ -79,6 +85,15 @@ public final class GateProperties implements JsonSerializable<GateProperties> {
     }
 
     /**
+     * Get the scheduledStartProperties property: Details for ScheduledStart gate.
+     * 
+     * @return the scheduledStartProperties value.
+     */
+    public ScheduledStartProperties scheduledStartProperties() {
+        return this.scheduledStartProperties;
+    }
+
+    /**
      * Get the target property: The target that the Gate is controlling, e.g. an Update Run.
      * 
      * @return the target value.
@@ -106,6 +121,7 @@ public final class GateProperties implements JsonSerializable<GateProperties> {
         jsonWriter.writeJsonField("target", this.target);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("scheduledStartProperties", this.scheduledStartProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -135,6 +151,8 @@ public final class GateProperties implements JsonSerializable<GateProperties> {
                     deserializedGateProperties.provisioningState = GateProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedGateProperties.displayName = reader.getString();
+                } else if ("scheduledStartProperties".equals(fieldName)) {
+                    deserializedGateProperties.scheduledStartProperties = ScheduledStartProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

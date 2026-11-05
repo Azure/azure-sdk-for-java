@@ -22,7 +22,7 @@ public final class EntitiesGetDataAnnotationsWithResponseMockTests {
     @Test
     public void testGetDataAnnotationsWithResponse() throws Exception {
         String responseStr
-            = "{\"entityName\":\"rxmunjdxvgln\",\"annotations\":[{\"annotationId\":\"lxpaglqivbgkcv\",\"createdAt\":\"2021-10-11T22:54:01Z\",\"annotationDetails\":{\"lvoniy\":\"vuqd\",\"hjknidibg\":\"fpubcpzgpxti\",\"ik\":\"jxgpnrhgovfg\"},\"description\":\"hh\"}],\"nextMarker\":\"wjrmzvuporqzd\"}";
+            = "{\"entityName\":\"holvdn\",\"annotations\":[{\"annotationId\":\"auo\",\"createdAt\":\"2021-02-09T23:33:17Z\",\"annotationDetails\":{\"kyefchnmnahmnxhk\":\"artvti\",\"ooxf\":\"jqirwrw\"},\"description\":\"fhxwrsne\"},{\"annotationId\":\"ozqvbubqmam\",\"createdAt\":\"2020-12-21T16:05:28Z\",\"annotationDetails\":{\"qhppubowsepdfgk\":\"xhxzgazttaboidvm\"},\"description\":\"dherngbtcj\"},{\"annotationId\":\"hokq\",\"createdAt\":\"2021-07-06T05:59:48Z\",\"annotationDetails\":{\"pnulaiywzej\":\"auxofshfph\",\"llndnpd\":\"whslwkoj\"},\"description\":\"pqafgfugsnnfhy\"}],\"nextMarker\":\"efy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class EntitiesGetDataAnnotationsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetDataAnnotationsResponse response = manager.entities()
-            .getDataAnnotationsWithResponse("vmtygj", "mzyospspshck", "kyjpmspbps",
-                new GetDataAnnotationsRequest().withStartAt(OffsetDateTime.parse("2021-03-22T17:32:57Z"))
-                    .withEndAt(OffsetDateTime.parse("2021-10-10T20:16:17Z"))
-                    .withTop(2112807448)
-                    .withNextMarker("tieyujtvczkcny"),
+            .getDataAnnotationsWithResponse("jfujq", "afcba", "hpzpo",
+                new GetDataAnnotationsRequest().withStartAt(OffsetDateTime.parse("2021-04-28T01:59:34Z"))
+                    .withEndAt(OffsetDateTime.parse("2021-08-26T01:20:28Z"))
+                    .withTop(179547673)
+                    .withNextMarker("ilkmk"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rxmunjdxvgln", response.entityName());
-        Assertions.assertEquals("vuqd", response.annotations().get(0).annotationDetails().get("lvoniy"));
-        Assertions.assertEquals("hh", response.annotations().get(0).description());
-        Assertions.assertEquals("wjrmzvuporqzd", response.nextMarker());
+        Assertions.assertEquals("holvdn", response.entityName());
+        Assertions.assertEquals("artvti", response.annotations().get(0).annotationDetails().get("kyefchnmnahmnxhk"));
+        Assertions.assertEquals("fhxwrsne", response.annotations().get(0).description());
+        Assertions.assertEquals("efy", response.nextMarker());
     }
 }

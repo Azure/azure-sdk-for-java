@@ -45,7 +45,8 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * is longer than the recurrence interval, then this is equivalent to an infinite startWindow, because the Job that
      * is 'due' in one recurrenceInterval is not carried forward into the next recurrence interval. The default is
      * infinite. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration startWindow;
@@ -61,7 +62,8 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * Jobs and terminate the Jobs ready for the next recurrence. The default is that the schedule does not recur: one
      * Job is created, within the startWindow after the doNotRunUntil time, and the schedule is complete as soon as that
      * Job finishes. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration recurrenceInterval;
@@ -133,7 +135,7 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * startWindow, because the Job that is 'due' in one recurrenceInterval is not carried forward into the next
      * recurrence interval. The default is infinite. The minimum value is 1 minute. If you specify a lower value, the
      * Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code
-     * is 400 (Bad Request).
+     * is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @return the startWindow value.
      */
@@ -150,7 +152,7 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * startWindow, because the Job that is 'due' in one recurrenceInterval is not carried forward into the next
      * recurrence interval. The default is infinite. The minimum value is 1 minute. If you specify a lower value, the
      * Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code
-     * is 400 (Bad Request).
+     * is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @param startWindow the startWindow value to set.
      * @return the BatchJobScheduleConfiguration object itself.
@@ -173,7 +175,7 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * default is that the schedule does not recur: one Job is created, within the startWindow after the doNotRunUntil
      * time, and the schedule is complete as soon as that Job finishes. The minimum value is 1 minute. If you specify a
      * lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the
-     * HTTP status code is 400 (Bad Request).
+     * HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @return the recurrenceInterval value.
      */
@@ -194,7 +196,7 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
      * default is that the schedule does not recur: one Job is created, within the startWindow after the doNotRunUntil
      * time, and the schedule is complete as soon as that Job finishes. The minimum value is 1 minute. If you specify a
      * lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the
-     * HTTP status code is 400 (Bad Request).
+     * HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @param recurrenceInterval the recurrenceInterval value to set.
      * @return the BatchJobScheduleConfiguration object itself.

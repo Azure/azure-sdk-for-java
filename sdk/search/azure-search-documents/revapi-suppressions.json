@@ -1,0 +1,20 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
+          },
+          "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
+        }
+      ]
+    }
+  }
+]

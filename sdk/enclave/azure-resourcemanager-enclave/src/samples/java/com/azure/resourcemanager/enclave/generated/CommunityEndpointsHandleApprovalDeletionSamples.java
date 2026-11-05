@@ -12,7 +12,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class CommunityEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-04-01/CommunityEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalDeletion.

@@ -12,11 +12,11 @@ public final class AvsConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsConnectionInner model = BinaryData.fromString(
-            "{\"serviceInitializationCompleted\":false,\"serviceInitializationHandleEnc\":\"oaxoruzfgsqu\",\"serviceInitializationHandle\":{\"sddcResourceId\":\"rxxle\",\"serviceAccountUsername\":\"ramxjezwlwnw\"}}")
+            "{\"serviceInitializationCompleted\":true,\"serviceInitializationHandleEnc\":\"mnjijpxacqqudf\",\"serviceInitializationHandle\":{\"sddcResourceId\":\"xbaaabjyv\",\"serviceAccountUsername\":\"ffimrzrtuzqogsex\"}}")
             .toObject(AvsConnectionInner.class);
-        Assertions.assertFalse(model.serviceInitializationCompleted());
-        Assertions.assertEquals("oaxoruzfgsqu", model.serviceInitializationHandleEnc());
-        Assertions.assertEquals("rxxle", model.serviceInitializationHandle().clusterResourceId());
-        Assertions.assertEquals("ramxjezwlwnw", model.serviceInitializationHandle().serviceAccountUsername());
+        Assertions.assertTrue(model.serviceInitializationCompleted());
+        Assertions.assertEquals("mnjijpxacqqudf", model.serviceInitializationHandleEnc());
+        Assertions.assertEquals("xbaaabjyv", model.serviceInitializationHandle().clusterResourceId());
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.serviceInitializationHandle().serviceAccountUsername());
     }
 }

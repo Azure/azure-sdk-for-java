@@ -433,7 +433,7 @@ public final class CosmosEncryptionAsyncContainer {
      * @param item the item to replace (containing the item id).
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param requestOptions the request comosItemRequestOptions.
+     * @param requestOptions the request cosmosItemRequestOptions.
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     @SuppressWarnings("unchecked")
