@@ -44,7 +44,7 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     private final TelephonyBindingStatus status;
 
     /*
-     * The service-generated webhook URL to configure with the telephony provider.
+     * The service-generated webhook URL to configure with the telephony provider. For SIP bindings, this is a SIP URI.
      */
     @Generated
     private final String incomingCallUrl;
@@ -119,7 +119,8 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     }
 
     /**
-     * Get the incomingCallUrl property: The service-generated webhook URL to configure with the telephony provider.
+     * Get the incomingCallUrl property: The service-generated webhook URL to configure with the telephony provider. For
+     * SIP bindings, this is a SIP URI.
      *
      * @return the incomingCallUrl value.
      */
@@ -175,6 +176,8 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
                     return TeamsPhoneExtensibilityTelephonyBindingListItem.fromJson(readerToUse.reset());
                 } else if ("twilio".equals(discriminatorValue)) {
                     return TwilioTelephonyBindingListItem.fromJson(readerToUse.reset());
+                } else if ("sip".equals(discriminatorValue)) {
+                    return SipTelephonyBindingListItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

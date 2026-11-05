@@ -10,10 +10,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ToolChoiceFunction;
-import com.openai.models.responses.ToolChoiceMcp;
-import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -327,9 +323,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      *
      * @return the maxOutputTokens value.
      */
-    BinaryData getMaxOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxOutputTokens() {
         // AI Tooling: union type
-        return this.maxOutputTokens;
+        return this.maxOutputTokens == null ? null : this.maxOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -338,9 +334,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentDefinition object itself.
      */
-    VoiceAgentDefinition setMaxOutputTokens(BinaryData maxOutputTokens) {
+    public VoiceAgentDefinition setMaxOutputTokens(VoiceAgentMaxOutputTokens maxOutputTokens) {
         // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens;
+        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
         return this;
     }
 
@@ -421,11 +417,10 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * `required` requires at least one tool call, and a specific function or MCP tool can be selected with an object.
      * Defaults to `auto`.
      *
-     * @return the toolChoice value.
+     * @return the tool choice, or {@code null} when absent or JSON null.
      */
-    BinaryData getToolChoice() {
-        // AI Tooling: union type
-        return this.toolChoice;
+    public VoiceAgentToolChoice getToolChoice() {
+        return this.toolChoice == null ? null : this.toolChoice.toObject(VoiceAgentToolChoice.class);
     }
 
     /**
@@ -434,12 +429,11 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * `required` requires at least one tool call, and a specific function or MCP tool can be selected with an object.
      * Defaults to `auto`.
      *
-     * @param toolChoice the toolChoice value to set.
+     * @param toolChoice the tool choice, or {@code null} to clear the property.
      * @return the VoiceAgentDefinition object itself.
      */
-    VoiceAgentDefinition setToolChoice(BinaryData toolChoice) {
-        // AI Tooling: union type
-        this.toolChoice = toolChoice;
+    public VoiceAgentDefinition setToolChoice(VoiceAgentToolChoice toolChoice) {
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice);
         return this;
     }
 
@@ -651,171 +645,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         });
     }
 
-    /**
-     * Set the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @param maxOutputTokens the maximum number of output tokens to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setMaxOutputTokens(long maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
-     */
-    public Long getMaxOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(Long.class);
-    }
-
-    /**
-     * Set the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @param maxOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setMaxOutputTokens(String maxOutputTokens) {
-        // AI Tooling: union type
-        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
-        return this;
-    }
-
-    /**
-     * Get the maxOutputTokens property: The maximum output-token count for one response.
-     *
-     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
-     */
-    public String getMaxOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(String.class);
-    }
-
-    /**
-     * Set the toolChoice property: How the model chooses tools for generated responses.
-     *
-     * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setToolChoice(ToolChoiceOptions toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Set the toolChoice property to a specific function tool: How the model chooses tools for generated responses.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setToolChoice(ToolChoiceFunction toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: How the model chooses tools for
-     * generated responses.
-     *
-     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isFunction()) {
-            return null;
-        }
-        return choice.asFunction();
-    }
-
-    /**
-     * Set the toolChoice property to a specific MCP tool: How the model chooses tools for generated responses.
-     *
-     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    public VoiceAgentDefinition setToolChoice(ToolChoiceMcp toolChoice) {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
-        return this;
-    }
-
-    /**
-     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: How the model chooses tools for generated
-     * responses.
-     *
-     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
-     */
-    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
-        if (choice == null || !choice.isMcp()) {
-            return null;
-        }
-        return choice.asMcp();
-    }
-
-    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!json.startsWith("{")) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ResponseCreateParams.ToolChoice.class);
-    }
-
-    /**
-     * Get the toolChoice property: How the model chooses tools for generated responses.
-     *
-     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ToolChoiceOptions.class);
-    }
-
     /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
+     * Optional subagent configuration. Set `subagent_type` to `delegate` for delegated background specialists or
+     * `inline` for inline voice subagents.
      */
     @Generated
     private VoiceAgentSubagentConfiguration subagentConfiguration;
@@ -873,8 +705,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Get the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @return the subagentConfiguration value.
      */
@@ -884,8 +716,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
+     * Set the subagentConfiguration property: Optional subagent configuration. Set `subagent_type` to `delegate` for
+     * delegated background specialists or `inline` for inline voice subagents.
      *
      * @param subagentConfiguration the subagentConfiguration value to set.
      * @return the VoiceAgentDefinition object itself.
