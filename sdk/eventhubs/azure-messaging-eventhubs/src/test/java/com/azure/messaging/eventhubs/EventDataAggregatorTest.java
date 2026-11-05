@@ -13,6 +13,8 @@ import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -31,14 +33,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongConsumer;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -348,6 +355,153 @@ public class EventDataAggregatorTest {
                 subscription.dispose();
             }
         }
+    }
+
+    /**
+     * Verifies that every terminal path stops the thread owned by this aggregator after a timer has run.
+     */
+    @ParameterizedTest
+    @EnumSource(Termination.class)
+    public void terminatesTimerThread(Termination termination) throws InterruptedException {
+        setupBatchMock(batch, new ArrayList<>(), event1);
+        setupBatchMock(batch2, new ArrayList<>());
+
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofMillis(100));
+
+        final CountDownLatch timerEntered = new CountDownLatch(1);
+        final AtomicReference<Thread> timerThread = new AtomicReference<>();
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            if (supplierCalls.getAndIncrement() == 0) {
+                return batch;
+            }
+            timerThread.set(Thread.currentThread());
+            timerEntered.countDown();
+            return batch2;
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        final AtomicReference<Throwable> error = new AtomicReference<>();
+        final AtomicInteger completions = new AtomicInteger();
+        final IllegalStateException expectedError = new IllegalStateException("upstream failure");
+        final Disposable subscription = aggregator.subscribe(published::add, error::set, completions::incrementAndGet);
+
+        try {
+            publisher.next(event1);
+            assertTrue(timerEntered.await(10, TimeUnit.SECONDS), "Timer did not create the replacement batch.");
+
+            switch (termination) {
+                case COMPLETE:
+                    publisher.complete();
+                    assertEquals(1, completions.get());
+                    assertNull(error.get());
+                    break;
+
+                case ERROR:
+                    publisher.error(expectedError);
+                    assertSame(expectedError, error.get());
+                    assertEquals(0, completions.get());
+                    break;
+
+                case CANCEL:
+                    subscription.dispose();
+                    publisher.assertCancelled();
+                    assertNull(error.get());
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unexpected termination: " + termination);
+            }
+
+            // isDisposed only confirms that shutdown was requested; join verifies that the actual thread exits.
+            timerThread.get().join(TimeUnit.SECONDS.toMillis(10));
+            assertFalse(timerThread.get().isAlive(), "Aggregator timer thread did not terminate.");
+            assertEquals(Collections.singletonList(batch), published);
+            assertEquals(2, supplierCalls.get());
+        } finally {
+            subscription.dispose();
+        }
+    }
+
+    /**
+     * Cancellation must not interrupt replacement-batch creation on an active timer tick. Once that work is
+     * released, cancellation and the owned timer thread must both finish without publishing the batch twice.
+     */
+    @Test
+    public void cancellationWaitsForTimerBatchCreation() throws Exception {
+        setupBatchMock(batch, new ArrayList<>(), event1);
+        setupBatchMock(batch2, new ArrayList<>());
+
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofMillis(100));
+
+        final CountDownLatch timerEntered = new CountDownLatch(1);
+        final CountDownLatch releaseTimer = new CountDownLatch(1);
+        final CountDownLatch cancelEntered = new CountDownLatch(1);
+        final AtomicReference<Thread> timerThread = new AtomicReference<>();
+        final AtomicBoolean interrupted = new AtomicBoolean();
+        final AtomicBoolean supplierWaitTimedOut = new AtomicBoolean();
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            if (supplierCalls.getAndIncrement() == 0) {
+                return batch;
+            }
+            timerThread.set(Thread.currentThread());
+            timerEntered.countDown();
+            try {
+                supplierWaitTimedOut.set(!releaseTimer.await(10, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                interrupted.set(true);
+                Thread.currentThread().interrupt();
+            }
+            if (Thread.currentThread().isInterrupted()) {
+                interrupted.set(true);
+            }
+            return batch2;
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator = new EventDataAggregator(
+            publisher.flux().doOnCancel(cancelEntered::countDown), supplier, NAMESPACE, options, PARTITION_ID);
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        final AtomicReference<Throwable> error = new AtomicReference<>();
+        final Disposable subscription = aggregator.subscribe(published::add, error::set);
+        final ExecutorService canceller = Executors.newSingleThreadExecutor();
+
+        try {
+            publisher.next(event1);
+            assertTrue(timerEntered.await(10, TimeUnit.SECONDS), "Timer did not enter replacement-batch creation.");
+
+            // The supplier holds the aggregator lock. Cancel on another thread so the test can release it.
+            final Future<?> cancellation = canceller.submit(subscription::dispose);
+            assertTrue(cancelEntered.await(10, TimeUnit.SECONDS), "Cancellation did not reach the upstream source.");
+            assertFalse(cancellation.isDone(), "Cancellation should wait for the active timer tick.");
+
+            releaseTimer.countDown();
+            cancellation.get(10, TimeUnit.SECONDS);
+            timerThread.get().join(TimeUnit.SECONDS.toMillis(10));
+
+            assertFalse(timerThread.get().isAlive(), "Aggregator timer thread did not terminate.");
+            assertFalse(interrupted.get(), "Cancellation interrupted replacement-batch creation.");
+            assertFalse(supplierWaitTimedOut.get(), "Replacement-batch creation timed out waiting for release.");
+            assertNull(error.get());
+            publisher.assertCancelled();
+            assertEquals(Collections.singletonList(batch), published);
+            assertEquals(2, supplierCalls.get());
+        } finally {
+            releaseTimer.countDown();
+            subscription.dispose();
+            canceller.shutdownNow();
+            assertTrue(canceller.awaitTermination(10, TimeUnit.SECONDS), "Cancellation executor did not terminate.");
+        }
+    }
+
+    private enum Termination {
+        COMPLETE, ERROR, CANCEL
     }
 
     /**
