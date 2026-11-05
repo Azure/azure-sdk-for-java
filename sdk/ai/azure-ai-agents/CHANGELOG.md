@@ -8,6 +8,10 @@
   destinations.
 - Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
 - Added preview SIP telephony bindings.
+- Added preview Live-agent Responses delegation settings using OpenAI Java's `ResponsesDelegationConfig`.
+- Reused OpenAI Java's Live audio settings, voice, and session usage models instead of generating duplicate types.
+- Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
+  voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
 
 ### Breaking Changes
 

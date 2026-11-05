@@ -52,6 +52,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     private List<String> keywords;
 
     /*
+     * 
      * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
@@ -178,7 +179,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Get the prompt property: An optional text to guide the model's style or continue a previous audio
+     * Get the prompt property:
+     * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
      * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
@@ -194,7 +196,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Set the prompt property: An optional text to guide the model's style or continue a previous audio
+     * Set the prompt property:
+     * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
      * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
