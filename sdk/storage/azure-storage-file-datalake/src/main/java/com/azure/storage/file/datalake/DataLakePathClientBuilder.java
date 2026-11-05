@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -106,6 +107,23 @@ public final class DataLakePathClientBuilder
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
         blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication of eligible GET blob requests made by the
+     * underlying Blob clients used by this Data Lake client. Applies when the builder constructs a pipeline with a
+     * {@link TokenCredential}; requests that are not eligible continue to use bearer token authentication.
+     * Sessions are disabled by default and are not used by the DFS pipeline.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache. See {@link SessionContext}
+     * for configuration, cache-sharing requirements, and the effect of changing settings after a client is built.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated DataLakePathClientBuilder object.
+     */
+    public DataLakePathClientBuilder sessionContext(SessionContext sessionContext) {
+        blobClientBuilder.sessionContext(sessionContext);
+        return this;
     }
 
     private DataLakeServiceVersion getServiceVersion() {

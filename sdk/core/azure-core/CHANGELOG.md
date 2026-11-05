@@ -1,10 +1,23 @@
 # Release History
 
-## 1.61.0-beta.1 (Unreleased)
+## 1.62.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
+- Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
+  configuration. An unset or cleared maximum preserves the selected transport's existing default.
+
 ### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
+  `InterruptedException`, which caused callers to silently lose the interruption signal.
+
+### Other Changes
+
+## 1.61.0 (2026-10-27)
 
 ### Bugs Fixed
 
@@ -20,6 +33,10 @@
 - Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
   refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
   the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
+- Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
+  complete.
+- Fixed virtual-thread carrier starvation during synchronous paging, which could deadlock token acquisition on Java 21
+  when authentication uses the shared executor.
 
 ### Other Changes
 

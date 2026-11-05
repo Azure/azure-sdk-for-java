@@ -23,7 +23,10 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
 - [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
+- [Troubleshoot GitHubActionsCredential authentication issues](#troubleshoot-githubactionscredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
+    - [Using a dedicated thread pool](#using-thread-pool)
+    - [Virtual-thread carrier starvation](#virtual-thread-carrier-starvation)
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
 
@@ -271,7 +274,9 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|-------------------------------------------------------------------------------------------------------------------------------|---|  
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."| The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Microsoft Entra ID. | <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The request to the authority host was invalid."| The configured properties for workload identity are invalid.                                                                  | Ensure the properties for workload identity are correctly configured on the credential builder and right permissions are assigned to the workload identity.
-|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li>AADSTS700211: No matching federated identity record found for presented assertion issuer ...</li><li>AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'.</li></ul> |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy|Call `WorkloadIdentityCredentialBuilder.enableAzureProxy()` while building the credential.
+|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li>AADSTS700211: No matching federated identity record found for presented assertion issuer ...</li><li>AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'.</li></ul> |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy, or its binding and permissions aren't configured.|Use `WorkloadIdentityCredential` directly and call `WorkloadIdentityCredentialBuilder.enableAzureProxy()`. Confirm that the webhook supplied `AZURE_KUBERNETES_TOKEN_PROXY` and the pod uses an authorized service account. `DefaultAzureCredential` and `ManagedIdentityCredential` don't support identity binding mode.|
+|Invalid AKS proxy configuration.|The proxy URL is missing or invalid, both CA sources are configured, or inline CA data is empty.|Use an absolute HTTPS proxy URL without credentials, a query, or a fragment. Set at most one of `AZURE_KUBERNETES_CA_FILE` and `AZURE_KUBERNETES_CA_DATA`; inline data must be PEM text, not Base64. Keep `AZURE_AUTHORITY_HOST` set to the Microsoft Entra authority.|
+|TLS failure when connecting to the AKS token proxy.|The proxy certificate isn't trusted or doesn't match `AZURE_KUBERNETES_SNI_NAME`.|Check the webhook's CA and TLS server-name settings. Ensure the CA file exists on first use. Missing or empty files during rotation retain an already loaded CA, but invalid nonempty bundles fail authentication. Never disable TLS verification.|
 
 ## Troubleshoot `IntelliJCredential` authentication issues
 
@@ -313,6 +318,28 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 |AADSTS700016: Application with identifier 'clientId' was not found in the directory 'Microsoft'. This can happen if the application has not been installed by the administrator of the tenant or consented to by any user in the tenant. You may have sent your authentication request to the wrong tenant.|The `<clientId>` provided is invalid|Verify the client ID argument is valid. If the service connection's federated identity was registered via a user-assigned managed identity, the client ID of the managed identity should be provided. If the service connection's federated identity is registered via an app registration, the Application (client) ID from your app registration should be provided.|
 
 
+## Troubleshoot `GitHubActionsCredential` authentication issues
+
+`GitHubActionsCredential` is a standalone credential for GitHub Actions OIDC federation. It is not part of
+`DefaultAzureCredential`. Missing configuration fails during `GitHubActionsCredentialBuilder.build()`, so
+constructing an unconfigured credential does not defer failure to a manually composed credential chain.
+
+| Error | Cause | Mitigation |
+| --- | --- | --- |
+| `CredentialUnavailableException` naming `AZURE_CLIENT_ID` or `AZURE_TENANT_ID` | The Azure application IDs are missing. | Set the environment variables or call `clientId` and `tenantId` on the builder. |
+| `CredentialUnavailableException` naming `ACTIONS_ID_TOKEN_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` | The process is outside an OIDC-enabled workflow step. | Grant the job `permissions: id-token: write` and run the SDK in that GitHub Actions step. Do not supply the runner token manually. |
+| Invalid runner request URL | The configured URL is not an absolute HTTPS URL, or contains user information or a fragment. | Use the URL supplied by the GitHub Actions runner. |
+| Unsupported authority host | There is no supported audience mapping for the authority. | Use one of the [documented cloud authorities](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticate-github-actions-workflows). Custom audiences and authorities are not supported. |
+| GitHub OIDC HTTP 401/403 | GitHub rejected the runner request. | Check the job's OIDC permissions and ensure the request variables belong to the current workflow step. |
+| `Received null token from OIDC request.` | The GitHub OIDC response body is missing or empty. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. |
+| `"value" field not detected in the response.` | The JSON response does not contain a nonempty string `value`. | Check that the request reaches the GitHub OIDC endpoint. Do not log the response body; it can contain an assertion. |
+| `Failed to parse OIDC response.` | The response contains malformed JSON or trailing content. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. Do not log the response body. |
+| Entra reports no matching federated identity record | The presented issuer, subject, or audience does not match the app's federation configuration. | Match the actual claims for the repository/ref, including immutable subject IDs when applicable, and the audience derived from the authority host. |
+
+See [GitHub's Azure OIDC setup guide](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure)
+for federation prerequisites. Never include the runner bearer token, OIDC assertion, access token, or raw token
+response in diagnostic logs.
+
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`
 
@@ -323,21 +350,13 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 ## Troubleshoot authentication timeout issues
 
 ### Using Thread pool
-The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
-arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
-a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
-common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
-strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
-this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
-allocation of threads from the common fork-join pool.
 
-To effectively address this deadlock situation, follow these steps:
+By default, Azure Identity runs MSAL authentication tasks on Azure Core's `SharedExecutorService`, not on the common
+fork-join pool. A bounded executor can run out of workers if application tasks occupy its threads while waiting for
+authentication work queued on the same executor.
 
-* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
-
-* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
-
-Here's a code sample below:
+To isolate authentication work, configure the credential with a dedicated executor. Keep this executor separate from
+application tasks that make blocking Azure SDK calls. The following example uses a cached platform-thread pool:
 
 ```java
 ExecutorService executorService = Executors.newCachedThreadPool();
@@ -350,13 +369,42 @@ try {
       .executorService(executorService)
       .build();
 
+    // Use the credential and finish all SDK requests before leaving this scope.
 } finally {
-   //Shutdown the thread pool once no longer needed.
+   // Shut down the executor only after all clients using the credential have stopped.
    executorService.shutdown();
 }
 ```
 
-You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
+The application owns this executor's lifecycle. Choose an executor with capacity and resource limits appropriate for
+your workload; a fixed number of threads is not sufficient for every concurrency pattern.
+
+### Virtual-thread carrier starvation
+
+On Java 21, blocking while holding a `synchronized` monitor can pin a virtual thread to its carrier thread. In affected
+Azure Core versions, synchronous paging holds such a monitor while retrieving a page, including while authentication
+waits for MSAL work on the shared virtual-thread executor. If all carriers are pinned, that work cannot run and
+authentication stops making progress. See [#46231](https://github.com/Azure/azure-sdk-for-java/issues/46231).
+
+For affected versions, temporarily disable virtual threads in the shared executor with either this environment variable:
+
+```text
+AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS=false
+```
+
+or this JVM option:
+
+```text
+-Dazure.sdk.shared.threadpool.usevirtualthreads=false
+```
+
+Set the option at process startup, before any Azure SDK code initializes `SharedExecutorService`. These settings are read
+once and affect all SDK libraries using that shared executor, not only Azure Identity. The names
+`AZURE_IDENTITY_USE_VIRTUAL_THREADS` and `azure.identity.use.virtual.threads` do not configure this executor.
+
+Alternatively, keep virtual threads enabled elsewhere and pass a dedicated platform-thread executor to the credential
+builder's `executorService(...)` method, as shown above. This is a workaround for affected versions, not a replacement for
+fixing the SDK-owned paging monitor.
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 

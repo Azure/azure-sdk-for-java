@@ -33,6 +33,12 @@ public final class CustomToolParameter extends Tool {
     private final String name;
 
     /*
+     * Whether the tool response can be returned asynchronously versus immediately returned on next response creation.
+     */
+    @Generated
+    private Boolean async;
+
+    /*
      * Optional description of the custom tool, used to provide more context.
      */
     @Generated
@@ -43,6 +49,18 @@ public final class CustomToolParameter extends Tool {
      */
     @Generated
     private CustomToolParamFormat format;
+
+    /*
+     * Whether this tool should be deferred and discovered via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
 
     /**
      * Creates an instance of CustomToolParameter class.
@@ -73,6 +91,30 @@ public final class CustomToolParameter extends Tool {
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Get the async property: Whether the tool response can be returned asynchronously versus immediately returned on
+     * next response creation.
+     *
+     * @return the async value.
+     */
+    @Generated
+    public Boolean isAsync() {
+        return this.async;
+    }
+
+    /**
+     * Set the async property: Whether the tool response can be returned asynchronously versus immediately returned on
+     * next response creation.
+     *
+     * @param async the async value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setAsync(Boolean async) {
+        this.async = async;
+        return this;
     }
 
     /**
@@ -116,6 +158,50 @@ public final class CustomToolParameter extends Tool {
     @Generated
     public CustomToolParameter setFormat(CustomToolParamFormat format) {
         this.format = format;
+        return this;
+    }
+
+    /**
+     * Get the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
         return this;
     }
 
@@ -187,91 +273,5 @@ public final class CustomToolParameter extends Tool {
             deserializedCustomToolParameter.allowedCallers = allowedCallers;
             return deserializedCustomToolParameter;
         });
-    }
-
-    /*
-     * Whether this tool should be deferred and discovered via tool search.
-     */
-    @Generated
-    private Boolean deferLoading;
-
-    /**
-     * Get the deferLoading property: Whether this tool should be deferred and discovered via tool search.
-     *
-     * @return the deferLoading value.
-     */
-    @Generated
-    public Boolean isDeferLoading() {
-        return this.deferLoading;
-    }
-
-    /**
-     * Set the deferLoading property: Whether this tool should be deferred and discovered via tool search.
-     *
-     * @param deferLoading the deferLoading value to set.
-     * @return the CustomToolParameter object itself.
-     */
-    @Generated
-    public CustomToolParameter setDeferLoading(Boolean deferLoading) {
-        this.deferLoading = deferLoading;
-        return this;
-    }
-
-    /*
-     * The allowed_callers property.
-     */
-    @Generated
-    private List<CallableToolAllowedCaller> allowedCallers;
-
-    /**
-     * Get the allowedCallers property: The allowed_callers property.
-     *
-     * @return the allowedCallers value.
-     */
-    @Generated
-    public List<CallableToolAllowedCaller> getAllowedCallers() {
-        return this.allowedCallers;
-    }
-
-    /**
-     * Set the allowedCallers property: The allowed_callers property.
-     *
-     * @param allowedCallers the allowedCallers value to set.
-     * @return the CustomToolParameter object itself.
-     */
-    @Generated
-    public CustomToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
-        this.allowedCallers = allowedCallers;
-        return this;
-    }
-
-    /*
-     * Whether the tool response can be returned asynchronously versus immediately returned on next response creation.
-     */
-    @Generated
-    private Boolean async;
-
-    /**
-     * Get the async property: Whether the tool response can be returned asynchronously versus immediately returned on
-     * next response creation.
-     *
-     * @return the async value.
-     */
-    @Generated
-    public Boolean isAsync() {
-        return this.async;
-    }
-
-    /**
-     * Set the async property: Whether the tool response can be returned asynchronously versus immediately returned on
-     * next response creation.
-     *
-     * @param async the async value to set.
-     * @return the CustomToolParameter object itself.
-     */
-    @Generated
-    public CustomToolParameter setAsync(Boolean async) {
-        this.async = async;
-        return this;
     }
 }
