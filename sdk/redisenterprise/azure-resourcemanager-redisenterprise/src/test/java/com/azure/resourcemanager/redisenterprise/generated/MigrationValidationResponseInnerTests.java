@@ -12,12 +12,12 @@ public final class MigrationValidationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationValidationResponseInner model = BinaryData.fromString(
-            "{\"isValid\":false,\"errors\":[{\"disparities\":[{\"category\":\"paierh\",\"message\":\"bcsglumma\"}]},{\"disparities\":[{\"category\":\"j\",\"message\":\"odxobnbdxkqpxok\"},{\"category\":\"jionpimexgstxgc\",\"message\":\"odgmaajrmvdjwz\"},{\"category\":\"lovmclwhijcoe\",\"message\":\"ctbzaq\"}]}],\"warnings\":[{\"disparities\":[{\"category\":\"cbkbfkg\",\"message\":\"kdkexxp\"}]},{\"disparities\":[{\"category\":\"fmxa\",\"message\":\"c\"}]}]}")
+            "{\"isValid\":true,\"errors\":[{\"disparities\":[{\"category\":\"whdsoifiyip\",\"message\":\"xsqwpgrjbznorc\"}]},{\"disparities\":[{\"category\":\"vsnb\",\"message\":\"xqabnmocpcysh\"}]}],\"warnings\":[{\"disparities\":[{\"category\":\"fblj\",\"message\":\"gpbtoqcjmklj\"},{\"category\":\"vbqid\",\"message\":\"qajzyulpkudjkr\"},{\"category\":\"khbzhfepgzg\",\"message\":\"e\"},{\"category\":\"zloc\",\"message\":\"scpai\"}]}]}")
             .toObject(MigrationValidationResponseInner.class);
-        Assertions.assertFalse(model.isValid());
-        Assertions.assertEquals("paierh", model.errors().get(0).disparities().get(0).category());
-        Assertions.assertEquals("bcsglumma", model.errors().get(0).disparities().get(0).message());
-        Assertions.assertEquals("cbkbfkg", model.warnings().get(0).disparities().get(0).category());
-        Assertions.assertEquals("kdkexxp", model.warnings().get(0).disparities().get(0).message());
+        Assertions.assertTrue(model.isValid());
+        Assertions.assertEquals("whdsoifiyip", model.errors().get(0).disparities().get(0).category());
+        Assertions.assertEquals("xsqwpgrjbznorc", model.errors().get(0).disparities().get(0).message());
+        Assertions.assertEquals("fblj", model.warnings().get(0).disparities().get(0).category());
+        Assertions.assertEquals("gpbtoqcjmklj", model.warnings().get(0).disparities().get(0).message());
     }
 }
