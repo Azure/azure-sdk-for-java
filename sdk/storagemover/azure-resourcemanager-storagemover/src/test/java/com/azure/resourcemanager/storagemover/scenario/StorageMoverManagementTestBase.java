@@ -16,7 +16,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -54,12 +53,14 @@ import java.util.Objects;
  */
 public abstract class StorageMoverManagementTestBase extends ResourceManagerTestProxyTestBase {
 
+    protected final StorageMoverTestEnvironment testEnvironment
+        = new StorageMoverTestEnvironment(isPlaybackMode(), Configuration.getGlobalConfiguration());
+
     /**
      * Default region. Overridable via {@code AZURE_TEST_LOCATION} (e.g. when a
      * subscription does not have {@code eastus} enabled).
      */
-    protected static final Region DEFAULT_REGION
-        = parseRegionOrDefault(Configuration.getGlobalConfiguration().get("AZURE_TEST_LOCATION"), Region.US_EAST);
+    protected final Region defaultRegion = testEnvironment.location;
 
     /**
      * Region where the cross-sub private-link / cpmoveraccount / AWS private
@@ -68,7 +69,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
      * westcentralus}. Private-link tests therefore self-provision their
      * resource group in that region so PE traffic stays in-region.
      */
-    protected static final Region WEST_CENTRAL_US = Region.US_WEST_CENTRAL;
+    protected final Region c2cRegion = testEnvironment.c2cLocation;
 
     /**
      * Returns a {@code startDate} suitable for schedule tests.
@@ -93,36 +94,34 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
      * private AWS S3 bucket, and the {@code cpmoveraccount} storage account
      * used by the C2C-with-private-source scenario.
      */
-    protected static final String XDATAMOVE_SYNTHETICS_SUB_ID = "b6b34ad8-ca89-4f85-beb7-c2ec13702dac";
+    protected final String syntheticsSubscriptionId = testEnvironment.syntheticsSubscriptionId;
 
     /**
      * Well-known resource ids used by the {@code AzureMultiCloudConnector}
      * endpoint scenarios. Mirrors the constants in
      * {@code StorageMoverManagementTestBase.cs} from .NET.
      */
-    protected static final String MULTI_CLOUD_CONNECTOR_ID
-        = "/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID + "/resourceGroups/E2E-Management-RGsyn"
+    protected final String multiCloudConnectorId
+        = "/subscriptions/" + syntheticsSubscriptionId + "/resourceGroups/E2E-Management-RGsyn"
             + "/providers/Microsoft.HybridConnectivity/publicCloudConnectors/e2e-sm-rp-connector";
 
-    protected static final String AWS_S3_BUCKET_ID = "/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID
+    protected final String awsS3BucketId = "/subscriptions/" + syntheticsSubscriptionId
         + "/resourceGroups/aws_640698235822/providers/Microsoft.AWSConnector/s3Buckets/e2e-sm-rp-bucket";
 
     /**
      * AWS S3 bucket reachable only over the private endpoint (rows #31/#32 of
      * the cross-language matrix).
      */
-    protected static final String AWS_PRIVATE_S3_BUCKET_ID = "/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID
+    protected final String awsPrivateS3BucketId = "/subscriptions/" + syntheticsSubscriptionId
         + "/resourceGroups/aws_640698235822/providers/Microsoft.AWSConnector/s3Buckets/e2e-sm-rp-private-bucket";
 
     /**
      * PrivateLinkService that fronts the AWS private bucket. The Connection
      * resource references this id; PE-approval helpers live in this base.
      */
-    protected static final String PRIVATE_LINK_SERVICE_RG = "E2E-Management-RGsyn";
-    protected static final String PRIVATE_LINK_SERVICE_NAME = "test-pls-wcs";
-    protected static final String PRIVATE_LINK_SERVICE_ID
-        = "/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID + "/resourceGroups/" + PRIVATE_LINK_SERVICE_RG
-            + "/providers/Microsoft.Network/privateLinkServices/" + PRIVATE_LINK_SERVICE_NAME;
+    protected final String privateLinkServiceResourceGroup = testEnvironment.privateLinkServiceResourceGroup;
+    protected final String privateLinkServiceName = testEnvironment.privateLinkServiceName;
+    protected final String privateLinkServiceId = testEnvironment.privateLinkServiceId();
 
     /**
      * Storage account holding the per-test target blob containers used by the
@@ -130,9 +129,8 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
      */
     protected static final String TEST_STORAGE_ACCOUNT_RG = "CP_Mover_IN_WCUS";
     protected static final String TEST_STORAGE_ACCOUNT_NAME = "cpmoveraccount";
-    protected static final String TEST_STORAGE_ACCOUNT_ID
-        = "/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID + "/resourceGroups/" + TEST_STORAGE_ACCOUNT_RG
-            + "/providers/Microsoft.Storage/storageAccounts/" + TEST_STORAGE_ACCOUNT_NAME;
+    protected final String testStorageAccountId = "/subscriptions/" + syntheticsSubscriptionId + "/resourceGroups/"
+        + TEST_STORAGE_ACCOUNT_RG + "/providers/Microsoft.Storage/storageAccounts/" + TEST_STORAGE_ACCOUNT_NAME;
 
     /**
      * Placeholder storage account resource id used when an endpoint requires a
@@ -177,7 +175,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
      * @return the region for the per-test resource group.
      */
     protected Region testRegion() {
-        return DEFAULT_REGION;
+        return defaultRegion;
     }
 
     @Override
@@ -194,8 +192,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
             new RetryPolicy("Retry-After", ChronoUnit.SECONDS), mergedPolicies, httpClient);
     }
 
-    @Override
-    protected void beforeTest() {
+    protected StorageMoverManagementTestBase() {
         // Cross-sub principalIds, tenantIds, and any custom resource-id-typed
         // properties in the body are server-generated per-run and must be
         // redacted from the persisted recordings. URL-side subscription-id
@@ -207,16 +204,34 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         // PE-provisioning sub respectively. The default URL sanitizer does not
         // reach these custom property names — sanitize them explicitly here so
         // real subscription IDs never make it into azure-sdk-assets.
-        interceptorManager.addSanitizers(Arrays.asList(
+        addSanitizers(
             new TestProxySanitizer("$..principalId", null, "00000000-0000-0000-0000-000000000000",
                 TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..tenantId", null, "00000000-0000-0000-0000-000000000000",
                 TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..updatedBy", null, "Sanitized", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..privateLinkServiceId", SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX,
                 "/subscriptions/00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..privateEndpointResourceId", SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX,
-                "/subscriptions/00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY)));
-        super.beforeTest();
+                "/subscriptions/00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+        addSanitizers(
+            new TestProxySanitizer("(?i)" + syntheticsSubscriptionId, StorageMoverTestEnvironment.ZERO_SUBSCRIPTION_ID,
+                TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer(StorageMoverTestEnvironment.ERROR_IDENTITY_REGEX,
+                StorageMoverTestEnvironment.ZERO_SUBSCRIPTION_ID, TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer(StorageMoverTestEnvironment.PRIVATE_LINK_SERVICE_PATH_REGEX,
+                StorageMoverTestEnvironment.PLAYBACK_PRIVATE_LINK_SERVICE_PATH, TestProxySanitizerType.URL),
+            new TestProxySanitizer(StorageMoverTestEnvironment.PRIVATE_LINK_SERVICE_PATH_REGEX,
+                StorageMoverTestEnvironment.PLAYBACK_PRIVATE_LINK_SERVICE_PATH, TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer("x-ms-operation-identifier", null, "Sanitized", TestProxySanitizerType.HEADER),
+            new TestProxySanitizer(StorageMoverTestEnvironment.SIGNED_QUERY_PARAMETERS_REGEX, "$1$2=Sanitized",
+                TestProxySanitizerType.URL));
+        for (String header : Arrays.asList("Location", "Azure-AsyncOperation")) {
+            addSanitizers(new TestProxySanitizer(header, "(?i)" + SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX,
+                "/subscriptions/" + StorageMoverTestEnvironment.ZERO_SUBSCRIPTION_ID, TestProxySanitizerType.HEADER),
+                new TestProxySanitizer(header, StorageMoverTestEnvironment.SIGNED_QUERY_PARAMETERS_REGEX,
+                    "$1$2=Sanitized", TestProxySanitizerType.HEADER));
+        }
     }
 
     @Override
@@ -397,9 +412,9 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         Objects.requireNonNull(privateEndpointResourceId, "privateEndpointResourceId");
         String targetName = lastSegment(privateEndpointResourceId);
         for (int attempt = 0; attempt < 10; attempt++) {
-            for (PrivateEndpointConnectionInner conn : networkManager(XDATAMOVE_SYNTHETICS_SUB_ID).serviceClient()
+            for (PrivateEndpointConnectionInner conn : networkManager(syntheticsSubscriptionId).serviceClient()
                 .getPrivateLinkServices()
-                .listPrivateEndpointConnections(PRIVATE_LINK_SERVICE_RG, PRIVATE_LINK_SERVICE_NAME)) {
+                .listPrivateEndpointConnections(privateLinkServiceResourceGroup, privateLinkServiceName)) {
                 if (conn.privateEndpoint() != null
                     && targetName.equalsIgnoreCase(lastSegment(conn.privateEndpoint().id()))) {
                     return conn;
@@ -408,7 +423,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
             sleep(Duration.ofSeconds(15));
         }
         throw new IllegalStateException(
-            "no PrivateEndpointConnection on " + PRIVATE_LINK_SERVICE_NAME + " matched " + privateEndpointResourceId);
+            "no PrivateEndpointConnection on " + privateLinkServiceName + " matched " + privateEndpointResourceId);
     }
 
     private static String lastSegment(String resourceId) {
@@ -430,9 +445,9 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
             .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withStatus("Approved")
                 .withDescription("")
                 .withActionsRequired("None"));
-        return networkManager(XDATAMOVE_SYNTHETICS_SUB_ID).serviceClient()
+        return networkManager(syntheticsSubscriptionId).serviceClient()
             .getPrivateLinkServices()
-            .updatePrivateEndpointConnection(PRIVATE_LINK_SERVICE_RG, PRIVATE_LINK_SERVICE_NAME, peConnectionName,
+            .updatePrivateEndpointConnection(privateLinkServiceResourceGroup, privateLinkServiceName, peConnectionName,
                 parameters);
     }
 
@@ -478,7 +493,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         ManagementException lastError = null;
         for (int attempt = 0; attempt < 10; attempt++) {
             try {
-                authorizationManager(XDATAMOVE_SYNTHETICS_SUB_ID).roleAssignments()
+                authorizationManager(syntheticsSubscriptionId).roleAssignments()
                     .define(roleAssignmentName)
                     .forObjectId(principalId)
                     .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
@@ -500,11 +515,4 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         throw new IllegalStateException("role assignment never propagated for principal " + principalId, lastError);
     }
 
-    private static Region parseRegionOrDefault(String name, Region fallback) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            return fallback;
-        }
-        Region parsed = Region.fromName(name);
-        return parsed != null ? parsed : Region.create(name, name);
-    }
 }
