@@ -29,7 +29,7 @@ public final class ProtectionGroupsCreateOrupdateMockTests {
     @Test
     public void testCreateOrupdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"plan\":\"utacoe\",\"resources\":{\"manual\":[\"ewzcjznmwcp\",\"guaadraufactkahz\"],\"matchRules\":{\"rules\":[{\"property\":\"resourceGroup\",\"operator\":\"startsWith\",\"value\":\"ziuxxpshnee\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"fgslqubkwdl\"},{\"property\":\"resourceGroup\",\"operator\":\"doesNotContains\",\"value\":\"d\"},{\"property\":\"resourceGroup\",\"operator\":\"endsWith\",\"value\":\"ujbazpjuohminyfl\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"discovered\",\"numberOfProtectedItems\":1354574729,\"lastBackUpTime\":6595563974366054506,\"backupActivityStatus\":\"klvxwmyg\",\"provisioningState\":\"Succeeded\"},\"id\":\"pqchiszep\",\"name\":\"nb\",\"type\":\"crxgibb\"}";
+            = "{\"properties\":{\"plan\":\"isze\",\"resources\":{\"manual\":[\"bjcrxgibbdaxco\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"uors\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"kwbqplhlvnuu\"},{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"lrphwzsoldw\"},{\"property\":\"tagName\",\"operator\":\"doesNotEqual\",\"value\":\"qdunvmnnrwrbior\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":1451955961,\"lastBackUpTime\":2046569881616478612,\"backupActivityStatus\":\"hhg\",\"provisioningState\":\"Succeeded\"},\"id\":\"msi\",\"name\":\"fomiloxgg\",\"type\":\"ufiqndieuzaof\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,31 +39,32 @@ public final class ProtectionGroupsCreateOrupdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionGroup response = manager.protectionGroups()
-            .define("odqkdlwwqfb")
-            .withExistingCloudAccount("gzibthostgktstv", "xeclzedqbcvhzlhp")
-            .withProperties(new ProtectionGroupProperties().withPlan("lkxt")
+            .define("vbquwr")
+            .withExistingCloudAccount("bqgzslesjcbhern", "tiewdj")
+            .withProperties(new ProtectionGroupProperties().withPlan("hwagohbuffkmrqe")
                 .withResources(new ProtectionGroupResources()
-                    .withManual(Arrays.asList("fsmlmbtxhwgfw", "rtawcoezb", "hubskhudygooo", "kqfqjbvl"))
+                    .withManual(Arrays.asList("hmxtdr", "futacoebjvewzc", "znmwcp"))
                     .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
+                        new Rule().withProperty(RuleProperty.REGION)
+                            .withOperator(Operator.CONTAINS)
+                            .withValue("draufactkah"),
                         new Rule().withProperty(RuleProperty.STATUS)
-                            .withOperator(Operator.STARTS_WITH)
-                            .withValue("luiqtqzfavyvnqq"),
-                        new Rule().withProperty(RuleProperty.RESOURCE_GROUP)
-                            .withOperator(Operator.DOES_NOT_CONTAINS)
-                            .withValue("ryeu"),
-                        new Rule().withProperty(RuleProperty.TAG_NAME)
                             .withOperator(Operator.DOES_NOT_EQUAL)
-                            .withValue("kq")))
-                        .withMatchType(MatchType.ANY))))
+                            .withValue("ajjziuxxpshne"),
+                        new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.CONTAINS).withValue("lfg"),
+                        new Rule().withProperty(RuleProperty.REGION)
+                            .withOperator(Operator.DOES_NOT_CONTAINS)
+                            .withValue("ubkwdle")))
+                        .withMatchType(MatchType.ALL))))
             .create();
 
-        Assertions.assertEquals("utacoe", response.properties().plan());
-        Assertions.assertEquals("ewzcjznmwcp", response.properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP,
+        Assertions.assertEquals("isze", response.properties().plan());
+        Assertions.assertEquals("bjcrxgibbdaxco", response.properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.TAG_NAME,
             response.properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.STARTS_WITH,
             response.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("ziuxxpshnee", response.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("uors", response.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, response.properties().resources().matchRules().matchType());
     }
 }

@@ -13,16 +13,16 @@ public final class SnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotProperties model = BinaryData.fromString(
-            "{\"creationData\":{\"sourceId\":\"jdhtldwkyzxu\"},\"provisioningState\":\"Restoring\",\"sourceVolumeSizeGiB\":163949755346838285,\"volumeName\":\"cwsvlxotog\"}")
+            "{\"creationData\":{\"sourceId\":\"gvpgy\"},\"provisioningState\":\"SoftDeleting\",\"sourceVolumeSizeGiB\":9066000575416708308,\"volumeName\":\"medjvcslynqwwncw\",\"snapshotAccessState\":\"InstantAccess\",\"completionPercent\":83.47632545519323}")
             .toObject(SnapshotProperties.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.creationData().sourceId());
+        Assertions.assertEquals("gvpgy", model.creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotProperties model
-            = new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("jdhtldwkyzxu"));
+            = new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("gvpgy"));
         model = BinaryData.fromObject(model).toObject(SnapshotProperties.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.creationData().sourceId());
+        Assertions.assertEquals("gvpgy", model.creationData().sourceId());
     }
 }

@@ -23,7 +23,7 @@ public final class SchedulersListPrivateEndpointConnectionsMockTests {
     @Test
     public void testListPrivateEndpointConnections() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"qugxywpmueefjzwf\"],\"privateEndpoint\":{\"id\":\"ujidsuyono\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ocqxtccmg\",\"actionsRequired\":\"dxyt\"},\"provisioningState\":\"Failed\"},\"id\":\"rxv\",\"name\":\"fudwpznt\",\"type\":\"hdzhlrqj\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"kvtkkg\"],\"privateEndpoint\":{\"id\":\"wjygvjayvblmhvk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"xvvy\",\"actionsRequired\":\"s\"},\"provisioningState\":\"Creating\"},\"id\":\"rqufegxuvwz\",\"name\":\"bnhlmc\",\"type\":\"l\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class SchedulersListPrivateEndpointConnectionsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateEndpointConnection> response = manager.schedulers()
-            .listPrivateEndpointConnections("plpho", "uscrpabgyepsb", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.schedulers().listPrivateEndpointConnections("mfiibfggj", "ool", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ocqxtccmg",
+        Assertions.assertEquals("xvvy",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dxyt",
+        Assertions.assertEquals("s",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

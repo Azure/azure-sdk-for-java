@@ -38,7 +38,6 @@ import com.azure.resourcemanager.commvaultcontentstore.fluent.CloudAccountsClien
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.CloudAccountInner;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.commvaultcontentstore.implementation.models.CloudAccountListResult;
-import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdate;
 import com.azure.resourcemanager.commvaultcontentstore.models.SaaSData;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -123,7 +122,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudAccountName") String cloudAccountName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountUpdate properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountInner properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}")
@@ -133,7 +132,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudAccountName") String cloudAccountName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountUpdate properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountInner properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -521,7 +520,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String cloudAccountName,
-        CloudAccountUpdate properties) {
+        CloudAccountInner properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -544,7 +543,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudAccountName,
-        CloudAccountUpdate properties) {
+        CloudAccountInner properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -566,7 +565,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudAccountName,
-        CloudAccountUpdate properties, Context context) {
+        CloudAccountInner properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -587,7 +586,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdateAsync(String resourceGroupName,
-        String cloudAccountName, CloudAccountUpdate properties) {
+        String cloudAccountName, CloudAccountInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, cloudAccountName, properties);
         return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(mono, this.client.getHttpPipeline(),
@@ -607,7 +606,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountUpdate properties) {
+        String cloudAccountName, CloudAccountInner properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudAccountName, properties);
         return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
             CloudAccountInner.class, Context.NONE);
@@ -627,7 +626,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountUpdate properties, Context context) {
+        String cloudAccountName, CloudAccountInner properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudAccountName, properties, context);
         return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
             CloudAccountInner.class, context);
@@ -646,7 +645,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudAccountInner> updateAsync(String resourceGroupName, String cloudAccountName,
-        CloudAccountUpdate properties) {
+        CloudAccountInner properties) {
         return beginUpdateAsync(resourceGroupName, cloudAccountName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -663,7 +662,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      * @return a Commvault Cloud Account Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties) {
+    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties) {
         return beginUpdate(resourceGroupName, cloudAccountName, properties).getFinalResult();
     }
 
@@ -680,7 +679,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      * @return a Commvault Cloud Account Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties,
+    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties,
         Context context) {
         return beginUpdate(resourceGroupName, cloudAccountName, properties, context).getFinalResult();
     }

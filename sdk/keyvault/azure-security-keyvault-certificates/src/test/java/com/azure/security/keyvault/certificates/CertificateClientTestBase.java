@@ -59,7 +59,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -69,8 +68,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_CERTIFICATE;
-import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_PEM_CERTIFICATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -454,7 +451,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         tags.put("key", "val");
 
         ImportCertificateOptions importCertificateOptions
-            = new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
+            = new ImportCertificateOptions(certificateName, ImportCertificateFixture.getPkcs12())
                 .setPassword(certificatePassword)
                 .setEnabled(true)
                 .setTags(tags);
@@ -484,7 +481,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         throws IOException;
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) {
-        byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
+        byte[] certificateContent = ImportCertificateFixture.getPem();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
         HashMap<String, String> tags = new HashMap<>();
@@ -702,10 +699,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static Stream<Arguments> getPlatformManagedTestParameters() {
         List<Arguments> argumentsList = new ArrayList<>();
 
-        if (shouldServiceVersionBeTested(CertificateServiceVersion.V2026_03_01_PREVIEW)) {
-            getHttpClients().forEach(httpClient -> argumentsList
-                .add(Arguments.of(httpClient, CertificateServiceVersion.V2026_03_01_PREVIEW)));
-        }
+        getHttpClients().forEach(
+            httpClient -> Arrays.stream(new CertificateServiceVersion[] { CertificateServiceVersion.V2026_04_01 })
+                .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
 
         return argumentsList.stream();
     }

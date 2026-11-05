@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiSafetyProviderConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiSafetyProviderConfig model
-            = BinaryData.fromString("{\"safetyProviderName\":\"yyysfgdotcubi\",\"blocking\":true}")
-                .toObject(RaiSafetyProviderConfig.class);
-        Assertions.assertEquals("yyysfgdotcubi", model.safetyProviderName());
-        Assertions.assertTrue(model.blocking());
+        RaiSafetyProviderConfig model = BinaryData.fromString("{\"safetyProviderName\":\"k\",\"blocking\":false}")
+            .toObject(RaiSafetyProviderConfig.class);
+        Assertions.assertEquals("k", model.safetyProviderName());
+        Assertions.assertFalse(model.blocking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiSafetyProviderConfig model
-            = new RaiSafetyProviderConfig().withSafetyProviderName("yyysfgdotcubi").withBlocking(true);
+        RaiSafetyProviderConfig model = new RaiSafetyProviderConfig().withSafetyProviderName("k").withBlocking(false);
         model = BinaryData.fromObject(model).toObject(RaiSafetyProviderConfig.class);
-        Assertions.assertEquals("yyysfgdotcubi", model.safetyProviderName());
-        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals("k", model.safetyProviderName());
+        Assertions.assertFalse(model.blocking());
     }
 }

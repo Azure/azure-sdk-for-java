@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkProfilesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkProfileListAll.json
+     * x-ms-original-file: 2026-03-01/NetworkProfileListAll.json
      */
     /**
      * Sample code: List all network profiles.

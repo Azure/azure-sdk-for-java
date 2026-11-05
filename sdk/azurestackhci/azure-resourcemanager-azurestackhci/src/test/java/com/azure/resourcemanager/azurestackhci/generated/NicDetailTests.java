@@ -13,39 +13,39 @@ public final class NicDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NicDetail model = BinaryData.fromString(
-            "{\"adapterName\":\"rjgeih\",\"interfaceDescription\":\"lg\",\"componentId\":\"fiwzcxmjpbyep\",\"driverVersion\":\"gt\",\"ip4Address\":\"j\",\"subnetMask\":\"cmyfqipgxhnpo\",\"defaultGateway\":\"qwcabvnui\",\"dnsServers\":[\"yaswlpaugmr\"],\"defaultIsolationId\":\"jlrxwtoaukhfk\"}")
+            "{\"adapterName\":\"udypohyuems\",\"interfaceDescription\":\"nsqyrpfoobrltt\",\"componentId\":\"sjnygqdnfwqzdzgt\",\"driverVersion\":\"axhnfh\",\"ip4Address\":\"yvi\",\"subnetMask\":\"uwivkxoy\",\"defaultGateway\":\"nbixxrti\",\"dnsServers\":[\"pwpgclrci\",\"tso\"],\"defaultIsolationId\":\"rkenx\"}")
             .toObject(NicDetail.class);
-        Assertions.assertEquals("rjgeih", model.adapterName());
-        Assertions.assertEquals("lg", model.interfaceDescription());
-        Assertions.assertEquals("fiwzcxmjpbyep", model.componentId());
-        Assertions.assertEquals("gt", model.driverVersion());
-        Assertions.assertEquals("j", model.ip4Address());
-        Assertions.assertEquals("cmyfqipgxhnpo", model.subnetMask());
-        Assertions.assertEquals("qwcabvnui", model.defaultGateway());
-        Assertions.assertEquals("yaswlpaugmr", model.dnsServers().get(0));
-        Assertions.assertEquals("jlrxwtoaukhfk", model.defaultIsolationId());
+        Assertions.assertEquals("udypohyuems", model.adapterName());
+        Assertions.assertEquals("nsqyrpfoobrltt", model.interfaceDescription());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", model.componentId());
+        Assertions.assertEquals("axhnfh", model.driverVersion());
+        Assertions.assertEquals("yvi", model.ip4Address());
+        Assertions.assertEquals("uwivkxoy", model.subnetMask());
+        Assertions.assertEquals("nbixxrti", model.defaultGateway());
+        Assertions.assertEquals("pwpgclrci", model.dnsServers().get(0));
+        Assertions.assertEquals("rkenx", model.defaultIsolationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NicDetail model = new NicDetail().withAdapterName("rjgeih")
-            .withInterfaceDescription("lg")
-            .withComponentId("fiwzcxmjpbyep")
-            .withDriverVersion("gt")
-            .withIp4Address("j")
-            .withSubnetMask("cmyfqipgxhnpo")
-            .withDefaultGateway("qwcabvnui")
-            .withDnsServers(Arrays.asList("yaswlpaugmr"))
-            .withDefaultIsolationId("jlrxwtoaukhfk");
+        NicDetail model = new NicDetail().withAdapterName("udypohyuems")
+            .withInterfaceDescription("nsqyrpfoobrltt")
+            .withComponentId("sjnygqdnfwqzdzgt")
+            .withDriverVersion("axhnfh")
+            .withIp4Address("yvi")
+            .withSubnetMask("uwivkxoy")
+            .withDefaultGateway("nbixxrti")
+            .withDnsServers(Arrays.asList("pwpgclrci", "tso"))
+            .withDefaultIsolationId("rkenx");
         model = BinaryData.fromObject(model).toObject(NicDetail.class);
-        Assertions.assertEquals("rjgeih", model.adapterName());
-        Assertions.assertEquals("lg", model.interfaceDescription());
-        Assertions.assertEquals("fiwzcxmjpbyep", model.componentId());
-        Assertions.assertEquals("gt", model.driverVersion());
-        Assertions.assertEquals("j", model.ip4Address());
-        Assertions.assertEquals("cmyfqipgxhnpo", model.subnetMask());
-        Assertions.assertEquals("qwcabvnui", model.defaultGateway());
-        Assertions.assertEquals("yaswlpaugmr", model.dnsServers().get(0));
-        Assertions.assertEquals("jlrxwtoaukhfk", model.defaultIsolationId());
+        Assertions.assertEquals("udypohyuems", model.adapterName());
+        Assertions.assertEquals("nsqyrpfoobrltt", model.interfaceDescription());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", model.componentId());
+        Assertions.assertEquals("axhnfh", model.driverVersion());
+        Assertions.assertEquals("yvi", model.ip4Address());
+        Assertions.assertEquals("uwivkxoy", model.subnetMask());
+        Assertions.assertEquals("nbixxrti", model.defaultGateway());
+        Assertions.assertEquals("pwpgclrci", model.dnsServers().get(0));
+        Assertions.assertEquals("rkenx", model.defaultIsolationId());
     }
 }

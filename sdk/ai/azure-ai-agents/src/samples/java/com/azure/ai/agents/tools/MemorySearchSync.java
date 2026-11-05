@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -52,7 +51,9 @@ public class MemorySearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
+        String agentName = "memory-search-agent";
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        ConversationService conversationService = openAIClient.conversations();
 
         String memoryStoreName = "my_memory_store";
         String scope = "user_123";
@@ -83,12 +84,9 @@ public class MemorySearchSync {
                 .setInstructions("You are a helpful assistant that answers general questions.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("memory-search-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent);
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // First conversation: teach the agent a preference
             Conversation conversation = conversationService.create();

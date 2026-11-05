@@ -1,0 +1,19 @@
+parameters:
+  - name: TestLogsArtifactName
+    type: string
+    default: 'test-logs'
+  - name: OomArtifactName
+    type: string
+    default: 'oom-hprofs'
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Check for and copy test logs and OOM hprofs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1
+      arguments: >
+        -StagingDirectory $(System.DefaultWorkingDirectory)
+        -TestLogsArtifactName ${{ parameters.TestLogsArtifactName }}
+        -OomArtifactName ${{ parameters.OomArtifactName }}
+    condition: always()

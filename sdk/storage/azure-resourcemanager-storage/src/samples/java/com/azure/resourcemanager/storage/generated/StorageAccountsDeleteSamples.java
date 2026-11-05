@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountDelete.json
+     * x-ms-original-file: 2026-09-01/StorageAccountDelete.json
      */
     /**
      * Sample code: StorageAccountDelete.

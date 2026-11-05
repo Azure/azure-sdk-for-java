@@ -246,9 +246,11 @@ public interface EdgeAction {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Resource tags. For PATCH requests, omitted tags are preserved, an empty tags
+             * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected..
              * 
-             * @param tags Resource tags.
+             * @param tags Resource tags. For PATCH requests, omitted tags are preserved, an empty tags object clears
+             * all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
@@ -272,9 +274,11 @@ public interface EdgeAction {
          */
         interface WithSku {
             /**
-             * Specifies the sku property: The sku type of the edge action.
+             * Specifies the sku property: The SKU of the Edge Action. Do not include sku in PATCH requests; any
+             * supplied sku, including null or the existing value, is rejected..
              * 
-             * @param sku The sku type of the edge action.
+             * @param sku The SKU of the Edge Action. Do not include sku in PATCH requests; any supplied sku, including
+             * null or the existing value, is rejected.
              * @return the next definition stage.
              */
             Update withSku(SkuTypeUpdate sku);

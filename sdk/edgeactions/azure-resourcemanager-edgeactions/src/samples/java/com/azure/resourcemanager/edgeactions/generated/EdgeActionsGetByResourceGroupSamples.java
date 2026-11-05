@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Get.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Get.json
      */
     /**
      * Sample code: GetEdgeAction.

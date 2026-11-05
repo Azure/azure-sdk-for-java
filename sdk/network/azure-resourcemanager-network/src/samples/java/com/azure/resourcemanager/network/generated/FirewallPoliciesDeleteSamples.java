@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyDelete.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyDelete.json
      */
     /**
      * Sample code: Delete Firewall Policy.

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
  */
 public final class ServiceGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ServiceGatewayCreate.json
+     * x-ms-original-file: 2026-03-01/ServiceGatewayCreate.json
      */
     /**
      * Sample code: Create service gateway.

@@ -12,11 +12,11 @@ public final class MongoMIRoleAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoMIRoleAssignmentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"ozkgyfpeoehg\",\"scope\":\"qmskkixv\",\"principalId\":\"jxplh\",\"provisioningState\":\"vasyntv\"},\"id\":\"yielb\",\"name\":\"rvvbqvknmpecqxg\",\"type\":\"qa\"},{\"properties\":{\"roleDefinitionId\":\"ubnsnstlpwq\",\"scope\":\"nxjkhtupsvyouw\",\"principalId\":\"iyxfwkztsmsfbevy\",\"provisioningState\":\"znfhkqytk\"},\"id\":\"adopgfzdgjfc\",\"name\":\"crsvloyyhi\",\"type\":\"qkzjuqwqaj\"}],\"nextLink\":\"zxpixhyo\"}")
+            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"mzqlnaag\",\"scope\":\"i\",\"principalId\":\"fqiywhxpsb\",\"provisioningState\":\"ialezaydpu\"},\"id\":\"degefxlieggoto\",\"name\":\"mhssfnwh\",\"type\":\"kahhec\"}],\"nextLink\":\"fmkcu\"}")
             .toObject(MongoMIRoleAssignmentListResult.class);
-        Assertions.assertEquals("ozkgyfpeoehg", model.value().get(0).roleDefinitionId());
-        Assertions.assertEquals("qmskkixv", model.value().get(0).scope());
-        Assertions.assertEquals("jxplh", model.value().get(0).principalId());
-        Assertions.assertEquals("zxpixhyo", model.nextLink());
+        Assertions.assertEquals("mzqlnaag", model.value().get(0).roleDefinitionId());
+        Assertions.assertEquals("i", model.value().get(0).scope());
+        Assertions.assertEquals("fqiywhxpsb", model.value().get(0).principalId());
+        Assertions.assertEquals("fmkcu", model.nextLink());
     }
 }

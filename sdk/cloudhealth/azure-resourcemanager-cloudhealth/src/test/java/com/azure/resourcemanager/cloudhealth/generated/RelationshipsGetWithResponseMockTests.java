@@ -21,7 +21,7 @@ public final class RelationshipsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"xqbawpc\",\"parentEntityName\":\"bnzqcyknapq\",\"childEntityName\":\"fyuicdh\",\"tags\":{\"bdvibidmhmwffpl\":\"ybww\"},\"discoveredBy\":\"u\"},\"id\":\"pckc\",\"name\":\"rrvwey\",\"type\":\"xoy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"n\",\"parentEntityName\":\"z\",\"childEntityName\":\"rfkspzhz\",\"tags\":{\"gljplkeuachtomfl\":\"sjcitdigsxc\",\"mdgycxn\":\"ytswfp\",\"qjjyslurl\":\"skw\"},\"discoveredBy\":\"hhkvpedwqs\"},\"id\":\"rhmpqvwwsk\",\"name\":\"ndcbrwi\",\"type\":\"uvqejosovyrrle\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class RelationshipsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relationship response = manager.relationships()
-            .getWithResponse("vfxzopjh", "zxlioh", "d", com.azure.core.util.Context.NONE)
+            .getWithResponse("gjekglklby", "lidwcwvmzegjon", "hj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xqbawpc", response.properties().displayName());
-        Assertions.assertEquals("bnzqcyknapq", response.properties().parentEntityName());
-        Assertions.assertEquals("fyuicdh", response.properties().childEntityName());
-        Assertions.assertEquals("ybww", response.properties().tags().get("bdvibidmhmwffpl"));
+        Assertions.assertEquals("n", response.properties().displayName());
+        Assertions.assertEquals("z", response.properties().parentEntityName());
+        Assertions.assertEquals("rfkspzhz", response.properties().childEntityName());
+        Assertions.assertEquals("sjcitdigsxc", response.properties().tags().get("gljplkeuachtomfl"));
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -149,6 +150,66 @@ public final class StoragesClientImpl implements StoragesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudAccountName") String cloudAccountName, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/enableComplianceLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StorageInner>> enableComplianceLock(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/enableComplianceLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageInner> enableComplianceLockSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/disableComplianceLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StorageInner>> disableComplianceLock(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/disableComplianceLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageInner> disableComplianceLockSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/refresh")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StorageInner>> refresh(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/refresh")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageInner> refreshSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudAccountName") String cloudAccountName, @PathParam("storageName") String storageName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -707,6 +768,245 @@ public final class StoragesClientImpl implements StoragesClient {
         Context context) {
         return new PagedIterable<>(() -> listByCloudAccountSinglePage(resourceGroupName, cloudAccountName, context),
             nextLink -> listByCloudAccountNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StorageInner>> enableComplianceLockWithResponseAsync(String resourceGroupName,
+        String cloudAccountName, String storageName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.enableComplianceLock(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StorageInner> enableComplianceLockAsync(String resourceGroupName, String cloudAccountName,
+        String storageName) {
+        return enableComplianceLockWithResponseAsync(resourceGroupName, cloudAccountName, storageName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageInner> enableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        final String accept = "application/json";
+        return service.enableComplianceLockSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
+    }
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageInner enableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        return enableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StorageInner>> disableComplianceLockWithResponseAsync(String resourceGroupName,
+        String cloudAccountName, String storageName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.disableComplianceLock(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StorageInner> disableComplianceLockAsync(String resourceGroupName, String cloudAccountName,
+        String storageName) {
+        return disableComplianceLockWithResponseAsync(resourceGroupName, cloudAccountName, storageName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageInner> disableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        final String accept = "application/json";
+        return service.disableComplianceLockSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
+    }
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageInner disableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        return disableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StorageInner>> refreshWithResponseAsync(String resourceGroupName, String cloudAccountName,
+        String storageName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.refresh(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StorageInner> refreshAsync(String resourceGroupName, String cloudAccountName, String storageName) {
+        return refreshWithResponseAsync(resourceGroupName, cloudAccountName, storageName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageInner> refreshWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        final String accept = "application/json";
+        return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
+    }
+
+    /**
+     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudAccountName Name of the Cloud Account resource.
+     * @param storageName Name of the Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageInner refresh(String resourceGroupName, String cloudAccountName, String storageName) {
+        return refreshWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE).getValue();
     }
 
     /**

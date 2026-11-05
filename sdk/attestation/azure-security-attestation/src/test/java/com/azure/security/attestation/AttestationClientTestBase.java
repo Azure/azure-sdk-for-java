@@ -72,6 +72,15 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     protected static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     protected static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     protected static final ClientLogger LOGGER = new ClientLogger(AttestationClientTestBase.class);
+
+    /**
+     * Clock skew tolerated when validating attestation service tokens in live and record mode.
+     * <p>
+     * Live test agents have been observed running up to 34 seconds behind the attestation service, which causes
+     * freshly issued tokens to fail "NotBefore" validation. Service tokens are valid for hours, so this tolerance
+     * doesn't meaningfully weaken the time validation being exercised.
+     */
+    protected static final Duration CLOCK_SKEW_TOLERANCE = Duration.ofSeconds(60);
     protected Tracer tracer;
 
     @Override
@@ -192,7 +201,9 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isPlaybackMode()) {
-            builder.httpClient(httpClient);
+            builder.httpClient(httpClient)
+                .tokenValidationOptions(
+                    new AttestationTokenValidationOptions().setValidationSlack(CLOCK_SKEW_TOLERANCE));
         }
 
         return builder;
@@ -219,10 +230,9 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isPlaybackMode()) {
-            // Add a 10-second slack time to account for clock drift between the client and server.
             builder
                 .tokenValidationOptions(
-                    new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)))
+                    new AttestationTokenValidationOptions().setValidationSlack(CLOCK_SKEW_TOLERANCE))
                 .credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpPrefixesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PublicIpPrefixListAll.json
+     * x-ms-original-file: 2026-03-01/PublicIpPrefixListAll.json
      */
     /**
      * Sample code: List all public IP prefixes.

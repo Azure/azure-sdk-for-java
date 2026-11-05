@@ -15,7 +15,7 @@ public final class CreateOrUpdateTextBlocklistTests extends ContentSafetyClientT
     @Disabled
     public void testCreateOrUpdateTextBlocklistTests() {
         // method invocation
-        TextBlocklist response = blocklistClient.createOrUpdateTextBlocklist("TestBlocklist", null);
+        TextBlocklist response = blocklistClient.createOrUpdateTextBlocklist("TestBlocklist", (TextBlocklist) null);
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -12,7 +12,10 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
+import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -35,6 +38,10 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        customizeOptimizationPollingStrategies(libraryCustomization, logger);
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
+        internalizeUnusedFunctionToolType(libraryCustomization, logger);
+        deprecateLegacyBrowserAutomationTools(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
@@ -42,7 +49,79 @@ public class AgentsCustomizations extends Customization {
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.agents.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
+    }
+
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
+
+    private void deprecateLegacyBrowserAutomationTools(LibraryCustomization customization) {
+        for (String className : Arrays.asList("BrowserAutomationPreviewTool", "BrowserAutomationPreviewToolboxTool")) {
+            customization.getClass(MODELS_PACKAGE, className).customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"));
+                deprecateBrowserAutomationNode(clazz, className.replace("Preview", ""));
+            });
+        }
+
+        customization.getClass(MODELS_PACKAGE, "ToolType").customizeAst(ast -> {
+            FieldDeclaration field = ast.getClassByName("ToolType")
+                .orElseThrow(() -> new IllegalStateException("ToolType was not generated"))
+                .getFieldByName("BROWSER_AUTOMATION_PREVIEW")
+                .orElseThrow(() -> new IllegalStateException("ToolType.BROWSER_AUTOMATION_PREVIEW was not generated"));
+            deprecateBrowserAutomationNode(field, "ToolType#BROWSER_AUTOMATION");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "ToolboxToolType")
+            .customizeAst(ast -> deprecateBrowserAutomationNode(
+                ast.getEnumByName("ToolboxToolType")
+                    .orElseThrow(() -> new IllegalStateException("ToolboxToolType was not generated"))
+                    .getEntries()
+                    .stream()
+                    .filter(entry -> "BROWSER_AUTOMATION_PREVIEW".equals(entry.getNameAsString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "ToolboxToolType.BROWSER_AUTOMATION_PREVIEW was not generated")),
+                "ToolboxToolType#BROWSER_AUTOMATION"));
+    }
+
+    private <T extends Node & NodeWithAnnotations<T> & NodeWithJavadoc<T>> void deprecateBrowserAutomationNode(T node,
+        String replacement) {
+        if (!node.isAnnotationPresent(Deprecated.class)) {
+            node.addMarkerAnnotation(Deprecated.class);
+        }
+        com.github.javaparser.javadoc.Javadoc javadoc = node.getJavadoc()
+            .orElseThrow(() -> new IllegalStateException("Missing Javadoc for legacy Browser Automation API"));
+        javadoc.getBlockTags().removeIf(tag -> "deprecated".equals(tag.getTagName()));
+        javadoc.addBlockTag("deprecated",
+            "This legacy Browser Automation tool is deprecated and is no longer available. Use {@link " + replacement
+                + "} instead. See <a href=\"https://aka.ms/bat/docs\">Browser Automation documentation</a>.");
+        node.setJavadocComment(javadoc);
+    }
 
     private static final String UNION_MARKER = "AI Tooling: union type";
 
@@ -90,6 +169,20 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
+    private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
+            .filter(clazz -> "ToolFunctionToolType1".equals(clazz.getClassName()))
+            .findFirst()
+            .orElse(null);
+        if (enumCustomization == null) {
+            logger.info("ToolFunctionToolType1 is not generated; no enum visibility change is needed.");
+            return;
+        }
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType1")
+            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType1 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
+    }
+
     /**
      * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.
      * The classes remain concrete so their generated {@code fromJson} methods can deserialize unknown future
@@ -98,12 +191,18 @@ public class AgentsCustomizations extends Customization {
      * @param customization the library customization
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        List<String> classNames = Arrays.asList("AgentHarness", "CreateTelephonyBindingInput", "RealtimeAudioFormat",
-            "RealtimeClientEvent", "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
-            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
-            "TelephonyTransferDestination", "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration",
-            "VoiceAgentSystemTool", "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration",
-            "VoiceConversationEngine");
+        List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
+            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
+            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "MemoryItem", "MemoryStoreDefinition",
+            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage", "RealtimeMcpError",
+            "RealtimeSessionConfigurationBase",
+            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
@@ -213,8 +312,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
             "Tool-selection behavior for the session.", toolChoice, false, false, logger);
 
-        // The response base models are immutable outputs. Their typed getters read through the overridable raw accessor
-        // so the generated subclasses that shadow the field share the same typed API.
+        // Retain base-model wrappers for older snapshots and expose them directly on the flattened response models.
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -222,7 +320,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -230,7 +328,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",
@@ -668,12 +766,55 @@ public class AgentsCustomizations extends Customization {
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
         customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"))));
+            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
+                clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"));
+            }));
 
         customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
+                clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
+            }));
+    }
+
+    private void customizeOptimizationPollingStrategies(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.implementation", "AgentsImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("AgentsImpl")
+                .orElseThrow(() -> new IllegalStateException("AgentsImpl was not generated."));
+            int replacementCount = 0;
+
+            for (MethodDeclaration method : clazz.getMethods()) {
+                if (!method.getNameAsString().startsWith("beginCreateOptimizationJob")) {
+                    continue;
+                }
+
+                List<ObjectCreationExpr> pollingStrategies = method.findAll(ObjectCreationExpr.class);
+                pollingStrategies.removeIf(creation -> {
+                    String typeName = creation.getType().getNameAsString();
+                    return !"OperationLocationPollingStrategy".equals(typeName)
+                        && !"SyncOperationLocationPollingStrategy".equals(typeName);
+                });
+                if (pollingStrategies.size() != 1) {
+                    throw new IllegalStateException("Expected one operation-location polling strategy in "
+                        + method.getNameAsString() + " but found " + pollingStrategies.size() + ".");
+                }
+
+                ObjectCreationExpr creation = pollingStrategies.get(0);
+                String strategy = creation.getType().getNameAsString().startsWith("Sync")
+                    ? "com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy"
+                    : "com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy";
+                creation.setType(StaticJavaParser.parseClassOrInterfaceType(strategy + "<>"));
+                replacementCount++;
+            }
+
+            if (replacementCount != 4) {
+                throw new IllegalStateException(
+                    "Expected to customize four optimization polling strategies but customized " + replacementCount
+                        + ".");
+            }
+            logger.info("Customized {} agent optimization polling strategies.", replacementCount);
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
@@ -726,7 +867,9 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateMember(TypeDeclaration<?> type, String member, String description, Logger logger) {
-        String fieldName = toCamelCase(member);
+        String fieldName = type.getFields().stream()
+            .flatMap(field -> field.getVariables().stream())
+            .anyMatch(variable -> variable.getNameAsString().equals(member)) ? member : toCamelCase(member);
         boolean found = false;
 
         for (FieldDeclaration field : type.getFields()) {

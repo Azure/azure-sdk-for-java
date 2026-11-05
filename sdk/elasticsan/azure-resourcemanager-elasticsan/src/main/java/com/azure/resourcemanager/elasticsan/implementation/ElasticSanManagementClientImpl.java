@@ -31,6 +31,7 @@ import com.azure.resourcemanager.elasticsan.fluent.ElasticSansClient;
 import com.azure.resourcemanager.elasticsan.fluent.OperationsClient;
 import com.azure.resourcemanager.elasticsan.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.elasticsan.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.elasticsan.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.elasticsan.fluent.SkusClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumeSnapshotsClient;
@@ -131,6 +132,20 @@ public final class ElasticSanManagementClientImpl implements ElasticSanManagemen
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     * 
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
     }
 
     /**
@@ -262,7 +277,8 @@ public final class ElasticSanManagementClientImpl implements ElasticSanManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-05-01-preview";
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.elasticSans = new ElasticSansClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

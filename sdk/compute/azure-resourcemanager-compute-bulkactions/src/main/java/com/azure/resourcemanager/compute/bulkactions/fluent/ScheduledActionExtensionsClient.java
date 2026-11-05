@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.ScheduledActi
  */
 public interface ScheduledActionExtensionsClient {
     /**
-     * Lists scheduled actions associated with the specified VM.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
      * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +28,7 @@ public interface ScheduledActionExtensionsClient {
     PagedIterable<ScheduledActionResourcesInner> listByVms(String resourceUri);
 
     /**
-     * Lists scheduled actions associated with the specified VM.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
      * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @param context The context to associate with this operation.

@@ -12,9 +12,9 @@ public final class CassandraKeyspaceGetPropertiesOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceGetPropertiesOptions model
-            = BinaryData.fromString("{\"throughput\":1079278403,\"autoscaleSettings\":{\"maxThroughput\":11369007}}")
+            = BinaryData.fromString("{\"throughput\":1812101895,\"autoscaleSettings\":{\"maxThroughput\":1560709540}}")
                 .toObject(CassandraKeyspaceGetPropertiesOptions.class);
-        Assertions.assertEquals(1079278403, model.throughput());
-        Assertions.assertEquals(11369007, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1812101895, model.throughput());
+        Assertions.assertEquals(1560709540, model.autoscaleSettings().maxThroughput());
     }
 }

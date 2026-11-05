@@ -595,7 +595,7 @@ public class NettyAsyncHttpClientTests {
 
     @Test
     public void perCallTimeout() {
-        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -617,7 +617,7 @@ public class NettyAsyncHttpClientTests {
 
     @Test
     public void perCallTimeoutSync() {
-        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 

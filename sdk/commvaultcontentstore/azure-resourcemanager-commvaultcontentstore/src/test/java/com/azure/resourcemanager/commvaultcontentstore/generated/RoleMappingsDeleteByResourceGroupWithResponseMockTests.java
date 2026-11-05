@@ -27,7 +27,8 @@ public final class RoleMappingsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.roleMappings().deleteByResourceGroupWithResponse("dao", "djvlpj", com.azure.core.util.Context.NONE);
+        manager.roleMappings()
+            .deleteByResourceGroupWithResponse("rjvpglydzgkrvqee", "toepryu", com.azure.core.util.Context.NONE);
 
     }
 }

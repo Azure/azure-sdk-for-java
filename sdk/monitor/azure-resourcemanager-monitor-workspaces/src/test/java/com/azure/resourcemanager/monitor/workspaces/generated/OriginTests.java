@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OriginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Origin model = BinaryData.fromString("{\"addedBy\":\"k\",\"addedByType\":\"Manual\"}").toObject(Origin.class);
-        Assertions.assertEquals("k", model.addedBy());
-        Assertions.assertEquals(AddedByType.MANUAL, model.addedByType());
+        Origin model
+            = BinaryData.fromString("{\"addedBy\":\"hnnpr\",\"addedByType\":\"Automatic\"}").toObject(Origin.class);
+        Assertions.assertEquals("hnnpr", model.addedBy());
+        Assertions.assertEquals(AddedByType.AUTOMATIC, model.addedByType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Origin model = new Origin().withAddedBy("k").withAddedByType(AddedByType.MANUAL);
+        Origin model = new Origin().withAddedBy("hnnpr").withAddedByType(AddedByType.AUTOMATIC);
         model = BinaryData.fromObject(model).toObject(Origin.class);
-        Assertions.assertEquals("k", model.addedBy());
-        Assertions.assertEquals(AddedByType.MANUAL, model.addedByType());
+        Assertions.assertEquals("hnnpr", model.addedBy());
+        Assertions.assertEquals(AddedByType.AUTOMATIC, model.addedByType());
     }
 }

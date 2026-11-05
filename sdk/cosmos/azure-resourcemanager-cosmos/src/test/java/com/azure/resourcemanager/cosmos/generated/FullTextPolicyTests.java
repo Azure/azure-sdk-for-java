@@ -14,21 +14,21 @@ public final class FullTextPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FullTextPolicy model = BinaryData.fromString(
-            "{\"defaultLanguage\":\"ibyfmo\",\"fullTextPaths\":[{\"path\":\"rkjpvdwxfzwii\",\"language\":\"zjb\"},{\"path\":\"yzsxjrkambtrne\",\"language\":\"mnvuqe\"}]}")
+            "{\"defaultLanguage\":\"aslzkwr\",\"fullTextPaths\":[{\"path\":\"ycqucwyh\",\"language\":\"nomdrkywuhpsv\"},{\"path\":\"uurutlwexxwlalni\",\"language\":\"zsrzpgepq\"}]}")
             .toObject(FullTextPolicy.class);
-        Assertions.assertEquals("ibyfmo", model.defaultLanguage());
-        Assertions.assertEquals("rkjpvdwxfzwii", model.fullTextPaths().get(0).path());
-        Assertions.assertEquals("zjb", model.fullTextPaths().get(0).language());
+        Assertions.assertEquals("aslzkwr", model.defaultLanguage());
+        Assertions.assertEquals("ycqucwyh", model.fullTextPaths().get(0).path());
+        Assertions.assertEquals("nomdrkywuhpsv", model.fullTextPaths().get(0).language());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FullTextPolicy model = new FullTextPolicy().withDefaultLanguage("ibyfmo")
-            .withFullTextPaths(Arrays.asList(new FullTextPath().withPath("rkjpvdwxfzwii").withLanguage("zjb"),
-                new FullTextPath().withPath("yzsxjrkambtrne").withLanguage("mnvuqe")));
+        FullTextPolicy model = new FullTextPolicy().withDefaultLanguage("aslzkwr")
+            .withFullTextPaths(Arrays.asList(new FullTextPath().withPath("ycqucwyh").withLanguage("nomdrkywuhpsv"),
+                new FullTextPath().withPath("uurutlwexxwlalni").withLanguage("zsrzpgepq")));
         model = BinaryData.fromObject(model).toObject(FullTextPolicy.class);
-        Assertions.assertEquals("ibyfmo", model.defaultLanguage());
-        Assertions.assertEquals("rkjpvdwxfzwii", model.fullTextPaths().get(0).path());
-        Assertions.assertEquals("zjb", model.fullTextPaths().get(0).language());
+        Assertions.assertEquals("aslzkwr", model.defaultLanguage());
+        Assertions.assertEquals("ycqucwyh", model.fullTextPaths().get(0).path());
+        Assertions.assertEquals("nomdrkywuhpsv", model.fullTextPaths().get(0).language());
     }
 }

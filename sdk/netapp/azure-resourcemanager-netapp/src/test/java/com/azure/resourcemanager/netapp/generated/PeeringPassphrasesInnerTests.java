@@ -12,10 +12,10 @@ public final class PeeringPassphrasesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PeeringPassphrasesInner model = BinaryData.fromString(
-            "{\"clusterPeeringCommand\":\"qedcgzulwm\",\"clusterPeeringPassphrase\":\"rqzz\",\"vserverPeeringCommand\":\"rjvpglydzgkrvqee\",\"criticalWarning\":\"oepry\"}")
+            "{\"clusterPeeringCommand\":\"brn\",\"clusterPeeringPassphrase\":\"suxmpraf\",\"vserverPeeringCommand\":\"g\",\"criticalWarning\":\"hocxvdfffwafqrou\"}")
             .toObject(PeeringPassphrasesInner.class);
-        Assertions.assertEquals("qedcgzulwm", model.clusterPeeringCommand());
-        Assertions.assertEquals("rqzz", model.clusterPeeringPassphrase());
-        Assertions.assertEquals("rjvpglydzgkrvqee", model.vserverPeeringCommand());
+        Assertions.assertEquals("brn", model.clusterPeeringCommand());
+        Assertions.assertEquals("suxmpraf", model.clusterPeeringPassphrase());
+        Assertions.assertEquals("g", model.vserverPeeringCommand());
     }
 }

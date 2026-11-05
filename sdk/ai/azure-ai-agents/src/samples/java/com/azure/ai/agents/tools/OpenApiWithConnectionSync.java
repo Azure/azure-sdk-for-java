@@ -32,12 +32,13 @@ import java.util.Map;
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
  *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
- *   <li>OPENAPI_PROJECT_CONNECTION_ID - The OpenAPI project connection ID.</li>
+ *   <li>OPENAPI_PROJECT_CONNECTION_ID - A Custom Keys connection containing your TripAdvisor API key
+ *       under the key name {@code key}.</li>
  * </ul>
  *
- * <p>This sample uses the httpbin OpenAPI spec bundled at
- * {@code src/samples/resources/assets/httpbin_openapi.json}. Replace it with your
- * own spec to call a different API.</p>
+ * <p>This sample uses the TripAdvisor location-search specification bundled at
+ * {@code src/samples/resources/assets/tripadvisor_openapi.json}. It declares API key authentication
+ * in the {@code key} query parameter, matching the project connection.</p>
  */
 public class OpenApiWithConnectionSync {
     public static void main(String[] args) throws Exception {
@@ -53,17 +54,17 @@ public class OpenApiWithConnectionSync {
 
         // Load the OpenAPI spec from a JSON file
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
-            SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
+            SampleUtils.getResourcePath("assets/tripadvisor_openapi.json"));
 
         // BEGIN: com.azure.ai.agents.define_openapi_with_connection
         // Create OpenAPI tool with project connection authentication
         OpenApiTool openApiTool = new OpenApiTool(
             new OpenApiFunctionDefinition(
-                "httpbin_get",
+                "tripadvisor",
                 spec,
                 new OpenApiProjectConnectionAuthDetails(
                     new OpenApiProjectConnectionSecurityScheme(connectionId)))
-                .setDescription("Get request metadata from an OpenAPI endpoint."));
+                .setDescription("TripAdvisor API to get travel information."));
         // END: com.azure.ai.agents.define_openapi_with_connection
 
         // Create agent with OpenAPI tool
@@ -75,12 +76,11 @@ public class OpenApiWithConnectionSync {
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {
-            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .input("Call the API and summarize the returned URL and origin.")
+                    .input("Recommend me 5 top hotels in the United States")
                     .build());
 
             System.out.println("Response: " + response.output());

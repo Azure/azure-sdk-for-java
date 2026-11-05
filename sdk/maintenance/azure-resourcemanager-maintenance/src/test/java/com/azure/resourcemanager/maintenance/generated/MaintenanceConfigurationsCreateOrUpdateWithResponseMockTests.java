@@ -30,7 +30,7 @@ public final class MaintenanceConfigurationsCreateOrUpdateWithResponseMockTests 
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"namespace\":\"lfmmdnbbglzpswi\",\"extensionProperties\":{\"bzmnvdfznud\":\"cwyhzdxssa\",\"xzb\":\"od\",\"dzu\":\"cblylpstdbhhxsr\",\"fiwjmygtdssls\":\"erscdntne\"},\"maintenanceScope\":\"Extension\",\"maintenanceWindow\":{\"startDateTime\":\"riofzpyqse\",\"expirationDateTime\":\"abnetshh\",\"duration\":\"h\",\"timeZone\":\"plvwiwubmwmbes\",\"recurEvery\":\"nkww\"},\"visibility\":\"Public\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"gaokonzmnsikv\",\"kqze\"],\"kbNumbersToInclude\":[\"dltfz\",\"mhhv\",\"gureodkwobdag\",\"tibqdxbxwakb\"],\"classificationsToInclude\":[\"xndlkzgxhu\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"odxun\",\"bebxmubyyntwl\"],\"packageNameMasksToInclude\":[\"tkoievseotgq\",\"l\"],\"classificationsToInclude\":[\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\"]}}},\"location\":\"gohdneuelfphsd\",\"tags\":{\"uvxzxclvi\":\"ozfikdowwq\"},\"id\":\"hqzonosggbhcoh\",\"name\":\"wdsjnkalju\",\"type\":\"iiswacffgdkzze\"}";
+            = "{\"properties\":{\"namespace\":\"gcj\",\"extensionProperties\":{\"bmnzbtbhjpgl\":\"zmuvpbttdumorppx\"},\"maintenanceScope\":\"InGuestPatch\",\"maintenanceWindow\":{\"startDateTime\":\"dneu\",\"expirationDateTime\":\"fphsdyhtozfikdow\",\"duration\":\"uuvxz\",\"timeZone\":\"lvithhqzonosgg\",\"recurEvery\":\"c\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"aljutiiswac\"],\"kbNumbersToInclude\":[\"dkzzewkfvhqcrail\"],\"classificationsToInclude\":[\"ppfufl\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"lxyjr\",\"sag\"],\"packageNameMasksToInclude\":[\"nihgwqapnedg\",\"bcvkcvqvpkeq\",\"cvdrhvoodsot\",\"obzdopcjwvnhdl\"],\"classificationsToInclude\":[\"gx\",\"xrslpm\",\"twuoegrpkhjwni\"]}}},\"location\":\"sluicpdggkzz\",\"tags\":{\"fy\":\"bmpaxmodfvu\",\"ouyftaakc\":\"sbpfvmwyhr\",\"ksmond\":\"wiyzvqtmnubexkp\",\"gkopkwhojvpajqgx\":\"mquxvypo\"},\"id\":\"mocmbqfqvmk\",\"name\":\"xozap\",\"type\":\"helxprglya\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,54 +40,55 @@ public final class MaintenanceConfigurationsCreateOrUpdateWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceConfiguration response = manager.maintenanceConfigurations()
-            .define("z")
-            .withExistingResourceGroup("qeqxo")
-            .withRegion("hin")
-            .withTags(mapOf("dslgnayqigynduh", "gmifthnzd"))
-            .withNamespace("zxctobgb")
-            .withExtensionProperties(mapOf("mfqjhhkxbp", "oizpostmgrcfbun", "jhxxjyn", "jy"))
+            .define("tpvjzbexilzznfqq")
+            .withExistingResourceGroup("t")
+            .withRegion("tibqdxbxwakb")
+            .withTags(mapOf("iplbpodxunkbebxm", "xndlkzgxhu"))
+            .withNamespace("pmqtaru")
+            .withExtensionProperties(mapOf("jewgdrjerv", "mkcjhwqytjrybn", "pehindoygm", "aen", "sl", "fthnzdn"))
             .withMaintenanceScope(MaintenanceScope.SQLMANAGED_INSTANCE)
-            .withVisibility(Visibility.CUSTOM)
+            .withVisibility(Visibility.PUBLIC)
             .withInstallPatches(new InputPatchConfiguration().withRebootSetting(RebootOptions.NEVER)
-                .withWindowsParameters(
-                    new InputWindowsParameters().withKbNumbersToExclude(Arrays.asList("hsfxoblytkb", "mpew"))
-                        .withKbNumbersToInclude(Arrays.asList("bkrvrnsvshqj", "hxcr", "bfovasrruvwbhsq"))
-                        .withClassificationsToInclude(Arrays.asList("bcgjbirxbp", "bsrfbj", "dtws"))
-                        .withExcludeKbsRequiringReboot(false))
-                .withLinuxParameters(
-                    new InputLinuxParameters().withPackageNameMasksToExclude(Arrays.asList("vjz", "exilzznfqqnvwpmq"))
-                        .withPackageNameMasksToInclude(Arrays.asList("uoujmkcjhwqy", "jrybnwjewgdrjer"))
-                        .withClassificationsToInclude(Arrays.asList("enq"))))
-            .withStartDateTime("krtswbxqz")
-            .withExpirationDateTime("zjf")
-            .withDuration("vjfdx")
-            .withTimeZone("vetvt")
-            .withRecurEvery("aqtdoqmcbx")
+                .withWindowsParameters(new InputWindowsParameters()
+                    .withKbNumbersToExclude(Arrays.asList("zdxss", "dbzm", "vdfznudaodvxzb"))
+                    .withKbNumbersToInclude(Arrays.asList("lylpstdb", "hxsrzdzucersc", "ntnev"))
+                    .withClassificationsToInclude(Arrays.asList("jmygtdsslswtmwer"))
+                    .withExcludeKbsRequiringReboot(false))
+                .withLinuxParameters(new InputLinuxParameters()
+                    .withPackageNameMasksToExclude(Arrays.asList("qsemwabne", "shhszhedplvwiw"))
+                    .withPackageNameMasksToInclude(Arrays.asList("wmbesldnkw", "tppjflcx"))
+                    .withClassificationsToInclude(Arrays.asList("okonzmnsikvmkqz", "qqkdltfzxmhhvhgu", "eodkwobda"))))
+            .withStartDateTime("igynduhavhqlk")
+            .withExpirationDateTime("umaq")
+            .withDuration("bgycduiertgccym")
+            .withTimeZone("olpsslqlf")
+            .withRecurEvery("dnbbglzps")
             .create();
 
-        Assertions.assertEquals("gohdneuelfphsd", response.location());
-        Assertions.assertEquals("ozfikdowwq", response.tags().get("uvxzxclvi"));
-        Assertions.assertEquals("lfmmdnbbglzpswi", response.namespace());
-        Assertions.assertEquals("cwyhzdxssa", response.extensionProperties().get("bzmnvdfznud"));
-        Assertions.assertEquals(MaintenanceScope.EXTENSION, response.maintenanceScope());
-        Assertions.assertEquals(Visibility.PUBLIC, response.visibility());
+        Assertions.assertEquals("sluicpdggkzz", response.location());
+        Assertions.assertEquals("bmpaxmodfvu", response.tags().get("fy"));
+        Assertions.assertEquals("gcj", response.namespace());
+        Assertions.assertEquals("zmuvpbttdumorppx", response.extensionProperties().get("bmnzbtbhjpgl"));
+        Assertions.assertEquals(MaintenanceScope.IN_GUEST_PATCH, response.maintenanceScope());
+        Assertions.assertEquals(Visibility.CUSTOM, response.visibility());
         Assertions.assertEquals(RebootOptions.NEVER, response.installPatches().rebootSetting());
-        Assertions.assertEquals("gaokonzmnsikv",
+        Assertions.assertEquals("aljutiiswac",
             response.installPatches().windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("dltfz", response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("xndlkzgxhu",
+        Assertions.assertEquals("dkzzewkfvhqcrail",
+            response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("ppfufl",
             response.installPatches().windowsParameters().classificationsToInclude().get(0));
         Assertions.assertTrue(response.installPatches().windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals("odxun",
+        Assertions.assertEquals("lxyjr",
             response.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("tkoievseotgq",
+        Assertions.assertEquals("nihgwqapnedg",
             response.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("u", response.installPatches().linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("riofzpyqse", response.startDateTime());
-        Assertions.assertEquals("abnetshh", response.expirationDateTime());
-        Assertions.assertEquals("h", response.duration());
-        Assertions.assertEquals("plvwiwubmwmbes", response.timeZone());
-        Assertions.assertEquals("nkww", response.recurEvery());
+        Assertions.assertEquals("gx", response.installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("dneu", response.startDateTime());
+        Assertions.assertEquals("fphsdyhtozfikdow", response.expirationDateTime());
+        Assertions.assertEquals("uuvxz", response.duration());
+        Assertions.assertEquals("lvithhqzonosgg", response.timeZone());
+        Assertions.assertEquals("c", response.recurEvery());
     }
 
     // Use "Map.of" if available

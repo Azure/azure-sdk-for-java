@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
@@ -57,7 +56,6 @@ public class WebSearchSync {
             agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 

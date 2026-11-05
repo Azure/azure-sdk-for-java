@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class DppResourceGuardProxyUnlockDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+     * x-ms-original-file: 2026-07-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
      * Sample code: UnlockDelete ResourceGuardProxy.

@@ -21,7 +21,7 @@ public final class HcpOpenShiftVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"channelGroup\":\"xfrdd\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-01-09T04:43:14Z\"},\"id\":\"tizzronasxif\",\"name\":\"ozqyzh\",\"type\":\"tw\"}";
+            = "{\"properties\":{\"channelGroup\":\"rxcpjuisavo\",\"enabled\":true,\"endOfLifeTimestamp\":\"2021-01-28T07:43:14Z\"},\"id\":\"fvazivjlfrqttba\",\"name\":\"lkatnwxyiopidkqq\",\"type\":\"kuvscxkdm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class HcpOpenShiftVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HcpOpenShiftVersion response = manager.hcpOpenShiftVersions()
-            .getWithResponse("gnepttwqmsni", "fcdmqnrojlpijn", com.azure.core.util.Context.NONE)
+            .getWithResponse("ctxtgzukxi", "mmqtgqqqxhr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xfrdd", response.properties().channelGroup());
-        Assertions.assertFalse(response.properties().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T04:43:14Z"),
+        Assertions.assertEquals("rxcpjuisavo", response.properties().channelGroup());
+        Assertions.assertTrue(response.properties().enabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-28T07:43:14Z"),
             response.properties().endOfLifeTimestamp());
     }
 }

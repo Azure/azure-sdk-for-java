@@ -16,6 +16,7 @@ jobs:
           displayName: 'Capture repo state for analysis'
           targetPath: '$(System.DefaultWorkingDirectory)'
           artifactName: 'repository'
+          isProduction: false
           sbomEnabled: false
 
     pool:

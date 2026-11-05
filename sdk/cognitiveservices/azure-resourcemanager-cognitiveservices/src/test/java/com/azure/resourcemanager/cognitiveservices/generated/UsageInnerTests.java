@@ -15,17 +15,17 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"unit\":\"Bytes\",\"name\":{\"value\":\"wzjuqk\",\"localizedValue\":\"sa\"},\"quotaPeriod\":\"wkuofoskghsauu\",\"limit\":35.506862744771716,\"currentValue\":77.80758609860673,\"nextResetTime\":\"duugidyjr\",\"status\":\"Included\",\"scopeType\":\"Regional\",\"scopeId\":\"svexcsonpclhoco\"}")
+            "{\"id\":\"xbczwtruwiqz\",\"type\":\"j\",\"unit\":\"Bytes\",\"name\":{\"value\":\"yokacspkw\",\"localizedValue\":\"zdobpxjmflbvvnch\"},\"quotaPeriod\":\"cciw\",\"limit\":22.377782651576815,\"currentValue\":22.407160322024012,\"nextResetTime\":\"sa\",\"status\":\"Unknown\",\"scopeType\":\"Regional\",\"scopeId\":\"foskghsauuimj\"}")
             .toObject(UsageInner.class);
         Assertions.assertEquals(UnitType.BYTES, model.unit());
-        Assertions.assertEquals("wzjuqk", model.name().value());
-        Assertions.assertEquals("sa", model.name().localizedValue());
-        Assertions.assertEquals("wkuofoskghsauu", model.quotaPeriod());
-        Assertions.assertEquals(35.506862744771716D, model.limit());
-        Assertions.assertEquals(77.80758609860673D, model.currentValue());
-        Assertions.assertEquals("duugidyjr", model.nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
+        Assertions.assertEquals("yokacspkw", model.name().value());
+        Assertions.assertEquals("zdobpxjmflbvvnch", model.name().localizedValue());
+        Assertions.assertEquals("cciw", model.quotaPeriod());
+        Assertions.assertEquals(22.377782651576815D, model.limit());
+        Assertions.assertEquals(22.407160322024012D, model.currentValue());
+        Assertions.assertEquals("sa", model.nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.status());
         Assertions.assertEquals(QuotaScopeType.REGIONAL, model.scopeType());
-        Assertions.assertEquals("svexcsonpclhoco", model.scopeId());
+        Assertions.assertEquals("foskghsauuimj", model.scopeId());
     }
 }

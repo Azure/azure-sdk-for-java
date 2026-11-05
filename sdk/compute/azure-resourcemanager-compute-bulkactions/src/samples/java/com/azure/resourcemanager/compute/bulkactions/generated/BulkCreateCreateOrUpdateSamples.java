@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.compute.bulkactions.models.BillingProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkactionVMProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.CachingTypes;
@@ -15,6 +16,8 @@ import com.azure.resourcemanager.compute.bulkactions.models.DiskCreateOptionType
 import com.azure.resourcemanager.compute.bulkactions.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocationType;
 import com.azure.resourcemanager.compute.bulkactions.models.HardwareProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.ImageReference;
 import com.azure.resourcemanager.compute.bulkactions.models.LinuxConfiguration;
@@ -26,9 +29,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.NetworkProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OSDisk;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentMode;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentPolicy;
-import com.azure.resourcemanager.compute.bulkactions.models.PriorityProfile;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -40,6 +41,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetwor
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfigurationProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ZonePlacementPolicyType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,11 +66,6 @@ public final class BulkCreateCreateOrUpdateSamples {
             .withTags(mapOf("workload", "batch-render", "env", "prod"))
             .withProperties(new BulkCreateProperties().withCapacity(2)
                 .withCapacityType(CapacityType.VM)
-                .withMinCapacity(1)
-                .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
-                .withPriorityProfile(new PriorityProfile().withType(PriorityType.SPOT)
-                    .withMaxPricePerVM(0.2D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE))
                 .withComputeProfile(new ComputeProfile().withVirtualMachineProfile(new BulkactionVMProperties()
                     .withStorageProfile(new StorageProfile()
                         .withImageReference(new ImageReference().withPublisher("Canonical")
@@ -101,11 +98,18 @@ public final class BulkCreateCreateOrUpdateSamples {
                                                 new VirtualMachineNetworkInterfaceIPConfigurationProperties()
                                                     .withSubnet(new SubResource().withId(
                                                         "/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"))
-                                                    .withPrimary(true)))))))))
-                    .withComputeApiVersion("2024-11-01"))
+                                                    .withPrimary(true))))))))
+                    .withPriority(PriorityType.SPOT)
+                    .withBillingProfile(new BillingProfile().withMaxPrice(0.05D))
+                    .withEvictionPolicy(EvictionPolicy.DEALLOCATE)).withComputeApiVersion("2024-11-01"))
                 .withExecutionParameters(new ExecutionParameters().withRetryPolicy(
                     new RetryPolicy().withRetryWindowInMinutes(30).withOnFailureAction(ResourceOperationType.DELETE))))
             .withZones(Arrays.asList("1", "2"))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("microsoftlosangeles1").withType(ExtendedLocationType.EDGE_ZONE))
+            .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                .withIncludeZones(Arrays.asList("1", "2"))
+                .withExcludeZones(Arrays.asList("3")))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

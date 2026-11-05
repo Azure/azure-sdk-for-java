@@ -13,19 +13,19 @@ public final class FleetspaceAccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspaceAccountProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"InternallyReady\",\"globalDatabaseAccountProperties\":{\"resourceId\":\"rcjlvkrkegtyczup\",\"armLocation\":\"yxlz\"}}")
+            "{\"provisioningState\":\"InternallyReady\",\"globalDatabaseAccountProperties\":{\"resourceId\":\"wjalw\",\"armLocation\":\"ofxca\"}}")
             .toObject(FleetspaceAccountProperties.class);
-        Assertions.assertEquals("rcjlvkrkegtyczup", model.globalDatabaseAccountProperties().resourceId());
-        Assertions.assertEquals("yxlz", model.globalDatabaseAccountProperties().armLocation());
+        Assertions.assertEquals("wjalw", model.globalDatabaseAccountProperties().resourceId());
+        Assertions.assertEquals("ofxca", model.globalDatabaseAccountProperties().armLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetspaceAccountProperties model = new FleetspaceAccountProperties().withGlobalDatabaseAccountProperties(
-            new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("rcjlvkrkegtyczup")
-                .withArmLocation("yxlz"));
+            new FleetspaceAccountPropertiesGlobalDatabaseAccountProperties().withResourceId("wjalw")
+                .withArmLocation("ofxca"));
         model = BinaryData.fromObject(model).toObject(FleetspaceAccountProperties.class);
-        Assertions.assertEquals("rcjlvkrkegtyczup", model.globalDatabaseAccountProperties().resourceId());
-        Assertions.assertEquals("yxlz", model.globalDatabaseAccountProperties().armLocation());
+        Assertions.assertEquals("wjalw", model.globalDatabaseAccountProperties().resourceId());
+        Assertions.assertEquals("ofxca", model.globalDatabaseAccountProperties().armLocation());
     }
 }

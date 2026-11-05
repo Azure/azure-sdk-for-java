@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.commvaultcontentstore.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.StorageInner;
@@ -186,4 +187,60 @@ public interface Storage {
      * @return the refreshed resource.
      */
     Storage refresh(Context context);
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    Response<Storage> enableComplianceLockWithResponse(Context context);
+
+    /**
+     * Enable compliance lock on the storage. Synchronous operation.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource.
+     */
+    Storage enableComplianceLock();
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    Response<Storage> disableComplianceLockWithResponse(Context context);
+
+    /**
+     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
+     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource.
+     */
+    Storage disableComplianceLock();
+
+    /**
+     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+     * resource.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Commvault Storage Resource along with {@link Response}.
+     */
+    Response<Storage> refreshWithResponse(Context context);
 }

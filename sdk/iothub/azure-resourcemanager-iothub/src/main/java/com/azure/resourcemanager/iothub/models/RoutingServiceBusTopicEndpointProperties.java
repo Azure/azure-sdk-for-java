@@ -65,6 +65,11 @@ public final class RoutingServiceBusTopicEndpointProperties
      */
     private String resourceGroup;
 
+    /*
+     * The format of the message payload delivered to this endpoint.
+     */
+    private MessagePayloadFormat messagePayloadFormat;
+
     /**
      * Creates an instance of RoutingServiceBusTopicEndpointProperties class.
      */
@@ -258,6 +263,27 @@ public final class RoutingServiceBusTopicEndpointProperties
     }
 
     /**
+     * Get the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @return the messagePayloadFormat value.
+     */
+    public MessagePayloadFormat messagePayloadFormat() {
+        return this.messagePayloadFormat;
+    }
+
+    /**
+     * Set the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @param messagePayloadFormat the messagePayloadFormat value to set.
+     * @return the RoutingServiceBusTopicEndpointProperties object itself.
+     */
+    public RoutingServiceBusTopicEndpointProperties
+        withMessagePayloadFormat(MessagePayloadFormat messagePayloadFormat) {
+        this.messagePayloadFormat = messagePayloadFormat;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -273,6 +299,8 @@ public final class RoutingServiceBusTopicEndpointProperties
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("messagePayloadFormat",
+            this.messagePayloadFormat == null ? null : this.messagePayloadFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -312,6 +340,9 @@ public final class RoutingServiceBusTopicEndpointProperties
                     deserializedRoutingServiceBusTopicEndpointProperties.subscriptionId = reader.getString();
                 } else if ("resourceGroup".equals(fieldName)) {
                     deserializedRoutingServiceBusTopicEndpointProperties.resourceGroup = reader.getString();
+                } else if ("messagePayloadFormat".equals(fieldName)) {
+                    deserializedRoutingServiceBusTopicEndpointProperties.messagePayloadFormat
+                        = MessagePayloadFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

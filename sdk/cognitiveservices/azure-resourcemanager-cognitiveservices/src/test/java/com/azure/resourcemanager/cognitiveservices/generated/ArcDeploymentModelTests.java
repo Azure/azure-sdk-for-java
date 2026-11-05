@@ -12,16 +12,16 @@ public final class ArcDeploymentModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentModel model
-            = BinaryData.fromString("{\"format\":\"bpkuwxeoio\",\"name\":\"fiz\"}").toObject(ArcDeploymentModel.class);
-        Assertions.assertEquals("bpkuwxeoio", model.format());
-        Assertions.assertEquals("fiz", model.name());
+            = BinaryData.fromString("{\"format\":\"fqb\",\"name\":\"ntnrgmqsorh\"}").toObject(ArcDeploymentModel.class);
+        Assertions.assertEquals("fqb", model.format());
+        Assertions.assertEquals("ntnrgmqsorh", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcDeploymentModel model = new ArcDeploymentModel().withFormat("bpkuwxeoio").withName("fiz");
+        ArcDeploymentModel model = new ArcDeploymentModel().withFormat("fqb").withName("ntnrgmqsorh");
         model = BinaryData.fromObject(model).toObject(ArcDeploymentModel.class);
-        Assertions.assertEquals("bpkuwxeoio", model.format());
-        Assertions.assertEquals("fiz", model.name());
+        Assertions.assertEquals("fqb", model.format());
+        Assertions.assertEquals("ntnrgmqsorh", model.name());
     }
 }

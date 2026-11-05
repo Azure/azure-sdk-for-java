@@ -72,6 +72,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                             assertEquals(updatedDescription, updatedStore.getDescription());
 
                             return memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null, null)
+                                .takeUntil(store -> store.getName().equals(updatedStore.getName()))
                                 .collectList()
                                 .doOnNext(stores -> {
                                     assertNotNull(stores);
@@ -116,10 +117,16 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
             = new MemoryStoreDefaultDefinition(deploymentName, embeddingDeploymentName);
         definition.setOptions(new MemoryStoreDefaultOptions(true, true));
 
-        ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(userMessageContent).build());
-        ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
+        ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(userMessageContent)
+            .build());
+        ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(queryMessageContent)
+            .build());
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);
 
@@ -183,16 +190,31 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
             = new MemoryStoreDefaultDefinition(deploymentName, embeddingDeploymentName);
         definition.setOptions(options);
 
-        ResponseInputItem initialMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(firstMessageContent).build());
-        ResponseInputItem chainedMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(chainedMessageContent).build());
-        ResponseInputItem searchQuery = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
-        ResponseInputItem agentMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.ASSISTANT).content(followupContextContent).build());
-        ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(followupQuestionContent).build());
+        ResponseInputItem initialMessage = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(firstMessageContent)
+            .build());
+        ResponseInputItem chainedMessage = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(chainedMessageContent)
+            .build());
+        ResponseInputItem searchQuery = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(queryMessageContent)
+            .build());
+        ResponseInputItem agentMessage = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.ASSISTANT)
+            .content(followupContextContent)
+            .build());
+        ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .type(EasyInputMessage.Type.MESSAGE)
+            .role(EasyInputMessage.Role.USER)
+            .content(followupQuestionContent)
+            .build());
 
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);

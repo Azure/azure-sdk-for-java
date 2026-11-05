@@ -987,12 +987,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesWithContext(1);
     }
 
+    Flux<ServiceBusMessageContext> receiveMessagesWithContextForAsyncProcessor() {
+        return receiveMessagesWithContext(1, false);
+    }
+
     private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+        return receiveMessagesWithContext(highTide, true);
+    }
+
+    private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide, boolean instrumentProcess) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
 
-        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
+        final Flux<ServiceBusMessageContext> messageFluxWithTracing
+            = instrumentProcess ? new FluxTrace(messageFlux, instrumentation) : messageFlux;
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
 
         if (!isSessionEnabled && receiverOptions.isAutoLockRenewEnabled()) {
@@ -1903,6 +1912,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     boolean isAutoLockRenewRequested() {
         return receiverOptions.isAutoLockRenewEnabled();
+    }
+
+    void endLockRenewal(ServiceBusReceivedMessage message) {
+        if (!isSessionEnabled
+            && receiverOptions.isAutoLockRenewEnabled()
+            && message != null
+            && message.getLockToken() != null) {
+            renewalContainer.remove(message.getLockToken());
+        }
     }
 
     boolean isV2() {

@@ -23,12 +23,14 @@ public final class EdgeActionUpdate implements JsonSerializable<EdgeActionUpdate
     private EdgeActionPropertiesUpdate properties;
 
     /*
-     * The sku type of the edge action
+     * The SKU of the Edge Action. Do not include sku in PATCH requests; any supplied sku, including null or the
+     * existing value, is rejected.
      */
     private SkuTypeUpdate sku;
 
     /*
-     * Resource tags.
+     * Resource tags. For PATCH requests, omitted tags are preserved, an empty tags object clears all tags, and supplied
+     * tags replace the entire tag collection. Null tags are rejected.
      */
     private Map<String, String> tags;
 
@@ -59,7 +61,8 @@ public final class EdgeActionUpdate implements JsonSerializable<EdgeActionUpdate
     }
 
     /**
-     * Get the sku property: The sku type of the edge action.
+     * Get the sku property: The SKU of the Edge Action. Do not include sku in PATCH requests; any supplied sku,
+     * including null or the existing value, is rejected.
      * 
      * @return the sku value.
      */
@@ -68,7 +71,8 @@ public final class EdgeActionUpdate implements JsonSerializable<EdgeActionUpdate
     }
 
     /**
-     * Set the sku property: The sku type of the edge action.
+     * Set the sku property: The SKU of the Edge Action. Do not include sku in PATCH requests; any supplied sku,
+     * including null or the existing value, is rejected.
      * 
      * @param sku the sku value to set.
      * @return the EdgeActionUpdate object itself.
@@ -79,7 +83,8 @@ public final class EdgeActionUpdate implements JsonSerializable<EdgeActionUpdate
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the tags property: Resource tags. For PATCH requests, omitted tags are preserved, an empty tags object clears
+     * all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @return the tags value.
      */
@@ -88,7 +93,8 @@ public final class EdgeActionUpdate implements JsonSerializable<EdgeActionUpdate
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Set the tags property: Resource tags. For PATCH requests, omitted tags are preserved, an empty tags object clears
+     * all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param tags the tags value to set.
      * @return the EdgeActionUpdate object itself.

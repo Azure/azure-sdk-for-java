@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkVirtualAppliancesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceUpdateTags.json
+     * x-ms-original-file: 2026-03-01/NetworkVirtualApplianceUpdateTags.json
      */
     /**
      * Sample code: Update NetworkVirtualAppliance.

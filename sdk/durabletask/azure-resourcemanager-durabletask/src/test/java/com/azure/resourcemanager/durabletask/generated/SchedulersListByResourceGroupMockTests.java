@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
@@ -24,7 +25,7 @@ public final class SchedulersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"wvlqdqgb\",\"ipAllowlist\":[\"ylihkaetckt\",\"fcivfsnkym\",\"ctq\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":1887113058,\"redundancyState\":\"None\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"uwutttxfvjrbi\",\"phxepcyvahf\",\"ljkyqxjvuuj\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"kgj\",\"name\":\"jyoxgvclt\",\"type\":\"gsncghkjeszz\"}]},\"location\":\"ijhtxf\",\"tags\":{\"xnehmpvec\":\"bfs\"},\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"endpoint\":\"t\",\"ipAllowlist\":[\"fhpagmhrskdsnf\",\"sd\",\"akgtdlmkkzevdlh\",\"wpusdsttwvogv\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":2086607804,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"kufgmj\",\"rwr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"aenuuz\",\"name\":\"opbminrfdw\",\"type\":\"yuhhziu\"}]},\"identity\":{\"principalId\":\"ozbhdmsmlmzq\",\"tenantId\":\"ft\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"iyylhalnswhccsp\":{\"principalId\":\"u\",\"clientId\":\"hxicslfaoqz\"}}},\"location\":\"aivwitqscywu\",\"tags\":{\"i\":\"oluhczbwemh\",\"wmsweypqwd\":\"sbrgz\",\"mkttlstvlzywem\":\"ggicccnxqhue\",\"lusiy\":\"zrncsdt\"},\"id\":\"bsfgytguslfea\",\"name\":\"cy\",\"type\":\"qukyhejhzi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +35,16 @@ public final class SchedulersListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Scheduler> response
-            = manager.schedulers().listByResourceGroup("senhwlrs", com.azure.core.util.Context.NONE);
+            = manager.schedulers().listByResourceGroup("yuuximerqfobwyzn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ijhtxf", response.iterator().next().location());
-        Assertions.assertEquals("bfs", response.iterator().next().tags().get("xnehmpvec"));
-        Assertions.assertEquals("ylihkaetckt", response.iterator().next().properties().ipAllowlist().get(0));
+        Assertions.assertEquals("aivwitqscywu", response.iterator().next().location());
+        Assertions.assertEquals("oluhczbwemh", response.iterator().next().tags().get("i"));
+        Assertions.assertEquals("fhpagmhrskdsnf", response.iterator().next().properties().ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.DEDICATED, response.iterator().next().properties().sku().name());
-        Assertions.assertEquals(1887113058, response.iterator().next().properties().sku().capacity());
+        Assertions.assertEquals(2086607804, response.iterator().next().properties().sku().capacity());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }
