@@ -412,6 +412,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
         jsonWriter.writeJsonField("osDisk", this.osDisk);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         jsonWriter.writeJsonField("serviceArtifactReference", this.serviceArtifactReference);
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("placement", this.placement);
+        jsonWriter.writeJsonField("resiliencyPolicy", this.resiliencyPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -439,6 +442,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
             BatchOsDisk osDisk = null;
             SecurityProfile securityProfile = null;
             ServiceArtifactReference serviceArtifactReference = null;
+            HardwareProfile hardwareProfile = null;
+            Placement placement = null;
+            ResiliencyPolicy resiliencyPolicy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -466,6 +472,12 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
                     securityProfile = SecurityProfile.fromJson(reader);
                 } else if ("serviceArtifactReference".equals(fieldName)) {
                     serviceArtifactReference = ServiceArtifactReference.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("placement".equals(fieldName)) {
+                    placement = Placement.fromJson(reader);
+                } else if ("resiliencyPolicy".equals(fieldName)) {
+                    resiliencyPolicy = ResiliencyPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -482,6 +494,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
             deserializedVirtualMachineConfiguration.osDisk = osDisk;
             deserializedVirtualMachineConfiguration.securityProfile = securityProfile;
             deserializedVirtualMachineConfiguration.serviceArtifactReference = serviceArtifactReference;
+            deserializedVirtualMachineConfiguration.hardwareProfile = hardwareProfile;
+            deserializedVirtualMachineConfiguration.placement = placement;
+            deserializedVirtualMachineConfiguration.resiliencyPolicy = resiliencyPolicy;
             return deserializedVirtualMachineConfiguration;
         });
     }
@@ -521,6 +536,124 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     @Generated
     public VirtualMachineConfiguration setOsDisk(BatchOsDisk osDisk) {
         this.osDisk = osDisk;
+        return this;
+    }
+
+    /*
+     * Specifies the hardware settings for the Compute Nodes. This property is not supported for pools created via
+     * auto-pool (as part of a job or job schedule); the request will be rejected if it is specified in that context.
+     */
+    @Generated
+    private HardwareProfile hardwareProfile;
+
+    /*
+     * The availability zone placement policy for Compute Nodes in the Pool. Set zonePlacementPolicy to Auto to delegate
+     * availability zone selection and balancing to the Virtual Machine Scale Set.
+     * On Pool creation, if placement is omitted, Batch uses nodePlacementConfiguration when it is specified; otherwise,
+     * the Pool uses Regional placement, which provides no availability zone distribution guarantee. This property
+     * cannot be combined with nodePlacementConfiguration.
+     * On PATCH, omitting placement preserves the existing placement policy, including when virtualMachineConfiguration
+     * is supplied.
+     */
+    @Generated
+    private Placement placement;
+
+    /*
+     * The resiliency policy for Compute Nodes in the Pool. This property requires placement.zonePlacementPolicy to be
+     * Auto.
+     * On PATCH, omitting resiliencyPolicy preserves the existing resiliency policy independently of whether placement
+     * is supplied.
+     */
+    @Generated
+    private ResiliencyPolicy resiliencyPolicy;
+
+    /**
+     * Get the hardwareProfile property: Specifies the hardware settings for the Compute Nodes. This property is not
+     * supported for pools created via auto-pool (as part of a job or job schedule); the request will be rejected if it
+     * is specified in that context.
+     *
+     * @return the hardwareProfile value.
+     */
+    @Generated
+    public HardwareProfile getHardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Set the hardwareProfile property: Specifies the hardware settings for the Compute Nodes. This property is not
+     * supported for pools created via auto-pool (as part of a job or job schedule); the request will be rejected if it
+     * is specified in that context.
+     *
+     * @param hardwareProfile the hardwareProfile value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setHardwareProfile(HardwareProfile hardwareProfile) {
+        this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
+     * Get the placement property: The availability zone placement policy for Compute Nodes in the Pool. Set
+     * zonePlacementPolicy to Auto to delegate availability zone selection and balancing to the Virtual Machine Scale
+     * Set.
+     * On Pool creation, if placement is omitted, Batch uses nodePlacementConfiguration when it is specified; otherwise,
+     * the Pool uses Regional placement, which provides no availability zone distribution guarantee. This property
+     * cannot be combined with nodePlacementConfiguration.
+     * On PATCH, omitting placement preserves the existing placement policy, including when virtualMachineConfiguration
+     * is supplied.
+     *
+     * @return the placement value.
+     */
+    @Generated
+    public Placement getPlacement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: The availability zone placement policy for Compute Nodes in the Pool. Set
+     * zonePlacementPolicy to Auto to delegate availability zone selection and balancing to the Virtual Machine Scale
+     * Set.
+     * On Pool creation, if placement is omitted, Batch uses nodePlacementConfiguration when it is specified; otherwise,
+     * the Pool uses Regional placement, which provides no availability zone distribution guarantee. This property
+     * cannot be combined with nodePlacementConfiguration.
+     * On PATCH, omitting placement preserves the existing placement policy, including when virtualMachineConfiguration
+     * is supplied.
+     *
+     * @param placement the placement value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setPlacement(Placement placement) {
+        this.placement = placement;
+        return this;
+    }
+
+    /**
+     * Get the resiliencyPolicy property: The resiliency policy for Compute Nodes in the Pool. This property requires
+     * placement.zonePlacementPolicy to be Auto.
+     * On PATCH, omitting resiliencyPolicy preserves the existing resiliency policy independently of whether placement
+     * is supplied.
+     *
+     * @return the resiliencyPolicy value.
+     */
+    @Generated
+    public ResiliencyPolicy getResiliencyPolicy() {
+        return this.resiliencyPolicy;
+    }
+
+    /**
+     * Set the resiliencyPolicy property: The resiliency policy for Compute Nodes in the Pool. This property requires
+     * placement.zonePlacementPolicy to be Auto.
+     * On PATCH, omitting resiliencyPolicy preserves the existing resiliency policy independently of whether placement
+     * is supplied.
+     *
+     * @param resiliencyPolicy the resiliencyPolicy value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setResiliencyPolicy(ResiliencyPolicy resiliencyPolicy) {
+        this.resiliencyPolicy = resiliencyPolicy;
         return this;
     }
 }

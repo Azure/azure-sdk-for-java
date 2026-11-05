@@ -34,14 +34,6 @@ public final class BatchNodeRebootKind extends ExpandableStringEnum<BatchNodeReb
     public static final BatchNodeRebootKind TASK_COMPLETION = fromString("taskcompletion");
 
     /**
-     * Deprecated, we encourage you to upload task data to Azure Storage in your task and use `TaskCompletion` instead.
-     * Allow currently running Tasks to complete, then wait for all Task data retention periods to expire. Schedule no
-     * new Tasks while waiting. Restart the Compute Node when all Task retention periods have expired.
-     */
-    @Generated
-    public static final BatchNodeRebootKind RETAINED_DATA = fromString("retaineddata");
-
-    /**
      * Creates a new instance of BatchNodeRebootKind value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

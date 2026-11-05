@@ -13,7 +13,12 @@ public enum BatchServiceVersion implements ServiceVersion {
     /**
      * Enum value 2025-06-01.
      */
-    V2025_06_01("2025-06-01");
+    V2025_06_01("2025-06-01"),
+
+    /**
+     * Enum value 2026-10-01.
+     */
+    V2026_10_01("2026-10-01");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum BatchServiceVersion implements ServiceVersion {
      * @return The latest {@link BatchServiceVersion}.
      */
     public static BatchServiceVersion getLatest() {
-        return V2025_06_01;
+        return V2026_10_01;
     }
 }
