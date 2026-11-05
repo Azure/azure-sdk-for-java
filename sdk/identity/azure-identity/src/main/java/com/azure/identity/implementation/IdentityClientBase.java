@@ -225,8 +225,9 @@ public abstract class IdentityClientBase {
         } else if (clientAssertionSupplier != null) {
             credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
         } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            // Fetch remote assertions during token acquisition, not permanently cached client initialization.
             credential = ClientCredentialFactory
-                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
+                .createFromCallback(() -> clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path."
