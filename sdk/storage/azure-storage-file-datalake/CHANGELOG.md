@@ -8,11 +8,20 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.30.2 (2026-11-03)
+
+### Bugs Fixed
 - Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
   `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
   when that position was not 0 and the buffer was larger than the block size.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.1` to version `12.37.2`.
 
 ## 12.30.1 (2026-11-02)
 
@@ -23,6 +32,18 @@
 - Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 - Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
 - Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.29.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.36.1`.
 
 ## 12.29.0 (2026-10-07)
 
