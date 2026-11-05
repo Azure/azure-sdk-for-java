@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.compute.recommender.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.compute.recommender.fluent.models.ComputeDiagnosticBaseInner;
+import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresBaseInner;
 
 /**
- * An immutable client-side representation of ComputeDiagnosticBase.
+ * An immutable client-side representation of SpotPlacementScoresBase.
  */
-public interface ComputeDiagnosticBase {
+public interface SpotPlacementScoresBase {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -33,11 +33,11 @@ public interface ComputeDiagnosticBase {
     String type();
 
     /**
-     * Gets the properties property: Contains additional properties of a diagnostic.
+     * Gets the properties property: Contains additional properties of a placement scores resource.
      * 
      * @return the properties value.
      */
-    DiagnosticProperties properties();
+    PlacementScoresProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -47,9 +47,9 @@ public interface ComputeDiagnosticBase {
     SystemData systemData();
 
     /**
-     * Gets the inner com.azure.resourcemanager.compute.recommender.fluent.models.ComputeDiagnosticBaseInner object.
+     * Gets the inner com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresBaseInner object.
      * 
      * @return the inner object.
      */
-    ComputeDiagnosticBaseInner innerModel();
+    SpotPlacementScoresBaseInner innerModel();
 }

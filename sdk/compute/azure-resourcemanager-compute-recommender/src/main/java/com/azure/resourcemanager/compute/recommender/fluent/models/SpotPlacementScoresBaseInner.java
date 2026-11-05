@@ -10,18 +10,18 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.compute.recommender.models.DiagnosticProperties;
+import com.azure.resourcemanager.compute.recommender.models.PlacementScoresProperties;
 import java.io.IOException;
 
 /**
- * Contains metadata of a diagnostic type.
+ * Contains metadata of the Spot Placement Scores resource.
  */
 @Immutable
-public final class ComputeDiagnosticBaseInner extends ProxyResource {
+public final class SpotPlacementScoresBaseInner extends ProxyResource {
     /*
-     * Contains additional properties of a diagnostic
+     * Contains additional properties of a placement scores resource.
      */
-    private DiagnosticProperties properties;
+    private PlacementScoresProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -44,17 +44,17 @@ public final class ComputeDiagnosticBaseInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of ComputeDiagnosticBaseInner class.
+     * Creates an instance of SpotPlacementScoresBaseInner class.
      */
-    private ComputeDiagnosticBaseInner() {
+    private SpotPlacementScoresBaseInner() {
     }
 
     /**
-     * Get the properties property: Contains additional properties of a diagnostic.
+     * Get the properties property: Contains additional properties of a placement scores resource.
      * 
      * @return the properties value.
      */
-    public DiagnosticProperties properties() {
+    public PlacementScoresProperties properties() {
         return this.properties;
     }
 
@@ -108,37 +108,37 @@ public final class ComputeDiagnosticBaseInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of ComputeDiagnosticBaseInner from the JsonReader.
+     * Reads an instance of SpotPlacementScoresBaseInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ComputeDiagnosticBaseInner if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of SpotPlacementScoresBaseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ComputeDiagnosticBaseInner.
+     * @throws IOException If an error occurs while reading the SpotPlacementScoresBaseInner.
      */
-    public static ComputeDiagnosticBaseInner fromJson(JsonReader jsonReader) throws IOException {
+    public static SpotPlacementScoresBaseInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ComputeDiagnosticBaseInner deserializedComputeDiagnosticBaseInner = new ComputeDiagnosticBaseInner();
+            SpotPlacementScoresBaseInner deserializedSpotPlacementScoresBaseInner = new SpotPlacementScoresBaseInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedComputeDiagnosticBaseInner.id = reader.getString();
+                    deserializedSpotPlacementScoresBaseInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedComputeDiagnosticBaseInner.name = reader.getString();
+                    deserializedSpotPlacementScoresBaseInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedComputeDiagnosticBaseInner.type = reader.getString();
+                    deserializedSpotPlacementScoresBaseInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedComputeDiagnosticBaseInner.properties = DiagnosticProperties.fromJson(reader);
+                    deserializedSpotPlacementScoresBaseInner.properties = PlacementScoresProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedComputeDiagnosticBaseInner.systemData = SystemData.fromJson(reader);
+                    deserializedSpotPlacementScoresBaseInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedComputeDiagnosticBaseInner;
+            return deserializedSpotPlacementScoresBaseInner;
         });
     }
 }

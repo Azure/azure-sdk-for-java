@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.compute.recommender.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.compute.recommender.fluent.models.ComputeDiagnosticBaseInner;
-import com.azure.resourcemanager.compute.recommender.models.ComputeDiagnosticBase;
-import com.azure.resourcemanager.compute.recommender.models.DiagnosticProperties;
+import com.azure.resourcemanager.compute.recommender.fluent.models.ComputePlacementScoresBaseInner;
+import com.azure.resourcemanager.compute.recommender.models.ComputePlacementScoresBase;
+import com.azure.resourcemanager.compute.recommender.models.PlacementScoresProperties;
 
-public final class ComputeDiagnosticBaseImpl implements ComputeDiagnosticBase {
-    private ComputeDiagnosticBaseInner innerObject;
+public final class ComputePlacementScoresBaseImpl implements ComputePlacementScoresBase {
+    private ComputePlacementScoresBaseInner innerObject;
 
     private final com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager serviceManager;
 
-    ComputeDiagnosticBaseImpl(ComputeDiagnosticBaseInner innerObject,
+    ComputePlacementScoresBaseImpl(ComputePlacementScoresBaseInner innerObject,
         com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -32,7 +32,7 @@ public final class ComputeDiagnosticBaseImpl implements ComputeDiagnosticBase {
         return this.innerModel().type();
     }
 
-    public DiagnosticProperties properties() {
+    public PlacementScoresProperties properties() {
         return this.innerModel().properties();
     }
 
@@ -40,7 +40,7 @@ public final class ComputeDiagnosticBaseImpl implements ComputeDiagnosticBase {
         return this.innerModel().systemData();
     }
 
-    public ComputeDiagnosticBaseInner innerModel() {
+    public ComputePlacementScoresBaseInner innerModel() {
         return this.innerObject;
     }
 

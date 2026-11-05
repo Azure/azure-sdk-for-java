@@ -1,14 +1,47 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2026-11-05)
 
-### Features Added
+- Azure Resource Manager Compute Recommender client library for Java. This package contains Microsoft Azure SDK for Compute Recommender Management SDK. The Compute Recommender Resource Provider Client. Package api-version 2026-10-05-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DiagnosticProperties` was removed
 
-### Other Changes
+#### `models.ComputeDiagnosticBase` was removed
+
+#### `models.SpotPlacementScores` was modified
+
+* `models.ComputeDiagnosticBase get(java.lang.String)` -> `models.SpotPlacementScoresBase get(java.lang.String)`
+
+#### `models.PlacementScore` was modified
+
+* `isQuotaAvailable()` was removed
+* `java.lang.String score()` -> `models.PlacementScoreValue score()`
+
+### Features Added
+
+* `models.ComputePlacementScoresResponse` was added
+
+* `models.PlacementScoreValue` was added
+
+* `models.ComputePlacementScoresInput` was added
+
+* `models.PlacementScoresProperties` was added
+
+* `models.ComputePlacementScores` was added
+
+* `models.SpotPlacementScoresBase` was added
+
+* `models.ComputePlacementScoresBase` was added
+
+#### `ComputeRecommenderManager` was modified
+
+* `computePlacementScores()` was added
+
+#### `models.PlacementScore` was modified
+
+* `placementPreference()` was added
 
 ## 1.0.0-beta.3 (2026-08-28)
 
