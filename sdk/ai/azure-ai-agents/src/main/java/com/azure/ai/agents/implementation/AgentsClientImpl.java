@@ -81,6 +81,20 @@ public final class AgentsClientImpl {
     }
 
     /**
+     * The BetaVoiceAgentsCampaignsImpl object to access its operations.
+     */
+    private final BetaVoiceAgentsCampaignsImpl betaVoiceAgentsCampaigns;
+
+    /**
+     * Gets the BetaVoiceAgentsCampaignsImpl object to access its operations.
+     *
+     * @return the BetaVoiceAgentsCampaignsImpl object.
+     */
+    public BetaVoiceAgentsCampaignsImpl getBetaVoiceAgentsCampaigns() {
+        return this.betaVoiceAgentsCampaigns;
+    }
+
+    /**
      * The BetaVoiceAgentsConversationsImpl object to access its operations.
      */
     private final BetaVoiceAgentsConversationsImpl betaVoiceAgentsConversations;
@@ -226,6 +240,7 @@ public final class AgentsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.betaVoiceAgentsCampaigns = new BetaVoiceAgentsCampaignsImpl(this);
         this.betaVoiceAgentsConversations = new BetaVoiceAgentsConversationsImpl(this);
         this.betaVoiceAgentsLiveConversations = new BetaVoiceAgentsLiveConversationsImpl(this);
         this.betaVoiceAgentsTelephonies = new BetaVoiceAgentsTelephoniesImpl(this);

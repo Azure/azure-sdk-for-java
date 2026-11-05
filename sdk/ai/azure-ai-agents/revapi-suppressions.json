@@ -9,18 +9,6 @@
           "code": "java.class.removed",
           "old": "class com.azure.ai.agents.models.EvaluationLevel",
           "justification": "EvaluationLevel was deprecated and unused by any public API; it is removed in this release. See CHANGELOG.md."
-        },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old": "method com.azure.ai.agents.models.ToolType com.azure.ai.agents.models.McpTool::getType()",
-          "new": "method java.lang.String com.azure.ai.agents.models.McpTool::getType()",
-          "justification": "Upstream TypeSpec separates the shared MCP model from the Tool subtype. McpTool now represents the shared model with a string type discriminator; ToolMcpTool represents the Tool subtype. This compatibility change is accepted for this release."
-        },
-        {
-          "code": "java.class.noLongerInheritsFromClass",
-          "old": "class com.azure.ai.agents.models.McpTool",
-          "new": "class com.azure.ai.agents.models.McpTool",
-          "justification": "Upstream TypeSpec separates the shared MCP model from the Tool subtype. McpTool is now the shared model, and callers adding MCP tools to an agent must use ToolMcpTool. This compatibility change is accepted for this release."
         }
       ]
     }

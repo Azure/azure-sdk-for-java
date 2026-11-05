@@ -17,8 +17,17 @@
 - Added typed Live delegation through `VoiceAgentLiveDelegation`, `VoiceAgentLiveDelegationType`,
   `VoiceAgentLiveClientDelegation`, and `VoiceAgentLiveResponsesDelegation`, with managed-agent delegation offsets
   represented as `Duration` and outputs as `List<VoiceAgentLiveDelegationResultItem>`.
+- Added preview telephony campaign clients and models for recipients, scheduling, progress, and validation errors.
 
 ### Breaking Changes
+
+- Replaced duplicate `Tool...` models with canonical tool models, including `McpTool` and `FileSearchTool`.
+- Changed `McpTool` to extend `Tool`; its `getType()` method now returns `ToolType` instead of `String`.
+- Replaced telephony binding creation inputs with the corresponding concrete `TelephonyBinding` models and removed
+  binding status properties.
+- Replaced telephony destination models with `TelephonyAddress`, `PhoneNumber`, `SipAddress`, and `TeamsAddress`.
+  Call-job creation now uses `TelephonyCallJobCreate` with typed source and destination addresses.
+- Renamed `TelephonyOutboundFixedIntervalRetryPolicy` to `FixedIntervalRetryPolicy`.
 
 ### Bugs Fixed
 
@@ -28,6 +37,7 @@
 
 ### Other Changes
 
+- Regenerated the client from Foundry TypeSpec commit `c547bc946e1b61c5ac0c798b48c22f0b7515ad59`.
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
 - Updated post-generation customizations to store fixed wire values in new Live and voice-agent models as class
   constants, preserving public getters and JSON serialization.

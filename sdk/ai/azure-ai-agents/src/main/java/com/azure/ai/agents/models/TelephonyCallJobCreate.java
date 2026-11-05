@@ -15,33 +15,24 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * A request to create one durable direct outbound call job.
+ * The direct outbound call to create.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class CreateTelephonyCallJobInput implements JsonSerializable<CreateTelephonyCallJobInput> {
+public final class TelephonyCallJobCreate implements JsonSerializable<TelephonyCallJobCreate> {
 
     /*
      * The phone destination to call.
      */
     @Generated
-    private final TelephonyOutboundDestination destination;
+    private final TelephonyAddress destination;
 
     /*
-     * The Foundry connection name in the current project used to originate the call. Its category selects Twilio, Azure
-     * Communication Services / Teams Phone extensibility, or SIP. No inbound telephony binding is required.
+     * Same-project Twilio, ACS/Teams Phone extensibility or SipOutbound connection; no inbound binding needed. SIP
+     * requires CustomKeys and a DNS target, revalidated before dialing, not a connectivity guarantee.
      */
     @Generated
     private final String connectionName;
-
-    /*
-     * The caller identity used to originate the call. For a Twilio connection, provide an authorized E.164 phone
-     * number. For an Azure Communication Services / Teams Phone extensibility connection, provide the Teams Resource
-     * Account object ID. The identity type is inferred from the connection category; originating does not change
-     * inbound routing.
-     */
-    @Generated
-    private final String source;
 
     /*
      * An optional customer-declared purpose for placing the call.
@@ -50,9 +41,7 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
     private String purpose;
 
     /*
-     * Structured input values available to the agent and greeting for this call. Agent-declared inputs are validated
-     * against their schemas; omitted optional inputs may use their Agent-defined default values, while omitted required
-     * inputs are rejected. Additional inputs remain available as dynamic template variables.
+     * Agent/greeting inputs, including nested JSON and null. Agent schemas, required fields and defaults apply.
      */
     @Generated
     private Map<String, BinaryData> structuredInputs;
@@ -64,20 +53,28 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
     private TelephonyCallJobSchedule schedule;
 
     /*
-     * The provider-attempt retry policy. Omit it for one attempt with no retry delay.
+     * Frozen retry policy. Omission at creation returns fixed_interval with max_attempts=1 and interval=0 seconds: one
+     * initial attempt, no retry.
      */
     @Generated
     private TelephonyOutboundRetryPolicy retryPolicy;
 
+    /*
+     * Caller identity: phone_number for Twilio/SIP, or a teams resource-account GUID for ACS/Teams Phone extensibility.
+     * No sip source URI.
+     */
+    @Generated
+    private final TelephonyAddress source;
+
     /**
-     * Creates an instance of CreateTelephonyCallJobInput class.
+     * Creates an instance of TelephonyCallJobCreate class.
      *
      * @param destination the destination value to set.
      * @param connectionName the connectionName value to set.
      * @param source the source value to set.
      */
     @Generated
-    public CreateTelephonyCallJobInput(TelephonyOutboundDestination destination, String connectionName, String source) {
+    public TelephonyCallJobCreate(TelephonyAddress destination, String connectionName, TelephonyAddress source) {
         this.destination = destination;
         this.connectionName = connectionName;
         this.source = source;
@@ -89,33 +86,20 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
      * @return the destination value.
      */
     @Generated
-    public TelephonyOutboundDestination getDestination() {
+    public TelephonyAddress getDestination() {
         return this.destination;
     }
 
     /**
-     * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
-     * Its category selects Twilio, Azure Communication Services / Teams Phone extensibility, or SIP. No inbound
-     * telephony binding is required.
+     * Get the connectionName property: Same-project Twilio, ACS/Teams Phone extensibility or SipOutbound connection; no
+     * inbound binding needed. SIP requires CustomKeys and a DNS target, revalidated before dialing, not a connectivity
+     * guarantee.
      *
      * @return the connectionName value.
      */
     @Generated
     public String getConnectionName() {
         return this.connectionName;
-    }
-
-    /**
-     * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
-     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone extensibility connection,
-     * provide the Teams Resource Account object ID. The identity type is inferred from the connection category;
-     * originating does not change inbound routing.
-     *
-     * @return the source value.
-     */
-    @Generated
-    public String getSource() {
-        return this.source;
     }
 
     /**
@@ -132,19 +116,17 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
      * Set the purpose property: An optional customer-declared purpose for placing the call.
      *
      * @param purpose the purpose value to set.
-     * @return the CreateTelephonyCallJobInput object itself.
+     * @return the TelephonyCallJobCreate object itself.
      */
     @Generated
-    public CreateTelephonyCallJobInput setPurpose(String purpose) {
+    public TelephonyCallJobCreate setPurpose(String purpose) {
         this.purpose = purpose;
         return this;
     }
 
     /**
-     * Get the structuredInputs property: Structured input values available to the agent and greeting for this call.
-     * Agent-declared inputs are validated against their schemas; omitted optional inputs may use their Agent-defined
-     * default values, while omitted required inputs are rejected. Additional inputs remain available as dynamic
-     * template variables.
+     * Get the structuredInputs property: Agent/greeting inputs, including nested JSON and null. Agent schemas, required
+     * fields and defaults apply.
      *
      * @return the structuredInputs value.
      */
@@ -154,16 +136,14 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
     }
 
     /**
-     * Set the structuredInputs property: Structured input values available to the agent and greeting for this call.
-     * Agent-declared inputs are validated against their schemas; omitted optional inputs may use their Agent-defined
-     * default values, while omitted required inputs are rejected. Additional inputs remain available as dynamic
-     * template variables.
+     * Set the structuredInputs property: Agent/greeting inputs, including nested JSON and null. Agent schemas, required
+     * fields and defaults apply.
      *
      * @param structuredInputs the structuredInputs value to set.
-     * @return the CreateTelephonyCallJobInput object itself.
+     * @return the TelephonyCallJobCreate object itself.
      */
     @Generated
-    public CreateTelephonyCallJobInput setStructuredInputs(Map<String, BinaryData> structuredInputs) {
+    public TelephonyCallJobCreate setStructuredInputs(Map<String, BinaryData> structuredInputs) {
         this.structuredInputs = structuredInputs;
         return this;
     }
@@ -182,16 +162,17 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
      * Set the schedule property: The optional execution window.
      *
      * @param schedule the schedule value to set.
-     * @return the CreateTelephonyCallJobInput object itself.
+     * @return the TelephonyCallJobCreate object itself.
      */
     @Generated
-    public CreateTelephonyCallJobInput setSchedule(TelephonyCallJobSchedule schedule) {
+    public TelephonyCallJobCreate setSchedule(TelephonyCallJobSchedule schedule) {
         this.schedule = schedule;
         return this;
     }
 
     /**
-     * Get the retryPolicy property: The provider-attempt retry policy. Omit it for one attempt with no retry delay.
+     * Get the retryPolicy property: Frozen retry policy. Omission at creation returns fixed_interval with
+     * max_attempts=1 and interval=0 seconds: one initial attempt, no retry.
      *
      * @return the retryPolicy value.
      */
@@ -201,15 +182,27 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
     }
 
     /**
-     * Set the retryPolicy property: The provider-attempt retry policy. Omit it for one attempt with no retry delay.
+     * Set the retryPolicy property: Frozen retry policy. Omission at creation returns fixed_interval with
+     * max_attempts=1 and interval=0 seconds: one initial attempt, no retry.
      *
      * @param retryPolicy the retryPolicy value to set.
-     * @return the CreateTelephonyCallJobInput object itself.
+     * @return the TelephonyCallJobCreate object itself.
      */
     @Generated
-    public CreateTelephonyCallJobInput setRetryPolicy(TelephonyOutboundRetryPolicy retryPolicy) {
+    public TelephonyCallJobCreate setRetryPolicy(TelephonyOutboundRetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
+    }
+
+    /**
+     * Get the source property: Caller identity: phone_number for Twilio/SIP, or a teams resource-account GUID for
+     * ACS/Teams Phone extensibility. No sip source URI.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public TelephonyAddress getSource() {
+        return this.source;
     }
 
     /**
@@ -221,7 +214,7 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("destination", this.destination);
         jsonWriter.writeStringField("connection_name", this.connectionName);
-        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("purpose", this.purpose);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs, (writer, element) -> {
             if (element == null) {
@@ -236,20 +229,20 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
     }
 
     /**
-     * Reads an instance of CreateTelephonyCallJobInput from the JsonReader.
+     * Reads an instance of TelephonyCallJobCreate from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateTelephonyCallJobInput if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of TelephonyCallJobCreate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateTelephonyCallJobInput.
+     * @throws IOException If an error occurs while reading the TelephonyCallJobCreate.
      */
     @Generated
-    public static CreateTelephonyCallJobInput fromJson(JsonReader jsonReader) throws IOException {
+    public static TelephonyCallJobCreate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TelephonyOutboundDestination destination = null;
+            TelephonyAddress destination = null;
             String connectionName = null;
-            String source = null;
+            TelephonyAddress source = null;
             String purpose = null;
             Map<String, BinaryData> structuredInputs = null;
             TelephonyCallJobSchedule schedule = null;
@@ -258,11 +251,11 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("destination".equals(fieldName)) {
-                    destination = TelephonyOutboundDestination.fromJson(reader);
+                    destination = TelephonyAddress.fromJson(reader);
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
                 } else if ("source".equals(fieldName)) {
-                    source = reader.getString();
+                    source = TelephonyAddress.fromJson(reader);
                 } else if ("purpose".equals(fieldName)) {
                     purpose = reader.getString();
                 } else if ("structured_inputs".equals(fieldName)) {
@@ -276,13 +269,13 @@ public final class CreateTelephonyCallJobInput implements JsonSerializable<Creat
                     reader.skipChildren();
                 }
             }
-            CreateTelephonyCallJobInput deserializedCreateTelephonyCallJobInput
-                = new CreateTelephonyCallJobInput(destination, connectionName, source);
-            deserializedCreateTelephonyCallJobInput.purpose = purpose;
-            deserializedCreateTelephonyCallJobInput.structuredInputs = structuredInputs;
-            deserializedCreateTelephonyCallJobInput.schedule = schedule;
-            deserializedCreateTelephonyCallJobInput.retryPolicy = retryPolicy;
-            return deserializedCreateTelephonyCallJobInput;
+            TelephonyCallJobCreate deserializedTelephonyCallJobCreate
+                = new TelephonyCallJobCreate(destination, connectionName, source);
+            deserializedTelephonyCallJobCreate.purpose = purpose;
+            deserializedTelephonyCallJobCreate.structuredInputs = structuredInputs;
+            deserializedTelephonyCallJobCreate.schedule = schedule;
+            deserializedTelephonyCallJobCreate.retryPolicy = retryPolicy;
+            return deserializedTelephonyCallJobCreate;
         });
     }
 }

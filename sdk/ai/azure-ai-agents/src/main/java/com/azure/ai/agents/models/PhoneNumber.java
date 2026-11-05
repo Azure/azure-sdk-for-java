@@ -12,47 +12,48 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A SIP destination for a telephony transfer target.
+ * Phone-number address used by supported source and destination roles.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class SipTelephonyTransferDestination extends TelephonyTransferDestination {
+public final class PhoneNumber extends TelephonyAddress {
 
     /*
-     * The telephony transfer destination type.
+     * Endpoint address type.
      */
     @Generated
-    private TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.SIP;
+    private TelephonyAddressType type = TelephonyAddressType.PHONE_NUMBER;
 
     /*
-     * The SIP or SIPS URI to call.
+     * E.164 phone number.
      */
     @Generated
     private final String value;
 
     /**
-     * Creates an instance of SipTelephonyTransferDestination class.
+     * Creates an instance of PhoneNumber class.
      *
      * @param value the value value to set.
      */
     @Generated
-    public SipTelephonyTransferDestination(String value) {
+    public PhoneNumber(String value) {
+        super(value);
         this.value = value;
     }
 
     /**
-     * Get the kind property: The telephony transfer destination type.
+     * Get the type property: Endpoint address type.
      *
-     * @return the kind value.
+     * @return the type value.
      */
     @Generated
     @Override
-    public TelephonyTransferDestinationKind getKind() {
-        return this.kind;
+    public TelephonyAddressType getType() {
+        return this.type;
     }
 
     /**
-     * Get the value property: The SIP or SIPS URI to call.
+     * Get the value property: E.164 phone number.
      *
      * @return the value value.
      */
@@ -69,39 +70,38 @@ public final class SipTelephonyTransferDestination extends TelephonyTransferDest
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of SipTelephonyTransferDestination from the JsonReader.
+     * Reads an instance of PhoneNumber from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SipTelephonyTransferDestination if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of PhoneNumber if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SipTelephonyTransferDestination.
+     * @throws IOException If an error occurs while reading the PhoneNumber.
      */
     @Generated
-    public static SipTelephonyTransferDestination fromJson(JsonReader jsonReader) throws IOException {
+    public static PhoneNumber fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String value = null;
-            TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.SIP;
+            TelephonyAddressType type = TelephonyAddressType.PHONE_NUMBER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
                     value = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = TelephonyTransferDestinationKind.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = TelephonyAddressType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            SipTelephonyTransferDestination deserializedSipTelephonyTransferDestination
-                = new SipTelephonyTransferDestination(value);
-            deserializedSipTelephonyTransferDestination.kind = kind;
-            return deserializedSipTelephonyTransferDestination;
+            PhoneNumber deserializedPhoneNumber = new PhoneNumber(value);
+            deserializedPhoneNumber.type = type;
+            return deserializedPhoneNumber;
         });
     }
 }

@@ -6,17 +6,16 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
-import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
-import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
+import com.azure.ai.agents.models.TelephonyCallJobCreate;
+import com.azure.ai.agents.models.TwilioTelephonyBinding;
+import com.azure.ai.agents.models.PhoneNumber;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
-import com.azure.ai.agents.models.TelephonyBindingStatus;
+import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyCallRecord;
 import com.azure.ai.agents.models.TelephonyCallJob;
 import com.azure.ai.agents.models.TelephonyCallJobStatus;
 import com.azure.ai.agents.models.TelephonyCallSummary;
-import com.azure.ai.agents.models.TelephonyOutboundDestination;
-import com.azure.ai.agents.models.TelephonyOutboundDestinationType;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
 import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.core.exception.HttpResponseException;
@@ -58,6 +57,7 @@ public class VoiceAgentTelephonyTests {
     private static final String AGENT = "voice-telephony-test";
     private static final String MISSING = "nonexistent-id";
     private static final String ROOT = "/agents/" + AGENT + "/telephony";
+    private static final String CALL_JOBS_ROOT = "/agents/" + AGENT + "/telephony_call_jobs";
     private static final String CONNECTION_1 = "twilio-sdk-testing-1";
     private static final String CONNECTION_2 = "twilio-sdk-testing-2";
     private static final String NUMBER_1 = "+13853864628";
@@ -68,7 +68,7 @@ public class VoiceAgentTelephonyTests {
     private static final String EMPTY_TARGETS = "{\"transfer_targets\":[]}";
     private static final String TARGETS = "{\"transfer_targets\":[{\"name\":\"sales_desk\","
         + "\"description\":\"Transfers to the sales desk for pricing questions.\","
-        + "\"destination\":{\"kind\":\"pstn\",\"value\":\"+14255550123\"}}]}";
+        + "\"destination\":{\"type\":\"phone_number\",\"value\":\"+14255550123\"}}]}";
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -76,14 +76,14 @@ public class VoiceAgentTelephonyTests {
         String bindingRequest = "{\"connection_name\":\"" + CONNECTION_1 + "\",\"label\":\"Java SDK test\","
             + "\"phone_number\":\"" + NUMBER_1 + "\",\"provider\":\"twilio\"}";
         String bindingResponse = "{\"provider\":\"twilio\",\"id\":\"binding-1\",\"label\":\"Java SDK test\","
-            + "\"status\":\"active\",\"incoming_call_url\":\"https://example.test/incoming\","
-            + "\"connection_name\":\"" + CONNECTION_1 + "\",\"phone_number\":\"" + NUMBER_1 + "\"}";
+            + "\"incoming_call_url\":\"https://example.test/incoming\"," + "\"connection_name\":\"" + CONNECTION_1
+            + "\",\"phone_number\":\"" + NUMBER_1 + "\"}";
         String jobRequest = "{\"destination\":{\"type\":\"phone_number\",\"value\":\"" + NUMBER_1 + "\"},"
-            + "\"connection_name\":\"" + CONNECTION_2 + "\",\"source\":\"" + NUMBER_2 + "\","
-            + "\"purpose\":\"Java SDK telephony validation\"}";
+            + "\"connection_name\":\"" + CONNECTION_2 + "\",\"source\":{\"type\":\"phone_number\",\"value\":\""
+            + NUMBER_2 + "\"}," + "\"purpose\":\"Java SDK telephony validation\"}";
         String jobResponse = "{\"destination\":{\"type\":\"phone_number\",\"value\":\"" + NUMBER_1 + "\"},"
-            + "\"connection_name\":\"" + CONNECTION_2 + "\",\"source\":\"" + NUMBER_2 + "\","
-            + "\"purpose\":\"Java SDK telephony validation\",\"id\":\"job-1\","
+            + "\"connection_name\":\"" + CONNECTION_2 + "\",\"source\":{\"type\":\"phone_number\",\"value\":\""
+            + NUMBER_2 + "\"}," + "\"purpose\":\"Java SDK telephony validation\",\"id\":\"job-1\","
             + "\"object\":\"telephony.call_job\",\"agent_name\":\"" + AGENT + "\",\"status\":\"accepted\","
             + "\"retry_policy\":{\"max_attempts\":1},\"attempt_count\":0,\"revision\":1,"
             + "\"created_at\":1,\"updated_at\":1}";
@@ -91,29 +91,32 @@ public class VoiceAgentTelephonyTests {
             .replace("\"revision\":1", "\"revision\":2");
         ScriptedTransport transport = new ScriptedTransport(async);
         transport.expect(HttpMethod.POST, ROOT + "/bindings", bindingRequest, 201, bindingResponse);
-        transport.expect(HttpMethod.POST, ROOT + "/call_jobs", jobRequest,
+        transport.expect(HttpMethod.POST, CALL_JOBS_ROOT, jobRequest,
             header(IDEMPOTENCY_KEY, "offline-idempotency-key"), 202, jobResponse, new HttpHeaders());
-        transport.expect(HttpMethod.GET, ROOT + "/call_jobs/job-1", null, 200, jobResponse);
-        transport.expect(HttpMethod.POST, ROOT + "/call_jobs/job-1:cancel", null, header(HttpHeaderName.IF_MATCH, "1"),
+        transport.expect(HttpMethod.GET, CALL_JOBS_ROOT + "/job-1", null, 200, jobResponse);
+        transport.expect(HttpMethod.POST, CALL_JOBS_ROOT + "/job-1:cancel", null, header(HttpHeaderName.IF_MATCH, "1"),
             200, cancelledJobResponse, new HttpHeaders());
         AgentsClientBuilder builder = builder(transport);
         BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
         BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
 
-        CreateTwilioTelephonyBindingInput bindingRequestModel
-            = new CreateTwilioTelephonyBindingInput(CONNECTION_1, NUMBER_1).setLabel("Java SDK test");
+        TwilioTelephonyBinding bindingRequestModel
+            = new TwilioTelephonyBinding(CONNECTION_1, NUMBER_1).setLabel("Java SDK test");
         TelephonyBinding binding = call(async, () -> syncClient.createTelephonyBinding(AGENT, bindingRequestModel),
             () -> asyncClient.createTelephonyBinding(AGENT, bindingRequestModel));
         assertEquals("binding-1", binding.getId());
-        assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
+        assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
+        assertEquals(NUMBER_1, assertInstanceOf(TwilioTelephonyBinding.class, binding).getPhoneNumber());
 
-        CreateTelephonyCallJobInput jobRequestModel = new CreateTelephonyCallJobInput(
-            new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, NUMBER_1), CONNECTION_2,
-            NUMBER_2).setPurpose("Java SDK telephony validation");
+        TelephonyCallJobCreate jobRequestModel
+            = new TelephonyCallJobCreate(new PhoneNumber(NUMBER_1), CONNECTION_2, new PhoneNumber(NUMBER_2))
+                .setPurpose("Java SDK telephony validation");
         TelephonyCallJob job
             = call(async, () -> syncClient.createTelephonyCallJob(AGENT, "offline-idempotency-key", jobRequestModel),
                 () -> asyncClient.createTelephonyCallJob(AGENT, "offline-idempotency-key", jobRequestModel));
         assertEquals("job-1", job.getId());
+        assertEquals(NUMBER_1, assertInstanceOf(PhoneNumber.class, job.getDestination()).getValue());
+        assertEquals(NUMBER_2, assertInstanceOf(PhoneNumber.class, job.getSource()).getValue());
         assertEquals(TelephonyCallJobStatus.ACCEPTED, job.getStatus());
         assertEquals(1L, job.getRevision());
         assertEquals("job-1", call(async, () -> syncClient.getTelephonyCallJob(AGENT, "job-1"),
@@ -130,8 +133,8 @@ public class VoiceAgentTelephonyTests {
     public void bindingTransferTargetAndCallLifecycle(boolean async) {
         String bindingPath = ROOT + "/bindings/binding-1";
         String binding = "{\"provider\":\"twilio\",\"id\":\"binding-1\",\"label\":\"Java SDK test\","
-            + "\"status\":\"active\",\"incoming_call_url\":\"https://example.test/incoming\","
-            + "\"connection_name\":\"" + CONNECTION_1 + "\",\"phone_number\":\"" + NUMBER_1 + "\"}";
+            + "\"incoming_call_url\":\"https://example.test/incoming\"," + "\"connection_name\":\"" + CONNECTION_1
+            + "\",\"phone_number\":\"" + NUMBER_1 + "\"}";
         String listedBinding = binding.substring(0, binding.length() - 1) + ",\"etag\":\"binding-etag\"}";
         String updatedBinding = binding.replace("Java SDK test", "Updated Java SDK test");
         String callPath = ROOT + "/calls/call-1";
@@ -141,7 +144,7 @@ public class VoiceAgentTelephonyTests {
         transport.expect(HttpMethod.GET, bindingPath, null, 200, binding);
         transport.expect(HttpMethod.GET, ROOT + "/bindings", null, 200,
             "{\"data\":[" + listedBinding + "],\"has_more\":false}");
-        transport.expect(HttpMethod.PATCH, bindingPath, "{\"status\":\"active\",\"label\":\"Updated Java SDK test\"}",
+        transport.expect(HttpMethod.PATCH, bindingPath, "{\"label\":\"Updated Java SDK test\"}",
             header(HttpHeaderName.IF_MATCH, "*"), 200, updatedBinding, new HttpHeaders());
         transport.expect(HttpMethod.GET, ROOT + "/transfer_targets", null, Collections.emptyMap(), 200, EMPTY_TARGETS,
             new HttpHeaders().set(HttpHeaderName.ETAG, "targets-etag"));
@@ -166,8 +169,7 @@ public class VoiceAgentTelephonyTests {
             : syncClient.listTelephonyBindings(AGENT).iterator().next();
         assertNotNull(listed);
         assertEquals("binding-etag", listed.getETag());
-        UpdateTelephonyBindingInput update = new UpdateTelephonyBindingInput().setStatus(TelephonyBindingStatus.ACTIVE)
-            .setLabel("Updated Java SDK test");
+        UpdateTelephonyBindingInput update = new UpdateTelephonyBindingInput().setLabel("Updated Java SDK test");
         assertEquals("Updated Java SDK test",
             call(async, () -> syncClient.updateTelephonyBinding(AGENT, "binding-1", "*", update),
                 () -> asyncClient.updateTelephonyBinding(AGENT, "binding-1", "*", update)).getLabel());
@@ -213,7 +215,7 @@ public class VoiceAgentTelephonyTests {
             header(HttpHeaderName.IF_MATCH, "targets-etag-2"), 200, EMPTY_TARGETS,
             new HttpHeaders().set(HttpHeaderName.ETAG, "targets-etag-3"));
         transport.notFound(HttpMethod.GET, ROOT + "/bindings/" + MISSING, null);
-        transport.notFound(HttpMethod.PATCH, ROOT + "/bindings/" + MISSING, "{\"status\":\"suspended\"}");
+        transport.notFound(HttpMethod.PATCH, ROOT + "/bindings/" + MISSING, "{\"label\":\"Updated Java SDK test\"}");
         transport.notFound(HttpMethod.DELETE, ROOT + "/bindings/" + MISSING, null);
         AgentsClientBuilder builder = builder(transport);
         BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
@@ -238,8 +240,7 @@ public class VoiceAgentTelephonyTests {
                 .isEmpty());
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyBinding(AGENT, MISSING),
             () -> asyncClient.getTelephonyBinding(AGENT, MISSING)), true);
-        UpdateTelephonyBindingInput update
-            = new UpdateTelephonyBindingInput().setStatus(TelephonyBindingStatus.SUSPENDED);
+        UpdateTelephonyBindingInput update = new UpdateTelephonyBindingInput().setLabel("Updated Java SDK test");
         assertNotFound(() -> call(async, () -> syncClient.updateTelephonyBinding(AGENT, MISSING, null, update),
             () -> asyncClient.updateTelephonyBinding(AGENT, MISSING, null, update)), true);
         assertNotFound(() -> call(async, () -> {
@@ -306,8 +307,8 @@ public class VoiceAgentTelephonyTests {
     @ValueSource(booleans = { false, true })
     public void callJobNotFound(boolean async) {
         ScriptedTransport transport = new ScriptedTransport(async);
-        transport.notFound(HttpMethod.GET, ROOT + "/call_jobs/" + MISSING, null);
-        transport.notFound(HttpMethod.POST, ROOT + "/call_jobs/" + MISSING + ":cancel", null);
+        transport.notFound(HttpMethod.GET, CALL_JOBS_ROOT + "/" + MISSING, null);
+        transport.notFound(HttpMethod.POST, CALL_JOBS_ROOT + "/" + MISSING + ":cancel", null);
         AgentsClientBuilder builder = builder(transport);
         BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
         BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
@@ -322,7 +323,10 @@ public class VoiceAgentTelephonyTests {
         assertNotNull(targets);
         assertEquals(1, targets.getTransferTargets().size());
         assertEquals("sales_desk", targets.getTransferTargets().get(0).getName());
-        assertEquals("pstn", targets.getTransferTargets().get(0).getDestination().getKind().toString());
+        PhoneNumber destination
+            = assertInstanceOf(PhoneNumber.class, targets.getTransferTargets().get(0).getDestination());
+        assertEquals("phone_number", destination.getType().toString());
+        assertEquals("+14255550123", destination.getValue());
     }
 
     private static Map<HttpHeaderName, String> header(HttpHeaderName name, String value) {

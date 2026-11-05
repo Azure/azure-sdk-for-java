@@ -32,24 +32,10 @@ public final class TelephonyTransferTarget implements JsonSerializable<Telephony
     private final String description;
 
     /*
-     * The provider-specific transfer destination.
+     * The shared typed address to transfer to. The selected provider validates supported destination types.
      */
     @Generated
-    private final TelephonyTransferDestination destination;
-
-    /**
-     * Creates an instance of TelephonyTransferTarget class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param destination the destination value to set.
-     */
-    @Generated
-    public TelephonyTransferTarget(String name, String description, TelephonyTransferDestination destination) {
-        this.name = name;
-        this.description = description;
-        this.destination = destination;
-    }
+    private final TelephonyAddress destination;
 
     /**
      * Get the name property: The unique name exposed to the voice agent for this transfer target.
@@ -72,12 +58,13 @@ public final class TelephonyTransferTarget implements JsonSerializable<Telephony
     }
 
     /**
-     * Get the destination property: The provider-specific transfer destination.
+     * Get the destination property: The shared typed address to transfer to. The selected provider validates supported
+     * destination types.
      *
      * @return the destination value.
      */
     @Generated
-    public TelephonyTransferDestination getDestination() {
+    public TelephonyAddress getDestination() {
         return this.destination;
     }
 
@@ -108,7 +95,7 @@ public final class TelephonyTransferTarget implements JsonSerializable<Telephony
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            TelephonyTransferDestination destination = null;
+            TelephonyAddress destination = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -117,12 +104,26 @@ public final class TelephonyTransferTarget implements JsonSerializable<Telephony
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("destination".equals(fieldName)) {
-                    destination = TelephonyTransferDestination.fromJson(reader);
+                    destination = TelephonyAddress.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new TelephonyTransferTarget(name, description, destination);
         });
+    }
+
+    /**
+     * Creates an instance of TelephonyTransferTarget class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param destination the destination value to set.
+     */
+    @Generated
+    public TelephonyTransferTarget(String name, String description, TelephonyAddress destination) {
+        this.name = name;
+        this.description = description;
+        this.destination = destination;
     }
 }

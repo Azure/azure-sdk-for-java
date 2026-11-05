@@ -7,8 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ToolMcpTool;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.agents.models.McpTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
@@ -48,10 +47,10 @@ public class CustomCodeInterpreterAsync {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        ToolMcpTool customCodeInterpreter = new ToolMcpTool("custom-code-interpreter")
+        McpTool customCodeInterpreter = new McpTool("custom-code-interpreter")
             .setServerUrl(mcpServerUrl)
             .setProjectConnectionId(connectionId)
-            .setRequireApproval(BinaryData.fromObject("never"));
+            .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")

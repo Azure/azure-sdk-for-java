@@ -7,8 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ToolMcpTool;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.agents.models.McpTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -44,10 +43,10 @@ public class CustomCodeInterpreterSync {
 
         // Create custom code interpreter MCP tool
         // Uses require_approval: "never" because code runs in a sandboxed Container Apps session
-        ToolMcpTool customCodeInterpreter = new ToolMcpTool("custom-code-interpreter")
+        McpTool customCodeInterpreter = new McpTool("custom-code-interpreter")
             .setServerUrl(mcpServerUrl)
             .setProjectConnectionId(connectionId)
-            .setRequireApproval(BinaryData.fromObject("never"));
+            .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")

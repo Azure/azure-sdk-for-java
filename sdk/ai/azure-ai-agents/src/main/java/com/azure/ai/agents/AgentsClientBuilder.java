@@ -66,6 +66,7 @@ import java.util.stream.Collectors;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaVoiceAgentsCampaignsClient.class,
         BetaVoiceAgentsConversationsClient.class,
         BetaVoiceAgentsLiveConversationsClient.class,
         BetaVoiceAgentsTelephonyClient.class,
@@ -73,6 +74,7 @@ import java.util.stream.Collectors;
         BetaAgentsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
+        BetaVoiceAgentsCampaignsAsyncClient.class,
         BetaVoiceAgentsConversationsAsyncClient.class,
         BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
@@ -983,5 +985,25 @@ public final class AgentsClientBuilder
     @Generated
     public BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
         return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsCampaignsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsCampaignsAsyncClient.
+     */
+    @Generated
+    public BetaVoiceAgentsCampaignsAsyncClient buildBetaVoiceAgentsCampaignsAsyncClient() {
+        return new BetaVoiceAgentsCampaignsAsyncClient(buildInnerClient().getBetaVoiceAgentsCampaigns());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsCampaignsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsCampaignsClient.
+     */
+    @Generated
+    public BetaVoiceAgentsCampaignsClient buildBetaVoiceAgentsCampaignsClient() {
+        return new BetaVoiceAgentsCampaignsClient(buildInnerClient().getBetaVoiceAgentsCampaigns());
     }
 }

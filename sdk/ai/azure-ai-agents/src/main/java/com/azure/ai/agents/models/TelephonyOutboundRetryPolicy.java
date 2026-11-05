@@ -113,7 +113,7 @@ public class TelephonyOutboundRetryPolicy implements JsonSerializable<TelephonyO
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("fixed_interval".equals(discriminatorValue)) {
-                    return TelephonyOutboundFixedIntervalRetryPolicy.fromJson(readerToUse.reset());
+                    return FixedIntervalRetryPolicy.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

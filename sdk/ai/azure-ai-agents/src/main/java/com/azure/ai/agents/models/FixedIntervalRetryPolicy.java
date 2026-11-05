@@ -13,11 +13,12 @@ import java.io.IOException;
 import java.time.Duration;
 
 /**
- * The frozen fixed-interval retry policy returned for an outbound call or campaign.
+ * Shared direct-call/Campaign retry policy. Omission means one attempt; CallJobs return max_attempts=1 and interval=0
+ * seconds.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOutboundRetryPolicy {
+public final class FixedIntervalRetryPolicy extends TelephonyOutboundRetryPolicy {
 
     /*
      * The retry strategy. Only fixed-interval retries are currently supported.
@@ -26,10 +27,25 @@ public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOu
     private TelephonyOutboundRetryPolicyType type = TelephonyOutboundRetryPolicyType.FIXED_INTERVAL;
 
     /*
-     * The fixed delay in seconds between attempts.
+     * The nonnegative delay between attempts, from 0 to 2147483647 seconds. Zero permits an immediate retry, subject to
+     * scheduling and capacity.
      */
     @Generated
     private final long interval;
+
+    /**
+     * Creates an instance of FixedIntervalRetryPolicy class.
+     *
+     * @param interval the interval value to set.
+     */
+    @Generated
+    public FixedIntervalRetryPolicy(Duration interval) {
+        if (interval == null) {
+            this.interval = 0L;
+        } else {
+            this.interval = interval.getSeconds();
+        }
+    }
 
     /**
      * Get the type property: The retry strategy. Only fixed-interval retries are currently supported.
@@ -43,7 +59,8 @@ public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOu
     }
 
     /**
-     * Get the interval property: The fixed delay in seconds between attempts.
+     * Get the interval property: The nonnegative delay between attempts, from 0 to 2147483647 seconds. Zero permits an
+     * immediate retry, subject to scheduling and capacity.
      *
      * @return the interval value.
      */
@@ -57,7 +74,7 @@ public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOu
      */
     @Generated
     @Override
-    public TelephonyOutboundFixedIntervalRetryPolicy setMaxAttempts(Integer maxAttempts) {
+    public FixedIntervalRetryPolicy setMaxAttempts(Integer maxAttempts) {
         super.setMaxAttempts(maxAttempts);
         return this;
     }
@@ -76,16 +93,16 @@ public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOu
     }
 
     /**
-     * Reads an instance of TelephonyOutboundFixedIntervalRetryPolicy from the JsonReader.
+     * Reads an instance of FixedIntervalRetryPolicy from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TelephonyOutboundFixedIntervalRetryPolicy if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of FixedIntervalRetryPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TelephonyOutboundFixedIntervalRetryPolicy.
+     * @throws IOException If an error occurs while reading the FixedIntervalRetryPolicy.
      */
     @Generated
-    public static TelephonyOutboundFixedIntervalRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
+    public static FixedIntervalRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Integer maxAttempts = null;
             Duration interval = null;
@@ -103,25 +120,10 @@ public final class TelephonyOutboundFixedIntervalRetryPolicy extends TelephonyOu
                     reader.skipChildren();
                 }
             }
-            TelephonyOutboundFixedIntervalRetryPolicy deserializedTelephonyOutboundFixedIntervalRetryPolicy
-                = new TelephonyOutboundFixedIntervalRetryPolicy(interval);
-            deserializedTelephonyOutboundFixedIntervalRetryPolicy.setMaxAttempts(maxAttempts);
-            deserializedTelephonyOutboundFixedIntervalRetryPolicy.type = type;
-            return deserializedTelephonyOutboundFixedIntervalRetryPolicy;
+            FixedIntervalRetryPolicy deserializedFixedIntervalRetryPolicy = new FixedIntervalRetryPolicy(interval);
+            deserializedFixedIntervalRetryPolicy.setMaxAttempts(maxAttempts);
+            deserializedFixedIntervalRetryPolicy.type = type;
+            return deserializedFixedIntervalRetryPolicy;
         });
-    }
-
-    /**
-     * Creates an instance of TelephonyOutboundFixedIntervalRetryPolicy class.
-     *
-     * @param interval the interval value to set.
-     */
-    @Generated
-    public TelephonyOutboundFixedIntervalRetryPolicy(Duration interval) {
-        if (interval == null) {
-            this.interval = 0L;
-        } else {
-            this.interval = interval.getSeconds();
-        }
     }
 }
