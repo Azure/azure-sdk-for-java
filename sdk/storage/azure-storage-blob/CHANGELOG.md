@@ -1,6 +1,6 @@
 # Release History
 
-## 12.38.0-beta.1 (Unreleased)
+## 12.38.0-beta.1 (2026-11-05)
 
 ### Features Added
 - Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
@@ -9,6 +9,7 @@
 
 - Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
   it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
 
 ### Breaking Changes
 
@@ -16,9 +17,12 @@
   for both synchronous and asynchronous clients, with support for XML fallback responses from the service. To explicitly
   request XML, use `new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.22.2` to version `12.23.0-beta.1`.
 
 ## 12.37.2 (2026-11-03)
 
