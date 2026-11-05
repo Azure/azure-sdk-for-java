@@ -23,8 +23,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.LinkedList;
@@ -35,10 +33,8 @@ import java.util.concurrent.TimeoutException;
 /**
  * This is a request policy in an {@link com.azure.core.http.HttpPipeline} for retrying a given HTTP request. The
  * request that is retried will be identical each time it is reissued.  Retries will try against a secondary if one is
- * specified and the type of operation/error indicates that the secondary can handle the request. A request retried
- * against the secondary doesn't keep an explicit {@code Host} header, and keeps the port of the authority that header
- * names. Exponential and fixed backoff are supported. The policy must only be used directly when creating a custom
- * pipeline.
+ * specified and the type of operation/error indicates that the secondary can handle the request. Exponential and fixed
+ * backoff are supported. The policy must only be used directly when creating a custom pipeline.
  */
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
@@ -358,33 +354,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         HttpPipelineCallContext context) {
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            String hostHeader = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.HOST);
-            if (hostHeader != null) {
-                // A Host header names the authority the request is addressed to, which differs from the URL when the
-                // request was routed elsewhere, for example by DataLocalityPolicy. The secondary keeps the addressed
-                // port, and the header, which names the primary, must not be sent to it.
-                builder.setPort(getPort(hostHeader));
-                context.getHttpRequest().getHeaders().remove(HttpHeaderName.HOST);
-            }
             builder.setHost(secondaryHost);
             try {
                 context.getHttpRequest().setUrl(builder.toUrl());
             } catch (MalformedURLException e) {
                 throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", e));
             }
-        }
-    }
-
-    /*
-     * Gets the port of an authority such as a Host header value, or null when it has none or cannot be parsed, in
-     * which case the scheme's default port is used.
-     */
-    private static String getPort(String authority) {
-        try {
-            int port = new URI(null, authority, null, null, null).getPort();
-            return port == -1 ? null : Integer.toString(port);
-        } catch (URISyntaxException e) {
-            return null;
         }
     }
 

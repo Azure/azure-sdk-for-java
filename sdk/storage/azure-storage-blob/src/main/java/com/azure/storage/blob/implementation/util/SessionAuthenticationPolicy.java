@@ -36,8 +36,7 @@ import java.util.Objects;
  * <p>
  * A layout-routed request, whose URL names the layout endpoint and whose {@code Host} header names the account, is
  * judged by the account authority: it is eligible for a session exactly as the same request sent directly to the
- * account would be. A retry against the secondary host carries no {@code Host} header, so it is judged by the
- * secondary URL and uses bearer authentication like any other secondary request.
+ * account would be.
  * <p>
  * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
  * session credential is invalidated only if it is still current. Each transport retry may fall back independently.

@@ -70,40 +70,40 @@ public class DataLocalityPolicyTests {
 
     @Test
     public void retryableFailureUsesSecondaryHostSync() {
-        List<String> requests = new ArrayList<>();
+        List<String> requestUrls = new ArrayList<>();
         HttpPipeline pipeline = createRetryPipeline(new NoOpHttpClient() {
             @Override
             public HttpResponse sendSync(HttpRequest request, Context context) {
-                requests.add(request.getUrl() + "|" + request.getHeaders().getValue(HttpHeaderName.HOST));
-                return new MockHttpResponse(request, requests.size() == 1 ? 500 : 200);
+                requestUrls.add(request.getUrl().toString());
+                return new MockHttpResponse(request, requestUrls.size() == 1 ? 500 : 200);
             }
         });
 
         HttpResponse response
-            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://storage.example.com:8443/container/blob"),
-                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net:9443"));
+            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://storage.example.com/container/blob"),
+                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net"));
 
         assertEquals(200, response.getStatusCode());
-        assertRetryDestinations(requests);
+        assertRetryDestinations(requestUrls);
     }
 
     @Test
     public void retryableFailureUsesSecondaryHostAsync() {
-        List<String> requests = new ArrayList<>();
+        List<String> requestUrls = new ArrayList<>();
         HttpPipeline pipeline = createRetryPipeline(new NoOpHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                requests.add(request.getUrl() + "|" + request.getHeaders().getValue(HttpHeaderName.HOST));
-                return Mono.just(new MockHttpResponse(request, requests.size() == 1 ? 500 : 200));
+                requestUrls.add(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, requestUrls.size() == 1 ? 500 : 200));
             }
         });
 
         StepVerifier
-            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://storage.example.com:8443/container/blob"),
-                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net:9443")))
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://storage.example.com/container/blob"),
+                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
-        assertRetryDestinations(requests);
+        assertRetryDestinations(requestUrls);
     }
 
     private void assertMalformedEndpointThrows(String endpoint) {
@@ -137,12 +137,10 @@ public class DataLocalityPolicyTests {
             .build();
     }
 
-    private static void assertRetryDestinations(List<String> requests) {
-        // The locality attempt keeps the account authority in Host. The secondary attempt uses the secondary host with
-        // the account's port and doesn't send the primary's Host header.
-        assertEquals(2, requests.size());
-        assertEquals("https://layout.example.net:9443/container/blob|storage.example.com:8443", requests.get(0));
-        assertEquals("https://secondary.example.com:8443/container/blob|null", requests.get(1));
+    private static void assertRetryDestinations(List<String> requestUrls) {
+        assertEquals(2, requestUrls.size());
+        assertEquals("https://layout.example.net/container/blob", requestUrls.get(0));
+        assertEquals("https://secondary.example.com/container/blob", requestUrls.get(1));
     }
 
     private HttpRequest sendRequest(Context context) throws Exception {

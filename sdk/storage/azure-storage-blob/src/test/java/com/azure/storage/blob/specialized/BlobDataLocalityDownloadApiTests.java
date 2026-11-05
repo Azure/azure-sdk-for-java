@@ -122,7 +122,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
     // private static final URI DATA_LOCALITY_ENDPOINT = URI.create("https://host-a:443");
     private static final String DATA_LOCALITY_HOST = "host-a";
-    private static final String SECONDARY_HOST = "account-secondary.blob.core.windows.net";
     private static final byte[] MOCK_BODY
         = "the quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8);
     // private static final int MOCK_FAILURE_OFFSET = 16;
@@ -475,41 +474,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertEquals(DATA_LOCALITY_HOST, read.urlHost);
         assertEquals(ORIGINAL_HOST, read.hostHeader);
         assertEquals("Session", read.authScheme);
-    }
-
-    @DoNotRecord
-    @Test
-    public void routedChunkSecondaryRetryUsesBearer() throws IOException {
-        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY).failRoutedRequestsWith(503);
-        BlobClient client = sessionMockBuilder(httpClient)
-            .retryOptions(new RequestRetryOptions(null, 2, Duration.ofSeconds(1), Duration.ofMillis(1),
-                Duration.ofMillis(1), SECONDARY_HOST))
-            .buildClient();
-        testFile = Files.createTempFile(generateBlobName(), ".dat");
-        Files.deleteIfExists(testFile);
-
-        client.downloadToFileWithResponse(
-            new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
-                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)),
-            null, Context.NONE);
-
-        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
-        int routedAttempts = 0;
-        int secondaryAttempts = 0;
-        for (RequestRecord request : httpClient.getDataRequestRecords()) {
-            if (DATA_LOCALITY_HOST.equals(request.urlHost)) {
-                routedAttempts++;
-                assertEquals(ORIGINAL_HOST, request.hostHeader);
-                assertEquals("Session", request.authScheme, request.url);
-            } else if (SECONDARY_HOST.equals(request.urlHost)) {
-                secondaryAttempts++;
-                assertNull(request.hostHeader);
-                assertTrue(request.url.startsWith("https://" + SECONDARY_HOST + "/container/blob"), request.url);
-                assertEquals("Bearer", request.authScheme, request.url);
-            }
-        }
-        assertTrue(routedAttempts > 0, "Expected routed attempts.");
-        assertEquals(routedAttempts, secondaryAttempts, "Expected one secondary attempt per failed routed attempt.");
     }
 
     @DoNotRecord
@@ -1015,7 +979,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         private final List<RequestRecord> layoutRequestRecords = new CopyOnWriteArrayList<>();
         private final List<RequestRecord> sessionRequestRecords = new CopyOnWriteArrayList<>();
         private int layoutRequestCount;
-        private Integer routedFailureStatus;
 
         private LayoutRoutingHttpClient(byte[] contentBytes) {
             this(contentBytes, null);
@@ -1024,14 +987,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         private LayoutRoutingHttpClient(byte[] contentBytes, Mono<HttpResponse> layoutFailure) {
             this.contentBytes = contentBytes;
             this.layoutFailure = layoutFailure;
-        }
-
-        /**
-         * Makes every request addressed to the layout endpoint fail with the given status code.
-         */
-        LayoutRoutingHttpClient failRoutedRequestsWith(int statusCode) {
-            this.routedFailureStatus = statusCode;
-            return this;
         }
 
         @Override
@@ -1058,9 +1013,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             }
 
             dataRequestRecords.add(record);
-            if (routedFailureStatus != null && DATA_LOCALITY_HOST.equals(record.urlHost)) {
-                return Mono.just(new MockHttpResponse(request, routedFailureStatus));
-            }
 
             String rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
             int start = 0;

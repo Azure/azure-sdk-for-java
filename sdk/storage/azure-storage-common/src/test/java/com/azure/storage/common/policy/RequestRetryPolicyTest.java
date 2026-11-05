@@ -29,9 +29,6 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -392,30 +389,6 @@ public class RequestRetryPolicyTest {
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(0, isPrimary, response));
     }
 
-    @ParameterizedTest
-    @MethodSource("secondaryAttemptAuthoritySupplier")
-    public void secondaryAttemptUsesSecondaryHostAndAddressedPort(String url, String hostHeader,
-        String expectedSecondaryUrl) {
-        List<String> requests = new ArrayList<>();
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public HttpResponse sendSync(HttpRequest request, Context context) {
-                requests.add(request.getUrl() + "|" + request.getHeaders().getValue(HttpHeaderName.HOST));
-                return new MockHttpResponse(request, requests.size() == 1 ? 503 : 200);
-            }
-        })
-            .policies(new RequestRetryPolicy(
-                new RequestRetryOptions(RetryPolicyType.FIXED, 2, (Integer) null, 1L, 1L, "secondary.example.com")))
-            .build();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        if (hostHeader != null) {
-            request.setHeader(HttpHeaderName.HOST, hostHeader);
-        }
-
-        assertEquals(200, pipeline.sendSync(request, Context.NONE).getStatusCode());
-        assertEquals(Arrays.asList(url + "|" + hostHeader, expectedSecondaryUrl + "|null"), requests);
-    }
-
     private static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {
         return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
     }
@@ -457,16 +430,5 @@ public class RequestRetryPolicyTest {
             Arguments.of("OperationTimedOut", null, true, true), Arguments.of("ServerBusy", null, true, true),
             Arguments.of(null, "404", false, true), Arguments.of(null, "404", true, false),
             Arguments.of("SomeOtherError", null, true, false), Arguments.of(null, null, true, false));
-    }
-
-    static Stream<Arguments> secondaryAttemptAuthoritySupplier() {
-        return Stream.of(
-            // Without a Host header, only the host changes.
-            Arguments.of("https://account.example.com:8443/c/b", null, "https://secondary.example.com:8443/c/b"),
-            // A Host header names the addressed authority, so the secondary keeps its port and doesn't get the header.
-            Arguments.of("https://routed.example.net:9443/c/b", "account.example.com:8443",
-                "https://secondary.example.com:8443/c/b"),
-            Arguments.of("https://routed.example.net:9443/c/b", "account.example.com",
-                "https://secondary.example.com/c/b"));
     }
 }
