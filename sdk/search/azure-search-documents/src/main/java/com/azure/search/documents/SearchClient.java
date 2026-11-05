@@ -26,6 +26,7 @@ import com.azure.search.documents.implementation.models.AutocompletePostRequest;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -854,6 +855,7 @@ public final class SearchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a document retrieved via a document lookup operation along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LookupDocument> getDocumentWithResponse(String key, RequestOptions requestOptions) {
         return convertResponse(this.serviceClient.getDocumentWithResponse(key, requestOptions), LookupDocument.class);
@@ -969,5 +971,29 @@ public final class SearchClient {
                 false);
         }
         return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param options The options for the lookup: query source authorization, elevated read and selected fields. May be
+     * null.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it. May be null. Its
+     * callbacks run after the operation options are applied, so a header set explicitly with setHeader overrides the
+     * corresponding header from {@code options}. Query parameters added through RequestOptions are appended to the
+     * request, not substituted.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LookupDocument> getDocumentWithResponse(String key, GetDocumentOptions options,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getDocumentWithResponse(key, options, requestOptions),
+            LookupDocument.class);
     }
 }

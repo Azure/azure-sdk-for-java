@@ -9,6 +9,9 @@ from a preview release are not included.
 
 - Added support for the `2026-10-01` GA service version, which is now the default service version.
 - Added `SearchOptions.moreLikeThis` to find documents similar to an existing document.
+- Added `GetDocumentOptions` and three-argument `getDocumentWithResponse` overloads on `SearchClient` and
+  `SearchAsyncClient` to group document lookup authorization, elevated-read, and selected-field options while
+  preserving existing overloads, including `getDocument(key, null)`.
 - Added query-source authorization and elevated-read controls to `SearchOptions` and document lookup overloads, and
   query-source authorization overloads and a header-only `KnowledgeBaseRetrievalOptions.querySourceAuthorization`
   option to knowledge base retrieval. Non-null explicit authorization arguments override the option; null falls

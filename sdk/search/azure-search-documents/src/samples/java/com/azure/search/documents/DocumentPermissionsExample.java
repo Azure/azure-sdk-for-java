@@ -22,6 +22,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedId
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 
@@ -63,8 +64,11 @@ public class DocumentPermissionsExample {
             .setQuerySourceAuthorization(querySourceToken)
             .setEnableElevatedRead(false))
             .forEach(result -> System.out.println(result.getAdditionalProperties()));
-        System.out.println(client.getDocument(System.getenv("SEARCH_DOCUMENT_KEY"), querySourceToken, false,
-            Collections.singletonList("id")).getAdditionalProperties());
+        GetDocumentOptions lookupOptions = new GetDocumentOptions().setQuerySourceAuthorization(querySourceToken)
+            .setEnableElevatedRead(false)
+            .setSelectedFields(Collections.singletonList("id"));
+        System.out.println(client.getDocumentWithResponse(System.getenv("SEARCH_DOCUMENT_KEY"), lookupOptions, null)
+            .getValue().getAdditionalProperties());
 
         new KnowledgeBaseRetrievalClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())

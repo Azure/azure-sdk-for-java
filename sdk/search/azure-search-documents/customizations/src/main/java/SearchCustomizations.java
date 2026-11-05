@@ -59,6 +59,11 @@ public class SearchCustomizations extends Customization {
 
         hideWithResponseBinaryDataApis(searchClient);
         hideWithResponseBinaryDataApis(searchAsyncClient);
+
+        addGetDocumentOptionsToImpl(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("SearchClientImpl"));
+        addTypedGetDocumentWithOptions(searchClient);
+        addTypedGetDocumentWithOptions(searchAsyncClient);
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexClient"));
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexAsyncClient"));
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerClient"));
@@ -796,6 +801,184 @@ public class SearchCustomizations extends Customization {
                 + "@return The matching resources as a paginated response with {@link " + pagedType + "}.");
             clazz.addMember(method);
         }));
+    }
+
+    // Adds query source authorization, elevated read and $select parameters to the internal getDocument REST methods
+    // so typed callers don't need to mutate or copy the caller's RequestOptions. RestProxy applies these before the
+    // RequestOptions callbacks, so headers set explicitly on RequestOptions override them while query parameters
+    // added through RequestOptions are appended. Existing internal
+    // signatures are preserved and forward null for the new parameters.
+    private static void addGetDocumentOptionsToImpl(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.core.annotation.Generated");
+            ast.addImport("com.azure.search.documents.models.GetDocumentOptions");
+            ast.addImport("java.util.Objects");
+            ast.addImport("java.util.stream.Collectors");
+            com.github.javaparser.ast.body.ClassOrInterfaceDeclaration clazz
+                = ast.getClassByName(customization.getClassName())
+                    .orElseThrow(() -> new IllegalStateException("Class not found."));
+
+            com.github.javaparser.ast.body.ClassOrInterfaceDeclaration service = clazz.getMembers()
+                .stream()
+                .filter(member -> member.isClassOrInterfaceDeclaration())
+                .map(member -> member.asClassOrInterfaceDeclaration())
+                .filter(type -> "SearchClientService".equals(type.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("SearchClientService not found."));
+            int serviceUpdated = 0;
+            for (String name : Arrays.asList("getDocument", "getDocumentSync")) {
+                for (MethodDeclaration method : service.getMethodsByName(name)) {
+                    method.getParameters()
+                        .removeIf(p -> "querySourceAuthorization".equals(p.getNameAsString())
+                            || "enableElevatedRead".equals(p.getNameAsString())
+                            || "selectedFields".equals(p.getNameAsString()));
+                    int index = -1;
+                    for (int i = 0; i < method.getParameters().size(); i++) {
+                        if ("requestOptions".equals(method.getParameter(i).getNameAsString())) {
+                            index = i;
+                        }
+                    }
+                    if (index < 0) {
+                        throw new IllegalStateException("requestOptions parameter not found in " + name + ".");
+                    }
+                    method.getParameters()
+                        .add(index, StaticJavaParser.parseParameter("@QueryParam(\"$select\") String selectedFields"));
+                    method.getParameters()
+                        .add(index, StaticJavaParser
+                            .parseParameter("@HeaderParam(\"x-ms-enable-elevated-read\") Boolean enableElevatedRead"));
+                    method.getParameters()
+                        .add(index, StaticJavaParser.parseParameter(
+                            "@HeaderParam(\"x-ms-query-source-authorization\") String querySourceAuthorization"));
+                    serviceUpdated++;
+                }
+            }
+            if (serviceUpdated != 2) {
+                throw new IllegalStateException(
+                    "Expected to update 2 service getDocument methods but updated " + serviceUpdated + ".");
+            }
+
+            for (boolean async : new boolean[] { true, false }) {
+                String name = async ? "getDocumentWithResponseAsync" : "getDocumentWithResponse";
+                clazz.getMethodsByName(name)
+                    .stream()
+                    .filter(method -> method.getParameters().size() == 3)
+                    .collect(java.util.stream.Collectors.toList())
+                    .forEach(MethodDeclaration::remove);
+                MethodDeclaration original = clazz.getMethodsByName(name)
+                    .stream()
+                    .filter(method -> method.getParameters().size() == 2
+                        && "String".equals(method.getParameter(0).getTypeAsString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(name + " not found."));
+
+                String returnType = original.getTypeAsString();
+                String signature = "@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n" + "public " + returnType
+                    + " " + name + "(String key, GetDocumentOptions options, RequestOptions requestOptions) {\n"
+                    + "    final String accept = \"application/json;odata.metadata=none\";\n"
+                    + "    final String querySourceAuthorization = options == null ? null\n"
+                    + "        : options.getQuerySourceAuthorization();\n"
+                    + "    final Boolean enableElevatedRead = options == null ? null : options.isEnableElevatedRead();\n"
+                    + "    final String selectedFields = options == null || options.getSelectedFields() == null ? null\n"
+                    + "        : options.getSelectedFields()\n"
+                    + "            .stream()\n"
+                    + "            .map(paramItemValue -> Objects.toString(paramItemValue, \"\"))\n"
+                    + "            .collect(Collectors.joining(\",\"));\n"
+                    + "    final RequestOptions effectiveOptions = requestOptions == null ? new RequestOptions() : requestOptions;\n";
+                String overloadSource;
+                String delegate;
+                if (async) {
+                    overloadSource = signature
+                        + "    return FluxUtil.withContext(context -> service.getDocument(this.getEndpoint(),\n"
+                        + "        this.getServiceVersion().getVersion(), this.getIndexName(), accept, key,\n"
+                        + "        querySourceAuthorization, enableElevatedRead, selectedFields, effectiveOptions, context));\n"
+                        + "}\n";
+                    delegate = "{\n    return getDocumentWithResponseAsync(key, null, requestOptions);\n}";
+                } else {
+                    overloadSource = signature
+                        + "    return service.getDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(),\n"
+                        + "        this.getIndexName(), accept, key, querySourceAuthorization, enableElevatedRead,\n"
+                        + "        selectedFields, effectiveOptions, Context.NONE);\n" + "}\n";
+                    delegate = "{\n    return getDocumentWithResponse(key, null, requestOptions);\n}";
+                }
+                MethodDeclaration overload
+                    = StaticJavaParser.parseBodyDeclaration(overloadSource).asMethodDeclaration();
+                original.getJavadocComment().ifPresent(javadoc -> {
+                    String content = removeLookupResponseBodySchema(javadoc.getContent());
+                    String updated = content.replaceFirst("(\\* @param key [^\\n]*\\n)",
+                        "$1     * @param options The options for the lookup: query source authorization, elevated read "
+                            + "and selected fields. May be null.\n");
+                    if (updated.equals(content)) {
+                        throw new IllegalStateException("Could not locate key javadoc for " + name + ".");
+                    }
+                    overload.setJavadocComment(updated);
+                });
+                original.setBody(StaticJavaParser.parseBlock(delegate));
+                if (!original.getAnnotationByName("Generated").isPresent()) {
+                    original.addMarkerAnnotation("Generated");
+                }
+                clazz.addMember(overload);
+            }
+        });
+    }
+
+    // Both typed response signatures are generator-owned so a preserved wrapper cannot suppress the new overload.
+    // No getDocument(String, GetDocumentOptions) is added so getDocument(key, null) stays source compatible.
+    private static void addTypedGetDocumentWithOptions(ClassCustomization customization) {
+        boolean async = customization.getClassName().endsWith("AsyncClient");
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            ast.addImport("com.azure.search.documents.models.GetDocumentOptions");
+            clazz.getMethodsBySignature("getDocumentWithResponse", "String", "RequestOptions")
+                .forEach(MethodDeclaration::remove);
+            clazz.getMethodsBySignature("getDocumentWithResponse", "String", "GetDocumentOptions", "RequestOptions")
+                .forEach(MethodDeclaration::remove);
+            String returnType = async ? "Mono<Response<LookupDocument>>" : "Response<LookupDocument>";
+            MethodDeclaration legacy = clazz
+                .getMethodsBySignature("hiddenGeneratedGetDocumentWithResponse", "String", "RequestOptions")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated lookup response method not found."))
+                .clone();
+            legacy.setName("getDocumentWithResponse");
+            legacy.setModifiers(Modifier.Keyword.PUBLIC);
+            legacy.setType(returnType);
+            legacy.setBody(StaticJavaParser.parseBlock(async
+                ? "{ return mapResponse(this.serviceClient.getDocumentWithResponseAsync(key, requestOptions), "
+                    + "LookupDocument.class); }"
+                : "{ return convertResponse(this.serviceClient.getDocumentWithResponse(key, requestOptions), "
+                    + "LookupDocument.class); }"));
+            legacy.getJavadocComment()
+                .ifPresent(javadoc -> legacy.setJavadocComment(removeLookupResponseBodySchema(javadoc.getContent())));
+            clazz.addMember(legacy);
+            String body = async
+                ? "    return mapResponse(this.serviceClient.getDocumentWithResponseAsync(key, options, requestOptions),\n"
+                    + "        LookupDocument.class);\n"
+                : "    return convertResponse(this.serviceClient.getDocumentWithResponse(key, options, requestOptions),\n"
+                    + "        LookupDocument.class);\n";
+            MethodDeclaration method = StaticJavaParser
+                .parseMethodDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\npublic " + returnType
+                    + " getDocumentWithResponse(String key, GetDocumentOptions options,\n"
+                    + "    RequestOptions requestOptions) {\n" + body + "}");
+            method.setJavadocComment("Retrieves a document from the index.\n\n"
+                + "@param key The key of the document to retrieve.\n"
+                + "@param options The options for the lookup: query source authorization, elevated read and selected "
+                + "fields. May be null.\n"
+                + "@param requestOptions The options to configure the HTTP request before HTTP client sends it. May be "
+                + "null. Its callbacks run after the operation options are applied, so a header set explicitly "
+                + "with setHeader overrides the corresponding header from {@code options}. Query parameters added "
+                + "through RequestOptions are appended to the request, not substituted.\n"
+                + "@throws HttpResponseException thrown if the request is rejected by server.\n"
+                + "@throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n"
+                + "@throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
+                + "@throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
+                + "@return a document retrieved via a document lookup operation along with {@link Response}"
+                + (async ? " on successful completion of {@link Mono}." : "."));
+            clazz.addMember(method);
+        }));
+    }
+
+    private static String removeLookupResponseBodySchema(String javadoc) {
+        return javadoc.replaceAll(
+            "(?s)\\n\\s*\\* <p><strong>Response Body Schema</strong></p>.*?(?=\\n\\s*\\* @param key)", "\n *");
     }
 
     // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.
