@@ -2,18 +2,19 @@
 
 This README is based on the latest released version of the Azure Compute Batch SDK, which allows users to run large-scale parallel and high-performance computing (HPC) batch jobs efficiently in Azure. To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
 
-> The SDK supports features of the Azure Batch service starting from API version **2023-05-01.16.0**. We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
+> The SDK supports Azure Batch service API versions **2025-06-01** and **2026-10-01**.
 
 ## Table of Contents
 
 - [Documentation](#documentation)
 - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
+- [Key concepts](#key-concepts)
 - [Azure Batch Authentication](#azure-batch-authentication)
   - [Authenticate with Microsoft Entra ID](#authenticate-with-microsoft-entra-id)
   - [Authenticate with Shared Key Credentials](#authenticate-with-shared-key-credentials)
 - [Error Handling](#error-handling)
-- [Operations Examples](#operations-examples)
+- [Examples](#examples)
   - [Pool Operations](#pool-operations)
     - [Create Pool](#create-pool)
     - [Get Pool](#get-pool)
@@ -26,7 +27,6 @@ This README is based on the latest released version of the Azure Compute Batch S
     - [Disable AutoScale Pool](#disable-autoscale-pool)
     - [Evaluate AutoScale Pool](#evaluate-autoscale-pool)
     - [List Pool Node Counts](#list-pool-node-counts)
-    - [List Pool Usage Metrics](#list-pool-usage-metrics)
     - [List Supported Images](#list-supported-images)
     - [Remove Nodes](#remove-nodes)
   - [Job Operations](#job-operations)
@@ -81,6 +81,7 @@ This README is based on the latest released version of the Azure Compute Batch S
   - [Application Operations](#application-operations)
     - [Get Application](#get-application)
     - [List Applications](#list-applications)
+- [Next steps](#next-steps)
 
 ## Documentation
 
@@ -109,6 +110,11 @@ Various documentation is available to help you get started
 ```
 
 [//]: # ({x-version-update-end})
+
+## Key concepts
+
+Azure Batch organizes compute resources into pools of nodes and work into jobs containing tasks.
+Use `BatchClientBuilder` to create a synchronous `BatchClient` or an asynchronous `BatchAsyncClient`.
 
 ## Azure Batch Authentication
 
@@ -150,10 +156,6 @@ BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
 BatchAsyncClient batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncClient();
 ```
 
-## Sample Code
-
-You can find sample code that illustrates Batch usage scenarios in <https://github.com/azure/azure-batch-samples>
-
 ## Error Handling
 
 In `Azure.Compute.Batch`, server errors throw exceptions such as `BatchErrorException`, the custom Batch error object. For example:
@@ -172,7 +174,7 @@ try {
 }
 ```
 
-## Operations Examples
+## Examples
 
 The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch). While most of these examples use the synchronous BatchClient, you can call these operations on the asynchronous BatchAsyncClient as well.
 
@@ -364,14 +366,6 @@ The `listPoolNodeCounts` method can be used to list pool node counts.
 
 ```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
 batchClient.listPoolNodeCounts();
-```
-
-#### List Pool Usage Metrics
-
-The `listPoolUsageMetrics` method can be used to list pool usage metrics.
-
-```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
-batchClient.listPoolUsageMetrics();
 ```
 
 #### List Supported Images
@@ -931,7 +925,7 @@ The `createNodeUser` method with a `BatchNodeUserCreateParameters` parameter can
 
 ```java com.azure.compute.batch.create-node-user.node-create-user
 batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
-    new BatchNodeUserCreateParameters("userName").setAdmin(false)
+    new BatchNodeUserCreateParameters("userName").setIsAdmin(false)
         .setExpiryTime(OffsetDateTime.parse("2017-08-01T00:00:00Z"))
         .setPassword("fakeTokenPlaceholder"),
     null);
@@ -1043,6 +1037,10 @@ Manage Resources: For errors related to limits and quotas (like AccountCoreQuota
 Check Azure Service Health: Sometimes, the issue may be with Azure services rather than your application. Check the Azure Status Dashboard for any ongoing issues that might be affecting Batch services.
 
 Handle Transient Errors: Implement retry logic in your application to handle transient failures in Batch.
+
+## Next steps
+
+You can find sample code that illustrates Batch usage scenarios in <https://github.com/Azure/azure-batch-samples>.
 
 ## Contributing
 

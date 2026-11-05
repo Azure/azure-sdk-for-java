@@ -255,10 +255,6 @@ public final class ReadmeSamples {
         batchClient.listPoolNodeCounts();
         // END: com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
 
-        // BEGIN: com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
-        batchClient.listPoolUsageMetrics();
-        // END: com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
-
         // BEGIN: com.azure.compute.batch.list-supported-images.list-supported-images
         batchClient.listSupportedImages();
         // END: com.azure.compute.batch.list-supported-images.list-supported-images
@@ -541,7 +537,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.create-node-user.node-create-user
         batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
-            new BatchNodeUserCreateParameters("userName").setAdmin(false)
+            new BatchNodeUserCreateParameters("userName").setIsAdmin(false)
                 .setExpiryTime(OffsetDateTime.parse("2017-08-01T00:00:00Z"))
                 .setPassword("fakeTokenPlaceholder"),
             null);

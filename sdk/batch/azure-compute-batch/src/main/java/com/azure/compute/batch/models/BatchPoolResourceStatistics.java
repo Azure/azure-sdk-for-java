@@ -309,9 +309,9 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    diskReadIops = reader.getLong();
+                    diskReadIops = Long.parseLong(reader.getString());
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    diskWriteIops = reader.getLong();
+                    diskWriteIops = Long.parseLong(reader.getString());
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {
