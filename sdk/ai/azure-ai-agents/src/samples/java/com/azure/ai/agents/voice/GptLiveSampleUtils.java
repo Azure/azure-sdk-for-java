@@ -6,23 +6,22 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.LiveInitialSessionAudioParam;
-import com.azure.ai.agents.models.LiveResponsesDelegationParam;
-import com.azure.ai.agents.models.LiveResponsesDelegationSettingsInputParam;
-import com.azure.ai.agents.models.LiveSessionAudioFormatPCMParam;
-import com.azure.ai.agents.models.LiveSessionAudioFormatPCMParamRate;
 import com.azure.ai.agents.models.VoiceAgentLiveDefinition;
-import com.azure.ai.agents.models.VoiceAgentSubProtocol;
+import com.azure.ai.agents.models.VoiceAgentLiveResponsesDelegation;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.openai.core.JsonValue;
+import com.openai.core.ObjectMappers;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.CommentaryAppendEvent;
+import com.openai.models.live.FunctionTool;
 import com.openai.models.live.InputAudioAppendEvent;
 import com.openai.models.live.ResponseCreateEvent;
 import com.openai.models.live.ResponseItemCreateEvent;
+import com.openai.models.live.ResponsesDelegationConfig;
 import com.openai.models.live.ServerEvent;
 import com.openai.models.live.SessionCloseEvent;
+import com.openai.models.live.SessionConfig;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputContent;
 import com.openai.models.responses.ResponseInputText;
@@ -650,18 +649,19 @@ final class GptLiveSampleUtils {
 
     static AgentResource createAgent(AgentsClientBuilder builder, String model, String backendModel,
         String scenario, boolean tools, boolean keepAgent) {
-        LiveResponsesDelegationSettingsInputParam responses = new LiveResponsesDelegationSettingsInputParam(backendModel)
-                .setInstructions(tools
+        ResponsesDelegationConfig.Builder responses = ResponsesDelegationConfig.builder().model(backendModel)
+                .instructions(tools
                     ? "Use get_weather for weather requests. After receiving its result, answer briefly."
                     : "Answer the user briefly and helpfully.");
         if (tools) {
-            responses.setTools(java.util.Collections.singletonList(BinaryData.fromObject(GptLiveFunctionToolSample.weatherTool())));
+            responses.addTool(ObjectMappers.jsonMapper().convertValue(
+                BinaryData.fromObject(GptLiveFunctionToolSample.weatherTool()).toObject(Map.class), FunctionTool.class));
         }
-        VoiceAgentLiveDefinition definition = new VoiceAgentLiveDefinition(VoiceAgentSubProtocol.LIVE, model)
+        VoiceAgentLiveDefinition definition = new VoiceAgentLiveDefinition(model)
                 .setInstructions("You are a helpful voice assistant. Delegate requests to your Responses backend.")
-                .setAudio(new LiveInitialSessionAudioParam().setFormat(new LiveSessionAudioFormatPCMParam(
-                    LiveSessionAudioFormatPCMParamRate.TWO_FOUR_ZERO_ZERO_ZERO)))
-                .setDelegation(BinaryData.fromObject(new LiveResponsesDelegationParam(responses)));
+                .setAudio(SessionConfig.Audio.builder()
+                    .audioPcmFormat(com.openai.models.live.AudioFormat.AudioPcm.Rate._24000).build())
+            .setDelegation(new VoiceAgentLiveResponsesDelegation(responses.build()));
         String agentName = createAgentName(scenario);
         AgentsClient agents = builder.buildAgentsClient();
         agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));

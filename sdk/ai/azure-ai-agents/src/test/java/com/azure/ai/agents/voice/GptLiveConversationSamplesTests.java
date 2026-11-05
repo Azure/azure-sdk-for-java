@@ -196,11 +196,11 @@ public class GptLiveConversationSamplesTests {
     private static void readConversation(AgentsClientBuilder builder, boolean async) {
         if (async) {
             GptLiveReadConversationAsyncSample
-                .readConversation(builder.buildBetaVoiceAgentsLiveConversationsAsyncClient(), "live-agent",
+                .readConversation(builder.beta().buildBetaVoiceAgentsLiveConversationsAsyncClient(), "live-agent",
                     "conversation-1")
                 .block(TIMEOUT);
         } else {
-            GptLiveReadConversationSample.readConversation(builder.buildBetaVoiceAgentsLiveConversationsClient(),
+            GptLiveReadConversationSample.readConversation(builder.beta().buildBetaVoiceAgentsLiveConversationsClient(),
                 "live-agent", "conversation-1");
         }
     }
@@ -208,11 +208,11 @@ public class GptLiveConversationSamplesTests {
     private void downloadAudio(AgentsClientBuilder builder, boolean async, String itemId) throws IOException {
         if (async) {
             GptLiveReadConversationAudioAsyncSample
-                .downloadAudio(builder.buildBetaVoiceAgentsLiveConversationsAsyncClient(), "live-agent",
+                .downloadAudio(builder.beta().buildBetaVoiceAgentsLiveConversationsAsyncClient(), "live-agent",
                     "conversation-1", itemId, directory)
                 .block(TIMEOUT);
         } else {
-            GptLiveReadConversationAudioSample.downloadAudio(builder.buildBetaVoiceAgentsLiveConversationsClient(),
+            GptLiveReadConversationAudioSample.downloadAudio(builder.beta().buildBetaVoiceAgentsLiveConversationsClient(),
                 "live-agent", "conversation-1", itemId, directory);
         }
     }

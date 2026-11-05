@@ -178,7 +178,7 @@ public final class VoiceAgentWebSocketUtils {
         VoiceAgentWebSocketConnectionOptions options) {
         UrlBuilder url = buildSessionUrl(configuration, agentName, "", options.isStoreEnabled(),
             options.getAgentVersionOverride());
-    VoiceAgentTransport transport = options.getTransportType();
+        VoiceAgentTransport transport = options.getTransportType();
         url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
         if (options.getAgentSessionId() != null) {
             url.setQueryParameter("agent_session_id", encode(options.getAgentSessionId()));

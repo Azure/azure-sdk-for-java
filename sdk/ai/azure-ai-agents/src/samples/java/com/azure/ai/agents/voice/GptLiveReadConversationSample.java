@@ -44,6 +44,7 @@ public class GptLiveReadConversationSample {
         BetaVoiceAgentsLiveConversationsClient client = new AgentsClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .addPolicy(previewHeaders())
+            .beta()
             .buildBetaVoiceAgentsLiveConversationsClient();
         readConversation(client, agentName, conversationId);
     }
@@ -94,7 +95,7 @@ public class GptLiveReadConversationSample {
     static void printConversation(VoiceAgentLiveConversation conversation) {
         System.out.printf("Conversation %s: status=%s, created=%s, completed=%s, usageSeconds=%s%n",
             conversation.getId(), conversation.getStatus(), conversation.getCreatedAt(), conversation.getCompletedAt(),
-            conversation.getUsage() == null ? null : conversation.getUsage().getSeconds());
+            conversation.getUsage() == null ? null : conversation.getUsage().seconds());
     }
 
     static void printItem(VoiceAgentLiveConversationItem item) {

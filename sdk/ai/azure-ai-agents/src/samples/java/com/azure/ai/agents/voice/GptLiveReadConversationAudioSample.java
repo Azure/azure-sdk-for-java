@@ -60,7 +60,7 @@ public class GptLiveReadConversationAudioSample {
         BetaVoiceAgentsLiveConversationsClient client = new AgentsClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .addPolicy(GptLiveReadConversationSample.previewHeaders())
-            .buildBetaVoiceAgentsLiveConversationsClient();
+            .beta().buildBetaVoiceAgentsLiveConversationsClient();
         downloadAudio(client, agentName, conversationId, itemId, directory);
     }
 
