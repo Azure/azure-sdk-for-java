@@ -1,6 +1,6 @@
 # Release History
 
-## 12.34.0-beta.1 (Unreleased)
+## 12.34.0-beta.1 (2026-11-05)
 
 ### Features Added
 - Added support for retrieving file and directory properties by file ID

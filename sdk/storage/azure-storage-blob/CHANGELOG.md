@@ -1,6 +1,6 @@
 # Release History
 
-## 12.38.0-beta.1 (Unreleased)
+## 12.38.0-beta.1 (2026-11-05)
 
 ### Features Added
 - Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
