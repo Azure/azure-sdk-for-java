@@ -113,7 +113,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * using their id.
      */
     @Generated
-    private List<RealtimeConversationItem> input;
+    private List<RealtimeResponseInputItem> input;
 
     /*
      * A pre-generated assistant message used to begin the response.
@@ -404,7 +404,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * @return the input value.
      */
     @Generated
-    public List<RealtimeConversationItem> getInput() {
+    public List<RealtimeResponseInputItem> getInput() {
         return this.input;
     }
 
@@ -419,7 +419,7 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
      * @return the VoiceAgentResponseCreateOptions object itself.
      */
     @Generated
-    public VoiceAgentResponseCreateOptions setInput(List<RealtimeConversationItem> input) {
+    public VoiceAgentResponseCreateOptions setInput(List<RealtimeResponseInputItem> input) {
         this.input = input;
         return this;
     }
@@ -557,8 +557,8 @@ public final class VoiceAgentResponseCreateOptions implements JsonSerializable<V
                 } else if ("audio".equals(fieldName)) {
                     deserializedVoiceAgentResponseCreateOptions.audio = VoiceAgentResponseAudioConfig.fromJson(reader);
                 } else if ("input".equals(fieldName)) {
-                    List<RealtimeConversationItem> input
-                        = reader.readArray(reader1 -> RealtimeConversationItem.fromJson(reader1));
+                    List<RealtimeResponseInputItem> input
+                        = reader.readArray(reader1 -> RealtimeResponseInputItem.fromJson(reader1));
                     deserializedVoiceAgentResponseCreateOptions.input = input;
                 } else if ("pre_generated_assistant_message".equals(fieldName)) {
                     deserializedVoiceAgentResponseCreateOptions.preGeneratedAssistantMessage
