@@ -450,6 +450,7 @@ class;com.azure.ai.agents.models.VoiceAgentHandoffVoiceAdaptation;Preview API. V
 class;com.azure.ai.agents.models.VoiceAgentInlineSubagentConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputCollectionChannel;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputCollectionStatus;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentInputCollectionStatusEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputTranscription;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputTranscriptionModel;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInterimResponseConfiguration;Preview API. VoiceAgents=V1Preview;
@@ -506,9 +507,6 @@ class;com.azure.ai.agents.models.VoiceAgentSemanticVadTurnDetection;Preview API.
 class;com.azure.ai.agents.models.VoiceAgentSendDtmfSystemTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSendSmsSystemTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerEvent;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventInputCollectionStatus;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventSystemToolArgumentsDelta;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentServerEventSystemToolArgumentsDone;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerEventTypeExtension;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentServerVadTurnDetection;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSessionAvatarConfiguration;Preview API. VoiceAgents=V1Preview;
@@ -540,7 +538,10 @@ class;com.azure.ai.agents.models.VoiceAgentSubagentResponsePolicy;Preview API. V
 class;com.azure.ai.agents.models.VoiceAgentSubagentType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSubProtocol;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSystemTool;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSystemToolArgumentsDeltaEvent;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSystemToolArgumentsDoneEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSystemToolItem;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAgentSystemToolItemObjectType;Preview API.;
 class;com.azure.ai.agents.models.VoiceAgentSystemToolItemStatus;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentSystemToolName;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTemplateGreetingConfiguration;Preview API. VoiceAgents=V1Preview;

@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * The configured transfer routing policy. The model selects a target name, not destinations or routing settings.
@@ -24,13 +25,6 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
      */
     @Generated
     private final VoiceAgentTransferStrategy strategy;
-
-    /*
-     * Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service defaults to 20 seconds. Must not
-     * exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
-     */
-    @Generated
-    private Integer ringTimeoutSeconds;
 
     /**
      * Creates an instance of VoiceAgentTransferRouting class.
@@ -54,30 +48,6 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
     }
 
     /**
-     * Get the ringTimeoutSeconds property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the
-     * service defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
-     *
-     * @return the ringTimeoutSeconds value.
-     */
-    @Generated
-    public Integer getRingTimeoutSeconds() {
-        return this.ringTimeoutSeconds;
-    }
-
-    /**
-     * Set the ringTimeoutSeconds property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the
-     * service defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
-     *
-     * @param ringTimeoutSeconds the ringTimeoutSeconds value to set.
-     * @return the VoiceAgentTransferRouting object itself.
-     */
-    @Generated
-    public VoiceAgentTransferRouting setRingTimeoutSeconds(Integer ringTimeoutSeconds) {
-        this.ringTimeoutSeconds = ringTimeoutSeconds;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -85,7 +55,7 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("strategy", this.strategy == null ? null : this.strategy.toString());
-        jsonWriter.writeNumberField("ring_timeout_seconds", this.ringTimeoutSeconds);
+        jsonWriter.writeNumberField("ring_timeout_seconds", this.ringTimeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,21 +72,59 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
     public static VoiceAgentTransferRouting fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VoiceAgentTransferStrategy strategy = null;
-            Integer ringTimeoutSeconds = null;
+            Long ringTimeout = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("strategy".equals(fieldName)) {
                     strategy = VoiceAgentTransferStrategy.fromString(reader.getString());
                 } else if ("ring_timeout_seconds".equals(fieldName)) {
-                    ringTimeoutSeconds = reader.getNullable(JsonReader::getInt);
+                    ringTimeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             VoiceAgentTransferRouting deserializedVoiceAgentTransferRouting = new VoiceAgentTransferRouting(strategy);
-            deserializedVoiceAgentTransferRouting.ringTimeoutSeconds = ringTimeoutSeconds;
+            deserializedVoiceAgentTransferRouting.ringTimeout = ringTimeout;
             return deserializedVoiceAgentTransferRouting;
         });
+    }
+
+    /*
+     * Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service defaults to 20 seconds. Must not
+     * exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     */
+    @Generated
+    private Long ringTimeout;
+
+    /**
+     * Get the ringTimeout property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
+     * defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     *
+     * @return the ringTimeout value.
+     */
+    @Generated
+    public Duration getRingTimeout() {
+        if (this.ringTimeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.ringTimeout);
+    }
+
+    /**
+     * Set the ringTimeout property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
+     * defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     *
+     * @param ringTimeout the ringTimeout value to set.
+     * @return the VoiceAgentTransferRouting object itself.
+     */
+    @Generated
+    public VoiceAgentTransferRouting setRingTimeout(Duration ringTimeout) {
+        if (ringTimeout == null) {
+            this.ringTimeout = null;
+        } else {
+            this.ringTimeout = ringTimeout.getSeconds();
+        }
+        return this;
     }
 }

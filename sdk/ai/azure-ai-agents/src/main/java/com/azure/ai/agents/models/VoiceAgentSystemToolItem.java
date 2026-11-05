@@ -35,12 +35,6 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
     private String id;
 
     /*
-     * The realtime item marker.
-     */
-    @Generated
-    private VoiceAgentSystemToolItemObject object;
-
-    /*
      * The generation status of the item, not the provider execution outcome.
      */
     @Generated
@@ -85,9 +79,8 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
      * @param callId the callId value to set.
      * @param arguments the arguments value to set.
      */
-    @Generated
-    public VoiceAgentSystemToolItem(VoiceAgentSystemToolItemStatus status, VoiceAgentSystemToolName name, String callId,
-        String arguments) {
+    private VoiceAgentSystemToolItem(VoiceAgentSystemToolItemStatus status, VoiceAgentSystemToolName name,
+        String callId, String arguments) {
         this.status = status;
         this.name = name;
         this.callId = callId;
@@ -121,31 +114,19 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
      * @param id the id value to set.
      * @return the VoiceAgentSystemToolItem object itself.
      */
-    @Generated
-    public VoiceAgentSystemToolItem setId(String id) {
+    private VoiceAgentSystemToolItem setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the object property: The realtime item marker.
+     * Set the objectType property: The realtime item marker.
      *
-     * @return the object value.
-     */
-    @Generated
-    public VoiceAgentSystemToolItemObject getObject() {
-        return this.object;
-    }
-
-    /**
-     * Set the object property: The realtime item marker.
-     *
-     * @param object the object value to set.
+     * @param objectType the objectType value to set.
      * @return the VoiceAgentSystemToolItem object itself.
      */
-    @Generated
-    public VoiceAgentSystemToolItem setObject(VoiceAgentSystemToolItemObject object) {
-        this.object = object;
+    private VoiceAgentSystemToolItem setObjectType(VoiceAgentSystemToolItemObjectType objectType) {
+        this.objectType = objectType;
         return this;
     }
 
@@ -226,7 +207,7 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -248,7 +229,7 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
             String arguments = null;
             RealtimeConversationItemType type = RealtimeConversationItemType.SYSTEM_TOOL;
             String id = null;
-            VoiceAgentSystemToolItemObject object = null;
+            VoiceAgentSystemToolItemObjectType objectType = null;
             Long createdAt = null;
             String responseId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -267,7 +248,7 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("object".equals(fieldName)) {
-                    object = VoiceAgentSystemToolItemObject.fromString(reader.getString());
+                    objectType = VoiceAgentSystemToolItemObjectType.fromString(reader.getString());
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getNullable(JsonReader::getLong);
                 } else if ("response_id".equals(fieldName)) {
@@ -280,10 +261,26 @@ public final class VoiceAgentSystemToolItem extends RealtimeConversationItem {
                 = new VoiceAgentSystemToolItem(status, name, callId, arguments);
             deserializedVoiceAgentSystemToolItem.type = type;
             deserializedVoiceAgentSystemToolItem.id = id;
-            deserializedVoiceAgentSystemToolItem.object = object;
+            deserializedVoiceAgentSystemToolItem.objectType = objectType;
             deserializedVoiceAgentSystemToolItem.createdAt = createdAt;
             deserializedVoiceAgentSystemToolItem.responseId = responseId;
             return deserializedVoiceAgentSystemToolItem;
         });
+    }
+
+    /*
+     * The realtime item marker.
+     */
+    @Generated
+    private VoiceAgentSystemToolItemObjectType objectType;
+
+    /**
+     * Get the objectType property: The realtime item marker.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public VoiceAgentSystemToolItemObjectType getObjectType() {
+        return this.objectType;
     }
 }

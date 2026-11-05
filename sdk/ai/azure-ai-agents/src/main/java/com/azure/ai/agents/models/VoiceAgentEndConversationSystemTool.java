@@ -80,8 +80,8 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", getDescription());
-        if (getTimeoutSeconds() != null) {
-            jsonWriter.writeNumberField("timeout_seconds", getTimeoutSeconds().getSeconds());
+        if (getTimeout() != null) {
+            jsonWriter.writeNumberField("timeout_seconds", getTimeout().getSeconds());
         }
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         return jsonWriter.writeEndObject();
@@ -106,10 +106,9 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
                 if ("description".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.setDescription(reader.getString());
                 } else if ("timeout_seconds".equals(fieldName)) {
-                    Long timeoutSecondsHolder = reader.getNullable(JsonReader::getLong);
-                    if (timeoutSecondsHolder != null) {
-                        deserializedVoiceAgentEndConversationSystemTool
-                            .setTimeoutSeconds(Duration.ofSeconds(timeoutSecondsHolder));
+                    Long timeoutHolder = reader.getNullable(JsonReader::getLong);
+                    if (timeoutHolder != null) {
+                        deserializedVoiceAgentEndConversationSystemTool.setTimeout(Duration.ofSeconds(timeoutHolder));
                     }
                 } else if ("name".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.name
@@ -127,8 +126,8 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
      */
     @Generated
     @Override
-    public VoiceAgentEndConversationSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
-        super.setTimeoutSeconds(timeoutSeconds);
+    public VoiceAgentEndConversationSystemTool setTimeout(Duration timeout) {
+        super.setTimeout(timeout);
         return this;
     }
 }

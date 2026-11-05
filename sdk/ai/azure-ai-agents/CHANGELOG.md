@@ -12,9 +12,13 @@
 - Reused OpenAI Java's Live audio settings, voice, and session usage models instead of generating duplicate types.
 - Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
   voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
+- Added preview voice-agent system tools, transfer routing, and system-tool intent and input-collection events.
 
 ### Breaking Changes
 
+- Standardized preview system-tool names with `VoiceAgent*Event`, `outputReference`, and `objectType`, and exposed
+  system-tool and transfer-ring timeouts as `Duration` through `timeout` and `ringTimeout`. System-tool items are
+  service-generated and no longer expose public constructors or setters.
 - Moved preview Live-conversation client factories under `AgentsClientBuilder.beta()`.
 - Changed preview Live delegation acknowledgement delays to `Duration` with unit-free `acknowledgementDelay`
   accessors, and renamed the managed-delegation duration property from `offsetMs` to `offset`.

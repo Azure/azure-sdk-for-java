@@ -98,7 +98,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeNumberField("timeout_seconds", this.timeoutSeconds);
+        jsonWriter.writeNumberField("timeout_seconds", this.timeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,7 +163,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                 } else if ("description".equals(fieldName)) {
                     deserializedVoiceAgentSystemTool.description = reader.getString();
                 } else if ("timeout_seconds".equals(fieldName)) {
-                    deserializedVoiceAgentSystemTool.timeoutSeconds = reader.getNullable(JsonReader::getLong);
+                    deserializedVoiceAgentSystemTool.timeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -176,35 +176,35 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      * Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60 seconds.
      */
     @Generated
-    private Long timeoutSeconds;
+    private Long timeout;
 
     /**
-     * Get the timeoutSeconds property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * Get the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
      * seconds.
      *
-     * @return the timeoutSeconds value.
+     * @return the timeout value.
      */
     @Generated
-    public Duration getTimeoutSeconds() {
-        if (this.timeoutSeconds == null) {
+    public Duration getTimeout() {
+        if (this.timeout == null) {
             return null;
         }
-        return Duration.ofSeconds(this.timeoutSeconds);
+        return Duration.ofSeconds(this.timeout);
     }
 
     /**
-     * Set the timeoutSeconds property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * Set the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
      * seconds.
      *
-     * @param timeoutSeconds the timeoutSeconds value to set.
+     * @param timeout the timeout value to set.
      * @return the VoiceAgentSystemTool object itself.
      */
     @Generated
-    public VoiceAgentSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
-        if (timeoutSeconds == null) {
-            this.timeoutSeconds = null;
+    public VoiceAgentSystemTool setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
         } else {
-            this.timeoutSeconds = timeoutSeconds.getSeconds();
+            this.timeout = timeout.getSeconds();
         }
         return this;
     }

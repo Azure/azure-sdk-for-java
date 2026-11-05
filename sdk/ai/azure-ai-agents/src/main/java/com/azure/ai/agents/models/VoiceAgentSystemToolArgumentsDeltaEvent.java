@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The completed intent arguments for a system tool, not provider success or a request for a customer function result.
+ * An incremental model-argument fragment for a service-managed system tool.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentServerEventSystemToolArgumentsDone extends RealtimeServerEvent {
+public final class VoiceAgentSystemToolArgumentsDeltaEvent extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_SYSTEM_TOOL_ARGUMENTS_DONE;
+    private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_SYSTEM_TOOL_ARGUMENTS_DELTA;
 
     /*
      * The unique identifier of this server event.
@@ -55,38 +55,36 @@ public final class VoiceAgentServerEventSystemToolArgumentsDone extends Realtime
     private final String callId;
 
     /*
-     * The invoked built-in capability.
+     * An incremental JSON fragment of the intent arguments.
      */
     @Generated
-    private final VoiceAgentSystemToolName name;
+    private final String delta;
 
     /*
-     * The complete, unexpanded model arguments as a JSON string.
+     * Optional padding metadata with no application semantics.
      */
     @Generated
-    private final String arguments;
+    private String obfuscation;
 
     /**
-     * Creates an instance of VoiceAgentServerEventSystemToolArgumentsDone class.
+     * Creates an instance of VoiceAgentSystemToolArgumentsDeltaEvent class.
      *
      * @param eventId the eventId value to set.
      * @param responseId the responseId value to set.
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param callId the callId value to set.
-     * @param name the name value to set.
-     * @param arguments the arguments value to set.
+     * @param delta the delta value to set.
      */
     @Generated
-    private VoiceAgentServerEventSystemToolArgumentsDone(String eventId, String responseId, String itemId,
-        int outputIndex, String callId, VoiceAgentSystemToolName name, String arguments) {
+    private VoiceAgentSystemToolArgumentsDeltaEvent(String eventId, String responseId, String itemId, int outputIndex,
+        String callId, String delta) {
         this.eventId = eventId;
         this.responseId = responseId;
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.callId = callId;
-        this.name = name;
-        this.arguments = arguments;
+        this.delta = delta;
     }
 
     /**
@@ -151,23 +149,23 @@ public final class VoiceAgentServerEventSystemToolArgumentsDone extends Realtime
     }
 
     /**
-     * Get the name property: The invoked built-in capability.
+     * Get the delta property: An incremental JSON fragment of the intent arguments.
      *
-     * @return the name value.
+     * @return the delta value.
      */
     @Generated
-    public VoiceAgentSystemToolName getName() {
-        return this.name;
+    public String getDelta() {
+        return this.delta;
     }
 
     /**
-     * Get the arguments property: The complete, unexpanded model arguments as a JSON string.
+     * Get the obfuscation property: Optional padding metadata with no application semantics.
      *
-     * @return the arguments value.
+     * @return the obfuscation value.
      */
     @Generated
-    public String getArguments() {
-        return this.arguments;
+    public String getObfuscation() {
+        return this.obfuscation;
     }
 
     /**
@@ -182,32 +180,32 @@ public final class VoiceAgentServerEventSystemToolArgumentsDone extends Realtime
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeStringField("call_id", this.callId);
-        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
-        jsonWriter.writeStringField("arguments", this.arguments);
+        jsonWriter.writeStringField("delta", this.delta);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("obfuscation", this.obfuscation);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of VoiceAgentServerEventSystemToolArgumentsDone from the JsonReader.
+     * Reads an instance of VoiceAgentSystemToolArgumentsDeltaEvent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentServerEventSystemToolArgumentsDone if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentSystemToolArgumentsDeltaEvent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentServerEventSystemToolArgumentsDone.
+     * @throws IOException If an error occurs while reading the VoiceAgentSystemToolArgumentsDeltaEvent.
      */
     @Generated
-    public static VoiceAgentServerEventSystemToolArgumentsDone fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentSystemToolArgumentsDeltaEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
             String callId = null;
-            VoiceAgentSystemToolName name = null;
-            String arguments = null;
-            RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_SYSTEM_TOOL_ARGUMENTS_DONE;
+            String delta = null;
+            RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_SYSTEM_TOOL_ARGUMENTS_DELTA;
+            String obfuscation = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -221,21 +219,21 @@ public final class VoiceAgentServerEventSystemToolArgumentsDone extends Realtime
                     outputIndex = reader.getInt();
                 } else if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = VoiceAgentSystemToolName.fromString(reader.getString());
-                } else if ("arguments".equals(fieldName)) {
-                    arguments = reader.getString();
+                } else if ("delta".equals(fieldName)) {
+                    delta = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
+                } else if ("obfuscation".equals(fieldName)) {
+                    obfuscation = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentServerEventSystemToolArgumentsDone deserializedVoiceAgentServerEventSystemToolArgumentsDone
-                = new VoiceAgentServerEventSystemToolArgumentsDone(eventId, responseId, itemId, outputIndex, callId,
-                    name, arguments);
-            deserializedVoiceAgentServerEventSystemToolArgumentsDone.type = type;
-            return deserializedVoiceAgentServerEventSystemToolArgumentsDone;
+            VoiceAgentSystemToolArgumentsDeltaEvent deserializedVoiceAgentSystemToolArgumentsDeltaEvent
+                = new VoiceAgentSystemToolArgumentsDeltaEvent(eventId, responseId, itemId, outputIndex, callId, delta);
+            deserializedVoiceAgentSystemToolArgumentsDeltaEvent.type = type;
+            deserializedVoiceAgentSystemToolArgumentsDeltaEvent.obfuscation = obfuscation;
+            return deserializedVoiceAgentSystemToolArgumentsDeltaEvent;
         });
     }
 }

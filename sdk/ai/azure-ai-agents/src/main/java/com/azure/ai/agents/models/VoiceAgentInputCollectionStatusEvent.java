@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeServerEvent {
+public final class VoiceAgentInputCollectionStatusEvent extends RealtimeServerEvent {
 
     /*
      * The type property.
@@ -72,16 +72,16 @@ public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeSe
      * reference it with `{{name}}`.
      */
     @Generated
-    private String outputRef;
+    private String outputReference;
 
     /**
-     * Creates an instance of VoiceAgentServerEventInputCollectionStatus class.
+     * Creates an instance of VoiceAgentInputCollectionStatusEvent class.
      *
      * @param callId the callId value to set.
      * @param status the status value to set.
      */
     @Generated
-    private VoiceAgentServerEventInputCollectionStatus(String callId, VoiceAgentInputCollectionStatus status) {
+    private VoiceAgentInputCollectionStatusEvent(String callId, VoiceAgentInputCollectionStatus status) {
         this.callId = callId;
         this.status = status;
     }
@@ -169,14 +169,14 @@ public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeSe
     }
 
     /**
-     * Get the outputRef property: Actual bare variable name from successful private collection, not its value. May be
-     * suffixed on collision; reference it with `{{name}}`.
+     * Get the outputReference property: Actual bare variable name from successful private collection, not its value.
+     * May be suffixed on collision; reference it with `{{name}}`.
      *
-     * @return the outputRef value.
+     * @return the outputReference value.
      */
     @Generated
-    public String getOutputRef() {
-        return this.outputRef;
+    public String getOutputReference() {
+        return this.outputReference;
     }
 
     /**
@@ -194,21 +194,21 @@ public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeSe
         jsonWriter.writeStringField("request_id", this.requestId);
         jsonWriter.writeStringField("channel", this.channel == null ? null : this.channel.toString());
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("output_ref", this.outputRef);
+        jsonWriter.writeStringField("output_ref", this.outputReference);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of VoiceAgentServerEventInputCollectionStatus from the JsonReader.
+     * Reads an instance of VoiceAgentInputCollectionStatusEvent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceAgentServerEventInputCollectionStatus if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of VoiceAgentInputCollectionStatusEvent if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceAgentServerEventInputCollectionStatus.
+     * @throws IOException If an error occurs while reading the VoiceAgentInputCollectionStatusEvent.
      */
     @Generated
-    public static VoiceAgentServerEventInputCollectionStatus fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentInputCollectionStatusEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             VoiceAgentInputCollectionStatus status = null;
@@ -218,7 +218,7 @@ public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeSe
             String requestId = null;
             VoiceAgentInputCollectionChannel channel = null;
             String value = null;
-            String outputRef = null;
+            String outputReference = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -239,21 +239,21 @@ public final class VoiceAgentServerEventInputCollectionStatus extends RealtimeSe
                 } else if ("value".equals(fieldName)) {
                     value = reader.getString();
                 } else if ("output_ref".equals(fieldName)) {
-                    outputRef = reader.getString();
+                    outputReference = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentServerEventInputCollectionStatus deserializedVoiceAgentServerEventInputCollectionStatus
-                = new VoiceAgentServerEventInputCollectionStatus(callId, status);
-            deserializedVoiceAgentServerEventInputCollectionStatus.type = type;
-            deserializedVoiceAgentServerEventInputCollectionStatus.eventId = eventId;
-            deserializedVoiceAgentServerEventInputCollectionStatus.collectionId = collectionId;
-            deserializedVoiceAgentServerEventInputCollectionStatus.requestId = requestId;
-            deserializedVoiceAgentServerEventInputCollectionStatus.channel = channel;
-            deserializedVoiceAgentServerEventInputCollectionStatus.value = value;
-            deserializedVoiceAgentServerEventInputCollectionStatus.outputRef = outputRef;
-            return deserializedVoiceAgentServerEventInputCollectionStatus;
+            VoiceAgentInputCollectionStatusEvent deserializedVoiceAgentInputCollectionStatusEvent
+                = new VoiceAgentInputCollectionStatusEvent(callId, status);
+            deserializedVoiceAgentInputCollectionStatusEvent.type = type;
+            deserializedVoiceAgentInputCollectionStatusEvent.eventId = eventId;
+            deserializedVoiceAgentInputCollectionStatusEvent.collectionId = collectionId;
+            deserializedVoiceAgentInputCollectionStatusEvent.requestId = requestId;
+            deserializedVoiceAgentInputCollectionStatusEvent.channel = channel;
+            deserializedVoiceAgentInputCollectionStatusEvent.value = value;
+            deserializedVoiceAgentInputCollectionStatusEvent.outputReference = outputReference;
+            return deserializedVoiceAgentInputCollectionStatusEvent;
         });
     }
 }

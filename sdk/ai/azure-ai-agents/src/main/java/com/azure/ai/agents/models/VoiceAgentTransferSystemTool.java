@@ -127,22 +127,12 @@ public final class VoiceAgentTransferSystemTool extends VoiceAgentSystemTool {
      */
     @Generated
     @Override
-    public VoiceAgentTransferSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
-        super.setTimeoutSeconds(timeoutSeconds);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", getDescription());
-        if (getTimeoutSeconds() != null) {
-            jsonWriter.writeNumberField("timeout_seconds", getTimeoutSeconds().getSeconds());
+        if (getTimeout() != null) {
+            jsonWriter.writeNumberField("timeout_seconds", getTimeout().getSeconds());
         }
         jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
@@ -163,7 +153,7 @@ public final class VoiceAgentTransferSystemTool extends VoiceAgentSystemTool {
     public static VoiceAgentTransferSystemTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String description = null;
-            Duration timeoutSeconds = null;
+            Duration timeout = null;
             List<VoiceAgentTransferTarget> targets = null;
             VoiceAgentSystemToolName name = VoiceAgentSystemToolName.TRANSFER;
             Boolean requireHandoff = null;
@@ -173,9 +163,9 @@ public final class VoiceAgentTransferSystemTool extends VoiceAgentSystemTool {
                 if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("timeout_seconds".equals(fieldName)) {
-                    Long timeoutSecondsHolder = reader.getNullable(JsonReader::getLong);
-                    if (timeoutSecondsHolder != null) {
-                        timeoutSeconds = Duration.ofSeconds(timeoutSecondsHolder);
+                    Long timeoutHolder = reader.getNullable(JsonReader::getLong);
+                    if (timeoutHolder != null) {
+                        timeout = Duration.ofSeconds(timeoutHolder);
                     }
                 } else if ("targets".equals(fieldName)) {
                     targets = reader.readArray(reader1 -> VoiceAgentTransferTarget.fromJson(reader1));
@@ -190,10 +180,20 @@ public final class VoiceAgentTransferSystemTool extends VoiceAgentSystemTool {
             VoiceAgentTransferSystemTool deserializedVoiceAgentTransferSystemTool
                 = new VoiceAgentTransferSystemTool(targets);
             deserializedVoiceAgentTransferSystemTool.setDescription(description);
-            deserializedVoiceAgentTransferSystemTool.setTimeoutSeconds(timeoutSeconds);
+            deserializedVoiceAgentTransferSystemTool.setTimeout(timeout);
             deserializedVoiceAgentTransferSystemTool.name = name;
             deserializedVoiceAgentTransferSystemTool.requireHandoff = requireHandoff;
             return deserializedVoiceAgentTransferSystemTool;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentTransferSystemTool setTimeout(Duration timeout) {
+        super.setTimeout(timeout);
+        return this;
     }
 }

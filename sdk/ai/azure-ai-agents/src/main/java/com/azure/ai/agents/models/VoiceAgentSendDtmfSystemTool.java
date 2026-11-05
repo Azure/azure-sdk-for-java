@@ -76,22 +76,12 @@ public final class VoiceAgentSendDtmfSystemTool extends VoiceAgentSystemTool {
      */
     @Generated
     @Override
-    public VoiceAgentSendDtmfSystemTool setTimeoutSeconds(Duration timeoutSeconds) {
-        super.setTimeoutSeconds(timeoutSeconds);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", getDescription());
-        if (getTimeoutSeconds() != null) {
-            jsonWriter.writeNumberField("timeout_seconds", getTimeoutSeconds().getSeconds());
+        if (getTimeout() != null) {
+            jsonWriter.writeNumberField("timeout_seconds", getTimeout().getSeconds());
         }
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         return jsonWriter.writeEndObject();
@@ -115,10 +105,9 @@ public final class VoiceAgentSendDtmfSystemTool extends VoiceAgentSystemTool {
                 if ("description".equals(fieldName)) {
                     deserializedVoiceAgentSendDtmfSystemTool.setDescription(reader.getString());
                 } else if ("timeout_seconds".equals(fieldName)) {
-                    Long timeoutSecondsHolder = reader.getNullable(JsonReader::getLong);
-                    if (timeoutSecondsHolder != null) {
-                        deserializedVoiceAgentSendDtmfSystemTool
-                            .setTimeoutSeconds(Duration.ofSeconds(timeoutSecondsHolder));
+                    Long timeoutHolder = reader.getNullable(JsonReader::getLong);
+                    if (timeoutHolder != null) {
+                        deserializedVoiceAgentSendDtmfSystemTool.setTimeout(Duration.ofSeconds(timeoutHolder));
                     }
                 } else if ("name".equals(fieldName)) {
                     deserializedVoiceAgentSendDtmfSystemTool.name
@@ -129,5 +118,15 @@ public final class VoiceAgentSendDtmfSystemTool extends VoiceAgentSystemTool {
             }
             return deserializedVoiceAgentSendDtmfSystemTool;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentSendDtmfSystemTool setTimeout(Duration timeout) {
+        super.setTimeout(timeout);
+        return this;
     }
 }
