@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"xaepdkzjancuxr\",\"d\"],\"privateEndpoint\":{\"id\":\"v\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"wd\",\"actionsRequired\":\"wz\"},\"provisioningState\":\"Deleting\"},\"id\":\"pgn\",\"name\":\"ytxhp\",\"type\":\"xbzpfzab\"}";
+            = "{\"properties\":{\"groupIds\":[\"cocmnyyaztt\"],\"privateEndpoint\":{\"id\":\"wrqpue\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ywbiexzfeyueax\",\"actionsRequired\":\"xujwbhqwalmuzyo\"},\"provisioningState\":\"Creating\"},\"id\":\"dkzjancuxrh\",\"name\":\"wbavxbniwdj\",\"type\":\"wz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("yazttbtwwrqpue", "ckzywbiexzfeyue", "xibxujwbhqwalm", com.azure.core.util.Context.NONE)
+            .getWithResponse("lhaaxdbabp", "lwrq", "fkts", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("wd", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("wz", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ywbiexzfeyueax", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xujwbhqwalmuzyo", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

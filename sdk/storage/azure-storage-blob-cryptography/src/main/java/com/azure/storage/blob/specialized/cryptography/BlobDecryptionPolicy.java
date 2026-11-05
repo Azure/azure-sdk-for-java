@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
@@ -21,11 +22,15 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.COMP_QUERY_PARAMETER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.LAYOUT_QUERY_PARAMETER_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
 
 /**
@@ -75,6 +80,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (isGetLayoutRequest(context)) {
+            return next.process();
+        }
+
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
         String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
 
@@ -176,6 +185,23 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         return rangeHeader != null;
     }
 
+    private boolean isGetLayoutRequest(HttpPipelineCallContext context) {
+        if (context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+            return false;
+        }
+
+        Iterator<Map.Entry<String, String>> queryParameters
+            = CoreUtils.parseQueryParameters(context.getHttpRequest().getUrl().getQuery());
+        while (queryParameters.hasNext()) {
+            Map.Entry<String, String> queryParameter = queryParameters.next();
+            if (COMP_QUERY_PARAMETER.equals(queryParameter.getKey())
+                && LAYOUT_QUERY_PARAMETER_VALUE.equals(queryParameter.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isEncryptedBlob(HttpPipelineCallContext context) {
         return context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isPresent();
     }
@@ -206,8 +232,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isDownloadResponse(HttpResponse httpResponse) {
-        // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
-        // response
+        // Non-download GET operations such as getLayout bypass this policy before response processing.
         return httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null;
     }
 

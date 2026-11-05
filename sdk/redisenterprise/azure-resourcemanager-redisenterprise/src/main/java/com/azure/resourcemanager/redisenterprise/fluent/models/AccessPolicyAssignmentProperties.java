@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPropertiesUser;
-import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentProvisioningError;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import java.io.IOException;
 
@@ -25,22 +24,9 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
     private ProvisioningState provisioningState;
 
     /*
-     * **Deprecated.** This property always returns "default". Use `accessString` to configure custom Redis ACL
-     * permissions instead.
+     * Name of access policy under specific access policy assignment. Only "default" policy is supported for now.
      */
     private String accessPolicyName;
-
-    /*
-     * The Redis ACL permissions string applied to this assignment, for example `+@read ~cache:*`. Defaults to `+@all
-     * ~*` if not specified.
-     */
-    private String accessString;
-
-    /*
-     * Provisioning error details when the access string failed to apply (e.g., invalid ACL syntax). Null when
-     * provisioning succeeded.
-     */
-    private AccessPolicyAssignmentProvisioningError provisioningError;
 
     /*
      * The user associated with the access policy.
@@ -63,8 +49,8 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
     }
 
     /**
-     * Get the accessPolicyName property: **Deprecated.** This property always returns "default". Use `accessString` to
-     * configure custom Redis ACL permissions instead.
+     * Get the accessPolicyName property: Name of access policy under specific access policy assignment. Only "default"
+     * policy is supported for now.
      * 
      * @return the accessPolicyName value.
      */
@@ -73,8 +59,8 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
     }
 
     /**
-     * Set the accessPolicyName property: **Deprecated.** This property always returns "default". Use `accessString` to
-     * configure custom Redis ACL permissions instead.
+     * Set the accessPolicyName property: Name of access policy under specific access policy assignment. Only "default"
+     * policy is supported for now.
      * 
      * @param accessPolicyName the accessPolicyName value to set.
      * @return the AccessPolicyAssignmentProperties object itself.
@@ -82,38 +68,6 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
     public AccessPolicyAssignmentProperties withAccessPolicyName(String accessPolicyName) {
         this.accessPolicyName = accessPolicyName;
         return this;
-    }
-
-    /**
-     * Get the accessString property: The Redis ACL permissions string applied to this assignment, for example
-     * `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
-     * 
-     * @return the accessString value.
-     */
-    public String accessString() {
-        return this.accessString;
-    }
-
-    /**
-     * Set the accessString property: The Redis ACL permissions string applied to this assignment, for example
-     * `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
-     * 
-     * @param accessString the accessString value to set.
-     * @return the AccessPolicyAssignmentProperties object itself.
-     */
-    public AccessPolicyAssignmentProperties withAccessString(String accessString) {
-        this.accessString = accessString;
-        return this;
-    }
-
-    /**
-     * Get the provisioningError property: Provisioning error details when the access string failed to apply (e.g.,
-     * invalid ACL syntax). Null when provisioning succeeded.
-     * 
-     * @return the provisioningError value.
-     */
-    public AccessPolicyAssignmentProvisioningError provisioningError() {
-        return this.provisioningError;
     }
 
     /**
@@ -142,9 +96,8 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("user", this.user);
         jsonWriter.writeStringField("accessPolicyName", this.accessPolicyName);
-        jsonWriter.writeStringField("accessString", this.accessString);
+        jsonWriter.writeJsonField("user", this.user);
         return jsonWriter.writeEndObject();
     }
 
@@ -165,19 +118,14 @@ public final class AccessPolicyAssignmentProperties implements JsonSerializable<
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("user".equals(fieldName)) {
+                if ("accessPolicyName".equals(fieldName)) {
+                    deserializedAccessPolicyAssignmentProperties.accessPolicyName = reader.getString();
+                } else if ("user".equals(fieldName)) {
                     deserializedAccessPolicyAssignmentProperties.user
                         = AccessPolicyAssignmentPropertiesUser.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAccessPolicyAssignmentProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("accessPolicyName".equals(fieldName)) {
-                    deserializedAccessPolicyAssignmentProperties.accessPolicyName = reader.getString();
-                } else if ("accessString".equals(fieldName)) {
-                    deserializedAccessPolicyAssignmentProperties.accessString = reader.getString();
-                } else if ("provisioningError".equals(fieldName)) {
-                    deserializedAccessPolicyAssignmentProperties.provisioningError
-                        = AccessPolicyAssignmentProvisioningError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

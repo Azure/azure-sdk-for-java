@@ -21,13 +21,16 @@
   `ofFunction`, or `ofMcp` to create a choice, and `getMode`, `getFunction`, or `getMcp` to inspect it. Getters for
   other variants return `null`. Passing `null` to the setter clears the property; the factories reject null arguments.
   `PromptAgentDefinition` is unchanged.
+- Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
+  voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
+- Changed the preview `VoiceAgentResponseCreateOptions` input list to `List<RealtimeResponseInputItem>`.
 
 ### Bugs Fixed
 
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.
 ### Other Changes
 
-- Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
 
 ## 2.9.0 (2026-10-30)
 
