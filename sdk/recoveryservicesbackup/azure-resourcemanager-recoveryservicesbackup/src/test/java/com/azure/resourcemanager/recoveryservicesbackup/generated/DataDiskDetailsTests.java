@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class DataDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataDiskDetails model = BinaryData.fromString(
-            "{\"encryptedDataDisks\":[{\"lun\":642411394,\"diskName\":\"htjsying\"},{\"lun\":973548614,\"diskName\":\"tmtdhtmdvypgik\"}]}")
-            .toObject(DataDiskDetails.class);
-        Assertions.assertEquals(642411394, model.encryptedDataDisks().get(0).lun());
-        Assertions.assertEquals("htjsying", model.encryptedDataDisks().get(0).diskName());
+        DataDiskDetails model
+            = BinaryData.fromString("{\"encryptedDataDisks\":[{\"lun\":1714425112,\"diskName\":\"dlpagzrcxfail\"}]}")
+                .toObject(DataDiskDetails.class);
+        Assertions.assertEquals(1714425112, model.encryptedDataDisks().get(0).lun());
+        Assertions.assertEquals("dlpagzrcxfail", model.encryptedDataDisks().get(0).diskName());
     }
 }

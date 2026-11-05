@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -60,13 +61,19 @@ public final class SendEventMessage extends WebPubSubMessageAck {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
+        jsonWriter.writeStartObject()
             .writeStringField("type", TYPE)
             .writeNumberField("ackId", getAckId())
             .writeStringField("event", event)
-            .writeStringField("dataType", dataType)
-            .writeStringField("data", Objects.toString(data, null))
-            .writeEndObject();
+            .writeStringField("dataType", dataType);
+
+        if (WebPubSubDataFormat.JSON.toString().equals(dataType)) {
+            jsonWriter.writeRawField("data", Objects.toString(data, null));
+        } else {
+            jsonWriter.writeStringField("data", Objects.toString(data, null));
+        }
+
+        return jsonWriter.writeEndObject();
     }
 
     /**

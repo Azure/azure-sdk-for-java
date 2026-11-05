@@ -133,10 +133,15 @@ public final class CertificateAuthorityImpl
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.certificateAuthorityName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificateAuthorities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}",
+            "resourceGroupName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}",
+            "namespaceName");
+        this.certificateAuthorityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}",
+            "certificateAuthorityName");
     }
 
     public CertificateAuthority refresh() {

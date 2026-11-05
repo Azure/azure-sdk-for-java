@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceProperties
 import java.io.IOException;
 
 /**
- * Concrete proxy resource types can be created by aliasing this type using a specific property type.
+ * One scheduled execution of a recurring bulk action.
  */
 @Immutable
 public final class OccurrenceInner extends ProxyResource {

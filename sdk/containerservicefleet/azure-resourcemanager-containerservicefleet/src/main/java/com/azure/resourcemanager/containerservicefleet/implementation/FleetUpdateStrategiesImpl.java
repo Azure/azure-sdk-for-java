@@ -66,17 +66,23 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
     }
 
     public FleetUpdateStrategy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
+        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
         if (fleetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
         }
-        String updateStrategyName = ResourceManagerUtils.getValueFromIdByName(id, "updateStrategies");
+        String updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
         if (updateStrategyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'updateStrategies'.", id)));
@@ -85,17 +91,23 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
     }
 
     public Response<FleetUpdateStrategy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
+        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
         if (fleetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
         }
-        String updateStrategyName = ResourceManagerUtils.getValueFromIdByName(id, "updateStrategies");
+        String updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
         if (updateStrategyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'updateStrategies'.", id)));
@@ -104,17 +116,23 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
+        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
         if (fleetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
         }
-        String updateStrategyName = ResourceManagerUtils.getValueFromIdByName(id, "updateStrategies");
+        String updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
         if (updateStrategyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'updateStrategies'.", id)));
@@ -124,17 +142,23 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
+        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
         if (fleetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
         }
-        String updateStrategyName = ResourceManagerUtils.getValueFromIdByName(id, "updateStrategies");
+        String updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
         if (updateStrategyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'updateStrategies'.", id)));

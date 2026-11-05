@@ -21,7 +21,7 @@ public final class AscUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"limit\":870046767,\"unit\":\"jid\",\"currentValue\":1213525244,\"name\":{\"value\":\"kyxvxevblbjedn\",\"localizedValue\":\"lageuaulxun\"}}]}";
+            = "{\"value\":[{\"limit\":888405116,\"unit\":\"utlwexxwla\",\"currentValue\":468849318,\"name\":{\"value\":\"zsrzpgepq\",\"localizedValue\":\"bb\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class AscUsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ResourceUsage> response = manager.ascUsages().list("akz", com.azure.core.util.Context.NONE);
+        PagedIterable<ResourceUsage> response
+            = manager.ascUsages().list("nomdrkywuhpsv", com.azure.core.util.Context.NONE);
 
     }
 }

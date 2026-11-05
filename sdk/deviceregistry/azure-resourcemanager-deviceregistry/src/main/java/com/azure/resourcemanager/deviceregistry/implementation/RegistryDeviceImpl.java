@@ -134,9 +134,15 @@ public final class RegistryDeviceImpl implements RegistryDevice, RegistryDevice.
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.registryDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registryDevices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "resourceGroupName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "namespaceName");
+        this.registryDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "registryDeviceName");
     }
 
     public RegistryDevice refresh() {

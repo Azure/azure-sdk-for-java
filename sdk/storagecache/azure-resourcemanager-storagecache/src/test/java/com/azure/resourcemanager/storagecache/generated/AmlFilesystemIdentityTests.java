@@ -16,7 +16,7 @@ public final class AmlFilesystemIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"v\",\"tenantId\":\"ur\",\"type\":\"None\",\"userAssignedIdentities\":{\"bogqxndlkzgxhu\":{\"principalId\":\"bdagxt\",\"clientId\":\"qdxbxwa\"},\"lrb\":{\"principalId\":\"plbpodxun\",\"clientId\":\"ebxmubyynt\"},\"l\":{\"principalId\":\"koievseo\",\"clientId\":\"q\"},\"pbttdum\":{\"principalId\":\"muwlauwzizxbm\",\"clientId\":\"cjefuzmu\"}}}")
+            "{\"principalId\":\"fuflrwdmhdlx\",\"tenantId\":\"rxsagafcnihgwqa\",\"type\":\"None\",\"userAssignedIdentities\":{\"sotbob\":{\"principalId\":\"bcvkcvqvpkeq\",\"clientId\":\"vdrhvoo\"},\"mutwuoe\":{\"principalId\":\"opcjwvnhd\",\"clientId\":\"wmgxcxrsl\"}}}")
             .toObject(AmlFilesystemIdentity.class);
         Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.type());
     }
@@ -25,8 +25,7 @@ public final class AmlFilesystemIdentityTests {
     public void testSerialize() throws Exception {
         AmlFilesystemIdentity model = new AmlFilesystemIdentity().withType(AmlFilesystemIdentityType.NONE)
             .withUserAssignedIdentities(
-                mapOf("bogqxndlkzgxhu", new UserAssignedIdentitiesValue(), "lrb", new UserAssignedIdentitiesValue(),
-                    "l", new UserAssignedIdentitiesValue(), "pbttdum", new UserAssignedIdentitiesValue()));
+                mapOf("sotbob", new UserAssignedIdentitiesValue(), "mutwuoe", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemIdentity.class);
         Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.type());
     }

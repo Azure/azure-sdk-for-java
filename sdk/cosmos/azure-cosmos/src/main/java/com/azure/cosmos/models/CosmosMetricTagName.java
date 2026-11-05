@@ -71,6 +71,7 @@ public final class CosmosMetricTagName {
     /**
      * The service endpoint (hostname + port)
      * Applicable to requests, direct channel, direct endpoint and direct requests
+     * For Gateway requests, the value is the HTTPS destination hostname and port, excluding the resource path.
      */
     public static final CosmosMetricTagName SERVICE_ENDPOINT = new CosmosMetricTagName(
         "ServiceEndpoint",

@@ -63,4 +63,18 @@ public interface GiVersions {
      */
     PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone, String shapeAttribute,
         Context context);
+
+    /**
+     * List GiVersion resources by SubscriptionLocationResource.
+     * 
+     * @param location The name of the Azure region.
+     * @param shape If provided, filters the results for the given shape.
+     * @param zone Filters the result for the given Azure Availability Zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a GiVersion list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone, Context context);
 }

@@ -109,10 +109,15 @@ public final class SecurityRuleImpl implements SecurityRule, SecurityRule.Defini
         com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkSecurityGroupName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkSecurityGroups");
-        this.securityRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "resourceGroupName");
+        this.networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "networkSecurityGroupName");
+        this.securityRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "securityRuleName");
     }
 
     public SecurityRule refresh() {

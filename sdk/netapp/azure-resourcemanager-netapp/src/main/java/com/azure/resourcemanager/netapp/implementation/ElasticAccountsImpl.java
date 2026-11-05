@@ -73,12 +73,16 @@ public final class ElasticAccountsImpl implements ElasticAccounts {
     }
 
     public ElasticAccount getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "elasticAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'elasticAccounts'.", id)));
@@ -87,12 +91,16 @@ public final class ElasticAccountsImpl implements ElasticAccounts {
     }
 
     public Response<ElasticAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "elasticAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'elasticAccounts'.", id)));
@@ -101,12 +109,16 @@ public final class ElasticAccountsImpl implements ElasticAccounts {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "elasticAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'elasticAccounts'.", id)));
@@ -115,12 +127,16 @@ public final class ElasticAccountsImpl implements ElasticAccounts {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "elasticAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'elasticAccounts'.", id)));

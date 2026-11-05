@@ -474,7 +474,7 @@ public class JdkHttpClientTests {
 
     @Test
     public void perCallTimeout() {
-        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -496,7 +496,7 @@ public class JdkHttpClientTests {
 
     @Test
     public void perCallTimeoutSync() {
-        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 

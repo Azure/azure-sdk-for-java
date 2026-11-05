@@ -11,7 +11,7 @@ import com.azure.resourcemanager.monitor.workspaces.models.ListParameter;
  */
 public final class IssueListAlertsSamples {
     /*
-     * x-ms-original-file: 2025-10-03/Issue_ListAlerts_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-03-preview/Issue_ListAlerts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Issue_ListAlerts_MaximumSet.

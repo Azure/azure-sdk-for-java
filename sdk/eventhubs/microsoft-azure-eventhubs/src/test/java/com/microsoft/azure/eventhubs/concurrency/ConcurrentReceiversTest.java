@@ -13,10 +13,10 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -37,7 +37,7 @@ public class ConcurrentReceiversTest extends ApiTestBase {
 
     int eventSentPerPartition = 1;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws InterruptedException, ExecutionException, EventHubException, IOException {
         connStr = TestContext.getConnectionString();
 
@@ -47,14 +47,14 @@ public class ConcurrentReceiversTest extends ApiTestBase {
         consumerGroupName = TestContext.getConsumerGroupName();
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (sender != null) {
             sender.closeSync();
         }
     }
 
-    @Test()
+    @Test
     public void testParallelCreationOfReceivers() throws EventHubException, IOException, InterruptedException, ExecutionException, TimeoutException {
         ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         ReceiveAtleastOneEventValidator[] counter = new ReceiveAtleastOneEventValidator[partitionCount];
@@ -89,7 +89,7 @@ public class ConcurrentReceiversTest extends ApiTestBase {
         CompletableFuture.allOf(validationSignals).get(partitionCount * 10, TimeUnit.SECONDS);
     }
 
-    @After
+    @AfterEach
     public void cleanupTest() throws EventHubException {
         for (int i = 0; i < partitionCount; i++) {
             if (receivers[i] != null) {

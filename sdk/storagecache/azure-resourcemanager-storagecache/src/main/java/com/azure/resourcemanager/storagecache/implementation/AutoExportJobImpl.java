@@ -206,9 +206,15 @@ public final class AutoExportJobImpl implements AutoExportJob, AutoExportJob.Def
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
-        this.autoExportJobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autoExportJobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "amlFilesystemName");
+        this.autoExportJobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "autoExportJobName");
     }
 
     public AutoExportJob refresh() {

@@ -9,6 +9,8 @@ import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,26 @@ public class ReactorNettyHttpClientTest {
     }
 
     @Test(groups = "unit")
+    public void httpClientAllocatorRespectsConfiguration() {
+        ByteBufAllocator expectedAllocator = System.getProperty("io.netty.allocator.type") == null
+            ? PooledByteBufAllocator.DEFAULT : ByteBufAllocator.DEFAULT;
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().options().get(ChannelOption.ALLOCATOR))
+            .isSameAs(expectedAllocator);
+
+        HttpClient unpooledConnectionClient = HttpClient.create(new HttpClientConfig(new Configs()));
+        try {
+            httpClient =
+                ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, unpooledConnectionClient, "httpClient");
+            assertThat(httpClient.configuration().options().get(ChannelOption.ALLOCATOR))
+                .isSameAs(expectedAllocator);
+        } finally {
+            LifeCycleUtils.closeQuietly(unpooledConnectionClient);
+        }
+    }
+
+    @Test(groups = "unit")
     public void httpClientWithMaxHeaderSize() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
@@ -71,7 +93,7 @@ public class ReactorNettyHttpClientTest {
     public void httpClientWithValidateHeaders() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().validateHeaders()).isTrue();
+        assertThat(httpClient.configuration().decoder().validateHeaders()).isFalse();
     }
 
     @Test(groups = "unit")

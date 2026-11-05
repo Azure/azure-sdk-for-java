@@ -21,7 +21,7 @@ public final class ProtectedItemsListByProtectionGroupMockTests {
     @Test
     public void testListByProtectionGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceName\":\"rilbywdx\",\"lastBackUpTime\":7966238893835264976,\"resourceGroup\":\"ccwr\",\"location\":\"fscjfnynszquji\",\"vmGuid\":\"dvoqyt\"},\"id\":\"yo\",\"name\":\"bblgyavut\",\"type\":\"thjoxoism\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceName\":\"sks\",\"lastBackUpTime\":1758816815337716387,\"resourceGroup\":\"mlqoljx\",\"location\":\"cgxxlxs\",\"vmGuid\":\"fgcviz\"},\"id\":\"dwl\",\"name\":\"w\",\"type\":\"youpfgfbkj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ProtectedItemsListByProtectionGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectedItem> response = manager.protectedItems()
-            .listByProtectionGroup("jeknizshq", "cimpevfg", "b", com.azure.core.util.Context.NONE);
+            .listByProtectionGroup("ytibyow", "blgyavutpthj", "xoi", com.azure.core.util.Context.NONE);
 
     }
 }

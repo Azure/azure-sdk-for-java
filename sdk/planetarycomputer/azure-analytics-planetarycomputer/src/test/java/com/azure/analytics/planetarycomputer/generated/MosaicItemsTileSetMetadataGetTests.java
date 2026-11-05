@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSetLimitsEntry;
 import com.azure.analytics.planetarycomputer.models.TileSetLink;
 import com.azure.analytics.planetarycomputer.models.TileSetMetadata;
@@ -19,7 +20,8 @@ public final class MosaicItemsTileSetMetadataGetTests extends PlanetaryComputerP
     public void testMosaicItemsTileSetMetadataGetTests() {
         // method invocation
         TileSetMetadata response = dataClient.getTilesetMetadata("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            "WebMercatorQuad", null, null, null, null, null, null);
+            "WebMercatorQuad", (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null,
+            (SelMethod) null);
 
         // response assertion
         Assertions.assertNotNull(response);

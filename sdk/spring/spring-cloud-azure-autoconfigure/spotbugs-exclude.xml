@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/4.10.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
+  <!-- Incorrect flagging, already checked by if-else -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,NP_NULL_PARAM_DEREF"/>
+  </Match>
+</FindBugsFilter>

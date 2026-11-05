@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Get.json
+     * x-ms-original-file: 2026-07-01/Clusters_Get.json
      */
     /**
      * Sample code: Get cluster.

@@ -103,10 +103,15 @@ public final class ExternalAuthImpl implements ExternalAuth, ExternalAuth.Defini
         com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hcpOpenShiftClusterName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hcpOpenShiftClusters");
-        this.externalAuthName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalAuths");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
+            "resourceGroupName");
+        this.hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
+            "hcpOpenShiftClusterName");
+        this.externalAuthName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
+            "externalAuthName");
     }
 
     public ExternalAuth refresh() {

@@ -13,18 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SpatialSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SpatialSpec model = BinaryData.fromString("{\"path\":\"vudtjuewbcihx\",\"types\":[\"LineString\",\"Point\"]}")
+        SpatialSpec model = BinaryData
+            .fromString("{\"path\":\"ijddtvqc\",\"types\":[\"Point\",\"LineString\",\"MultiPolygon\",\"LineString\"]}")
             .toObject(SpatialSpec.class);
-        Assertions.assertEquals("vudtjuewbcihx", model.path());
-        Assertions.assertEquals(SpatialType.LINE_STRING, model.types().get(0));
+        Assertions.assertEquals("ijddtvqc", model.path());
+        Assertions.assertEquals(SpatialType.POINT, model.types().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpatialSpec model = new SpatialSpec().withPath("vudtjuewbcihx")
-            .withTypes(Arrays.asList(SpatialType.LINE_STRING, SpatialType.POINT));
+        SpatialSpec model = new SpatialSpec().withPath("ijddtvqc")
+            .withTypes(Arrays.asList(SpatialType.POINT, SpatialType.LINE_STRING, SpatialType.MULTI_POLYGON,
+                SpatialType.LINE_STRING));
         model = BinaryData.fromObject(model).toObject(SpatialSpec.class);
-        Assertions.assertEquals("vudtjuewbcihx", model.path());
-        Assertions.assertEquals(SpatialType.LINE_STRING, model.types().get(0));
+        Assertions.assertEquals("ijddtvqc", model.path());
+        Assertions.assertEquals(SpatialType.POINT, model.types().get(0));
     }
 }

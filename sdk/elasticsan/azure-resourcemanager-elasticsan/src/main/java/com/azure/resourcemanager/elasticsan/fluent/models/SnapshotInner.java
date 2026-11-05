@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.SnapshotAccessState;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 import java.io.IOException;
 
@@ -147,6 +148,26 @@ public final class SnapshotInner extends ProxyResource {
      */
     public String volumeName() {
         return this.innerProperties() == null ? null : this.innerProperties().volumeName();
+    }
+
+    /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotAccessState();
+    }
+
+    /**
+     * Get the completionPercent property: Percentage complete for the background copy of the snapshot when a snapshot
+     * is in InstantAccess state.
+     * 
+     * @return the completionPercent value.
+     */
+    public Double completionPercent() {
+        return this.innerProperties() == null ? null : this.innerProperties().completionPercent();
     }
 
     /**

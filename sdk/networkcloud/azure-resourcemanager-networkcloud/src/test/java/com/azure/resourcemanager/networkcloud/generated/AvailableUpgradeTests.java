@@ -11,7 +11,7 @@ public final class AvailableUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableUpgrade model
-            = BinaryData.fromString("{\"availabilityLifecycle\":\"GenerallyAvailable\",\"version\":\"wwqfbumlkxtrqj\"}")
+            = BinaryData.fromString("{\"availabilityLifecycle\":\"GenerallyAvailable\",\"version\":\"wdlenrdsut\"}")
                 .toObject(AvailableUpgrade.class);
     }
 }

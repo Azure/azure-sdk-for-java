@@ -20,7 +20,7 @@ public final class ProtectedItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceName\":\"nrwrbiork\",\"lastBackUpTime\":1294897435349030649,\"resourceGroup\":\"ywjhhgdnhx\",\"location\":\"sivfomilo\",\"vmGuid\":\"ggdufiqndieu\"},\"id\":\"ofjchvcyyysf\",\"name\":\"dotcubiipuip\",\"type\":\"oqonma\"}";
+            = "{\"properties\":{\"resourceName\":\"zshq\",\"lastBackUpTime\":8892495531853240884,\"resourceGroup\":\"m\",\"location\":\"ev\",\"vmGuid\":\"gmblrri\"},\"id\":\"ywdxsmic\",\"name\":\"wrwfscjfnyns\",\"type\":\"qujizdvo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ProtectedItemsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectedItem response = manager.protectedItems()
-            .getWithResponse("axconfozauo", "sukokwbqplhl", "nuuepzlrp", "wzsoldweyuqdunv",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("chvcyyysfgdo", "cubiipuipw", "qonmacj", "k", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

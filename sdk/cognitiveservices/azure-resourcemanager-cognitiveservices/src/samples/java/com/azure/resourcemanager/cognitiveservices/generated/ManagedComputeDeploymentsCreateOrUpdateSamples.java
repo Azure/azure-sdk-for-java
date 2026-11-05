@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModelVersionUpgradeOption;
+import com.azure.resourcemanager.cognitiveservices.models.GatedModelAccessProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
@@ -13,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateManagedComputeDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateManagedComputeDeployment.
@@ -30,13 +31,15 @@ public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
                 .withDeploymentTemplate(
                     "azureml://registries/azureml-openai-oss/deploymenttemplates/gpt-oss-120b-short-context/versions/1")
                 .withAcceleratorType("H100_80GB")
-                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE))
+                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE)
+                .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/my-project/connections/my-hf-connection")))
             .withSku(new Sku().withName("GlobalManagedCompute").withCapacity(1))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateVmManagedComputeDeployment.
@@ -51,6 +54,8 @@ public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
             .withProperties(new ManagedComputeDeploymentProperties()
                 .withModel("azureml://registries/azureml-openai-oss/models/gpt-oss-120b/versions/4")
                 .withDeploymentTemplate("projects/my-project/deploymentTemplates/gpt-oss-120b-vllm-tuned/versions/2")
+                .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/my-project/connections/my-hf-connection"))
                 .withComputeId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool")
                 .withPriority("High"))

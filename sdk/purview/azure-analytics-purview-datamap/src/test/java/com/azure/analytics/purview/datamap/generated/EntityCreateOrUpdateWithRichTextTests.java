@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
+import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
 import com.azure.core.util.BinaryData;
@@ -40,7 +41,7 @@ public final class EntityCreateOrUpdateWithRichTextTests extends DataMapClientTe
                     .setStatus(EntityStatus.ACTIVE)
                     .setUpdatedBy("ExampleUpdator")
                     .setVersion(0L)),
-                null, null);
+                (BusinessAttributeUpdateBehavior) null, (String) null);
 
         // response assertion
         Assertions.assertNotNull(response);

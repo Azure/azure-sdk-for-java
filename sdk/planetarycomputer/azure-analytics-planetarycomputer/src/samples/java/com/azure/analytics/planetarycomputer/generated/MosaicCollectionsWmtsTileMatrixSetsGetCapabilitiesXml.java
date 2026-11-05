@@ -6,8 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.List;
 
 public class MosaicCollectionsWmtsTileMatrixSetsGetCapabilitiesXml {
     public static void main(String[] args) {
@@ -17,8 +20,9 @@ public class MosaicCollectionsWmtsTileMatrixSetsGetCapabilitiesXml {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-with-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
         byte[] response = dataClient.getCollectionWmtsCapabilitiesWithTms("naip-atl", "WebMercatorQuad",
-            "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null, null, null,
-            null, null, null, null, null);
+            "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", (String) null, (TilerImageFormat) null,
+            (Integer) null, (Integer) null, (Integer) null, (List<Integer>) null, (List<String>) null, (String) null,
+            (List<String>) null, (Boolean) null, (String) null, (Boolean) null, (WarpKernelResampling) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-with-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

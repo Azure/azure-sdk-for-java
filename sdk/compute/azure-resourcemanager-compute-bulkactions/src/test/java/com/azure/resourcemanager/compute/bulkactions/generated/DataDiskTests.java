@@ -23,67 +23,67 @@ public final class DataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataDisk model = BinaryData.fromString(
-            "{\"lun\":1055481655,\"name\":\"wwtppj\",\"vhd\":{\"uri\":\"xogaokonzmnsikv\"},\"image\":{\"uri\":\"ze\"},\"caching\":\"ReadOnly\",\"writeAcceleratorEnabled\":false,\"createOption\":\"FromImage\",\"diskSizeGB\":228938566,\"managedDisk\":{\"storageAccountType\":\"StandardSSD_LRS\",\"diskEncryptionSet\":{\"id\":\"hgure\"},\"securityProfile\":{\"securityEncryptionType\":\"VMGuestStateOnly\",\"diskEncryptionSet\":{\"id\":\"dagxtibqd\"}},\"id\":\"xwak\"},\"sourceResource\":{\"id\":\"qxn\"},\"toBeDetached\":true,\"detachOption\":\"ForceDetach\",\"deleteOption\":\"Delete\"}")
+            "{\"lun\":1857421626,\"name\":\"maofmxagkv\",\"vhd\":{\"uri\":\"lmqkrhahvlj\"},\"image\":{\"uri\":\"aquhcdhm\"},\"caching\":\"None\",\"writeAcceleratorEnabled\":false,\"createOption\":\"Copy\",\"diskSizeGB\":552039222,\"managedDisk\":{\"storageAccountType\":\"StandardSSD_ZRS\",\"diskEncryptionSet\":{\"id\":\"mwsrcrgvxpvgo\"},\"securityProfile\":{\"securityEncryptionType\":\"VMGuestStateOnly\",\"diskEncryptionSet\":{\"id\":\"sgwbnbbeld\"}},\"id\":\"k\"},\"sourceResource\":{\"id\":\"liourqhak\"},\"toBeDetached\":true,\"detachOption\":\"ForceDetach\",\"deleteOption\":\"Detach\"}")
             .toObject(DataDisk.class);
-        Assertions.assertEquals(1055481655, model.lun());
-        Assertions.assertEquals("wwtppj", model.name());
-        Assertions.assertEquals("xogaokonzmnsikv", model.vhd().uri());
-        Assertions.assertEquals("ze", model.image().uri());
-        Assertions.assertEquals(CachingTypes.READ_ONLY, model.caching());
+        Assertions.assertEquals(1857421626, model.lun());
+        Assertions.assertEquals("maofmxagkv", model.name());
+        Assertions.assertEquals("lmqkrhahvlj", model.vhd().uri());
+        Assertions.assertEquals("aquhcdhm", model.image().uri());
+        Assertions.assertEquals(CachingTypes.NONE, model.caching());
         Assertions.assertFalse(model.writeAcceleratorEnabled());
-        Assertions.assertEquals(DiskCreateOptionTypes.FROM_IMAGE, model.createOption());
-        Assertions.assertEquals(228938566, model.diskSizeGB());
-        Assertions.assertEquals("xwak", model.managedDisk().id());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals("hgure", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.createOption());
+        Assertions.assertEquals(552039222, model.diskSizeGB());
+        Assertions.assertEquals("k", model.managedDisk().id());
+        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_ZRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals("mwsrcrgvxpvgo", model.managedDisk().diskEncryptionSet().id());
         Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("dagxtibqd", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("qxn", model.sourceResource().id());
+        Assertions.assertEquals("sgwbnbbeld", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("liourqhak", model.sourceResource().id());
         Assertions.assertTrue(model.toBeDetached());
         Assertions.assertEquals(DiskDetachOptionTypes.FORCE_DETACH, model.detachOption());
-        Assertions.assertEquals(DiskDeleteOptionTypes.DELETE, model.deleteOption());
+        Assertions.assertEquals(DiskDeleteOptionTypes.DETACH, model.deleteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataDisk model
-            = new DataDisk().withLun(1055481655)
-                .withName("wwtppj")
-                .withVhd(new VirtualHardDisk().withUri("xogaokonzmnsikv"))
-                .withImage(new VirtualHardDisk().withUri("ze"))
-                .withCaching(CachingTypes.READ_ONLY)
+            = new DataDisk().withLun(1857421626)
+                .withName("maofmxagkv")
+                .withVhd(new VirtualHardDisk().withUri("lmqkrhahvlj"))
+                .withImage(new VirtualHardDisk().withUri("aquhcdhm"))
+                .withCaching(CachingTypes.NONE)
                 .withWriteAcceleratorEnabled(false)
-                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                .withDiskSizeGB(228938566)
-                .withManagedDisk(new ManagedDiskParametersContent().withId("xwak")
-                    .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
-                    .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("hgure"))
+                .withCreateOption(DiskCreateOptionTypes.COPY)
+                .withDiskSizeGB(552039222)
+                .withManagedDisk(new ManagedDiskParametersContent().withId("k")
+                    .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_ZRS)
+                    .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("mwsrcrgvxpvgo"))
                     .withSecurityProfile(new VMDiskSecurityProfile()
                         .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
-                        .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("dagxtibqd"))))
-                .withSourceResource(new ApiEntityReference().withId("qxn"))
+                        .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("sgwbnbbeld"))))
+                .withSourceResource(new ApiEntityReference().withId("liourqhak"))
                 .withToBeDetached(true)
                 .withDetachOption(DiskDetachOptionTypes.FORCE_DETACH)
-                .withDeleteOption(DiskDeleteOptionTypes.DELETE);
+                .withDeleteOption(DiskDeleteOptionTypes.DETACH);
         model = BinaryData.fromObject(model).toObject(DataDisk.class);
-        Assertions.assertEquals(1055481655, model.lun());
-        Assertions.assertEquals("wwtppj", model.name());
-        Assertions.assertEquals("xogaokonzmnsikv", model.vhd().uri());
-        Assertions.assertEquals("ze", model.image().uri());
-        Assertions.assertEquals(CachingTypes.READ_ONLY, model.caching());
+        Assertions.assertEquals(1857421626, model.lun());
+        Assertions.assertEquals("maofmxagkv", model.name());
+        Assertions.assertEquals("lmqkrhahvlj", model.vhd().uri());
+        Assertions.assertEquals("aquhcdhm", model.image().uri());
+        Assertions.assertEquals(CachingTypes.NONE, model.caching());
         Assertions.assertFalse(model.writeAcceleratorEnabled());
-        Assertions.assertEquals(DiskCreateOptionTypes.FROM_IMAGE, model.createOption());
-        Assertions.assertEquals(228938566, model.diskSizeGB());
-        Assertions.assertEquals("xwak", model.managedDisk().id());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals("hgure", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.createOption());
+        Assertions.assertEquals(552039222, model.diskSizeGB());
+        Assertions.assertEquals("k", model.managedDisk().id());
+        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_ZRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals("mwsrcrgvxpvgo", model.managedDisk().diskEncryptionSet().id());
         Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("dagxtibqd", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("qxn", model.sourceResource().id());
+        Assertions.assertEquals("sgwbnbbeld", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("liourqhak", model.sourceResource().id());
         Assertions.assertTrue(model.toBeDetached());
         Assertions.assertEquals(DiskDetachOptionTypes.FORCE_DETACH, model.detachOption());
-        Assertions.assertEquals(DiskDeleteOptionTypes.DELETE, model.deleteOption());
+        Assertions.assertEquals(DiskDeleteOptionTypes.DETACH, model.deleteOption());
     }
 }

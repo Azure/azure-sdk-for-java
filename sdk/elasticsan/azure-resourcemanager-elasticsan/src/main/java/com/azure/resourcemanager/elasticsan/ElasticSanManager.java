@@ -30,6 +30,7 @@ import com.azure.resourcemanager.elasticsan.implementation.ElasticSansImpl;
 import com.azure.resourcemanager.elasticsan.implementation.OperationsImpl;
 import com.azure.resourcemanager.elasticsan.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.elasticsan.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.elasticsan.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.elasticsan.implementation.SkusImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumeSnapshotsImpl;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.elasticsan.models.ElasticSans;
 import com.azure.resourcemanager.elasticsan.models.Operations;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.elasticsan.models.PrivateLinkResources;
+import com.azure.resourcemanager.elasticsan.models.ResourceProviders;
 import com.azure.resourcemanager.elasticsan.models.Skus;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroups;
 import com.azure.resourcemanager.elasticsan.models.VolumeSnapshots;
@@ -57,6 +59,8 @@ import java.util.stream.Collectors;
  * types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service.
  */
 public final class ElasticSanManager {
+    private ResourceProviders resourceProviders;
+
     private Operations operations;
 
     private ElasticSans elasticSans;
@@ -286,6 +290,18 @@ public final class ElasticSanManager {
                 .build();
             return new ElasticSanManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     * 
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /**

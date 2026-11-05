@@ -16,21 +16,22 @@ public final class AppLinkMemberListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppLinkMemberListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"rvqdra\"},\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"gehoqfbowskany\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"cuiywgqyw\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"External\"},\"privateConnect\":{\"subnetResourceId\":\"ynhz\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"rcgyn\",\"tags\":{\"vmmcoofs\":\"pec\",\"y\":\"lzevgbmqjqab\",\"wnfnbacf\":\"mivkwlzuvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\"},\"id\":\"eallnwsubisnj\",\"name\":\"mpmngnzscxaqwoo\",\"type\":\"hcbonqvpkvlr\"},{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"ase\"},\"upgradeProfile\":{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"lokeyy\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"bdlwtgrhpdjpj\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"azjpqyegualhbxxh\"}},\"provisioningState\":\"Deleting\"},\"location\":\"zvdudgwdslfhotwm\",\"tags\":{\"cftadeh\":\"pwlbjnpg\",\"dejbavo\":\"nltyfsoppusuesnz\",\"vudwx\":\"xzdmohctb\"},\"id\":\"ndnvo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"}],\"nextLink\":\"fqweykhmene\"}")
+            "{\"value\":[{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"a\"},\"upgradeProfile\":{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"ayvvtpgvdf\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"kftutqxlngxlefg\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"rxdq\"},\"network\":\"dt\"},\"provisioningState\":\"Accepted\"},\"location\":\"vqdra\",\"tags\":{\"gehoqfbowskany\":\"yb\",\"rvynhzgpph\":\"tzlcuiywgqywgn\"},\"id\":\"cgyncocpecf\",\"name\":\"m\",\"type\":\"coofsxlzev\"}],\"nextLink\":\"m\"}")
             .toObject(AppLinkMemberListResult.class);
-        Assertions.assertEquals("rcgyn", model.value().get(0).location());
-        Assertions.assertEquals("pec", model.value().get(0).tags().get("vmmcoofs"));
+        Assertions.assertEquals("vqdra", model.value().get(0).location());
+        Assertions.assertEquals("yb", model.value().get(0).tags().get("gehoqfbowskany"));
         Assertions.assertEquals(ClusterType.AKS, model.value().get(0).properties().clusterType());
-        Assertions.assertEquals("rvqdra", model.value().get(0).properties().metadata().resourceId());
-        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, model.value().get(0).properties().upgradeProfile().mode());
+        Assertions.assertEquals("a", model.value().get(0).properties().metadata().resourceId());
+        Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.value().get(0).properties().upgradeProfile().mode());
         Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
             model.value().get(0).properties().upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("gehoqfbowskany",
+        Assertions.assertEquals("ayvvtpgvdf",
             model.value().get(0).properties().upgradeProfile().selfManagedUpgradeProfile().version());
-        Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL,
+        Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             model.value().get(0).properties().connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("ynhz",
+        Assertions.assertEquals("rxdq",
             model.value().get(0).properties().connectivityProfile().privateConnect().subnetResourceId());
-        Assertions.assertEquals("fqweykhmene", model.nextLink());
+        Assertions.assertEquals("dt", model.value().get(0).properties().connectivityProfile().network());
+        Assertions.assertEquals("m", model.nextLink());
     }
 }

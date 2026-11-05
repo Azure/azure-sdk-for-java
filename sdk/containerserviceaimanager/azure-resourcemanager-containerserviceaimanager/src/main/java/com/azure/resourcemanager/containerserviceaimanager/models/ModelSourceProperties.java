@@ -37,6 +37,12 @@ public final class ModelSourceProperties implements JsonSerializable<ModelSource
      */
     private CredentialValue credential;
 
+    /*
+     * Microsoft Foundry project reference. Required when `sourceType` is `MicrosoftFoundry`; must be omitted otherwise.
+     * Immutable after creation.
+     */
+    private MicrosoftFoundrySource microsoftFoundry;
+
     /**
      * Creates an instance of ModelSourceProperties class.
      */
@@ -117,6 +123,28 @@ public final class ModelSourceProperties implements JsonSerializable<ModelSource
     }
 
     /**
+     * Get the microsoftFoundry property: Microsoft Foundry project reference. Required when `sourceType` is
+     * `MicrosoftFoundry`; must be omitted otherwise. Immutable after creation.
+     * 
+     * @return the microsoftFoundry value.
+     */
+    public MicrosoftFoundrySource microsoftFoundry() {
+        return this.microsoftFoundry;
+    }
+
+    /**
+     * Set the microsoftFoundry property: Microsoft Foundry project reference. Required when `sourceType` is
+     * `MicrosoftFoundry`; must be omitted otherwise. Immutable after creation.
+     * 
+     * @param microsoftFoundry the microsoftFoundry value to set.
+     * @return the ModelSourceProperties object itself.
+     */
+    public ModelSourceProperties withMicrosoftFoundry(MicrosoftFoundrySource microsoftFoundry) {
+        this.microsoftFoundry = microsoftFoundry;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -125,6 +153,7 @@ public final class ModelSourceProperties implements JsonSerializable<ModelSource
         jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeJsonField("microsoftFoundry", this.microsoftFoundry);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +182,8 @@ public final class ModelSourceProperties implements JsonSerializable<ModelSource
                     deserializedModelSourceProperties.description = reader.getString();
                 } else if ("credential".equals(fieldName)) {
                     deserializedModelSourceProperties.credential = CredentialValue.fromJson(reader);
+                } else if ("microsoftFoundry".equals(fieldName)) {
+                    deserializedModelSourceProperties.microsoftFoundry = MicrosoftFoundrySource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

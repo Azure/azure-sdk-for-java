@@ -139,11 +139,18 @@ public final class CertificatePolicyImpl
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.certificateAuthorityName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificateAuthorities");
-        this.certificatePolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificatePolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}",
+            "resourceGroupName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}",
+            "namespaceName");
+        this.certificateAuthorityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}",
+            "certificateAuthorityName");
+        this.certificatePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}",
+            "certificatePolicyName");
     }
 
     public CertificatePolicy refresh() {

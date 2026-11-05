@@ -1,0 +1,19 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.privatedns\\.models\\.(PrivateZoneListResult|RecordSetListResult|VirtualNetworkLinkListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        }
+      ]
+    }
+  }
+]

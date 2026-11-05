@@ -12,11 +12,11 @@ import com.microsoft.azure.servicebus.management.ManagementClientAsync;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.management.SubscriptionDescription;
 import com.microsoft.azure.servicebus.management.TopicDescription;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -30,7 +30,7 @@ public abstract class ClientTests extends Tests {
     protected IMessageSender sendClient;
     protected IMessageAndSessionPump receiveClient;
     
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         ClientTests.entityNameCreatedForAllTests = null;
         ClientTests.receiveEntityPathForAllTest = null;
@@ -39,7 +39,7 @@ public abstract class ClientTests extends Tests {
         managementClientAsync = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
     
-    @Before
+    @BeforeEach
     public void setup() throws ExecutionException, InterruptedException {
         if (this.shouldCreateEntityForEveryTest() || ClientTests.entityNameCreatedForAllTests == null) {
              // Create entity
@@ -71,7 +71,7 @@ public abstract class ClientTests extends Tests {
         }
     }
     
-    @After
+    @AfterEach
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (this.sendClient != null) {
             this.sendClient.close();
@@ -91,7 +91,7 @@ public abstract class ClientTests extends Tests {
         }
     }
     
-    @AfterClass
+    @AfterAll
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClientAsync == null) {
             return;

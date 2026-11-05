@@ -17,7 +17,7 @@ import java.util.Map;
  * MCP tool
  *
  * Give the model access to additional tools via remote Model Context Protocol
- * (MCP) servers. [Learn more about MCP](/docs/guides/tools-remote-mcp).
+ * (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
  */
 @Fluent
 public final class McpTool extends Tool {
@@ -44,7 +44,10 @@ public final class McpTool extends Tool {
     /*
      * Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -155,7 +158,10 @@ public final class McpTool extends Tool {
     /**
      * Get the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -528,7 +534,10 @@ public final class McpTool extends Tool {
     /**
      * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`

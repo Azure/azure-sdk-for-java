@@ -15,10 +15,10 @@ public final class BackupAutomaticAndOnDemandPropertiesTests {
     public void testDeserialize() throws Exception {
         BackupAutomaticAndOnDemandProperties model = BinaryData
             .fromString(
-                "{\"backupType\":\"Full\",\"completedTime\":\"2021-09-06T02:43:55Z\",\"source\":\"tcxapzhyrpetogeb\"}")
+                "{\"backupType\":\"Full\",\"completedTime\":\"2021-08-03T21:55:22Z\",\"source\":\"npqfrtqlkzmeg\"}")
             .toObject(BackupAutomaticAndOnDemandProperties.class);
         Assertions.assertEquals(BackupType.FULL, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:43:55Z"), model.completedTime());
-        Assertions.assertEquals("tcxapzhyrpetogeb", model.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T21:55:22Z"), model.completedTime());
+        Assertions.assertEquals("npqfrtqlkzmeg", model.source());
     }
 }

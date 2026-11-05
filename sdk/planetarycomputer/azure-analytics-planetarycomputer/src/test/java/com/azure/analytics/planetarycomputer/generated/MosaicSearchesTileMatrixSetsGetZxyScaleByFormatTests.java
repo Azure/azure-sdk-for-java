@@ -4,10 +4,15 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
 import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -19,10 +24,13 @@ public final class MosaicSearchesTileMatrixSetsGetZxyScaleByFormatTests extends 
     public void testMosaicSearchesTileMatrixSetsGetZxyScaleByFormatTests() {
         // method invocation
         BinaryData response = dataClient.getSearchTileWithTmsByScaleAndFormat("ba13fc7947b9b585690d84ee61aaa653",
-            "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png", Arrays.asList(1, 2, 3), Arrays.asList("image"), null,
-            Arrays.asList("image|1,2,3"), null, null, null, WarpKernelResampling.NEAREST, null, null, null, null, null,
-            null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST, null, null,
-            null, null, null, null, null, null, null, null, null, 2);
+            "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png", Arrays.asList(1, 2, 3), Arrays.asList("image"),
+            (String) null, Arrays.asList("image|1,2,3"), (Boolean) null, (String) null, (Boolean) null,
+            WarpKernelResampling.NEAREST, (Integer) null, (Integer) null, (Integer) null, (Boolean) null,
+            (Boolean) null, (String) null, (List<Integer>) null, "epsg:4326", "2024-01-01T00:00:00Z",
+            Arrays.asList("band=1"), SelMethod.NEAREST, (TerrainAlgorithm) null, (String) null, (Double) null,
+            (String) null, (String) null, (Resampling) null, (PixelSelection) null, (List<String>) null,
+            (ColorMapNames) null, (String) null, (Boolean) null, 2);
 
         // response assertion
         Assertions.assertNotNull(response);

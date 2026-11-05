@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class ProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-GET-ByResourceGroup.json
+     * x-ms-original-file: 2026-09-01/Profile-GET-ByResourceGroup.json
      */
     /**
      * Sample code: ListProfilesByResourceGroup.

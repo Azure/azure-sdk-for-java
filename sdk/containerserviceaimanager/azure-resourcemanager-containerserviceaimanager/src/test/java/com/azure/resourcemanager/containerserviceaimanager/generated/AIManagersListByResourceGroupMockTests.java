@@ -24,7 +24,7 @@ public final class AIManagersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"deletePolicy\":\"Keep\",\"managedResourceGroupName\":\"jooxdjebw\"},\"eTag\":\"cwwfvovbvme\",\"identity\":{\"principalId\":\"ivyhzceuojgjrwju\",\"tenantId\":\"otwmcdyt\",\"type\":\"None\",\"userAssignedIdentities\":{\"cg\":{\"principalId\":\"xnrj\",\"clientId\":\"gqwgxhniskxfbkp\"}}},\"location\":\"wndnhj\",\"tags\":{\"btdhxujznbm\":\"whvylw\",\"wpr\":\"ow\",\"xobbcswsrt\":\"qlveualupjmkh\",\"fgb\":\"riplrbpbewtg\"},\"id\":\"c\",\"name\":\"wxzvlvqhjkb\",\"type\":\"gibtnm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"deletePolicy\":\"Keep\",\"managedResourceGroupName\":\"dxluu\",\"clusterResourceId\":\"ttouwaboekqvkel\"},\"eTag\":\"mvb\",\"identity\":{\"principalId\":\"jsflhhcaalnjix\",\"tenantId\":\"xyawj\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tfolhbnx\":{\"principalId\":\"slyjpkiid\",\"clientId\":\"exznelixhnr\"},\"gylgqgitxmedjvcs\":{\"principalId\":\"alaulppggdtpnapn\",\"clientId\":\"ropuhpigv\"},\"cnapkteoell\":{\"principalId\":\"n\",\"clientId\":\"wncwzzhxgktrmg\"}}},\"location\":\"tfdygpfqb\",\"tags\":{\"cq\":\"eopzfqrhhuaopp\",\"t\":\"qxolzdahzx\",\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\"},\"id\":\"j\",\"name\":\"n\",\"type\":\"u\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,13 @@ public final class AIManagersListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AIManager> response
-            = manager.aIManagers().listByResourceGroup("hashsfwxosow", com.azure.core.util.Context.NONE);
+            = manager.aIManagers().listByResourceGroup("wozuhkf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wndnhj", response.iterator().next().location());
-        Assertions.assertEquals("whvylw", response.iterator().next().tags().get("btdhxujznbm"));
+        Assertions.assertEquals("tfdygpfqb", response.iterator().next().location());
+        Assertions.assertEquals("eopzfqrhhuaopp", response.iterator().next().tags().get("cq"));
         Assertions.assertEquals(DeletePolicy.KEEP, response.iterator().next().properties().deletePolicy());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("ttouwaboekqvkel", response.iterator().next().properties().clusterResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionExtensionListByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-04-15-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionExtension_ListByVms_MaximumSet.
@@ -18,11 +18,14 @@ public final class ScheduledActionExtensionListByVmsSamples {
      */
     public static void scheduledActionExtensionListByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.scheduledActionExtensions()
+            .listByVms(
+                "subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-04-15-preview/ScheduledActionExtension_ListByVms_MinimumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionExtension_ListByVms_MinimumSet.
@@ -31,6 +34,9 @@ public final class ScheduledActionExtensionListByVmsSamples {
      */
     public static void scheduledActionExtensionListByVmsMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.scheduledActionExtensions()
+            .listByVms(
+                "subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm",
+                com.azure.core.util.Context.NONE);
     }
 }

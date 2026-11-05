@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -197,10 +198,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            AppendBlobAppendBlockOptions opts
-                = new AppendBlobAppendBlockOptions().setRequestConditions(appendBlobRequestConditions)
-                    .setContentValidationAlgorithm(contentValidationAlgorithm);
-            return client.appendBlockWithResponse(blockData, writeLength, opts)
+            return BinaryData.fromFlux(blockData, writeLength, false)
+                .flatMap(binaryData -> client.appendBlockWithResponseInternal(
+                    new AppendBlobAppendBlockOptions(binaryData).setRequestConditions(appendBlobRequestConditions)
+                        .setContentValidationAlgorithm(contentValidationAlgorithm),
+                    Context.NONE))
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
@@ -366,11 +368,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
-            return client
-                .uploadPagesWithResponseInternal(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData,
-                    new PageBlobUploadPagesOptions().setRequestConditions(pageBlobRequestConditions)
-                        .setContentValidationAlgorithm(contentValidationAlgorithm),
-                    Context.NONE)
+            PageRange pageRange = new PageRange().setStart(offset).setEnd(offset + length - 1);
+            return BinaryData.fromFlux(pageData, (long) length, false)
+                .flatMap(binaryData -> client
+                    .uploadPagesWithResponseInternal(new PageBlobUploadPagesOptions(pageRange, binaryData)
+                        .setRequestConditions(pageBlobRequestConditions)
+                        .setContentValidationAlgorithm(contentValidationAlgorithm), Context.NONE))
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

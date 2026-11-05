@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VolumesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Volumes_ListByResourceGroup.json
      */
     /**
      * Sample code: List volumes for resource group.

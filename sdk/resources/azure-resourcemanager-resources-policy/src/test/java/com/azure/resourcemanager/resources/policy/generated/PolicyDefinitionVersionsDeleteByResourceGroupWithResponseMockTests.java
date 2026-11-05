@@ -28,7 +28,7 @@ public final class PolicyDefinitionVersionsDeleteByResourceGroupWithResponseMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policyDefinitionVersions()
-            .deleteByResourceGroupWithResponse("eqfky", "h", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("qweuip", "pvksmit", com.azure.core.util.Context.NONE);
 
     }
 }

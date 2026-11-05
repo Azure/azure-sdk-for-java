@@ -58,6 +58,14 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
         return this.innerModel().newStorageCapacityTiB();
     }
 
+    public Boolean runRebalanceJob() {
+        return this.innerModel().runRebalanceJob();
+    }
+
+    public String rebalanceJobId() {
+        return this.innerModel().rebalanceJobId();
+    }
+
     public ExpansionJobStatusType state() {
         return this.innerModel().state();
     }
@@ -159,9 +167,15 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
-        this.expansionJobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "expansionJobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}",
+            "amlFilesystemName");
+        this.expansionJobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}",
+            "expansionJobName");
     }
 
     public ExpansionJob refresh() {
@@ -202,6 +216,11 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
 
     public ExpansionJobImpl withNewStorageCapacityTiB(Float newStorageCapacityTiB) {
         this.innerModel().withNewStorageCapacityTiB(newStorageCapacityTiB);
+        return this;
+    }
+
+    public ExpansionJobImpl withRunRebalanceJob(Boolean runRebalanceJob) {
+        this.innerModel().withRunRebalanceJob(runRebalanceJob);
         return this;
     }
 

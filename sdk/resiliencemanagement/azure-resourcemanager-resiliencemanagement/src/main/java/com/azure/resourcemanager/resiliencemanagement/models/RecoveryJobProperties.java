@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -27,6 +28,67 @@ public final class RecoveryJobProperties extends JobProperties {
      * The provisioning state of the recovery job.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Indicates whether the job was triggered by the system or a user.
+     */
+    private JobTriggeredBy triggeredBy;
+
+    /*
+     * Execution configurations for the job.
+     */
+    private ExecutionConfigurations executionConfigurations;
+
+    /*
+     * User Comments.
+     */
+    private List<JobUserComment> userComments;
+
+    /*
+     * Additional information about the job.
+     */
+    private JobExtendedInfo jobExtendedInfo;
+
+    /*
+     * Details of any retries that have been attempted for this job.
+     */
+    private List<JobRetryDetails> retryDetails;
+
+    /*
+     * The operation that this job is intended to perform.
+     */
+    private String operation;
+
+    /*
+     * The resource for which this job was created. This is typically the resource that the job is intended to manage or
+     * operate on.
+     */
+    private String resourceId;
+
+    /*
+     * Details of any errors that occurred during the execution of this job.
+     */
+    private JobErrorInfo errorDetails;
+
+    /*
+     * The time elapsed during the execution of this job.
+     */
+    private Duration duration;
+
+    /*
+     * The end time of the job execution.
+     */
+    private OffsetDateTime endTime;
+
+    /*
+     * The start time of the job execution.
+     */
+    private OffsetDateTime startTime;
+
+    /*
+     * The current status of the job execution.
+     */
+    private JobStatus status;
 
     /**
      * Creates an instance of RecoveryJobProperties class.
@@ -51,6 +113,127 @@ public final class RecoveryJobProperties extends JobProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the triggeredBy property: Indicates whether the job was triggered by the system or a user.
+     * 
+     * @return the triggeredBy value.
+     */
+    @Override
+    public JobTriggeredBy triggeredBy() {
+        return this.triggeredBy;
+    }
+
+    /**
+     * Get the executionConfigurations property: Execution configurations for the job.
+     * 
+     * @return the executionConfigurations value.
+     */
+    @Override
+    public ExecutionConfigurations executionConfigurations() {
+        return this.executionConfigurations;
+    }
+
+    /**
+     * Get the userComments property: User Comments.
+     * 
+     * @return the userComments value.
+     */
+    @Override
+    public List<JobUserComment> userComments() {
+        return this.userComments;
+    }
+
+    /**
+     * Get the jobExtendedInfo property: Additional information about the job.
+     * 
+     * @return the jobExtendedInfo value.
+     */
+    @Override
+    public JobExtendedInfo jobExtendedInfo() {
+        return this.jobExtendedInfo;
+    }
+
+    /**
+     * Get the retryDetails property: Details of any retries that have been attempted for this job.
+     * 
+     * @return the retryDetails value.
+     */
+    @Override
+    public List<JobRetryDetails> retryDetails() {
+        return this.retryDetails;
+    }
+
+    /**
+     * Get the operation property: The operation that this job is intended to perform.
+     * 
+     * @return the operation value.
+     */
+    @Override
+    public String operation() {
+        return this.operation;
+    }
+
+    /**
+     * Get the resourceId property: The resource for which this job was created. This is typically the resource that the
+     * job is intended to manage or operate on.
+     * 
+     * @return the resourceId value.
+     */
+    @Override
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Get the errorDetails property: Details of any errors that occurred during the execution of this job.
+     * 
+     * @return the errorDetails value.
+     */
+    @Override
+    public JobErrorInfo errorDetails() {
+        return this.errorDetails;
+    }
+
+    /**
+     * Get the duration property: The time elapsed during the execution of this job.
+     * 
+     * @return the duration value.
+     */
+    @Override
+    public Duration duration() {
+        return this.duration;
+    }
+
+    /**
+     * Get the endTime property: The end time of the job execution.
+     * 
+     * @return the endTime value.
+     */
+    @Override
+    public OffsetDateTime endTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Get the startTime property: The start time of the job execution.
+     * 
+     * @return the startTime value.
+     */
+    @Override
+    public OffsetDateTime startTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Get the status property: The current status of the job execution.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
     }
 
     /**
@@ -82,35 +265,35 @@ public final class RecoveryJobProperties extends JobProperties {
                 reader.nextToken();
 
                 if ("status".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withStatus(JobStatus.fromString(reader.getString()));
+                    deserializedRecoveryJobProperties.status = JobStatus.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withStartTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedRecoveryJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withEndTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedRecoveryJobProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("duration".equals(fieldName)) {
-                    deserializedRecoveryJobProperties
-                        .withDuration(reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                    deserializedRecoveryJobProperties.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("errorDetails".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withErrorDetails(JobErrorInfo.fromJson(reader));
+                    deserializedRecoveryJobProperties.errorDetails = JobErrorInfo.fromJson(reader);
                 } else if ("resourceId".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withResourceId(reader.getString());
+                    deserializedRecoveryJobProperties.resourceId = reader.getString();
                 } else if ("operation".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withOperation(reader.getString());
+                    deserializedRecoveryJobProperties.operation = reader.getString();
                 } else if ("retryDetails".equals(fieldName)) {
                     List<JobRetryDetails> retryDetails = reader.readArray(reader1 -> JobRetryDetails.fromJson(reader1));
-                    deserializedRecoveryJobProperties.withRetryDetails(retryDetails);
+                    deserializedRecoveryJobProperties.retryDetails = retryDetails;
                 } else if ("jobExtendedInfo".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withJobExtendedInfo(JobExtendedInfo.fromJson(reader));
+                    deserializedRecoveryJobProperties.jobExtendedInfo = JobExtendedInfo.fromJson(reader);
                 } else if ("userComments".equals(fieldName)) {
                     List<JobUserComment> userComments = reader.readArray(reader1 -> JobUserComment.fromJson(reader1));
-                    deserializedRecoveryJobProperties.withUserComments(userComments);
+                    deserializedRecoveryJobProperties.userComments = userComments;
                 } else if ("executionConfigurations".equals(fieldName)) {
-                    deserializedRecoveryJobProperties
-                        .withExecutionConfigurations(ExecutionConfigurations.fromJson(reader));
+                    deserializedRecoveryJobProperties.executionConfigurations
+                        = ExecutionConfigurations.fromJson(reader);
                 } else if ("triggeredBy".equals(fieldName)) {
-                    deserializedRecoveryJobProperties.withTriggeredBy(JobTriggeredBy.fromString(reader.getString()));
+                    deserializedRecoveryJobProperties.triggeredBy = JobTriggeredBy.fromString(reader.getString());
                 } else if ("jobType".equals(fieldName)) {
                     deserializedRecoveryJobProperties.jobType = JobType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {

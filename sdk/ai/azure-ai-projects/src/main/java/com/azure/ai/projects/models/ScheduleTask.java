@@ -36,7 +36,7 @@ public class ScheduleTask implements JsonSerializable<ScheduleTask> {
      * Creates an instance of ScheduleTask class.
      */
     @Generated
-    public ScheduleTask() {
+    protected ScheduleTask() {
     }
 
     /**

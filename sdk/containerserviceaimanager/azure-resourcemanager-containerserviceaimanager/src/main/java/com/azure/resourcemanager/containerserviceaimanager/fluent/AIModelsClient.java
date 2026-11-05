@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.models.AIModelInner;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.models.CalculateCostResponseInner;
-import com.azure.resourcemanager.containerserviceaimanager.models.CalculateCostRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in AIModelsClient.
@@ -88,7 +87,6 @@ public interface AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,7 +95,7 @@ public interface AIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CalculateCostResponseInner> calculateCostWithResponse(String location, String aiModelName,
-        CalculateCostRequest body, Context context);
+        Context context);
 
     /**
      * Returns a ranked list of GPU SKU pricing plans for deploying this model in the target region, each annotated with
@@ -110,12 +108,11 @@ public interface AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for the AI model `calculateCost` action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CalculateCostResponseInner calculateCost(String location, String aiModelName, CalculateCostRequest body);
+    CalculateCostResponseInner calculateCost(String location, String aiModelName);
 }

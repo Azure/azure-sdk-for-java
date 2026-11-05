@@ -15,20 +15,21 @@ public final class AIManagerNamespaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerNamespaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"abhjybi\":\"tthzrvqd\"},\"annotations\":{\"zlcuiywgqywgndrv\":\"oqfbowskanyk\"}},\"eTag\":\"hzgpphrcgyncocpe\",\"id\":\"vmmcoofs\",\"name\":\"lzevgbmqjqab\",\"type\":\"y\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"labels\":{\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\",\"kwh\":\"t\"},\"annotations\":{\"znorcj\":\"ifiyipjxsqwpgrj\",\"xqabnmocpcysh\":\"vsnb\",\"klj\":\"rzafbljjgpbtoqcj\",\"qajzyulpkudjkr\":\"vbqid\"}},\"eTag\":\"hbzhfepg\",\"id\":\"qex\",\"name\":\"locx\",\"type\":\"c\"}")
             .toObject(AIManagerNamespaceInner.class);
-        Assertions.assertEquals("tthzrvqd", model.properties().labels().get("abhjybi"));
-        Assertions.assertEquals("oqfbowskanyk", model.properties().annotations().get("zlcuiywgqywgndrv"));
+        Assertions.assertEquals("sfqpteehz", model.properties().labels().get("vypyqrimzinpv"));
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.properties().annotations().get("znorcj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AIManagerNamespaceInner model = new AIManagerNamespaceInner()
-            .withProperties(new AIManagerNamespaceProperties().withLabels(mapOf("abhjybi", "tthzrvqd"))
-                .withAnnotations(mapOf("zlcuiywgqywgndrv", "oqfbowskanyk")));
+        AIManagerNamespaceInner model = new AIManagerNamespaceInner().withProperties(new AIManagerNamespaceProperties()
+            .withLabels(mapOf("vypyqrimzinpv", "sfqpteehz", "rsoodqxhcrmnoh", "wjdk", "kwh", "t"))
+            .withAnnotations(mapOf("znorcj", "ifiyipjxsqwpgrj", "xqabnmocpcysh", "vsnb", "klj", "rzafbljjgpbtoqcj",
+                "qajzyulpkudjkr", "vbqid")));
         model = BinaryData.fromObject(model).toObject(AIManagerNamespaceInner.class);
-        Assertions.assertEquals("tthzrvqd", model.properties().labels().get("abhjybi"));
-        Assertions.assertEquals("oqfbowskanyk", model.properties().annotations().get("zlcuiywgqywgndrv"));
+        Assertions.assertEquals("sfqpteehz", model.properties().labels().get("vypyqrimzinpv"));
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.properties().annotations().get("znorcj"));
     }
 
     // Use "Map.of" if available

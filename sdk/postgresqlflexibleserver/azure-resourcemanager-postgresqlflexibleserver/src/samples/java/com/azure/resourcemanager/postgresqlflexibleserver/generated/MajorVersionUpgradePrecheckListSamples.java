@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MajorVersionUpgradePrecheckListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/MajorVersionUpgradePrecheckListByServer.json
+     * x-ms-original-file: 2026-07-01-preview/MajorVersionUpgradePrecheckListByServer.json
      */
     /**
      * Sample code: List all major version upgrade precheck validations for a server.

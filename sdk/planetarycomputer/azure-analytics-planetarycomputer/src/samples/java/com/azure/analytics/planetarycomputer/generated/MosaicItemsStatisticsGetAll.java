@@ -6,10 +6,14 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicItemsStatisticsGetAll {
     public static void main(String[] args) {
@@ -19,8 +23,11 @@ public class MosaicItemsStatisticsGetAll {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-statistics.mosaic-items-statistics-get-all
         TilerStacItemStatistics response = dataClient.getItemStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null);
+            (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null, (Resampling) null, (Integer) null,
+            (Boolean) null, (List<Integer>) null, (List<Integer>) null, (String) null, (String) null, (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null, (String) null,
+            (String) null, (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-statistics.mosaic-items-statistics-get-all
     }
 }

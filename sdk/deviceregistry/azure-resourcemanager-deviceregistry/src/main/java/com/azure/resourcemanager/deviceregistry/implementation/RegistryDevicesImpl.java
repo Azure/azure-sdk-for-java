@@ -66,17 +66,23 @@ public final class RegistryDevicesImpl implements RegistryDevices {
     }
 
     public RegistryDevice getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "namespaceName");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String registryDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "registryDevices");
+        String registryDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "registryDeviceName");
         if (registryDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'registryDevices'.", id)));
@@ -85,17 +91,23 @@ public final class RegistryDevicesImpl implements RegistryDevices {
     }
 
     public Response<RegistryDevice> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "namespaceName");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String registryDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "registryDevices");
+        String registryDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "registryDeviceName");
         if (registryDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'registryDevices'.", id)));
@@ -104,17 +116,23 @@ public final class RegistryDevicesImpl implements RegistryDevices {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "namespaceName");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String registryDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "registryDevices");
+        String registryDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "registryDeviceName");
         if (registryDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'registryDevices'.", id)));
@@ -123,17 +141,23 @@ public final class RegistryDevicesImpl implements RegistryDevices {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "namespaceName");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String registryDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "registryDevices");
+        String registryDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}",
+            "registryDeviceName");
         if (registryDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'registryDevices'.", id)));

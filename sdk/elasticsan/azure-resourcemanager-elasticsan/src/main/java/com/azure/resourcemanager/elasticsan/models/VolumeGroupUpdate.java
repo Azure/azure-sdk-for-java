@@ -180,6 +180,81 @@ public final class VolumeGroupUpdate implements JsonSerializable<VolumeGroupUpda
     }
 
     /**
+     * Get the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedIops value.
+     */
+    public Integer reservedIops() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedIops();
+    }
+
+    /**
+     * Set the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedIops the reservedIops value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withReservedIops(Integer reservedIops) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withReservedIops(reservedIops);
+        return this;
+    }
+
+    /**
+     * Get the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedMBps value.
+     */
+    public Integer reservedMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedMBps();
+    }
+
+    /**
+     * Set the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedMBps the reservedMBps value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withReservedMBps(Integer reservedMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withReservedMBps(reservedMBps);
+        return this;
+    }
+
+    /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteRetentionPolicy();
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withDeleteRetentionPolicy(deleteRetentionPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

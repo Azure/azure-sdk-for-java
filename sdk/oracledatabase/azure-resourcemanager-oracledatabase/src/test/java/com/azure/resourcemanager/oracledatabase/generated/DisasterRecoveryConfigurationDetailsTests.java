@@ -14,25 +14,25 @@ public final class DisasterRecoveryConfigurationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisasterRecoveryConfigurationDetails model = BinaryData.fromString(
-            "{\"disasterRecoveryType\":\"BackupBased\",\"timeSnapshotStandbyEnabledTill\":\"2021-09-06T21:17:56Z\",\"isSnapshotStandby\":false,\"isReplicateAutomaticBackups\":true}")
+            "{\"disasterRecoveryType\":\"Adg\",\"timeSnapshotStandbyEnabledTill\":\"2021-11-07T15:05:03Z\",\"isSnapshotStandby\":true,\"isReplicateAutomaticBackups\":false}")
             .toObject(DisasterRecoveryConfigurationDetails.class);
-        Assertions.assertEquals(DisasterRecoveryType.BACKUP_BASED, model.disasterRecoveryType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T21:17:56Z"), model.timeSnapshotStandbyEnabledTill());
-        Assertions.assertFalse(model.isSnapshotStandby());
-        Assertions.assertTrue(model.isReplicateAutomaticBackups());
+        Assertions.assertEquals(DisasterRecoveryType.ADG, model.disasterRecoveryType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T15:05:03Z"), model.timeSnapshotStandbyEnabledTill());
+        Assertions.assertTrue(model.isSnapshotStandby());
+        Assertions.assertFalse(model.isReplicateAutomaticBackups());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DisasterRecoveryConfigurationDetails model
-            = new DisasterRecoveryConfigurationDetails().withDisasterRecoveryType(DisasterRecoveryType.BACKUP_BASED)
-                .withTimeSnapshotStandbyEnabledTill(OffsetDateTime.parse("2021-09-06T21:17:56Z"))
-                .withIsSnapshotStandby(false)
-                .withIsReplicateAutomaticBackups(true);
+            = new DisasterRecoveryConfigurationDetails().withDisasterRecoveryType(DisasterRecoveryType.ADG)
+                .withTimeSnapshotStandbyEnabledTill(OffsetDateTime.parse("2021-11-07T15:05:03Z"))
+                .withIsSnapshotStandby(true)
+                .withIsReplicateAutomaticBackups(false);
         model = BinaryData.fromObject(model).toObject(DisasterRecoveryConfigurationDetails.class);
-        Assertions.assertEquals(DisasterRecoveryType.BACKUP_BASED, model.disasterRecoveryType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T21:17:56Z"), model.timeSnapshotStandbyEnabledTill());
-        Assertions.assertFalse(model.isSnapshotStandby());
-        Assertions.assertTrue(model.isReplicateAutomaticBackups());
+        Assertions.assertEquals(DisasterRecoveryType.ADG, model.disasterRecoveryType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T15:05:03Z"), model.timeSnapshotStandbyEnabledTill());
+        Assertions.assertTrue(model.isSnapshotStandby());
+        Assertions.assertFalse(model.isReplicateAutomaticBackups());
     }
 }

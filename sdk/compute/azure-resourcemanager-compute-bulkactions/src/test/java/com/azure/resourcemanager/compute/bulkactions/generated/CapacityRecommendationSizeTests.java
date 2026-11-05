@@ -12,7 +12,7 @@ public final class CapacityRecommendationSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityRecommendationSize model
-            = BinaryData.fromString("{\"sku\":\"yxwjkcp\"}").toObject(CapacityRecommendationSize.class);
-        Assertions.assertEquals("yxwjkcp", model.sku());
+            = BinaryData.fromString("{\"sku\":\"ckyfih\"}").toObject(CapacityRecommendationSize.class);
+        Assertions.assertEquals("ckyfih", model.sku());
     }
 }

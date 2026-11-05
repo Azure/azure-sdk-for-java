@@ -12,9 +12,9 @@ public final class AutonomousDatabaseCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"ccybvp\"},\"id\":\"akkud\",\"name\":\"px\",\"type\":\"wjplma\"},{\"properties\":{\"characterSet\":\"tcyohpfkyrk\"},\"id\":\"dg\",\"name\":\"ogsjkmnwqjno\",\"type\":\"aiy\"}],\"nextLink\":\"d\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"plcplcwkhi\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"},{\"properties\":{\"characterSet\":\"vekqvgqo\"},\"id\":\"ifzmpjwyivqi\",\"name\":\"f\",\"type\":\"cvhrfsp\"},{\"properties\":{\"characterSet\":\"agr\"},\"id\":\"ikteusqczkvyk\",\"name\":\"xubyjaffmmfblcqc\",\"type\":\"ubgq\"},{\"properties\":{\"characterSet\":\"rtalmet\"},\"id\":\"wgdsl\",\"name\":\"xih\",\"type\":\"rmooizqse\"}],\"nextLink\":\"xiutcx\"}")
             .toObject(AutonomousDatabaseCharacterSetListResult.class);
-        Assertions.assertEquals("ccybvp", model.value().get(0).properties().characterSet());
-        Assertions.assertEquals("d", model.nextLink());
+        Assertions.assertEquals("plcplcwkhi", model.value().get(0).properties().characterSet());
+        Assertions.assertEquals("xiutcx", model.nextLink());
     }
 }

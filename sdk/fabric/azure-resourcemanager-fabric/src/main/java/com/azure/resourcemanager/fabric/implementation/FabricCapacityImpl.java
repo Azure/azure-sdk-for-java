@@ -131,8 +131,12 @@ public final class FabricCapacityImpl implements FabricCapacity, FabricCapacity.
     FabricCapacityImpl(FabricCapacityInner innerObject, com.azure.resourcemanager.fabric.FabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.capacityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "resourceGroupName");
+        this.capacityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "capacityName");
     }
 
     public FabricCapacity refresh() {

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ClustersRotateCredentialSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_RotateCredential.json
+     * x-ms-original-file: 2026-07-01/Clusters_RotateCredential.json
      */
     /**
      * Sample code: Rotate one or more managed credentials.

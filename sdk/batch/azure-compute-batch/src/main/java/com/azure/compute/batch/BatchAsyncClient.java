@@ -11772,9 +11772,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchApplication>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -11834,9 +11841,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -11862,9 +11876,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchPool>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12096,9 +12117,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchSupportedImage>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -12126,9 +12154,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolNodeCounts>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -12347,9 +12382,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12376,9 +12418,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12414,9 +12463,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobPreparationAndReleaseTaskStatus>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12691,9 +12747,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobSchedule>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12724,9 +12787,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchTask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12862,9 +12932,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSubTasks(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchSubtask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13038,9 +13115,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13350,9 +13434,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNode>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13400,9 +13491,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchNodeVMExtension>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -13528,9 +13626,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13572,9 +13677,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchApplication>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13661,9 +13773,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -13719,9 +13838,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchPool>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14029,9 +14155,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchSupportedImage>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -14073,9 +14206,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolNodeCounts>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -14560,9 +14700,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14618,9 +14765,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14678,9 +14832,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobPreparationAndReleaseTaskStatus>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15163,9 +15324,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobSchedule>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15225,9 +15393,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchTask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15473,9 +15648,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSubTasks(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchSubtask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15686,9 +15868,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -16126,9 +16315,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNode>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -16208,9 +16404,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchNodeVMExtension>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -16325,9 +16528,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()

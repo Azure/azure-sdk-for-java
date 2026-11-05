@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class DatabasesForceLinkToReplicationGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesForceLink.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesForceLink.json
      */
     /**
      * Sample code: How to relink a database after a regional outage.

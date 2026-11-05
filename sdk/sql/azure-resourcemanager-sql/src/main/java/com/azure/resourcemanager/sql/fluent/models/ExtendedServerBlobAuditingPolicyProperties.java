@@ -164,6 +164,14 @@ public final class ExtendedServerBlobAuditingPolicyProperties
     private Boolean isManagedIdentityInUse;
 
     /*
+     * Specifies the required fields to include in audit events (optional).
+     * Each item must be a valid audit_event field name.
+     * Can only be specified when isAzureMonitorTargetEnabled is true.
+     * For the complete list of valid field names, see the audit_event table schema documentation.
+     */
+    private List<String> requiredFields;
+
+    /*
      * Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
      * required.
      */
@@ -558,6 +566,32 @@ public final class ExtendedServerBlobAuditingPolicyProperties
     }
 
     /**
+     * Get the requiredFields property: Specifies the required fields to include in audit events (optional).
+     * Each item must be a valid audit_event field name.
+     * Can only be specified when isAzureMonitorTargetEnabled is true.
+     * For the complete list of valid field names, see the audit_event table schema documentation.
+     * 
+     * @return the requiredFields value.
+     */
+    public List<String> requiredFields() {
+        return this.requiredFields;
+    }
+
+    /**
+     * Set the requiredFields property: Specifies the required fields to include in audit events (optional).
+     * Each item must be a valid audit_event field name.
+     * Can only be specified when isAzureMonitorTargetEnabled is true.
+     * For the complete list of valid field names, see the audit_event table schema documentation.
+     * 
+     * @param requiredFields the requiredFields value to set.
+     * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
+     */
+    public ExtendedServerBlobAuditingPolicyProperties withRequiredFields(List<String> requiredFields) {
+        this.requiredFields = requiredFields;
+        return this;
+    }
+
+    /**
      * Get the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
      * 
@@ -691,6 +725,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties
         jsonWriter.writeBooleanField("isAzureMonitorTargetEnabled", this.isAzureMonitorTargetEnabled);
         jsonWriter.writeNumberField("queueDelayMs", this.queueDelayMs);
         jsonWriter.writeBooleanField("isManagedIdentityInUse", this.isManagedIdentityInUse);
+        jsonWriter.writeArrayField("requiredFields", this.requiredFields,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
         jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
         jsonWriter.writeStringField("storageAccountSubscriptionId",
@@ -742,6 +778,9 @@ public final class ExtendedServerBlobAuditingPolicyProperties
                 } else if ("isManagedIdentityInUse".equals(fieldName)) {
                     deserializedExtendedServerBlobAuditingPolicyProperties.isManagedIdentityInUse
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requiredFields".equals(fieldName)) {
+                    List<String> requiredFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExtendedServerBlobAuditingPolicyProperties.requiredFields = requiredFields;
                 } else if ("storageEndpoint".equals(fieldName)) {
                     deserializedExtendedServerBlobAuditingPolicyProperties.storageEndpoint = reader.getString();
                 } else if ("storageAccountAccessKey".equals(fieldName)) {

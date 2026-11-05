@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class StorageAppliancesDisableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_DisableRemoteVendorManagement.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_DisableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn off remote vendor management for storage appliance.

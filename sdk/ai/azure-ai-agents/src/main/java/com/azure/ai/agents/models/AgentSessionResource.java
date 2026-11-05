@@ -162,6 +162,7 @@ public final class AgentSessionResource implements JsonSerializable<AgentSession
             long createdAt = 0L;
             long lastAccessedAt = 0L;
             long expiresAt = 0L;
+            Long stoppedAt = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -177,6 +178,8 @@ public final class AgentSessionResource implements JsonSerializable<AgentSession
                     lastAccessedAt = reader.getLong();
                 } else if ("expires_at".equals(fieldName)) {
                     expiresAt = reader.getLong();
+                } else if ("stopped_at".equals(fieldName)) {
+                    stoppedAt = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -186,7 +189,30 @@ public final class AgentSessionResource implements JsonSerializable<AgentSession
             deserializedAgentSessionResource.createdAt = createdAt;
             deserializedAgentSessionResource.lastAccessedAt = lastAccessedAt;
             deserializedAgentSessionResource.expiresAt = expiresAt;
+            deserializedAgentSessionResource.stoppedAt = stoppedAt;
             return deserializedAgentSessionResource;
         });
+    }
+
+    /*
+     * The Unix timestamp (in seconds) when the session sandbox was last observed to stop or go idle. Present only after
+     * the session has gone idle at least once, used for accurate idle-billing reconciliation.
+     */
+    @Generated
+    private Long stoppedAt;
+
+    /**
+     * Get the stoppedAt property: The Unix timestamp (in seconds) when the session sandbox was last observed to stop or
+     * go idle. Present only after the session has gone idle at least once, used for accurate idle-billing
+     * reconciliation.
+     *
+     * @return the stoppedAt value.
+     */
+    @Generated
+    public OffsetDateTime getStoppedAt() {
+        if (this.stoppedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.stoppedAt), ZoneOffset.UTC);
     }
 }

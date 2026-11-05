@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -27,9 +28,11 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.rx.FeedRangeTestData;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -43,6 +46,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -64,9 +68,11 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -92,6 +98,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
     private final Multimap<String, ObjectNode> partitionKeyToDocuments = ArrayListMultimap.create();
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
+    private FeedRangeTestData scopedData;
+    private boolean expectThinClient;
 
     @DataProvider(name = "changeFeedQueryCompleteAfterAvailableNowDataProvider")
     public static Object[][] changeFeedQueryCompleteAfterAvailableNowDataProvider() {
@@ -162,11 +170,21 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "emulator", "fast" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "fast", "query", "thinclient", "thinclientEndpointProbe" },
+        timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
-        safeDeleteSyncDatabase(createdDatabase);
-        safeCloseSyncClient(client);
+        try {
+            if (scopedData != null) {
+                scopedData.close();
+            }
+        } finally {
+            try {
+                safeDeleteSyncDatabase(createdDatabase);
+            } finally {
+                safeCloseSyncClient(client);
+            }
+        }
     }
 
     @AfterMethod(groups = { "emulator", "fast" })
@@ -189,8 +207,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         this.partitionKeyToDocuments.clear();
     }
 
-    @BeforeClass(groups = { "emulator", "fast" }, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosContainerTest() {
+    @BeforeClass(groups = { "emulator", "fast", "query", "thinclient", "thinclientEndpointProbe" },
+        timeOut = SETUP_TIMEOUT)
+    public void before_CosmosContainerTest(ITestContext context) {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions()
             .setMaxRetryAttemptsOnThrottledRequests(100)
             .setMaxRetryWaitTime(Duration.ofSeconds(60));
@@ -200,6 +219,58 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
+        expectThinClient = getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY
+            && (Boolean.TRUE.equals(Configs.isThinClientEnabled())
+                || Arrays.asList(context.getIncludedGroups()).contains("thinclientEndpointProbe"));
+    }
+
+    @BeforeClass(groups = {"query", "thinclient", "thinclientEndpointProbe"},
+        dependsOnMethods = "before_CosmosContainerTest", timeOut = SETUP_TIMEOUT)
+    public void beforeScopedChangeFeedTests() {
+        scopedData = new FeedRangeTestData(client.asyncClient(), "change-feed-range");
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+    }
+
+    @DataProvider
+    public Object[][] scopedChangeFeedRanges() {
+        return FeedRangeTestData.scopes();
+    }
+
+    @Test(groups = {"query", "thinclient", "thinclientEndpointProbe"},
+        dataProvider = "scopedChangeFeedRanges", timeOut = TIMEOUT)
+    public void changeFeedPreservesScopeAcrossContinuation(String scope) {
+        Range<String> range = scopedData.rangeFor(scope);
+        Set<String> ids = new HashSet<>();
+        String continuation = null;
+        int nonEmptyPages = 0;
+        for (int pageNumber = 0; pageNumber < 100; pageNumber++) {
+            CosmosChangeFeedRequestOptions options = continuation == null
+                ? CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(new FeedRangeEpkImpl(range))
+                : CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation);
+            options.setMaxItemCount(1);
+            FeedResponse<ObjectNode> page = scopedData.getContainer().queryChangeFeed(options, ObjectNode.class)
+                .byPage().blockFirst(FeedRangeTestData.REQUEST_TIMEOUT);
+            assertThat(page).isNotNull();
+            if (expectThinClient) {
+                assertThinClientEndpointUsed(page.getCosmosDiagnostics());
+            }
+            for (ObjectNode document : page.getResults()) {
+                assertThat(ids.add(document.get("id").asText())).as("No duplicate changes after resumption").isTrue();
+            }
+            continuation = page.getContinuationToken();
+            assertThat(continuation).isNotEmpty();
+            if (ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor().getNoChanges(page)) {
+                if (ids.size() > 1) {
+                    assertThat(nonEmptyPages).as("Must exercise resumed change-feed pages").isGreaterThan(1);
+                }
+                assertThat(ids).containsExactlyInAnyOrderElementsOf(scopedData.expectedIds(range));
+                return;
+            }
+            if (!page.getResults().isEmpty()) {
+                nonEmptyPages++;
+            }
+        }
+        throw new AssertionError("Change feed did not drain in 100 resumed pages");
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 5)

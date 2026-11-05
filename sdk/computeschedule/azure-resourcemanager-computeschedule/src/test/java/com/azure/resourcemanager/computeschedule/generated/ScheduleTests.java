@@ -14,27 +14,27 @@ public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Schedule model = BinaryData.fromString(
-            "{\"deadline\":\"2021-11-30T01:16:03Z\",\"deadLine\":\"2021-08-06T18:49:52Z\",\"timezone\":\"czbysc\",\"timeZone\":\"q\",\"deadlineType\":\"Unknown\"}")
+            "{\"deadline\":\"2021-04-12T08:15:27Z\",\"deadLine\":\"2021-10-21T01:15:22Z\",\"timezone\":\"yscnpqxu\",\"timeZone\":\"vyq\",\"deadlineType\":\"CompleteBy\"}")
             .toObject(Schedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T01:16:03Z"), model.deadline());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T18:49:52Z"), model.deadLine());
-        Assertions.assertEquals("czbysc", model.timezone());
-        Assertions.assertEquals("q", model.timeZone());
-        Assertions.assertEquals(DeadlineType.UNKNOWN, model.deadlineType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T08:15:27Z"), model.deadline());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T01:15:22Z"), model.deadLine());
+        Assertions.assertEquals("yscnpqxu", model.timezone());
+        Assertions.assertEquals("vyq", model.timeZone());
+        Assertions.assertEquals(DeadlineType.COMPLETE_BY, model.deadlineType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schedule model = new Schedule().withDeadline(OffsetDateTime.parse("2021-11-30T01:16:03Z"))
-            .withDeadLine(OffsetDateTime.parse("2021-08-06T18:49:52Z"))
-            .withTimezone("czbysc")
-            .withTimeZone("q")
-            .withDeadlineType(DeadlineType.UNKNOWN);
+        Schedule model = new Schedule().withDeadline(OffsetDateTime.parse("2021-04-12T08:15:27Z"))
+            .withDeadLine(OffsetDateTime.parse("2021-10-21T01:15:22Z"))
+            .withTimezone("yscnpqxu")
+            .withTimeZone("vyq")
+            .withDeadlineType(DeadlineType.COMPLETE_BY);
         model = BinaryData.fromObject(model).toObject(Schedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T01:16:03Z"), model.deadline());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T18:49:52Z"), model.deadLine());
-        Assertions.assertEquals("czbysc", model.timezone());
-        Assertions.assertEquals("q", model.timeZone());
-        Assertions.assertEquals(DeadlineType.UNKNOWN, model.deadlineType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T08:15:27Z"), model.deadline());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T01:15:22Z"), model.deadLine());
+        Assertions.assertEquals("yscnpqxu", model.timezone());
+        Assertions.assertEquals("vyq", model.timeZone());
+        Assertions.assertEquals(DeadlineType.COMPLETE_BY, model.deadlineType());
     }
 }

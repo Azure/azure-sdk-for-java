@@ -12,7 +12,6 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.IOExceptionCheckedConsumer;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.NettyHttpClientProvider;
 import io.clientcore.http.netty4.TestUtils;
 import io.netty.util.ResourceLeakDetector;
@@ -38,6 +37,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -190,12 +191,14 @@ public class HttpResponseDrainsBufferTests {
     }
 
     private void runScenario(IOExceptionCheckedConsumer<Response<BinaryData>> responseConsumer) {
+        ExecutorService executorService
+            = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
         try {
             HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-            Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
-            List<Future<Void>> futures = SharedExecutorService.getInstance()
-                .invokeAll(IntStream.range(0, 1).mapToObj(ignored -> (Callable<Void>) () -> {
+            Semaphore limiter = new Semaphore(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
+            List<Future<Void>> futures
+                = executorService.invokeAll(IntStream.range(0, 1).mapToObj(ignored -> (Callable<Void>) () -> {
                     try {
                         limiter.acquire();
                         responseConsumer
@@ -219,6 +222,8 @@ public class HttpResponseDrainsBufferTests {
             Runtime.getRuntime().gc();
         } catch (InterruptedException | ExecutionException ex) {
             throw new RuntimeException(ex);
+        } finally {
+            executorService.shutdownNow();
         }
     }
 

@@ -12,9 +12,9 @@ public final class CommitmentCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentCost model
-            = BinaryData.fromString("{\"commitmentMeterId\":\"ddzydisnu\",\"overageMeterId\":\"ywyjlnldpxot\"}")
+            = BinaryData.fromString("{\"commitmentMeterId\":\"osgwqpsqazihqo\",\"overageMeterId\":\"qgcnbhcbmjk\"}")
                 .toObject(CommitmentCost.class);
-        Assertions.assertEquals("ddzydisnu", model.commitmentMeterId());
-        Assertions.assertEquals("ywyjlnldpxot", model.overageMeterId());
+        Assertions.assertEquals("osgwqpsqazihqo", model.commitmentMeterId());
+        Assertions.assertEquals("qgcnbhcbmjk", model.overageMeterId());
     }
 }

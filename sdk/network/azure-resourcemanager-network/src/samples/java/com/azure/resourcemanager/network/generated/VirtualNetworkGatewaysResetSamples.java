@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysResetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualNetworkGatewayReset.json
+     * x-ms-original-file: 2026-03-01/VirtualNetworkGatewayReset.json
      */
     /**
      * Sample code: ResetVirtualNetworkGateway.
