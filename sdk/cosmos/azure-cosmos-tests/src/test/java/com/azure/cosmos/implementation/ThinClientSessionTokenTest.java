@@ -572,21 +572,111 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit", dataProvider = "diagnosticsForSessionResolution")
-    public void sessionResolutionPreservesMetadataDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+    public void sessionResolutionPreservesMetadataDiagnostics(CosmosDiagnostics cosmosDiagnostics) throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "1");
             request.captureOriginalSessionToken();
+            request.useThinClientMode = true;
             request.requestContext.cosmosDiagnostics = cosmosDiagnostics;
             ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
                 .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(cosmosDiagnostics);
             MetadataDiagnosticsContext expected = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
 
-            assertThat(SessionTokenHelper.resolveExplicitSessionToken(
-                request, fixture.collections, fixture.ranges, fixture.sessions).block(Duration.ofSeconds(5))).isTrue();
+            prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
             verify(fixture.collections).resolveCollectionAsync(expected, request);
             verify(fixture.ranges).tryLookupAsync(expected, RID, null, null);
             assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
                 .isEqualTo("1:1#200#1=180#2=150");
+        }
+    }
+
+    private static Mono<?> prepareSessionToken(RxGatewayStoreModel store, RxDocumentServiceRequest request)
+        throws Exception {
+        Method method = RxGatewayStoreModel.class.getDeclaredMethod("applySessionToken", RxDocumentServiceRequest.class);
+        method.setAccessible(true);
+        return (Mono<?>) method.invoke(store, request);
+    }
+
+    @DataProvider
+    public Object[][] missingSessionMetadata() {
+        return new Object[][] {
+            {"collection", false}, {"collection", true}, {"ranges", false}, {"ranges", true},
+            {"caches", false}, {"caches", true}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "missingSessionMetadata")
+    public void missingMetadataPreservesAutomaticFallbackButNeverSubstitutesExplicitProgress(
+        String missing, boolean explicit) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            Mockito.when(fixture.sessions.resolveGlobalSessionToken(any())).thenReturn("1:1#900");
+            if ("collection".equals(missing)) {
+                Mockito.doReturn(Mono.just(new Utils.ValueHolder<>(null)))
+                    .when(fixture.collections).resolveCollectionAsync(any(), any());
+            } else if ("ranges".equals(missing)) {
+                fixture.map = null;
+            } else {
+                fixture.thin.setCollectionCache(null);
+                fixture.thin.setPartitionKeyRangeCache(null);
+            }
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, explicit ? ORIGINAL : null, null);
+            request.captureOriginalSessionToken();
+            request.useThinClientMode = true;
+            Mono<?> preparation = prepareSessionToken(fixture.thin, request);
+            if (explicit) {
+                assertThatThrownBy(() -> preparation.block(Duration.ofSeconds(5)))
+                    .isInstanceOf("caches".equals(missing) ? IllegalStateException.class : NotFoundException.class);
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(ORIGINAL);
+                verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
+            } else {
+                preparation.block(Duration.ofSeconds(5));
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo("1:1#900");
+                verify(fixture.sessions).resolveGlobalSessionToken(request);
+            }
+            verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
+        }
+    }
+
+    @DataProvider
+    public Object[][] automaticRangeSelectors() {
+        return new Object[][] {
+            {"range", "1"}, {"missingRange", "missing"}, {"logicalKey", "0"}, {"cachedEpk", "1"}, {"noTarget", null}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "automaticRangeSelectors")
+    public void automaticResolutionRetainsExistingRangeSelection(String selector, String expectedRange) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            Mockito.when(fixture.sessions.resolveGlobalSessionToken(any())).thenReturn("0:1#900,1:1#800");
+            Mockito.when(fixture.sessions.resolvePartitionLocalSessionToken(any(), any()))
+                .thenReturn(SessionTokenHelper.parse("1#300"));
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, null, null);
+            request.useThinClientMode = true;
+            if ("range".equals(selector) || "missingRange".equals(selector)) {
+                request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(expectedRange));
+                request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
+            } else if ("logicalKey".equals(selector) || "cachedEpk".equals(selector)) {
+                request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
+                if ("cachedEpk".equals(selector)) {
+                    request.setEffectivePartitionKey("90");
+                }
+            } else {
+                request.requestContext.resolvedPartitionKeyRange = fixture.map.tryGetRangeByPartitionKeyRangeId("1");
+            }
+            prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
+            if (expectedRange == null) {
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                    .isEqualTo("0:1#900,1:1#800");
+                verify(fixture.sessions).resolveGlobalSessionToken(request);
+                verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
+            } else {
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                    .isEqualTo(expectedRange + ":1#300");
+                verify(fixture.sessions).resolvePartitionLocalSessionToken(request, expectedRange);
+                verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
+            }
+            verify(fixture.collections).resolveCollectionAsync(any(), Mockito.eq(request));
+            verify(fixture.ranges).tryLookupAsync(any(), Mockito.eq(RID), Mockito.isNull(), Mockito.isNull());
         }
     }
 
@@ -615,9 +705,30 @@ public class ThinClientSessionTokenTest {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, null);
             request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
+            request.setEffectivePartitionKey("90");
             fixture.thin.processMessage(request).block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void explicitHierarchicalPrefixUsesExactEpkScopeBeforeLogicalKey() {
+        try (Fixture fixture = new Fixture()) {
+            fixture.definition.setKind(PartitionKind.MULTI_HASH);
+            fixture.definition.setPaths(Arrays.asList("/tenant", "/user"));
+            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
+            request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"tenant"}, true));
+            request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "80");
+            request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "90");
+            request.getHeaders().put(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
+                ReadFeedKeyType.EffectivePartitionKeyRange.name());
+            fixture.thin.processMessage(request).block(Duration.ofSeconds(5));
+            assertThat(fixture.wireTokens).containsExactly("1:1#200#1=180#2=150");
+            assertThat(fixture.encodedTokens.get(0).get(RntbdRequestHeader.StartEpk.id()))
+                .containsExactly("80".getBytes(StandardCharsets.UTF_8));
+            assertThat(fixture.encodedTokens.get(0).get(RntbdRequestHeader.EndEpk.id()))
+                .containsExactly("90".getBytes(StandardCharsets.UTF_8));
         }
     }
 
