@@ -266,7 +266,7 @@ public interface CloudAccount {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(CloudAccountProperties properties);
+            Update withProperties(CloudAccountUpdateProperties properties);
         }
 
         /**
@@ -279,7 +279,7 @@ public interface CloudAccount {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedServiceIdentity identity);
+            Update withIdentity(CloudAccountIdentityUpdate identity);
         }
     }
 

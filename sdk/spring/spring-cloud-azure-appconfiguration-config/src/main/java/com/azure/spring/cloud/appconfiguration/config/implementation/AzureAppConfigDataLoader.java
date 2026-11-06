@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -169,7 +170,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         // During refresh, attempt once without retry
         if (resource.isRefresh()) {
             replicaClientFactory.findActiveClients(resource.getEndpoint());
-            return attemptLoadFromClients(sourceList);
+            return attemptLoadFromClients(sourceList, null);
         }
 
         // During startup, retry with backoff until deadline
@@ -180,7 +181,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
         while (Instant.now().isBefore(deadline)) {
             replicaClientFactory.findActiveClients(resource.getEndpoint());
-            lastException = attemptLoadFromClients(sourceList);
+            lastException = attemptLoadFromClients(sourceList, lastException);
 
             if (lastException == null) {
                 return null; // Success
@@ -198,15 +199,16 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     backoffSeconds = BackoffTimeCalculator.calculateBackoff(postFixedWindowAttempts) / 1_000_000_000L;
                 }
 
-                // Don't wait longer than remaining time until deadline
-                long remainingSeconds = deadline.getEpochSecond() - Instant.now().getEpochSecond();
-                long waitSeconds = Math.min(backoffSeconds, remainingSeconds);
+                long clientWaitMillis = replicaClientFactory.getMillisUntilNextClientAvailable(resource.getEndpoint());
+                long backoffMillis = clientWaitMillis > 0 ? clientWaitMillis : backoffSeconds * 1000;
+                long remainingMillis = Duration.between(Instant.now(), deadline).toMillis();
+                long waitMillis = Math.min(backoffMillis, remainingMillis);
 
-                if (waitSeconds > 0) {
+                if (waitMillis > 0) {
                     logger.debug("All replicas in backoff for store: " + resource.getEndpoint()
-                        + ". Waiting " + waitSeconds + "s before retry (elapsed: " + elapsedSeconds + "s).");
+                        + ". Waiting " + waitMillis + "ms before retry (elapsed: " + elapsedSeconds + "s).");
                     try {
-                        Thread.sleep(waitSeconds * 1000);
+                        Thread.sleep(waitMillis);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         return lastException;
@@ -214,7 +216,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 }
             }
         }
-        return lastException;
+        return lastException != null ? lastException
+            : new IllegalStateException("Azure App Configuration startup timeout expired for store: "
+                + resource.getEndpoint());
     }
 
     /**
@@ -237,11 +241,14 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * Attempts to load configuration from available clients.
      *
      * @param sourceList the list to populate with property sources
-     * @return the exception if all clients failed, null on success
+     * @param previousException the last startup failure to preserve when no clients are available
+     * @return the exception if loading failed or no clients were available, null on success
      */
-    private Exception attemptLoadFromClients(List<EnumerablePropertySource<?>> sourceList) {
+    private Exception attemptLoadFromClients(List<EnumerablePropertySource<?>> sourceList, Exception previousException) {
         boolean reloadFailed = false;
-        Exception lastException = null;
+        Exception lastException = previousException != null ? previousException
+            : new IllegalStateException("No Azure App Configuration clients available for store: "
+                + resource.getEndpoint());
         AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), true);
         List<EnumerablePropertySource<?>> tempSourceList = new ArrayList<>();
 
@@ -363,7 +370,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationPropertySource propertySource;
+            AppConfigurationApplicationSettingPropertySource propertySource;
 
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
@@ -373,7 +380,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                    selectedKeys.getTagsFilter());
+                    selectedKeys.getTagsFilter(), featureFlagClient);
             }
             propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);
