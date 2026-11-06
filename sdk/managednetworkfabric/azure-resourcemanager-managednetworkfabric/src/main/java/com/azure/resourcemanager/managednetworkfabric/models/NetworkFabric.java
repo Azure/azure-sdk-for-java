@@ -145,6 +145,14 @@ public interface NetworkFabric {
     long fabricAsn();
 
     /**
+     * Gets the networkBootstrapDeviceId property: Azure resource ID for the NetworkBootstrapDevice belonging to this
+     * Network Fabric.
+     * 
+     * @return the networkBootstrapDeviceId value.
+     */
+    String networkBootstrapDeviceId();
+
+    /**
      * Gets the terminalServerConfiguration property: Network and credentials configuration currently applied to
      * terminal server.
      * 
@@ -276,11 +284,35 @@ public interface NetworkFabric {
     AdministrativeState administrativeState();
 
     /**
+     * Gets the operationalState property: Operational state of networkFabric indicating if the resources of the fabric
+     * are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
      * Gets the qosConfiguration property: NetworkFabric QoS Configuration.
      * 
      * @return the qosConfiguration value.
      */
     QosProperties qosConfiguration();
+
+    /**
+     * Gets the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    SecretArchiveSettings secretArchiveSettings();
+
+    /**
+     * Gets the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @return the upgradeProfile value.
+     */
+    List<UpgradeProfileProperties> upgradeProfile();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -485,7 +517,8 @@ public interface NetworkFabric {
             DefinitionStages.WithControlPlaneAcls, DefinitionStages.WithFeatureFlags,
             DefinitionStages.WithTrustedIpPrefixes, DefinitionStages.WithUniqueRdConfiguration,
             DefinitionStages.WithStorageArrayCount, DefinitionStages.WithAuthorizedTransceiver,
-            DefinitionStages.WithQosConfiguration, DefinitionStages.WithAnnotation {
+            DefinitionStages.WithQosConfiguration, DefinitionStages.WithSecretArchiveSettings,
+            DefinitionStages.WithUpgradeProfile, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              * 
@@ -687,6 +720,36 @@ public interface NetworkFabric {
         }
 
         /**
+         * The stage of the NetworkFabric definition allowing to specify secretArchiveSettings.
+         */
+        interface WithSecretArchiveSettings {
+            /**
+             * Specifies the secretArchiveSettings property: The settings for a customer secret archive that may be used
+             * to hold copies of credentials for the Network Fabric..
+             * 
+             * @param secretArchiveSettings The settings for a customer secret archive that may be used to hold copies
+             * of credentials for the Network Fabric.
+             * @return the next definition stage.
+             */
+            WithCreate withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings);
+        }
+
+        /**
+         * The stage of the NetworkFabric definition allowing to specify upgradeProfile.
+         */
+        interface WithUpgradeProfile {
+            /**
+             * Specifies the upgradeProfile property: The upgrade profile to be used by devices in the network fabric
+             * during device operations.
+             * 
+             * @param upgradeProfile The upgrade profile to be used by devices in the network fabric during device
+             * operations.
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradeProfile(List<UpgradeProfileProperties> upgradeProfile);
+        }
+
+        /**
          * The stage of the NetworkFabric definition allowing to specify annotation.
          */
         interface WithAnnotation {
@@ -716,7 +779,8 @@ public interface NetworkFabric {
         UpdateStages.WithManagementNetworkConfiguration, UpdateStages.WithStorageAccountConfiguration,
         UpdateStages.WithHardwareAlertThreshold, UpdateStages.WithControlPlaneAcls, UpdateStages.WithTrustedIpPrefixes,
         UpdateStages.WithUniqueRdConfiguration, UpdateStages.WithQosConfiguration, UpdateStages.WithFeatureFlags,
-        UpdateStages.WithAuthorizedTransceiver {
+        UpdateStages.WithAuthorizedTransceiver, UpdateStages.WithSecretArchiveSettings,
+        UpdateStages.WithUpgradeProfile {
         /**
          * Executes the update request.
          * 
@@ -976,6 +1040,36 @@ public interface NetworkFabric {
              */
             Update withAuthorizedTransceiver(AuthorizedTransceiverPatchProperties authorizedTransceiver);
         }
+
+        /**
+         * The stage of the NetworkFabric update allowing to specify secretArchiveSettings.
+         */
+        interface WithSecretArchiveSettings {
+            /**
+             * Specifies the secretArchiveSettings property: The settings for a customer secret archive that may be used
+             * to hold copies of credentials for the Network Fabric..
+             * 
+             * @param secretArchiveSettings The settings for a customer secret archive that may be used to hold copies
+             * of credentials for the Network Fabric.
+             * @return the next definition stage.
+             */
+            Update withSecretArchiveSettings(SecretArchivePatchSettings secretArchiveSettings);
+        }
+
+        /**
+         * The stage of the NetworkFabric update allowing to specify upgradeProfile.
+         */
+        interface WithUpgradeProfile {
+            /**
+             * Specifies the upgradeProfile property: The upgrade profile to be used by devices in the network fabric
+             * during device operations.
+             * 
+             * @param upgradeProfile The upgrade profile to be used by devices in the network fabric during device
+             * operations.
+             * @return the next definition stage.
+             */
+            Update withUpgradeProfileForUpdate(List<UpgradeProfilePropertiesPatchProperties> upgradeProfile);
+        }
     }
 
     /**
@@ -1068,13 +1162,14 @@ public interface NetworkFabric {
     /**
      * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
      * 
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult refreshConfiguration(Context context);
+    OperationStatusResult refreshConfiguration(RefreshConfigurationRequestProperties body, Context context);
 
     /**
      * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
@@ -1135,7 +1230,7 @@ public interface NetworkFabric {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body);
+    ValidateConfigurationResponseV2 validateConfiguration(ValidateConfigurationProperties body);
 
     /**
      * Validates the configuration of the underlying resources in the given Network Fabric instance.
@@ -1147,7 +1242,7 @@ public interface NetworkFabric {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context);
+    ValidateConfigurationResponseV2 validateConfiguration(ValidateConfigurationProperties body, Context context);
 
     /**
      * Gets Topology of the underlying resources in the given Network Fabric instance.

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class NetworkPacketBrokersCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkPacketBrokers_Create.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Create_MaximumSet_Gen.

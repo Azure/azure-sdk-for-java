@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsRotatePasswordsSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotatePasswords.json
      */
     /**
      * Sample code: Successful password rotation for the Terminal Server and all Network Devices.
@@ -22,7 +22,7 @@ public final class NetworkFabricsRotatePasswordsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords_Error.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotatePasswords_Error.json
      */
     /**
      * Sample code: Total failure to rotate passwords.
@@ -35,7 +35,7 @@ public final class NetworkFabricsRotatePasswordsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords_PartialSuccess.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotatePasswords_PartialSuccess.json
      */
     /**
      * Sample code: Partial failure to rotate passwords for some devices.

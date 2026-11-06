@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsResyncPasswordsSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords_PartialSuccess.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ResyncPasswords_PartialSuccess.json
      */
     /**
      * Sample code: Partial failure to resync passwords for some devices.
@@ -22,7 +22,7 @@ public final class NetworkFabricsResyncPasswordsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords_Error.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ResyncPasswords_Error.json
      */
     /**
      * Sample code: Total failure to resync passwords.
@@ -35,7 +35,7 @@ public final class NetworkFabricsResyncPasswordsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ResyncPasswords.json
      */
     /**
      * Sample code: Successful password resync for the Terminal Server and all Network Devices.

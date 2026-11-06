@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsDeprovisionSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Deprovision.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Deprovision.json
      */
     /**
      * Sample code: NetworkFabrics_Deprovision_MaximumSet_Gen.

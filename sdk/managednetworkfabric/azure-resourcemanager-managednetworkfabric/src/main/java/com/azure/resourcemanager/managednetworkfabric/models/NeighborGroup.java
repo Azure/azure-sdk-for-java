@@ -121,6 +121,13 @@ public interface NeighborGroup {
     ConfigurationState configurationState();
 
     /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     * 
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.

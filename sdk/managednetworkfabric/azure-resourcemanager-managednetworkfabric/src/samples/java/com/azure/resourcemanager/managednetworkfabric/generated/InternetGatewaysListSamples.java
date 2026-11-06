@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class InternetGatewaysListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternetGateways_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/InternetGateways_ListBySubscription.json
      */
     /**
      * Sample code: InternetGateways_ListBySubscription_MaximumSet_Gen.

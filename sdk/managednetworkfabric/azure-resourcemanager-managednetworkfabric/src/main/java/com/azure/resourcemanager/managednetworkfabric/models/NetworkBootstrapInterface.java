@@ -119,6 +119,14 @@ public interface NetworkBootstrapInterface {
     String serialNumber();
 
     /**
+     * Gets the operationalState property: Operational state of networkBootstrapInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
      * Gets the annotation property: Switch configuration description.
      * 
      * @return the annotation value.

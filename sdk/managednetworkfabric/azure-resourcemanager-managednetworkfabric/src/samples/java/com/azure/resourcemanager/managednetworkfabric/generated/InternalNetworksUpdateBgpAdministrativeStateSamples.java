@@ -12,7 +12,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkUpda
  */
 public final class InternalNetworksUpdateBgpAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateBgpAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_UpdateBgpAdministrativeState.json
      */
     /**
      * Sample code: InternalNetworks_UpdateBgpAdministrativeState_MaximumSet_Gen.

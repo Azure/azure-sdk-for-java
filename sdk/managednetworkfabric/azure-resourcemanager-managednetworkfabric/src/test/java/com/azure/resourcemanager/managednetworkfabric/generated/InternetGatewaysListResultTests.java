@@ -13,15 +13,15 @@ public final class InternetGatewaysListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewaysListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"annotation\":\"cngoadyedmzrg\",\"internetGatewayRuleId\":\"oknub\",\"ipv4Address\":\"itpkpztrgdg\",\"port\":1339773074,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"sw\",\"lastOperation\":{\"details\":\"xpqitweialwvs\"},\"provisioningState\":\"Canceled\"},\"location\":\"z\",\"tags\":{\"sxzakuejkm\":\"qtyltcoqcujp\"},\"id\":\"bizt\",\"name\":\"ofqcvovjufycsjm\",\"type\":\"bemyeji\"},{\"properties\":{\"annotation\":\"uxegthortudawlpj\",\"internetGatewayRuleId\":\"lqerpptcbgqnzm\",\"ipv4Address\":\"iilialwc\",\"port\":1452234120,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Infrastructure\",\"networkFabricControllerId\":\"ccgzpraoxnyu\",\"lastOperation\":{\"details\":\"tsgftipwcxbyubh\"},\"provisioningState\":\"Failed\"},\"location\":\"yurnpnuhzafc\",\"tags\":{\"bui\":\"hiigby\",\"vcrk\":\"vxva\"},\"id\":\"lbnb\",\"name\":\"xvhcs\",\"type\":\"hzlwxaea\"}],\"nextLink\":\"ur\"}")
+            "{\"value\":[{\"properties\":{\"annotation\":\"wbormcqmi\",\"internetGatewayRuleId\":\"ijqpkzfbojxjmcs\",\"ipv4Address\":\"qwixvcpwnk\",\"port\":1321154301,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"alickduoi\",\"lastOperation\":{\"details\":\"mt\"},\"provisioningState\":\"Succeeded\"},\"location\":\"nxrwzawnvs\",\"tags\":{\"zregzgyufutrwpw\":\"hzagxnvhycvdimw\",\"meottawj\":\"ryekzkd\"},\"id\":\"osxw\",\"name\":\"hnhjtfvpndpmi\",\"type\":\"jpnwynudql\"}],\"nextLink\":\"sauzpjlx\"}")
             .toObject(InternetGatewaysListResult.class);
-        Assertions.assertEquals("z", model.value().get(0).location());
-        Assertions.assertEquals("qtyltcoqcujp", model.value().get(0).tags().get("sxzakuejkm"));
-        Assertions.assertEquals("cngoadyedmzrg", model.value().get(0).annotation());
-        Assertions.assertEquals("oknub", model.value().get(0).internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.WORKLOAD, model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("nxrwzawnvs", model.value().get(0).location());
+        Assertions.assertEquals("hzagxnvhycvdimw", model.value().get(0).tags().get("zregzgyufutrwpw"));
+        Assertions.assertEquals("wbormcqmi", model.value().get(0).annotation());
+        Assertions.assertEquals("ijqpkzfbojxjmcs", model.value().get(0).internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, model.value().get(0).typePropertiesType());
         Assertions.assertEquals(GatewayType.WORKLOAD, model.value().get(0).internetGatewayType());
-        Assertions.assertEquals("sw", model.value().get(0).networkFabricControllerId());
-        Assertions.assertEquals("ur", model.nextLink());
+        Assertions.assertEquals("alickduoi", model.value().get(0).networkFabricControllerId());
+        Assertions.assertEquals("sauzpjlx", model.nextLink());
     }
 }

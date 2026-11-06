@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class StaticRoutePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StaticRoutePatchProperties model
-            = BinaryData.fromString("{\"prefix\":\"zvdajfwnncf\",\"nextHop\":[\"ciqgjjrlhiqlwixv\"]}")
-                .toObject(StaticRoutePatchProperties.class);
-        Assertions.assertEquals("zvdajfwnncf", model.prefix());
-        Assertions.assertEquals("ciqgjjrlhiqlwixv", model.nextHop().get(0));
+        StaticRoutePatchProperties model = BinaryData
+            .fromString(
+                "{\"prefix\":\"nncfmaciqgjjrlhi\",\"nextHop\":[\"wixvtbouguxtndop\",\"jtt\",\"asualapdlndbea\"]}")
+            .toObject(StaticRoutePatchProperties.class);
+        Assertions.assertEquals("nncfmaciqgjjrlhi", model.prefix());
+        Assertions.assertEquals("wixvtbouguxtndop", model.nextHop().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StaticRoutePatchProperties model
-            = new StaticRoutePatchProperties().withPrefix("zvdajfwnncf").withNextHop(Arrays.asList("ciqgjjrlhiqlwixv"));
+        StaticRoutePatchProperties model = new StaticRoutePatchProperties().withPrefix("nncfmaciqgjjrlhi")
+            .withNextHop(Arrays.asList("wixvtbouguxtndop", "jtt", "asualapdlndbea"));
         model = BinaryData.fromObject(model).toObject(StaticRoutePatchProperties.class);
-        Assertions.assertEquals("zvdajfwnncf", model.prefix());
-        Assertions.assertEquals("ciqgjjrlhiqlwixv", model.nextHop().get(0));
+        Assertions.assertEquals("nncfmaciqgjjrlhi", model.prefix());
+        Assertions.assertEquals("wixvtbouguxtndop", model.nextHop().get(0));
     }
 }

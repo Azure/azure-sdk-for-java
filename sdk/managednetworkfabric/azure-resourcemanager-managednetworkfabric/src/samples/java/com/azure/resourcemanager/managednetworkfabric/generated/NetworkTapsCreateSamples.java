@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class NetworkTapsCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTaps_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTaps_Create.json
      */
     /**
      * Sample code: NetworkTaps_Create_MaximumSet_Gen.

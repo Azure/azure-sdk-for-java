@@ -17,6 +17,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelector;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
 import java.io.IOException;
@@ -357,6 +358,16 @@ public final class NetworkDeviceInner extends Resource {
      */
     public AdministrativeState administrativeState() {
         return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
+     * Get the operationalState property: Operational state of networkDevice indicating if the device is reachable and
+     * services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
     }
 
     /**

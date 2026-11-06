@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkPacketBrokersListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkPacketBrokers_ListBySubscription.json
      */
     /**
      * Sample code: NetworkPacketBrokers_ListBySubscription_MaximumSet_Gen.

@@ -14,9 +14,9 @@ public final class FabricLockPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricLockProperties model
-            = BinaryData.fromString("{\"lockState\":\"Disabled\",\"lockType\":\"Configuration\"}")
+            = BinaryData.fromString("{\"lockState\":\"Enabled\",\"lockType\":\"Administrative\"}")
                 .toObject(FabricLockProperties.class);
-        Assertions.assertEquals(LockConfigurationState.DISABLED, model.lockState());
-        Assertions.assertEquals(NetworkFabricLockType.CONFIGURATION, model.lockType());
+        Assertions.assertEquals(LockConfigurationState.ENABLED, model.lockState());
+        Assertions.assertEquals(NetworkFabricLockType.ADMINISTRATIVE, model.lockType());
     }
 }

@@ -14,13 +14,17 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkPa
 import com.azure.resourcemanager.managednetworkfabric.models.NNIDerivedUniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
+import com.azure.resourcemanager.managednetworkfabric.models.PostUpgradeProfilePatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.PreUpgradeProfilePatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.QosConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.QosPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetPatchInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchivePatchSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountPatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerPatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfilePropertiesPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPatchableProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionAPatchProperties;
@@ -34,7 +38,7 @@ import java.util.Map;
  */
 public final class NetworkFabricsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Update_QoS.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Update_QoS.json
      */
     /**
      * Sample code: NetworkFabrics_Update_QoS_Enable.
@@ -52,7 +56,7 @@ public final class NetworkFabricsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Update.json
      */
     /**
      * Sample code: NetworkFabrics_Update_MaximumSet_Gen.
@@ -141,6 +145,18 @@ public final class NetworkFabricsUpdateSamples {
             .withQosConfiguration(new QosPatchProperties().withQosConfigurationState(QosConfigurationState.ENABLED))
             .withFeatureFlags(Arrays.asList(new FeatureFlagProperties().withFeatureFlagName("uniqueRdConfiguration")
                 .withFeatureFlagValue("Enabled")))
+            .withSecretArchiveSettings(new SecretArchivePatchSettings()
+                .withAssociatedIdentity(new IdentitySelectorPatch()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
+                .withVaultUri("https://myvault.vault.azure.net/"))
+            .withUpgradeProfileForUpdate(Arrays.asList(new UpgradeProfilePropertiesPatchProperties()
+                .withPreUpgradeProfile(
+                    new PreUpgradeProfilePatchProperties().withMaxEnteringMaintenanceTimeoutInSeconds(300))
+                .withPostUpgradeProfile(
+                    new PostUpgradeProfilePatchProperties().withMaxExitingMaintenanceTimeoutInSeconds(3000)
+                        .withMlagReloadDelayTimeoutInSeconds(900))))
             .apply();
     }
 

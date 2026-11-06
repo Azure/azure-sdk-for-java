@@ -26,7 +26,7 @@ public final class NetworkTapRulesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"qwutbyaeyyiw\",\"configurationType\":\"File\",\"tapRulesUrl\":\"wpdmexugdjdmwc\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"onridhwoyznjdd\"},\"matchConfigurations\":[{\"matchConfigurationName\":\"lomvxvipuo\",\"sequenceNumber\":5766492833755362133,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"ydj\",\"sequenceNumber\":5026175360069810154,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"ftszswvyighj\",\"sequenceNumber\":6135814047212485583,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]}],\"networkTapId\":\"qzkzworuhhvdeodc\",\"networkTapIds\":[\"fxbkgpnx\"],\"pollingIntervalInSeconds\":1692679025,\"lastSyncedTime\":\"2021-09-20T04:37:39Z\",\"globalNetworkTapRuleActions\":{\"enableCount\":\"False\",\"truncate\":\"klhwutyuv\"},\"lastOperation\":{\"details\":\"trfziubeflv\"},\"networkFabricIds\":[\"bmceplnukdawgzhb\",\"hjvonuhvyg\"],\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"RMA\"},\"identity\":{\"principalId\":\"coth\",\"tenantId\":\"xjc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dwhwd\":{\"principalId\":\"xebmliyrctfaa\",\"clientId\":\"ukraq\"},\"cuyffkay\":{\"principalId\":\"ntqsrhacjsbpdhj\",\"clientId\":\"fnbiyxq\"}}},\"location\":\"ljtrmlxrqllug\",\"tags\":{\"lpvp\":\"bwdkziwwbqukjith\",\"shhcktbfmtbprt\":\"vceiwc\",\"qbwgmznvlwcn\":\"vuxwuepjcugwku\"},\"id\":\"hqkie\",\"name\":\"qpubwz\",\"type\":\"xetxzcjrb\"}";
+            = "{\"properties\":{\"annotation\":\"rrptblsatakz\",\"configurationType\":\"Inline\",\"tapRulesUrl\":\"fx\",\"identitySelector\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"eyv\"},\"matchConfigurations\":[{\"matchConfigurationName\":\"mjies\",\"sequenceNumber\":5353271479467920948,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{}]}],\"networkTapId\":\"refifbislj\",\"networkTapIds\":[\"qj\",\"frmqevgcbrmmw\",\"euyohjhpxjlgi\"],\"pollingIntervalInSeconds\":42772530,\"lastSyncedTime\":\"2021-10-01T13:38:29Z\",\"globalNetworkTapRuleActions\":{\"enableCount\":\"False\",\"truncate\":\"qeqfxzcxvp\"},\"lastOperation\":{\"details\":\"tkdit\"},\"networkFabricIds\":[\"k\",\"fdeeppycwsyqx\",\"owfnsyyeytr\",\"yojhmgvmeemjazql\"],\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\"},\"identity\":{\"principalId\":\"a\",\"tenantId\":\"holkoyxmspud\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gzi\":{\"principalId\":\"unrqvupjxs\",\"clientId\":\"qzdfjwo\"},\"epgdd\":{\"principalId\":\"moftilhoye\",\"clientId\":\"w\"}}},\"location\":\"cdtkv\",\"tags\":{\"hsxtryyrvwmmuo\":\"fcqmfvzub\",\"ts\":\"turdhnnmhrizwm\",\"pgqxekbv\":\"gqztnbvueizu\",\"yeigngrzvegxmx\":\"xyumqoqwvtby\"},\"id\":\"nhqxzewlwwdmpvpc\",\"name\":\"ccov\",\"type\":\"kwhdtfjvfct\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,23 +36,23 @@ public final class NetworkTapRulesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkTapRule response = manager.networkTapRules()
-            .getByResourceGroupWithResponse("otaoaixi", "cwyinfywtqvjno", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("hdlwlehhqxy", "lbk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ljtrmlxrqllug", response.location());
-        Assertions.assertEquals("bwdkziwwbqukjith", response.tags().get("lpvp"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("qwutbyaeyyiw", response.annotation());
-        Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
-        Assertions.assertEquals("wpdmexugdjdmwc", response.tapRulesUrl());
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
+        Assertions.assertEquals("cdtkv", response.location());
+        Assertions.assertEquals("fcqmfvzub", response.tags().get("hsxtryyrvwmmuo"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("rrptblsatakz", response.annotation());
+        Assertions.assertEquals(ConfigurationType.INLINE, response.configurationType());
+        Assertions.assertEquals("fx", response.tapRulesUrl());
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             response.identitySelector().identityType());
-        Assertions.assertEquals("onridhwoyznjdd", response.identitySelector().userAssignedIdentityResourceId());
-        Assertions.assertEquals("lomvxvipuo", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(5766492833755362133L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals("eyv", response.identitySelector().userAssignedIdentityResourceId());
+        Assertions.assertEquals("mjies", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(5353271479467920948L, response.matchConfigurations().get(0).sequenceNumber());
         Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals(1692679025, response.pollingIntervalInSeconds());
+        Assertions.assertEquals(42772530, response.pollingIntervalInSeconds());
         Assertions.assertEquals(BooleanEnumProperty.FALSE, response.globalNetworkTapRuleActions().enableCount());
-        Assertions.assertEquals("klhwutyuv", response.globalNetworkTapRuleActions().truncate());
+        Assertions.assertEquals("qeqfxzcxvp", response.globalNetworkTapRuleActions().truncate());
     }
 }

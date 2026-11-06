@@ -26,7 +26,7 @@ public final class RoutePoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"usjlqtjj\",\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":4721860429819384541,\"condition\":{\"ipCommunityIds\":[\"mevahqjdihjol\",\"wahehud\"],\"ipExtendedCommunityIds\":[\"olmm\",\"fdgv\"],\"type\":\"Or\",\"ipPrefixId\":\"bm\"},\"action\":{\"localPreference\":1812199928715825554,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"vogrripopzyde\"},{\"sequenceNumber\":8497289798873482339,\"condition\":{\"ipCommunityIds\":[\"dmsnezdumjqdhr\",\"wyq\",\"qmelm\"],\"ipExtendedCommunityIds\":[\"ep\"],\"type\":\"And\",\"ipPrefixId\":\"ve\"},\"action\":{\"localPreference\":5160782763481893595,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"nl\"},{\"sequenceNumber\":8442014316834448522,\"condition\":{\"ipCommunityIds\":[\"pwqksknstjfkjb\",\"yggrmztcxyphd\",\"xws\"],\"ipExtendedCommunityIds\":[\"gejopveg\"],\"type\":\"And\",\"ipPrefixId\":\"eayhojdgwezcr\"},\"action\":{\"localPreference\":7206213179804720989,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"fdpxbwqgkfxcdtj\"}],\"networkFabricId\":\"yevvuddnwj\",\"addressFamilyType\":\"IPv6\",\"lastOperation\":{\"details\":\"lemxbmaii\"},\"configurationState\":\"Failed\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\"},\"location\":\"evh\",\"tags\":{\"sis\":\"jpumpqlugzydylf\",\"i\":\"dmfo\",\"tkprbm\":\"svfnxxkmrfz\",\"duh\":\"azrfhfjwikvakj\"},\"id\":\"ilvajctpwlf\",\"name\":\"fardjqwdrooooobs\",\"type\":\"dqv\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"k\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":2653926571421179087,\"condition\":{\"ipCommunityIds\":[\"wgbajmgctwamj\",\"wvmugistnyzmhh\",\"pedmkxtdy\"],\"ipExtendedCommunityIds\":[\"f\"],\"type\":\"And\",\"ipPrefixId\":\"bmo\"},\"action\":{\"localPreference\":9091592362340183526,\"actionType\":\"Deny\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"xhkhjsrc\"},{\"sequenceNumber\":8628091980032218307,\"condition\":{\"ipCommunityIds\":[\"jtiyrqtuz\",\"z\"],\"ipExtendedCommunityIds\":[\"xngspazmxssb\",\"ljnatbecu\"],\"type\":\"Or\",\"ipPrefixId\":\"kkewg\"},\"action\":{\"localPreference\":372589037617479097,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"tjjewezcknp\"},{\"sequenceNumber\":3298536727621130948,\"condition\":{\"ipCommunityIds\":[\"qjd\",\"hjoldwahehudi\"],\"ipExtendedCommunityIds\":[\"l\"],\"type\":\"And\",\"ipPrefixId\":\"d\"},\"action\":{\"localPreference\":5419612117641701023,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"jqvmpzcjvogr\"},{\"sequenceNumber\":4324033310772324068,\"condition\":{\"ipCommunityIds\":[\"zy\",\"espwwkdmsnezdumj\",\"dhrgw\"],\"ipExtendedCommunityIds\":[\"qmelm\",\"kbepieh\",\"ve\",\"er\"],\"type\":\"And\",\"ipPrefixId\":\"rnlbfnuppwqkskns\"},\"action\":{\"localPreference\":5827485919939656278,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"ggrmztcx\"}],\"networkFabricId\":\"phdkxwstabgejopv\",\"addressFamilyType\":\"IPv6\",\"lastOperation\":{\"details\":\"oeayhojdgwezc\"},\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\"},\"location\":\"cfdpx\",\"tags\":{\"dtj\":\"gkfx\",\"bc\":\"yevvuddnwj\",\"pftzbkev\":\"flemxbmaiiv\"},\"id\":\"l\",\"name\":\"bjpumpqlugzydyl\",\"type\":\"rsis\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,24 +37,24 @@ public final class RoutePoliciesListMockTests {
 
         PagedIterable<RoutePolicy> response = manager.routePolicies().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("evh", response.iterator().next().location());
-        Assertions.assertEquals("jpumpqlugzydylf", response.iterator().next().tags().get("sis"));
-        Assertions.assertEquals("usjlqtjj", response.iterator().next().annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().defaultAction());
-        Assertions.assertEquals("vogrripopzyde", response.iterator().next().statements().get(0).annotation());
-        Assertions.assertEquals(4721860429819384541L, response.iterator().next().statements().get(0).sequenceNumber());
-        Assertions.assertEquals("mevahqjdihjol",
+        Assertions.assertEquals("cfdpx", response.iterator().next().location());
+        Assertions.assertEquals("gkfx", response.iterator().next().tags().get("dtj"));
+        Assertions.assertEquals("k", response.iterator().next().annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.iterator().next().defaultAction());
+        Assertions.assertEquals("xhkhjsrc", response.iterator().next().statements().get(0).annotation());
+        Assertions.assertEquals(2653926571421179087L, response.iterator().next().statements().get(0).sequenceNumber());
+        Assertions.assertEquals("wgbajmgctwamj",
             response.iterator().next().statements().get(0).condition().ipCommunityIds().get(0));
-        Assertions.assertEquals("olmm",
+        Assertions.assertEquals("f",
             response.iterator().next().statements().get(0).condition().ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.OR,
+        Assertions.assertEquals(RoutePolicyConditionType.AND,
             response.iterator().next().statements().get(0).condition().type());
-        Assertions.assertEquals("bm", response.iterator().next().statements().get(0).condition().ipPrefixId());
-        Assertions.assertEquals(1812199928715825554L,
+        Assertions.assertEquals("bmo", response.iterator().next().statements().get(0).condition().ipPrefixId());
+        Assertions.assertEquals(9091592362340183526L,
             response.iterator().next().statements().get(0).action().localPreference());
-        Assertions.assertEquals(RoutePolicyActionType.CONTINUE,
+        Assertions.assertEquals(RoutePolicyActionType.DENY,
             response.iterator().next().statements().get(0).action().actionType());
-        Assertions.assertEquals("yevvuddnwj", response.iterator().next().networkFabricId());
+        Assertions.assertEquals("phdkxwstabgejopv", response.iterator().next().networkFabricId());
         Assertions.assertEquals(AddressFamilyType.IPV6, response.iterator().next().addressFamilyType());
     }
 }

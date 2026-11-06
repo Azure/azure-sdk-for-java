@@ -26,7 +26,7 @@ public final class NetworkTapsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"xflzhgr\",\"sourceTapRuleId\":\"wysdmovbvnjyqq\",\"networkFabricIds\":[\"gz\",\"ykc\",\"ol\"],\"destinations\":[{\"name\":\"w\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"gytyv\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"jgobzjmuk\",\"wmhzarrfttxh\",\"frjgvho\"]},\"destinationTapRuleId\":\"vvvabzlmkfvs\"},{\"name\":\"lkjowvzyoehljtl\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"uothnucqktuae\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"ii\",\"teydlb\"]},\"destinationTapRuleId\":\"mivtuphwwyixo\"},{\"name\":\"fxfteo\",\"destinationType\":\"Direct\",\"destinationId\":\"rziwkcpxgjmyoufq\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"cdikkmyrsvtrtxg\",\"mpohuvasxjzklqkg\"]},\"destinationTapRuleId\":\"kntknjhywgzi\"}],\"pollingType\":\"Pull\",\"lastOperation\":{\"details\":\"fdehptln\"},\"configurationState\":\"Succeeded\",\"provisioningState\":\"Updating\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"eszx\"},\"identity\":{\"principalId\":\"euoih\",\"tenantId\":\"kfiwpgxyavcbdsu\",\"type\":\"None\",\"userAssignedIdentities\":{\"yhpbtwzrziv\":{\"principalId\":\"hcj\",\"clientId\":\"xtljyr\"},\"fbr\":{\"principalId\":\"kdcjymdoldbuy\",\"clientId\":\"gephviue\"},\"fkmti\":{\"principalId\":\"oxhy\",\"clientId\":\"agaxru\"},\"xwfodvzpxmo\":{\"principalId\":\"ynkhvpuq\",\"clientId\":\"zdbbitpgrnhpmsdg\"}}},\"location\":\"bvgieey\",\"tags\":{\"tbasvjodgplagwvg\":\"n\",\"hinbsys\":\"nxmqudnqcbb\",\"iyyzqdnrgnyb\":\"lbfzkvrmdos\",\"mkhxunq\":\"qwjj\"},\"id\":\"vqticgsdcpmclk\",\"name\":\"ydabhydcqrs\",\"type\":\"qwzndzuxlgmy\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"nxlcdg\",\"sourceTapRuleId\":\"ufancjlkrskz\",\"networkFabricIds\":[\"bafqzihmvw\"],\"destinations\":[{\"name\":\"jwvqiahoqjz\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"vwdlrt\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"xhgwzbyst\",\"uuwehntjssjbpnat\"]},\"destinationTapRuleId\":\"mvqichz\"},{\"name\":\"ajit\",\"destinationType\":\"Direct\",\"destinationId\":\"znpryouujqyeyzo\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"i\",\"mwvhcgcmu\"]},\"destinationTapRuleId\":\"ut\"}],\"pollingType\":\"Pull\",\"lastOperation\":{\"details\":\"hzytdj\"},\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"annotation\":\"yrhmpokf\"},\"identity\":{\"principalId\":\"bxm\",\"tenantId\":\"ajyrace\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ru\":{\"principalId\":\"s\",\"clientId\":\"uhjetxupxeains\"},\"lbswwbrllv\":{\"principalId\":\"eaenkfsxtsmz\",\"clientId\":\"ozfaj\"},\"dz\":{\"principalId\":\"zujc\",\"clientId\":\"znwlxzmszxyfa\"}}},\"location\":\"qvdivzjyx\",\"tags\":{\"jbrqb\":\"lbl\",\"dmyduvawea\":\"tmacnq\",\"yymh\":\"qfbvbvkwryrzo\",\"obhltmpay\":\"b\"},\"id\":\"qqgr\",\"name\":\"yttosnzbbxifa\",\"type\":\"rhpuzca\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,23 +36,23 @@ public final class NetworkTapsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkTap> response
-            = manager.networkTaps().listByResourceGroup("c", com.azure.core.util.Context.NONE);
+            = manager.networkTaps().listByResourceGroup("uxjudyvzo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bvgieey", response.iterator().next().location());
-        Assertions.assertEquals("n", response.iterator().next().tags().get("tbasvjodgplagwvg"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("xflzhgr", response.iterator().next().networkPacketBrokerId());
-        Assertions.assertEquals("w", response.iterator().next().destinations().get(0).name());
+        Assertions.assertEquals("qvdivzjyx", response.iterator().next().location());
+        Assertions.assertEquals("lbl", response.iterator().next().tags().get("jbrqb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("nxlcdg", response.iterator().next().networkPacketBrokerId());
+        Assertions.assertEquals("jwvqiahoqjz", response.iterator().next().destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN,
             response.iterator().next().destinations().get(0).destinationType());
-        Assertions.assertEquals("gytyv", response.iterator().next().destinations().get(0).destinationId());
-        Assertions.assertEquals(Encapsulation.GRE,
+        Assertions.assertEquals("vwdlrt", response.iterator().next().destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.NONE,
             response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("jgobzjmuk",
+        Assertions.assertEquals("xhgwzbyst",
             response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("vvvabzlmkfvs",
-            response.iterator().next().destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("mvqichz", response.iterator().next().destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PULL, response.iterator().next().pollingType());
-        Assertions.assertEquals("eszx", response.iterator().next().annotation());
+        Assertions.assertEquals("yrhmpokf", response.iterator().next().annotation());
     }
 }

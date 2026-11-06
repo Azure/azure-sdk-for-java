@@ -12,22 +12,21 @@ public final class NetworkBootstrapInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkBootstrapInterfaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\",\"configurationState\":\"Provisioning\",\"physicalIdentifier\":\"xbejhxopehely\",\"connectedTo\":\"khdapxdiibjjwuek\",\"interfaceType\":\"Management\",\"description\":\"hxhuhhnrmmfzfkh\",\"additionalDescription\":\"zjf\",\"ipv4Address\":\"jhtvbskgciedlqv\",\"ipv6Address\":\"trlsmsr\",\"serialNumber\":\"fgb\",\"annotation\":\"gchjtpszcawf\"}")
+            "{\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"configurationState\":\"PendingAdministrativeUpdate\",\"physicalIdentifier\":\"ddaxaogs\",\"connectedTo\":\"cmmmbipysehyybo\",\"interfaceType\":\"Management\",\"description\":\"vmkkbpg\",\"additionalDescription\":\"wd\",\"ipv4Address\":\"hdtiemb\",\"ipv6Address\":\"qwvcwce\",\"serialNumber\":\"rtrgpdlbtbxhyfwj\",\"operationalState\":\"Down\",\"annotation\":\"uzrl\"}")
             .toObject(NetworkBootstrapInterfaceProperties.class);
-        Assertions.assertEquals("gchjtpszcawf", model.annotation());
-        Assertions.assertEquals("zjf", model.additionalDescription());
-        Assertions.assertEquals("fgb", model.serialNumber());
+        Assertions.assertEquals("uzrl", model.annotation());
+        Assertions.assertEquals("wd", model.additionalDescription());
+        Assertions.assertEquals("rtrgpdlbtbxhyfwj", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkBootstrapInterfaceProperties model
-            = new NetworkBootstrapInterfaceProperties().withAnnotation("gchjtpszcawf")
-                .withAdditionalDescription("zjf")
-                .withSerialNumber("fgb");
+        NetworkBootstrapInterfaceProperties model = new NetworkBootstrapInterfaceProperties().withAnnotation("uzrl")
+            .withAdditionalDescription("wd")
+            .withSerialNumber("rtrgpdlbtbxhyfwj");
         model = BinaryData.fromObject(model).toObject(NetworkBootstrapInterfaceProperties.class);
-        Assertions.assertEquals("gchjtpszcawf", model.annotation());
-        Assertions.assertEquals("zjf", model.additionalDescription());
-        Assertions.assertEquals("fgb", model.serialNumber());
+        Assertions.assertEquals("uzrl", model.annotation());
+        Assertions.assertEquals("wd", model.additionalDescription());
+        Assertions.assertEquals("rtrgpdlbtbxhyfwj", model.serialNumber());
     }
 }

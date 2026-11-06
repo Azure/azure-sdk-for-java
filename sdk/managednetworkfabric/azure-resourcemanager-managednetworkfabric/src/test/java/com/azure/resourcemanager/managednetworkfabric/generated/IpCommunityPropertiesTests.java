@@ -16,45 +16,43 @@ public final class IpCommunityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityProperties model = BinaryData.fromString(
-            "{\"annotation\":\"wvua\",\"networkFabricId\":\"wbqamteuliy\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":6587094493738850881,\"wellKnownCommunities\":[\"Internet\"],\"communityMembers\":[\"auxxepmyw\"]},{\"action\":\"Permit\",\"sequenceNumber\":6860341300408282511,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoExport\",\"LocalAS\"],\"communityMembers\":[\"ijqpkzfbojxjmcs\"]},{\"action\":\"Deny\",\"sequenceNumber\":2240819145094168645,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"pwnkwywzwo\"]},{\"action\":\"Deny\",\"sequenceNumber\":8736317778676807202,\"wellKnownCommunities\":[\"LocalAS\",\"NoAdvertise\",\"NoAdvertise\",\"NoExport\"],\"communityMembers\":[\"tamtyv\",\"kn\",\"rwzawnvs\",\"cfhzagxnvhycv\"]}],\"lastOperation\":{\"details\":\"wrzregzgyufu\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\"}")
+            "{\"annotation\":\"hqhsknd\",\"networkFabricId\":\"lqkaadlknwf\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":540786333904483290,\"wellKnownCommunities\":[\"GShut\"],\"communityMembers\":[\"txiv\",\"nrlyxnuc\",\"ephblkwqpatvbqs\",\"tcjb\"]},{\"action\":\"Deny\",\"sequenceNumber\":5077408473598673922,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoExport\",\"NoExport\"],\"communityMembers\":[\"tuowogtgitsqh\",\"vbrzcdb\",\"nfzndscxmxeat\",\"db\"]},{\"action\":\"Deny\",\"sequenceNumber\":2580805120871115843,\"wellKnownCommunities\":[\"GShut\",\"LocalAS\"],\"communityMembers\":[\"q\",\"naomhjrm\",\"u\",\"maxljalfihcj\"]},{\"action\":\"Deny\",\"sequenceNumber\":2110046772829254579,\"wellKnownCommunities\":[\"GShut\"],\"communityMembers\":[\"exxqcwg\"]}],\"lastOperation\":{\"details\":\"gvaknokzwjjzrl\"},\"configurationState\":\"CommitStaged\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\"}")
             .toObject(IpCommunityProperties.class);
-        Assertions.assertEquals("wvua", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(6587094493738850881L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.INTERNET,
+        Assertions.assertEquals("hqhsknd", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(540786333904483290L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.GSHUT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("auxxepmyw", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("txiv", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityProperties model = new IpCommunityProperties().withAnnotation("wvua")
+        IpCommunityProperties model = new IpCommunityProperties().withAnnotation("hqhsknd")
             .withIpCommunityRules(Arrays.asList(
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(6587094493738850881L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
-                    .withCommunityMembers(Arrays.asList("auxxepmyw")),
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(6860341300408282511L)
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(540786333904483290L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
+                    .withCommunityMembers(Arrays.asList("txiv", "nrlyxnuc", "ephblkwqpatvbqs", "tcjb")),
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(5077408473598673922L)
                     .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE,
-                        WellKnownCommunities.NO_EXPORT, WellKnownCommunities.LOCAL_AS))
-                    .withCommunityMembers(Arrays.asList("ijqpkzfbojxjmcs")),
+                        WellKnownCommunities.NO_EXPORT, WellKnownCommunities.NO_EXPORT))
+                    .withCommunityMembers(Arrays.asList("tuowogtgitsqh", "vbrzcdb", "nfzndscxmxeat", "db")),
                 new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                    .withSequenceNumber(2240819145094168645L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE))
-                    .withCommunityMembers(Arrays.asList("pwnkwywzwo")),
+                    .withSequenceNumber(2580805120871115843L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.LOCAL_AS))
+                    .withCommunityMembers(Arrays.asList("q", "naomhjrm", "u", "maxljalfihcj")),
                 new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                    .withSequenceNumber(8736317778676807202L)
-                    .withWellKnownCommunities(
-                        Arrays.asList(WellKnownCommunities.LOCAL_AS, WellKnownCommunities.NO_ADVERTISE,
-                            WellKnownCommunities.NO_ADVERTISE, WellKnownCommunities.NO_EXPORT))
-                    .withCommunityMembers(Arrays.asList("tamtyv", "kn", "rwzawnvs", "cfhzagxnvhycv"))));
+                    .withSequenceNumber(2110046772829254579L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
+                    .withCommunityMembers(Arrays.asList("exxqcwg"))));
         model = BinaryData.fromObject(model).toObject(IpCommunityProperties.class);
-        Assertions.assertEquals("wvua", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(6587094493738850881L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.INTERNET,
+        Assertions.assertEquals("hqhsknd", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(540786333904483290L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.GSHUT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("auxxepmyw", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("txiv", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 }

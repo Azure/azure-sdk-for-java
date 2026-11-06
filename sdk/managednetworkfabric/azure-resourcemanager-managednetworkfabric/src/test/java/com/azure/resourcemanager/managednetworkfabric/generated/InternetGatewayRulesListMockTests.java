@@ -24,7 +24,7 @@ public final class InternetGatewayRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"tugiwsvlfpmbp\",\"rgnx\"],\"condition\":\"And\",\"destinationAddressList\":[\"zaysfzuvu\"],\"sourceAddressList\":[\"y\",\"qcjclvbqovkz\",\"eytphnazpgvfcubx\"],\"headerAddressList\":[{\"headerName\":\"edbqrlbyhzyf\",\"addressList\":[\"qkrzvdj\",\"cevbkk\"]},{\"headerName\":\"fjwgp\",\"addressList\":[\"wx\",\"hw\",\"fqzwysmsqqmdajsq\"]}]},\"lastOperation\":{\"details\":\"ftyi\"},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"iifdrbsrpj\",\"pbibsnxmfo\"],\"annotation\":\"npnrfvqgcuwgkmq\"},\"location\":\"rewtfu\",\"tags\":{\"kcgittfmlpihtepa\":\"sxn\",\"nybnt\":\"jebrinvfcdsijs\",\"ayxujzoxgakqt\":\"x\"},\"id\":\"rjucazwe\",\"name\":\"mah\",\"type\":\"lx\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"okd\",\"qxkzeowizvj\"],\"condition\":\"And\",\"destinationAddressList\":[\"flzqwkx\"],\"sourceAddressList\":[\"auvkkcowgnw\",\"ldctnwchuqm\",\"ynmt\",\"lcvlmrvhedrbzzb\"],\"headerAddressList\":[{\"headerName\":\"wxw\",\"addressList\":[\"kdlxdlh\",\"alz\"]}]},\"lastOperation\":{\"details\":\"wkyxowno\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"sxiaj\"],\"annotation\":\"rsd\"},\"location\":\"jxlopn\",\"tags\":{\"jlwrfeabzjpg\":\"xtpprszeh\"},\"id\":\"jmgpceqaklsfx\",\"name\":\"rxix\",\"type\":\"mfqmvnhsfjxt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,17 @@ public final class InternetGatewayRulesListMockTests {
         PagedIterable<InternetGatewayRule> response
             = manager.internetGatewayRules().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rewtfu", response.iterator().next().location());
-        Assertions.assertEquals("sxn", response.iterator().next().tags().get("kcgittfmlpihtepa"));
-        Assertions.assertEquals(Action.ALLOW, response.iterator().next().ruleProperties().action());
-        Assertions.assertEquals("tugiwsvlfpmbp", response.iterator().next().ruleProperties().addressList().get(0));
+        Assertions.assertEquals("jxlopn", response.iterator().next().location());
+        Assertions.assertEquals("xtpprszeh", response.iterator().next().tags().get("jlwrfeabzjpg"));
+        Assertions.assertEquals(Action.DENY, response.iterator().next().ruleProperties().action());
+        Assertions.assertEquals("okd", response.iterator().next().ruleProperties().addressList().get(0));
         Assertions.assertEquals(RuleCondition.AND, response.iterator().next().ruleProperties().condition());
-        Assertions.assertEquals("zaysfzuvu",
-            response.iterator().next().ruleProperties().destinationAddressList().get(0));
-        Assertions.assertEquals("y", response.iterator().next().ruleProperties().sourceAddressList().get(0));
-        Assertions.assertEquals("edbqrlbyhzyf",
+        Assertions.assertEquals("flzqwkx", response.iterator().next().ruleProperties().destinationAddressList().get(0));
+        Assertions.assertEquals("auvkkcowgnw", response.iterator().next().ruleProperties().sourceAddressList().get(0));
+        Assertions.assertEquals("wxw",
             response.iterator().next().ruleProperties().headerAddressList().get(0).headerName());
-        Assertions.assertEquals("qkrzvdj",
+        Assertions.assertEquals("kdlxdlh",
             response.iterator().next().ruleProperties().headerAddressList().get(0).addressList().get(0));
-        Assertions.assertEquals("npnrfvqgcuwgkmq", response.iterator().next().annotation());
+        Assertions.assertEquals("rsd", response.iterator().next().annotation());
     }
 }

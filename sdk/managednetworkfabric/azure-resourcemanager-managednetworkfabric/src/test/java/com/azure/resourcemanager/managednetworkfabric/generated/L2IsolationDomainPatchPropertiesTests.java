@@ -13,24 +13,24 @@ public final class L2IsolationDomainPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2IsolationDomainPatchProperties model = BinaryData.fromString(
-            "{\"mtu\":1378278521,\"extendedVlan\":\"Enabled\",\"networkToNetworkInterconnectId\":\"crraueekcsu\",\"annotation\":\"ogd\"}")
+            "{\"mtu\":1219847323,\"extendedVlan\":\"Disabled\",\"networkToNetworkInterconnectId\":\"z\",\"annotation\":\"qreblui\"}")
             .toObject(L2IsolationDomainPatchProperties.class);
-        Assertions.assertEquals("ogd", model.annotation());
-        Assertions.assertEquals(1378278521, model.mtu());
-        Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("crraueekcsu", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("qreblui", model.annotation());
+        Assertions.assertEquals(1219847323, model.mtu());
+        Assertions.assertEquals(ExtendedVlan.DISABLED, model.extendedVlan());
+        Assertions.assertEquals("z", model.networkToNetworkInterconnectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainPatchProperties model = new L2IsolationDomainPatchProperties().withAnnotation("ogd")
-            .withMtu(1378278521)
-            .withExtendedVlan(ExtendedVlan.ENABLED)
-            .withNetworkToNetworkInterconnectId("crraueekcsu");
+        L2IsolationDomainPatchProperties model = new L2IsolationDomainPatchProperties().withAnnotation("qreblui")
+            .withMtu(1219847323)
+            .withExtendedVlan(ExtendedVlan.DISABLED)
+            .withNetworkToNetworkInterconnectId("z");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatchProperties.class);
-        Assertions.assertEquals("ogd", model.annotation());
-        Assertions.assertEquals(1378278521, model.mtu());
-        Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("crraueekcsu", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("qreblui", model.annotation());
+        Assertions.assertEquals(1219847323, model.mtu());
+        Assertions.assertEquals(ExtendedVlan.DISABLED, model.extendedVlan());
+        Assertions.assertEquals("z", model.networkToNetworkInterconnectId());
     }
 }

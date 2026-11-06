@@ -28,7 +28,7 @@ public final class InternetGatewayRulesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"lah\",\"eqjchhrrx\",\"cztrqnuahh\",\"edvbrbdujpsh\"],\"condition\":\"Or\",\"destinationAddressList\":[\"ry\",\"y\",\"lwzjorvsgm\"],\"sourceAddressList\":[\"les\",\"jckyocyb\",\"lwdmpsdfsla\"],\"headerAddressList\":[{\"headerName\":\"hyylipvq\",\"addressList\":[\"mexnpoaeruywf\",\"ltwlzlmp\",\"prlcgqewm\",\"wyhqly\"]},{\"headerName\":\"kmxusmkpa\",\"addressList\":[\"wpbnjcko\",\"tun\"]}]},\"lastOperation\":{\"details\":\"ysvnddllbwnmvh\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"myrg\",\"sdouzohihqlwy\",\"sxeqtl\"],\"annotation\":\"mczcxouaneuep\"},\"location\":\"ztakov\",\"tags\":{\"mt\":\"wpv\"},\"id\":\"c\",\"name\":\"tucmiqsdsn\",\"type\":\"qqgs\"}";
+            = "{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"nvfcdsi\",\"sinybntlxwayxujz\",\"xgakq\",\"krjucazwedma\"],\"condition\":\"And\",\"destinationAddressList\":[\"cem\"],\"sourceAddressList\":[\"n\",\"dvqan\",\"enxgohmmgbl\",\"yfgz\"],\"headerAddressList\":[{\"headerName\":\"ifsgzfg\",\"addressList\":[\"xjiqpdsohw\",\"nayoogh\",\"xhpp\"]},{\"headerName\":\"ksqiwlmegjtose\",\"addressList\":[\"ygowd\",\"izzugdorcppqvov\",\"irtasep\"]},{\"headerName\":\"lpexhh\",\"addressList\":[\"tl\",\"p\",\"biroxamnvrcq\",\"pbainsihdzxeufjy\"]}]},\"lastOperation\":{\"details\":\"m\"},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"pib\",\"wqjcphofyoqfvm\",\"wplx\",\"uzltn\"],\"annotation\":\"olghgtejty\"},\"location\":\"syc\",\"tags\":{\"caoc\":\"rqdty\",\"c\":\"uuxqnk\"},\"id\":\"mrwc\",\"name\":\"ynjcvewl\",\"type\":\"jrnaktj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,31 +38,32 @@ public final class InternetGatewayRulesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InternetGatewayRule response = manager.internetGatewayRules()
-            .define("oanudvqannenxgo")
-            .withRegion("syc")
-            .withExistingResourceGroup("cem")
+            .define("pg")
+            .withRegion("jpc")
+            .withExistingResourceGroup("sbjxpuokkdpts")
             .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
-                .withAddressList(Arrays.asList("blqyfgzbfp", "ifsgzfg"))
-                .withCondition(RuleCondition.OR)
-                .withDestinationAddressList(Arrays.asList("iq", "dsohwnnayo", "ghjxhpppnksqi"))
-                .withSourceAddressList(Arrays.asList("egjto", "eohoygowdzizzu", "d", "rcppqvovsirtas"))
-                .withHeaderAddressList(Arrays.asList(new HeaderAddressProperties().withHeaderName("lpexhh")
-                    .withAddressList(Arrays.asList("tl", "p", "biroxamnvrcq", "pbainsihdzxeufjy")))))
-            .withTags(mapOf("caoc", "rqdty", "c", "uuxqnk"))
-            .withAnnotation("olghgtejty")
+                .withAddressList(Arrays.asList("nalpwa", "lkw"))
+                .withCondition(RuleCondition.AND)
+                .withDestinationAddressList(Arrays.asList("wnwnjdrnfgtmupbl"))
+                .withSourceAddressList(Arrays.asList("qvz", "ikxufuwcajyezlk", "iveftugiwsvlfp", "bpnrgnxwrfu"))
+                .withHeaderAddressList(Arrays.asList(new HeaderAddressProperties().withHeaderName("s")
+                    .withAddressList(Arrays.asList("vuoxzyfqcjclvbqo", "kzueytphnaz")))))
+            .withTags(
+                mapOf("phhpwxghwwfqzwys", "kkgqfjw", "yifadsl", "sqqmdajsqepxf", "bibsn", "ifdrbsrpjs", "pn", "mfooi"))
+            .withAnnotation("pqkrz")
             .create();
 
-        Assertions.assertEquals("ztakov", response.location());
-        Assertions.assertEquals("wpv", response.tags().get("mt"));
-        Assertions.assertEquals(Action.ALLOW, response.ruleProperties().action());
-        Assertions.assertEquals("lah", response.ruleProperties().addressList().get(0));
-        Assertions.assertEquals(RuleCondition.OR, response.ruleProperties().condition());
-        Assertions.assertEquals("ry", response.ruleProperties().destinationAddressList().get(0));
-        Assertions.assertEquals("les", response.ruleProperties().sourceAddressList().get(0));
-        Assertions.assertEquals("hyylipvq", response.ruleProperties().headerAddressList().get(0).headerName());
-        Assertions.assertEquals("mexnpoaeruywf",
+        Assertions.assertEquals("syc", response.location());
+        Assertions.assertEquals("rqdty", response.tags().get("caoc"));
+        Assertions.assertEquals(Action.DENY, response.ruleProperties().action());
+        Assertions.assertEquals("nvfcdsi", response.ruleProperties().addressList().get(0));
+        Assertions.assertEquals(RuleCondition.AND, response.ruleProperties().condition());
+        Assertions.assertEquals("cem", response.ruleProperties().destinationAddressList().get(0));
+        Assertions.assertEquals("n", response.ruleProperties().sourceAddressList().get(0));
+        Assertions.assertEquals("ifsgzfg", response.ruleProperties().headerAddressList().get(0).headerName());
+        Assertions.assertEquals("xjiqpdsohw",
             response.ruleProperties().headerAddressList().get(0).addressList().get(0));
-        Assertions.assertEquals("mczcxouaneuep", response.annotation());
+        Assertions.assertEquals("olghgtejty", response.annotation());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.CommitBatchStatusRe
  */
 public final class NetworkFabricsCommitBatchStatusSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_CommitBatchStatus.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_CommitBatchStatus.json
      */
     /**
      * Sample code: NetworkFabrics_CommitBatchStatus_MaximumSet.

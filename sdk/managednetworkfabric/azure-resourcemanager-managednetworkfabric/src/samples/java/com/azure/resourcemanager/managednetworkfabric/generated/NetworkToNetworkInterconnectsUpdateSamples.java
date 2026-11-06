@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public final class NetworkToNetworkInterconnectsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkToNetworkInterconnects_Update.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Update_MaximumSet_Gen.

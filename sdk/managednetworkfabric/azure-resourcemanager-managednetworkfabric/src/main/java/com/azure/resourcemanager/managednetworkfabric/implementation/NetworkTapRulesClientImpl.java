@@ -38,7 +38,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkTapRulesClie
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleResyncResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.implementation.models.NetworkTapRulesListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRulePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -1471,13 +1471,13 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    private PollerFlux<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfigurationAsync(String resourceGroupName, String networkTapRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateConfigurationWithResponseAsync(resourceGroupName, networkTapRuleName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
-            ValidateConfigurationResponseInner.class, this.client.getContext());
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            mono, this.client.getHttpPipeline(), ValidateConfigurationResponseV2Inner.class,
+            ValidateConfigurationResponseV2Inner.class, this.client.getContext());
     }
 
     /**
@@ -1491,11 +1491,12 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkTapRuleName) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, networkTapRuleName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class,
+            Context.NONE);
     }
 
     /**
@@ -1510,12 +1511,12 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkTapRuleName, Context context) {
         Response<BinaryData> response
             = validateConfigurationWithResponse(resourceGroupName, networkTapRuleName, context);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, context);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class, context);
     }
 
     /**
@@ -1529,7 +1530,7 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+    private Mono<ValidateConfigurationResponseV2Inner> validateConfigurationAsync(String resourceGroupName,
         String networkTapRuleName) {
         return beginValidateConfigurationAsync(resourceGroupName, networkTapRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1546,7 +1547,7 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
         String networkTapRuleName) {
         return beginValidateConfiguration(resourceGroupName, networkTapRuleName).getFinalResult();
     }
@@ -1563,8 +1564,8 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkTapRuleName,
-        Context context) {
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         return beginValidateConfiguration(resourceGroupName, networkTapRuleName, context).getFinalResult();
     }
 

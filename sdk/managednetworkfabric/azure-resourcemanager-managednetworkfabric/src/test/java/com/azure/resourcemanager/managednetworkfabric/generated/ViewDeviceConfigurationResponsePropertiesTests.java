@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ViewDeviceConfigurationResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ViewDeviceConfigurationResponseProperties model
-            = BinaryData.fromString("{\"deviceConfigurationUrl\":\"fgdkwbk\"}")
-                .toObject(ViewDeviceConfigurationResponseProperties.class);
-        Assertions.assertEquals("fgdkwbk", model.deviceConfigurationUrl());
+        ViewDeviceConfigurationResponseProperties model = BinaryData.fromString("{\"deviceConfigurationUrl\":\"poil\"}")
+            .toObject(ViewDeviceConfigurationResponseProperties.class);
+        Assertions.assertEquals("poil", model.deviceConfigurationUrl());
     }
 }

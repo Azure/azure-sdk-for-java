@@ -206,6 +206,29 @@ public final class NetworkPacketBrokerInner extends Resource {
     }
 
     /**
+     * Get the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule.
+     * 
+     * @return the sourceNetworkTapRuleId value.
+     */
+    public String sourceNetworkTapRuleId() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceNetworkTapRuleId();
+    }
+
+    /**
+     * Set the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule.
+     * 
+     * @param sourceNetworkTapRuleId the sourceNetworkTapRuleId value to set.
+     * @return the NetworkPacketBrokerInner object itself.
+     */
+    public NetworkPacketBrokerInner withSourceNetworkTapRuleId(String sourceNetworkTapRuleId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkPacketBrokerProperties();
+        }
+        this.innerProperties().withSourceNetworkTapRuleId(sourceNetworkTapRuleId);
+        return this;
+    }
+
+    /**
      * Get the lastOperation property: Details of the last operation performed on the resource.
      * 
      * @return the lastOperation value.

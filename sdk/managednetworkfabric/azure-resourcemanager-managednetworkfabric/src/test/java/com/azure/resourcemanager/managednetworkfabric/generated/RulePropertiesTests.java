@@ -16,37 +16,36 @@ public final class RulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleProperties model = BinaryData.fromString(
-            "{\"action\":\"Allow\",\"addressList\":[\"ftptnuwj\"],\"condition\":\"And\",\"destinationAddressList\":[\"gcgqyhleseyqrhvy\"],\"sourceAddressList\":[\"otjvdkwiswskukjt\",\"sbvw\"],\"headerAddressList\":[{\"headerName\":\"xkdtxfkndlqvtwkn\",\"addressList\":[\"mb\",\"gtywatmqaqkue\",\"tgroesh\",\"ygzc\"]},{\"headerName\":\"fqxkfaoyteh\",\"addressList\":[\"vjmvqmtdwckygr\",\"ejnndljdju\"]},{\"headerName\":\"br\",\"addressList\":[\"ynkceysfaqegpl\"]}]}")
+            "{\"action\":\"Allow\",\"addressList\":[\"ygr\",\"ejnndljdju\",\"kb\",\"req\"],\"condition\":\"Or\",\"destinationAddressList\":[\"ysfaqegplwrysh\",\"ddkvbxgkqu\",\"ybwptda\"],\"sourceAddressList\":[\"vvlfntymtp\"],\"headerAddressList\":[{\"headerName\":\"naz\",\"addressList\":[\"hzr\",\"qalsxkd\",\"wqapfgsdp\"]},{\"headerName\":\"essmzhhku\",\"addressList\":[\"ldqqctekv\",\"lblhtjq\"]}]}")
             .toObject(RuleProperties.class);
         Assertions.assertEquals(Action.ALLOW, model.action());
-        Assertions.assertEquals("ftptnuwj", model.addressList().get(0));
-        Assertions.assertEquals(RuleCondition.AND, model.condition());
-        Assertions.assertEquals("gcgqyhleseyqrhvy", model.destinationAddressList().get(0));
-        Assertions.assertEquals("otjvdkwiswskukjt", model.sourceAddressList().get(0));
-        Assertions.assertEquals("xkdtxfkndlqvtwkn", model.headerAddressList().get(0).headerName());
-        Assertions.assertEquals("mb", model.headerAddressList().get(0).addressList().get(0));
+        Assertions.assertEquals("ygr", model.addressList().get(0));
+        Assertions.assertEquals(RuleCondition.OR, model.condition());
+        Assertions.assertEquals("ysfaqegplwrysh", model.destinationAddressList().get(0));
+        Assertions.assertEquals("vvlfntymtp", model.sourceAddressList().get(0));
+        Assertions.assertEquals("naz", model.headerAddressList().get(0).headerName());
+        Assertions.assertEquals("hzr", model.headerAddressList().get(0).addressList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuleProperties model = new RuleProperties().withAction(Action.ALLOW)
-            .withAddressList(Arrays.asList("ftptnuwj"))
-            .withCondition(RuleCondition.AND)
-            .withDestinationAddressList(Arrays.asList("gcgqyhleseyqrhvy"))
-            .withSourceAddressList(Arrays.asList("otjvdkwiswskukjt", "sbvw"))
+            .withAddressList(Arrays.asList("ygr", "ejnndljdju", "kb", "req"))
+            .withCondition(RuleCondition.OR)
+            .withDestinationAddressList(Arrays.asList("ysfaqegplwrysh", "ddkvbxgkqu", "ybwptda"))
+            .withSourceAddressList(Arrays.asList("vvlfntymtp"))
             .withHeaderAddressList(Arrays.asList(
-                new HeaderAddressProperties().withHeaderName("xkdtxfkndlqvtwkn")
-                    .withAddressList(Arrays.asList("mb", "gtywatmqaqkue", "tgroesh", "ygzc")),
-                new HeaderAddressProperties().withHeaderName("fqxkfaoyteh")
-                    .withAddressList(Arrays.asList("vjmvqmtdwckygr", "ejnndljdju")),
-                new HeaderAddressProperties().withHeaderName("br").withAddressList(Arrays.asList("ynkceysfaqegpl"))));
+                new HeaderAddressProperties().withHeaderName("naz")
+                    .withAddressList(Arrays.asList("hzr", "qalsxkd", "wqapfgsdp")),
+                new HeaderAddressProperties().withHeaderName("essmzhhku")
+                    .withAddressList(Arrays.asList("ldqqctekv", "lblhtjq"))));
         model = BinaryData.fromObject(model).toObject(RuleProperties.class);
         Assertions.assertEquals(Action.ALLOW, model.action());
-        Assertions.assertEquals("ftptnuwj", model.addressList().get(0));
-        Assertions.assertEquals(RuleCondition.AND, model.condition());
-        Assertions.assertEquals("gcgqyhleseyqrhvy", model.destinationAddressList().get(0));
-        Assertions.assertEquals("otjvdkwiswskukjt", model.sourceAddressList().get(0));
-        Assertions.assertEquals("xkdtxfkndlqvtwkn", model.headerAddressList().get(0).headerName());
-        Assertions.assertEquals("mb", model.headerAddressList().get(0).addressList().get(0));
+        Assertions.assertEquals("ygr", model.addressList().get(0));
+        Assertions.assertEquals(RuleCondition.OR, model.condition());
+        Assertions.assertEquals("ysfaqegplwrysh", model.destinationAddressList().get(0));
+        Assertions.assertEquals("vvlfntymtp", model.sourceAddressList().get(0));
+        Assertions.assertEquals("naz", model.headerAddressList().get(0).headerName());
+        Assertions.assertEquals("hzr", model.headerAddressList().get(0).addressList().get(0));
     }
 }

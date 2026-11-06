@@ -22,7 +22,7 @@ public final class NetworkInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"physicalIdentifier\":\"gomhs\",\"connectedTo\":\"d\",\"interfaceType\":\"Management\",\"ipv4Address\":\"wbijxfc\",\"ipv6Address\":\"effrg\",\"description\":\"dmrowhrrguvd\",\"additionalDescription\":\"gucwawlmsikl\",\"lastOperation\":{\"details\":\"dfcphg\"},\"networkFabricId\":\"ijzhrb\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"configurationState\":\"Failed\",\"annotation\":\"uelf\"},\"identity\":{\"principalId\":\"b\",\"tenantId\":\"blpdwckmnpzub\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"emnryxnklf\":{\"principalId\":\"g\",\"clientId\":\"rgngcpbshqzzlc\"},\"dsuopcdi\":{\"principalId\":\"zsyigxsyx\",\"clientId\":\"gczabapeuqyz\"}}},\"id\":\"sspcutgkm\",\"name\":\"sqaqgllnhg\",\"type\":\"siwzzkaeqrnglgi\"}";
+            = "{\"properties\":{\"physicalIdentifier\":\"dbvcxoamh\",\"connectedTo\":\"uhnbdlz\",\"interfaceType\":\"Data\",\"ipv4Address\":\"tzjjgv\",\"ipv6Address\":\"tqc\",\"description\":\"nkyvujhejytrv\",\"additionalDescription\":\"uysbrngnbqhm\",\"lastOperation\":{\"details\":\"zxkormrcj\"},\"networkFabricId\":\"tcfnbffd\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"configurationState\":\"CommitStaged\",\"operationalState\":\"Unknown\",\"annotation\":\"ehuboq\"},\"identity\":{\"principalId\":\"nuxamxikhrxi\",\"tenantId\":\"l\",\"type\":\"None\",\"userAssignedIdentities\":{\"xeirjtwji\":{\"principalId\":\"eojecboggwtih\",\"clientId\":\"ywgtsod\"},\"uvoaxqo\":{\"principalId\":\"frh\",\"clientId\":\"g\"},\"vzuaxtbrqnyu\":{\"principalId\":\"lp\",\"clientId\":\"pbzyqbggxcyra\"},\"bj\":{\"principalId\":\"lpuwxs\",\"clientId\":\"qlgxxbnrurtn\"}}},\"id\":\"su\",\"name\":\"ckhfbmde\",\"type\":\"ohlshmaaoofltbs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class NetworkInterfacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkInterface response = manager.networkInterfaces()
-            .getWithResponse("rqnjush", "xhtvn", "cmrrgm", com.azure.core.util.Context.NONE)
+            .getWithResponse("ruldt", "ycnk", "rmiecfmqcxm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("gucwawlmsikl", response.additionalDescription());
-        Assertions.assertEquals("uelf", response.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("uysbrngnbqhm", response.additionalDescription());
+        Assertions.assertEquals("ehuboq", response.annotation());
     }
 }

@@ -32,6 +32,11 @@ public final class DeviceRole extends ExpandableStringEnum<DeviceRole> {
     public static final DeviceRole MANAGEMENT_SWITCH = fromString("ManagementSwitch");
 
     /**
+     * Device Role Terminal Server (NetworkBootstrapDevice).
+     */
+    public static final DeviceRole TERMINAL_SERVER = fromString("TerminalServer");
+
+    /**
      * Creates a new instance of DeviceRole value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

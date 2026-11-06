@@ -172,6 +172,21 @@ public interface NetworkFabricController {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the operationalState property: Operational state of networkFabricController indicating if the resources of
+     * the controller are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
+     * Gets the vmProfile property: The VM profile configuration for the NFC's associated compute (VM) resources.
+     * 
+     * @return the vmProfile value.
+     */
+    VmProfile vmProfile();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -259,7 +274,7 @@ public interface NetworkFabricController {
             DefinitionStages.WithWorkloadExpressRouteConnections,
             DefinitionStages.WithManagedResourceGroupConfiguration,
             DefinitionStages.WithIsWorkloadManagementNetworkEnabled, DefinitionStages.WithIpv4AddressSpace,
-            DefinitionStages.WithIpv6AddressSpace, DefinitionStages.WithNfcSku {
+            DefinitionStages.WithIpv6AddressSpace, DefinitionStages.WithNfcSku, DefinitionStages.WithVmProfile {
             /**
              * Executes the create request.
              * 
@@ -422,6 +437,20 @@ public interface NetworkFabricController {
              * @return the next definition stage.
              */
             WithCreate withNfcSku(NfcSku nfcSku);
+        }
+
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify vmProfile.
+         */
+        interface WithVmProfile {
+            /**
+             * Specifies the vmProfile property: The VM profile configuration for the NFC's associated compute (VM)
+             * resources..
+             * 
+             * @param vmProfile The VM profile configuration for the NFC's associated compute (VM) resources.
+             * @return the next definition stage.
+             */
+            WithCreate withVmProfile(VmProfile vmProfile);
         }
     }
 

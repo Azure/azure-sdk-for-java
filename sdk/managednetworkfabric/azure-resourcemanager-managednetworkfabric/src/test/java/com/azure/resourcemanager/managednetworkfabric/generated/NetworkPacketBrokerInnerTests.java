@@ -17,27 +17,31 @@ public final class NetworkPacketBrokerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkPacketBrokerInner model = BinaryData.fromString(
-            "{\"properties\":{\"networkFabricId\":\"oqwb\",\"networkDeviceIds\":[\"lqbzbwb\",\"wzhbhflj\",\"yodpiovnlhrwy\",\"kzu\"],\"sourceInterfaceIds\":[\"pwxsvdeatjiobni\"],\"networkTapIds\":[\"extqd\",\"wtgntimznupb\",\"tbsetko\",\"sqvhe\"],\"neighborGroupIds\":[\"kghcrzmmmj\",\"vdhdgdiwmlgs\"],\"lastOperation\":{\"details\":\"etqjisjm\"},\"provisioningState\":\"Deleting\",\"configurationState\":\"Rejected\"},\"identity\":{\"principalId\":\"kakhgkrv\",\"tenantId\":\"ycvytv\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zvoortc\":{\"principalId\":\"wfusqp\",\"clientId\":\"xkczbdypbbimhjb\"},\"lkv\":{\"principalId\":\"h\",\"clientId\":\"cyuzlybqscibv\"},\"viulbyl\":{\"principalId\":\"cafn\",\"clientId\":\"hawvc\"}}},\"location\":\"jzrycwpb\",\"tags\":{\"pucknsastlp\":\"whm\",\"j\":\"mgomicttrvlv\",\"xamqecjrzvlcivqx\":\"xok\"},\"id\":\"emklphx\",\"name\":\"wwlojkbgnf\",\"type\":\"rzjv\"}")
+            "{\"properties\":{\"networkFabricId\":\"bempf\",\"networkDeviceIds\":[\"qnmelyksy\"],\"sourceInterfaceIds\":[\"iclm\",\"lnu\",\"kqvzlbbbajdexq\"],\"networkTapIds\":[\"ex\",\"zbf\",\"etji\",\"w\"],\"neighborGroupIds\":[\"bm\",\"jvvyxtvvxnakzix\",\"kaybfmlngf\",\"hrmvla\"],\"sourceNetworkTapRuleId\":\"ujmwxnrzblxna\",\"lastOperation\":{\"details\":\"mfndcbsyhludzj\"},\"provisioningState\":\"Accepted\",\"configurationState\":\"Accepted\"},\"identity\":{\"principalId\":\"v\",\"tenantId\":\"jfdvtdurmdtacnt\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wriglbqtrefecl\":{\"principalId\":\"hvqiiasbtwskkf\",\"clientId\":\"yikmxhhqsxjbjk\"},\"cjptnn\":{\"principalId\":\"xcjffzwncvd\",\"clientId\":\"xonzt\"}}},\"location\":\"rcjqpzj\",\"tags\":{\"h\":\"jr\",\"agwviqehmdqvaoli\":\"gsjbi\",\"m\":\"xdfsfvkjc\",\"rkd\":\"rsvxphtjnhptj\"},\"id\":\"yzhimm\",\"name\":\"dtdtft\",\"type\":\"izuzjd\"}")
             .toObject(NetworkPacketBrokerInner.class);
-        Assertions.assertEquals("jzrycwpb", model.location());
-        Assertions.assertEquals("whm", model.tags().get("pucknsastlp"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("oqwb", model.networkFabricId());
+        Assertions.assertEquals("rcjqpzj", model.location());
+        Assertions.assertEquals("jr", model.tags().get("h"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bempf", model.networkFabricId());
+        Assertions.assertEquals("ujmwxnrzblxna", model.sourceNetworkTapRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerInner model = new NetworkPacketBrokerInner().withLocation("jzrycwpb")
-            .withTags(mapOf("pucknsastlp", "whm", "j", "mgomicttrvlv", "xamqecjrzvlcivqx", "xok"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("zvoortc", new UserAssignedIdentity(), "lkv",
-                    new UserAssignedIdentity(), "viulbyl", new UserAssignedIdentity())))
-            .withNetworkFabricId("oqwb");
+        NetworkPacketBrokerInner model = new NetworkPacketBrokerInner().withLocation("rcjqpzj")
+            .withTags(mapOf("h", "jr", "agwviqehmdqvaoli", "gsjbi", "m", "xdfsfvkjc", "rkd", "rsvxphtjnhptj"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf("wriglbqtrefecl", new UserAssignedIdentity(), "cjptnn", new UserAssignedIdentity())))
+            .withNetworkFabricId("bempf")
+            .withSourceNetworkTapRuleId("ujmwxnrzblxna");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerInner.class);
-        Assertions.assertEquals("jzrycwpb", model.location());
-        Assertions.assertEquals("whm", model.tags().get("pucknsastlp"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("oqwb", model.networkFabricId());
+        Assertions.assertEquals("rcjqpzj", model.location());
+        Assertions.assertEquals("jr", model.tags().get("h"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bempf", model.networkFabricId());
+        Assertions.assertEquals("ujmwxnrzblxna", model.sourceNetworkTapRuleId());
     }
 
     // Use "Map.of" if available

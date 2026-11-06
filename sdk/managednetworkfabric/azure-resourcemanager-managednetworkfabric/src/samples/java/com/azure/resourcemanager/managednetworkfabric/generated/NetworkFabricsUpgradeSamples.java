@@ -12,7 +12,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabri
  */
 public final class NetworkFabricsUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Upgrade.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Upgrade.json
      */
     /**
      * Sample code: NetworkFabrics_Upgrade_MaximumSet_Gen.

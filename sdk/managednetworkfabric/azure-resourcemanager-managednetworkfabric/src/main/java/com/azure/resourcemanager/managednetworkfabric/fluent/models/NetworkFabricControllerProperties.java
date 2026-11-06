@@ -15,7 +15,9 @@ import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagemen
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.VmProfile;
 import java.io.IOException;
 import java.util.List;
 
@@ -97,6 +99,17 @@ public final class NetworkFabricControllerProperties implements JsonSerializable
      * this process, the states keep changing based on the status of NFC provisioning.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Operational state of networkFabricController indicating if the resources of the controller are reachable and
+     * services are available.
+     */
+    private OperationalState operationalState;
+
+    /*
+     * The VM profile configuration for the NFC's associated compute (VM) resources.
+     */
+    private VmProfile vmProfile;
 
     /**
      * Creates an instance of NetworkFabricControllerProperties class.
@@ -338,6 +351,36 @@ public final class NetworkFabricControllerProperties implements JsonSerializable
     }
 
     /**
+     * Get the operationalState property: Operational state of networkFabricController indicating if the resources of
+     * the controller are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
+     * Get the vmProfile property: The VM profile configuration for the NFC's associated compute (VM) resources.
+     * 
+     * @return the vmProfile value.
+     */
+    public VmProfile vmProfile() {
+        return this.vmProfile;
+    }
+
+    /**
+     * Set the vmProfile property: The VM profile configuration for the NFC's associated compute (VM) resources.
+     * 
+     * @param vmProfile the vmProfile value to set.
+     * @return the NetworkFabricControllerProperties object itself.
+     */
+    public NetworkFabricControllerProperties withVmProfile(VmProfile vmProfile) {
+        this.vmProfile = vmProfile;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -356,6 +399,7 @@ public final class NetworkFabricControllerProperties implements JsonSerializable
         jsonWriter.writeStringField("ipv4AddressSpace", this.ipv4AddressSpace);
         jsonWriter.writeStringField("ipv6AddressSpace", this.ipv6AddressSpace);
         jsonWriter.writeStringField("nfcSku", this.nfcSku == null ? null : this.nfcSku.toString());
+        jsonWriter.writeJsonField("vmProfile", this.vmProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -417,6 +461,11 @@ public final class NetworkFabricControllerProperties implements JsonSerializable
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkFabricControllerProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
+                } else if ("vmProfile".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.vmProfile = VmProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

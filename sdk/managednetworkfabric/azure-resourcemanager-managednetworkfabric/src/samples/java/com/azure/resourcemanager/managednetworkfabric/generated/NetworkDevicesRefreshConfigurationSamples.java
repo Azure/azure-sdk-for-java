@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkDevicesRefreshConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_RefreshConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_RefreshConfiguration.json
      */
     /**
      * Sample code: NetworkDevices_RefreshConfiguration_MaximumSet_Gen.

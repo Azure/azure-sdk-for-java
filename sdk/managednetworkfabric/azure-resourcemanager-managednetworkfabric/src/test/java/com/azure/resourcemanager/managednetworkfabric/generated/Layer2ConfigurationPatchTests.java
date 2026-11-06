@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class Layer2ConfigurationPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Layer2ConfigurationPatch model
-            = BinaryData.fromString("{\"mtu\":1181259528,\"interfaces\":[\"raq\",\"il\",\"pqcaigazwfwlrfd\",\"w\"]}")
-                .toObject(Layer2ConfigurationPatch.class);
-        Assertions.assertEquals(1181259528, model.mtu());
-        Assertions.assertEquals("raq", model.interfaces().get(0));
+        Layer2ConfigurationPatch model = BinaryData.fromString("{\"mtu\":1696191639,\"interfaces\":[\"pyixlv\"]}")
+            .toObject(Layer2ConfigurationPatch.class);
+        Assertions.assertEquals(1696191639, model.mtu());
+        Assertions.assertEquals("pyixlv", model.interfaces().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Layer2ConfigurationPatch model = new Layer2ConfigurationPatch().withMtu(1181259528)
-            .withInterfaces(Arrays.asList("raq", "il", "pqcaigazwfwlrfd", "w"));
+        Layer2ConfigurationPatch model
+            = new Layer2ConfigurationPatch().withMtu(1696191639).withInterfaces(Arrays.asList("pyixlv"));
         model = BinaryData.fromObject(model).toObject(Layer2ConfigurationPatch.class);
-        Assertions.assertEquals(1181259528, model.mtu());
-        Assertions.assertEquals("raq", model.interfaces().get(0));
+        Assertions.assertEquals(1696191639, model.mtu());
+        Assertions.assertEquals("pyixlv", model.interfaces().get(0));
     }
 }

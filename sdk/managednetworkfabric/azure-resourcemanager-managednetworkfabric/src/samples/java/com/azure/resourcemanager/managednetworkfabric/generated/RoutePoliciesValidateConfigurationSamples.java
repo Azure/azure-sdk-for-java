@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class RoutePoliciesValidateConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/RoutePolicies_ValidateConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/RoutePolicies_ValidateConfiguration.json
      */
     /**
      * Sample code: RoutePolicies_ValidateConfiguration_MaximumSet_Gen.

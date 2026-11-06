@@ -13,18 +13,18 @@ public final class BfdConfigurationTests {
     public void testDeserialize() throws Exception {
         BfdConfiguration model = BinaryData
             .fromString(
-                "{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1411346592,\"multiplier\":1480169002}")
+                "{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":558826863,\"multiplier\":1665055697}")
             .toObject(BfdConfiguration.class);
-        Assertions.assertEquals(1411346592, model.intervalInMilliSeconds());
-        Assertions.assertEquals(1480169002, model.multiplier());
+        Assertions.assertEquals(558826863, model.intervalInMilliSeconds());
+        Assertions.assertEquals(1665055697, model.multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BfdConfiguration model
-            = new BfdConfiguration().withIntervalInMilliSeconds(1411346592).withMultiplier(1480169002);
+            = new BfdConfiguration().withIntervalInMilliSeconds(558826863).withMultiplier(1665055697);
         model = BinaryData.fromObject(model).toObject(BfdConfiguration.class);
-        Assertions.assertEquals(1411346592, model.intervalInMilliSeconds());
-        Assertions.assertEquals(1480169002, model.multiplier());
+        Assertions.assertEquals(558826863, model.intervalInMilliSeconds());
+        Assertions.assertEquals(1665055697, model.multiplier());
     }
 }

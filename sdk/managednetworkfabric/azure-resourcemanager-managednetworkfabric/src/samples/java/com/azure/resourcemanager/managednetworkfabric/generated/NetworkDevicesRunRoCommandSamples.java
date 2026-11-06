@@ -11,7 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.DeviceRoCommand;
  */
 public final class NetworkDevicesRunRoCommandSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_RunRoCommand.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_RunRoCommand.json
      */
     /**
      * Sample code: NetworkDevices_RunRoCommand_MaximumSet_Gen.
