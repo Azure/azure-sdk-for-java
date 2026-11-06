@@ -23,7 +23,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      * The tool kind.
      */
     @Generated
-    private final String type = "system";
+    private final VoiceAgentToolType type = VoiceAgentToolType.SYSTEM;
 
     /*
      * The service-managed control action. Known values are stable; additional values may be added over time.
@@ -51,7 +51,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -95,7 +95,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeNumberField("timeout_seconds", this.timeout);

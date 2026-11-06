@@ -23,7 +23,7 @@ public class VoiceConversationEngine implements JsonSerializable<VoiceConversati
      * The conversation engine type.
      */
     @Generated
-    private String type = "VoiceConversationEngine";
+    private VoiceConversationEngineType type = VoiceConversationEngineType.fromString("VoiceConversationEngine");
 
     /**
      * Creates an instance of VoiceConversationEngine class.
@@ -38,7 +38,7 @@ public class VoiceConversationEngine implements JsonSerializable<VoiceConversati
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public VoiceConversationEngineType getType() {
         return this.type;
     }
 
@@ -49,7 +49,7 @@ public class VoiceConversationEngine implements JsonSerializable<VoiceConversati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -96,7 +96,8 @@ public class VoiceConversationEngine implements JsonSerializable<VoiceConversati
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedVoiceConversationEngine.type = reader.getString();
+                    deserializedVoiceConversationEngine.type
+                        = VoiceConversationEngineType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

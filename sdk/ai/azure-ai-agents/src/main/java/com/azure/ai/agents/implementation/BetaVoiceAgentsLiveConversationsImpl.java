@@ -1345,8 +1345,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      *     sample_rate: int (Required)
      *     channels: int (Required)
      *     channel_layout (Required): {
-     *         left: String (Required)
-     *         right: String (Required)
+     *         left: String(user/agent) (Required)
+     *         right: String(user/agent) (Required)
      *     }
      *     duration_ms: long (Required)
      *     blob_uri: String (Optional)
@@ -1390,8 +1390,8 @@ public final class BetaVoiceAgentsLiveConversationsImpl {
      *     sample_rate: int (Required)
      *     channels: int (Required)
      *     channel_layout (Required): {
-     *         left: String (Required)
-     *         right: String (Required)
+     *         left: String(user/agent) (Required)
+     *         right: String(user/agent) (Required)
      *     }
      *     duration_ms: long (Required)
      *     blob_uri: String (Optional)

@@ -25,7 +25,7 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
      * may be added over time.
      */
     @Generated
-    private final String type;
+    private final VoiceAgentRtcCallErrorType type;
 
     /*
      * A machine-readable error code, when available.
@@ -40,18 +40,6 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
     private final String message;
 
     /**
-     * Creates an instance of VoiceAgentRtcCallErrorDetails class.
-     *
-     * @param type the type value to set.
-     * @param message the message value to set.
-     */
-    @Generated
-    private VoiceAgentRtcCallErrorDetails(String type, String message) {
-        this.type = type;
-        this.message = message;
-    }
-
-    /**
      * Get the type property: The error category, following the VoiceLive wire contract: `invalid_request_error` for a
      * client-side signaling fault (for example, a malformed SDP offer) or `server_error` for a service-side failure.
      * Additional categories may be added over time.
@@ -59,7 +47,7 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public VoiceAgentRtcCallErrorType getType() {
         return this.type;
     }
 
@@ -90,7 +78,7 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("code", this.code);
         return jsonWriter.writeEndObject();
@@ -108,14 +96,14 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
     @Generated
     public static VoiceAgentRtcCallErrorDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = null;
+            VoiceAgentRtcCallErrorType type = null;
             String message = null;
             String code = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceAgentRtcCallErrorType.fromString(reader.getString());
                 } else if ("message".equals(fieldName)) {
                     message = reader.getString();
                 } else if ("code".equals(fieldName)) {
@@ -129,5 +117,17 @@ public final class VoiceAgentRtcCallErrorDetails implements JsonSerializable<Voi
             deserializedVoiceAgentRtcCallErrorDetails.code = code;
             return deserializedVoiceAgentRtcCallErrorDetails;
         });
+    }
+
+    /**
+     * Creates an instance of VoiceAgentRtcCallErrorDetails class.
+     *
+     * @param type the type value to set.
+     * @param message the message value to set.
+     */
+    @Generated
+    private VoiceAgentRtcCallErrorDetails(VoiceAgentRtcCallErrorType type, String message) {
+        this.type = type;
+        this.message = message;
     }
 }
