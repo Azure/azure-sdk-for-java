@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.audio.transcriptions.TranscriptionLanguage;
 import com.openai.models.realtime.ConversationItemInputAudioTranscriptionCompletedEvent.Usage;
 import com.openai.models.realtime.LogProbProperties;
 import java.io.IOException;
@@ -218,7 +219,14 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
             OpenAIJsonHelper.toBinaryData(this.usage).writeTo(jsonWriter);
         }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
+        // AI Tooling: openai-java de-dup
+        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                OpenAIJsonHelper.toBinaryData(element).writeTo(writer);
+            }
+        });
         // AI Tooling: openai-java de-dup
         jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> {
             if (element == null) {
@@ -273,7 +281,12 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else if ("languages".equals(fieldName)) {
-                    languages = reader.readArray(reader1 -> TranscriptionLanguage.fromJson(reader1));
+                    // AI Tooling: openai-java de-dup
+                    languages = reader.readArray(reader1 -> {
+                        BinaryData languageData
+                            = reader1.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                        return OpenAIJsonHelper.fromBinaryData(languageData, TranscriptionLanguage.class);
+                    });
                 } else if ("logprobs".equals(fieldName)) {
                     // AI Tooling: openai-java de-dup
                     logprobs = reader.readArray(reader1 -> {

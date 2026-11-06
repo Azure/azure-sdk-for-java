@@ -8,12 +8,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.LogProbProperties;
-import com.openai.models.realtime.NoiseReductionType;
 import com.openai.models.realtime.RealtimeReasoning;
 import com.openai.models.realtime.RealtimeReasoningEffort;
 import com.openai.models.realtime.RealtimeResponseStatus;
 import com.openai.models.realtime.RealtimeResponseUsage;
-import com.openai.models.responses.ResponsePrompt;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -48,8 +46,7 @@ public class RealtimeOpenAIDedupSerializationTests {
 
         for (String variant : variants) {
             RealtimeConversationItem item;
-            try (JsonReader reader = JsonProviders.createReader(
-                "{" + variant + ",\"object\":\"realtime.item\"}")) {
+            try (JsonReader reader = JsonProviders.createReader("{" + variant + ",\"object\":\"realtime.item\"}")) {
                 item = RealtimeConversationItem.fromJson(reader);
             }
             String json = serialize(item);
@@ -58,46 +55,6 @@ public class RealtimeOpenAIDedupSerializationTests {
                 assertEquals(json, serialize(RealtimeConversationItem.fromJson(reader)));
             }
         }
-    }
-
-    @Test
-    public void testRealtimeReasoningAndPromptRoundTrip() throws IOException {
-        RealtimeReasoningEffort[] efforts = {
-            RealtimeReasoningEffort.MINIMAL,
-            RealtimeReasoningEffort.LOW,
-            RealtimeReasoningEffort.MEDIUM,
-            RealtimeReasoningEffort.HIGH,
-            RealtimeReasoningEffort.XHIGH };
-
-        for (RealtimeReasoningEffort effort : efforts) {
-            RealtimeReasoning reasoning = RealtimeReasoning.builder().effort(effort).build();
-            ResponsePrompt prompt = ResponsePrompt.builder().id("pmpt_123").version("2").build();
-            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setInstructions("Be concise")
-                .setReasoning(reasoning)
-                .setPrompt(prompt);
-
-            String json = serialize(original);
-            assertTrue(json.contains("\"effort\":\"" + effort.asString() + "\""));
-            assertTrue(json.contains("\"prompt\":{\"id\":\"pmpt_123\""));
-
-            RealtimeSessionConfiguration result;
-            try (JsonReader reader = JsonProviders.createReader(json)) {
-                result = RealtimeSessionConfiguration.fromJson(reader);
-            }
-
-            assertEquals(effort, result.getReasoning().effort().get());
-            assertEquals("pmpt_123", result.getPrompt().id());
-            assertEquals("2", result.getPrompt().version().get());
-            assertEquals(json, serialize(result));
-        }
-    }
-
-    @Test
-    public void testAbsentRealtimeReasoningAndPromptRemainAbsent() throws IOException {
-        String json = serialize(new RealtimeSessionConfiguration().setInstructions("No reasoning"));
-
-        assertFalse(json.contains("\"reasoning\""));
-        assertFalse(json.contains("\"prompt\""));
     }
 
     @Test
@@ -120,37 +77,6 @@ public class RealtimeOpenAIDedupSerializationTests {
         assertReasoningRoundTrip(createParams.getReasoning(), serialize(createParams));
         assertReasoningRoundTrip(updateConfig.getReasoning(), serialize(updateConfig));
         assertReasoningRoundTrip(responseConfig.getReasoning(), serialize(responseConfig));
-    }
-
-    @Test
-    public void testNoiseReductionEnumRoundTrip() throws IOException {
-        NoiseReductionType[] types = { NoiseReductionType.NEAR_FIELD, NoiseReductionType.FAR_FIELD };
-
-        for (NoiseReductionType type : types) {
-            com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction realtimeNoiseReduction
-                = com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction.builder().type(type).build();
-            com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction transcriptionNoiseReduction
-                = com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction.builder()
-                    .type(type)
-                    .build();
-            RealtimeSessionAudioInput realtime
-                = new RealtimeSessionAudioInput().setNoiseReduction(realtimeNoiseReduction);
-            RealtimeTranscriptionSessionAudioInput transcription
-                = new RealtimeTranscriptionSessionAudioInput().setNoiseReduction(transcriptionNoiseReduction);
-
-            String realtimeJson = serialize(realtime);
-            String transcriptionJson = serialize(transcription);
-            assertEquals("{\"noise_reduction\":{\"type\":\"" + type.asString() + "\"}}", realtimeJson);
-            assertEquals(realtimeJson, transcriptionJson);
-
-            try (JsonReader reader = JsonProviders.createReader(realtimeJson)) {
-                assertEquals(type, RealtimeSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
-            }
-            try (JsonReader reader = JsonProviders.createReader(transcriptionJson)) {
-                assertEquals(type,
-                    RealtimeTranscriptionSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
-            }
-        }
     }
 
     @Test

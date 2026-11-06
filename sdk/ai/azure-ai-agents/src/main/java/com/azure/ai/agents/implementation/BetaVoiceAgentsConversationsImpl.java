@@ -1148,7 +1148,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -1264,7 +1263,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -1402,7 +1400,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -1516,7 +1513,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -1633,7 +1629,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -1729,7 +1724,6 @@ public final class BetaVoiceAgentsConversationsImpl {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }

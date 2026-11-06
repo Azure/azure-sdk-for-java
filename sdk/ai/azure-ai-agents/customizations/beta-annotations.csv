@@ -10,7 +10,6 @@ class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Previ
 field;com.azure.ai.agents.models.AgentKind;Preview API.;VOICE
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.AudioTranscription;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.AudioTranscriptionModel;Preview API.;
 field;com.azure.ai.agents.models.AzureCreateResponseDetails;Preview API. ModelRouterControls=V1Preview;model_selection_details
 field;com.azure.ai.agents.models.AzureCreateResponseOptions;Preview API. ModelRouterControls=V1Preview;routing_config
 class;com.azure.ai.agents.models.BingCustomSearchConfiguration;Preview API. preview_tool;
@@ -309,7 +308,6 @@ class;com.azure.ai.agents.models.RealtimeServerVadTurnDetection;Preview API. Voi
 class;com.azure.ai.agents.models.RealtimeSessionAudioConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeSessionAudioInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeSessionAudioOutput;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.RealtimeSessionAudioOutputVoice;Preview API.;
 class;com.azure.ai.agents.models.RealtimeSessionConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeSessionConfigurationBase;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeSessionCreatedEvent;Preview API. VoiceAgents=V1Preview;
@@ -392,6 +390,11 @@ class;com.azure.ai.agents.models.TelephonyTransferTarget;Preview API. VoiceAgent
 class;com.azure.ai.agents.models.TelephonyTransferTargets;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.ToolboxSearchPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.TranscriptionLanguage;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TranscriptTextInputTokenDetails;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TranscriptTextUsage;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TranscriptTextUsageDuration;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TranscriptTextUsageTokens;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TranscriptTextUsageType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TwilioTelephonyBinding;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TwilioTelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.UpdateTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;

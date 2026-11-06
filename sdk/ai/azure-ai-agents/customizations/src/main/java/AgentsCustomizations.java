@@ -196,10 +196,9 @@ public class AgentsCustomizations extends Customization {
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
             "EvaluationVoiceModelConfiguration", "OptimizationContext",
             "MemoryItem", "MemoryStoreDefinition",
-            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
-            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage", "RealtimeMcpError",
-            "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyAddress", "TelephonyBinding", "TelephonyCampaignSchedule",
+            "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage",
+            "TelephonyAddress", "TelephonyBinding", "TelephonyCampaignSchedule",
             "TelephonyOutboundRetryPolicy",
             "UserConversationSimulationInterruptionConfiguration", "VoiceAgentBaseDefinition",
             "VoiceAgentGreetingConfiguration",
@@ -231,28 +230,6 @@ public class AgentsCustomizations extends Customization {
         List<String[]> allowedTools
             = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
                 modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
-        List<String[]> tracing = Arrays.asList(stringUnionVariant("the tracing mode string to set"),
-            modelUnionVariant("RealtimeSessionTracingConfiguration",
-                "the {@link RealtimeSessionTracingConfiguration} configuration to set"));
-        List<String[]> truncation = Arrays.asList(stringUnionVariant("the truncation mode string to set"),
-            openAiDirectUnionVariant("com.openai.models.realtime.RealtimeTruncationRetentionRatio",
-                "RealtimeTruncationRetentionRatio",
-                "the openai-java {@link RealtimeTruncationRetentionRatio} configuration to set",
-                "an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it is not set or"
-                    + " holds another variant",
-                "json.startsWith(\"{\")"));
-        List<String[]> voice = Arrays.asList(
-            stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
-            modelUnionVariant("RealtimeSessionAudioOutputVoice",
-                "the {@link RealtimeSessionAudioOutputVoice} custom voice to set"));
-
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
-            tracing, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "truncation",
-            "The truncation policy for the session.", truncation, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionAudioOutput", "voice",
-            "The built-in or custom voice used for audio output.", voice, true, false, logger);
-
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",

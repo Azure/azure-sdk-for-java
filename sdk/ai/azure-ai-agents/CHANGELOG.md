@@ -17,6 +17,12 @@
 
 ### Breaking Changes
 
+- Replaced preview transcription languages with OpenAI Java's `TranscriptionLanguage` and listed MCP tools with
+  `RealtimeMcpListTools.Tool`. MCP tool input schemas and annotations now retain their JSON contents.
+- Replaced preview realtime session configurations, audio formats, turn detection, and MCP errors with the complete
+  OpenAI Java types. `RealtimeSessionUpdateEvent.getSession()` now returns `SessionUpdateEvent.Session`, audio-format
+  properties use `RealtimeAudioFormats`, and `RealtimeMcpToolCall.getError()` returns OpenAI's `RealtimeMcpToolCall.Error`.
+  Foundry-specific session and turn-detection models remain unchanged.
 - Updated preview telephony binding, call-job, transfer, and retry model shapes to match the redesigned service contract.
 - Standardized preview system-tool names with `VoiceAgent*Event`, `outputReference`, and `objectType`, and exposed
   system-tool and transfer-ring timeouts as `Duration` through `timeout` and `ringTimeout`. System-tool items are
