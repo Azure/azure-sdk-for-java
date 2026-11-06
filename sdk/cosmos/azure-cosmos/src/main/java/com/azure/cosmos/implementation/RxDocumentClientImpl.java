@@ -7560,6 +7560,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
         request.captureOriginalSessionToken();
+        if (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
+        }
+        request.useThinClientMode = false;
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {

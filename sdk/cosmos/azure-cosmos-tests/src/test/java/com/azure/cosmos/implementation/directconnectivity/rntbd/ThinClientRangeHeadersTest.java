@@ -45,8 +45,8 @@ public class ThinClientRangeHeadersTest {
     public Object[][] sessionTokens() {
         String compound = "0:1#100,1:1#200";
         return new Object[][] {
-            {true, compound, compound, "1#200", "1:1#200"},
-            {true, compound, compound, null, null},
+            {true, compound, "1:1#200", "1#200", "1:1#200"},
+            {true, compound, null, null, null},
             {true, compound, null, "1#200", null},
             {true, compound, "", "1#200", null},
             {false, compound, "1:1#200", "1#300", "1:1#200"},
@@ -61,7 +61,7 @@ public class ThinClientRangeHeadersTest {
     }
 
     @Test(groups = "unit", dataProvider = "sessionTokens")
-    public void sessionEncodingDoesNotMutateHeaders(
+    public void sessionEncodingUsesPreparedHeaderWithoutMutation(
         boolean thin, String original, String header, String localToken, String expected) {
         RxDocumentServiceRequest request = Mockito.spy(createRequest(OperationType.Read, "80", "FF"));
         request.useThinClientMode = thin;

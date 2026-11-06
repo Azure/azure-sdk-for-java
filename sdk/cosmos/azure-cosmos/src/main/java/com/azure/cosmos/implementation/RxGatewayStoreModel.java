@@ -1332,14 +1332,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
+        if (request.useThinClientMode
+            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            return SessionTokenHelper.resolveExplicitSessionToken(request, this.collectionCache,
+                this.partitionKeyRangeCache, this.sessionContainer)
+                .doOnNext(useThinClient -> request.useThinClientMode = useThinClient)
+                .then();
+        }
+
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (request.useThinClientMode
-                && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
-                return SessionTokenHelper.resolveExplicitSessionToken(request, this.collectionCache,
-                    this.partitionKeyRangeCache)
-                    .doOnNext(useThinClient -> request.useThinClientMode = useThinClient)
-                    .then();
-            }
             return Mono.empty(); //User is explicitly controlling the session.
         }
 

@@ -34,15 +34,18 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    public static boolean isCompoundSessionToken(String sessionToken) {
+    static boolean isCompoundSessionToken(String sessionToken) {
         // Classify without parsing; validation happens when selecting partition-local progress.
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
     // False means unresolved partition scope; a resolved scope with no matching progress still uses V2.
     static Mono<Boolean> resolveExplicitSessionToken(
-        RxDocumentServiceRequest request, RxCollectionCache collectionCache, RxPartitionKeyRangeCache rangeCache) {
+        RxDocumentServiceRequest request, RxCollectionCache collectionCache, RxPartitionKeyRangeCache rangeCache,
+        ISessionContainer sessionContainer) {
         return Mono.defer(() -> {
+            // Each attempt starts from caller progress, never a previous attempt's narrowed or omitted header.
+            setOriginalSessionToken(request, request.getOriginalSessionToken());
             request.requestContext.sessionToken = null;
             MetadataDiagnosticsContext diagnostics =
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
@@ -62,8 +65,7 @@ public class SessionTokenHelper {
                             return false;
                         }
                         request.requestContext.resolvedPartitionKeyRange = target;
-                        request.requestContext.sessionToken =
-                            getLocalSessionToken(request, request.getOriginalSessionToken(), target.getId());
+                        setPartitionLocalSessionToken(request, target.getId(), sessionContainer);
                         return true;
                     });
             });
