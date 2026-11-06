@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.Encryption;
 import com.azure.resourcemanager.servicebus.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.servicebus.models.Identity;
+import com.azure.resourcemanager.servicebus.models.IpAddressType;
 import com.azure.resourcemanager.servicebus.models.PlatformCapabilities;
 import com.azure.resourcemanager.servicebus.models.PublicNetworkAccess;
 import com.azure.resourcemanager.servicebus.models.SBSku;
@@ -462,6 +463,31 @@ public final class SBNamespaceInner extends Resource {
             this.innerProperties = new SBNamespaceProperties();
         }
         this.innerProperties().withGeoDataReplication(geoDataReplication);
+        return this;
+    }
+
+    /**
+     * Get the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @return the ipAddressType value.
+     */
+    public IpAddressType ipAddressType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddressType();
+    }
+
+    /**
+     * Set the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @param ipAddressType the ipAddressType value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withIpAddressType(IpAddressType ipAddressType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withIpAddressType(ipAddressType);
         return this;
     }
 
