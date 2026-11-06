@@ -14,34 +14,31 @@ public final class ConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"kind\":\"ChaosAgent\",\"targetResourceId\":\"qy\",\"principalId\":\"eziunjxdfzant\",\"tenantId\":\"cegyamlbnseqacj\",\"certificateSubjectName\":\"pilguooqjag\",\"certificateIssuer\":\"itgueiookjbs\",\"dstsPrincipal\":\"rtdtpdelq\",\"dataPlaneEndpoint\":\"slmot\",\"status\":\"Connected\",\"provisioningState\":\"Canceled\"},\"id\":\"o\",\"name\":\"vcjkgd\",\"type\":\"razftxejwabmdujt\"}")
+            "{\"properties\":{\"kind\":\"AksExtension\",\"targetResourceId\":\"ejjtbxqmul\",\"principalId\":\"lxqzvn\",\"tenantId\":\"sbycucrwnamikz\",\"certificateSubjectName\":\"rqbsmswziq\",\"certificateIssuer\":\"uhok\",\"dataPlaneEndpoint\":\"uswhvhczznvfbycj\",\"status\":\"Pending\",\"provisioningState\":\"Canceled\"},\"id\":\"xzv\",\"name\":\"mwmxqhndvnoamld\",\"type\":\"ehaohdjhh\"}")
             .toObject(ConnectionInner.class);
-        Assertions.assertEquals(ConnectionKind.CHAOS_AGENT, model.properties().kind());
-        Assertions.assertEquals("qy", model.properties().targetResourceId());
-        Assertions.assertEquals("eziunjxdfzant", model.properties().principalId());
-        Assertions.assertEquals("cegyamlbnseqacj", model.properties().tenantId());
-        Assertions.assertEquals("pilguooqjag", model.properties().certificateSubjectName());
-        Assertions.assertEquals("itgueiookjbs", model.properties().certificateIssuer());
-        Assertions.assertEquals("rtdtpdelq", model.properties().dstsPrincipal());
+        Assertions.assertEquals(ConnectionKind.AKS_EXTENSION, model.properties().kind());
+        Assertions.assertEquals("ejjtbxqmul", model.properties().targetResourceId());
+        Assertions.assertEquals("lxqzvn", model.properties().principalId());
+        Assertions.assertEquals("sbycucrwnamikz", model.properties().tenantId());
+        Assertions.assertEquals("rqbsmswziq", model.properties().certificateSubjectName());
+        Assertions.assertEquals("uhok", model.properties().certificateIssuer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionInner model
-            = new ConnectionInner().withProperties(new ConnectionProperties().withKind(ConnectionKind.CHAOS_AGENT)
-                .withTargetResourceId("qy")
-                .withPrincipalId("eziunjxdfzant")
-                .withTenantId("cegyamlbnseqacj")
-                .withCertificateSubjectName("pilguooqjag")
-                .withCertificateIssuer("itgueiookjbs")
-                .withDstsPrincipal("rtdtpdelq"));
+            = new ConnectionInner().withProperties(new ConnectionProperties().withKind(ConnectionKind.AKS_EXTENSION)
+                .withTargetResourceId("ejjtbxqmul")
+                .withPrincipalId("lxqzvn")
+                .withTenantId("sbycucrwnamikz")
+                .withCertificateSubjectName("rqbsmswziq")
+                .withCertificateIssuer("uhok"));
         model = BinaryData.fromObject(model).toObject(ConnectionInner.class);
-        Assertions.assertEquals(ConnectionKind.CHAOS_AGENT, model.properties().kind());
-        Assertions.assertEquals("qy", model.properties().targetResourceId());
-        Assertions.assertEquals("eziunjxdfzant", model.properties().principalId());
-        Assertions.assertEquals("cegyamlbnseqacj", model.properties().tenantId());
-        Assertions.assertEquals("pilguooqjag", model.properties().certificateSubjectName());
-        Assertions.assertEquals("itgueiookjbs", model.properties().certificateIssuer());
-        Assertions.assertEquals("rtdtpdelq", model.properties().dstsPrincipal());
+        Assertions.assertEquals(ConnectionKind.AKS_EXTENSION, model.properties().kind());
+        Assertions.assertEquals("ejjtbxqmul", model.properties().targetResourceId());
+        Assertions.assertEquals("lxqzvn", model.properties().principalId());
+        Assertions.assertEquals("sbycucrwnamikz", model.properties().tenantId());
+        Assertions.assertEquals("rqbsmswziq", model.properties().certificateSubjectName());
+        Assertions.assertEquals("uhok", model.properties().certificateIssuer());
     }
 }

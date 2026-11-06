@@ -11,7 +11,7 @@ public final class ActionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionInner model = BinaryData.fromString(
-            "{\"properties\":{\"canonicalId\":\"aifmvikl\",\"displayName\":\"dvk\",\"description\":\"ejd\",\"actionName\":\"xcv\",\"version\":\"rhnj\",\"actionType\":\"Discrete\",\"supportedTargetTypes\":[{\"targetType\":\"novqfzge\",\"requiredPermissions\":[\"ftul\",\"ltducea\",\"tmczuomejwcwwqi\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"sx\",\"ojmsvpkjprvkwc\"]},\"id\":\"ql\",\"name\":\"yxgtczh\",\"type\":\"ydbsd\"}")
+            "{\"properties\":{\"canonicalId\":\"toego\",\"displayName\":\"wbw\",\"description\":\"szzcmrvexztv\",\"actionName\":\"qgsfraoyzkoow\",\"version\":\"mnguxawqaldsyu\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"qfobwyz\",\"requiredPermissions\":[\"ykutwpf\",\"pagmhrskdsnf\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"akgtdlmkkzevdlh\",\"wpusdsttwvogv\",\"bejdcn\",\"qqmoaku\"]},\"id\":\"m\",\"name\":\"zr\",\"type\":\"rdgrtw\"}")
             .toObject(ActionInner.class);
     }
 }
