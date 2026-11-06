@@ -718,9 +718,9 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void customizeCampaignPollingStrategies(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.implementation", "BetaVoiceAgentsCampaignsImpl").customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName("BetaVoiceAgentsCampaignsImpl")
-                .orElseThrow(() -> new IllegalStateException("BetaVoiceAgentsCampaignsImpl was not generated."));
+        customization.getClass("com.azure.ai.agents.implementation", "BetaVoiceAgentsTelephoniesImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("BetaVoiceAgentsTelephoniesImpl")
+                .orElseThrow(() -> new IllegalStateException("BetaVoiceAgentsTelephoniesImpl was not generated."));
             customizeCampaignPollingStrategies(clazz);
             logger.info("Customized twelve campaign polling strategies.");
         });

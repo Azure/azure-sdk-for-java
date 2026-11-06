@@ -103,6 +103,13 @@ public class FoundryFeaturesHeaderVerificationTest {
                     .getTelephonyCallJobWithResponse("agent", "job", new RequestOptions())
                     .block(),
                 () -> builder.beta()
+                    .buildBetaVoiceAgentsTelephonyClient()
+                    .getCampaignWithResponse("agent", "campaign", new RequestOptions()),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsTelephonyAsyncClient()
+                    .getCampaignWithResponse("agent", "campaign", new RequestOptions())
+                    .block(),
+                () -> builder.beta()
                     .buildBetaVoiceAgentsConversationsClient()
                     .getAgentConversationWithResponse("agent", "conversation", new RequestOptions()),
                 () -> builder.beta()
