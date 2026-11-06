@@ -43,6 +43,18 @@
 		"featureFlagNamePrefix": ".appconfig.featureflag~2F",
 		"featureFlagName": "[concat(variables('featureFlagNamePrefix'), 'Alpha')]",
 		"featureFlagContentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+		"selectionSettings": [
+			{ "key": "/application/selection.entries.shared", "label": "", "value": "unlabeled" },
+			{ "key": "/application/selection.entries.unlabeled-only", "label": "", "value": "unlabeled-only" },
+			{ "key": "/application/selection.entries.shared", "label": "selection-base", "value": "base" },
+			{ "key": "/application/selection.entries.base-only", "label": "selection-base", "value": "base-only" },
+			{ "key": "/application/selection.entries.shared", "label": "selection-override", "value": "override" },
+			{ "key": "/application/selection.entries.override-only", "label": "selection-override", "value": "override-only" },
+			{ "key": "/application/selection-first/selection.entries.shared", "label": "selection-base", "value": "first-select" },
+			{ "key": "/application/selection-first/selection.entries.first-only", "label": "selection-base", "value": "first-only" },
+			{ "key": "/application/selection-second/selection.entries.shared", "label": "selection-override", "value": "second-select" },
+			{ "key": "/application/selection-second/selection.entries.second-only", "label": "selection-override", "value": "second-only" }
+		],
 		"azureAppConfigurationDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b"
 	},
 	"resources": [
@@ -127,6 +139,42 @@
 				"value": "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}",
 				"contentType": "[variables('featureFlagContentType')]",
 				"tags": "[variables('tags')]"
+			}
+		},
+		{
+			"type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+			"apiVersion": "2020-07-01-preview",
+			"name": "[format('{0}/~2Fapplication~2Fpagination.entries.key{1:D3}', variables('configStoreName'), copyIndex('paginationSettings'))]",
+			"copy": {
+				"name": "paginationSettings",
+				"count": 101,
+				"mode": "serial",
+				"batchSize": 10
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.AppConfiguration/configurationStores', variables('configStoreName'))]"
+			],
+			"properties": {
+				"value": "[format('value{0:D3}', copyIndex('paginationSettings'))]",
+				"contentType": "text/plain"
+			}
+		},
+		{
+			"type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+			"apiVersion": "2020-07-01-preview",
+			"name": "[concat(variables('configStoreName'), '/', replace(variables('selectionSettings')[copyIndex('selectionSettings')].key, '/', '~2F'), if(empty(variables('selectionSettings')[copyIndex('selectionSettings')].label), '', concat('$', variables('selectionSettings')[copyIndex('selectionSettings')].label)))]",
+			"copy": {
+				"name": "selectionSettings",
+				"count": "[length(variables('selectionSettings'))]",
+				"mode": "serial",
+				"batchSize": 10
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.AppConfiguration/configurationStores', variables('configStoreName'))]"
+			],
+			"properties": {
+				"value": "[variables('selectionSettings')[copyIndex('selectionSettings')].value]",
+				"contentType": "text/plain"
 			}
 		},
     {

@@ -1,3 +1,2 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-com.azure.spring.cloud.config.AppConfiguration
-
+org.springframework.boot.bootstrap.BootstrapRegistryInitializer=\
+com.azure.spring.cloud.config.TestBootstrapRegistryInitializer
