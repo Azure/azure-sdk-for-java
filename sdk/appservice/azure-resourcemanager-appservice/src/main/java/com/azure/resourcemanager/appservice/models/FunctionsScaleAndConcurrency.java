@@ -23,7 +23,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
     private List<FunctionsAlwaysReadyConfig> alwaysReady;
 
     /*
-     * The maximum number of instances for the function app.
+     * The maximum number of on demand instances per function group.
      */
     private Integer maximumInstanceCount;
 
@@ -65,7 +65,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
     }
 
     /**
-     * Get the maximumInstanceCount property: The maximum number of instances for the function app.
+     * Get the maximumInstanceCount property: The maximum number of on demand instances per function group.
      * 
      * @return the maximumInstanceCount value.
      */
@@ -74,7 +74,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
     }
 
     /**
-     * Set the maximumInstanceCount property: The maximum number of instances for the function app.
+     * Set the maximumInstanceCount property: The maximum number of on demand instances per function group.
      * 
      * @param maximumInstanceCount the maximumInstanceCount value to set.
      * @return the FunctionsScaleAndConcurrency object itself.

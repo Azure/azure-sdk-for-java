@@ -916,6 +916,134 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
     void restartWebApps(String resourceGroupName, String name);
 
     /**
+     * Start all apps in an App Service plan.
+     * 
+     * Description for Start all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> startWebAppsWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Start all apps in an App Service plan.
+     * 
+     * Description for Start all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> startWebAppsAsync(String resourceGroupName, String name);
+
+    /**
+     * Start all apps in an App Service plan.
+     * 
+     * Description for Start all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> startWebAppsWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Start all apps in an App Service plan.
+     * 
+     * Description for Start all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startWebApps(String resourceGroupName, String name);
+
+    /**
+     * Stop all apps in an App Service plan.
+     * 
+     * Description for Stop all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> stopWebAppsWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Stop all apps in an App Service plan.
+     * 
+     * Description for Stop all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> stopWebAppsAsync(String resourceGroupName, String name);
+
+    /**
+     * Stop all apps in an App Service plan.
+     * 
+     * Description for Stop all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> stopWebAppsWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Stop all apps in an App Service plan.
+     * 
+     * Description for Stop all apps in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stopWebApps(String resourceGroupName, String name);
+
+    /**
      * Get all apps associated with an App Service plan.
      * 
      * Description for Get all apps associated with an App Service plan.
