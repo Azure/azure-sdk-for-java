@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ChangeFeedResponseMappingTest;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.models.FeedResponse;
 import org.mockito.Mockito;
@@ -84,6 +85,48 @@ public class ChangeFeedQueryFilteringFetcherTest {
         StepVerifier.create(fetcher.nextPage()).expectErrorMatches(error -> error == failure).verify();
     }
 
+    @Test(groups = "unit", dataProvider = "modes")
+    public void decodedDirectResponseAdvancesPhysicalProgressUntilNotModified(ChangeFeedMode mode) {
+        AtomicInteger calls = new AtomicInteger();
+        ChangeFeedFetcher<Document> fetcher = createFetcher(mode, request -> {
+            int call = calls.incrementAndGet();
+            return Mono.just(ChangeFeedResponseMappingTest.mappedChangeFeed(call == 3 ? 304 : 200,
+                "\"" + call + "\"", "not-a-physical-token", call == 1));
+        });
+        for (int page = 1; page <= 3; page++) {
+            FeedResponse<Document> response = fetcher.nextPage().block();
+            ChangeFeedState state = ChangeFeedState.fromString(response.getContinuationToken());
+            assertThat(state.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo("\"" + page + "\"");
+        }
+        assertThat(fetcher.shouldFetchMore()).isFalse();
+    }
+
+    @Test(groups = "unit", dataProvider = "modes")
+    public void missingPhysicalContinuationFailsForAllDecodedDirectResponseShapesWithoutUpdatingState(
+        ChangeFeedMode mode) {
+        for (int status : new int[] { 200, 304 }) {
+            for (boolean hasItems : status == 304 ? new boolean[] { false } : new boolean[] { false, true }) {
+                for (String queryContinuation : new String[] { null, "not-a-physical-token" }) {
+                    ChangeFeedStateV1 state = new ChangeFeedStateV1("rid", FeedRangeEpkImpl.forFullRange(), mode,
+                        ChangeFeedStartFromInternal.createFromBeginning(), null);
+                    AtomicInteger calls = new AtomicInteger();
+                    ChangeFeedFetcher<Document> fetcher = createFetcher(state, request -> Mono.just(
+                        calls.incrementAndGet() == 1
+                            ? ChangeFeedResponseMappingTest.mappedChangeFeed(200, "\"1\"", null, true)
+                            : ChangeFeedResponseMappingTest.mappedChangeFeed(status, null, queryContinuation, hasItems)));
+                    fetcher.nextPage().block();
+                    String previousState = state.toJson();
+                    StepVerifier.create(fetcher.nextPage())
+                        .expectErrorMatches(error -> error instanceof IllegalStateException
+                            && error.getMessage().contains("missing the required ETag physical continuation"))
+                        .verify();
+                    assertThat(state.toJson()).isEqualTo(previousState);
+                    assertThat(calls).hasValue(2);
+                }
+            }
+        }
+    }
+
     @Test(groups = "unit")
     public void cancellationReachesThePhysicalRead() {
         AtomicBoolean cancelled = new AtomicBoolean();
@@ -95,10 +138,14 @@ public class ChangeFeedQueryFilteringFetcherTest {
 
     private ChangeFeedFetcher<Document> createFetcher(ChangeFeedMode mode,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> execute) {
+        return createFetcher(new ChangeFeedStateV1("rid", FeedRangeEpkImpl.forFullRange(), mode,
+            ChangeFeedStartFromInternal.createFromBeginning(), null), execute);
+    }
+
+    private ChangeFeedFetcher<Document> createFetcher(ChangeFeedStateV1 state,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> execute) {
         RxDocumentClientImpl client = mock(RxDocumentClientImpl.class, Mockito.RETURNS_DEEP_STUBS);
         when(client.getResetSessionTokenRetryPolicy().getRequestPolicy(any())).thenReturn(null);
-        ChangeFeedStateV1 state = new ChangeFeedStateV1("rid", FeedRangeEpkImpl.forFullRange(), mode,
-            ChangeFeedStartFromInternal.createFromBeginning(), null);
         return new ChangeFeedFetcher<>(client,
             () -> {
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(TestUtils.mockDiagnosticsClientContext(),

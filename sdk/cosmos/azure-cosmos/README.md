@@ -154,6 +154,10 @@ service deployment that supports query-filtered change feed through the Query Do
 SDK support alone does not enable backend evaluation. All-versions-and-deletes mode also requires
 the account and container prerequisites for that mode.
 
+A filtered response must include an ETag representing physical change feed progress. If it is missing,
+the SDK fails explicitly rather than substituting an ordinary document-query continuation or treating
+the response as the end of the feed.
+
 ```java readme-sample-filteredChangeFeed
 CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
     .createForProcessingFromBeginning(FeedRange.forFullRange())

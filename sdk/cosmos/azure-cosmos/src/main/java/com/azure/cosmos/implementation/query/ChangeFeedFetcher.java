@@ -166,10 +166,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor().getNoChanges(response);
+        if (request.getOperationType() == OperationType.Query && Strings.isNullOrEmpty(serverContinuationToken)) {
+            throw new IllegalStateException(
+                "The query-filtered change feed response is missing the required ETag physical continuation. "
+                    + "The service and transport must support the query-filtered change feed response contract.");
+        }
         if (request.getOperationType() == OperationType.Query && !isNoChanges
             && response.getResults().isEmpty()
-            && (Strings.isNullOrEmpty(serverContinuationToken)
-                || serverContinuationToken.equals(request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH)))) {
+            && serverContinuationToken.equals(request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH))) {
             throw new IllegalStateException(
                 "An empty filtered change feed page did not advance the continuation. The service must return "
                     + "an advancing continuation or a not-modified response.");
