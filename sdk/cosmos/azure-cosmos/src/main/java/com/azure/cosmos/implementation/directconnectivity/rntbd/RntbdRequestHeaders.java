@@ -580,17 +580,25 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private void addSessionToken(RxDocumentServiceRequest request, Map<String, String> headers) {
+        String sessionTokenToSend = headers.get(HttpHeaders.SESSION_TOKEN);
+        if (StringUtils.isEmpty(sessionTokenToSend)) {
+            return;
+        }
+
         if (request.useThinClientMode
             && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
-            // Eligibility was applied by the gateway session stage. Never restore a removed token.
-            ISessionToken localToken = request.requestContext.sessionToken;
-            if (localToken != null && StringUtils.isNotEmpty(headers.get(HttpHeaders.SESSION_TOKEN))) {
-                this.getSessionToken().setValue(SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
-                    request.requestContext.resolvedPartitionKeyRange.getId(), localToken.convertToString()));
+            ISessionToken partitionLocalToken = request.requestContext.sessionToken;
+            if (partitionLocalToken == null) {
+                // No caller progress matched the target partition or its parents.
+                return;
             }
-        } else {
-            this.fillTokenFromHeader(headers, this::getSessionToken, HttpHeaders.SESSION_TOKEN);
+
+            // Narrow only the wire value; preserve the original compound header for retries.
+            sessionTokenToSend = SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+                request.requestContext.resolvedPartitionKeyRange.getId(), partitionLocalToken.convertToString());
         }
+
+        this.getSessionToken().setValue(sessionTokenToSend);
     }
 
     private RntbdToken getShareThroughput() {

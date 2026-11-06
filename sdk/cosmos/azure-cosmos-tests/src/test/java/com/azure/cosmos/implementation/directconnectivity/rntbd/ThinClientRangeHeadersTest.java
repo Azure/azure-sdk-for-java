@@ -53,7 +53,10 @@ public class ThinClientRangeHeadersTest {
             {false, compound, compound, null, compound},
             {true, "1:1#200", "1:1#200", "1#300", "1:1#200"},
             {true, null, "1:1#300", "1#300", "1:1#300"},
-            {true, null, compound, null, compound}
+            {true, null, compound, null, compound},
+            {true, null, null, "1#300", null},
+            {false, compound, null, "1#200", null},
+            {false, compound, "", "1#200", null}
         };
     }
 
