@@ -1113,7 +1113,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          GlobalEndpointManager globalEndpointManager,
                                          HttpClient httpClient,
                                          Map<String, String> additionalHeaders) {
-        ThinClientStoreModel thinClientStore = new ThinClientStoreModel(
+        return new ThinClientStoreModel(
             this,
             sessionContainer,
             consistencyLevel,
@@ -1122,8 +1122,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             httpClient,
             additionalHeaders,
             this.clientTelemetryConfig);
-        thinClientStore.setClassicGatewayStore(this.gatewayProxy);
-        return thinClientStore;
     }
 
     private HttpClient httpClient() {
@@ -2749,10 +2747,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                       return Mono.just(documentCollectionValueHolder);
                                   })
                           )
-                          .flatMap(this::populateAuthorizationHeader);
+                          .flatMap(this::populateAuthorizationHeader)
+                          .flatMap(this::prepareSessionTokenForAttempt);
         }
 
-        return this.populateAuthorizationHeader(request);
+        return this.populateAuthorizationHeader(request).flatMap(this::prepareSessionTokenForAttempt);
     }
 
     private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
@@ -7552,6 +7551,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         });
     }
 
+    private Mono<RxDocumentServiceRequest> prepareSessionTokenForAttempt(RxDocumentServiceRequest request) {
+        request.captureOriginalSessionToken();
+        boolean explicitCompound = SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken());
+        if (explicitCompound) {
+            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
+        }
+        request.useThinClientMode = !request.useGatewayMode && useThinClientStoreModel(request);
+        if (!request.useThinClientMode || !explicitCompound) {
+            return Mono.just(request);
+        }
+        return this.thinProxy.tryPrepareExplicitSessionToken(request).map(canUseThinClient -> {
+            request.useThinClientMode = canUseThinClient;
+            if (!canUseThinClient) {
+                logger.debug("Using classic Gateway for unresolved compound session-token scope");
+            }
+            return request;
+        });
+    }
+
     /**
      * Certain requests must be routed through gateway even when the client connectivity mode is direct.
      *
@@ -7559,19 +7577,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
-        request.captureOriginalSessionToken();
-        if (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
-            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
-        }
-        request.useThinClientMode = false;
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {
             return this.gatewayProxy;
         }
 
-        if (useThinClientStoreModel(request)) {
-            request.useThinClientMode = true;
+        if (request.useThinClientMode) {
             return this.thinProxy;
         }
 

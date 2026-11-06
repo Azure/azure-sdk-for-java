@@ -90,8 +90,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        request.captureOriginalSessionToken();
-        request.useThinClientMode = true;
         return super.processMessage(request);
     }
 

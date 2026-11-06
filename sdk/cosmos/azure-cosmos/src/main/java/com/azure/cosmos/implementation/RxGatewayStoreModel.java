@@ -101,7 +101,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
-    private RxGatewayStoreModel classicGatewayStore;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
     private final Map<String, String> additionalHeaders;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
@@ -165,7 +164,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
         this.additionalHeaders = inner.additionalHeaders;
-        this.classicGatewayStore = inner.classicGatewayStore;
     }
 
     public Tag getServiceEndpointMetricTag(URI requestUri) {
@@ -1096,12 +1094,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request)
-            .then(Mono.defer(() -> {
-                RxGatewayStoreModel transport = this.classicGatewayStore != null && !request.useThinClientMode
-                    ? this.classicGatewayStore : this;
-                return transport.invokeAsync(request);
-            }));
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(
             e -> {
@@ -1133,10 +1126,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         ).flatMap(response ->
             this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
         );
-    }
-
-    void setClassicGatewayStore(RxGatewayStoreModel classicGatewayStore) {
-        this.classicGatewayStore = Objects.requireNonNull(classicGatewayStore, "classicGatewayStore");
     }
 
     @Override
@@ -1319,6 +1308,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 || this.useMultipleWriteLocations);
     }
 
+    // False tells the operation layer to select classic Gateway before dispatch.
+    public Mono<Boolean> tryPrepareExplicitSessionToken(RxDocumentServiceRequest request) {
+        return shouldApplySessionToken(request) ? resolveSessionToken(request, true) : Mono.just(true);
+    }
+
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
@@ -1330,17 +1324,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        boolean explicitCompound = request.useThinClientMode
-            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken());
-
-        if (!explicitCompound && !Strings.isNullOrEmpty(headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (request.useThinClientMode
+            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            // The operation layer has already prepared this token, including intentional omission.
+            return Mono.empty();
+        }
+        if (!Strings.isNullOrEmpty(headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             return Mono.empty(); //User is explicitly controlling the session.
         }
 
-        return resolveSessionToken(request, explicitCompound);
+        return resolveSessionToken(request, false).then();
     }
 
-    private Mono<Void> resolveSessionToken(RxDocumentServiceRequest request, boolean explicitCompound) {
+    private Mono<Boolean> resolveSessionToken(RxDocumentServiceRequest request, boolean explicitCompound) {
         return Mono.defer(() -> {
             if (explicitCompound) {
                 SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
@@ -1352,7 +1348,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     return Mono.error(new IllegalStateException("Session token resolution requires metadata caches."));
                 }
                 applyGlobalSessionToken(request);
-                return Mono.empty();
+                return Mono.just(true);
             }
             ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
                 .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
@@ -1363,7 +1359,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         return Mono.error(new NotFoundException("Collection could not be resolved."));
                     }
                     applyGlobalSessionToken(request);
-                    return Mono.empty();
+                    return Mono.just(true);
                 }
                 DocumentCollection collection = collectionHolder.v;
                 return this.partitionKeyRangeCache.tryLookupAsync(
@@ -1374,16 +1370,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
                             }
                             applyGlobalSessionToken(request);
-                            return Mono.empty();
+                            return Mono.just(true);
                         }
                         PartitionKeyRange range = SessionTokenHelper.resolveSessionTokenRange(
                             request, collection, mapHolder.v, explicitCompound);
-                        if (explicitCompound) {
-                            request.useThinClientMode = range != null;
-                            if (range == null) {
-                                logger.debug("Using classic Gateway for unresolved compound session-token scope");
-                                return Mono.empty();
-                            }
+                        if (explicitCompound && range == null) {
+                            return Mono.just(false);
                         }
                         String rangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                         if (range != null || StringUtils.isNotEmpty(rangeId) || request.getPartitionKeyInternal() != null) {
@@ -1396,7 +1388,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         } else {
                             applyGlobalSessionToken(request);
                         }
-                        return Mono.empty();
+                        return Mono.just(true);
                     });
             });
         });
