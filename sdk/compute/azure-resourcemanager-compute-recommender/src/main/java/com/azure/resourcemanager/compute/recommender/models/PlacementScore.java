@@ -35,12 +35,12 @@ public final class PlacementScore implements JsonSerializable<PlacementScore> {
      * A placement score indicating the likelihood of successfully allocating the specified Spot VM(s), as well as the
      * expected lifetimes of the Spot VM(s) after allocation.
      */
-    private String score;
+    private PlacementScoreValue score;
 
     /*
-     * Whether the desired quota is available.
+     * Placement preference from 0 to 10 (inclusive). Higher is better.
      */
-    private Boolean isQuotaAvailable;
+    private Integer placementPreference;
 
     /**
      * Creates an instance of PlacementScore class.
@@ -81,17 +81,17 @@ public final class PlacementScore implements JsonSerializable<PlacementScore> {
      * 
      * @return the score value.
      */
-    public String score() {
+    public PlacementScoreValue score() {
         return this.score;
     }
 
     /**
-     * Get the isQuotaAvailable property: Whether the desired quota is available.
+     * Get the placementPreference property: Placement preference from 0 to 10 (inclusive). Higher is better.
      * 
-     * @return the isQuotaAvailable value.
+     * @return the placementPreference value.
      */
-    public Boolean isQuotaAvailable() {
-        return this.isQuotaAvailable;
+    public Integer placementPreference() {
+        return this.placementPreference;
     }
 
     /**
@@ -103,8 +103,8 @@ public final class PlacementScore implements JsonSerializable<PlacementScore> {
         jsonWriter.writeStringField("sku", this.sku);
         jsonWriter.writeStringField("region", this.region);
         jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
-        jsonWriter.writeStringField("score", this.score);
-        jsonWriter.writeBooleanField("isQuotaAvailable", this.isQuotaAvailable);
+        jsonWriter.writeStringField("score", this.score == null ? null : this.score.toString());
+        jsonWriter.writeNumberField("placementPreference", this.placementPreference);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,9 +130,9 @@ public final class PlacementScore implements JsonSerializable<PlacementScore> {
                 } else if ("availabilityZone".equals(fieldName)) {
                     deserializedPlacementScore.availabilityZone = reader.getString();
                 } else if ("score".equals(fieldName)) {
-                    deserializedPlacementScore.score = reader.getString();
-                } else if ("isQuotaAvailable".equals(fieldName)) {
-                    deserializedPlacementScore.isQuotaAvailable = reader.getNullable(JsonReader::getBoolean);
+                    deserializedPlacementScore.score = PlacementScoreValue.fromString(reader.getString());
+                } else if ("placementPreference".equals(fieldName)) {
+                    deserializedPlacementScore.placementPreference = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

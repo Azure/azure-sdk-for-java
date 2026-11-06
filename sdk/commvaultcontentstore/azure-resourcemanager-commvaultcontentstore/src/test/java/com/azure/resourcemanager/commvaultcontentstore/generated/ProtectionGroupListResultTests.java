@@ -15,17 +15,17 @@ public final class ProtectionGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"plan\":\"aiuebbaumnyqu\",\"resources\":{\"manual\":[\"eojnabc\"],\"matchRules\":{\"rules\":[{\"property\":\"resourceGroup\",\"operator\":\"endsWith\",\"value\":\"xpsiebtfhvpes\"},{\"property\":\"tagName\",\"operator\":\"equals\",\"value\":\"krdqmh\"},{\"property\":\"status\",\"operator\":\"equals\",\"value\":\"htldwk\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":1711095303,\"lastBackUpTime\":5735733954229084765,\"backupActivityStatus\":\"ncwscwsvlxoto\",\"provisioningState\":\"Failed\"},\"id\":\"upqsx\",\"name\":\"nmic\",\"type\":\"kvceoveilovnotyf\"}],\"nextLink\":\"cnjbkcnxdhbt\"}")
+            "{\"value\":[{\"properties\":{\"plan\":\"fhzovawjvzunluth\",\"resources\":{\"manual\":[\"rnxipei\",\"pjzu\",\"e\"],\"matchRules\":{\"rules\":[{\"property\":\"name\",\"operator\":\"endsWith\",\"value\":\"tskzbbtdzumveek\"},{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"ozuhkfp\"}],\"matchType\":\"all\"}},\"protectionStatus\":\"backed_up_with_error\",\"numberOfProtectedItems\":820009390,\"lastBackUpTime\":2825814840016940868,\"backupActivityStatus\":\"xl\",\"provisioningState\":\"Succeeded\"},\"id\":\"ttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}],\"nextLink\":\"lnjixisxya\"}")
             .toObject(ProtectionGroupListResult.class);
-        Assertions.assertEquals("aiuebbaumnyqu", model.value().get(0).properties().plan());
-        Assertions.assertEquals("eojnabc", model.value().get(0).properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP,
+        Assertions.assertEquals("fhzovawjvzunluth", model.value().get(0).properties().plan());
+        Assertions.assertEquals("rnxipei", model.value().get(0).properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.NAME,
             model.value().get(0).properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.ENDS_WITH,
             model.value().get(0).properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("xpsiebtfhvpes",
+        Assertions.assertEquals("tskzbbtdzumveek",
             model.value().get(0).properties().resources().matchRules().rules().get(0).value());
-        Assertions.assertEquals(MatchType.ANY, model.value().get(0).properties().resources().matchRules().matchType());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.nextLink());
+        Assertions.assertEquals(MatchType.ALL, model.value().get(0).properties().resources().matchRules().matchType());
+        Assertions.assertEquals("lnjixisxya", model.nextLink());
     }
 }

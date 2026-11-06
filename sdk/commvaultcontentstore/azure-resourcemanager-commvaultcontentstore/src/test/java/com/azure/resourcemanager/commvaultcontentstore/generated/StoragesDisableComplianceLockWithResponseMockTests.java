@@ -24,7 +24,7 @@ public final class StoragesDisableComplianceLockWithResponseMockTests {
     @Test
     public void testDisableComplianceLockWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"jabibsystawf\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"jxbkzbzkdvn\",\"name\":\"jabudurgkakmo\",\"type\":\"zhjjklffhmouwq\"}";
+            = "{\"properties\":{\"location\":\"fwynwcvtbvkay\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"tkzwpcnpwzc\",\"name\":\"a\",\"type\":\"sgvvsccyajguq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class StoragesDisableComplianceLockWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Storage response = manager.storages()
-            .disableComplianceLockWithResponse("hvxndzwmkrefajpj", "rwkq", "yhgbijtjivfx",
-                com.azure.core.util.Context.NONE)
+            .disableComplianceLockWithResponse("gamv", "phoszqz", "dphqamv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jabibsystawf", response.properties().location());
+        Assertions.assertEquals("fwynwcvtbvkay", response.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, response.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COLD, response.properties().classProperty());
     }
 }
