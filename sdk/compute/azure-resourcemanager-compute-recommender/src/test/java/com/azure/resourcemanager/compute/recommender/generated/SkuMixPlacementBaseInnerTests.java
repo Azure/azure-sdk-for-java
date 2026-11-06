@@ -12,8 +12,8 @@ public final class SkuMixPlacementBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementBaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"supportedResourceTypes\":[\"bpzvgn\",\"zsymglzufcyzkohd\",\"ihanuf\",\"fcbjysagithxqha\"]},\"id\":\"fpikxwczb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}")
+            "{\"properties\":{\"supportedResourceTypes\":[\"ablgphuticndvk\",\"ozwyiftyhxhuro\"]},\"id\":\"tyxolniwpwc\",\"name\":\"kjfkg\",\"type\":\"awxklr\"}")
             .toObject(SkuMixPlacementBaseInner.class);
-        Assertions.assertEquals("bpzvgn", model.properties().supportedResourceTypes().get(0));
+        Assertions.assertEquals("ablgphuticndvk", model.properties().supportedResourceTypes().get(0));
     }
 }

@@ -19,31 +19,38 @@ public final class ProtectionGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupProperties model = BinaryData.fromString(
-            "{\"plan\":\"rhdwbavxbniw\",\"resources\":{\"manual\":[\"wz\",\"s\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"doesNotEqual\",\"value\":\"xytxhpzxbz\"}],\"matchType\":\"all\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":999930307,\"lastBackUpTime\":1128579127863386058,\"backupActivityStatus\":\"cuh\",\"provisioningState\":\"Failed\"}")
+            "{\"plan\":\"pow\",\"resources\":{\"manual\":[\"rzqlveu\",\"lupj\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"startsWith\",\"value\":\"obbc\"},{\"property\":\"resourceGroup\",\"operator\":\"endsWith\",\"value\":\"rtjriplrbpbew\"},{\"property\":\"status\",\"operator\":\"contains\",\"value\":\"fgb\"},{\"property\":\"status\",\"operator\":\"doesNotEqual\",\"value\":\"wxzvlvqhjkb\"}],\"matchType\":\"all\"}},\"protectionStatus\":\"backed_up_with_error\",\"numberOfProtectedItems\":795071177,\"lastBackUpTime\":1014195087102039367,\"backupActivityStatus\":\"xiebwwaloayqcg\",\"provisioningState\":\"Failed\"}")
             .toObject(ProtectionGroupProperties.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.plan());
-        Assertions.assertEquals("wz", model.resources().manual().get(0));
+        Assertions.assertEquals("pow", model.plan());
+        Assertions.assertEquals("rzqlveu", model.resources().manual().get(0));
         Assertions.assertEquals(RuleProperty.TAG_VALUE, model.resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("xytxhpzxbz", model.resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals(Operator.STARTS_WITH, model.resources().matchRules().rules().get(0).operator());
+        Assertions.assertEquals("obbc", model.resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ALL, model.resources().matchRules().matchType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionGroupProperties model = new ProtectionGroupProperties().withPlan("rhdwbavxbniw")
-            .withResources(new ProtectionGroupResources().withManual(Arrays.asList("wz", "s"))
-                .withMatchRules(new ProtectionGroupResourcesMatchRules()
-                    .withRules(Arrays.asList(new Rule().withProperty(RuleProperty.TAG_VALUE)
+        ProtectionGroupProperties model = new ProtectionGroupProperties().withPlan("pow")
+            .withResources(new ProtectionGroupResources().withManual(Arrays.asList("rzqlveu", "lupj"))
+                .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
+                    new Rule().withProperty(RuleProperty.TAG_VALUE)
+                        .withOperator(Operator.STARTS_WITH)
+                        .withValue("obbc"),
+                    new Rule().withProperty(RuleProperty.RESOURCE_GROUP)
+                        .withOperator(Operator.ENDS_WITH)
+                        .withValue("rtjriplrbpbew"),
+                    new Rule().withProperty(RuleProperty.STATUS).withOperator(Operator.CONTAINS).withValue("fgb"),
+                    new Rule().withProperty(RuleProperty.STATUS)
                         .withOperator(Operator.DOES_NOT_EQUAL)
-                        .withValue("xytxhpzxbz")))
+                        .withValue("wxzvlvqhjkb")))
                     .withMatchType(MatchType.ALL)));
         model = BinaryData.fromObject(model).toObject(ProtectionGroupProperties.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.plan());
-        Assertions.assertEquals("wz", model.resources().manual().get(0));
+        Assertions.assertEquals("pow", model.plan());
+        Assertions.assertEquals("rzqlveu", model.resources().manual().get(0));
         Assertions.assertEquals(RuleProperty.TAG_VALUE, model.resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("xytxhpzxbz", model.resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals(Operator.STARTS_WITH, model.resources().matchRules().rules().get(0).operator());
+        Assertions.assertEquals("obbc", model.resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ALL, model.resources().matchRules().matchType());
     }
 }
