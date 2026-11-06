@@ -36,10 +36,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
@@ -804,12 +802,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, BinaryData campaign, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class),
             TypeReference.createInstance(TelephonyCampaign.class));
     }
@@ -997,12 +997,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, BinaryData campaign, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class),
             TypeReference.createInstance(TelephonyCampaign.class));
     }
@@ -1190,12 +1192,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         BinaryData campaign, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1382,12 +1386,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         BinaryData campaign, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -2332,12 +2338,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class),
             TypeReference.createInstance(TelephonyCampaign.class));
     }
@@ -2410,12 +2418,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class),
             TypeReference.createInstance(TelephonyCampaign.class));
     }
@@ -2488,12 +2498,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -2565,12 +2577,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -2674,12 +2688,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class), TypeReference.createInstance(Void.class));
     }
 
@@ -2715,12 +2731,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         String campaignName, String ifMatch, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(TelephonyCampaignOperation.class), TypeReference.createInstance(Void.class));
     }
 
@@ -2756,12 +2774,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
     }
 
@@ -2797,12 +2817,14 @@ public final class BetaVoiceAgentsCampaignsImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
     }
 

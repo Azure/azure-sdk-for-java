@@ -39,6 +39,7 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
+        customizeCampaignPollingStrategies(libraryCustomization, logger);
         stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         internalizeUnusedFunctionToolType(libraryCustomization, logger);
         deprecateLegacyBrowserAutomationTools(libraryCustomization);
@@ -714,6 +715,56 @@ public class AgentsCustomizations extends Customization {
             }
             logger.info("Customized {} agent optimization polling strategies.", replacementCount);
         });
+    }
+
+    private void customizeCampaignPollingStrategies(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.implementation", "BetaVoiceAgentsCampaignsImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("BetaVoiceAgentsCampaignsImpl")
+                .orElseThrow(() -> new IllegalStateException("BetaVoiceAgentsCampaignsImpl was not generated."));
+            customizeCampaignPollingStrategies(clazz);
+            logger.info("Customized twelve campaign polling strategies.");
+        });
+    }
+
+    private static void customizeCampaignPollingStrategies(ClassOrInterfaceDeclaration clazz) {
+        String[] prefixes = { "beginCreateCampaign", "beginCancelCampaign", "beginDeleteCampaign" };
+        int[] counts = new int[prefixes.length];
+        for (MethodDeclaration method : clazz.getMethods()) {
+            for (int i = 0; i < prefixes.length; i++) {
+                if (!method.getNameAsString().startsWith(prefixes[i])) {
+                    continue;
+                }
+                boolean async = method.getNameAsString().endsWith("Async");
+                String originalType = async ? "DefaultPollingStrategy" : "SyncDefaultPollingStrategy";
+                String replacementType
+                    = async ? "CampaignOperationLocationPollingStrategy" : "SyncCampaignOperationLocationPollingStrategy";
+                List<ObjectCreationExpr> strategies = method.findAll(ObjectCreationExpr.class);
+                strategies.removeIf(creation -> !originalType.equals(creation.getType().getNameAsString())
+                    && !replacementType.equals(creation.getType().getNameAsString()));
+                if (strategies.size() != 1) {
+                    throw new IllegalStateException("Expected one campaign polling strategy in "
+                        + method.getNameAsString() + " but found " + strategies.size() + ".");
+                }
+                ObjectCreationExpr creation = strategies.get(0);
+                int expectedArguments = originalType.equals(creation.getType().getNameAsString()) ? 1 : 2;
+                if (creation.getArguments().size() != expectedArguments) {
+                    throw new IllegalStateException("Unexpected campaign polling strategy arguments in "
+                        + method.getNameAsString() + ".");
+                }
+                creation.setType(StaticJavaParser.parseClassOrInterfaceType(
+                    "com.azure.ai.agents.implementation." + replacementType + "<>"));
+                creation.setArguments(NodeList.nodeList(creation.getArgument(0).clone(),
+                    StaticJavaParser.parseExpression("finalRequestOptions -> this.getCampaignWithResponse"
+                        + (async ? "Async" : "") + "(agentName, campaignName, finalRequestOptions)")));
+                counts[i]++;
+            }
+        }
+        for (int i = 0; i < prefixes.length; i++) {
+            if (counts[i] != 4) {
+                throw new IllegalStateException("Expected four campaign polling strategies for " + prefixes[i]
+                    + " but customized " + counts[i] + ".");
+            }
+        }
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
