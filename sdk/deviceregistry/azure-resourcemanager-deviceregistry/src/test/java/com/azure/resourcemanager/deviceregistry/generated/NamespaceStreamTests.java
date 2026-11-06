@@ -14,22 +14,23 @@ public final class NamespaceStreamTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceStream model = BinaryData.fromString(
-            "{\"name\":\"mcbxvwvxysl\",\"streamConfiguration\":\"hsfxoblytkb\",\"typeRef\":\"pe\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}]}")
+            "{\"name\":\"wsrtjriplrbpbe\",\"streamConfiguration\":\"ghfg\",\"typeRef\":\"c\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}]}")
             .toObject(NamespaceStream.class);
-        Assertions.assertEquals("mcbxvwvxysl", model.name());
-        Assertions.assertEquals("hsfxoblytkb", model.streamConfiguration());
-        Assertions.assertEquals("pe", model.typeRef());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.name());
+        Assertions.assertEquals("ghfg", model.streamConfiguration());
+        Assertions.assertEquals("c", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceStream model = new NamespaceStream().withName("mcbxvwvxysl")
-            .withStreamConfiguration("hsfxoblytkb")
-            .withTypeRef("pe")
-            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination(), new StreamDestination()));
+        NamespaceStream model = new NamespaceStream().withName("wsrtjriplrbpbe")
+            .withStreamConfiguration("ghfg")
+            .withTypeRef("c")
+            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination(), new StreamDestination(),
+                new StreamDestination()));
         model = BinaryData.fromObject(model).toObject(NamespaceStream.class);
-        Assertions.assertEquals("mcbxvwvxysl", model.name());
-        Assertions.assertEquals("hsfxoblytkb", model.streamConfiguration());
-        Assertions.assertEquals("pe", model.typeRef());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.name());
+        Assertions.assertEquals("ghfg", model.streamConfiguration());
+        Assertions.assertEquals("c", model.typeRef());
     }
 }

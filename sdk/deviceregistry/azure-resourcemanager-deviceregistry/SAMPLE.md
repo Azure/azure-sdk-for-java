@@ -19,26 +19,40 @@
 - [ListByResourceGroup](#assets_listbyresourcegroup)
 - [Update](#assets_update)
 
+## AsyncOperationStatus
+
+- [Get](#asyncoperationstatus_get)
+
 ## BillingContainers
 
 - [Get](#billingcontainers_get)
 - [List](#billingcontainers_list)
 
-## Credentials
+## CertificateAuthorities
 
-- [CreateOrUpdate](#credentials_createorupdate)
-- [Delete](#credentials_delete)
-- [Get](#credentials_get)
-- [ListByResourceGroup](#credentials_listbyresourcegroup)
-- [Synchronize](#credentials_synchronize)
-- [Update](#credentials_update)
+- [Activate](#certificateauthorities_activate)
+- [CreateOrReplace](#certificateauthorities_createorreplace)
+- [Delete](#certificateauthorities_delete)
+- [Get](#certificateauthorities_get)
+- [ListByNamespace](#certificateauthorities_listbynamespace)
+- [RevokeAndRotate](#certificateauthorities_revokeandrotate)
+- [Update](#certificateauthorities_update)
+
+## CertificatePolicies
+
+- [CreateOrReplace](#certificatepolicies_createorreplace)
+- [Delete](#certificatepolicies_delete)
+- [Get](#certificatepolicies_get)
+- [ListByCertificateAuthority](#certificatepolicies_listbycertificateauthority)
+- [Update](#certificatepolicies_update)
 
 ## NamespaceAssets
 
 - [CreateOrReplace](#namespaceassets_createorreplace)
 - [Delete](#namespaceassets_delete)
+- [ExecuteAction](#namespaceassets_executeaction)
 - [Get](#namespaceassets_get)
-- [ListByResourceGroup](#namespaceassets_listbyresourcegroup)
+- [ListByNamespace](#namespaceassets_listbynamespace)
 - [Update](#namespaceassets_update)
 
 ## NamespaceDevices
@@ -46,8 +60,7 @@
 - [CreateOrReplace](#namespacedevices_createorreplace)
 - [Delete](#namespacedevices_delete)
 - [Get](#namespacedevices_get)
-- [ListByResourceGroup](#namespacedevices_listbyresourcegroup)
-- [Revoke](#namespacedevices_revoke)
+- [ListByNamespace](#namespacedevices_listbynamespace)
 - [Update](#namespacedevices_update)
 
 ## NamespaceDiscoveredAssets
@@ -55,7 +68,7 @@
 - [CreateOrReplace](#namespacediscoveredassets_createorreplace)
 - [Delete](#namespacediscoveredassets_delete)
 - [Get](#namespacediscoveredassets_get)
-- [ListByResourceGroup](#namespacediscoveredassets_listbyresourcegroup)
+- [ListByNamespace](#namespacediscoveredassets_listbynamespace)
 - [Update](#namespacediscoveredassets_update)
 
 ## NamespaceDiscoveredDevices
@@ -63,7 +76,7 @@
 - [CreateOrReplace](#namespacediscovereddevices_createorreplace)
 - [Delete](#namespacediscovereddevices_delete)
 - [Get](#namespacediscovereddevices_get)
-- [ListByResourceGroup](#namespacediscovereddevices_listbyresourcegroup)
+- [ListByNamespace](#namespacediscovereddevices_listbynamespace)
 - [Update](#namespacediscovereddevices_update)
 
 ## Namespaces
@@ -84,15 +97,13 @@
 
 - [List](#operations_list)
 
-## Policies
+## RegistryDevices
 
-- [ActivateBringYourOwnRoot](#policies_activatebringyourownroot)
-- [CreateOrUpdate](#policies_createorupdate)
-- [Delete](#policies_delete)
-- [Get](#policies_get)
-- [ListByResourceGroup](#policies_listbyresourcegroup)
-- [RevokeIssuer](#policies_revokeissuer)
-- [Update](#policies_update)
+- [CreateOrReplace](#registrydevices_createorreplace)
+- [Delete](#registrydevices_delete)
+- [Get](#registrydevices_get)
+- [ListByNamespace](#registrydevices_listbynamespace)
+- [Update](#registrydevices_update)
 
 ## SchemaRegistries
 
@@ -131,7 +142,7 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.
@@ -157,7 +168,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_AssetEndpointProfile.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile.
@@ -203,7 +214,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
  */
 public final class AssetEndpointProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-11-01/Delete_AssetEndpointProfile.json
      */
     /**
      * Sample code: Delete_AssetEndpointProfile.
@@ -226,7 +237,7 @@ public final class AssetEndpointProfilesDeleteSamples {
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-11-01/Get_AssetEndpointProfile.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile.
@@ -240,7 +251,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
+     * x-ms-original-file: 2026-11-01/Get_AssetEndpointProfile_With_SyncStatus.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile_With_SyncStatus.
@@ -264,7 +275,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
  */
 public final class AssetEndpointProfilesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_AssetEndpointProfiles_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_AssetEndpointProfiles_BySubscription.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_BySubscription.
@@ -286,7 +297,7 @@ public final class AssetEndpointProfilesListSamples {
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_AssetEndpointProfiles_ByResourceGroup.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_ByResourceGroup.
@@ -311,7 +322,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  */
 public final class AssetEndpointProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-11-01/Update_AssetEndpointProfile.json
      */
     /**
      * Sample code: Update_AssetEndpointProfile.
@@ -353,7 +364,7 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_DisplayName.
@@ -418,7 +429,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_DiscoveredAssetRefs.
@@ -485,7 +496,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Asset_Without_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_ExternalAssetId.
@@ -550,7 +561,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Asset_With_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_ExternalAssetId.
@@ -637,7 +648,7 @@ public final class AssetsCreateOrReplaceSamples {
  */
 public final class AssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Asset.json
+     * x-ms-original-file: 2026-11-01/Delete_Asset.json
      */
     /**
      * Sample code: Delete_Asset.
@@ -658,7 +669,7 @@ public final class AssetsDeleteSamples {
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Asset_With_SyncStatus.json
+     * x-ms-original-file: 2026-11-01/Get_Asset_With_SyncStatus.json
      */
     /**
      * Sample code: Get_Asset_With_SyncStatus.
@@ -671,7 +682,7 @@ public final class AssetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Asset.json
+     * x-ms-original-file: 2026-11-01/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.
@@ -693,7 +704,7 @@ public final class AssetsGetByResourceGroupSamples {
  */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Assets_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_Assets_BySubscription.json
      */
     /**
      * Sample code: List_Assets_BySubscription.
@@ -715,7 +726,7 @@ public final class AssetsListSamples {
  */
 public final class AssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Assets_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_Assets_ByResourceGroup.json
      */
     /**
      * Sample code: List_Assets_ByResourceGroup.
@@ -740,7 +751,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  */
 public final class AssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_Asset.json
+     * x-ms-original-file: 2026-11-01/Update_Asset.json
      */
     /**
      * Sample code: Update_Asset.
@@ -758,6 +769,28 @@ public final class AssetsUpdateSamples {
 }
 ```
 
+### AsyncOperationStatus_Get
+
+```java
+/**
+ * Samples for AsyncOperationStatus Get.
+ */
+public final class AsyncOperationStatusGetSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/Get_AsyncOperationStatus.json
+     */
+    /**
+     * Sample code: Get_AsyncOperationStatus.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getAsyncOperationStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.asyncOperationStatus()
+            .getWithResponse("eastus", "00000000-0000-0000-0000-000000000001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### BillingContainers_Get
 
 ```java
@@ -766,7 +799,7 @@ public final class AssetsUpdateSamples {
  */
 public final class BillingContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_BillingContainer.json
+     * x-ms-original-file: 2026-11-01/Get_BillingContainer.json
      */
     /**
      * Sample code: Get_BillingContainer.
@@ -787,7 +820,7 @@ public final class BillingContainersGetSamples {
  */
 public final class BillingContainersListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_BillingContainers_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_BillingContainers_BySubscription.json
      */
     /**
      * Sample code: List_BillingContainers_BySubscription.
@@ -801,34 +834,109 @@ public final class BillingContainersListSamples {
 }
 ```
 
-### Credentials_CreateOrUpdate
+### CertificateAuthorities_Activate
 
 ```java
-import com.azure.resourcemanager.deviceregistry.fluent.models.CredentialInner;
-import com.azure.resourcemanager.deviceregistry.models.CredentialProperties;
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.resourcemanager.deviceregistry.models.ActivateCertificateAuthorityRequest;
 
 /**
- * Samples for Credentials CreateOrUpdate.
+ * Samples for CertificateAuthorities Activate.
  */
-public final class CredentialsCreateOrUpdateSamples {
+public final class CertificateAuthoritiesActivateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Credentials.json
+     * x-ms-original-file: 2026-11-01/Activate_CertificateAuthority.json
      */
     /**
-     * Sample code: CreateOrReplace_Credentials.
+     * Sample code: Activate a Certificate Authority.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        createOrReplaceCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials()
-            .createOrUpdate("rgdeviceregistry", "mynamespace",
-                new CredentialInner().withLocation("East US 2")
-                    .withTags(mapOf("key7121", "fakeTokenPlaceholder"))
-                    .withProperties(new CredentialProperties()),
+        activateACertificateAuthority(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .activate("rgdeviceregistry", "mynamespace", "myexternalica",
+                new ActivateCertificateAuthorityRequest()
+                    .withCertificateChain("-----BEGIN CERTIFICATE-----\\nMIID...\\n-----END CERTIFICATE-----"),
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificateAuthorities_CreateOrReplace
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityKeyType;
+import com.azure.resourcemanager.deviceregistry.models.ExternalCertificateAuthorityIssuer;
+import com.azure.resourcemanager.deviceregistry.models.IntermediateCertificateAuthorityProperties;
+import com.azure.resourcemanager.deviceregistry.models.MicrosoftCertificateAuthorityIssuer;
+import com.azure.resourcemanager.deviceregistry.models.RootCertificateAuthorityProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for CertificateAuthorities CreateOrReplace.
+ */
+public final class CertificateAuthoritiesCreateOrReplaceSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_CertificateAuthority_Root.json
+     */
+    /**
+     * Sample code: Create or Replace a Root Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceARootCertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .define("myrootca")
+            .withRegion("East US 2")
+            .withExistingNamespace("rgdeviceregistry", "mynamespace")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new RootCertificateAuthorityProperties().withKeyType(CertificateAuthorityKeyType.ECC))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_CertificateAuthority_ICAExternalIssuer.json
+     */
+    /**
+     * Sample code: Create or Replace an External Intermediate Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceAnExternalIntermediateCertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .define("myexternalica")
+            .withRegion("East US 2")
+            .withExistingNamespace("rgdeviceregistry", "mynamespace")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(
+                new IntermediateCertificateAuthorityProperties().withKeyType(CertificateAuthorityKeyType.ECC)
+                    .withIssuer(new ExternalCertificateAuthorityIssuer()))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_CertificateAuthority_ICAInternalIssuer.json
+     */
+    /**
+     * Sample code: Create or Replace an Internal Intermediate Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceAnInternalIntermediateCertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .define("myica")
+            .withRegion("East US 2")
+            .withExistingNamespace("rgdeviceregistry", "mynamespace")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new IntermediateCertificateAuthorityProperties()
+                .withKeyType(CertificateAuthorityKeyType.ECC)
+                .withIssuer(new MicrosoftCertificateAuthorityIssuer().withCertificateAuthorityResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgdeviceregistry/providers/Microsoft.DeviceRegistry/namespaces/mynamespace/certificateAuthorities/myrootca")))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -845,115 +953,301 @@ public final class CredentialsCreateOrUpdateSamples {
 }
 ```
 
-### Credentials_Delete
+### CertificateAuthorities_Delete
 
 ```java
 /**
- * Samples for Credentials Delete.
+ * Samples for CertificateAuthorities Delete.
  */
-public final class CredentialsDeleteSamples {
+public final class CertificateAuthoritiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Credentials.json
+     * x-ms-original-file: 2026-11-01/Delete_CertificateAuthority.json
      */
     /**
-     * Sample code: Delete_Credentials.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void deleteCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials().delete("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Credentials_Get
-
-```java
-/**
- * Samples for Credentials Get.
- */
-public final class CredentialsGetSamples {
-    /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Credentials.json
-     */
-    /**
-     * Sample code: Get_Credentials.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void getCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials().getWithResponse("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Credentials_ListByResourceGroup
-
-```java
-/**
- * Samples for Credentials ListByResourceGroup.
- */
-public final class CredentialsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2026-03-01-preview/List_Credentials_ByResourceGroup.json
-     */
-    /**
-     * Sample code: List_Credentials_ByResourceGroup.
+     * Sample code: Delete a Certificate Authority.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listCredentialsByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+        deleteACertificateAuthority(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .delete("rgdeviceregistry", "mynamespace", "myrootca", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Credentials_Synchronize
+### CertificateAuthorities_Get
 
 ```java
 /**
- * Samples for Credentials Synchronize.
+ * Samples for CertificateAuthorities Get.
  */
-public final class CredentialsSynchronizeSamples {
+public final class CertificateAuthoritiesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Credentials_Synchronize.json
+     * x-ms-original-file: 2026-11-01/Get_CertificateAuthority_ICAInternalIssuer.json
      */
     /**
-     * Sample code: Credentials_Synchronize.
+     * Sample code: Get an Internal Intermediate Certificate Authority.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void credentialsSynchronize(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials().synchronize("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    public static void getAnInternalIntermediateCertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myica", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Get_CertificateAuthority_Root.json
+     */
+    /**
+     * Sample code: Get a Root Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        getARootCertificateAuthority(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myrootca", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Get_CertificateAuthority_ICAExternalIssuer.json
+     */
+    /**
+     * Sample code: Get an External Intermediate Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getAnExternalIntermediateCertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myexternalica", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Credentials_Update
+### CertificateAuthorities_ListByNamespace
 
 ```java
-import com.azure.resourcemanager.deviceregistry.models.CredentialUpdate;
+/**
+ * Samples for CertificateAuthorities ListByNamespace.
+ */
+public final class CertificateAuthoritiesListByNamespaceSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/List_CertificateAuthorities_ByNamespace.json
+     */
+    /**
+     * Sample code: List_CertificateAuthorities_ByNamespace.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listCertificateAuthoritiesByNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .listByNamespace("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificateAuthorities_RevokeAndRotate
+
+```java
+/**
+ * Samples for CertificateAuthorities RevokeAndRotate.
+ */
+public final class CertificateAuthoritiesRevokeAndRotateSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/RevokeAndRotate_CertificateAuthority.json
+     */
+    /**
+     * Sample code: Revoke and rotate a Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        revokeAndRotateACertificateAuthority(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificateAuthorities()
+            .revokeAndRotate("rgdeviceregistry", "mynamespace", "myica", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificateAuthorities_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthority;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for Credentials Update.
+ * Samples for CertificateAuthorities Update.
  */
-public final class CredentialsUpdateSamples {
+public final class CertificateAuthoritiesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_Credentials.json
+     * x-ms-original-file: 2026-11-01/Update_CertificateAuthority.json
      */
     /**
-     * Sample code: Update_Credentials.
+     * Sample code: Update a Certificate Authority.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void updateCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.credentials()
-            .update("rgdeviceregistry", "mynamespace",
-                new CredentialUpdate().withTags(mapOf("key9580", "fakeTokenPlaceholder")),
+    public static void
+        updateACertificateAuthority(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        CertificateAuthority resource = manager.certificateAuthorities()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myrootca", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("environment", "production")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### CertificatePolicies_CreateOrReplace
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificatePolicyConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.CertificatePolicyProperties;
+
+/**
+ * Samples for CertificatePolicies CreateOrReplace.
+ */
+public final class CertificatePoliciesCreateOrReplaceSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_CertificatePolicy.json
+     */
+    /**
+     * Sample code: Create or Replace a Certificate Policy.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createOrReplaceACertificatePolicy(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificatePolicies()
+            .define("mycertificatepolicy")
+            .withRegion("East US 2")
+            .withExistingCertificateAuthority("rgdeviceregistry", "mynamespace", "myrootca")
+            .withProperties(new CertificatePolicyProperties()
+                .withCertificate(new CertificatePolicyConfiguration().withValidityPeriodInDays(30)))
+            .create();
+    }
+}
+```
+
+### CertificatePolicies_Delete
+
+```java
+/**
+ * Samples for CertificatePolicies Delete.
+ */
+public final class CertificatePoliciesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/Delete_CertificatePolicy.json
+     */
+    /**
+     * Sample code: Delete a Certificate Policy.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        deleteACertificatePolicy(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificatePolicies()
+            .delete("rgdeviceregistry", "mynamespace", "myrootca", "mycertificatepolicy",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificatePolicies_Get
+
+```java
+/**
+ * Samples for CertificatePolicies Get.
+ */
+public final class CertificatePoliciesGetSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/Get_CertificatePolicy.json
+     */
+    /**
+     * Sample code: Get a Certificate Policy.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getACertificatePolicy(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificatePolicies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myrootca", "mycertificatepolicy",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificatePolicies_ListByCertificateAuthority
+
+```java
+/**
+ * Samples for CertificatePolicies ListByCertificateAuthority.
+ */
+public final class CertificatePoliciesListByCertificateAuthoritySamples {
+    /*
+     * x-ms-original-file: 2026-11-01/List_CertificatePolicies_ByCertificateAuthority.json
+     */
+    /**
+     * Sample code: List Certificate Policies for a Certificate Authority.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void listCertificatePoliciesForACertificateAuthority(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.certificatePolicies()
+            .listByCertificateAuthority("rgdeviceregistry", "mynamespace", "myrootca",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CertificatePolicies_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificatePolicy;
+import com.azure.resourcemanager.deviceregistry.models.CertificatePolicyUpdateProperties;
+import com.azure.resourcemanager.deviceregistry.models.OptionalPropertiesCertificatePolicyConfiguration;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for CertificatePolicies Update.
+ */
+public final class CertificatePoliciesUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/Update_CertificatePolicy.json
+     */
+    /**
+     * Sample code: Update a Certificate Policy.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        updateACertificatePolicy(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        CertificatePolicy resource = manager.certificatePolicies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myrootca", "mycertificatepolicy",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new CertificatePolicyUpdateProperties()
+                .withCertificate(new OptionalPropertiesCertificatePolicyConfiguration().withValidityPeriodInDays(60)))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -977,6 +1271,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
+import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.ManagementAction;
@@ -987,6 +1282,8 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDatasetDataPoint;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceEvent;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceStream;
 import com.azure.resourcemanager.deviceregistry.models.StorageDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.StreamMqttDestination;
@@ -1002,7 +1299,7 @@ import java.util.Map;
  */
 public final class NamespaceAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceAsset.
@@ -1024,7 +1321,7 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                 .withDisplayName("AssetDisplayName")
                 .withDescription("This is a sample Asset")
                 .withDeviceRef(new DeviceRef().withDeviceName("device1").withEndpointName("opcuaendpointname"))
-                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1", "myAssetTypeRef2"))
+                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1"))
                 .withManufacturer("Contoso")
                 .withManufacturerUri("https://www.contoso.com/manufacturerUri")
                 .withModel("ContosoModel")
@@ -1055,58 +1352,37 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                     .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
                     .withDestinations(Arrays.asList(new DatasetBrokerStateStoreDestination().withConfiguration(
                         new BrokerStateStoreDestinationConfiguration().withKey("fakeTokenPlaceholder"))))
-                    .withDataPoints(Arrays.asList(
-                        new NamespaceDatasetDataPoint().withName("dataset1DataPoint1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withTypeRef("dataset1DataPoint1TypeRef"),
-                        new NamespaceDatasetDataPoint().withName("dataset1DataPoint2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withTypeRef("dataset1DataPoint2TypeRef")))))
-                .withStreams(Arrays.asList(
-                    new NamespaceStream().withName("stream1")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream1TypeRef")
-                        .withDestinations(Arrays.asList(new StreamStorageDestination()
-                            .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1")))),
-                    new NamespaceStream().withName("stream2")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream2TypeRef")
-                        .withDestinations(Arrays.asList(new StreamMqttDestination()
-                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testStream2")
-                                .withRetain(TopicRetainType.NEVER)
+                    .withDataPoints(Arrays.asList(new NamespaceDatasetDataPoint().withName("dataset1DataPoint1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withDataPointConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                        .withTypeRef("dataset1DataPoint1TypeRef")))))
+                .withEventGroups(Arrays.asList(new NamespaceEventGroup().withName("default")
+                    .withEvents(Arrays.asList(new NamespaceEvent().withName("event1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5")
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                        .withDestinations(Arrays.asList(new EventMqttDestination()
+                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
+                                .withRetain(TopicRetainType.KEEP)
                                 .withQos(MqttDestinationQos.QOS0)
-                                .withTtl(7200L))))))
-                .withManagementGroups(
-                    Arrays
-                        .asList(
-                            new ManagementGroup().withName("managementGroup1")
-                                .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
-                                .withTypeRef("managementGroup1TypeRef")
-                                .withDefaultTopic("/contoso/managementGroup1")
-                                .withDefaultTimeoutInSeconds(100)
-                                .withActions(
-                                    Arrays
-                                        .asList(
-                                            new ManagementAction().withName("action1")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
-                                                .withTypeRef("action1TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action1")
-                                                .withActionType(ManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60),
-                                            new ManagementAction().withName("action2")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile2")
-                                                .withTypeRef("action2TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action2")
-                                                .withActionType(ManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60))))))
+                                .withTtl(7200L))))
+                        .withTypeRef("event1Ref")))))
+                .withStreams(Arrays.asList(new NamespaceStream().withName("stream1")
+                    .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                    .withTypeRef("stream1TypeRef")
+                    .withDestinations(Arrays.asList(new StreamStorageDestination()
+                        .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))))
+                .withManagementGroups(Arrays.asList(new ManagementGroup().withName("managementGroup1")
+                    .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
+                    .withTypeRef("managementGroup1TypeRef")
+                    .withDefaultTopic("/contoso/managementGroup1")
+                    .withDefaultTimeoutInSeconds(100)
+                    .withActions(Arrays.asList(new ManagementAction().withName("action1")
+                        .withActionConfiguration("{\"retryCount\":5,\"retryBackoffInterval\":5}")
+                        .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
+                        .withTypeRef("action1TypeRef")
+                        .withTopic("/contoso/managementGroup1/action1")
+                        .withActionType(ManagementActionType.CALL)
+                        .withTimeoutInSeconds(60))))))
             .create();
     }
 
@@ -1132,7 +1408,7 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceAsset.json
+     * x-ms-original-file: 2026-11-01/Delete_NamespaceAsset.json
      */
     /**
      * Sample code: Delete_NamespaceAsset.
@@ -1147,6 +1423,54 @@ public final class NamespaceAssetsDeleteSamples {
 }
 ```
 
+### NamespaceAssets_ExecuteAction
+
+```java
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetExecuteActionRequest;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NamespaceAssets ExecuteAction.
+ */
+public final class NamespaceAssetsExecuteActionSamples {
+    /*
+     * x-ms-original-file: 2026-11-01/ExecuteAction_Assets_Namespace.json
+     */
+    /**
+     * Sample code: Namespace Asset Execute Action.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        namespaceAssetExecuteAction(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaceAssets()
+            .executeAction("myResourceGroup", "my-namespace-1", "my-asset-1",
+                new NamespaceAssetExecuteActionRequest().withManagementActionName("my-asset-action-1")
+                    .withManagementGroupName("my-asset-group-1")
+                    .withPayload(mapOf("prop1", BinaryData.fromBytes("value1".getBytes(StandardCharsets.UTF_8)),
+                        "prop2", BinaryData.fromBytes("123".getBytes(StandardCharsets.UTF_8)), "prop3",
+                        BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8)), "prop4",
+                        BinaryData.fromBytes("{subProp1=subValue1}".getBytes(StandardCharsets.UTF_8)))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### NamespaceAssets_Get
 
 ```java
@@ -1155,7 +1479,7 @@ public final class NamespaceAssetsDeleteSamples {
  */
 public final class NamespaceAssetsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceAsset.json
+     * x-ms-original-file: 2026-11-01/Get_NamespaceAsset.json
      */
     /**
      * Sample code: Get_NamespaceAsset.
@@ -1169,25 +1493,25 @@ public final class NamespaceAssetsGetSamples {
 }
 ```
 
-### NamespaceAssets_ListByResourceGroup
+### NamespaceAssets_ListByNamespace
 
 ```java
 /**
- * Samples for NamespaceAssets ListByResourceGroup.
+ * Samples for NamespaceAssets ListByNamespace.
  */
-public final class NamespaceAssetsListByResourceGroupSamples {
+public final class NamespaceAssetsListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_NamespaceAssets_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_NamespaceAssets_ByNamespace.json
      */
     /**
-     * Sample code: List_NamespaceAssets_ByResourceGroup.
+     * Sample code: List_NamespaceAssets_ByNamespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespaceAssetsByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listNamespaceAssetsByNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaceAssets()
-            .listByResourceGroup("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
+            .listByNamespace("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1203,7 +1527,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdatePrope
  */
 public final class NamespaceAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceAsset.json
+     * x-ms-original-file: 2026-11-01/Update_NamespaceAsset.json
      */
     /**
      * Sample code: Update_NamespaceAssets.
@@ -1247,7 +1571,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_x509.json
      */
     /**
      * Sample code: Create edge enabled device with x509 inbound authentication.
@@ -1263,22 +1587,26 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(
                 new NamespaceDeviceProperties().withEnabled(true)
                     .withExternalDeviceId("unique-edge-device-identifier")
-                    .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint",
-                        new InboundEndpoints().withEndpointType("microsoft.opcua")
-                            .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                            .withVersion("2")
-                            .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
-                                .withX509Credentials(new X509CertificateCredentials()
-                                    .withCertificateSecretName("fakeTokenPlaceholder"))),
-                        "theV2OPCUAEndpoint",
-                        new InboundEndpoints().withEndpointType("microsoft.opcua")
-                            .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                            .withVersion("2")
-                            .withAuthentication(
-                                new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
+                    .withEndpoints(
+                        new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint",
+                            new InboundEndpoints().withEndpointType("microsoft.opcua")
+                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                                .withVersion("2")
+                                .withAuthentication(new HostAuthentication()
+                                    .withMethod(AuthenticationMethod.CERTIFICATE)
                                     .withX509Credentials(new X509CertificateCredentials()
-                                        .withCertificateSecretName("fakeTokenPlaceholder")))
-                            .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
+                                        .withCertificateSecretName("fakeTokenPlaceholder")
+                                        .withKeySecretName("fakeTokenPlaceholder")
+                                        .withIntermediateCertificatesSecretName("fakeTokenPlaceholder"))),
+                            "theV2OPCUAEndpoint",
+                            new InboundEndpoints().withEndpointType("microsoft.opcua")
+                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                                .withVersion("2")
+                                .withAuthentication(
+                                    new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
+                                        .withX509Credentials(new X509CertificateCredentials()
+                                            .withCertificateSecretName("fakeTokenPlaceholder")))
+                                .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
                     .withAttributes(
                         mapOf("deviceType", BinaryData.fromBytes("OPCUAServers".getBytes(StandardCharsets.UTF_8)),
                             "deviceOwner", BinaryData.fromBytes("OT".getBytes(StandardCharsets.UTF_8)),
@@ -1290,7 +1618,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
      */
     /**
      * Sample code: Create edge enabled device with anonymous host authentication.
@@ -1306,7 +1634,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua:v1")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.ANONYMOUS)))))
@@ -1321,7 +1649,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
      */
     /**
      * Sample code: Create edge enabled device with UsernamesPassword inbound authentication.
@@ -1337,7 +1665,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua:v1")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.USERNAME_PASSWORD)
@@ -1354,7 +1682,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDevices.
@@ -1368,10 +1696,11 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withRegion("West Europe")
             .withExistingNamespace("myResourceGroup", "adr-namespace-gbk0925-n01")
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
-                .withEndpoints(
-                    new MessagingEndpoints().withOutbound(new OutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
+                .withExternalDeviceId("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f")
+                .withEndpoints(new MessagingEndpoints()
+                    .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices")
+                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
                     BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8)))))
@@ -1400,7 +1729,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDevice.json
+     * x-ms-original-file: 2026-11-01/Delete_NamespaceDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDevice.
@@ -1423,7 +1752,7 @@ public final class NamespaceDevicesDeleteSamples {
  */
 public final class NamespaceDevicesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDeviceWithEndpointErrorStatus.json
+     * x-ms-original-file: 2026-11-01/Get_NamespaceDeviceWithEndpointErrorStatus.json
      */
     /**
      * Sample code: Get NamespaceDevice with Endpoint Error Status.
@@ -1437,7 +1766,7 @@ public final class NamespaceDevicesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDevice.json
+     * x-ms-original-file: 2026-11-01/Get_NamespaceDevice.json
      */
     /**
      * Sample code: Get_NamespaceDevice.
@@ -1451,65 +1780,25 @@ public final class NamespaceDevicesGetSamples {
 }
 ```
 
-### NamespaceDevices_ListByResourceGroup
+### NamespaceDevices_ListByNamespace
 
 ```java
 /**
- * Samples for NamespaceDevices ListByResourceGroup.
+ * Samples for NamespaceDevices ListByNamespace.
  */
-public final class NamespaceDevicesListByResourceGroupSamples {
+public final class NamespaceDevicesListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDevices_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_NamespaceDevices_ByNamespace.json
      */
     /**
-     * Sample code: List_NamespaceDevices_ByResourceGroup.
+     * Sample code: List_NamespaceDevices_ByNamespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespaceDevicesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listNamespaceDevicesByNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaceDevices()
-            .listByResourceGroup("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NamespaceDevices_Revoke
-
-```java
-import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
-
-/**
- * Samples for NamespaceDevices Revoke.
- */
-public final class NamespaceDevicesRevokeSamples {
-    /*
-     * x-ms-original-file: 2026-03-01-preview/NamespaceDevices_Revoke.json
-     */
-    /**
-     * Sample code: NamespaceDevices_Revoke.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void namespaceDevicesRevoke(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.namespaceDevices()
-            .revoke("rgdeviceregistry", "mynamespace", "device1",
-                new DeviceCredentialsRevokeRequest().withDisable(true), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-03-01-preview/NamespaceDevices_RevokeFailure.json
-     */
-    /**
-     * Sample code: NamespaceDevices_RevokeFailure.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void
-        namespaceDevicesRevokeFailure(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.namespaceDevices()
-            .revoke("rgdeviceregistry", "mynamespace", "device1",
-                new DeviceCredentialsRevokeRequest().withDisable(true), com.azure.core.util.Context.NONE);
+            .listByNamespace("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1532,7 +1821,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDevice.json
+     * x-ms-original-file: 2026-11-01/Update_NamespaceDevice.json
      */
     /**
      * Sample code: Update_NamespaceDevices.
@@ -1546,10 +1835,10 @@ public final class NamespaceDevicesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new NamespaceDeviceUpdateProperties()
-                .withEndpoints(
-                    new MessagingEndpoints().withOutbound(new OutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
+                .withEndpoints(new MessagingEndpoints()
+                    .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices")
+                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
                     BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8))))
@@ -1578,6 +1867,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
+import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.MqttDestinationConfiguration;
@@ -1585,6 +1875,8 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDatasetDataPoint;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEvent;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementAction;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementActionType;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementGroup;
@@ -1604,7 +1896,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredAsset.
@@ -1623,7 +1915,7 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(new NamespaceDiscoveredAssetProperties()
                 .withDeviceRef(new DeviceRef().withDeviceName("myDevice").withEndpointName("opcuaendpointname"))
-                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1", "myAssetTypeRef2"))
+                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1"))
                 .withDiscoveryId("11111111-1111-1111-1111-111111111111")
                 .withVersion(73766L)
                 .withManufacturer("Contoso")
@@ -1655,66 +1947,45 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
                     .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
                     .withDestinations(Arrays.asList(new DatasetBrokerStateStoreDestination().withConfiguration(
                         new BrokerStateStoreDestinationConfiguration().withKey("fakeTokenPlaceholder"))))
-                    .withDataPoints(Arrays.asList(
-                        new NamespaceDiscoveredDatasetDataPoint().withName("dataset1DataPoint1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
-                            .withTypeRef("dataset1DataPoint1TypeRef"),
-                        new NamespaceDiscoveredDatasetDataPoint().withName("dataset1DataPoint2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
-                            .withTypeRef("dataset1DataPoint2TypeRef")))
+                    .withDataPoints(Arrays.asList(new NamespaceDiscoveredDatasetDataPoint()
+                        .withName("dataset1DataPoint1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withDataPointConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
+                        .withTypeRef("dataset1DataPoint1TypeRef")))
                     .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
-                .withStreams(Arrays.asList(
-                    new NamespaceDiscoveredStream().withName("stream1")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream1TypeRef")
-                        .withDestinations(Arrays.asList(new StreamStorageDestination()
-                            .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))
-                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")),
-                    new NamespaceDiscoveredStream().withName("stream2")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream2TypeRef")
-                        .withDestinations(Arrays.asList(new StreamMqttDestination()
-                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testStream2")
-                                .withRetain(TopicRetainType.NEVER)
+                .withEventGroups(Arrays.asList(new NamespaceDiscoveredEventGroup().withName("default")
+                    .withEvents(Arrays.asList(new NamespaceDiscoveredEvent().withName("event1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                        .withDestinations(Arrays.asList(new EventMqttDestination()
+                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
+                                .withRetain(TopicRetainType.KEEP)
                                 .withQos(MqttDestinationQos.QOS0)
                                 .withTtl(7200L))))
-                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
+                        .withTypeRef("event1Ref")
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))))
+                .withStreams(Arrays.asList(new NamespaceDiscoveredStream().withName("stream1")
+                    .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                    .withTypeRef("stream1TypeRef")
+                    .withDestinations(Arrays.asList(new StreamStorageDestination()
+                        .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))
+                    .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
                 .withManagementGroups(
-                    Arrays
-                        .asList(
-                            new NamespaceDiscoveredManagementGroup().withName("managementGroup1")
-                                .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
-                                .withTypeRef("managementGroup1TypeRef")
-                                .withDefaultTopic("/contoso/managementGroup1")
-                                .withDefaultTimeoutInSeconds(100)
-                                .withActions(
-                                    Arrays
-                                        .asList(
-                                            new NamespaceDiscoveredManagementAction().withName("action1")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
-                                                .withTypeRef("action1TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action1")
-                                                .withActionType(NamespaceDiscoveredManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60)
-                                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")),
-                                            new NamespaceDiscoveredManagementAction().withName("action2")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile2")
-                                                .withTypeRef("action2TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action2")
-                                                .withActionType(NamespaceDiscoveredManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60)
-                                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
-                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")))))
+                    Arrays.asList(new NamespaceDiscoveredManagementGroup().withName("managementGroup1")
+                        .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
+                        .withTypeRef("managementGroup1TypeRef")
+                        .withDefaultTopic("/contoso/managementGroup1")
+                        .withDefaultTimeoutInSeconds(100)
+                        .withActions(Arrays.asList(new NamespaceDiscoveredManagementAction().withName("action1")
+                            .withActionConfiguration("{\"retryCount\":5,\"retryBackoffInterval\":5}")
+                            .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
+                            .withTypeRef("action1TypeRef")
+                            .withTopic("/contoso/managementGroup1/action1")
+                            .withActionType(NamespaceDiscoveredManagementActionType.CALL)
+                            .withTimeoutInSeconds(60)
+                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")))))
             .create();
     }
 
@@ -1740,7 +2011,7 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-11-01/Delete_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredAsset.
@@ -1763,7 +2034,7 @@ public final class NamespaceDiscoveredAssetsDeleteSamples {
  */
 public final class NamespaceDiscoveredAssetsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-11-01/Get_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredAsset.
@@ -1779,25 +2050,25 @@ public final class NamespaceDiscoveredAssetsGetSamples {
 }
 ```
 
-### NamespaceDiscoveredAssets_ListByResourceGroup
+### NamespaceDiscoveredAssets_ListByNamespace
 
 ```java
 /**
- * Samples for NamespaceDiscoveredAssets ListByResourceGroup.
+ * Samples for NamespaceDiscoveredAssets ListByNamespace.
  */
-public final class NamespaceDiscoveredAssetsListByResourceGroupSamples {
+public final class NamespaceDiscoveredAssetsListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDiscoveredAssets_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_NamespaceDiscoveredAssets_ByNamespace.json
      */
     /**
-     * Sample code: List_NamespaceDiscoveredAssets_ByResourceGroup.
+     * Sample code: List_NamespaceDiscoveredAssets_ByNamespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void listNamespaceDiscoveredAssetsByResourceGroup(
+    public static void listNamespaceDiscoveredAssetsByNamespace(
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaceDiscoveredAssets()
-            .listByResourceGroup("myResourceGroup", "my-namespace-1", com.azure.core.util.Context.NONE);
+            .listByNamespace("myResourceGroup", "my-namespace-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1813,7 +2084,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetU
  */
 public final class NamespaceDiscoveredAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-11-01/Update_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredAsset.
@@ -1850,7 +2121,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredDevice.
@@ -1869,9 +2140,9 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(new NamespaceDiscoveredDeviceProperties()
                 .withEndpoints(new DiscoveredMessagingEndpoints()
-                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
+                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices")
+                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
                 .withDiscoveryId("discoveryId1")
                 .withVersion(1L))
             .create();
@@ -1899,7 +2170,7 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-11-01/Delete_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredDevice.
@@ -1922,7 +2193,7 @@ public final class NamespaceDiscoveredDevicesDeleteSamples {
  */
 public final class NamespaceDiscoveredDevicesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-11-01/Get_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredDevice.
@@ -1938,25 +2209,25 @@ public final class NamespaceDiscoveredDevicesGetSamples {
 }
 ```
 
-### NamespaceDiscoveredDevices_ListByResourceGroup
+### NamespaceDiscoveredDevices_ListByNamespace
 
 ```java
 /**
- * Samples for NamespaceDiscoveredDevices ListByResourceGroup.
+ * Samples for NamespaceDiscoveredDevices ListByNamespace.
  */
-public final class NamespaceDiscoveredDevicesListByResourceGroupSamples {
+public final class NamespaceDiscoveredDevicesListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDiscoveredDevices_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_NamespaceDiscoveredDevices_ByNamespace.json
      */
     /**
-     * Sample code: List_NamespaceDiscoveredDevices_ByResourceGroup.
+     * Sample code: List_NamespaceDiscoveredDevices_ByNamespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void listNamespaceDiscoveredDevicesByResourceGroup(
+    public static void listNamespaceDiscoveredDevicesByNamespace(
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaceDiscoveredDevices()
-            .listByResourceGroup("myResourceGroup", "my-namespace-1", com.azure.core.util.Context.NONE);
+            .listByNamespace("myResourceGroup", "my-namespace-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1977,7 +2248,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-11-01/Update_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredDevice.
@@ -1993,9 +2264,9 @@ public final class NamespaceDiscoveredDevicesUpdateSamples {
         resource.update()
             .withProperties(
                 new NamespaceDiscoveredDeviceUpdateProperties().withEndpoints(new DiscoveredMessagingEndpoints()
-                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("newIothubEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                            .withAddress("https://iothub-for-dps.azure-devices.net"))))))
+                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("newEventGridEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices")
+                            .withAddress("https://myneweventgridtopic.westeurope-1.eventgrid.azure.net/api/events"))))))
             .apply();
     }
 
@@ -2016,9 +2287,18 @@ public final class NamespaceDiscoveredDevicesUpdateSamples {
 ### Namespaces_CreateOrReplace
 
 ```java
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.Management;
+import com.azure.resourcemanager.deviceregistry.models.ManagementEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceProvisioning;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -2027,30 +2307,71 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Namespace_With_MessagingAndProvisioningEndpoints.json
      */
     /**
-     * Sample code: CreateOrReplace_Namespace_With_Endpoints.
+     * Sample code: Create or Replace a Namespace with linked Messaging and Provisioning Endpoints.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        createOrReplaceNamespaceWithEndpoints(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void createOrReplaceANamespaceWithLinkedMessagingAndProvisioningEndpoints(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaces()
+            .define("mynamespace")
+            .withRegion("northeurope")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new NamespaceProperties()
+                .withMessaging(new Messaging().withEndpoints(mapOf("myPrimaryIotHubEndpoint", new MessagingEndpoint()
+                    .withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub1")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED)),
+                    "mySecondaryIotHubEndpoint",
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                        .withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub2")
+                        .withInboundCallerIdentity(new InboundCallerIdentity()
+                            .withType(InboundCallerIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentity(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myAdrCallerUami")))))
+                .withProvisioning(new NamespaceProvisioning().withEndpoints(mapOf("myDpsEndpoint",
+                    new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                        .withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/provisioningServices/myDps")
+                        .withInboundCallerIdentity(
+                            new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Namespace_With_ManagementEndpoints.json
+     */
+    /**
+     * Sample code: Create or Replace a Namespace with Management Endpoints.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceANamespaceWithManagementEndpoints(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces()
             .define("adr-namespace-gbk0925-n01")
             .withRegion("North Europe")
             .withExistingResourceGroup("myResourceGroup")
-            .withProperties(
-                new NamespaceProperties()
-                    .withMessaging(
-                        new Messaging()
-                            .withEndpoints(
-                                mapOf("iothubEndpoint",
-                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                                        .withAddress("https://iothub-for-dps.azure-devices.net"),
-                                    "anotherIothubEndpoint",
-                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                                        .withAddress("https://iothub-for-dps-2.azure-devices.net")))))
+            .withProperties(new NamespaceProperties().withManagement(new Management().withEndpoints(mapOf(
+                "customLocation1",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-1")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr"),
+                "customLocation2",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr1.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-2")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr1")))))
             .create();
     }
 
@@ -2076,14 +2397,14 @@ public final class NamespacesCreateOrReplaceSamples {
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Namespace.json
+     * x-ms-original-file: 2026-11-01/Delete_Namespace.json
      */
     /**
-     * Sample code: Delete_Namespace.
+     * Sample code: Delete a Namespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void deleteNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void deleteANamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().delete("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
     }
 }
@@ -2097,17 +2418,30 @@ public final class NamespacesDeleteSamples {
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Namespace.json
+     * x-ms-original-file: 2026-11-01/Get_Namespace_With_FailedLinkingEndpoint.json
      */
     /**
-     * Sample code: Get_Namespace.
+     * Sample code: Get a Namespace with a Failed Linking Endpoint.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void getNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void getANamespaceWithAFailedLinkingEndpoint(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces()
-            .getByResourceGroupWithResponse("myResourceGroup", "adr-namespace-gbk0925-n01",
-                com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "my-namespace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Get_Namespace.json
+     */
+    /**
+     * Sample code: Get a Namespace.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getANamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2120,15 +2454,15 @@ public final class NamespacesGetByResourceGroupSamples {
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Namespace_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_Namespace_BySubscription.json
      */
     /**
-     * Sample code: List_Namespaces_BySubscription.
+     * Sample code: List the Namespaces in a Subscription.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespacesBySubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listTheNamespacesInASubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -2142,15 +2476,15 @@ public final class NamespacesListSamples {
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Namespace_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_Namespace_ByResourceGroup.json
      */
     /**
-     * Sample code: List_Namespaces_ByResourceGroup.
+     * Sample code: List the Namespaces in a Resource Group.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespacesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listTheNamespacesInAResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -2168,7 +2502,7 @@ import java.util.Arrays;
  */
 public final class NamespacesMigrateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Migrate_Assets_Namespace.json
+     * x-ms-original-file: 2026-11-01/Migrate_Assets_Namespace.json
      */
     /**
      * Sample code: Namespace Migrate.
@@ -2190,10 +2524,19 @@ public final class NamespacesMigrateSamples {
 ### Namespaces_Update
 
 ```java
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.Management;
+import com.azure.resourcemanager.deviceregistry.models.ManagementEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.MessagingEndpointAvailability;
+import com.azure.resourcemanager.deviceregistry.models.MessagingEndpointProvisioning;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceProvisioning;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdateProperties;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -2202,24 +2545,86 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2026-11-01/Update_Namespace_ManagementEndpoints.json
      */
     /**
-     * Sample code: Update_Namespace_Endpoints.
+     * Sample code: Link a Namespace to a Management Endpoint.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        updateNamespaceEndpoints(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        linkANamespaceToAManagementEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         Namespace resource = manager.namespaces()
             .getByResourceGroupWithResponse("myResourceGroup", "adr-namespace-gbk0925-n01",
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("iothubEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                        .withAddress("https://iothub-for-dps.azure-devices.net")))))
+            .withProperties(new NamespaceUpdateProperties().withManagement(new Management().withEndpoints(mapOf(
+                "customLocation1",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-1")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr")))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Update_Namespace_ProvisioningEndpoints.json
+     */
+    /**
+     * Sample code: Link a Namespace to a Provisioning Endpoint.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        linkANamespaceToAProvisioningEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Namespace resource = manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new NamespaceUpdateProperties().withProvisioning(new NamespaceProvisioning().withEndpoints(
+                mapOf("myDpsEndpoint", new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/provisioningServices/myDps")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Update_Namespace_MessagingEndpoints.json
+     */
+    /**
+     * Sample code: Link a Namespace to a Messaging Endpoint.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        linkANamespaceToAMessagingEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Namespace resource = manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf(
+                "myPrimaryIotHubEndpoint",
+                new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub1")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))
+                    .withProvisioning(
+                        new MessagingEndpointProvisioning().withAvailability(MessagingEndpointAvailability.AVAILABLE)
+                            .withAllocationWeight(1)),
+                "mySecondaryIotHubEndpoint",
+                new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub2")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))
+                    .withProvisioning(
+                        new MessagingEndpointProvisioning().withAvailability(MessagingEndpointAvailability.AVAILABLE)
+                            .withAllocationWeight(1))))))
             .apply();
     }
 
@@ -2245,7 +2650,7 @@ public final class NamespacesUpdateSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_OperationStatus.json
+     * x-ms-original-file: 2026-11-01/Get_OperationStatus.json
      */
     /**
      * Sample code: Get_OperationStatus.
@@ -2254,7 +2659,7 @@ public final class OperationStatusGetSamples {
      */
     public static void getOperationStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.operationStatus()
-            .getWithResponse("testLocation", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", com.azure.core.util.Context.NONE);
+            .getWithResponse("eastus", "00000000-0000-0000-0000-000000000001", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2267,7 +2672,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Operations.json
+     * x-ms-original-file: 2026-11-01/List_Operations.json
      */
     /**
      * Sample code: List_Operations.
@@ -2280,184 +2685,140 @@ public final class OperationsListSamples {
 }
 ```
 
-### Policies_ActivateBringYourOwnRoot
+### RegistryDevices_CreateOrReplace
 
 ```java
-import com.azure.resourcemanager.deviceregistry.models.ActivateBringYourOwnRootRequest;
+import com.azure.resourcemanager.deviceregistry.models.RegistryDeviceEnablementState;
+import com.azure.resourcemanager.deviceregistry.models.RegistryDeviceProperties;
 
 /**
- * Samples for Policies ActivateBringYourOwnRoot.
+ * Samples for RegistryDevices CreateOrReplace.
  */
-public final class PoliciesActivateBringYourOwnRootSamples {
+public final class RegistryDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Policies_ActivateBringYourOwnRoot.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_RegistryDevice.json
      */
     /**
-     * Sample code: Policies_ActivateBringYourOwnRoot.
+     * Sample code: Create or Replace a Device.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        policiesActivateBringYourOwnRoot(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies()
-            .activateBringYourOwnRoot("rgdeviceregistry", "mynamespace", "mypolicy",
-                new ActivateBringYourOwnRootRequest().withCertificateChain(
-                    "-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAKL0UG+mRkmWMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMjQwMTAxMDAwMDAwWhcNMjUwMTAxMDAwMDAwWjBF\nMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAw...\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAKL0UG+mRkmXMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMjQwMTAxMDAwMDAwWhcNMjUwMTAxMDAwMDAwWjBF\nMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAx...\n-----END CERTIFICATE-----"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Policies_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.deviceregistry.models.BringYourOwnRoot;
-import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
-import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
-import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
-import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
-import com.azure.resourcemanager.deviceregistry.models.SupportedKeyType;
-
-/**
- * Samples for Policies CreateOrUpdate.
- */
-public final class PoliciesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Policies.json
-     */
-    /**
-     * Sample code: CreateOrReplace_Policies.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void createOrReplacePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies()
-            .define("mypolicy")
-            .withExistingNamespace("rgdeviceregistry", "mynamespace")
-            .withProperties(new PolicyProperties().withCertificate(new CertificateConfiguration()
-                .withCertificateAuthorityConfiguration(
-                    new CertificateAuthorityConfiguration().withKeyType(SupportedKeyType.ECC)
-                        .withBringYourOwnRoot(new BringYourOwnRoot().withEnabled(true)))
-                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+    public static void createOrReplaceADevice(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.registryDevices()
+            .define("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab")
+            .withRegion("North Europe")
+            .withExistingNamespace("myResourceGroup", "my-namespace-1")
+            .withProperties(new RegistryDeviceProperties().withEnablementState(RegistryDeviceEnablementState.ENABLED)
+                .withExternalDeviceId("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab")
+                .withManufacturer("Contoso")
+                .withModel("SmartSensor")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("5.15"))
             .create();
     }
 }
 ```
 
-### Policies_Delete
+### RegistryDevices_Delete
 
 ```java
 /**
- * Samples for Policies Delete.
+ * Samples for RegistryDevices Delete.
  */
-public final class PoliciesDeleteSamples {
+public final class RegistryDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Policies.json
+     * x-ms-original-file: 2026-11-01/Delete_RegistryDevice.json
      */
     /**
-     * Sample code: Delete_Policies.
+     * Sample code: Delete a Device.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void deletePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies().delete("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE);
+    public static void deleteADevice(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.registryDevices()
+            .delete("myResourceGroup", "my-namespace-1", "adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Policies_Get
+### RegistryDevices_Get
 
 ```java
 /**
- * Samples for Policies Get.
+ * Samples for RegistryDevices Get.
  */
-public final class PoliciesGetSamples {
+public final class RegistryDevicesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Policies.json
+     * x-ms-original-file: 2026-11-01/Get_RegistryDevice.json
      */
     /**
-     * Sample code: Get_Policies.
+     * Sample code: Get a Device.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void getPolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies()
-            .getWithResponse("rgdeviceregistry", "mynamespace", "myPolicy", com.azure.core.util.Context.NONE);
+    public static void getADevice(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.registryDevices()
+            .getWithResponse("myResourceGroup", "my-namespace-1",
+                "adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Policies_ListByResourceGroup
+### RegistryDevices_ListByNamespace
 
 ```java
 /**
- * Samples for Policies ListByResourceGroup.
+ * Samples for RegistryDevices ListByNamespace.
  */
-public final class PoliciesListByResourceGroupSamples {
+public final class RegistryDevicesListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Policies_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_RegistryDevices_ByNamespace.json
      */
     /**
-     * Sample code: List_Policies_ByResourceGroup.
+     * Sample code: List Devices for a Namespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listPoliciesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+        listDevicesForANamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.registryDevices()
+            .listByNamespace("myResourceGroup", "my-namespace-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Policies_RevokeIssuer
+### RegistryDevices_Update
 
 ```java
+import com.azure.resourcemanager.deviceregistry.models.RegistryDevice;
+import com.azure.resourcemanager.deviceregistry.models.RegistryDeviceEnablementState;
+import com.azure.resourcemanager.deviceregistry.models.RegistryDeviceUpdateProperties;
+
 /**
- * Samples for Policies RevokeIssuer.
+ * Samples for RegistryDevices Update.
  */
-public final class PoliciesRevokeIssuerSamples {
+public final class RegistryDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Policies_RevokeIssuer.json
+     * x-ms-original-file: 2026-11-01/Update_RegistryDevice.json
      */
     /**
-     * Sample code: Policies_RevokeIssuer.
+     * Sample code: Update a Device.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void policiesRevokeIssuer(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.policies()
-            .revokeIssuer("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Policies_Update
-
-```java
-import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
-import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
-import com.azure.resourcemanager.deviceregistry.models.Policy;
-import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
-
-/**
- * Samples for Policies Update.
- */
-public final class PoliciesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-03-01-preview/Update_Policies.json
-     */
-    /**
-     * Sample code: Update_Policies.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void updatePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        Policy resource = manager.policies()
-            .getWithResponse("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE)
+    public static void updateADevice(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        RegistryDevice resource = manager.registryDevices()
+            .getWithResponse("myResourceGroup", "my-namespace-1",
+                "adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new PolicyUpdateProperties().withCertificate(new CertificateConfiguration()
-                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+            .withProperties(
+                new RegistryDeviceUpdateProperties().withEnablementState(RegistryDeviceEnablementState.ENABLED)
+                    .withManufacturer("Contoso")
+                    .withModel("SmartSensorV2")
+                    .withHardwareRevision("1.0")
+                    .withSoftwareRevision("6.1"))
             .apply();
     }
 }
@@ -2475,7 +2836,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_SchemaRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaRegistry.
@@ -2492,7 +2853,7 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
             .withProperties(new SchemaRegistryProperties().withNamespace("sr-namespace-001")
                 .withDisplayName("Schema Registry namespace 001")
                 .withDescription("This is a sample Schema Registry")
-                .withStorageAccountContainerUrl("my-blob-storage.blob.core.windows.net/my-container"))
+                .withStorageAccountContainerUrl("https://my-blob-storage.blob.core.windows.net/my-container"))
             .create();
     }
 
@@ -2518,7 +2879,7 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
  */
 public final class SchemaRegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_SchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/Delete_SchemaRegistry.json
      */
     /**
      * Sample code: Delete_SchemaRegistry.
@@ -2539,7 +2900,7 @@ public final class SchemaRegistriesDeleteSamples {
  */
 public final class SchemaRegistriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_SchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/Get_SchemaRegistry.json
      */
     /**
      * Sample code: Get_SchemaRegistry.
@@ -2561,7 +2922,7 @@ public final class SchemaRegistriesGetByResourceGroupSamples {
  */
 public final class SchemaRegistriesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_SchemaRegistries_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_SchemaRegistries_BySubscription.json
      */
     /**
      * Sample code: List_SchemaRegistries_Subscription.
@@ -2583,7 +2944,7 @@ public final class SchemaRegistriesListSamples {
  */
 public final class SchemaRegistriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_SchemaRegistries_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_SchemaRegistries_ByResourceGroup.json
      */
     /**
      * Sample code: List_SchemaRegistries_ResourceGroup.
@@ -2610,7 +2971,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_SchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/Update_SchemaRegistry.json
      */
     /**
      * Sample code: Update_SchemaRegistry.
@@ -2652,7 +3013,7 @@ import com.azure.resourcemanager.deviceregistry.models.SchemaVersionProperties;
  */
 public final class SchemaVersionsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaVersion.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_SchemaVersion.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaVersion.
@@ -2680,7 +3041,7 @@ public final class SchemaVersionsCreateOrReplaceSamples {
  */
 public final class SchemaVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_SchemaVersion.json
+     * x-ms-original-file: 2026-11-01/Delete_SchemaVersion.json
      */
     /**
      * Sample code: Delete_SchemaVersion.
@@ -2702,7 +3063,7 @@ public final class SchemaVersionsDeleteSamples {
  */
 public final class SchemaVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_SchemaVersion.json
+     * x-ms-original-file: 2026-11-01/Get_SchemaVersion.json
      */
     /**
      * Sample code: Get_SchemaVersion.
@@ -2725,7 +3086,7 @@ public final class SchemaVersionsGetSamples {
  */
 public final class SchemaVersionsListBySchemaSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_SchemaVersions_BySchema.json
+     * x-ms-original-file: 2026-11-01/List_SchemaVersions_BySchema.json
      */
     /**
      * Sample code: List_SchemaVersions_Schema.
@@ -2754,7 +3115,7 @@ import java.util.Map;
  */
 public final class SchemasCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Schema.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Schema.json
      */
     /**
      * Sample code: CreateOrReplace_Schema.
@@ -2795,7 +3156,7 @@ public final class SchemasCreateOrReplaceSamples {
  */
 public final class SchemasDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Schema.json
+     * x-ms-original-file: 2026-11-01/Delete_Schema.json
      */
     /**
      * Sample code: Delete_Schema.
@@ -2817,7 +3178,7 @@ public final class SchemasDeleteSamples {
  */
 public final class SchemasGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Schema.json
+     * x-ms-original-file: 2026-11-01/Get_Schema.json
      */
     /**
      * Sample code: Schemas_Get.
@@ -2839,7 +3200,7 @@ public final class SchemasGetSamples {
  */
 public final class SchemasListBySchemaRegistrySamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Schemas_BySchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/List_Schemas_BySchemaRegistry.json
      */
     /**
      * Sample code: List_Schemas_SchemaRegistry.

@@ -13,18 +13,18 @@ public final class SchemaVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"uuid\":\"rjlnacgcck\",\"description\":\"hxkizvytnrzv\",\"schemaContent\":\"lj\",\"hash\":\"aeranokqgukkjqnv\",\"provisioningState\":\"Deleting\"},\"id\":\"laxxulc\",\"name\":\"isdos\",\"type\":\"jbjsvgjrwh\"}")
+            "{\"properties\":{\"uuid\":\"fedxihchrphkm\",\"description\":\"jdqnsdfzpbgt\",\"schemaContent\":\"kylkdghrj\",\"hash\":\"utlwxezwzhok\",\"provisioningState\":\"Accepted\"},\"id\":\"hh\",\"name\":\"qlgehg\",\"type\":\"pipifh\"}")
             .toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("hxkizvytnrzv", model.properties().description());
-        Assertions.assertEquals("lj", model.properties().schemaContent());
+        Assertions.assertEquals("jdqnsdfzpbgt", model.properties().description());
+        Assertions.assertEquals("kylkdghrj", model.properties().schemaContent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionInner model = new SchemaVersionInner()
-            .withProperties(new SchemaVersionProperties().withDescription("hxkizvytnrzv").withSchemaContent("lj"));
+        SchemaVersionInner model = new SchemaVersionInner().withProperties(
+            new SchemaVersionProperties().withDescription("jdqnsdfzpbgt").withSchemaContent("kylkdghrj"));
         model = BinaryData.fromObject(model).toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("hxkizvytnrzv", model.properties().description());
-        Assertions.assertEquals("lj", model.properties().schemaContent());
+        Assertions.assertEquals("jdqnsdfzpbgt", model.properties().description());
+        Assertions.assertEquals("kylkdghrj", model.properties().schemaContent());
     }
 }

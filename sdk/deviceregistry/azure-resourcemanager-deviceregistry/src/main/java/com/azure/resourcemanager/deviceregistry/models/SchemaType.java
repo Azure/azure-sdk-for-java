@@ -17,6 +17,16 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
     public static final SchemaType MESSAGE_SCHEMA = fromString("MessageSchema");
 
     /**
+     * W3C Web of Things Thing Model document.
+     */
+    public static final SchemaType THING_MODEL = fromString("ThingModel");
+
+    /**
+     * W3C Web of Things Thing Description document.
+     */
+    public static final SchemaType THING_DESCRIPTION = fromString("ThingDescription");
+
+    /**
      * Creates a new instance of SchemaType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
+import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.ManagementAction;
@@ -18,6 +19,8 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDatasetDataPoint;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceEvent;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceStream;
 import com.azure.resourcemanager.deviceregistry.models.StorageDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.StreamMqttDestination;
@@ -33,7 +36,7 @@ import java.util.Map;
  */
 public final class NamespaceAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceAsset.
@@ -55,7 +58,7 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                 .withDisplayName("AssetDisplayName")
                 .withDescription("This is a sample Asset")
                 .withDeviceRef(new DeviceRef().withDeviceName("device1").withEndpointName("opcuaendpointname"))
-                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1", "myAssetTypeRef2"))
+                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1"))
                 .withManufacturer("Contoso")
                 .withManufacturerUri("https://www.contoso.com/manufacturerUri")
                 .withModel("ContosoModel")
@@ -86,58 +89,37 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                     .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
                     .withDestinations(Arrays.asList(new DatasetBrokerStateStoreDestination().withConfiguration(
                         new BrokerStateStoreDestinationConfiguration().withKey("fakeTokenPlaceholder"))))
-                    .withDataPoints(Arrays.asList(
-                        new NamespaceDatasetDataPoint().withName("dataset1DataPoint1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withTypeRef("dataset1DataPoint1TypeRef"),
-                        new NamespaceDatasetDataPoint().withName("dataset1DataPoint2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withTypeRef("dataset1DataPoint2TypeRef")))))
-                .withStreams(Arrays.asList(
-                    new NamespaceStream().withName("stream1")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream1TypeRef")
-                        .withDestinations(Arrays.asList(new StreamStorageDestination()
-                            .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1")))),
-                    new NamespaceStream().withName("stream2")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream2TypeRef")
-                        .withDestinations(Arrays.asList(new StreamMqttDestination()
-                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testStream2")
-                                .withRetain(TopicRetainType.NEVER)
+                    .withDataPoints(Arrays.asList(new NamespaceDatasetDataPoint().withName("dataset1DataPoint1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withDataPointConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                        .withTypeRef("dataset1DataPoint1TypeRef")))))
+                .withEventGroups(Arrays.asList(new NamespaceEventGroup().withName("default")
+                    .withEvents(Arrays.asList(new NamespaceEvent().withName("event1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5")
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                        .withDestinations(Arrays.asList(new EventMqttDestination()
+                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
+                                .withRetain(TopicRetainType.KEEP)
                                 .withQos(MqttDestinationQos.QOS0)
-                                .withTtl(7200L))))))
-                .withManagementGroups(
-                    Arrays
-                        .asList(
-                            new ManagementGroup().withName("managementGroup1")
-                                .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
-                                .withTypeRef("managementGroup1TypeRef")
-                                .withDefaultTopic("/contoso/managementGroup1")
-                                .withDefaultTimeoutInSeconds(100)
-                                .withActions(
-                                    Arrays
-                                        .asList(
-                                            new ManagementAction().withName("action1")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
-                                                .withTypeRef("action1TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action1")
-                                                .withActionType(ManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60),
-                                            new ManagementAction().withName("action2")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile2")
-                                                .withTypeRef("action2TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action2")
-                                                .withActionType(ManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60))))))
+                                .withTtl(7200L))))
+                        .withTypeRef("event1Ref")))))
+                .withStreams(Arrays.asList(new NamespaceStream().withName("stream1")
+                    .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                    .withTypeRef("stream1TypeRef")
+                    .withDestinations(Arrays.asList(new StreamStorageDestination()
+                        .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))))
+                .withManagementGroups(Arrays.asList(new ManagementGroup().withName("managementGroup1")
+                    .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
+                    .withTypeRef("managementGroup1TypeRef")
+                    .withDefaultTopic("/contoso/managementGroup1")
+                    .withDefaultTimeoutInSeconds(100)
+                    .withActions(Arrays.asList(new ManagementAction().withName("action1")
+                        .withActionConfiguration("{\"retryCount\":5,\"retryBackoffInterval\":5}")
+                        .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
+                        .withTypeRef("action1TypeRef")
+                        .withTopic("/contoso/managementGroup1/action1")
+                        .withActionType(ManagementActionType.CALL)
+                        .withTimeoutInSeconds(60))))))
             .create();
     }
 

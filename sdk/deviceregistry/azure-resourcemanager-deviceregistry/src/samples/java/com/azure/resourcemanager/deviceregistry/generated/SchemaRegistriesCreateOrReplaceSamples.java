@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_SchemaRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaRegistry.
@@ -30,7 +30,7 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
             .withProperties(new SchemaRegistryProperties().withNamespace("sr-namespace-001")
                 .withDisplayName("Schema Registry namespace 001")
                 .withDescription("This is a sample Schema Registry")
-                .withStorageAccountContainerUrl("my-blob-storage.blob.core.windows.net/my-container"))
+                .withStorageAccountContainerUrl("https://my-blob-storage.blob.core.windows.net/my-container"))
             .create();
     }
 
