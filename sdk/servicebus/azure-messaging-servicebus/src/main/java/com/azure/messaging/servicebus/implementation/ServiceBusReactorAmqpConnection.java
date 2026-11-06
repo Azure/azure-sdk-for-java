@@ -151,7 +151,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     channelCache = new ChannelCacheWrapper(cache);
                 }
                 return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
-                    messageSerializer, retryOptions.getTryTimeout());
+                    messageSerializer, retryOptions);
             }));
         }));
     }

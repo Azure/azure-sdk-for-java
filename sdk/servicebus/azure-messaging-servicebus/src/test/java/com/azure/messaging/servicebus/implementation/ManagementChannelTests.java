@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
@@ -560,8 +561,8 @@ class ManagementChannelTests {
         when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
 
         ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
-        managementChannel
-            = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager, messageSerializer, TIMEOUT);
+        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager, messageSerializer,
+            new AmqpRetryOptions().setTryTimeout(TIMEOUT));
     }
 
     @AfterEach
