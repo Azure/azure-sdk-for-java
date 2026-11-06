@@ -124,6 +124,8 @@
     "djacoco",
     "djava",
     "djdk",
+    "djmh",
+    "dmdep",
     "doesnt",
     "dremote",
     "drevapi",

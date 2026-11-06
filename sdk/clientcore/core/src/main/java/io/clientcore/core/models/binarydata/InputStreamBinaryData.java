@@ -5,9 +5,8 @@ package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
-import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.utils.ImplUtils;
-import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
+import io.clientcore.core.implementation.utils.InputStreamUtils;
 import io.clientcore.core.implementation.utils.StreamUtil;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -116,14 +115,7 @@ public final class InputStreamBinaryData extends BinaryData {
                     ImplUtils.writeByteBufferToStream(bb, outputStream);
                 }
             } else {
-                // Otherwise use a generic write to.
-                // More optimizations can be done here based on the type of InputStream but this is the initial
-                // implementation, so it has been kept simple.
-                byte[] buffer = new byte[8192];
-                int read;
-                while ((read = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, read);
-                }
+                InputStreamUtils.transferTo(inputStream, outputStream);
             }
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
@@ -211,7 +203,7 @@ public final class InputStreamBinaryData extends BinaryData {
             List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
                 INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
+            return new InputStreamBinaryData(() -> InputStreamUtils.createInputStream(byteBuffers), length,
                 byteBuffers);
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
@@ -220,14 +212,7 @@ public final class InputStreamBinaryData extends BinaryData {
 
     private byte[] getBytes() {
         try {
-            AccessibleByteArrayOutputStream dataOutputBuffer = new AccessibleByteArrayOutputStream();
-            int nRead;
-            byte[] data = new byte[STREAM_READ_SIZE];
-            InputStream inputStream = this.content.get();
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                dataOutputBuffer.write(data, 0, nRead);
-            }
-            return dataOutputBuffer.toByteArrayUnsafe();
+            return InputStreamUtils.readAllBytes(this.content.get());
         } catch (IOException ex) {
             throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
