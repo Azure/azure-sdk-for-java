@@ -15,12 +15,14 @@ import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
+import com.azure.resourcemanager.eventhubs.fluent.FabricShortcutsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventhubs.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.OperationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.eventhubs.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventhubs.fluent.SchemaRegistriesClient;
+import com.azure.resourcemanager.eventhubs.fluent.UpgradePreferencesOperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -212,6 +214,34 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The FabricShortcutsClient object to access its operations.
+     */
+    private final FabricShortcutsClient fabricShortcuts;
+
+    /**
+     * Gets the FabricShortcutsClient object to access its operations.
+     * 
+     * @return the FabricShortcutsClient object.
+     */
+    public FabricShortcutsClient getFabricShortcuts() {
+        return this.fabricShortcuts;
+    }
+
+    /**
+     * The UpgradePreferencesOperationsClient object to access its operations.
+     */
+    private final UpgradePreferencesOperationsClient upgradePreferencesOperations;
+
+    /**
+     * Gets the UpgradePreferencesOperationsClient object to access its operations.
+     * 
+     * @return the UpgradePreferencesOperationsClient object.
+     */
+    public UpgradePreferencesOperationsClient getUpgradePreferencesOperations() {
+        return this.upgradePreferencesOperations;
+    }
+
+    /**
      * The ConfigurationsClient object to access its operations.
      */
     private final ConfigurationsClient configurations;
@@ -299,7 +329,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01-preview";
+        this.apiVersion = "2026-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
@@ -307,6 +337,8 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.consumerGroups = new ConsumerGroupsClientImpl(this);
+        this.fabricShortcuts = new FabricShortcutsClientImpl(this);
+        this.upgradePreferencesOperations = new UpgradePreferencesOperationsClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
