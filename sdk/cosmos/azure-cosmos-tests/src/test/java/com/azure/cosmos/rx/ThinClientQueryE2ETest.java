@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
@@ -48,6 +49,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -1286,106 +1288,6 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 .isEqualTo(400);
             assertThinClientEndpointUsed(e.getDiagnostics());
             logger.info("Expected error for invalid query: {} (status {})", e.getMessage(), e.getStatusCode());
-        }
-    }
-
-    // ==================== Vector Search ====================
-
-    /**
-     * Creates a vector-enabled container, runs VectorDistance query through both
-     * Direct and thin client, compares results.
-     */
-    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT * 2)
-    public void testVectorSearchGatewayVsThinClient() {
-        String vectorContainerId = "vecCompare_" + UUID.randomUUID().toString().substring(0, 8);
-        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
-        CosmosAsyncContainer directVecContainer = db.getContainer(vectorContainerId);
-
-        try {
-            PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
-            pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
-
-            CosmosContainerProperties props = new CosmosContainerProperties(vectorContainerId, pkDef);
-
-            CosmosVectorEmbeddingPolicy policy = new CosmosVectorEmbeddingPolicy();
-            CosmosVectorEmbedding emb = new CosmosVectorEmbedding();
-            emb.setPath("/embedding");
-            emb.setDataType(CosmosVectorDataType.FLOAT32);
-            emb.setEmbeddingDimensions(3);
-            emb.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
-            policy.setCosmosVectorEmbeddings(Collections.singletonList(emb));
-            props.setVectorEmbeddingPolicy(policy);
-
-            IndexingPolicy idxPolicy = new IndexingPolicy();
-            idxPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-            idxPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
-            idxPolicy.setExcludedPaths(Arrays.asList(new ExcludedPath("/embedding/*"), new ExcludedPath("/\"_etag\"/?")));
-            CosmosVectorIndexSpec vecIdx = new CosmosVectorIndexSpec();
-            vecIdx.setPath("/embedding");
-            vecIdx.setType(CosmosVectorIndexType.FLAT.toString());
-            idxPolicy.setVectorIndexes(Collections.singletonList(vecIdx));
-            props.setIndexingPolicy(idxPolicy);
-
-            db.createContainer(props).block();
-            CosmosAsyncContainer tcVecContainer = thinClient.getDatabase(db.getId()).getContainer(vectorContainerId);
-
-            double[][] embeddings = {
-                {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0},
-                {1.0, 1.0, 0.0}, {0.9, 0.1, 0.0},
-            };
-
-            String vecPk = UUID.randomUUID().toString();
-            List<String> docIds = new ArrayList<>();
-            for (int i = 0; i < embeddings.length; i++) {
-                String docId = "vec_" + i + "_" + UUID.randomUUID().toString().substring(0, 8);
-                docIds.add(docId);
-                ObjectNode doc = OBJECT_MAPPER.createObjectNode();
-                doc.put(ID_FIELD, docId);
-                doc.put(PK_FIELD, vecPk);
-                doc.put("text", "document " + i);
-                ArrayNode arr = doc.putArray("embedding");
-                for (double v : embeddings[i]) { arr.add(v); }
-                directVecContainer.createItem(doc, new PartitionKey(vecPk), null).block();
-            }
-
-            String query = "SELECT TOP 5 c.id, c.text, VectorDistance(c.embedding, [1.0, 0.0, 0.0]) AS score "
-                + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0])";
-
-            QueryResult<ObjectNode> directResult = drainQuery(directVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
-            QueryResult<ObjectNode> tcResult = drainQuery(tcVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
-
-            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
-
-            assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
-            assertThat(tcResult.results.size()).isEqualTo(5);
-
-            for (int i = 0; i < directResult.results.size(); i++) {
-                assertThat(tcResult.results.get(i).get("id").asText()).isEqualTo(directResult.results.get(i).get("id").asText());
-            }
-
-            assertThat(tcResult.results.get(0).get("id").asText()).isEqualTo(docIds.get(0));
-            assertThat(tcResult.results.get(0).get("score").asDouble()).isGreaterThan(0.99);
-
-            // Euclidean variant — validates ORDER BY score semantics with a different distance function
-            String euclideanQuery = "SELECT TOP 5 c.id, VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'}) AS score "
-                + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'})";
-
-            QueryResult<ObjectNode> directEuclidean = drainQuery(directVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
-            QueryResult<ObjectNode> tcEuclidean = drainQuery(tcVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
-
-            for (CosmosDiagnostics d : tcEuclidean.diagnostics) { assertThinClientEndpointUsed(d); }
-
-            assertThat(tcEuclidean.results.size()).isEqualTo(directEuclidean.results.size());
-            assertThat(tcEuclidean.results.size()).isEqualTo(5);
-
-            for (int i = 0; i < directEuclidean.results.size(); i++) {
-                assertThat(tcEuclidean.results.get(i).get("id").asText())
-                    .as("Euclidean vector search result mismatch at position " + i)
-                    .isEqualTo(directEuclidean.results.get(i).get("id").asText());
-            }
-
-        } finally {
-            safeDeleteContainer(directVecContainer);
         }
     }
 

@@ -1,0 +1,28 @@
+{
+  "matrix": {
+    "ConnectionMode": {
+      "Direct": {
+        "ConnectionMode": "Direct",
+        "Http2Enabled": "false",
+        "ThinClientEnabled": "false"
+      },
+      "Compute": {
+        "ConnectionMode": "Compute",
+        "Http2Enabled": "true",
+        "ThinClientEnabled": "false"
+      },
+      "ThinClient": {
+        "ConnectionMode": "ThinClient",
+        "Http2Enabled": "true",
+        "ThinClientEnabled": "true"
+      }
+    },
+    "Agent": {
+      "ubuntu": {
+        "OSVmImage": "env:LINUXVMIMAGE",
+        "Pool": "env:LINUXPOOL"
+      }
+    },
+    "JavaTestVersion": [ "1.21" ]
+  }
+}
