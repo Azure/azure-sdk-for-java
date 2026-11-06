@@ -57,6 +57,17 @@ public final class ManagedOpsProperties implements JsonSerializable<ManagedOpsPr
     }
 
     /**
+     * Set the sku property: Product plan details of this resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the ManagedOpsProperties object itself.
+     */
+    public ManagedOpsProperties withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
@@ -110,6 +121,7 @@ public final class ManagedOpsProperties implements JsonSerializable<ManagedOpsPr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("desiredConfiguration", this.desiredConfiguration);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 

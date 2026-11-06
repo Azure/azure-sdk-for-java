@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managedops.generated;
  */
 public final class ManagedOpsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-28-preview/ManagedOps_Delete.json
+     * x-ms-original-file: 2026-01-06-preview/ManagedOps_Delete.json
      */
     /**
      * Sample code: ManagedOps_Delete.
