@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FlowsGetDestinationEndpointPortsWithResponseMockTests {
     @Test
     public void testGetDestinationEndpointPortsWithResponse() throws Exception {
-        String responseStr = "{\"ports\":[7659517955968508578,3069082401150326102,5037986779075366865]}";
+        String responseStr = "{\"ports\":[6292582819663936932,8210651043064796802]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,9 @@ public final class FlowsGetDestinationEndpointPortsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetDestinationEndpointPortsResult response = manager.flows()
-            .getDestinationEndpointPortsWithResponse("laohoqkp", "t", "qjilaywkdcwmqsyr",
-                com.azure.core.util.Context.NONE)
+            .getDestinationEndpointPortsWithResponse("nezoellnkki", "w", "mtum", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(7659517955968508578L, response.ports().get(0));
+        Assertions.assertEquals(6292582819663936932L, response.ports().get(0));
     }
 }

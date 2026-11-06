@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class FlowsSetSourceAddressesSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/setFlowSourceAddresses.json
+     * x-ms-original-file: 2026-06-29-preview/setFlowSourceAddresses.json
      */
     /**
      * Sample code: Set the flow stream source addresses.

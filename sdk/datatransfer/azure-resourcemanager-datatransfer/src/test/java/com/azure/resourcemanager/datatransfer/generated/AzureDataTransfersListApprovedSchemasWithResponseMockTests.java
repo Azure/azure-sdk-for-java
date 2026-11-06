@@ -25,7 +25,7 @@ public final class AzureDataTransfersListApprovedSchemasWithResponseMockTests {
     @Test
     public void testListApprovedSchemasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"aodkwwnbafoc\",\"connectionId\":\"hzhaquvwsxb\",\"status\":\"Approved\",\"name\":\"ervqchoadhrsxqvz\",\"content\":\"pabdsrg\",\"direction\":\"Receive\",\"schemaUri\":\"lzrsub\",\"schemaType\":\"Zip\"},{\"id\":\"hjnlt\",\"connectionId\":\"tjdvqydieqqkwa\",\"status\":\"Approved\",\"name\":\"xv\",\"content\":\"xoebwg\",\"direction\":\"Send\",\"schemaUri\":\"banbaupwtzv\",\"schemaType\":\"Xsd\"},{\"id\":\"ozkxbzrpejplss\",\"connectionId\":\"bttt\",\"status\":\"New\",\"name\":\"xunrswgkpjhboy\",\"content\":\"ebhuhkslgwlokhu\",\"direction\":\"Receive\",\"schemaUri\":\"yzcqypzqzufg\",\"schemaType\":\"Zip\"},{\"id\":\"jyvdwtfxptpqayam\",\"connectionId\":\"cf\",\"status\":\"New\",\"name\":\"xsnxocuullojk\",\"content\":\"yhgww\",\"direction\":\"Receive\",\"schemaUri\":\"dbdljz\",\"schemaType\":\"Zip\"}]}";
+            = "{\"value\":[{\"id\":\"vkunhdim\",\"connectionId\":\"ktirzka\",\"status\":\"New\",\"name\":\"cdocfqpl\",\"content\":\"o\",\"direction\":\"Send\",\"schemaUri\":\"wrjlvzkl\",\"schemaType\":\"Zip\"},{\"id\":\"ikyjtkakvlb\",\"connectionId\":\"hjvpzaptu\",\"status\":\"Approved\",\"name\":\"oizjixwfgcdiyk\",\"content\":\"xwnujvqyn\",\"direction\":\"Receive\",\"schemaUri\":\"tmdmuqohhihr\",\"schemaType\":\"Zip\"},{\"id\":\"ddrwjcljbrhlhpvz\",\"connectionId\":\"bwenninafh\",\"status\":\"New\",\"name\":\"rmvzti\",\"content\":\"wviq\",\"direction\":\"Send\",\"schemaUri\":\"hkrcqx\",\"schemaType\":\"Xsd\"},{\"id\":\"zarmqcbpoks\",\"connectionId\":\"invagovjyhd\",\"status\":\"New\",\"name\":\"dvcehqw\",\"content\":\"txnmxgnmguz\",\"direction\":\"Send\",\"schemaUri\":\"orbalkj\",\"schemaType\":\"Xsd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,17 +36,17 @@ public final class AzureDataTransfersListApprovedSchemasWithResponseMockTests {
 
         SchemasListResult response = manager.azureDataTransfers()
             .listApprovedSchemasWithResponse(
-                new ListApprovedSchemasRequest().withPipeline("knpdgzigjsu").withDirection(Direction.RECEIVE),
+                new ListApprovedSchemasRequest().withPipeline("gkzc").withDirection(Direction.SEND),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("aodkwwnbafoc", response.value().get(0).id());
-        Assertions.assertEquals("hzhaquvwsxb", response.value().get(0).connectionId());
-        Assertions.assertEquals(SchemaStatus.APPROVED, response.value().get(0).status());
-        Assertions.assertEquals("ervqchoadhrsxqvz", response.value().get(0).name());
-        Assertions.assertEquals("pabdsrg", response.value().get(0).content());
-        Assertions.assertEquals(Direction.RECEIVE, response.value().get(0).direction());
-        Assertions.assertEquals("lzrsub", response.value().get(0).schemaUri());
+        Assertions.assertEquals("vkunhdim", response.value().get(0).id());
+        Assertions.assertEquals("ktirzka", response.value().get(0).connectionId());
+        Assertions.assertEquals(SchemaStatus.NEW, response.value().get(0).status());
+        Assertions.assertEquals("cdocfqpl", response.value().get(0).name());
+        Assertions.assertEquals("o", response.value().get(0).content());
+        Assertions.assertEquals(Direction.SEND, response.value().get(0).direction());
+        Assertions.assertEquals("wrjlvzkl", response.value().get(0).schemaUri());
         Assertions.assertEquals(SchemaType.ZIP, response.value().get(0).schemaType());
     }
 }

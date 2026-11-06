@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SetDestinationEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SetDestinationEndpoints model
-            = BinaryData.fromString("{\"endpoints\":[\"tffyaqit\",\"hheioqaqhvseuf\",\"qyrxp\"]}")
-                .toObject(SetDestinationEndpoints.class);
-        Assertions.assertEquals("tffyaqit", model.endpoints().get(0));
+        SetDestinationEndpoints model = BinaryData.fromString("{\"endpoints\":[\"r\",\"aiouaubrjt\",\"oq\"]}")
+            .toObject(SetDestinationEndpoints.class);
+        Assertions.assertEquals("r", model.endpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SetDestinationEndpoints model
-            = new SetDestinationEndpoints().withEndpoints(Arrays.asList("tffyaqit", "hheioqaqhvseuf", "qyrxp"));
+            = new SetDestinationEndpoints().withEndpoints(Arrays.asList("r", "aiouaubrjt", "oq"));
         model = BinaryData.fromObject(model).toObject(SetDestinationEndpoints.class);
-        Assertions.assertEquals("tffyaqit", model.endpoints().get(0));
+        Assertions.assertEquals("r", model.endpoints().get(0));
     }
 }

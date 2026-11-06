@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class FlowsSetDestinationEndpointsSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/setFlowDestinationEndpoints.json
+     * x-ms-original-file: 2026-06-29-preview/setFlowDestinationEndpoints.json
      */
     /**
      * Sample code: Set the flow stream destination endpoints.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getFlow.json
+     * x-ms-original-file: 2026-06-29-preview/getFlow.json
      */
     /**
      * Sample code: Gets flow resource.

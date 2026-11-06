@@ -14,16 +14,22 @@ import com.azure.resourcemanager.datatransfer.fluent.models.ConnectionInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.ListFlowsByPipelineResultInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.PipelineInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.SchemasListResultInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowResponseBodyInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowSummaryInner;
 import com.azure.resourcemanager.datatransfer.models.Action;
 import com.azure.resourcemanager.datatransfer.models.Connection;
 import com.azure.resourcemanager.datatransfer.models.ConnectionIdList;
 import com.azure.resourcemanager.datatransfer.models.ListFlowsByPipelineResult;
+import com.azure.resourcemanager.datatransfer.models.ListTransferFlowsByPipelineRequestBody;
 import com.azure.resourcemanager.datatransfer.models.Pipeline;
 import com.azure.resourcemanager.datatransfer.models.Pipelines;
 import com.azure.resourcemanager.datatransfer.models.PipelinesPatch;
 import com.azure.resourcemanager.datatransfer.models.ResourceBody;
 import com.azure.resourcemanager.datatransfer.models.Schema;
 import com.azure.resourcemanager.datatransfer.models.SchemasListResult;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowRequestBody;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowResponseBody;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowSummary;
 
 public final class PipelinesImpl implements Pipelines {
     private static final ClientLogger LOGGER = new ClientLogger(PipelinesImpl.class);
@@ -111,6 +117,28 @@ public final class PipelinesImpl implements Pipelines {
         }
     }
 
+    public TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        TransferFlowResponseBodyInner inner
+            = this.serviceClient().approveTransferFlow(resourceGroupName, pipelineName, body);
+        if (inner != null) {
+            return new TransferFlowResponseBodyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        TransferFlowResponseBodyInner inner
+            = this.serviceClient().approveTransferFlow(resourceGroupName, pipelineName, body, context);
+        if (inner != null) {
+            return new TransferFlowResponseBodyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Pipeline executeAction(String resourceGroupName, String pipelineName, Action action) {
         PipelineInner inner = this.serviceClient().executeAction(resourceGroupName, pipelineName, action);
         if (inner != null) {
@@ -146,6 +174,19 @@ public final class PipelinesImpl implements Pipelines {
         }
     }
 
+    public PagedIterable<TransferFlowSummary> listTransferFlows(String resourceGroupName, String pipelineName) {
+        PagedIterable<TransferFlowSummaryInner> inner
+            = this.serviceClient().listTransferFlows(resourceGroupName, pipelineName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransferFlowSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<TransferFlowSummary> listTransferFlows(String resourceGroupName, String pipelineName,
+        ListTransferFlowsByPipelineRequestBody body, Context context) {
+        PagedIterable<TransferFlowSummaryInner> inner
+            = this.serviceClient().listTransferFlows(resourceGroupName, pipelineName, body, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransferFlowSummaryImpl(inner1, this.manager()));
+    }
+
     public Response<SchemasListResult> listSchemasListWithResponse(String resourceGroupName, String pipelineName,
         Schema schema, Context context) {
         Response<SchemasListResultInner> inner
@@ -178,6 +219,28 @@ public final class PipelinesImpl implements Pipelines {
             = this.serviceClient().rejectConnection(resourceGroupName, pipelineName, connection, context);
         if (inner != null) {
             return new ConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        TransferFlowResponseBodyInner inner
+            = this.serviceClient().rejectTransferFlow(resourceGroupName, pipelineName, body);
+        if (inner != null) {
+            return new TransferFlowResponseBodyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        TransferFlowResponseBodyInner inner
+            = this.serviceClient().rejectTransferFlow(resourceGroupName, pipelineName, body, context);
+        if (inner != null) {
+            return new TransferFlowResponseBodyImpl(inner, this.manager());
         } else {
             return null;
         }

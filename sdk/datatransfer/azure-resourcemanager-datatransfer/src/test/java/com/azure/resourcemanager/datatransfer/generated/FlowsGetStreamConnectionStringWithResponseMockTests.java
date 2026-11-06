@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FlowsGetStreamConnectionStringWithResponseMockTests {
     @Test
     public void testGetStreamConnectionStringWithResponse() throws Exception {
-        String responseStr = "{\"connectionString\":\"umljcirvpef\"}";
+        String responseStr = "{\"connectionString\":\"rbjgmn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,10 @@ public final class FlowsGetStreamConnectionStringWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetStreamConnectionStringResult response = manager.flows()
-            .getStreamConnectionStringWithResponse("rndpgfjodhdaqotw", "hipx", "gsabvcipowzafc",
+            .getStreamConnectionStringWithResponse("c", "buvczldbglzoutb", "aqgzekajclyzgs",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("umljcirvpef", response.connectionString());
+        Assertions.assertEquals("rbjgmn", response.connectionString());
     }
 }

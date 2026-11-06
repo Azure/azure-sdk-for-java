@@ -17,23 +17,22 @@ public final class ConnectionsPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionsPatch model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"sxiftozq\",\"tenantId\":\"hftwesgog\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"rghxjb\":{\"principalId\":\"nxkrlgnyhmossxkk\",\"clientId\":\"h\"},\"z\":{\"principalId\":\"qxvcxgfrpdsofb\",\"clientId\":\"rnsvbuswd\"},\"yuxzejntpsewgi\":{\"principalId\":\"bycnunvjsrtkf\",\"clientId\":\"nopqgikyzirtx\"}}},\"tags\":{\"mieoxorgguf\":\"qukrydxt\"}}")
+            "{\"identity\":{\"principalId\":\"vydfceacvlhvygdy\",\"tenantId\":\"umrtwnawjsl\",\"type\":\"None\",\"userAssignedIdentities\":{\"hqnrn\":{\"principalId\":\"jgcyztsfmznba\",\"clientId\":\"ph\"},\"ydv\":{\"principalId\":\"x\",\"clientId\":\"uwrykqgaifmvikl\"},\"volvtn\":{\"principalId\":\"bejdznxcv\",\"clientId\":\"rhnj\"}}},\"tags\":{\"mjdftu\":\"fzg\",\"mczuo\":\"jltduceam\",\"ssxmojms\":\"ejwcwwqiok\"}}")
             .toObject(ConnectionsPatch.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("qukrydxt", model.tags().get("mieoxorgguf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("fzg", model.tags().get("mjdftu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionsPatch model = new ConnectionsPatch()
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("rghxjb", new UserAssignedIdentity(), "z",
-                        new UserAssignedIdentity(), "yuxzejntpsewgi", new UserAssignedIdentity())))
-            .withTags(mapOf("mieoxorgguf", "qukrydxt"));
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("hqnrn", new UserAssignedIdentity(), "ydv",
+                    new UserAssignedIdentity(), "volvtn", new UserAssignedIdentity())))
+            .withTags(mapOf("mjdftu", "fzg", "mczuo", "jltduceam", "ssxmojms", "ejwcwwqiok"));
         model = BinaryData.fromObject(model).toObject(ConnectionsPatch.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("qukrydxt", model.tags().get("mieoxorgguf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("fzg", model.tags().get("mjdftu"));
     }
 
     // Use "Map.of" if available

@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FlowsGetDestinationEndpointsWithResponseMockTests {
     @Test
     public void testGetDestinationEndpointsWithResponse() throws Exception {
-        String responseStr = "{\"endpoints\":[\"zocrdzgczeu\",\"tgxdncaqt\"]}";
+        String responseStr = "{\"endpoints\":[\"vfqepd\",\"cl\",\"uubwyvpjb\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,10 @@ public final class FlowsGetDestinationEndpointsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetDestinationEndpointsResult response = manager.flows()
-            .getDestinationEndpointsWithResponse("lfylnkkbjpjvlyw", "tmfwobbjwhl", "yj",
+            .getDestinationEndpointsWithResponse("uaxroqvqpilrgu", "canlduwzorxs", "mxaqklxym",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zocrdzgczeu", response.endpoints().get(0));
+        Assertions.assertEquals("vfqepd", response.endpoints().get(0));
     }
 }

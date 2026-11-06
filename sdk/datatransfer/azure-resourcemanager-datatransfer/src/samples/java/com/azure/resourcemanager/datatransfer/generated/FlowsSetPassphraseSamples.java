@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.SetStreamPassphrase;
  */
 public final class FlowsSetPassphraseSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/setFlowPassphrase.json
+     * x-ms-original-file: 2026-06-29-preview/setFlowPassphrase.json
      */
     /**
      * Sample code: Set the flow stream passphrase.

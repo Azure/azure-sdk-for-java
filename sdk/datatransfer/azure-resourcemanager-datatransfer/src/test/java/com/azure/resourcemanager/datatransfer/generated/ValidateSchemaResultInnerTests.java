@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateSchemaResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateSchemaResultInner model
-            = BinaryData.fromString("{\"status\":\"Succeeded\",\"message\":\"tuodxeszabbelaw\"}")
-                .toObject(ValidateSchemaResultInner.class);
-        Assertions.assertEquals(ValidateSchemaStatus.SUCCEEDED, model.status());
-        Assertions.assertEquals("tuodxeszabbelaw", model.message());
+        ValidateSchemaResultInner model = BinaryData.fromString("{\"status\":\"Failed\",\"message\":\"swokm\"}")
+            .toObject(ValidateSchemaResultInner.class);
+        Assertions.assertEquals(ValidateSchemaStatus.FAILED, model.status());
+        Assertions.assertEquals("swokm", model.message());
     }
 }

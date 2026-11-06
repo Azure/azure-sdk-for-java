@@ -36,14 +36,15 @@ public final class FlowsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.flows()
-            .update("yzbfvxovqkx", "uxqggvqrnhyhl", "cjsqggjhffbxr", new FlowsPatch()
-                .withProperties(new FlowsPatchProperties().withStreamProtocol(StreamProtocol.UDP)
-                    .withPassphrase("peuqlsdxeqztvxwm")
-                    .withStreamId("mjswenawwamecle")
-                    .withStreamLatency(7889615004017663344L))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("cswqa", new UserAssignedIdentity())))
-                .withTags(mapOf("tpgaeukya", "vtxigvjr", "csklhsidsjt", "ohpmwhqn", "gazlsvbz", "lpbnin", "e", "cpuo")),
+            .update("ffcvvyezslpuxgcb", "svalpnptwtrkxgpa", "wugxyqvnjobf",
+                new FlowsPatch()
+                    .withProperties(new FlowsPatchProperties().withStreamProtocol(StreamProtocol.RTP)
+                        .withPassphrase("iuhzzgqlmfa")
+                        .withStreamId("z")
+                        .withStreamLatency(341905894524829872L))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("nymmqgwokmikpa", new UserAssignedIdentity())))
+                    .withTags(mapOf("w", "mjxuvjipfdvhaxd", "pphthdklmvetatla", "ae", "oxrpogw", "fqoixwgiksbbvt")),
                 com.azure.core.util.Context.NONE);
 
     }

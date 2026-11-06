@@ -82,6 +82,20 @@ public interface DataTransferManagementClient {
     FlowsClient getFlows();
 
     /**
+     * Gets the StorageTransferFlowsClient object to access its operations.
+     * 
+     * @return the StorageTransferFlowsClient object.
+     */
+    StorageTransferFlowsClient getStorageTransferFlows();
+
+    /**
+     * Gets the MessagingTransferFlowsClient object to access its operations.
+     * 
+     * @return the MessagingTransferFlowsClient object.
+     */
+    MessagingTransferFlowsClient getMessagingTransferFlows();
+
+    /**
      * Gets the AzureDataTransfersClient object to access its operations.
      * 
      * @return the AzureDataTransfersClient object.

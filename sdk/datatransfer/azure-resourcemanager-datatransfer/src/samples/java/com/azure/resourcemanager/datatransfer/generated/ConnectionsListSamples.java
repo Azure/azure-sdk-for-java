@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class ConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/listPendingConnections.json
+     * x-ms-original-file: 2026-06-29-preview/listPendingConnections.json
      */
     /**
      * Sample code: Lists a list of pending connections.

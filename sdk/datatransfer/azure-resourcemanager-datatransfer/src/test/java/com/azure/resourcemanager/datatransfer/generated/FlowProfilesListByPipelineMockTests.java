@@ -30,7 +30,7 @@ public final class FlowProfilesListByPipelineMockTests {
     @Test
     public void testListByPipeline() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"flowProfileId\":\"smexiitdf\",\"replicationScenario\":\"SoftwareArtifacts\",\"status\":\"Disabled\",\"description\":\"yasiibmiy\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"ClamAv\",\"ClamAv\"]},\"archives\":{\"minimumSizeForExpansion\":1948425303402168643,\"maximumExpansionSizeLimit\":5871871887515703016,\"maximumDepthLimit\":5528337560499983450,\"maximumCompressionRatioLimit\":31.01483222425886},\"dataSize\":{\"maximum\":4211321915913216397,\"minimum\":5485854076220810952},\"mimeFilters\":{\"type\":\"Deny\",\"filters\":[{},{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"prot\",\"reference\":\"Inline\",\"schema\":\"ndm\"},\"textMatching\":{\"deny\":[{\"text\":\"gcmjkavl\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Insensitive\"},{\"text\":\"bmftpmdt\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Sensitive\"},{\"text\":\"ltfvnz\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Sensitive\"},{\"text\":\"t\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Insensitive\"}]}}},\"identity\":{\"principalId\":\"pvpbdbzqgqqiheds\",\"tenantId\":\"wthmkyib\",\"type\":\"None\",\"userAssignedIdentities\":{\"sufco\":{\"principalId\":\"sgqcwdho\",\"clientId\":\"dtmcd\"},\"wqqxeysko\":{\"principalId\":\"xbzlmc\",\"clientId\":\"apcvhdbe\"}}},\"location\":\"zinkfkbgbzbowxeq\",\"tags\":{\"qkjjeokbz\":\"jmygvk\",\"czurtlei\":\"fezrx\",\"bkwvzg\":\"q\",\"bzdixzmq\":\"zvd\"},\"id\":\"noda\",\"name\":\"opqhewjptmc\",\"type\":\"sbostzel\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"flowProfileId\":\"txejwabm\",\"replicationScenario\":\"Complex\",\"status\":\"Obsolete\",\"description\":\"tmvcop\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"ClamAv\",\"Defender\",\"ClamAv\",\"Defender\"]},\"archives\":{\"minimumSizeForExpansion\":2846253840488751642,\"maximumExpansionSizeLimit\":2114516081328845996,\"maximumDepthLimit\":6480720384030637820,\"maximumCompressionRatioLimit\":20.089415326798854},\"dataSize\":{\"maximum\":8969096089825659884,\"minimum\":8289506453605187678},\"mimeFilters\":{\"type\":\"Allow\",\"filters\":[{},{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"dfvclglxnfu\",\"reference\":\"Inline\",\"schema\":\"busqogsfi\"},\"textMatching\":{\"deny\":[{\"text\":\"ansharujtjiqxfz\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Insensitive\"}]}}},\"identity\":{\"principalId\":\"vwkpqh\",\"tenantId\":\"enuygbq\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"un\":{\"principalId\":\"ewvnqvcdlgu\",\"clientId\":\"cmfdjwnlax\"},\"soxhlwntsjgqr\":{\"principalId\":\"ikczvvitacgxmf\",\"clientId\":\"serxht\"},\"yuel\":{\"principalId\":\"y\",\"clientId\":\"uuuybnchrsziz\"},\"yggagflnlgmt\":{\"principalId\":\"tn\",\"clientId\":\"bf\"}}},\"location\":\"ahzjmucftb\",\"tags\":{\"fusuckzmkwklsno\":\"lrohkpig\",\"hjnhgwydyynfsvk\":\"axmqeqal\",\"ta\":\"gbv\"},\"id\":\"arfdlpukhpyrnei\",\"name\":\"jcpeogkhnmg\",\"type\":\"ro\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,41 +40,41 @@ public final class FlowProfilesListByPipelineMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FlowProfile> response
-            = manager.flowProfiles().listByPipeline("irpghriypoqeyh", "qhykprlpyzn", com.azure.core.util.Context.NONE);
+            = manager.flowProfiles().listByPipeline("cslmotoebnfxo", "vcjkgd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zinkfkbgbzbowxeq", response.iterator().next().location());
-        Assertions.assertEquals("jmygvk", response.iterator().next().tags().get("qkjjeokbz"));
-        Assertions.assertEquals(DataClassType.SOFTWARE_ARTIFACTS,
-            response.iterator().next().properties().replicationScenario());
-        Assertions.assertEquals(FlowProfileStatus.DISABLED, response.iterator().next().properties().status());
-        Assertions.assertEquals("yasiibmiy", response.iterator().next().properties().description());
+        Assertions.assertEquals("ahzjmucftb", response.iterator().next().location());
+        Assertions.assertEquals("lrohkpig", response.iterator().next().tags().get("fusuckzmkwklsno"));
+        Assertions.assertEquals(DataClassType.COMPLEX, response.iterator().next().properties().replicationScenario());
+        Assertions.assertEquals(FlowProfileStatus.OBSOLETE, response.iterator().next().properties().status());
+        Assertions.assertEquals("tmvcop", response.iterator().next().properties().description());
         Assertions.assertEquals(AntivirusSolutions.CLAM_AV,
             response.iterator().next().properties().rulesets().antivirus().avSolutions().get(0));
-        Assertions.assertEquals(1948425303402168643L,
+        Assertions.assertEquals(2846253840488751642L,
             response.iterator().next().properties().rulesets().archives().minimumSizeForExpansion());
-        Assertions.assertEquals(5871871887515703016L,
+        Assertions.assertEquals(2114516081328845996L,
             response.iterator().next().properties().rulesets().archives().maximumExpansionSizeLimit());
-        Assertions.assertEquals(5528337560499983450L,
+        Assertions.assertEquals(6480720384030637820L,
             response.iterator().next().properties().rulesets().archives().maximumDepthLimit());
-        Assertions.assertEquals(31.01483222425886D,
+        Assertions.assertEquals(20.089415326798854D,
             response.iterator().next().properties().rulesets().archives().maximumCompressionRatioLimit());
-        Assertions.assertEquals(4211321915913216397L,
+        Assertions.assertEquals(8969096089825659884L,
             response.iterator().next().properties().rulesets().dataSize().maximum());
-        Assertions.assertEquals(5485854076220810952L,
+        Assertions.assertEquals(8289506453605187678L,
             response.iterator().next().properties().rulesets().dataSize().minimum());
-        Assertions.assertEquals(FilterType.DENY,
+        Assertions.assertEquals(FilterType.ALLOW,
             response.iterator().next().properties().rulesets().mimeFilters().type());
-        Assertions.assertEquals("prot",
+        Assertions.assertEquals("dfvclglxnfu",
             response.iterator().next().properties().rulesets().xmlFilters().defaultNamespace());
         Assertions.assertEquals(XmlReferenceType.INLINE,
             response.iterator().next().properties().rulesets().xmlFilters().reference());
-        Assertions.assertEquals("ndm", response.iterator().next().properties().rulesets().xmlFilters().schema());
-        Assertions.assertEquals("gcmjkavl",
+        Assertions.assertEquals("busqogsfi", response.iterator().next().properties().rulesets().xmlFilters().schema());
+        Assertions.assertEquals("ansharujtjiqxfz",
             response.iterator().next().properties().rulesets().textMatching().deny().get(0).text());
         Assertions.assertEquals(MatchType.PARTIAL,
             response.iterator().next().properties().rulesets().textMatching().deny().get(0).matchType());
         Assertions.assertEquals(Casing.INSENSITIVE,
             response.iterator().next().properties().rulesets().textMatching().deny().get(0).caseSensitivity());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

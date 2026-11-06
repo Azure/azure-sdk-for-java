@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SetStreamPassphraseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SetStreamPassphrase model = BinaryData.fromString("{\"value\":\"cgq\"}").toObject(SetStreamPassphrase.class);
-        Assertions.assertEquals("cgq", model.value());
+        SetStreamPassphrase model
+            = BinaryData.fromString("{\"value\":\"uojrngiflr\"}").toObject(SetStreamPassphrase.class);
+        Assertions.assertEquals("uojrngiflr", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SetStreamPassphrase model = new SetStreamPassphrase().withValue("cgq");
+        SetStreamPassphrase model = new SetStreamPassphrase().withValue("uojrngiflr");
         model = BinaryData.fromObject(model).toObject(SetStreamPassphrase.class);
-        Assertions.assertEquals("cgq", model.value());
+        Assertions.assertEquals("uojrngiflr", model.value());
     }
 }

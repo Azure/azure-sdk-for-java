@@ -25,7 +25,7 @@ public final class PipelinesListSchemasListWithResponseMockTests {
     @Test
     public void testListSchemasListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"gdhg\",\"connectionId\":\"i\",\"status\":\"Approved\",\"name\":\"iwrqofulopmjnl\",\"content\":\"whc\",\"direction\":\"Receive\",\"schemaUri\":\"bke\",\"schemaType\":\"Xsd\"},{\"id\":\"uerct\",\"connectionId\":\"oyin\",\"status\":\"Approved\",\"name\":\"rlcyrduc\",\"content\":\"go\",\"direction\":\"Send\",\"schemaUri\":\"srucvcrrpcjtt\",\"schemaType\":\"Xsd\"},{\"id\":\"jeaq\",\"connectionId\":\"mvvfko\",\"status\":\"Approved\",\"name\":\"hktuidvrma\",\"content\":\"pdwwexymzvlazi\",\"direction\":\"Receive\",\"schemaUri\":\"wvqsgny\",\"schemaType\":\"Zip\"},{\"id\":\"ivensrpmeyyvpk\",\"connectionId\":\"tlbijpzg\",\"status\":\"New\",\"name\":\"fhfv\",\"content\":\"mknbnxwcdommpv\",\"direction\":\"Send\",\"schemaUri\":\"zfgbrttuiaclkie\",\"schemaType\":\"Zip\"}]}";
+            = "{\"value\":[{\"id\":\"tfvpndpmiljpn\",\"connectionId\":\"nudqllz\",\"status\":\"Approved\",\"name\":\"pjlxeehuxiqhzl\",\"content\":\"yme\",\"direction\":\"Receive\",\"schemaUri\":\"kihmxrfdsajredn\",\"schemaType\":\"Zip\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,25 @@ public final class PipelinesListSchemasListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemasListResult response = manager.pipelines()
-            .listSchemasListWithResponse("yvk", "kmrocxne",
-                new Schema().withId("sm")
-                    .withConnectionId("dlfp")
+            .listSchemasListWithResponse("alickduoi", "tamtyv",
+                new Schema().withId("nxrwzawnvs")
+                    .withConnectionId("fhzag")
                     .withStatus(SchemaStatus.APPROVED)
-                    .withName("cygvoavyunssx")
-                    .withContent("hi")
+                    .withName("ycvdimw")
+                    .withContent("regzgyufutrwpwer")
                     .withDirection(Direction.RECEIVE)
-                    .withSchemaUri("lgvvpaseksgbu")
+                    .withSchemaUri("kdhmeottawjyosx")
                     .withSchemaType(SchemaType.ZIP),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gdhg", response.value().get(0).id());
-        Assertions.assertEquals("i", response.value().get(0).connectionId());
+        Assertions.assertEquals("tfvpndpmiljpn", response.value().get(0).id());
+        Assertions.assertEquals("nudqllz", response.value().get(0).connectionId());
         Assertions.assertEquals(SchemaStatus.APPROVED, response.value().get(0).status());
-        Assertions.assertEquals("iwrqofulopmjnl", response.value().get(0).name());
-        Assertions.assertEquals("whc", response.value().get(0).content());
+        Assertions.assertEquals("pjlxeehuxiqhzl", response.value().get(0).name());
+        Assertions.assertEquals("yme", response.value().get(0).content());
         Assertions.assertEquals(Direction.RECEIVE, response.value().get(0).direction());
-        Assertions.assertEquals("bke", response.value().get(0).schemaUri());
-        Assertions.assertEquals(SchemaType.XSD, response.value().get(0).schemaType());
+        Assertions.assertEquals("kihmxrfdsajredn", response.value().get(0).schemaUri());
+        Assertions.assertEquals(SchemaType.ZIP, response.value().get(0).schemaType());
     }
 }
