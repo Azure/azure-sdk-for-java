@@ -12,8 +12,8 @@ public final class UsageMetricListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageMetricListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":8451132931226635993,\"totalFirmwareCount\":6340547465391917507,\"provisioningState\":\"Canceled\"},\"id\":\"wjvzunluthnn\",\"name\":\"rnxipei\",\"type\":\"pjzu\"}],\"nextLink\":\"jxdultskzbbtdzu\"}")
+            "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":4327896689449869677,\"totalFirmwareCount\":2698439393081810654,\"provisioningState\":\"Extracting\"},\"id\":\"mg\",\"name\":\"opkwhojv\",\"type\":\"ajqgxy\"},{\"properties\":{\"monthlyFirmwareUploadCount\":7500274521983784453,\"totalFirmwareCount\":8191946554711009380,\"provisioningState\":\"Canceled\"},\"id\":\"vmkcx\",\"name\":\"zapvhelx\",\"type\":\"rgly\"},{\"properties\":{\"monthlyFirmwareUploadCount\":1729923694834862702,\"totalFirmwareCount\":3729632374595732416,\"provisioningState\":\"Canceled\"},\"id\":\"uejrjxgc\",\"name\":\"qibrhosxsdqrhzoy\",\"type\":\"i\"}],\"nextLink\":\"rq\"}")
             .toObject(UsageMetricListResult.class);
-        Assertions.assertEquals("jxdultskzbbtdzu", model.nextLink());
+        Assertions.assertEquals("rq", model.nextLink());
     }
 }
