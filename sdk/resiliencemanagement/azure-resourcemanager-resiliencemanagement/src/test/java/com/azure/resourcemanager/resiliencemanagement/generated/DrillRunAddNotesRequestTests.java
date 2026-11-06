@@ -12,16 +12,15 @@ public final class DrillRunAddNotesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillRunAddNotesRequest model = BinaryData
-            .fromString(
-                "{\"notes\":\"sdaultxij\",\"timestamp\":\"2021-09-28T21:22:28Z\",\"author\":\"qwazlnqnmcjngzq\"}")
+            .fromString("{\"notes\":\"ta\",\"timestamp\":\"2021-03-05T18:11:46Z\",\"author\":\"dlpukhpyrne\"}")
             .toObject(DrillRunAddNotesRequest.class);
-        Assertions.assertEquals("sdaultxij", model.notes());
+        Assertions.assertEquals("ta", model.notes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillRunAddNotesRequest model = new DrillRunAddNotesRequest().withNotes("sdaultxij");
+        DrillRunAddNotesRequest model = new DrillRunAddNotesRequest().withNotes("ta");
         model = BinaryData.fromObject(model).toObject(DrillRunAddNotesRequest.class);
-        Assertions.assertEquals("sdaultxij", model.notes());
+        Assertions.assertEquals("ta", model.notes());
     }
 }

@@ -42,6 +42,11 @@ public final class RecoveryGroupProperties implements JsonSerializable<RecoveryG
      */
     private List<RecoveryGroupBaseAction> postActions;
 
+    /*
+     * Resiliency-specific properties for the recovery orchestration group.
+     */
+    private RecoveryGroupResiliencyProperties resiliencyGroupProperties;
+
     /**
      * Creates an instance of RecoveryGroupProperties class.
      */
@@ -149,6 +154,27 @@ public final class RecoveryGroupProperties implements JsonSerializable<RecoveryG
     }
 
     /**
+     * Get the resiliencyGroupProperties property: Resiliency-specific properties for the recovery orchestration group.
+     * 
+     * @return the resiliencyGroupProperties value.
+     */
+    public RecoveryGroupResiliencyProperties resiliencyGroupProperties() {
+        return this.resiliencyGroupProperties;
+    }
+
+    /**
+     * Set the resiliencyGroupProperties property: Resiliency-specific properties for the recovery orchestration group.
+     * 
+     * @param resiliencyGroupProperties the resiliencyGroupProperties value to set.
+     * @return the RecoveryGroupProperties object itself.
+     */
+    public RecoveryGroupProperties
+        withResiliencyGroupProperties(RecoveryGroupResiliencyProperties resiliencyGroupProperties) {
+        this.resiliencyGroupProperties = resiliencyGroupProperties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -159,6 +185,7 @@ public final class RecoveryGroupProperties implements JsonSerializable<RecoveryG
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("preActions", this.preActions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("postActions", this.postActions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resiliencyGroupProperties", this.resiliencyGroupProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -192,6 +219,9 @@ public final class RecoveryGroupProperties implements JsonSerializable<RecoveryG
                     List<RecoveryGroupBaseAction> postActions
                         = reader.readArray(reader1 -> RecoveryGroupBaseAction.fromJson(reader1));
                     deserializedRecoveryGroupProperties.postActions = postActions;
+                } else if ("resiliencyGroupProperties".equals(fieldName)) {
+                    deserializedRecoveryGroupProperties.resiliencyGroupProperties
+                        = RecoveryGroupResiliencyProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

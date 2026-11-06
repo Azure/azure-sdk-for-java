@@ -1,14 +1,175 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-11-03)
+
+- Azure Resource Manager Resilience Management client library for Java. This package contains Microsoft Azure SDK for Resilience Management Management SDK.  Package api-version 2026-11-30-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ResourceServiceBusProtectionSetting` was added
 
-### Bugs Fixed
+* `models.VmRecoveryConfig` was added
 
-### Other Changes
+* `models.ResourceAzureTemplateProtectionSetting` was added
+
+* `models.RegionalObjectives` was added
+
+* `models.ReplicationMode` was added
+
+* `models.ResourceNetAppFilesProtectionSetting` was added
+
+* `models.CyberResiliencyGroupProperties` was added
+
+* `models.ResourceCosmosDBProtectionSetting` was added
+
+* `models.CyberResiliencyPlanProperties` was added
+
+* `models.ResiliencyType` was added
+
+* `models.RecoveryType` was added
+
+* `models.RecoveryConfigProfiles` was added
+
+* `models.RecoveryResourceInclusionEligibility` was added
+
+* `models.FileShareRecoveryConfig` was added
+
+* `models.WorkloadConfig` was added
+
+* `models.BackupType` was added
+
+* `models.FaultEligibility` was added
+
+* `models.IsoDuration` was added
+
+* `models.UnifiedResilienceItemRegionalResiliencyPosture` was added
+
+* `models.RegionalResiliencyStatus` was added
+
+* `models.ResourceProtectionState` was added
+
+* `models.TargetResourceSpec` was added
+
+* `models.InfrastructureResiliencyPlanProperties` was added
+
+* `models.CyberResiliencyResourceProperties` was added
+
+* `models.EffectiveConfiguration` was added
+
+* `models.RecoveryConfigProfile` was added
+
+* `models.RecoveryPointPolicy` was added
+
+* `models.RecoveryConfigProfileProperties` was added
+
+* `models.ResourceInclusionDisabledReason` was added
+
+* `models.RecoveryConfigProfileAssociation` was added
+
+* `models.RecoveryPlanResiliencyProperties` was added
+
+* `models.TargetEnvironment` was added
+
+* `models.ProtectedItemDetails` was added
+
+* `models.ResourceStorageAccountProtectionSetting` was added
+
+* `models.RecoveryResourceResiliencyProperties` was added
+
+* `models.RecoveryGroupResiliencyProperties` was added
+
+* `models.TargetScope` was added
+
+* `models.InfrastructureResiliencyGroupProperties` was added
+
+* `models.RecoveryPointHealthStatus` was added
+
+* `models.CopyOptions` was added
+
+* `models.RecoveryPointPolicyType` was added
+
+* `models.TargetProvisioningMode` was added
+
+* `models.FaultIneligibleReason` was added
+
+* `models.WorkloadType` was added
+
+* `models.InfrastructureResiliencyResourceProperties` was added
+
+#### `models.RecoveryResourceProperties` was modified
+
+* `withResiliencyResourceProperties(models.RecoveryResourceResiliencyProperties)` was added
+* `inclusionDisabledReasons()` was added
+* `resiliencyResourceProperties()` was added
+
+#### `models.LastRunProperties` was modified
+
+* `lastRunRecoveryTimeActual()` was added
+
+#### `models.RecoveryGroupProperties` was modified
+
+* `resiliencyGroupProperties()` was added
+* `withResiliencyGroupProperties(models.RecoveryGroupResiliencyProperties)` was added
+
+#### `models.RecoveryPlanType` was modified
+
+* `CYBER_RECOVERY` was added
+
+#### `models.DrillResourceProperties` was modified
+
+* `faultIneligibleReason()` was added
+* `faultEligibility()` was added
+
+#### `models.RecoveryPlanProperties` was modified
+
+* `resiliencyPlanProperties()` was added
+* `withResiliencyPlanProperties(models.RecoveryPlanResiliencyProperties)` was added
+
+#### `models.ResourceProtectionSolutionType` was modified
+
+* `AZURE_TEMPLATE` was added
+* `AZURE_SERVICE_BUS` was added
+* `AZURE_NET_APP_FILES` was added
+* `AZURE_STORAGE_ACCOUNT` was added
+* `AZURE_COSMOS_DB` was added
+
+#### `models.GoalAssignmentProperties` was modified
+
+* `withRegionalObjectives(models.RegionalObjectives)` was added
+* `requireRegionalResiliency()` was added
+* `withRequireRegionalResiliency(java.lang.Boolean)` was added
+* `regionalObjectives()` was added
+
+#### `models.ResourceProtectionSolutionSettings` was modified
+
+* `replicationMode()` was added
+
+#### `models.GoalResourceProperties` was modified
+
+* `withRegionalResiliency(models.ResiliencyProperties)` was added
+* `regionalResiliency()` was added
+
+#### `models.GoalsData` was modified
+
+* `regionalResiliency()` was added
+
+#### `models.DrillRunProperties` was modified
+
+* `recoveryTimeObjective()` was added
+
+#### `models.RegionalDrillResourceProperties` was modified
+
+* `advisorRegionalRecommendationId()` was added
+* `replicationMode()` was added
+* `regionalResiliencyStatus()` was added
+
+#### `models.UnifiedResilienceItemResiliencyPosture` was modified
+
+* `regionalResiliency()` was added
+
+#### `ResilienceManagementManager` was modified
+
+* `recoveryConfigProfiles()` was added
 
 ## 1.0.0 (2026-10-09)
 

@@ -82,6 +82,13 @@ public interface ResilienceManagementManagementClient {
     RecoveryPlansClient getRecoveryPlans();
 
     /**
+     * Gets the RecoveryConfigProfilesClient object to access its operations.
+     * 
+     * @return the RecoveryConfigProfilesClient object.
+     */
+    RecoveryConfigProfilesClient getRecoveryConfigProfiles();
+
+    /**
      * Gets the RecoveryPlanActionsClient object to access its operations.
      * 
      * @return the RecoveryPlanActionsClient object.

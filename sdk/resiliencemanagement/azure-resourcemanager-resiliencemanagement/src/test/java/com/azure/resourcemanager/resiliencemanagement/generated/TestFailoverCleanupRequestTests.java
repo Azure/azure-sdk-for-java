@@ -12,14 +12,14 @@ public final class TestFailoverCleanupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestFailoverCleanupRequest model
-            = BinaryData.fromString("{\"comments\":\"szufoxciqopidoa\"}").toObject(TestFailoverCleanupRequest.class);
-        Assertions.assertEquals("szufoxciqopidoa", model.comments());
+            = BinaryData.fromString("{\"comments\":\"esutrgjupauutpw\"}").toObject(TestFailoverCleanupRequest.class);
+        Assertions.assertEquals("esutrgjupauutpw", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverCleanupRequest model = new TestFailoverCleanupRequest().withComments("szufoxciqopidoa");
+        TestFailoverCleanupRequest model = new TestFailoverCleanupRequest().withComments("esutrgjupauutpw");
         model = BinaryData.fromObject(model).toObject(TestFailoverCleanupRequest.class);
-        Assertions.assertEquals("szufoxciqopidoa", model.comments());
+        Assertions.assertEquals("esutrgjupauutpw", model.comments());
     }
 }

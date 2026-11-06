@@ -35,6 +35,7 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.GoalAssignmentsClie
 import com.azure.resourcemanager.resiliencemanagement.fluent.GoalResourcesClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.OperationStatusClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.OperationsClient;
+import com.azure.resourcemanager.resiliencemanagement.fluent.RecoveryConfigProfilesClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.RecoveryJobResourcesClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.RecoveryJobsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.RecoveryPlanActionsClient;
@@ -212,6 +213,20 @@ public final class ResilienceManagementManagementClientImpl implements Resilienc
     }
 
     /**
+     * The RecoveryConfigProfilesClient object to access its operations.
+     */
+    private final RecoveryConfigProfilesClient recoveryConfigProfiles;
+
+    /**
+     * Gets the RecoveryConfigProfilesClient object to access its operations.
+     * 
+     * @return the RecoveryConfigProfilesClient object.
+     */
+    public RecoveryConfigProfilesClient getRecoveryConfigProfiles() {
+        return this.recoveryConfigProfiles;
+    }
+
+    /**
      * The RecoveryPlanActionsClient object to access its operations.
      */
     private final RecoveryPlanActionsClient recoveryPlanActions;
@@ -382,12 +397,13 @@ public final class ResilienceManagementManagementClientImpl implements Resilienc
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-01";
+        this.apiVersion = "2026-11-30-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.goalAssignments = new GoalAssignmentsClientImpl(this);
         this.goalResources = new GoalResourcesClientImpl(this);
         this.recoveryPlans = new RecoveryPlansClientImpl(this);
+        this.recoveryConfigProfiles = new RecoveryConfigProfilesClientImpl(this);
         this.recoveryPlanActions = new RecoveryPlanActionsClientImpl(this);
         this.recoveryResources = new RecoveryResourcesClientImpl(this);
         this.recoveryJobs = new RecoveryJobsClientImpl(this);

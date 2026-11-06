@@ -34,6 +34,7 @@ import com.azure.resourcemanager.resiliencemanagement.implementation.GoalAssignm
 import com.azure.resourcemanager.resiliencemanagement.implementation.GoalResourcesImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.OperationsImpl;
+import com.azure.resourcemanager.resiliencemanagement.implementation.RecoveryConfigProfilesImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.RecoveryJobResourcesImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.RecoveryJobsImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.RecoveryPlanActionsImpl;
@@ -51,6 +52,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignments;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResources;
 import com.azure.resourcemanager.resiliencemanagement.models.OperationStatus;
 import com.azure.resourcemanager.resiliencemanagement.models.Operations;
+import com.azure.resourcemanager.resiliencemanagement.models.RecoveryConfigProfiles;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryJobResources;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryJobs;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanActions;
@@ -79,6 +81,8 @@ public final class ResilienceManagementManager {
     private GoalResources goalResources;
 
     private RecoveryPlans recoveryPlans;
+
+    private RecoveryConfigProfiles recoveryConfigProfiles;
 
     private RecoveryPlanActions recoveryPlanActions;
 
@@ -375,6 +379,19 @@ public final class ResilienceManagementManager {
             this.recoveryPlans = new RecoveryPlansImpl(clientObject.getRecoveryPlans(), this);
         }
         return recoveryPlans;
+    }
+
+    /**
+     * Gets the resource collection API of RecoveryConfigProfiles.
+     * 
+     * @return Resource collection API of RecoveryConfigProfiles.
+     */
+    public RecoveryConfigProfiles recoveryConfigProfiles() {
+        if (this.recoveryConfigProfiles == null) {
+            this.recoveryConfigProfiles
+                = new RecoveryConfigProfilesImpl(clientObject.getRecoveryConfigProfiles(), this);
+        }
+        return recoveryConfigProfiles;
     }
 
     /**

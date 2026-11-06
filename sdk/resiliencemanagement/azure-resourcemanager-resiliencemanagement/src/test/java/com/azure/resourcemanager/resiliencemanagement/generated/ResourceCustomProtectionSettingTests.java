@@ -13,28 +13,28 @@ public final class ResourceCustomProtectionSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCustomProtectionSetting model = BinaryData.fromString(
-            "{\"protectionSolutionType\":\"CustomRunbook\",\"failoverAction\":{\"resourceId\":\"tswb\"},\"failoverCommitAction\":{\"resourceId\":\"zvszj\"},\"testFailoverAction\":{\"resourceId\":\"uvjfdxxive\"},\"testFailoverCleanupAction\":{\"resourceId\":\"t\"},\"reprotectAction\":{\"resourceId\":\"aqtdoqmcbx\"}}")
+            "{\"protectionSolutionType\":\"CustomRunbook\",\"failoverAction\":{\"resourceId\":\"hyxxrwlycoduhpk\"},\"failoverCommitAction\":{\"resourceId\":\"gymare\"},\"testFailoverAction\":{\"resourceId\":\"ajxq\"},\"testFailoverCleanupAction\":{\"resourceId\":\"jhkycub\"},\"reprotectAction\":{\"resourceId\":\"dgssofwqmzqal\"}}")
             .toObject(ResourceCustomProtectionSetting.class);
-        Assertions.assertEquals("tswb", model.failoverAction().resourceId());
-        Assertions.assertEquals("zvszj", model.failoverCommitAction().resourceId());
-        Assertions.assertEquals("uvjfdxxive", model.testFailoverAction().resourceId());
-        Assertions.assertEquals("t", model.testFailoverCleanupAction().resourceId());
-        Assertions.assertEquals("aqtdoqmcbx", model.reprotectAction().resourceId());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.failoverAction().resourceId());
+        Assertions.assertEquals("gymare", model.failoverCommitAction().resourceId());
+        Assertions.assertEquals("ajxq", model.testFailoverAction().resourceId());
+        Assertions.assertEquals("jhkycub", model.testFailoverCleanupAction().resourceId());
+        Assertions.assertEquals("dgssofwqmzqal", model.reprotectAction().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceCustomProtectionSetting model = new ResourceCustomProtectionSetting()
-            .withFailoverAction(new ResourceCustomProtectionAction().withResourceId("tswb"))
-            .withFailoverCommitAction(new ResourceCustomProtectionAction().withResourceId("zvszj"))
-            .withTestFailoverAction(new ResourceCustomProtectionAction().withResourceId("uvjfdxxive"))
-            .withTestFailoverCleanupAction(new ResourceCustomProtectionAction().withResourceId("t"))
-            .withReprotectAction(new ResourceCustomProtectionAction().withResourceId("aqtdoqmcbx"));
+            .withFailoverAction(new ResourceCustomProtectionAction().withResourceId("hyxxrwlycoduhpk"))
+            .withFailoverCommitAction(new ResourceCustomProtectionAction().withResourceId("gymare"))
+            .withTestFailoverAction(new ResourceCustomProtectionAction().withResourceId("ajxq"))
+            .withTestFailoverCleanupAction(new ResourceCustomProtectionAction().withResourceId("jhkycub"))
+            .withReprotectAction(new ResourceCustomProtectionAction().withResourceId("dgssofwqmzqal"));
         model = BinaryData.fromObject(model).toObject(ResourceCustomProtectionSetting.class);
-        Assertions.assertEquals("tswb", model.failoverAction().resourceId());
-        Assertions.assertEquals("zvszj", model.failoverCommitAction().resourceId());
-        Assertions.assertEquals("uvjfdxxive", model.testFailoverAction().resourceId());
-        Assertions.assertEquals("t", model.testFailoverCleanupAction().resourceId());
-        Assertions.assertEquals("aqtdoqmcbx", model.reprotectAction().resourceId());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.failoverAction().resourceId());
+        Assertions.assertEquals("gymare", model.failoverCommitAction().resourceId());
+        Assertions.assertEquals("ajxq", model.testFailoverAction().resourceId());
+        Assertions.assertEquals("jhkycub", model.testFailoverCleanupAction().resourceId());
+        Assertions.assertEquals("dgssofwqmzqal", model.reprotectAction().resourceId());
     }
 }
