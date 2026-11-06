@@ -144,8 +144,12 @@ public final class UpdateInstanceImpl implements UpdateInstance, UpdateInstance.
         com.azure.resourcemanager.deviceregistry.softwareupdate.DeviceRegistrySoftwareUpdateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.updateInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
+            "resourceGroupName");
+        this.updateInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
+            "updateInstanceName");
     }
 
     public UpdateInstance refresh() {
