@@ -66,6 +66,13 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY = "The maximum number hint of documents returned in a single request. ";
     private static final int DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT = 1000;
 
+    private static final String CHANGE_FEED_POLL_DELAY_MS_CONFIG = "azure.cosmos.source.changeFeed.poll.delay.ms";
+    private static final String CHANGE_FEED_POLL_DELAY_MS_CONFIG_DOC =
+        "Delay in milliseconds before polling a feed range again after no changes are found. "
+            + "A longer delay reduces idle read charges but increases change detection latency. Default is 0.";
+    private static final String CHANGE_FEED_POLL_DELAY_MS_CONFIG_DISPLAY = "Change feed polling delay in ms.";
+    private static final int DEFAULT_CHANGE_FEED_POLL_DELAY_MS = 0;
+
     // Metadata config
     private static final String METADATA_POLL_DELAY_MS_CONFIG = "azure.cosmos.source.metadata.poll.delay.ms";
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DOC =
@@ -260,6 +267,18 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
                 changeFeedGroupOrder++,
                 ConfigDef.Width.MEDIUM,
                 CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY
+            )
+            .define(
+                CHANGE_FEED_POLL_DELAY_MS_CONFIG,
+                ConfigDef.Type.INT,
+                DEFAULT_CHANGE_FEED_POLL_DELAY_MS,
+                ConfigDef.Range.atLeast(0),
+                ConfigDef.Importance.MEDIUM,
+                CHANGE_FEED_POLL_DELAY_MS_CONFIG_DOC,
+                changeFeedGroupName,
+                changeFeedGroupOrder,
+                ConfigDef.Width.MEDIUM,
+                CHANGE_FEED_POLL_DELAY_MS_CONFIG_DISPLAY
             );
     }
 
@@ -338,12 +357,14 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
         CosmosChangeFeedStartFromMode changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
         Instant changeFeedStartFrom = this.parseChangeFeedStartFrom(changeFeedStartFromMode);
         Integer changeFeedMaxItemCountHint = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONFIG);
+        Integer changeFeedPollDelayInMs = this.getInt(CHANGE_FEED_POLL_DELAY_MS_CONFIG);
 
         return new CosmosSourceChangeFeedConfig(
             changeFeedModes,
             changeFeedStartFromMode,
             changeFeedStartFrom,
-            changeFeedMaxItemCountHint);
+            changeFeedMaxItemCountHint,
+            changeFeedPollDelayInMs);
     }
 
     private CosmosSourceMessageKeyConfig parseMessageKeyConfig() {

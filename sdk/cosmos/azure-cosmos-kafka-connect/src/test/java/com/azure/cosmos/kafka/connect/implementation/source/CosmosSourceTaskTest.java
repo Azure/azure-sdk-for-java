@@ -14,7 +14,9 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import org.apache.kafka.connect.data.Struct;
@@ -26,9 +28,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,6 +40,45 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
+
+    @Test(groups = "unit")
+    public void pollDelayOnlyAppliesWhenChangeFeedHasNoChanges() {
+        FeedResponse<?> noChangesResponse =
+            ModelBridgeInternal.toFeedResponsePage(Collections.emptyList(), Collections.emptyMap(), true);
+        assertThat(CosmosSourceTask.getPollDelayInMs(
+            ModelBridgeInternal.getNoChangesFromFeedResponse(noChangesResponse),
+            100)).isEqualTo(100);
+
+        FeedResponse<?> changedResponse =
+            ModelBridgeInternal.toFeedResponsePage(Collections.emptyList(), Collections.emptyMap(), false);
+        assertThat(CosmosSourceTask.getPollDelayInMs(
+            ModelBridgeInternal.getNoChangesFromFeedResponse(changedResponse),
+            100)).isEqualTo(0);
+    }
+
+    @Test(groups = "unit")
+    public void pollDelayDefersIdleRangeWithoutBlockingReadyRanges() {
+        FeedRangeTaskUnit idleFeedRange = new FeedRangeTaskUnit(
+            databaseName,
+            multiPartitionContainerName,
+            "containerRid",
+            FeedRange.forFullRange(),
+            null,
+            multiPartitionContainerName);
+        FeedRangeTaskUnit activeFeedRange = new FeedRangeTaskUnit(
+            databaseName,
+            multiPartitionContainerName,
+            "containerRid",
+            FeedRange.forFullRange(),
+            null,
+            multiPartitionContainerName);
+
+        PriorityQueue<CosmosSourceTask.ScheduledTaskUnit> queue = new PriorityQueue<>();
+        queue.add(new CosmosSourceTask.ScheduledTaskUnit(idleFeedRange, 1000));
+        queue.add(new CosmosSourceTask.ScheduledTaskUnit(activeFeedRange, 0));
+        assertThat(queue.poll().getTaskUnit()).isSameAs(activeFeedRange);
+        assertThat(queue.peek().getDelayInMs()).isGreaterThan(0);
+    }
 
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
