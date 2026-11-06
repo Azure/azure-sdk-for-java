@@ -132,8 +132,12 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
         com.azure.resourcemanager.appservice.sreagent.AppServiceSreAgentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.agentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agents/{agentName}",
+            "resourceGroupName");
+        this.agentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agents/{agentName}",
+            "agentName");
     }
 
     public Agent refresh() {

@@ -104,9 +104,15 @@ public final class AgentSpaceConnectorImpl
         com.azure.resourcemanager.appservice.sreagent.AppServiceSreAgentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.agentSpaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agentSpaces");
-        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agentSpaces/{agentSpaceName}/connectors/{connectorName}",
+            "resourceGroupName");
+        this.agentSpaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agentSpaces/{agentSpaceName}/connectors/{connectorName}",
+            "agentSpaceName");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agentSpaces/{agentSpaceName}/connectors/{connectorName}",
+            "connectorName");
     }
 
     public AgentSpaceConnector refresh() {

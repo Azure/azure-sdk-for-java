@@ -133,8 +133,12 @@ public final class AgentSpaceImpl implements AgentSpace, AgentSpace.Definition, 
         com.azure.resourcemanager.appservice.sreagent.AppServiceSreAgentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.agentSpaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agentSpaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agentSpaces/{agentSpaceName}",
+            "resourceGroupName");
+        this.agentSpaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/agentSpaces/{agentSpaceName}",
+            "agentSpaceName");
     }
 
     public AgentSpace refresh() {
