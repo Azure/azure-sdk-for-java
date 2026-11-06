@@ -153,6 +153,9 @@ or `ChangeFeedProcessorOptions.setQuery(String)` for a processor. This feature r
 service deployment that supports query-filtered change feed through the Query Documents POST API;
 SDK support alone does not enable backend evaluation. All-versions-and-deletes mode also requires
 the account and container prerequisites for that mode.
+Gateway sends a Query Documents POST with the query JSON body. Direct encodes the equivalent native
+ReadFeed operation with the same query payload and change feed mode; it does not use ordinary query paging.
+All-versions-and-deletes mode retains its existing Gateway routing.
 
 A filtered response must include an ETag representing physical change feed progress. If it is missing,
 the SDK fails explicitly rather than substituting an ordinary document-query continuation or treating

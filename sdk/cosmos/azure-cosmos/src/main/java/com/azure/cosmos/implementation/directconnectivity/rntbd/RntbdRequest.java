@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
@@ -121,10 +125,16 @@ public final class RntbdRequest {
     public static RntbdRequest from(final RntbdRequestArgs args) {
 
         final RxDocumentServiceRequest serviceRequest = args.serviceRequest();
+        OperationType wireOperation = serviceRequest.getOperationType();
+        if (wireOperation == OperationType.Query && serviceRequest.getResourceType() == ResourceType.Document
+            && StringUtils.isNotEmpty(serviceRequest.getHeaders().get(HttpConstants.HttpHeaders.A_IM))) {
+            // HTTP translates a query POST with A-IM to ReadFeed; RNTBD must encode that native operation itself.
+            wireOperation = OperationType.ReadFeed;
+        }
 
         final RntbdRequestFrame frame = new RntbdRequestFrame(
             args.activityId(),
-            serviceRequest.getOperationType(),
+            wireOperation,
             serviceRequest.getResourceType());
 
         final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
