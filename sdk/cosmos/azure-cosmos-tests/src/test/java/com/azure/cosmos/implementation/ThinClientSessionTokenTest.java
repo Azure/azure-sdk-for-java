@@ -454,8 +454,17 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
+            assertThat(attempts.get(0).getSessionTokenPreparation())
+                .isSameAs(attempts.get(1).getSessionTokenPreparation());
+            if (!fallbackPrimary && expected != null) {
+                assertThat(attempts.get(0).requestContext.sessionToken)
+                    .isSameAs(attempts.get(1).requestContext.sessionToken);
+            }
             for (RxDocumentServiceRequest attempt : attempts) {
                 assertThat(attempt.getOriginalSessionToken()).isEqualTo(original);
+                if (expected == null) {
+                    assertThat(attempt.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+                }
             }
             assertThat(attempts.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
                 .isEqualTo(fallbackPrimary ? original : expected);
@@ -528,6 +537,104 @@ public class ThinClientSessionTokenTest {
             verify(fixture.collections, never()).resolveCollectionAsync(any(), any());
             verify(fixture.ranges, never()).tryLookupAsync(any(), any(), any(), any());
             Mockito.verifyNoMoreInteractions(key);
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "transportChanges")
+    public void repeatedAttemptsAndClonesReusePreparedProgress(String original, String expected) {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, original, "0");
+            Mono<RxDocumentServiceResponse> operation = fixture.processMessage(request);
+            operation.block(Duration.ofSeconds(5));
+            ISessionToken prepared = request.requestContext.sessionToken;
+            operation.block(Duration.ofSeconds(5));
+            RxDocumentServiceRequest clone = request.clone();
+            fixture.processMessage(clone).block(Duration.ofSeconds(5));
+            assertThat(fixture.wireTokens).containsExactly(expected, expected, expected);
+            if (expected != null) {
+                assertThat(request.requestContext.sessionToken).isSameAs(prepared);
+                assertThat(clone.requestContext.sessionToken).isSameAs(prepared);
+            } else {
+                assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+                assertThat(clone.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+            }
+            Supplier<ISessionToken> unexpectedEvaluation = () -> {
+                throw new AssertionError("A completed scope must not be evaluated again.");
+            };
+            request.getSessionTokenPreparation().resolve(request, original, "0", unexpectedEvaluation);
+            clone.getSessionTokenPreparation().resolve(clone, original, "0", unexpectedEvaluation);
+            verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
+            verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void changedParentLineageRescopesOriginalProgress() {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
+            fixture.processMessage(request).block(Duration.ofSeconds(5));
+            ISessionToken first = request.requestContext.sessionToken;
+            request.requestContext.resolvedPartitionKeyRange =
+                new PartitionKeyRange("0", "", "80", Collections.singletonList("1"));
+            fixture.processMessage(request).block(Duration.ofSeconds(5));
+            assertThat(request.requestContext.sessionToken).isNotSameAs(first);
+            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1", "0:1#200#1=180#2=150");
+            assertThat(request.getOriginalSessionToken()).isEqualTo(ORIGINAL);
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "transportChanges")
+    public void recreatedPointRetriesShareTheOperationScope(String original, String expected) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentClientImpl client = fixture.client();
+            setField(client, "globalPartitionEndpointManagerForPerPartitionCircuitBreaker",
+                Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class));
+            RegionalRoutingContext region =
+                fixture.endpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList()).get(0);
+            Mockito.when(fixture.endpointManager.getApplicableReadRegionalRoutingContexts(Mockito.<List<String>>any()))
+                .thenReturn(new UnmodifiableList<>(Collections.singletonList(region)));
+            AtomicInteger sends = new AtomicInteger();
+            IServerErrorInjector injector = Mockito.mock(IServerErrorInjector.class);
+            Mockito.when(injector.injectServerResponseError(any(), any())).thenAnswer(invocation -> {
+                if (sends.getAndIncrement() == 0) {
+                    Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
+                    failure.v = new RequestRateTooLargeException();
+                    return true;
+                }
+                return false;
+            });
+            fixture.inject(injector);
+            RequestOptions options = new RequestOptions();
+            options.setSessionToken(original);
+            options.setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
+                        Duration.ofMillis(10), Duration.ofMillis(10))).build());
+            List<RxDocumentServiceRequest> attempts = new ArrayList<>();
+            executePointWithAvailability(client, options, fixture.context, (copy, availability) -> {
+                DocumentClientRetryPolicy policy = fixture.retryPolicy();
+                return BackoffRetryUtility.executeRetry(() -> {
+                    RxDocumentServiceRequest request = fixture.request(OperationType.Read, copy.getSessionToken(), "0");
+                    request.requestContext.setCrossRegionAvailabilityContext(availability);
+                    attempts.add(request);
+                    policy.onBeforeSendRequest(request);
+                    return dispatch(client, request);
+                }, policy).map(response -> new ResourceResponse<>(response, Document.class));
+            }).block(Duration.ofSeconds(5));
+
+            assertThat(attempts).hasSize(2);
+            assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
+            assertThat(attempts.get(0).getSessionTokenPreparation())
+                .isSameAs(attempts.get(1).getSessionTokenPreparation());
+            if (expected != null) {
+                assertThat(attempts.get(1).requestContext.sessionToken)
+                    .isSameAs(attempts.get(0).requestContext.sessionToken);
+            } else {
+                assertThat(attempts).allSatisfy(attempt ->
+                    assertThat(attempt.requestContext.getSessionTokenEvaluationResults()).hasSize(1));
+            }
+            assertThat(fixture.wireTokens).containsExactly(expected);
+            assertThat(sends.get()).isEqualTo(2);
         }
     }
 

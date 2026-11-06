@@ -6278,7 +6278,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       RequestOptions options, List<Object> procedureParams) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams, documentClientRetryPolicy), documentClientRetryPolicy);
+        SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation =
+            SessionTokenHelper.createSessionTokenPreparation(options == null ? null : options.getSessionToken());
+        return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(
+            storedProcedureLink, options, procedureParams, documentClientRetryPolicy, sessionTokenPreparation),
+            documentClientRetryPolicy);
     }
 
     @Override
@@ -6322,6 +6326,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         final DocumentClientRetryPolicy finalRetryPolicy = documentClientRetryPolicy;
+        SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation =
+            SessionTokenHelper.createSessionTokenPreparation(nonNullRequestOptions.getSessionToken());
 
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
@@ -6334,14 +6340,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         options,
                         finalRetryPolicy,
                         disableAutomaticIdGeneration,
-                        requestReference), documentClientRetryPolicy),
+                        requestReference,
+                        sessionTokenPreparation), documentClientRetryPolicy),
                 scopedDiagnosticsFactory
             ),
             requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
-                                                                               RequestOptions options, List<Object> procedureParams, DocumentClientRetryPolicy retryPolicy) {
+        RequestOptions options, List<Object> procedureParams, DocumentClientRetryPolicy retryPolicy,
+        SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation) {
 
         try {
             logger.debug("Executing a StoredProcedure. storedProcedureLink [{}]", storedProcedureLink);
@@ -6355,6 +6363,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ResourceType.StoredProcedure, path,
                     procedureParams != null && !procedureParams.isEmpty() ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
+            request.setSessionTokenPreparation(sessionTokenPreparation);
 
             if (options != null) {
                 request.requestContext.setExcludeRegions(options.getExcludedRegions());
@@ -6390,7 +6399,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                          RequestOptions options,
                                                                          DocumentClientRetryPolicy requestRetryPolicy,
                                                                          boolean disableAutomaticIdGeneration,
-                                                                         AtomicReference<RxDocumentServiceRequest> requestReference) {
+                                                                         AtomicReference<RxDocumentServiceRequest> requestReference,
+                                                                         SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation) {
 
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
@@ -6399,6 +6409,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(request -> {
+                    request.setSessionTokenPreparation(sessionTokenPreparation);
                     requestReference.set(request);
                     applyEndToEndLatencyPolicyCfgToRequestContext(request, options.getCosmosEndToEndLatencyPolicyConfig());
                     return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
@@ -8404,6 +8415,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final RequestOptions nonNullRequestOptions =
             initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
+        SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation =
+            SessionTokenHelper.createSessionTokenPreparation(nonNullRequestOptions.getSessionToken());
 
         checkArgument(
             resourceType == ResourceType.Document,
@@ -8445,6 +8458,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 perPartitionCircuitBreakerInfoHolder,
                 perPartitionAutomaticFailoverInfoHolder);
 
+            crossRegionAvailabilityContextForMainRequest.setSessionTokenPreparation(sessionTokenPreparation);
             return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, crossRegionAvailabilityContextForMainRequest);
         }
 
@@ -8484,6 +8498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         perPartitionCircuitBreakerInfoHolder,
                         perPartitionAutomaticFailoverInfoHolder);
 
+                    crossRegionAvailabilityContextForMainRequest.setSessionTokenPreparation(sessionTokenPreparation);
                     Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForMainRequest)
                             .map(NonTransientPointOperationResult::new)
@@ -8531,6 +8546,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         perPartitionCircuitBreakerInfoHolder,
                         perPartitionAutomaticFailoverInfoHolder);
 
+                    crossRegionAvailabilityContextForHedgedRequest.setSessionTokenPreparation(sessionTokenPreparation);
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForHedgedRequest)
                             .map(NonTransientPointOperationResult::new)

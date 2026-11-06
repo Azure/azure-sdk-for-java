@@ -12,13 +12,24 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class SessionTokenHelperTests {
     @DataProvider
@@ -34,6 +45,106 @@ public class SessionTokenHelperTests {
     @Test(groups = "unit", dataProvider = "compoundSessionTokens")
     public void detectsCompoundTokensWithoutParsing(String token, boolean expected) {
         assertThat(SessionTokenHelper.isCompoundSessionToken(token)).isEqualTo(expected);
+        assertThat(SessionTokenHelper.createSessionTokenPreparation(token) != null).isEqualTo(expected);
+    }
+
+    @DataProvider
+    public Object[][] scopedOutcomes() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "scopedOutcomes")
+    public void concurrentAttemptsComputeEachScopedOutcomeOnce(boolean unmatched) throws Exception {
+        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        String original = "0:1#100,1:1#200";
+        AtomicInteger evaluations = new AtomicInteger();
+        Supplier<ISessionToken> resolver = () -> {
+            evaluations.incrementAndGet();
+            return unmatched ? null : SessionTokenHelper.parse("1#100");
+        };
+        ExecutorService executor = Executors.newFixedThreadPool(8);
+        CyclicBarrier start = new CyclicBarrier(8);
+        try {
+            List<Future<ISessionToken>> results = new ArrayList<>();
+            for (int i = 0; i < 8; i++) {
+                RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
+                results.add(executor.submit(() -> {
+                    start.await(5, TimeUnit.SECONDS);
+                    return preparation.resolve(request, original, "0", resolver);
+                }));
+            }
+            ISessionToken first = results.get(0).get(5, TimeUnit.SECONDS);
+            for (Future<ISessionToken> result : results) {
+                assertThat(result.get(5, TimeUnit.SECONDS)).isSameAs(first);
+            }
+            assertThat(evaluations.get()).isEqualTo(1);
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+
+    @Test(groups = "unit")
+    public void scopesAreIsolatedByOperationTokenCollectionRangeAndParents() {
+        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        String original = "0:1#100,1:1#200";
+        AtomicInteger evaluations = new AtomicInteger();
+        Supplier<ISessionToken> resolver = () -> {
+            evaluations.incrementAndGet();
+            return SessionTokenHelper.parse("1#200");
+        };
+        RxDocumentServiceRequest request = scopeRequest("collection", "2", Arrays.asList("0", "1"));
+        ISessionToken first = preparation.resolve(request, original, "2", resolver);
+        request.requestContext.resolvedPartitionKeyRange.setParents(Arrays.asList("1", "0"));
+        assertThat(preparation.resolve(request, original, "2", resolver)).isSameAs(first);
+        assertThat(evaluations.get()).isEqualTo(1);
+
+        request.requestContext.resolvedPartitionKeyRange.setParents(Collections.singletonList("0"));
+        assertThat(preparation.resolve(request, original, "2", resolver)).isNotSameAs(first);
+        assertThat(evaluations.get()).isEqualTo(2);
+        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("3", "", "FF",
+            Collections.singletonList("0"));
+        preparation.resolve(request, original, "3", resolver);
+        assertThat(evaluations.get()).isEqualTo(3);
+        request.requestContext.resolvedCollectionRid = "recreated-collection";
+        preparation.resolve(request, original, "3", resolver);
+        assertThat(evaluations.get()).isEqualTo(4);
+        preparation.resolve(request, "0:1#300,1:1#400", "3", resolver);
+        assertThat(evaluations.get()).isEqualTo(5);
+
+        RxDocumentServiceRequest originalScope = scopeRequest("collection", "2", Arrays.asList("0", "1"));
+        assertThat(preparation.resolve(originalScope, original, "2", resolver)).isNotSameAs(first);
+        assertThat(evaluations.get()).isEqualTo(6);
+        assertThat(new SessionTokenHelper.SessionTokenPreparation().resolve(originalScope, original, "2", resolver))
+            .isNotSameAs(first);
+        assertThat(evaluations.get()).isEqualTo(7);
+    }
+
+    @Test(groups = "unit")
+    public void failedPreparationDoesNotPublishATokenOrShareAnException() {
+        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
+        String original = "0:1#100,1:invalid";
+        AtomicInteger evaluations = new AtomicInteger();
+        Supplier<ISessionToken> resolver = () -> {
+            evaluations.incrementAndGet();
+            return SessionTokenHelper.parse("invalid");
+        };
+        Throwable first = catchThrowable(
+            () -> preparation.resolve(request, original, "0", resolver));
+        Throwable second = catchThrowable(
+            () -> preparation.resolve(request, original, "0", resolver));
+        assertThat(first).hasRootCauseInstanceOf(BadRequestException.class);
+        assertThat(second).hasRootCauseInstanceOf(BadRequestException.class).isNotSameAs(first);
+        assertThat(second.getCause()).isNotSameAs(first.getCause());
+        assertThat(evaluations.get()).isEqualTo(2);
+    }
+
+    private static RxDocumentServiceRequest scopeRequest(String collectionRid, String rangeId, List<String> parents) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(rangeId, "", "FF", parents);
+        return request;
     }
 
     @DataProvider

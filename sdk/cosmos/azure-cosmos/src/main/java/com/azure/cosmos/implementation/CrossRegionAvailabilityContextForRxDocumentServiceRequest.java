@@ -28,6 +28,7 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
+    private SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation;
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
@@ -47,6 +48,14 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
         return this.feedOperationContextForCircuitBreaker;
+    }
+
+    public SessionTokenHelper.SessionTokenPreparation getSessionTokenPreparation() {
+        return this.sessionTokenPreparation;
+    }
+
+    public void setSessionTokenPreparation(SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation) {
+        this.sessionTokenPreparation = sessionTokenPreparation;
     }
 
     public AvailabilityStrategyContext getAvailabilityStrategyContext() {

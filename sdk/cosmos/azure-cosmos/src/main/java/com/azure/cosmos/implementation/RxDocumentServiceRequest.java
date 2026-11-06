@@ -62,6 +62,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile String originalSessionToken;
     private boolean originalSessionTokenCaptured;
+    private SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation;
     private volatile PartitionKeyRangeIdentity partitionKeyRangeIdentity;
     private volatile Integer defaultReplicaIndex;
 
@@ -943,6 +944,22 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.originalSessionToken = originalSessionToken;
     }
 
+    public synchronized SessionTokenHelper.SessionTokenPreparation getSessionTokenPreparation() {
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest availability =
+            this.requestContext.getCrossRegionAvailabilityContext();
+        if (availability != null && availability.getSessionTokenPreparation() != null) {
+            return availability.getSessionTokenPreparation();
+        }
+        if (this.sessionTokenPreparation == null) {
+            this.sessionTokenPreparation = new SessionTokenHelper.SessionTokenPreparation();
+        }
+        return this.sessionTokenPreparation;
+    }
+
+    public synchronized void setSessionTokenPreparation(SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation) {
+        this.sessionTokenPreparation = sessionTokenPreparation;
+    }
+
     public void setDefaultReplicaIndex(Integer defaultReplicaIndex) {
         this.defaultReplicaIndex = defaultReplicaIndex;
     }
@@ -1083,6 +1100,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.originalSessionTokenCaptured = this.originalSessionTokenCaptured;
+        rxDocumentServiceRequest.sessionTokenPreparation = this.sessionTokenPreparation;
+        if (SessionTokenHelper.isCompoundSessionToken(this.originalSessionTokenCaptured
+            ? this.originalSessionToken
+            : sourceHeaders == null ? null : sourceHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            rxDocumentServiceRequest.sessionTokenPreparation = this.getSessionTokenPreparation();
+        }
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
         rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
