@@ -242,6 +242,79 @@ For "Feature Flag" and "Secret Reference" configuration settings, see [samples][
 * [Retrieve all Snapshots](#retrieve-all-snapshots)
 * [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
 * [Retrieve Labels](#retrieve-labels)
+* [Manage dedicated Feature Flag resources](#manage-dedicated-feature-flag-resources)
+
+### Manage dedicated Feature Flag resources
+
+The preview API version `2026-05-01-preview` introduces a dedicated feature flag resource, managed with
+`FeatureFlagClient` and `FeatureFlagAsyncClient`. Use a preview library version that supports this API; the GA BOM
+does not select preview releases.
+
+These resources are **separate** from `FeatureFlagConfigurationSetting` instances stored as key-values:
+
+| Resource | Clients | Model |
+|---|---|---|
+| Key-value-backed feature flag setting (`/kv`) | `ConfigurationClient`, `ConfigurationAsyncClient` | `FeatureFlagConfigurationSetting` |
+| Dedicated feature flag (`/ff`) | `FeatureFlagClient`, `FeatureFlagAsyncClient` | `FeatureFlag` |
+
+Use the feature flag name directly, without the `.appconfig.featureflag/` key prefix. Neither client converts or
+redirects operations between these resource types. Existing feature flag setting APIs continue to use key-values.
+
+The following examples use Microsoft Entra ID authentication with `DefaultAzureCredential` from [azure-identity][azure_identity].
+Set `endpoint` to your App Configuration store endpoint, and assign the **App Configuration Data Owner** role
+to the identity running these read/write examples. When running the sample's `main` method, set the
+`AZURE_APP_CONFIG_ENDPOINT` environment variable.
+
+```java readme-sample-featureFlagResources
+FeatureFlagClient client = new FeatureFlagClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+FeatureFlag created = client.addFeatureFlag(new FeatureFlag("MyFeature", true).setLabel("production"));
+FeatureFlag retrieved = client.getFeatureFlag(created.getName(), created.getLabel());
+retrieved.setEnabled(false);
+FeatureFlag updated = client.setFeatureFlagWithResponse(retrieved, true, Context.NONE).getValue();
+
+FeatureFlagSelector selector = new FeatureFlagSelector().setNameFilter("My*").setLabelFilter("production");
+client.listFeatureFlags(selector).forEach(flag -> System.out.println(flag.getName()));
+client.listFeatureFlagRevisions(selector).forEach(flag -> System.out.println(flag.getETag()));
+client.listLabels().forEach(label -> System.out.println(label.getName()));
+
+client.deleteFeatureFlagWithResponse(updated, true, Context.NONE);
+```
+
+`addFeatureFlag` creates only if the name and label do not already exist. `setFeatureFlag` creates or replaces
+unconditionally; pass `true` to the response-bearing overload to require an unchanged ETag. Conditional writes
+require an ETag on the supplied resource. Conditional reads expose HTTP 304 with a null response value.
+
+`FeatureFlagSelector` supports name, label, and tag filters, field selection, point-in-time reads, and per-page
+match conditions. To monitor changes, retain the ETag from each page and supply
+`MatchConditions.setIfNoneMatch` entries in page order on the next listing. Unchanged pages have HTTP status 304
+and no items, but paging continues.
+
+Feature flag models also support conditions (`FeatureFlagConditions`, `FeatureFilter`), variants, allocation,
+and telemetry. `FeatureFilter` belongs to the new resource and uses string-valued parameters; it is not the existing
+`FeatureFlagFilter` used with key-value-backed feature flag settings.
+
+Both clients support connection strings, Microsoft Entra credentials, audience selection, and sync tokens.
+Build an asynchronous client with `FeatureFlagClientBuilder.buildAsyncClient()`:
+
+```java readme-sample-featureFlagResourcesAsync
+FeatureFlagAsyncClient client = new FeatureFlagClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
+
+client.setFeatureFlag(new FeatureFlag("MyAsyncFeature", true))
+    .flatMap(flag -> client.getFeatureFlag(flag.getName()))
+    .flatMap(flag -> client.deleteFeatureFlag(flag.getName()))
+    .subscribe(flag -> System.out.println(flag.getName()));
+```
+
+`FeatureFlagClient.listLabels` always selects dedicated feature flag labels (`resourceType=ff`).
+`ConfigurationClient.listLabels` selects key-value labels (`resourceType=kv` on API version `2026-05-01-preview` and later); asynchronous
+clients follow the same rules. See the [feature flag resource sample](src/samples/java/com/azure/data/appconfiguration/FeatureFlagResourceSample.java).
 
 ### Create a Configuration Client
 
@@ -619,5 +692,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
-
-

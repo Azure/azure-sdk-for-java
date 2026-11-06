@@ -35,6 +35,7 @@ The following sections provide several code snippets covering some of the most c
 - [Entra Authentication][sample_entra_authentication]
 - [HTTP client with proxy option][proxy_option]
 - [Feature Flag configuration setting][sample_feature_flag_setting]
+- [Dedicated Feature Flag resources (preview)][sample_feature_flag_resource]
 - [Secret Reference configuration setting][sample_secret_reference_setting]
 - [Create/Retrieve/Update a snapshot and retrieve settings in a snapshot][sample_snapshot_CRU_usage]
 - [Create snapshot with tags][sample_snapshot_create_with_tags]
@@ -67,8 +68,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_read_revision_history_tags]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ReadRevisionHistoryWIthTagsFilter.java
 [sample_entra_authentication]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/EntraIdAuthentication.java
 [sample_feature_flag_setting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/FeatureFlagConfigurationSettingSample.java
+[sample_feature_flag_resource]: java/com/azure/data/appconfiguration/FeatureFlagResourceSample.java
 [sample_secret_reference_setting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/SecretReferenceConfigurationSettingSample.java
 [sample_snapshot_CRU_usage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/CreateSnapshot.java
 [sample_snapshot_create_with_tags]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/CreateSnapshotWithTagsFilter.java
 [sample_list_snapshots]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ListSnapshots.java
-

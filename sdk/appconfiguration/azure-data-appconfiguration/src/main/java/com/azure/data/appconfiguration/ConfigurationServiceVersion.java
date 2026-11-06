@@ -22,7 +22,12 @@ public enum ConfigurationServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-11-01}.
      */
-    V2023_11_01("2023-11-01");
+    V2023_11_01("2023-11-01"),
+
+    /**
+     * Service version {@code 2026-05-01-preview}.
+     */
+    V2026_05_01_PREVIEW("2026-05-01-preview");
 
     private final String version;
 
@@ -44,6 +49,6 @@ public enum ConfigurationServiceVersion implements ServiceVersion {
      * @return the latest {@link ConfigurationServiceVersion}
      */
     public static ConfigurationServiceVersion getLatest() {
-        return V2023_11_01;
+        return V2026_05_01_PREVIEW;
     }
 }

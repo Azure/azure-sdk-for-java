@@ -4,11 +4,17 @@
 
 ### Features Added
 
+- Added `FeatureFlagClient`, `FeatureFlagAsyncClient`, and `FeatureFlagClientBuilder` for the dedicated feature flag resource using API version `2026-05-01-preview`. These resources are separate from key-value-backed `FeatureFlagConfigurationSetting` instances.
+- Added feature flag resource models for conditions, variants, allocation, and telemetry, plus selectors, conditional operations, paged listing, and revision history.
+- Feature flag clients list feature flag labels, while configuration clients continue to list key-value labels.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Updated to support `2026-05-01-preview`
 
 ## 1.10.1 (2026-08-18)
 
