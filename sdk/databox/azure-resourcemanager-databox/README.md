@@ -1,8 +1,8 @@
-# Azure Resource Manager DataBox client library for Java
+# Azure Resource Manager Data Box client library for Java
 
-Azure Resource Manager DataBox client library for Java.
+Azure Resource Manager Data Box client library for Java.
 
-This package contains Microsoft Azure SDK for DataBox Management SDK.  Package tag package-2025-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Data Box Management SDK.  Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-databox</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
