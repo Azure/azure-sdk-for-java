@@ -13,22 +13,22 @@ public final class CertificateDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateDescriptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"subject\":\"mfnjh\",\"expiry\":\"Mon, 05 Apr 2021 14:46:39 GMT\",\"thumbprint\":\"mszkkfo\",\"isVerified\":true,\"created\":\"Mon, 21 Jun 2021 22:48:50 GMT\",\"updated\":\"Mon, 31 May 2021 03:25:20 GMT\",\"certificate\":\"kf\",\"certificateAuthorityResourceId\":\"wneaiv\"},\"etag\":\"czelpcirel\",\"id\":\"eae\",\"name\":\"wabfatkl\",\"type\":\"dxbjhwuaanozj\"}")
+            "{\"properties\":{\"subject\":\"wo\",\"expiry\":\"Sun, 28 Feb 2021 13:28:15 GMT\",\"thumbprint\":\"shrtdtkcnqxwb\",\"isVerified\":true,\"created\":\"Wed, 01 Sep 2021 09:08:06 GMT\",\"updated\":\"Wed, 21 Jul 2021 21:11:01 GMT\",\"certificate\":\"jwaa\",\"certificateAuthorityResourceId\":\"pqiiobyuqe\"},\"etag\":\"qlpqwcciuq\",\"id\":\"dbutauvfbtkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}")
             .toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("kf", model.properties().certificate());
-        Assertions.assertEquals("wneaiv", model.properties().certificateAuthorityResourceId());
+        Assertions.assertEquals("jwaa", model.properties().certificate());
+        Assertions.assertEquals("pqiiobyuqe", model.properties().certificateAuthorityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateDescriptionInner model
             = new CertificateDescriptionInner().withProperties(new CertificateProperties().withIsVerified(true)
-                .withCertificate("kf")
-                .withCertificateAuthorityResourceId("wneaiv"));
+                .withCertificate("jwaa")
+                .withCertificateAuthorityResourceId("pqiiobyuqe"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("kf", model.properties().certificate());
-        Assertions.assertEquals("wneaiv", model.properties().certificateAuthorityResourceId());
+        Assertions.assertEquals("jwaa", model.properties().certificate());
+        Assertions.assertEquals("pqiiobyuqe", model.properties().certificateAuthorityResourceId());
     }
 }

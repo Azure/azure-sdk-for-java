@@ -87,11 +87,6 @@ public final class RoutingCosmosDBSqlApiProperties implements JsonSerializable<R
      */
     private String partitionKeyTemplate;
 
-    /*
-     * The format of the message payload delivered to this endpoint.
-     */
-    private MessagePayloadFormat messagePayloadFormat;
-
     /**
      * Creates an instance of RoutingCosmosDBSqlApiProperties class.
      */
@@ -360,26 +355,6 @@ public final class RoutingCosmosDBSqlApiProperties implements JsonSerializable<R
     }
 
     /**
-     * Get the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
-     * 
-     * @return the messagePayloadFormat value.
-     */
-    public MessagePayloadFormat messagePayloadFormat() {
-        return this.messagePayloadFormat;
-    }
-
-    /**
-     * Set the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
-     * 
-     * @param messagePayloadFormat the messagePayloadFormat value to set.
-     * @return the RoutingCosmosDBSqlApiProperties object itself.
-     */
-    public RoutingCosmosDBSqlApiProperties withMessagePayloadFormat(MessagePayloadFormat messagePayloadFormat) {
-        this.messagePayloadFormat = messagePayloadFormat;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -398,8 +373,6 @@ public final class RoutingCosmosDBSqlApiProperties implements JsonSerializable<R
         jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
         jsonWriter.writeStringField("partitionKeyName", this.partitionKeyName);
         jsonWriter.writeStringField("partitionKeyTemplate", this.partitionKeyTemplate);
-        jsonWriter.writeStringField("messagePayloadFormat",
-            this.messagePayloadFormat == null ? null : this.messagePayloadFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -447,9 +420,6 @@ public final class RoutingCosmosDBSqlApiProperties implements JsonSerializable<R
                     deserializedRoutingCosmosDBSqlApiProperties.partitionKeyName = reader.getString();
                 } else if ("partitionKeyTemplate".equals(fieldName)) {
                     deserializedRoutingCosmosDBSqlApiProperties.partitionKeyTemplate = reader.getString();
-                } else if ("messagePayloadFormat".equals(fieldName)) {
-                    deserializedRoutingCosmosDBSqlApiProperties.messagePayloadFormat
-                        = MessagePayloadFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
