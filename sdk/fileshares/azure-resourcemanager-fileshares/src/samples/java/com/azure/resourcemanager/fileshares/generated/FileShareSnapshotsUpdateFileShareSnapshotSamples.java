@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class FileShareSnapshotsUpdateFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_Update_MaximumSet.

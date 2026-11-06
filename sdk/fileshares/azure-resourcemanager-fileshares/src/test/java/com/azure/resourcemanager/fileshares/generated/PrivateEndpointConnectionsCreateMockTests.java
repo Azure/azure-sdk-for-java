@@ -25,7 +25,7 @@ public final class PrivateEndpointConnectionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"novvqfovljxy\"],\"privateEndpoint\":{\"id\":\"w\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ndsytgadg\",\"actionsRequired\":\"aeaeneqnzarrw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ijfqkacewiipfp\",\"name\":\"bjibwwiftohq\",\"type\":\"vpuvks\"}";
+            = "{\"properties\":{\"groupIds\":[\"wfluszdt\",\"hrkwo\"],\"privateEndpoint\":{\"id\":\"voqacpiexpbt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"wo\",\"actionsRequired\":\"washr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cnqxwbpokulpi\",\"name\":\"jwaa\",\"type\":\"ipqiiobyuqerpq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,18 @@ public final class PrivateEndpointConnectionsCreateMockTests {
 
         PrivateEndpointConnection response
             = manager.privateEndpointConnections()
-                .define("kcnqxwbpo")
-                .withExistingFileShare("wo", "nwashrtd")
+                .define("yhrfouyftaakcpw")
+                .withExistingFileShare("axmodfvuef", "wsbpfvm")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("pqwcciuqgbdbutau")
-                        .withActionsRequired("btkuwhh")))
+                        .withDescription("ajqgxy")
+                        .withActionsRequired("ocmbqfqvmkcxoza")))
                 .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ndsytgadg", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("aeaeneqnzarrw",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("wo", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("washr", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

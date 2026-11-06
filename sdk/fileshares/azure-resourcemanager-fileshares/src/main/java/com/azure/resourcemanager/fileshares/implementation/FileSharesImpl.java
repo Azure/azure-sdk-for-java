@@ -12,10 +12,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.fileshares.fluent.FileSharesClient;
 import com.azure.resourcemanager.fileshares.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareInner;
+import com.azure.resourcemanager.fileshares.fluent.models.RedundancyConversionStatusResponseInner;
 import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.fileshares.models.FileShare;
 import com.azure.resourcemanager.fileshares.models.FileShares;
+import com.azure.resourcemanager.fileshares.models.RedundancyConversionStatusResponse;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionRequest;
 
 public final class FileSharesImpl implements FileShares {
     private static final ClientLogger LOGGER = new ClientLogger(FileSharesImpl.class);
@@ -87,6 +90,36 @@ public final class FileSharesImpl implements FileShares {
         CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(location, body);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> startRedundancyConversionWithResponse(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body, Context context) {
+        return this.serviceClient()
+            .startRedundancyConversionWithResponse(resourceGroupName, resourceName, body, context);
+    }
+
+    public void startRedundancyConversion(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body) {
+        this.serviceClient().startRedundancyConversion(resourceGroupName, resourceName, body);
+    }
+
+    public Response<RedundancyConversionStatusResponse>
+        getRedundancyConversionStatusWithResponse(String resourceGroupName, String resourceName, Context context) {
+        Response<RedundancyConversionStatusResponseInner> inner
+            = this.serviceClient().getRedundancyConversionStatusWithResponse(resourceGroupName, resourceName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RedundancyConversionStatusResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public RedundancyConversionStatusResponse getRedundancyConversionStatus(String resourceGroupName,
+        String resourceName) {
+        RedundancyConversionStatusResponseInner inner
+            = this.serviceClient().getRedundancyConversionStatus(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new RedundancyConversionStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

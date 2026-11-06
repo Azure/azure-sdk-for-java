@@ -12,26 +12,26 @@ public final class FileShareLimitsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareLimitsResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"limits\":{\"maxFileShares\":1493558591,\"maxFileShareSnapshots\":2143826704,\"maxFileShareSubnets\":1890498246,\"maxFileSharePrivateEndpointConnections\":2058649208,\"minProvisionedStorageGiB\":1309614398,\"maxProvisionedStorageGiB\":1414548234,\"minProvisionedIOPerSec\":1520989721,\"maxProvisionedIOPerSec\":1083545989,\"minProvisionedThroughputMiBPerSec\":223654021,\"maxProvisionedThroughputMiBPerSec\":299344741},\"provisioningConstants\":{\"baseIOPerSec\":306734530,\"scalarIOPerSec\":77.41510425361014,\"baseThroughputMiBPerSec\":445329815,\"scalarThroughputMiBPerSec\":82.09638916807184,\"guardrailIOPerSecScalar\":70.10904951109774,\"guardrailThroughputScalar\":51.84957148993339}}}")
+            "{\"properties\":{\"limits\":{\"maxFileShares\":212177726,\"maxFileShareSnapshots\":829690425,\"maxFileShareSubnets\":2139015356,\"maxFileSharePrivateEndpointConnections\":1792680801,\"minProvisionedStorageGiB\":862594448,\"maxProvisionedStorageGiB\":245724981,\"minProvisionedIOPerSec\":157234884,\"maxProvisionedIOPerSec\":1764023919,\"minProvisionedThroughputMiBPerSec\":642461794,\"maxProvisionedThroughputMiBPerSec\":799434019},\"provisioningConstants\":{\"baseIOPerSec\":244069221,\"scalarIOPerSec\":33.64942709505411,\"baseThroughputMiBPerSec\":2007054909,\"scalarThroughputMiBPerSec\":49.17460485856575,\"guardrailIOPerSecScalar\":96.57760470524683,\"guardrailThroughputScalar\":46.7812536582212}}}")
             .toObject(FileShareLimitsResponseInner.class);
-        Assertions.assertEquals(1493558591, model.properties().limits().maxFileShares());
-        Assertions.assertEquals(2143826704, model.properties().limits().maxFileShareSnapshots());
-        Assertions.assertEquals(1890498246, model.properties().limits().maxFileShareSubnets());
-        Assertions.assertEquals(2058649208, model.properties().limits().maxFileSharePrivateEndpointConnections());
-        Assertions.assertEquals(1309614398, model.properties().limits().minProvisionedStorageGiB());
-        Assertions.assertEquals(1414548234, model.properties().limits().maxProvisionedStorageGiB());
-        Assertions.assertEquals(1520989721, model.properties().limits().minProvisionedIOPerSec());
-        Assertions.assertEquals(1083545989, model.properties().limits().maxProvisionedIOPerSec());
-        Assertions.assertEquals(223654021, model.properties().limits().minProvisionedThroughputMiBPerSec());
-        Assertions.assertEquals(299344741, model.properties().limits().maxProvisionedThroughputMiBPerSec());
-        Assertions.assertEquals(306734530, model.properties().provisioningConstants().baseIOPerSec());
-        Assertions.assertEquals(77.41510425361014, model.properties().provisioningConstants().scalarIOPerSec());
-        Assertions.assertEquals(445329815, model.properties().provisioningConstants().baseThroughputMiBPerSec());
-        Assertions.assertEquals(82.09638916807184,
+        Assertions.assertEquals(212177726, model.properties().limits().maxFileShares());
+        Assertions.assertEquals(829690425, model.properties().limits().maxFileShareSnapshots());
+        Assertions.assertEquals(2139015356, model.properties().limits().maxFileShareSubnets());
+        Assertions.assertEquals(1792680801, model.properties().limits().maxFileSharePrivateEndpointConnections());
+        Assertions.assertEquals(862594448, model.properties().limits().minProvisionedStorageGiB());
+        Assertions.assertEquals(245724981, model.properties().limits().maxProvisionedStorageGiB());
+        Assertions.assertEquals(157234884, model.properties().limits().minProvisionedIOPerSec());
+        Assertions.assertEquals(1764023919, model.properties().limits().maxProvisionedIOPerSec());
+        Assertions.assertEquals(642461794, model.properties().limits().minProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(799434019, model.properties().limits().maxProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(244069221, model.properties().provisioningConstants().baseIOPerSec());
+        Assertions.assertEquals(33.64942709505411, model.properties().provisioningConstants().scalarIOPerSec());
+        Assertions.assertEquals(2007054909, model.properties().provisioningConstants().baseThroughputMiBPerSec());
+        Assertions.assertEquals(49.17460485856575,
             model.properties().provisioningConstants().scalarThroughputMiBPerSec());
-        Assertions.assertEquals(70.10904951109774,
+        Assertions.assertEquals(96.57760470524683,
             model.properties().provisioningConstants().guardrailIOPerSecScalar());
-        Assertions.assertEquals(51.84957148993339,
+        Assertions.assertEquals(46.7812536582212,
             model.properties().provisioningConstants().guardrailThroughputScalar());
     }
 }

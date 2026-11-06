@@ -13,10 +13,10 @@ public final class FileShareProvisioningRecommendationOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareProvisioningRecommendationOutput model = BinaryData.fromString(
-            "{\"provisionedIOPerSec\":1916962672,\"provisionedThroughputMiBPerSec\":1163138760,\"availableRedundancyOptions\":[\"Zone\"]}")
+            "{\"provisionedIOPerSec\":1859867828,\"provisionedThroughputMiBPerSec\":128550194,\"availableRedundancyOptions\":[\"Zone\",\"Local\",\"Zone\",\"Zone\"]}")
             .toObject(FileShareProvisioningRecommendationOutput.class);
-        Assertions.assertEquals(1916962672, model.provisionedIOPerSec());
-        Assertions.assertEquals(1163138760, model.provisionedThroughputMiBPerSec());
+        Assertions.assertEquals(1859867828, model.provisionedIOPerSec());
+        Assertions.assertEquals(128550194, model.provisionedThroughputMiBPerSec());
         Assertions.assertEquals(Redundancy.ZONE, model.availableRedundancyOptions().get(0));
     }
 }
