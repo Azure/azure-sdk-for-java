@@ -26,7 +26,7 @@ public final class SecurityRulesListByNetworkSecurityGroupMockTests {
     @Test
     public void testListByNetworkSecurityGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"pna\",\"protocol\":\"*\",\"sourceAddressPrefixes\":[\"ccbdre\",\"xhcexdrrvqahq\",\"ghtpw\",\"jnhyjsvf\"],\"destinationAddressPrefixes\":[\"z\"],\"sourcePortRanges\":[\"oowvrv\",\"t\"],\"destinationPortRanges\":[\"ppyostronzmyhgf\"],\"access\":\"Deny\",\"priority\":1358743575,\"direction\":\"Inbound\",\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"waekrrjreafxtsgu\",\"type\":\"CustomLocation\"},\"id\":\"lik\",\"name\":\"xwslolbqpv\",\"type\":\"zlmvfelfktgp\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"atutmzlbiojlvfhr\",\"protocol\":\"*\",\"sourceAddressPrefixes\":[\"eqvcwwyyurmoch\",\"prprsnmokay\",\"ejnhlbkpb\",\"pcpil\"],\"destinationAddressPrefixes\":[\"hzvechndbnwieho\"],\"sourcePortRanges\":[\"jwiuubwefqsfapaq\",\"ferr\"],\"destinationPortRanges\":[\"x\"],\"access\":\"Allow\",\"priority\":1238092125,\"direction\":\"Outbound\",\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"wogqqnobpudcdab\",\"type\":\"CustomLocation\"},\"id\":\"wyawbzasqbuc\",\"name\":\"jg\",\"type\":\"yexaoguy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,20 @@ public final class SecurityRulesListByNetworkSecurityGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SecurityRule> response = manager.securityRules()
-            .listByNetworkSecurityGroup("tvgbmhrixkwmy", "jejveg", com.azure.core.util.Context.NONE);
+            .listByNetworkSecurityGroup("opqhewjptmc", "sbostzel", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pna", response.iterator().next().properties().description());
+        Assertions.assertEquals("atutmzlbiojlvfhr", response.iterator().next().properties().description());
         Assertions.assertEquals(SecurityRuleProtocol.ASTERISK, response.iterator().next().properties().protocol());
-        Assertions.assertEquals("ccbdre", response.iterator().next().properties().sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("z", response.iterator().next().properties().destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("oowvrv", response.iterator().next().properties().sourcePortRanges().get(0));
-        Assertions.assertEquals("ppyostronzmyhgf",
-            response.iterator().next().properties().destinationPortRanges().get(0));
-        Assertions.assertEquals(SecurityRuleAccess.DENY, response.iterator().next().properties().access());
-        Assertions.assertEquals(1358743575, response.iterator().next().properties().priority());
-        Assertions.assertEquals(SecurityRuleDirection.INBOUND, response.iterator().next().properties().direction());
-        Assertions.assertEquals("waekrrjreafxtsgu", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("eqvcwwyyurmoch",
+            response.iterator().next().properties().sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("hzvechndbnwieho",
+            response.iterator().next().properties().destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("jwiuubwefqsfapaq", response.iterator().next().properties().sourcePortRanges().get(0));
+        Assertions.assertEquals("x", response.iterator().next().properties().destinationPortRanges().get(0));
+        Assertions.assertEquals(SecurityRuleAccess.ALLOW, response.iterator().next().properties().access());
+        Assertions.assertEquals(1238092125, response.iterator().next().properties().priority());
+        Assertions.assertEquals(SecurityRuleDirection.OUTBOUND, response.iterator().next().properties().direction());
+        Assertions.assertEquals("wogqqnobpudcdab", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

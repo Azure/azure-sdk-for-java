@@ -52,6 +52,13 @@ public final class NetworkInterfaceProperties implements JsonSerializable<Networ
      */
     private NetworkSecurityGroupArmReference networkSecurityGroup;
 
+    /*
+     * This setting is applicable only when SDN is supported and enabled in the environment. Indicates whether SDN
+     * policies should be bypassed for this network interface. By default, SDN is enabled. Set this value to true only
+     * if you want to disable SDN for the network interface.
+     */
+    private Boolean bypassSdnPolicies;
+
     /**
      * Creates an instance of NetworkInterfaceProperties class.
      */
@@ -181,6 +188,30 @@ public final class NetworkInterfaceProperties implements JsonSerializable<Networ
     }
 
     /**
+     * Get the bypassSdnPolicies property: This setting is applicable only when SDN is supported and enabled in the
+     * environment. Indicates whether SDN policies should be bypassed for this network interface. By default, SDN is
+     * enabled. Set this value to true only if you want to disable SDN for the network interface.
+     * 
+     * @return the bypassSdnPolicies value.
+     */
+    public Boolean bypassSdnPolicies() {
+        return this.bypassSdnPolicies;
+    }
+
+    /**
+     * Set the bypassSdnPolicies property: This setting is applicable only when SDN is supported and enabled in the
+     * environment. Indicates whether SDN policies should be bypassed for this network interface. By default, SDN is
+     * enabled. Set this value to true only if you want to disable SDN for the network interface.
+     * 
+     * @param bypassSdnPolicies the bypassSdnPolicies value to set.
+     * @return the NetworkInterfaceProperties object itself.
+     */
+    public NetworkInterfaceProperties withBypassSdnPolicies(Boolean bypassSdnPolicies) {
+        this.bypassSdnPolicies = bypassSdnPolicies;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -192,6 +223,7 @@ public final class NetworkInterfaceProperties implements JsonSerializable<Networ
         jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
         jsonWriter.writeBooleanField("createFromLocal", this.createFromLocal);
         jsonWriter.writeJsonField("networkSecurityGroup", this.networkSecurityGroup);
+        jsonWriter.writeBooleanField("bypassSdnPolicies", this.bypassSdnPolicies);
         return jsonWriter.writeEndObject();
     }
 
@@ -228,6 +260,9 @@ public final class NetworkInterfaceProperties implements JsonSerializable<Networ
                 } else if ("networkSecurityGroup".equals(fieldName)) {
                     deserializedNetworkInterfaceProperties.networkSecurityGroup
                         = NetworkSecurityGroupArmReference.fromJson(reader);
+                } else if ("bypassSdnPolicies".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.bypassSdnPolicies
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

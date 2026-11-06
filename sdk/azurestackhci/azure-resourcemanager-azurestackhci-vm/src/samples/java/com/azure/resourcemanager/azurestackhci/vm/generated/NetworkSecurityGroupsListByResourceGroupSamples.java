@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class NetworkSecurityGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
      */
     /**
      * Sample code: List network security groups in resource group.

@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityGroupTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityGroupTagsUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"cxerf\":\"kymuctqhjfbebr\",\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"}}")
+        NetworkSecurityGroupTagsUpdate model = BinaryData
+            .fromString("{\"tags\":{\"afkuwb\":\"pycanuzbpz\",\"ehhseyvjusrts\":\"rnwb\",\"mx\":\"hspkdeemao\"}}")
             .toObject(NetworkSecurityGroupTagsUpdate.class);
-        Assertions.assertEquals("kymuctqhjfbebr", model.tags().get("cxerf"));
+        Assertions.assertEquals("pycanuzbpz", model.tags().get("afkuwb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityGroupTagsUpdate model
-            = new NetworkSecurityGroupTagsUpdate().withTags(mapOf("cxerf", "kymuctqhjfbebr", "phxepcyvahf",
-                "wutttxfvjrbi", "gidokgjljyoxgvcl", "ljkyqxjvuuj", "jhtxfvgxbfsmxne", "bgsncghkjeszzhb"));
+        NetworkSecurityGroupTagsUpdate model = new NetworkSecurityGroupTagsUpdate()
+            .withTags(mapOf("afkuwb", "pycanuzbpz", "ehhseyvjusrts", "rnwb", "mx", "hspkdeemao"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupTagsUpdate.class);
-        Assertions.assertEquals("kymuctqhjfbebr", model.tags().get("cxerf"));
+        Assertions.assertEquals("pycanuzbpz", model.tags().get("afkuwb"));
     }
 
     // Use "Map.of" if available

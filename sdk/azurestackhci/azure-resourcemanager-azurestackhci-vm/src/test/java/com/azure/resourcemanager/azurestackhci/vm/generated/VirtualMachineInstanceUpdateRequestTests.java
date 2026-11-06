@@ -16,6 +16,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.OsProfileUpdateLinuxCon
 import com.azure.resourcemanager.azurestackhci.vm.models.OsProfileUpdateWindowsConfiguration;
 import com.azure.resourcemanager.azurestackhci.vm.models.StorageProfileUpdate;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualHardDiskArmReference;
+import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateProperties;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateRequest;
@@ -27,22 +28,28 @@ public final class VirtualMachineInstanceUpdateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstanceUpdateRequest model = BinaryData.fromString(
-            "{\"properties\":{\"hardwareProfile\":{\"vmSize\":\"Standard_NV6\",\"processors\":1133541665,\"memoryMB\":5718085323874880821,\"virtualMachineGPUs\":[{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":6995511201429396399,\"gpuName\":\"ujmkcjhwqy\"},{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":3152947325406928517,\"gpuName\":\"wj\"},{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":8703835635466312899,\"gpuName\":\"ervnaenqpehi\"},{\"assignmentType\":\"GpuDDA\",\"partitionSizeMB\":3847328622576191056,\"gpuName\":\"ifthnz\"}]},\"storageProfile\":{\"dataDisks\":[{\"id\":\"gnayqigynduh\"}]},\"networkProfile\":{\"networkInterfaces\":[{\"id\":\"kthumaqolbgycdui\"},{\"id\":\"tgccymvaolpss\"}]},\"osProfile\":{\"computerName\":\"fmmdnbbg\",\"linuxConfiguration\":{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":true},\"windowsConfiguration\":{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":false}}},\"identity\":{\"principalId\":\"zdxss\",\"tenantId\":\"bzmnvdfznud\",\"type\":\"SystemAssigned\"}}")
+            "{\"properties\":{\"hardwareProfile\":{\"vmSize\":\"Standard_K8S_v1\",\"processors\":1138450132,\"memoryMB\":7518874827455710832,\"virtualMachineGPUs\":[{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":518441316636125291,\"gpuName\":\"gvvcnayrhyr\"},{\"assignmentType\":\"GpuDDA\",\"partitionSizeMB\":5726286891049833981,\"gpuName\":\"edndr\"}],\"dynamicMemoryConfig\":{\"maximumMemoryMB\":3509094090426959627,\"minimumMemoryMB\":5152017214547708245,\"targetMemoryBuffer\":1018889547,\"enabled\":true}},\"storageProfile\":{\"dataDisks\":[{\"id\":\"mtdaa\"},{\"id\":\"dvwvgpio\"},{\"id\":\"wxrt\"}]},\"networkProfile\":{\"networkInterfaces\":[{\"id\":\"pxgy\"},{\"id\":\"gvr\"},{\"id\":\"npkukghimdblx\"},{\"id\":\"imfnjhfjx\"}]},\"osProfile\":{\"computerName\":\"zk\",\"linuxConfiguration\":{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":true},\"windowsConfiguration\":{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":false}}},\"identity\":{\"principalId\":\"jawneaiv\",\"tenantId\":\"czelpcirel\",\"type\":\"SystemAssigned\"}}")
             .toObject(VirtualMachineInstanceUpdateRequest.class);
-        Assertions.assertEquals(VmSizeEnum.STANDARD_NV6, model.properties().hardwareProfile().vmSize());
-        Assertions.assertEquals(1133541665, model.properties().hardwareProfile().processors());
-        Assertions.assertEquals(5718085323874880821L, model.properties().hardwareProfile().memoryMB());
+        Assertions.assertEquals(VmSizeEnum.STANDARD_K8S_V1, model.properties().hardwareProfile().vmSize());
+        Assertions.assertEquals(1138450132, model.properties().hardwareProfile().processors());
+        Assertions.assertEquals(7518874827455710832L, model.properties().hardwareProfile().memoryMB());
         Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP,
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).assignmentType());
-        Assertions.assertEquals(6995511201429396399L,
+        Assertions.assertEquals(518441316636125291L,
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).partitionSizeMB());
-        Assertions.assertEquals("ujmkcjhwqy",
+        Assertions.assertEquals("gvvcnayrhyr",
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).gpuName());
-        Assertions.assertEquals("gnayqigynduh", model.properties().storageProfile().dataDisks().get(0).id());
-        Assertions.assertEquals("kthumaqolbgycdui",
-            model.properties().networkProfile().networkInterfaces().get(0).id());
-        Assertions.assertEquals("fmmdnbbg", model.properties().osProfile().computerName());
-        Assertions.assertTrue(model.properties().osProfile().linuxConfiguration().provisionVMAgent());
+        Assertions.assertEquals(3509094090426959627L,
+            model.properties().hardwareProfile().dynamicMemoryConfig().maximumMemoryMB());
+        Assertions.assertEquals(5152017214547708245L,
+            model.properties().hardwareProfile().dynamicMemoryConfig().minimumMemoryMB());
+        Assertions.assertEquals(1018889547,
+            model.properties().hardwareProfile().dynamicMemoryConfig().targetMemoryBuffer());
+        Assertions.assertTrue(model.properties().hardwareProfile().dynamicMemoryConfig().enabled());
+        Assertions.assertEquals("mtdaa", model.properties().storageProfile().dataDisks().get(0).id());
+        Assertions.assertEquals("pxgy", model.properties().networkProfile().networkInterfaces().get(0).id());
+        Assertions.assertEquals("zk", model.properties().osProfile().computerName());
+        Assertions.assertFalse(model.properties().osProfile().linuxConfiguration().provisionVMAgent());
         Assertions.assertTrue(model.properties().osProfile().linuxConfiguration().provisionVMConfigAgent());
         Assertions.assertTrue(model.properties().osProfile().windowsConfiguration().provisionVMAgent());
         Assertions.assertFalse(model.properties().osProfile().windowsConfiguration().provisionVMConfigAgent());
@@ -53,52 +60,58 @@ public final class VirtualMachineInstanceUpdateRequestTests {
     public void testSerialize() throws Exception {
         VirtualMachineInstanceUpdateRequest model = new VirtualMachineInstanceUpdateRequest()
             .withProperties(new VirtualMachineInstanceUpdateProperties()
-                .withHardwareProfile(new HardwareProfileUpdate().withVmSize(VmSizeEnum.STANDARD_NV6)
-                    .withProcessors(1133541665)
-                    .withMemoryMB(5718085323874880821L)
+                .withHardwareProfile(new HardwareProfileUpdate().withVmSize(VmSizeEnum.STANDARD_K8S_V1)
+                    .withProcessors(1138450132)
+                    .withMemoryMB(7518874827455710832L)
                     .withVirtualMachineGPUs(Arrays.asList(
                         new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
                             .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                            .withPartitionSizeMB(6995511201429396399L)
-                            .withGpuName("ujmkcjhwqy"),
-                        new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
-                            .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                            .withPartitionSizeMB(3152947325406928517L)
-                            .withGpuName("wj"),
-                        new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
-                            .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                            .withPartitionSizeMB(8703835635466312899L)
-                            .withGpuName("ervnaenqpehi"),
+                            .withPartitionSizeMB(518441316636125291L)
+                            .withGpuName("gvvcnayrhyr"),
                         new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
                             .withAssignmentType(GpuAssignmentTypeEnum.GPU_DDA)
-                            .withPartitionSizeMB(3847328622576191056L)
-                            .withGpuName("ifthnz"))))
+                            .withPartitionSizeMB(5726286891049833981L)
+                            .withGpuName("edndr")))
+                    .withDynamicMemoryConfig(new VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig()
+                        .withMaximumMemoryMB(3509094090426959627L)
+                        .withMinimumMemoryMB(5152017214547708245L)
+                        .withTargetMemoryBuffer(1018889547)
+                        .withEnabled(true)))
                 .withStorageProfile(new StorageProfileUpdate()
-                    .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId("gnayqigynduh"))))
-                .withNetworkProfile(new NetworkProfileUpdate()
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceArmReference().withId("kthumaqolbgycdui"),
-                        new NetworkInterfaceArmReference().withId("tgccymvaolpss"))))
-                .withOsProfile(new OsProfileUpdate().withComputerName("fmmdnbbg")
-                    .withLinuxConfiguration(new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(true)
+                    .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId("mtdaa"),
+                        new VirtualHardDiskArmReference().withId("dvwvgpio"),
+                        new VirtualHardDiskArmReference().withId("wxrt"))))
+                .withNetworkProfile(new NetworkProfileUpdate().withNetworkInterfaces(Arrays.asList(
+                    new NetworkInterfaceArmReference().withId("pxgy"), new NetworkInterfaceArmReference().withId("gvr"),
+                    new NetworkInterfaceArmReference().withId("npkukghimdblx"),
+                    new NetworkInterfaceArmReference().withId("imfnjhfjx"))))
+                .withOsProfile(new OsProfileUpdate().withComputerName("zk")
+                    .withLinuxConfiguration(new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(false)
                         .withProvisionVMConfigAgent(true))
                     .withWindowsConfiguration(new OsProfileUpdateWindowsConfiguration().withProvisionVMAgent(true)
                         .withProvisionVMConfigAgent(false))))
             .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstanceUpdateRequest.class);
-        Assertions.assertEquals(VmSizeEnum.STANDARD_NV6, model.properties().hardwareProfile().vmSize());
-        Assertions.assertEquals(1133541665, model.properties().hardwareProfile().processors());
-        Assertions.assertEquals(5718085323874880821L, model.properties().hardwareProfile().memoryMB());
+        Assertions.assertEquals(VmSizeEnum.STANDARD_K8S_V1, model.properties().hardwareProfile().vmSize());
+        Assertions.assertEquals(1138450132, model.properties().hardwareProfile().processors());
+        Assertions.assertEquals(7518874827455710832L, model.properties().hardwareProfile().memoryMB());
         Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP,
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).assignmentType());
-        Assertions.assertEquals(6995511201429396399L,
+        Assertions.assertEquals(518441316636125291L,
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).partitionSizeMB());
-        Assertions.assertEquals("ujmkcjhwqy",
+        Assertions.assertEquals("gvvcnayrhyr",
             model.properties().hardwareProfile().virtualMachineGPUs().get(0).gpuName());
-        Assertions.assertEquals("gnayqigynduh", model.properties().storageProfile().dataDisks().get(0).id());
-        Assertions.assertEquals("kthumaqolbgycdui",
-            model.properties().networkProfile().networkInterfaces().get(0).id());
-        Assertions.assertEquals("fmmdnbbg", model.properties().osProfile().computerName());
-        Assertions.assertTrue(model.properties().osProfile().linuxConfiguration().provisionVMAgent());
+        Assertions.assertEquals(3509094090426959627L,
+            model.properties().hardwareProfile().dynamicMemoryConfig().maximumMemoryMB());
+        Assertions.assertEquals(5152017214547708245L,
+            model.properties().hardwareProfile().dynamicMemoryConfig().minimumMemoryMB());
+        Assertions.assertEquals(1018889547,
+            model.properties().hardwareProfile().dynamicMemoryConfig().targetMemoryBuffer());
+        Assertions.assertTrue(model.properties().hardwareProfile().dynamicMemoryConfig().enabled());
+        Assertions.assertEquals("mtdaa", model.properties().storageProfile().dataDisks().get(0).id());
+        Assertions.assertEquals("pxgy", model.properties().networkProfile().networkInterfaces().get(0).id());
+        Assertions.assertEquals("zk", model.properties().osProfile().computerName());
+        Assertions.assertFalse(model.properties().osProfile().linuxConfiguration().provisionVMAgent());
         Assertions.assertTrue(model.properties().osProfile().linuxConfiguration().provisionVMConfigAgent());
         Assertions.assertTrue(model.properties().osProfile().windowsConfiguration().provisionVMAgent());
         Assertions.assertFalse(model.properties().osProfile().windowsConfiguration().provisionVMConfigAgent());

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.StorageContainerPropert
  */
 public final class StorageContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/StorageContainers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/StorageContainers_CreateOrUpdate.json
      */
     /**
      * Sample code: PutStorageContainer.

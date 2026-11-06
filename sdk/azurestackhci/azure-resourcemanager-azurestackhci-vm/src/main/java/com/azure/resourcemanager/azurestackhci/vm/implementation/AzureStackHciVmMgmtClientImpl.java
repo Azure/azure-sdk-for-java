@@ -31,14 +31,22 @@ import com.azure.resourcemanager.azurestackhci.vm.fluent.AzureStackHciVmMgmtClie
 import com.azure.resourcemanager.azurestackhci.vm.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.GuestAgentsClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.HybridIdentityMetadatasClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.InboundRulesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.LogicalNetworksClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.MarketplaceGalleryImagesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.NatGatewaysClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.NetworkSecurityGroupsClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.OperationsClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.PublicIPAddressesClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.SecurityRulesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.SnapshotsClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.StorageContainersClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualHardDisksClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualMachineInstancesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualNetworkSubnetsClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualNetworksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -222,6 +230,20 @@ public final class AzureStackHciVmMgmtClientImpl implements AzureStackHciVmMgmtC
     }
 
     /**
+     * The SnapshotsClient object to access its operations.
+     */
+    private final SnapshotsClient snapshots;
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     * 
+     * @return the SnapshotsClient object.
+     */
+    public SnapshotsClient getSnapshots() {
+        return this.snapshots;
+    }
+
+    /**
      * The StorageContainersClient object to access its operations.
      */
     private final StorageContainersClient storageContainers;
@@ -306,6 +328,104 @@ public final class AzureStackHciVmMgmtClientImpl implements AzureStackHciVmMgmtC
     }
 
     /**
+     * The VirtualNetworksClient object to access its operations.
+     */
+    private final VirtualNetworksClient virtualNetworks;
+
+    /**
+     * Gets the VirtualNetworksClient object to access its operations.
+     * 
+     * @return the VirtualNetworksClient object.
+     */
+    public VirtualNetworksClient getVirtualNetworks() {
+        return this.virtualNetworks;
+    }
+
+    /**
+     * The VirtualNetworkSubnetsClient object to access its operations.
+     */
+    private final VirtualNetworkSubnetsClient virtualNetworkSubnets;
+
+    /**
+     * Gets the VirtualNetworkSubnetsClient object to access its operations.
+     * 
+     * @return the VirtualNetworkSubnetsClient object.
+     */
+    public VirtualNetworkSubnetsClient getVirtualNetworkSubnets() {
+        return this.virtualNetworkSubnets;
+    }
+
+    /**
+     * The PublicIPAddressesClient object to access its operations.
+     */
+    private final PublicIPAddressesClient publicIPAddresses;
+
+    /**
+     * Gets the PublicIPAddressesClient object to access its operations.
+     * 
+     * @return the PublicIPAddressesClient object.
+     */
+    public PublicIPAddressesClient getPublicIPAddresses() {
+        return this.publicIPAddresses;
+    }
+
+    /**
+     * The NatGatewaysClient object to access its operations.
+     */
+    private final NatGatewaysClient natGateways;
+
+    /**
+     * Gets the NatGatewaysClient object to access its operations.
+     * 
+     * @return the NatGatewaysClient object.
+     */
+    public NatGatewaysClient getNatGateways() {
+        return this.natGateways;
+    }
+
+    /**
+     * The InboundRulesClient object to access its operations.
+     */
+    private final InboundRulesClient inboundRules;
+
+    /**
+     * Gets the InboundRulesClient object to access its operations.
+     * 
+     * @return the InboundRulesClient object.
+     */
+    public InboundRulesClient getInboundRules() {
+        return this.inboundRules;
+    }
+
+    /**
+     * The LoadBalancersClient object to access its operations.
+     */
+    private final LoadBalancersClient loadBalancers;
+
+    /**
+     * Gets the LoadBalancersClient object to access its operations.
+     * 
+     * @return the LoadBalancersClient object.
+     */
+    public LoadBalancersClient getLoadBalancers() {
+        return this.loadBalancers;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
      * Initializes an instance of AzureStackHciVmMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -322,19 +442,27 @@ public final class AzureStackHciVmMgmtClientImpl implements AzureStackHciVmMgmtC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01-preview";
+        this.apiVersion = "2026-07-01-preview";
         this.galleryImages = new GalleryImagesClientImpl(this);
         this.logicalNetworks = new LogicalNetworksClientImpl(this);
         this.marketplaceGalleryImages = new MarketplaceGalleryImagesClientImpl(this);
         this.networkInterfaces = new NetworkInterfacesClientImpl(this);
         this.networkSecurityGroups = new NetworkSecurityGroupsClientImpl(this);
         this.securityRules = new SecurityRulesClientImpl(this);
+        this.snapshots = new SnapshotsClientImpl(this);
         this.storageContainers = new StorageContainersClientImpl(this);
         this.virtualHardDisks = new VirtualHardDisksClientImpl(this);
         this.virtualMachineInstances = new VirtualMachineInstancesClientImpl(this);
         this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
         this.attestationStatuses = new AttestationStatusesClientImpl(this);
         this.guestAgents = new GuestAgentsClientImpl(this);
+        this.virtualNetworks = new VirtualNetworksClientImpl(this);
+        this.virtualNetworkSubnets = new VirtualNetworkSubnetsClientImpl(this);
+        this.publicIPAddresses = new PublicIPAddressesClientImpl(this);
+        this.natGateways = new NatGatewaysClientImpl(this);
+        this.inboundRules = new InboundRulesClientImpl(this);
+        this.loadBalancers = new LoadBalancersClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**

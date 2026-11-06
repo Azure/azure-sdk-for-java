@@ -12,18 +12,18 @@ public final class OsProfileUpdateLinuxConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OsProfileUpdateLinuxConfiguration model
-            = BinaryData.fromString("{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":true}")
+            = BinaryData.fromString("{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":false}")
                 .toObject(OsProfileUpdateLinuxConfiguration.class);
         Assertions.assertTrue(model.provisionVMAgent());
-        Assertions.assertTrue(model.provisionVMConfigAgent());
+        Assertions.assertFalse(model.provisionVMConfigAgent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OsProfileUpdateLinuxConfiguration model
-            = new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(true).withProvisionVMConfigAgent(true);
+            = new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(true).withProvisionVMConfigAgent(false);
         model = BinaryData.fromObject(model).toObject(OsProfileUpdateLinuxConfiguration.class);
         Assertions.assertTrue(model.provisionVMAgent());
-        Assertions.assertTrue(model.provisionVMConfigAgent());
+        Assertions.assertFalse(model.provisionVMConfigAgent());
     }
 }

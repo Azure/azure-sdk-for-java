@@ -14,16 +14,17 @@ public final class VirtualMachineInstancePropertiesNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesNetworkProfile model
-            = BinaryData.fromString("{\"networkInterfaces\":[{\"id\":\"f\"}]}")
+            = BinaryData.fromString("{\"networkInterfaces\":[{\"id\":\"qvmkcxo\"},{\"id\":\"pvhelxprg\"}]}")
                 .toObject(VirtualMachineInstancePropertiesNetworkProfile.class);
-        Assertions.assertEquals("f", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("qvmkcxo", model.networkInterfaces().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesNetworkProfile model = new VirtualMachineInstancePropertiesNetworkProfile()
-            .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceArmReference().withId("f")));
+            .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceArmReference().withId("qvmkcxo"),
+                new NetworkInterfaceArmReference().withId("pvhelxprg")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesNetworkProfile.class);
-        Assertions.assertEquals("f", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("qvmkcxo", model.networkInterfaces().get(0).id());
     }
 }

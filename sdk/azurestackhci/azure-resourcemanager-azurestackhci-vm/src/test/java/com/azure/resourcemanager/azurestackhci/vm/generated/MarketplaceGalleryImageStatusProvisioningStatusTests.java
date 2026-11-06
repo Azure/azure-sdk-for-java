@@ -13,9 +13,9 @@ public final class MarketplaceGalleryImageStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceGalleryImageStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"nj\",\"status\":\"Succeeded\"}")
+            = BinaryData.fromString("{\"operationId\":\"s\",\"status\":\"Succeeded\"}")
                 .toObject(MarketplaceGalleryImageStatusProvisioningStatus.class);
-        Assertions.assertEquals("nj", model.operationId());
+        Assertions.assertEquals("s", model.operationId());
         Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

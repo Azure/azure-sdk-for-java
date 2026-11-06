@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class NetworkSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NetworkSecurityGroups_Delete.json
+     * x-ms-original-file: 2026-07-01-preview/NetworkSecurityGroups_Delete.json
      */
     /**
      * Sample code: Delete network security group.

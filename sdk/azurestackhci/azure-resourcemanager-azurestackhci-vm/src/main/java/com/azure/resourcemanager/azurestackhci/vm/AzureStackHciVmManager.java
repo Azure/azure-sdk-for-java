@@ -30,26 +30,42 @@ import com.azure.resourcemanager.azurestackhci.vm.implementation.AzureStackHciVm
 import com.azure.resourcemanager.azurestackhci.vm.implementation.GalleryImagesImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.GuestAgentsImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.HybridIdentityMetadatasImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.InboundRulesImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.LoadBalancersImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.LogicalNetworksImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.MarketplaceGalleryImagesImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.NatGatewaysImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.NetworkInterfacesImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.NetworkSecurityGroupsImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.OperationsImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.PublicIPAddressesImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.SecurityRulesImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.StorageContainersImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.VirtualHardDisksImpl;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.VirtualMachineInstancesImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.VirtualNetworkSubnetsImpl;
+import com.azure.resourcemanager.azurestackhci.vm.implementation.VirtualNetworksImpl;
 import com.azure.resourcemanager.azurestackhci.vm.models.AttestationStatuses;
 import com.azure.resourcemanager.azurestackhci.vm.models.GalleryImages;
 import com.azure.resourcemanager.azurestackhci.vm.models.GuestAgents;
 import com.azure.resourcemanager.azurestackhci.vm.models.HybridIdentityMetadatas;
+import com.azure.resourcemanager.azurestackhci.vm.models.InboundRules;
+import com.azure.resourcemanager.azurestackhci.vm.models.LoadBalancers;
 import com.azure.resourcemanager.azurestackhci.vm.models.LogicalNetworks;
 import com.azure.resourcemanager.azurestackhci.vm.models.MarketplaceGalleryImages;
+import com.azure.resourcemanager.azurestackhci.vm.models.NatGateways;
 import com.azure.resourcemanager.azurestackhci.vm.models.NetworkInterfaces;
 import com.azure.resourcemanager.azurestackhci.vm.models.NetworkSecurityGroups;
+import com.azure.resourcemanager.azurestackhci.vm.models.Operations;
+import com.azure.resourcemanager.azurestackhci.vm.models.PublicIPAddresses;
 import com.azure.resourcemanager.azurestackhci.vm.models.SecurityRules;
+import com.azure.resourcemanager.azurestackhci.vm.models.Snapshots;
 import com.azure.resourcemanager.azurestackhci.vm.models.StorageContainers;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualHardDisks;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstances;
+import com.azure.resourcemanager.azurestackhci.vm.models.VirtualNetworkSubnets;
+import com.azure.resourcemanager.azurestackhci.vm.models.VirtualNetworks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -75,6 +91,8 @@ public final class AzureStackHciVmManager {
 
     private SecurityRules securityRules;
 
+    private Snapshots snapshots;
+
     private StorageContainers storageContainers;
 
     private VirtualHardDisks virtualHardDisks;
@@ -86,6 +104,20 @@ public final class AzureStackHciVmManager {
     private AttestationStatuses attestationStatuses;
 
     private GuestAgents guestAgents;
+
+    private VirtualNetworks virtualNetworks;
+
+    private VirtualNetworkSubnets virtualNetworkSubnets;
+
+    private PublicIPAddresses publicIPAddresses;
+
+    private NatGateways natGateways;
+
+    private InboundRules inboundRules;
+
+    private LoadBalancers loadBalancers;
+
+    private Operations operations;
 
     private final AzureStackHciVmMgmtClient clientObject;
 
@@ -376,6 +408,18 @@ public final class AzureStackHciVmManager {
     }
 
     /**
+     * Gets the resource collection API of Snapshots. It manages Snapshot.
+     * 
+     * @return Resource collection API of Snapshots.
+     */
+    public Snapshots snapshots() {
+        if (this.snapshots == null) {
+            this.snapshots = new SnapshotsImpl(clientObject.getSnapshots(), this);
+        }
+        return snapshots;
+    }
+
+    /**
      * Gets the resource collection API of StorageContainers. It manages StorageContainer.
      * 
      * @return Resource collection API of StorageContainers.
@@ -447,6 +491,90 @@ public final class AzureStackHciVmManager {
             this.guestAgents = new GuestAgentsImpl(clientObject.getGuestAgents(), this);
         }
         return guestAgents;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
+     * 
+     * @return Resource collection API of VirtualNetworks.
+     */
+    public VirtualNetworks virtualNetworks() {
+        if (this.virtualNetworks == null) {
+            this.virtualNetworks = new VirtualNetworksImpl(clientObject.getVirtualNetworks(), this);
+        }
+        return virtualNetworks;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualNetworkSubnets. It manages VirtualNetworkSubnet.
+     * 
+     * @return Resource collection API of VirtualNetworkSubnets.
+     */
+    public VirtualNetworkSubnets virtualNetworkSubnets() {
+        if (this.virtualNetworkSubnets == null) {
+            this.virtualNetworkSubnets = new VirtualNetworkSubnetsImpl(clientObject.getVirtualNetworkSubnets(), this);
+        }
+        return virtualNetworkSubnets;
+    }
+
+    /**
+     * Gets the resource collection API of PublicIPAddresses. It manages PublicIPAddress.
+     * 
+     * @return Resource collection API of PublicIPAddresses.
+     */
+    public PublicIPAddresses publicIPAddresses() {
+        if (this.publicIPAddresses == null) {
+            this.publicIPAddresses = new PublicIPAddressesImpl(clientObject.getPublicIPAddresses(), this);
+        }
+        return publicIPAddresses;
+    }
+
+    /**
+     * Gets the resource collection API of NatGateways. It manages NatGateway.
+     * 
+     * @return Resource collection API of NatGateways.
+     */
+    public NatGateways natGateways() {
+        if (this.natGateways == null) {
+            this.natGateways = new NatGatewaysImpl(clientObject.getNatGateways(), this);
+        }
+        return natGateways;
+    }
+
+    /**
+     * Gets the resource collection API of InboundRules. It manages InboundRule.
+     * 
+     * @return Resource collection API of InboundRules.
+     */
+    public InboundRules inboundRules() {
+        if (this.inboundRules == null) {
+            this.inboundRules = new InboundRulesImpl(clientObject.getInboundRules(), this);
+        }
+        return inboundRules;
+    }
+
+    /**
+     * Gets the resource collection API of LoadBalancers. It manages LoadBalancer.
+     * 
+     * @return Resource collection API of LoadBalancers.
+     */
+    public LoadBalancers loadBalancers() {
+        if (this.loadBalancers == null) {
+            this.loadBalancers = new LoadBalancersImpl(clientObject.getLoadBalancers(), this);
+        }
+        return loadBalancers;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**

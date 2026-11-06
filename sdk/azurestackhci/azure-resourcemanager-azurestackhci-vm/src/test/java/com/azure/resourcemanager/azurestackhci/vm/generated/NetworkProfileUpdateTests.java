@@ -13,16 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProfileUpdate model = BinaryData.fromString("{\"networkInterfaces\":[{\"id\":\"pgcjefuzmuvp\"}]}")
+        NetworkProfileUpdate model = BinaryData.fromString(
+            "{\"networkInterfaces\":[{\"id\":\"imrzrtuzqog\"},{\"id\":\"xnevfdnwn\"},{\"id\":\"ewzsyyceuzsoib\"},{\"id\":\"dpfrxtrthzvaytdw\"}]}")
             .toObject(NetworkProfileUpdate.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("imrzrtuzqog", model.networkInterfaces().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkProfileUpdate model = new NetworkProfileUpdate()
-            .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceArmReference().withId("pgcjefuzmuvp")));
+            .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceArmReference().withId("imrzrtuzqog"),
+                new NetworkInterfaceArmReference().withId("xnevfdnwn"),
+                new NetworkInterfaceArmReference().withId("ewzsyyceuzsoib"),
+                new NetworkInterfaceArmReference().withId("dpfrxtrthzvaytdw")));
         model = BinaryData.fromObject(model).toObject(NetworkProfileUpdate.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("imrzrtuzqog", model.networkInterfaces().get(0).id());
     }
 }

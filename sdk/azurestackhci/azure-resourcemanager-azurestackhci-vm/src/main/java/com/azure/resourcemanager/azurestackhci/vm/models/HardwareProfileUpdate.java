@@ -37,6 +37,11 @@ public final class HardwareProfileUpdate implements JsonSerializable<HardwarePro
      */
     private List<VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU> virtualMachineGPUs;
 
+    /*
+     * Dynamic memory config for day-2 updates and static-to-dynamic conversion of the virtual machine instance.
+     */
+    private VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig dynamicMemoryConfig;
+
     /**
      * Creates an instance of HardwareProfileUpdate class.
      */
@@ -125,6 +130,29 @@ public final class HardwareProfileUpdate implements JsonSerializable<HardwarePro
     }
 
     /**
+     * Get the dynamicMemoryConfig property: Dynamic memory config for day-2 updates and static-to-dynamic conversion of
+     * the virtual machine instance.
+     * 
+     * @return the dynamicMemoryConfig value.
+     */
+    public VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig dynamicMemoryConfig() {
+        return this.dynamicMemoryConfig;
+    }
+
+    /**
+     * Set the dynamicMemoryConfig property: Dynamic memory config for day-2 updates and static-to-dynamic conversion of
+     * the virtual machine instance.
+     * 
+     * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
+     * @return the HardwareProfileUpdate object itself.
+     */
+    public HardwareProfileUpdate withDynamicMemoryConfig(
+        VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig dynamicMemoryConfig) {
+        this.dynamicMemoryConfig = dynamicMemoryConfig;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -135,6 +163,7 @@ public final class HardwareProfileUpdate implements JsonSerializable<HardwarePro
         jsonWriter.writeNumberField("memoryMB", this.memoryMB);
         jsonWriter.writeArrayField("virtualMachineGPUs", this.virtualMachineGPUs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dynamicMemoryConfig", this.dynamicMemoryConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -164,6 +193,9 @@ public final class HardwareProfileUpdate implements JsonSerializable<HardwarePro
                         = reader.readArray(reader1 -> VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU
                             .fromJson(reader1));
                     deserializedHardwareProfileUpdate.virtualMachineGPUs = virtualMachineGPUs;
+                } else if ("dynamicMemoryConfig".equals(fieldName)) {
+                    deserializedHardwareProfileUpdate.dynamicMemoryConfig
+                        = VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
