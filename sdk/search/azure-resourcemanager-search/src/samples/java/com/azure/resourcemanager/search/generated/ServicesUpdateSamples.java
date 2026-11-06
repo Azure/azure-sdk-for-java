@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceDisableLocalAuth.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceDisableLocalAuth.json
      */
     /**
      * Sample code: SearchUpdateServiceDisableLocalAuth.
@@ -50,7 +50,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithSku.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceWithSku.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSku.
@@ -67,7 +67,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
@@ -85,12 +85,12 @@ public final class ServicesUpdateSamples {
                     .withNetworkRuleSet(new NetworkRuleSet()
                         .withIpRules(
                             Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
-                        .withBypass(SearchBypass.AZURE_PORTAL)),
+                        .withBypass(SearchBypass.AZURE_SERVICES)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithCmkEnforcement.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceWithCmkEnforcement.json
      */
     /**
      * Sample code: SearchUpdateServiceWithCmkEnforcement.
@@ -110,7 +110,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithDataExfiltration.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceWithDataExfiltration.json
      */
     /**
      * Sample code: SearchUpdateServiceWithDataExfiltration.
@@ -130,7 +130,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToRemoveIdentity.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceToRemoveIdentity.json
      */
     /**
      * Sample code: SearchUpdateServiceToRemoveIdentity.
@@ -148,7 +148,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithSemanticSearch.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceWithSemanticSearch.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSemanticSearch.
@@ -168,7 +168,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPrivateEndpoints.
@@ -187,7 +187,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPs.
@@ -202,15 +202,13 @@ public final class ServicesUpdateSamples {
                 new SearchServiceUpdate().withReplicaCount(3)
                     .withPartitionCount(1)
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withNetworkRuleSet(new NetworkRuleSet()
-                        .withIpRules(
-                            Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
-                        .withBypass(SearchBypass.NONE)),
+                    .withNetworkRuleSet(new NetworkRuleSet().withIpRules(
+                        Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceAuthOptions.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceAuthOptions.json
      */
     /**
      * Sample code: SearchUpdateServiceAuthOptions.
@@ -230,7 +228,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateService.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateService.json
      */
     /**
      * Sample code: SearchUpdateService.
@@ -248,7 +246,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
+     * x-ms-original-file: 2026-11-01/SearchUpdateServiceWithKnowledgeRetrieval.json
      */
     /**
      * Sample code: SearchUpdateServiceWithKnowledgeRetrieval.
