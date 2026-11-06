@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -1343,7 +1344,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 request.requestContext.sessionToken = null;
                 PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
                 PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-                if (range != null && (identity == null
+                DocumentServiceRequestContext sessionContext = request.getSessionTokenContextReference().get();
+                if (range != null && sessionContext != null
+                    && sessionContext.isSessionTokenScopeVerified(request, request.getOriginalSessionToken())
+                    && (identity == null
                     || (range.getId().equals(identity.getPartitionKeyRangeId())
                         && (identity.getCollectionRid() == null
                             || identity.getCollectionRid().equals(request.requestContext.resolvedCollectionRid))))) {
@@ -1386,6 +1390,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         if (explicitCompound && range == null) {
                             return Mono.just(false);
                         }
+                        if (explicitCompound) {
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            if (!isExplicitSessionTokenScopeVerified(request, mapHolder.v)) {
+                                return Mono.just(false);
+                            }
+                        }
                         String rangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                         if (range != null || StringUtils.isNotEmpty(rangeId) || request.getPartitionKeyInternal() != null) {
                             request.requestContext.resolvedPartitionKeyRange = range;
@@ -1401,6 +1411,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     });
             });
         });
+    }
+
+    private boolean isExplicitSessionTokenScopeVerified(RxDocumentServiceRequest request, CollectionRoutingMap routingMap) {
+        String originalToken = request.getOriginalSessionToken();
+        SessionTokenHelper.resolveExplicitSessionTokenForRange(
+            request, originalToken, request.requestContext.resolvedPartitionKeyRange.getId());
+        return request.getSessionTokenContextReference().get().verifySessionTokenScope(request, originalToken, routingMap);
     }
 
     private void applyGlobalSessionToken(RxDocumentServiceRequest request) {

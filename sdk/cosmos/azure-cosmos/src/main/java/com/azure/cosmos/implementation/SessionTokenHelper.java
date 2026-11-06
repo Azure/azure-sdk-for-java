@@ -40,6 +40,27 @@ public class SessionTokenHelper {
         return isCompoundSessionToken(sessionToken) ? new AtomicReference<>() : null;
     }
 
+    public static boolean areSessionTokenRangesKnown(
+        String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
+        List<String> parents = target.getParents();
+        for (String segment : StringUtils.split(originalToken, ",")) {
+            String[] parts = StringUtils.split(segment, ":");
+            if (parts.length != 2 || (routingMap.tryGetRangeByPartitionKeyRangeId(parts[0]) == null
+                && (parents == null || !parents.contains(parts[0])))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static ISessionToken resolveExplicitSessionTokenForRange(
+        RxDocumentServiceRequest request, String originalToken, String rangeId) {
+        AtomicReference<DocumentServiceRequestContext> context = request.getSessionTokenContextReference();
+        context.compareAndSet(null, request.requestContext);
+        return context.get().getOrResolveSessionToken(
+            request, originalToken, rangeId, () -> getLocalSessionToken(request, originalToken, rangeId));
+    }
+
     public static PartitionKeyRange resolveSessionTokenRange(
         RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap,
         boolean explicitCompound) {
@@ -111,11 +132,8 @@ public class SessionTokenHelper {
         if (StringUtils.isNotEmpty(originalSessionToken)) {
             if (request.useThinClientMode && isCompoundSessionToken(request.getOriginalSessionToken())
                 && request.getOriginalSessionToken().equals(originalSessionToken)) {
-                AtomicReference<DocumentServiceRequestContext> context = request.getSessionTokenContextReference();
-                context.compareAndSet(null, request.requestContext);
-                request.requestContext.sessionToken = context.get().getOrResolveSessionToken(
-                    request, originalSessionToken, partitionKeyRangeId,
-                    () -> getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId));
+                request.requestContext.sessionToken =
+                    resolveExplicitSessionTokenForRange(request, originalSessionToken, partitionKeyRangeId);
             } else {
                 request.requestContext.sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
             }

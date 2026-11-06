@@ -50,6 +50,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -167,11 +168,11 @@ public class ThinClientSessionTokenE2ETest {
 
     @DataProvider
     public Object[][] targetProgress() {
-        return new Object[][] {{true}, {false}};
+        return new Object[][] {{true, false}, {false, false}, {true, true}, {false, true}};
     }
 
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "targetProgress", timeOut = 90000)
-    public void unrelatedProgressDoesNotChangeTransport(boolean includeTargetProgress) {
+    public void unrelatedProgressUsesVerifiedScopeOrClassicGateway(boolean includeTargetProgress, boolean unknownRange) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
             Map.Entry<String, ObjectNode> target = representatives.entrySet().iterator().next();
@@ -180,14 +181,28 @@ public class ThinClientSessionTokenE2ETest {
             if (!includeTargetProgress) {
                 progress.remove(target.getKey());
             }
-            String original = combine(progress) + ",2147483647:1#0";
+            String original = combine(progress);
+            if (unknownRange) {
+                original += ",2147483647:1#0";
+            } else if (progress.size() == 1) {
+                original += "," + original;
+            }
             CosmosItemRequestOptions options = new CosmosItemRequestOptions().setSessionToken(original)
                 .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
             CosmosItemResponse<ObjectNode> response = reader.getDatabase(database.getId()).getContainer("items")
                 .readItem(item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
                 .block(WAIT);
             assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));
-            TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
+            if (unknownRange) {
+                assertThat(response.getDiagnostics().getDiagnosticsContext().getRequestInfo()).isNotEmpty()
+                    .allSatisfy(info -> {
+                        URI endpoint = URI.create(info.getEndpoint());
+                        assertThat(endpoint.getScheme()).isEqualTo("https");
+                        assertThat(endpoint.getPort()).isIn(-1, 443);
+                    });
+            } else {
+                TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
+            }
             assertThat(options.getSessionToken()).isEqualTo(original);
         }
     }

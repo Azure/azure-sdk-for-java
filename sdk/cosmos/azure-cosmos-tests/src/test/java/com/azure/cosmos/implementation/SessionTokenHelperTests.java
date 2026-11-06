@@ -164,6 +164,37 @@ public class SessionTokenHelperTests {
         return request;
     }
 
+    @Test(groups = "unit")
+    public void verifiesTokenRangesOncePerScopeWithoutRetainingRoutingSnapshot() {
+        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
+        CollectionRoutingMap beforeSplit = Mockito.spy(routingMap(
+            new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF")));
+        String original = "0:1#100,1:1#200";
+        RxDocumentServiceRequest request = scopeRequest(beforeSplit.getCollectionUniqueId(), "0", Collections.emptyList());
+        context.getOrResolveSessionToken(request, original, "0", () -> SessionTokenHelper.parse("1#100"));
+        assertThat(context.verifySessionTokenScope(request, original, beforeSplit)).isTrue();
+        assertThat(context.verifySessionTokenScope(request, original, beforeSplit)).isTrue();
+        assertThat(context.isSessionTokenScopeVerified(request, original)).isTrue();
+        Mockito.verify(beforeSplit).tryGetRangeByPartitionKeyRangeId("0");
+        Mockito.verify(beforeSplit).tryGetRangeByPartitionKeyRangeId("1");
+        assertThat(context.verifySessionTokenScope(request, "0:1#100,2:1#200", beforeSplit)).isFalse();
+
+        CollectionRoutingMap afterSplit = routingMap(
+            new PartitionKeyRange("0", "", "80"),
+            new PartitionKeyRange("2", "80", "FF", Collections.singletonList("1")));
+        request.requestContext.resolvedPartitionKeyRange = afterSplit.getRangeByPartitionKeyRangeId("2");
+        assertThat(context.isSessionTokenScopeVerified(request, original)).isFalse();
+        context.getOrResolveSessionToken(request, "1:1#100,2:1#200", "2", () -> SessionTokenHelper.parse("1#200"));
+        assertThat(context.verifySessionTokenScope(request, "1:1#100,2:1#200", afterSplit)).isTrue();
+        assertThat(context.verifySessionTokenScope(request, "1:1#100,3:1#200", afterSplit)).isFalse();
+        CollectionRoutingMap unrelatedParent = routingMap(
+            new PartitionKeyRange("2", "", "80", Collections.singletonList("1")),
+            new PartitionKeyRange("3", "80", "FF", Collections.singletonList("0")));
+        request.requestContext.resolvedPartitionKeyRange = unrelatedParent.getRangeByPartitionKeyRangeId("2");
+        context.getOrResolveSessionToken(request, "0:1#100,3:1#200", "2", () -> null);
+        assertThat(context.verifySessionTokenScope(request, "0:1#100,3:1#200", unrelatedParent)).isFalse();
+    }
+
     @DataProvider
     public Object[][] localTokenTargets() {
         return new Object[][] {

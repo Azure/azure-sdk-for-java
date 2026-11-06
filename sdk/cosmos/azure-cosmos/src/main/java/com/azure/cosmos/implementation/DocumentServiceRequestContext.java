@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
@@ -91,24 +92,60 @@ public class DocumentServiceRequestContext implements Cloneable {
     private String scopedRangeId;
     private Set<String> scopedParentRangeIds;
     private ISessionToken scopedSessionToken;
+    private boolean scopedSessionTokenTopologyVerified;
 
     public DocumentServiceRequestContext() {}
 
+    public synchronized boolean verifySessionTokenScope(
+        RxDocumentServiceRequest request, String originalToken, CollectionRoutingMap routingMap) {
+        Objects.requireNonNull(routingMap, "routingMap");
+        Objects.requireNonNull(originalToken, "originalToken");
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        if (range == null || !Objects.equals(routingMap.getCollectionUniqueId(), request.requestContext.resolvedCollectionRid)) {
+            return false;
+        }
+        if (isSessionTokenScopeVerified(request, originalToken)) {
+            return true;
+        }
+        if (!SessionTokenHelper.areSessionTokenRangesKnown(originalToken, routingMap, range)) {
+            return false;
+        }
+        if (matchesSessionTokenScope(request, originalToken, range.getId(), getParentRangeIds(range))) {
+            this.scopedSessionTokenTopologyVerified = true;
+        }
+        return true;
+    }
+
+    public synchronized boolean isSessionTokenScopeVerified(RxDocumentServiceRequest request, String originalToken) {
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        return this.scopedSessionTokenTopologyVerified && range != null
+            && matchesSessionTokenScope(request, originalToken, range.getId(), getParentRangeIds(range));
+    }
+
+    private static Set<String> getParentRangeIds(PartitionKeyRange range) {
+        List<String> parentIds = range == null ? null : range.getParents();
+        return parentIds == null ? Collections.emptySet() : new HashSet<>(parentIds);
+    }
+
+    private boolean matchesSessionTokenScope(
+        RxDocumentServiceRequest request, String originalToken, String rangeId, Set<String> parents) {
+        return this.sessionTokenScoped && Objects.equals(this.scopedOriginalSessionToken, originalToken)
+            && Objects.equals(this.scopedCollectionRid, request.requestContext.resolvedCollectionRid)
+            && Objects.equals(this.scopedRangeId, rangeId) && this.scopedParentRangeIds.equals(parents);
+    }
+
     public synchronized ISessionToken getOrResolveSessionToken(
         RxDocumentServiceRequest request, String originalToken, String rangeId, Supplier<ISessionToken> resolver) {
-        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        List<String> parentIds = range == null ? null : range.getParents();
-        Set<String> parents = parentIds == null ? Collections.emptySet() : new HashSet<>(parentIds);
+        Set<String> parents = getParentRangeIds(request.requestContext.resolvedPartitionKeyRange);
         String collectionRid = request.requestContext.resolvedCollectionRid;
-        if (!this.sessionTokenScoped || !Objects.equals(this.scopedOriginalSessionToken, originalToken)
-            || !Objects.equals(this.scopedCollectionRid, collectionRid) || !Objects.equals(this.scopedRangeId, rangeId)
-            || !this.scopedParentRangeIds.equals(parents)) {
+        if (!matchesSessionTokenScope(request, originalToken, rangeId, parents)) {
             ISessionToken token = resolver.get();
             this.scopedOriginalSessionToken = originalToken;
             this.scopedCollectionRid = collectionRid;
             this.scopedRangeId = rangeId;
             this.scopedParentRangeIds = parents;
             this.scopedSessionToken = token;
+            this.scopedSessionTokenTopologyVerified = false;
             // A scoped null means intentional omission, not an unprepared token.
             this.sessionTokenScoped = true;
         }
