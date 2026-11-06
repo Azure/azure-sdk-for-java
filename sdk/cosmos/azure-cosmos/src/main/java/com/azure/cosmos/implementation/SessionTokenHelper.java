@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -34,21 +33,22 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    static boolean isCompoundSessionToken(String sessionToken) {
+    public static boolean isCompoundSessionToken(String sessionToken) {
         // Classify without parsing; validation happens when selecting partition-local progress.
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
     // False means unresolved partition scope; a resolved scope with no matching progress still uses V2.
-    static Mono<Boolean> resolveExplicitSessionToken(
+    public static Mono<Boolean> resolveExplicitSessionToken(
         RxDocumentServiceRequest request, RxCollectionCache collectionCache, RxPartitionKeyRangeCache rangeCache,
         ISessionContainer sessionContainer) {
         return Mono.defer(() -> {
             // Each attempt starts from caller progress, never a previous attempt's narrowed or omitted header.
             setOriginalSessionToken(request, request.getOriginalSessionToken());
             request.requestContext.sessionToken = null;
-            MetadataDiagnosticsContext diagnostics =
-                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
+            MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
             return collectionCache.resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
                 if (collectionHolder.v == null) {
                     return Mono.error(new NotFoundException("Collection could not be resolved."));

@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
@@ -560,6 +561,32 @@ public class ThinClientSessionTokenTest {
             assertThatThrownBy(() -> fixture.thin.processMessage(request).block(Duration.ofSeconds(5)))
                 .isSameAs(failure);
             assertThat(fixture.wireTokens).hasSize(1);
+        }
+    }
+
+    @DataProvider
+    public Object[][] diagnosticsForSessionResolution() {
+        return new Object[][] {
+            {null}, {Mockito.mock(CosmosDiagnostics.class)}, {mockDiagnosticsClientContext().createDiagnostics()}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "diagnosticsForSessionResolution")
+    public void sessionResolutionPreservesMetadataDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "1");
+            request.captureOriginalSessionToken();
+            request.requestContext.cosmosDiagnostics = cosmosDiagnostics;
+            ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(cosmosDiagnostics);
+            MetadataDiagnosticsContext expected = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
+
+            assertThat(SessionTokenHelper.resolveExplicitSessionToken(
+                request, fixture.collections, fixture.ranges, fixture.sessions).block(Duration.ofSeconds(5))).isTrue();
+            verify(fixture.collections).resolveCollectionAsync(expected, request);
+            verify(fixture.ranges).tryLookupAsync(expected, RID, null, null);
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                .isEqualTo("1:1#200#1=180#2=150");
         }
     }
 
