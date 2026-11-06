@@ -12,6 +12,10 @@
 
 ### Bugs Fixed
 
+- Fixed the `Expect: 100-continue` fallback wait starting before the request headers were written. Time the headers
+  spent reaching the wire, such as on the first request in a JVM, shortened the wait for `100 Continue` and could
+  cause the body to be sent before the service had a chance to answer.
+
 ### Other Changes
 
 ## 1.3.0 (2026-10-27)

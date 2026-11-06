@@ -8,9 +8,19 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.SharedExecutorService;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.RequestOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Disposable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,12 +35,20 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_DEFAULTS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests that the client honours {@code Expect: 100-continue} on the wire: the headers are sent, the body is withheld
@@ -40,8 +58,8 @@ public class VertxHttpClientExpectContinueTests {
     private static final byte[] BODY = new byte[1024];
     private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
     private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(30);
-    // Keep this below the server's 500 ms settle window and the one-second continue fallback.
-    private static final Duration WRITE_TIMEOUT = Duration.ofMillis(250);
+    // Mirrors the client's wait for 100 Continue before sending the body anyway.
+    private static final Duration EXPECT_CONTINUE_FALLBACK = Duration.ofSeconds(1);
 
     @ParameterizedTest
     @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })
@@ -52,8 +70,10 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
-            HttpClient client
-                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
+            // With the default fallback, an agent stalled for longer than the server's settle window lets the fallback
+            // send the body inside that window, failing the test although the client behaved correctly. Pushing the
+            // fallback past the test timeout means the body can only be sent in answer to 100 Continue.
+            HttpClient client = clientWithFallback(TEST_TIMEOUT);
             HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response);
@@ -76,8 +96,7 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
-            HttpClient client
-                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
+            HttpClient client = new VertxHttpClientBuilder().responseTimeout(RESPONSE_TIMEOUT).build();
             HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response, "the request did not complete");
@@ -85,6 +104,90 @@ public class VertxHttpClientExpectContinueTests {
             assertTrue(server.awaitRequest(), "the request never reached the server");
             assertEquals(BODY.length, server.bodyBytesBeforeContinue + server.bodyBytesAfterContinue,
                 "the body was never delivered");
+        }
+    }
+
+    @Test
+    public void fallbackWaitStartsOnceTheHeadersAreWritten() throws Exception {
+        // The service must get the full fallback wait to answer after the headers are written, regardless of how long
+        // the header write takes. Driven through a mocked request so the header write is completed on demand.
+        Vertx vertx = Vertx.vertx();
+        try {
+            MockedRequest request = new MockedRequest();
+            Disposable exchange = request.send(vertx);
+
+            // Hold the header write well past the fallback; no body may be written while it is pending.
+            Thread.sleep(EXPECT_CONTINUE_FALLBACK.toMillis() * 2);
+            assertEquals(0, request.bodyWrites.get(),
+                "the fallback elapsed while the headers were still being written");
+
+            long headerWriteCompleted = System.nanoTime();
+            request.headerWrite.complete();
+
+            assertTrue(request.bodyWritten.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS),
+                "the body was never sent once the fallback elapsed");
+            // Timers never fire early and the fallback is started no earlier than this timestamp, so a slow agent can
+            // only lengthen the measured wait, never shorten it.
+            long waitedMillis = TimeUnit.NANOSECONDS.toMillis(request.bodyWriteNanos - headerWriteCompleted);
+            assertTrue(request.bodyWriteNanos - headerWriteCompleted >= EXPECT_CONTINUE_FALLBACK.toNanos(),
+                "the body was sent " + waitedMillis + " ms after the headers were written, before the service had its "
+                    + "full wait to answer the expectation");
+            exchange.dispose();
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    public void continueBeforeTheHeaderWriteCompletesWritesTheBodyOnce() throws Exception {
+        // If 100 Continue is handled before the header write is reported complete, the body has already been sent and
+        // no fallback may be started to send it again.
+        Vertx vertx = Vertx.vertx();
+        try {
+            MockedRequest request = new MockedRequest();
+            Disposable exchange = request.send(vertx);
+
+            request.continueHandler.get().handle(null);
+            assertEquals(1, request.bodyWrites.get(), "100 Continue did not send the body");
+
+            request.headerWrite.complete();
+
+            // Outlast a fallback that might have been started by the header write.
+            Thread.sleep(EXPECT_CONTINUE_FALLBACK.toMillis() * 2);
+            assertEquals(1, request.bodyWrites.get(), "the body was written more than once");
+            exchange.dispose();
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    public void writeTimeoutIsPausedWhileAwaitingContinue() throws Exception {
+        // The wait for 100 Continue is the service's time, not the client's, so the write timeout must not run during
+        // it. Asserted on the write timeout's scheduler rather than by outlasting a short write timeout, so a slow
+        // agent cannot fail it.
+        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
+        scheduler.setRemoveOnCancelPolicy(true);
+        Vertx vertx = Vertx.vertx();
+        try {
+            MockedRequest request = new MockedRequest();
+            Disposable exchange = request.send(vertx, vertxClient -> new VertxHttpClient(vertxClient,
+                new HttpClientOptions(), Duration.ZERO, TEST_TIMEOUT, scheduler, TEST_TIMEOUT));
+
+            assertEquals(1, scheduler.getQueue().size(), "the header write was not watched by the write timeout");
+
+            request.headerWrite.complete();
+            request.awaitContext();
+            assertEquals(0, scheduler.getQueue().size(), "the write timeout kept running while awaiting 100 Continue");
+
+            request.continueHandler.get().handle(null);
+            assertEquals(1, request.bodyWrites.get(), "100 Continue did not send the body");
+            assertEquals(0, scheduler.getQueue().size(), "the write timeout kept running after the body was written");
+            assertNull(request.exchangeError.get(), "the exchange failed");
+            exchange.dispose();
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
+            scheduler.shutdownNow();
         }
     }
 
@@ -128,6 +231,106 @@ public class VertxHttpClientExpectContinueTests {
             assertNull(server.expectHeader, "the Expect header should not have been set");
             assertEquals(BODY.length, server.bodyBytesBeforeContinue,
                 "without the header the body should be sent immediately");
+        }
+    }
+
+    private static HttpClient clientWithFallback(Duration expectContinueTimeout) {
+        VertxHttpClient base = (VertxHttpClient) new VertxHttpClientBuilder().responseTimeout(RESPONSE_TIMEOUT).build();
+        return new VertxHttpClient(base.client, base.buildOptions, RESPONSE_TIMEOUT, Duration.ZERO,
+            SharedExecutorService.getInstance(), expectContinueTimeout);
+    }
+
+    /**
+     * A Vert.x request whose header write completes only when the test says so, recording the body writes. Sent
+     * through a {@link VertxHttpClient} wrapping a mocked Vert.x client, on a Vert.x context so the client can use
+     * Vert.x timers.
+     */
+    private static final class MockedRequest {
+        private final Promise<Void> headerWrite = Promise.promise();
+        private final AtomicReference<Handler<Void>> continueHandler = new AtomicReference<>();
+        private final AtomicInteger bodyWrites = new AtomicInteger();
+        private final CountDownLatch bodyWritten = new CountDownLatch(1);
+        private final CountDownLatch headersSent = new CountDownLatch(1);
+        private final AtomicReference<Throwable> exchangeError = new AtomicReference<>();
+        private final HttpClientRequest request;
+        private volatile long bodyWriteNanos;
+        private volatile io.vertx.core.Context context;
+
+        @SuppressWarnings("unchecked")
+        MockedRequest() {
+            request = mock(HttpClientRequest.class, invocation -> {
+                switch (invocation.getMethod().getName()) {
+                    // sendHead on Vert.x 4.5 and 5.0, writeHead on 5.1 and later.
+                    case "sendHead":
+                    case "writeHead":
+                        headersSent.countDown();
+                        return headerWrite.future();
+
+                    case "continueHandler":
+                        continueHandler.set(invocation.getArgument(0));
+                        return null;
+
+                    case "end":
+                        if (bodyWrites.incrementAndGet() == 1) {
+                            bodyWriteNanos = System.nanoTime();
+                        }
+                        bodyWritten.countDown();
+                        return Future.succeededFuture();
+
+                    case "response":
+                        // The exchange is never answered; the test ends it by disposing the subscription.
+                        return Promise.promise().future();
+
+                    case "version":
+                        return HttpVersion.HTTP_1_1;
+
+                    case "reset":
+                        return invocation.getMethod().getReturnType() == boolean.class
+                            ? true
+                            : Future.succeededFuture();
+
+                    default:
+                        return RETURNS_DEFAULTS.answer(invocation);
+                }
+            });
+        }
+
+        Disposable send(Vertx vertx) throws Exception {
+            return send(vertx, vertxClient -> new VertxHttpClient(vertxClient, new HttpClientOptions(), Duration.ZERO));
+        }
+
+        Disposable send(Vertx vertx, Function<io.vertx.core.http.HttpClient, HttpClient> clientFactory)
+            throws Exception {
+            io.vertx.core.http.HttpClient vertxClient = mock(io.vertx.core.http.HttpClient.class);
+            when(vertxClient.request(any(RequestOptions.class))).thenReturn(Future.succeededFuture(request));
+            HttpClient client = clientFactory.apply(vertxClient);
+
+            HttpRequest azureRequest
+                = new HttpRequest(HttpMethod.PUT, "http://localhost/expect-continue").setBody(BODY);
+            azureRequest.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+
+            AtomicReference<Disposable> exchange = new AtomicReference<>();
+            context = vertx.getOrCreateContext();
+            context
+                .runOnContext(ignored -> exchange.set(client.send(azureRequest).subscribe(null, exchangeError::set)));
+
+            assertTrue(headersSent.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS),
+                "the client never wrote the headers");
+            assertNotNull(continueHandler.get(), "the client did not register a continue handler");
+            assertEquals(0, bodyWrites.get(), "the body was written before the headers");
+            return () -> {
+                Disposable disposable = exchange.get();
+                if (disposable != null) {
+                    disposable.dispose();
+                }
+            };
+        }
+
+        // Waits for the work already queued on the request's context, such as handlers for the header write.
+        void awaitContext() throws InterruptedException {
+            CountDownLatch drained = new CountDownLatch(1);
+            context.runOnContext(ignored -> drained.countDown());
+            assertTrue(drained.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS), "the Vert.x context stalled");
         }
     }
 
