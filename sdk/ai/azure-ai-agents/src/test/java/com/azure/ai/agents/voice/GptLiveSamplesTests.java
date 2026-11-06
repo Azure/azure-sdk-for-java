@@ -53,6 +53,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -72,6 +73,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated("Virtual-time tests replace the global Reactor schedulers")
 @ResourceLock("voice-agent-websocket-tls")
 @Timeout(20)
 public class GptLiveSamplesTests {
@@ -937,23 +939,46 @@ public class GptLiveSamplesTests {
     public void continuousSilentAudioStillAllowsInputAfterTheGreeting(boolean async) {
         startTextServer(false, false, Mono.empty(), true);
         AtomicInteger silentFrames = new AtomicInteger();
+        AtomicBoolean readingInput = new AtomicBoolean();
+        CountDownLatch silenceWhileReading = new CountDownLatch(1);
+        Reader input = new StringReader("exit\n") {
+            @Override
+            public int read(char[] buffer, int offset, int length) throws IOException {
+                assertTrue(silentFrames.get() > 0, "Silent output must arrive before input begins");
+                readingInput.set(true);
+                try {
+                    assertTrue(silenceWhileReading.await(5, TimeUnit.SECONDS),
+                        "Silent output must continue while reading input");
+                    return super.read(buffer, offset, length);
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Console read interrupted", error);
+                } finally {
+                    readingInput.set(false);
+                }
+            }
+        };
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream original = System.out;
         try (PrintStream capture = new PrintStream(output)) {
             System.setOut(capture);
-            runInteractiveConversation(async, new StringReader("exit\n"), pcm -> {
+            runInteractiveConversation(async, input, pcm -> {
                 if (pcm.length == 960) {
                     assertArrayEquals(new byte[960], pcm);
                     silentFrames.incrementAndGet();
+                    if (readingInput.get()) {
+                        silenceWhileReading.countDown();
+                    }
                 }
             }, () -> {
             });
         } finally {
             System.setOut(original);
         }
-        assertTrue(silentFrames.get() >= 20, "The server must keep streaming silence throughout the quiet period");
         String transcript = new String(output.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(transcript.contains("Assistant: Welcome." + System.lineSeparator() + "You: "));
+        assertTrue(transcript.contains("Assistant: Welcome." + System.lineSeparator() + "You: "),
+            () -> "Expected greeting followed by input prompt (async=" + async + "). Actual transcript: "
+                + transcript.replace("\r", "\\r").replace("\n", "\\n"));
         assertEquals(Arrays.asList("session.commentary.append", "session.close"), commandsWithoutInputAudio());
     }
 
@@ -1435,6 +1460,7 @@ public class GptLiveSamplesTests {
 
     private void startTextServer(boolean tools, boolean fail, Mono<Void> beforeGreeting, boolean continuousSilence) {
         AtomicInteger responses = new AtomicInteger();
+        AtomicInteger silentInputs = new AtomicInteger();
         String silentOutput = "{\"type\":\"session.output_audio.delta\",\"delta\":\""
             + Base64.getEncoder().encodeToString(new byte[960]) + "\"}";
         server = VoiceAgentWebSocketSessionTests.tlsServer()
@@ -1469,7 +1495,7 @@ public class GptLiveSamplesTests {
                                     "{\"type\":\"session.output_audio.delta\",\"delta\":\"AQI=\"}", COMPLETED);
                             }
                             if (continuousSilence && "session.input_audio.append".equals(command.get("type"))) {
-                                return Flux.just(silentOutput);
+                                return silentInputs.getAndIncrement() % 5 == 0 ? Flux.just(silentOutput) : Flux.empty();
                             }
                             return "session.close".equals(command.get("type")) ? Flux.just(CLOSED) : Flux.empty();
                         })))

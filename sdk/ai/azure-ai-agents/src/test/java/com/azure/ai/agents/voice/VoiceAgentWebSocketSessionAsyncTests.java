@@ -51,6 +51,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,6 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated("Virtual-time tests replace the global Reactor schedulers")
 @ResourceLock("voice-agent-websocket-tls")
 public class VoiceAgentWebSocketSessionAsyncTests {
     private DisposableServer server;
