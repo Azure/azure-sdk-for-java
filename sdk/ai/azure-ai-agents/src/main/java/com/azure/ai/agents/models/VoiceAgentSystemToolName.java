@@ -50,4 +50,46 @@ public final class VoiceAgentSystemToolName extends ExpandableStringEnum<VoiceAg
     public static Collection<VoiceAgentSystemToolName> values() {
         return values(VoiceAgentSystemToolName.class);
     }
+
+    /**
+     * Switches supported conversation language settings.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName LANGUAGE_DETECTION = fromString("language_detection");
+
+    /**
+     * Retrieves the unchanged transcript of the last user audio turn.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName DIGIT_RECOGNITION = fromString("digit_recognition");
+
+    /**
+     * Requests a transfer to an explicitly configured logical target.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName TRANSFER = fromString("transfer");
+
+    /**
+     * Collects one complete SMS from an explicitly selected sender.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName COLLECT_SMS = fromString("collect_sms");
+
+    /**
+     * Collects keypad digits on the current call.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName COLLECT_DTMF = fromString("collect_dtmf");
+
+    /**
+     * Sends literal or templated keypad digits.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName SEND_DTMF = fromString("send_dtmf");
+
+    /**
+     * Sends a text message from the Agent's SMS-capable number.
+     */
+    @Generated
+    public static final VoiceAgentSystemToolName SEND_SMS = fromString("send_sms");
 }

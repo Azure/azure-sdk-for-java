@@ -29,7 +29,7 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
      * The conversation engine type.
      */
     @Generated
-    private String type = "hosted_agent";
+    private VoiceConversationEngineType type = VoiceConversationEngineType.HOSTED_AGENT;
 
     /*
      * The non-empty DNS-like name of the target hosted text agent in the same project.
@@ -72,7 +72,7 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceConversationEngineType getType() {
         return this.type;
     }
 
@@ -152,7 +152,7 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("version", this.version);
         if (additionalProperties != null) {
             for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
@@ -180,7 +180,7 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
     public static VoiceHostedAgentConversationEngine fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            String type = "hosted_agent";
+            VoiceConversationEngineType type = VoiceConversationEngineType.HOSTED_AGENT;
             String version = null;
             Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -189,7 +189,7 @@ public final class VoiceHostedAgentConversationEngine extends VoiceConversationE
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceConversationEngineType.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else {

@@ -56,12 +56,6 @@ public class VoiceAgentToolChoiceSerializationTests {
     }
 
     @Test
-    public void realtimeSessionConfigurationRoundTrips() throws IOException {
-        assertModelRoundTrips("{\"type\":\"realtime\"}", RealtimeSessionConfiguration::fromJson,
-            RealtimeSessionConfiguration::getToolChoice, RealtimeSessionConfiguration::setToolChoice);
-    }
-
-    @Test
     public void sessionResponseConfigurationRoundTrips() throws IOException {
         assertModelRoundTrips("{\"id\":\"s\",\"model\":\"m\"}", VoiceAgentSessionResponseConfiguration::fromJson,
             VoiceAgentSessionResponseConfiguration::getToolChoice, null);

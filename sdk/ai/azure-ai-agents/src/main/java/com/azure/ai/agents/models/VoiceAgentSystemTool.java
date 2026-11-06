@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * A service-managed control that acts on the active voice session without customer code or external authentication.
@@ -22,7 +23,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      * The tool kind.
      */
     @Generated
-    private final String type = "system";
+    private final VoiceAgentToolType type = VoiceAgentToolType.SYSTEM;
 
     /*
      * The service-managed control action. Known values are stable; additional values may be added over time.
@@ -50,7 +51,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -94,9 +95,10 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("timeout_seconds", this.timeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,6 +130,20 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("end_conversation".equals(discriminatorValue)) {
                     return VoiceAgentEndConversationSystemTool.fromJson(readerToUse.reset());
+                } else if ("language_detection".equals(discriminatorValue)) {
+                    return VoiceAgentLanguageDetectionSystemTool.fromJson(readerToUse.reset());
+                } else if ("digit_recognition".equals(discriminatorValue)) {
+                    return VoiceAgentDigitRecognitionSystemTool.fromJson(readerToUse.reset());
+                } else if ("collect_sms".equals(discriminatorValue)) {
+                    return VoiceAgentCollectSmsSystemTool.fromJson(readerToUse.reset());
+                } else if ("collect_dtmf".equals(discriminatorValue)) {
+                    return VoiceAgentCollectDtmfSystemTool.fromJson(readerToUse.reset());
+                } else if ("transfer".equals(discriminatorValue)) {
+                    return VoiceAgentTransferSystemTool.fromJson(readerToUse.reset());
+                } else if ("send_dtmf".equals(discriminatorValue)) {
+                    return VoiceAgentSendDtmfSystemTool.fromJson(readerToUse.reset());
+                } else if ("send_sms".equals(discriminatorValue)) {
+                    return VoiceAgentSendSmsSystemTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -146,11 +162,50 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                     deserializedVoiceAgentSystemTool.name = VoiceAgentSystemToolName.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedVoiceAgentSystemTool.description = reader.getString();
+                } else if ("timeout_seconds".equals(fieldName)) {
+                    deserializedVoiceAgentSystemTool.timeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedVoiceAgentSystemTool;
         });
+    }
+
+    /*
+     * Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60 seconds.
+     */
+    @Generated
+    private Long timeout;
+
+    /**
+     * Get the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * seconds.
+     *
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeout);
+    }
+
+    /**
+     * Set the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * seconds.
+     *
+     * @param timeout the timeout value to set.
+     * @return the VoiceAgentSystemTool object itself.
+     */
+    @Generated
+    public VoiceAgentSystemTool setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
+        } else {
+            this.timeout = timeout.getSeconds();
+        }
+        return this;
     }
 }

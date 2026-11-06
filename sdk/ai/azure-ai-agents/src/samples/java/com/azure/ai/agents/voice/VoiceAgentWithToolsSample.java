@@ -10,7 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.RealtimePcmAudioFormat;
+import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
 import com.azure.ai.agents.models.VoiceAgentAudioInputConfiguration;
@@ -58,8 +58,11 @@ public class VoiceAgentWithToolsSample {
             .allowPreview(true)
             .buildAgentsClient();
 
-        RealtimePcmAudioFormat pcm = new RealtimePcmAudioFormat()
-            .setRate(Rate._24000);
+        RealtimeAudioFormats pcm = RealtimeAudioFormats.ofAudioPcm(
+            RealtimeAudioFormats.AudioPcm.builder()
+                .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                .rate(Rate._24000)
+                .build());
         VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration()
             .setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection()

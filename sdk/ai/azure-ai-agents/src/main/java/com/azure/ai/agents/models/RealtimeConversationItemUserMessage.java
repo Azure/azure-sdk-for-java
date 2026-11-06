@@ -46,12 +46,6 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
     @Generated
     private String id;
 
-    /*
-     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
-     */
-    @Generated
-    private RealtimeConversationItemObjectType object;
-
     // AI Tooling: openai-java de-dup
     private Status status;
 
@@ -125,30 +119,6 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
     }
 
     /**
-     * Get the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public RealtimeConversationItemObjectType getObject() {
-        return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemUserMessage object itself.
-     */
-    @Generated
-    public RealtimeConversationItemUserMessage setObject(RealtimeConversationItemObjectType object) {
-        this.object = object;
-        return this;
-    }
-
-    /**
      * Get the status property: The status of the item. Has no effect on the conversation.
      *
      * @return the status value.
@@ -208,7 +178,7 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
         });
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         return jsonWriter.writeEndObject();
     }
@@ -256,7 +226,7 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
             RealtimeConversationItemUserMessage deserializedRealtimeConversationItemUserMessage
                 = new RealtimeConversationItemUserMessage(content);
             deserializedRealtimeConversationItemUserMessage.id = id;
-            deserializedRealtimeConversationItemUserMessage.object = object;
+            deserializedRealtimeConversationItemUserMessage.objectType = object;
             deserializedRealtimeConversationItemUserMessage.status = status;
             deserializedRealtimeConversationItemUserMessage.createdAt = createdAt;
             deserializedRealtimeConversationItemUserMessage.responseId = responseId;
@@ -273,6 +243,36 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
     public RealtimeConversationItemUserMessage setStatus(Status status) {
         // AI Tooling: openai-java de-dup
         this.status = status;
+        return this;
+    }
+
+    /*
+     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
+     */
+    @Generated
+    private RealtimeConversationItemObjectType objectType;
+
+    /**
+     * Get the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public RealtimeConversationItemObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Set the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param objectType the objectType value to set.
+     * @return the RealtimeConversationItemUserMessage object itself.
+     */
+    @Generated
+    public RealtimeConversationItemUserMessage setObjectType(RealtimeConversationItemObjectType objectType) {
+        this.objectType = objectType;
         return this;
     }
 }

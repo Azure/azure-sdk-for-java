@@ -77,7 +77,7 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
      * The timestamp_type property.
      */
     @Generated
-    private final String timestampType = "word";
+    private final VoiceAgentAudioTimestampType timestampType = VoiceAgentAudioTimestampType.WORD;
 
     /**
      * Creates an instance of VoiceAgentResponseAudioTimestampDeltaEvent class.
@@ -209,7 +209,7 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
      * @return the timestampType value.
      */
     @Generated
-    public String getTimestampType() {
+    public VoiceAgentAudioTimestampType getTimestampType() {
         return this.timestampType;
     }
 
@@ -228,7 +228,8 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
         jsonWriter.writeLongField("audio_offset_ms", this.audioOffset);
         jsonWriter.writeLongField("audio_duration_ms", this.audioDuration);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("timestamp_type", this.timestampType);
+        jsonWriter.writeStringField("timestamp_type",
+            this.timestampType == null ? null : this.timestampType.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }

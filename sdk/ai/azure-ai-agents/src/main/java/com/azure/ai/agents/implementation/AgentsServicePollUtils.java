@@ -4,9 +4,17 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
+import com.azure.core.exception.AzureException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.Map;
 
@@ -20,6 +28,10 @@ import java.util.Map;
  * <p>This class is package-private; it is <b>not</b> part of the public API.</p>
  */
 final class AgentsServicePollUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(AgentsServicePollUtils.class);
+    private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("Operation-Id");
+    private static final String CAMPAIGN_OPERATION_ID = "campaignOperationId";
+
     private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE
         = new TypeReference<Map<String, Object>>() {
         };
@@ -37,6 +49,72 @@ final class AgentsServicePollUtils {
             throw new IllegalStateException("The optimization create response did not contain a job ID.");
         }
         return endpoint + (endpoint.endsWith("/") ? "" : "/") + "agent_optimization_jobs/" + jobId;
+    }
+
+    static boolean canPollCampaign(Response<?> response) {
+        int statusCode = response.getStatusCode();
+        return statusCode == 200
+            || statusCode == 201
+            || statusCode == 202
+            || (statusCode == 204 && response.getRequest().getHttpMethod() == HttpMethod.DELETE);
+    }
+
+    static boolean initializeCampaignPollingContext(Response<?> response, PollingContext<?> pollingContext) {
+        HttpMethod method = response.getRequest().getHttpMethod();
+        pollingContext.setData(PollingUtils.HTTP_METHOD, method.name());
+        if (method == HttpMethod.DELETE && response.getStatusCode() == 204) {
+            return true;
+        }
+        int statusCode = response.getStatusCode();
+        if (statusCode != 200 && statusCode != 201 && statusCode != 202) {
+            throw LOGGER.logExceptionAsError(
+                new AzureException("Campaign operation failed with HTTP status " + statusCode + "."));
+        }
+        String pollingUrl = response.getHeaders().getValue(PollingUtils.OPERATION_LOCATION_HEADER);
+        if (pollingUrl == null || pollingUrl.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Campaign operation response is missing Operation-Location."));
+        }
+        if (method != HttpMethod.DELETE) {
+            String operationId = response.getHeaders().getValue(OPERATION_ID);
+            if (operationId == null || operationId.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Campaign operation response is missing Operation-Id."));
+            }
+            pollingContext.setData(CAMPAIGN_OPERATION_ID, operationId);
+        }
+        return false;
+    }
+
+    static boolean isCompletedCampaignDeletion(PollingContext<?> pollingContext) {
+        LongRunningOperationStatus status = pollingContext.getLatestResponse().getStatus();
+        if (status == LongRunningOperationStatus.FAILED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
+        } else if (status == LongRunningOperationStatus.USER_CANCELLED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation cancelled."));
+        } else if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Campaign operation has not completed successfully."));
+        }
+        return HttpMethod.DELETE.name().equals(pollingContext.getData(PollingUtils.HTTP_METHOD));
+    }
+
+    static RequestOptions getCampaignFinalRequestOptions(PollingContext<?> pollingContext, Context context) {
+        String operationId = pollingContext.getData(CAMPAIGN_OPERATION_ID);
+        if (operationId == null || operationId.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Campaign polling context is missing the original Operation-Id."));
+        }
+        return new RequestOptions().setContext(context).addQueryParam("operation_id", operationId);
+    }
+
+    static BinaryData getCampaignResponseBody(Response<BinaryData> response) {
+        BinaryData body = response.getValue();
+        if (body == null || (body.getLength() != null && body.getLength() == 0)) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Campaign final GET did not contain a response body."));
+        }
+        return body;
     }
 
     /**

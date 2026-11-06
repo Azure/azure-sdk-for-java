@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * A service-managed control that ends the active conversation.
@@ -22,7 +23,7 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
      * The tool kind.
      */
     @Generated
-    private final String type = "system";
+    private final VoiceAgentToolType type = VoiceAgentToolType.SYSTEM;
 
     /*
      * The service-managed control action. Known values are stable; additional values may be added over time.
@@ -44,7 +45,7 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -77,8 +78,11 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", getDescription());
+        if (getTimeout() != null) {
+            jsonWriter.writeNumberField("timeout_seconds", getTimeout().getSeconds());
+        }
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         return jsonWriter.writeEndObject();
     }
@@ -101,6 +105,11 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
                 reader.nextToken();
                 if ("description".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.setDescription(reader.getString());
+                } else if ("timeout_seconds".equals(fieldName)) {
+                    Long timeoutHolder = reader.getNullable(JsonReader::getLong);
+                    if (timeoutHolder != null) {
+                        deserializedVoiceAgentEndConversationSystemTool.setTimeout(Duration.ofSeconds(timeoutHolder));
+                    }
                 } else if ("name".equals(fieldName)) {
                     deserializedVoiceAgentEndConversationSystemTool.name
                         = VoiceAgentSystemToolName.fromString(reader.getString());
@@ -110,5 +119,15 @@ public final class VoiceAgentEndConversationSystemTool extends VoiceAgentSystemT
             }
             return deserializedVoiceAgentEndConversationSystemTool;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentEndConversationSystemTool setTimeout(Duration timeout) {
+        super.setTimeout(timeout);
+        return this;
     }
 }

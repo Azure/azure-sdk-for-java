@@ -23,7 +23,7 @@ public final class VoiceAgentTemplateGreetingConfiguration extends VoiceAgentGre
      * The greeting mode.
      */
     @Generated
-    private String type = "template";
+    private VoiceAgentGreetingMode type = VoiceAgentGreetingMode.TEMPLATE;
 
     /*
      * The Handlebars text template spoken at session start.
@@ -48,7 +48,7 @@ public final class VoiceAgentTemplateGreetingConfiguration extends VoiceAgentGre
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentGreetingMode getType() {
         return this.type;
     }
 
@@ -70,7 +70,7 @@ public final class VoiceAgentTemplateGreetingConfiguration extends VoiceAgentGre
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -87,14 +87,14 @@ public final class VoiceAgentTemplateGreetingConfiguration extends VoiceAgentGre
     public static VoiceAgentTemplateGreetingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            String type = "template";
+            VoiceAgentGreetingMode type = VoiceAgentGreetingMode.TEMPLATE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceAgentGreetingMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed long-running job polling to recognize the service's `cancelled` status as terminal.
+
 ### Other Changes
 
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
