@@ -14,32 +14,31 @@ public final class AkriConnectorTemplateReadinessProbeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateReadinessProbe model = BinaryData.fromString(
-            "{\"exec\":{\"command\":[\"lcrpw\",\"xeznoi\",\"brnjwmw\",\"pn\"]},\"failureThreshold\":808609813,\"initialDelaySeconds\":1740415327,\"periodSeconds\":552544194,\"successThreshold\":2849760,\"timeoutSeconds\":4171905}")
+            "{\"exec\":{\"command\":[\"hqk\",\"htpwij\"]},\"failureThreshold\":1695369378,\"initialDelaySeconds\":441495179,\"periodSeconds\":3385554,\"successThreshold\":758254768,\"timeoutSeconds\":146536566}")
             .toObject(AkriConnectorTemplateReadinessProbe.class);
-        Assertions.assertEquals("lcrpw", model.exec().command().get(0));
-        Assertions.assertEquals(808609813, model.failureThreshold());
-        Assertions.assertEquals(1740415327, model.initialDelaySeconds());
-        Assertions.assertEquals(552544194, model.periodSeconds());
-        Assertions.assertEquals(2849760, model.successThreshold());
-        Assertions.assertEquals(4171905, model.timeoutSeconds());
+        Assertions.assertEquals("hqk", model.exec().command().get(0));
+        Assertions.assertEquals(1695369378, model.failureThreshold());
+        Assertions.assertEquals(441495179, model.initialDelaySeconds());
+        Assertions.assertEquals(3385554, model.periodSeconds());
+        Assertions.assertEquals(758254768, model.successThreshold());
+        Assertions.assertEquals(146536566, model.timeoutSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateReadinessProbe model = new AkriConnectorTemplateReadinessProbe()
-            .withExec(
-                new AkriConnectorTemplateExecAction().withCommand(Arrays.asList("lcrpw", "xeznoi", "brnjwmw", "pn")))
-            .withFailureThreshold(808609813)
-            .withInitialDelaySeconds(1740415327)
-            .withPeriodSeconds(552544194)
-            .withSuccessThreshold(2849760)
-            .withTimeoutSeconds(4171905);
+            .withExec(new AkriConnectorTemplateExecAction().withCommand(Arrays.asList("hqk", "htpwij")))
+            .withFailureThreshold(1695369378)
+            .withInitialDelaySeconds(441495179)
+            .withPeriodSeconds(3385554)
+            .withSuccessThreshold(758254768)
+            .withTimeoutSeconds(146536566);
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateReadinessProbe.class);
-        Assertions.assertEquals("lcrpw", model.exec().command().get(0));
-        Assertions.assertEquals(808609813, model.failureThreshold());
-        Assertions.assertEquals(1740415327, model.initialDelaySeconds());
-        Assertions.assertEquals(552544194, model.periodSeconds());
-        Assertions.assertEquals(2849760, model.successThreshold());
-        Assertions.assertEquals(4171905, model.timeoutSeconds());
+        Assertions.assertEquals("hqk", model.exec().command().get(0));
+        Assertions.assertEquals(1695369378, model.failureThreshold());
+        Assertions.assertEquals(441495179, model.initialDelaySeconds());
+        Assertions.assertEquals(3385554, model.periodSeconds());
+        Assertions.assertEquals(758254768, model.successThreshold());
+        Assertions.assertEquals(146536566, model.timeoutSeconds());
     }
 }

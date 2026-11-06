@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
+import com.azure.resourcemanager.iotoperations.models.InstanceSku;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
@@ -35,6 +36,11 @@ public final class InstanceResourceInner extends Resource {
      * The managed service identities assigned to this resource.
      */
     private ManagedServiceIdentity identity;
+
+    /*
+     * The billing SKU for the AIO Instance. Defaults to Standard.
+     */
+    private InstanceSku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -123,6 +129,26 @@ public final class InstanceResourceInner extends Resource {
     }
 
     /**
+     * Get the sku property: The billing SKU for the AIO Instance. Defaults to Standard.
+     * 
+     * @return the sku value.
+     */
+    public InstanceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The billing SKU for the AIO Instance. Defaults to Standard.
+     * 
+     * @param sku the sku value to set.
+     * @return the InstanceResourceInner object itself.
+     */
+    public InstanceResourceInner withSku(InstanceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -190,6 +216,7 @@ public final class InstanceResourceInner extends Resource {
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -226,6 +253,8 @@ public final class InstanceResourceInner extends Resource {
                     deserializedInstanceResourceInner.properties = InstanceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedInstanceResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedInstanceResourceInner.sku = InstanceSku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedInstanceResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

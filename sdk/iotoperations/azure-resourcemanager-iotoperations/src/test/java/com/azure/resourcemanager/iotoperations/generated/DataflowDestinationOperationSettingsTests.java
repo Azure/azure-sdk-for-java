@@ -14,21 +14,20 @@ public final class DataflowDestinationOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowDestinationOperationSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"odkwobd\",\"dataDestination\":\"gxtibqdxbxw\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
+            "{\"endpointRef\":\"flcxoga\",\"dataDestination\":\"konzmnsik\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
             .toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("odkwobd", model.endpointRef());
-        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
+        Assertions.assertEquals("flcxoga", model.endpointRef());
+        Assertions.assertEquals("konzmnsik", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowDestinationOperationSettings model
-            = new DataflowDestinationOperationSettings().withEndpointRef("odkwobd")
-                .withDataDestination("gxtibqdxbxw")
-                .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction(),
-                    new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction()));
+            = new DataflowDestinationOperationSettings().withEndpointRef("flcxoga")
+                .withDataDestination("konzmnsik")
+                .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("odkwobd", model.endpointRef());
-        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
+        Assertions.assertEquals("flcxoga", model.endpointRef());
+        Assertions.assertEquals("konzmnsik", model.dataDestination());
     }
 }

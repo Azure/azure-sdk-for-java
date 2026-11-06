@@ -71,6 +71,13 @@ public interface InstanceResource {
     ManagedServiceIdentity identity();
 
     /**
+     * Gets the sku property: The billing SKU for the AIO Instance. Defaults to Standard.
+     * 
+     * @return the sku value.
+     */
+    InstanceSku sku();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -173,8 +180,8 @@ public interface InstanceResource {
          * The stage of the InstanceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithIdentity, DefinitionStages.WithSku {
             /**
              * Executes the create request.
              * 
@@ -228,6 +235,19 @@ public interface InstanceResource {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the InstanceResource definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The billing SKU for the AIO Instance. Defaults to Standard..
+             * 
+             * @param sku The billing SKU for the AIO Instance. Defaults to Standard.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(InstanceSku sku);
         }
     }
 
