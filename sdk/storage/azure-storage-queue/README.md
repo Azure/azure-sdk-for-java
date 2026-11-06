@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.33.0-beta.1</version>
+  <version>12.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -498,5 +498,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [storage_rest]: https://learn.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
-
 
