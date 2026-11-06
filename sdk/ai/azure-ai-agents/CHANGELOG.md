@@ -8,9 +8,30 @@
   destinations.
 - Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
 - Added preview SIP telephony bindings.
+- Added preview Live-agent Responses delegation settings using OpenAI Java's `ResponsesDelegationConfig`.
+- Reused OpenAI Java's Live audio settings, voice, and session usage models instead of generating duplicate types.
+- Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
+  voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
+- Added preview voice-agent system tools, transfer routing, and system-tool intent and input-collection events.
+- Added preview voice-agent telephony campaigns with recipient validation and scheduling.
 
 ### Breaking Changes
 
+- Renamed preview `VoiceAgentWebSocketConnectionOptions.getTransport()` and `setTransport(...)` to
+  `getTransportType()` and `setTransportType(...)`.
+- Replaced preview transcription languages with OpenAI Java's `TranscriptionLanguage` and listed MCP tools with
+  `RealtimeMcpListTools.Tool`. MCP tool input schemas and annotations now retain their JSON contents.
+- Replaced preview realtime session configurations, audio formats, turn detection, and MCP errors with the complete
+  OpenAI Java types. `RealtimeSessionUpdateEvent.getSession()` now returns `SessionUpdateEvent.Session`, audio-format
+  properties use `RealtimeAudioFormats`, and `RealtimeMcpToolCall.getError()` returns OpenAI's `RealtimeMcpToolCall.Error`.
+  Foundry-specific session and turn-detection models remain unchanged.
+- Updated preview telephony binding, call-job, transfer, and retry model shapes to match the redesigned service contract.
+- Standardized preview system-tool names with `VoiceAgent*Event`, `outputReference`, and `objectType`, and exposed
+  system-tool and transfer-ring timeouts as `Duration` through `timeout` and `ringTimeout`. System-tool items are
+  service-generated and no longer expose public constructors or setters.
+- Moved preview Live-conversation client factories under `AgentsClientBuilder.beta()`.
+- Changed preview Live delegation acknowledgement delays to `Duration` with unit-free `acknowledgementDelay`
+  accessors, and renamed the managed-delegation duration property from `offsetMs` to `offset`.
 - Replaced the numeric/string token-limit accessors on preview voice and realtime models with
   `getMaxOutputTokens()` and `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. `InlineVoiceSubagent` uses
   the same type through `getMaxResponseOutputTokens()` and `setMaxResponseOutputTokens(VoiceAgentMaxOutputTokens)`.
@@ -28,6 +49,9 @@
 ### Bugs Fixed
 
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.
+- Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
+  structured inputs, and response structured inputs through `BinaryData`.
+
 ### Other Changes
 
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.

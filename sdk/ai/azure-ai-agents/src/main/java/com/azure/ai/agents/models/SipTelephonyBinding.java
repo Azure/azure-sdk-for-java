@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A SIP binding.
+ * Inbound binding using a same-project SipInbound connection for authentication/network restrictions. Creation does not
+ * prove regional runtime readiness.
  */
-@Immutable
+@Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class SipTelephonyBinding extends TelephonyBinding {
 
@@ -26,30 +27,17 @@ public final class SipTelephonyBinding extends TelephonyBinding {
     private TelephonyProvider provider = TelephonyProvider.SIP;
 
     /*
-     * For UI display only.
+     * Optional display metadata, not a routing key or E.164-constrained destination.
      */
     @Generated
     private String phoneNumber;
 
     /*
-     * Omit or send [] to allow any caller. Entries match the entire normalized E.164 caller number.
+     * Exact E.164 caller numbers or restricted anchored patterns, validated by the service. Omit or use [] for no
+     * restriction.
      */
     @Generated
     private List<String> allowedCallingNumbers;
-
-    /**
-     * Creates an instance of SipTelephonyBinding class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     */
-    @Generated
-    private SipTelephonyBinding(String id, String connectionName, TelephonyBindingStatus status,
-        String incomingCallUrl) {
-        super(id, connectionName, status, incomingCallUrl);
-    }
 
     /**
      * Get the provider property: The telephony provider.
@@ -63,7 +51,7 @@ public final class SipTelephonyBinding extends TelephonyBinding {
     }
 
     /**
-     * Get the phoneNumber property: For UI display only.
+     * Get the phoneNumber property: Optional display metadata, not a routing key or E.164-constrained destination.
      *
      * @return the phoneNumber value.
      */
@@ -73,8 +61,8 @@ public final class SipTelephonyBinding extends TelephonyBinding {
     }
 
     /**
-     * Get the allowedCallingNumbers property: Omit or send [] to allow any caller. Entries match the entire normalized
-     * E.164 caller number.
+     * Get the allowedCallingNumbers property: Exact E.164 caller numbers or restricted anchored patterns, validated by
+     * the service. Omit or use [] for no restriction.
      *
      * @return the allowedCallingNumbers value.
      */
@@ -90,10 +78,7 @@ public final class SipTelephonyBinding extends TelephonyBinding {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("connection_name", getConnectionName());
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
         jsonWriter.writeStringField("phone_number", this.phoneNumber);
@@ -116,7 +101,6 @@ public final class SipTelephonyBinding extends TelephonyBinding {
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String label = null;
             TelephonyProvider provider = TelephonyProvider.SIP;
@@ -129,8 +113,6 @@ public final class SipTelephonyBinding extends TelephonyBinding {
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("label".equals(fieldName)) {
@@ -145,13 +127,59 @@ public final class SipTelephonyBinding extends TelephonyBinding {
                     reader.skipChildren();
                 }
             }
-            SipTelephonyBinding deserializedSipTelephonyBinding
-                = new SipTelephonyBinding(id, connectionName, status, incomingCallUrl);
+            SipTelephonyBinding deserializedSipTelephonyBinding = new SipTelephonyBinding(connectionName);
+            deserializedSipTelephonyBinding.setId(id);
+            deserializedSipTelephonyBinding.setIncomingCallUrl(incomingCallUrl);
             deserializedSipTelephonyBinding.setLabel(label);
             deserializedSipTelephonyBinding.provider = provider;
             deserializedSipTelephonyBinding.phoneNumber = phoneNumber;
             deserializedSipTelephonyBinding.allowedCallingNumbers = allowedCallingNumbers;
             return deserializedSipTelephonyBinding;
         });
+    }
+
+    /**
+     * Creates an instance of SipTelephonyBinding class.
+     *
+     * @param connectionName the connectionName value to set.
+     */
+    @Generated
+    public SipTelephonyBinding(String connectionName) {
+        super(connectionName);
+    }
+
+    /**
+     * Set the phoneNumber property: Optional display metadata, not a routing key or E.164-constrained destination.
+     *
+     * @param phoneNumber the phoneNumber value to set.
+     * @return the SipTelephonyBinding object itself.
+     */
+    @Generated
+    public SipTelephonyBinding setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    /**
+     * Set the allowedCallingNumbers property: Exact E.164 caller numbers or restricted anchored patterns, validated by
+     * the service. Omit or use [] for no restriction.
+     *
+     * @param allowedCallingNumbers the allowedCallingNumbers value to set.
+     * @return the SipTelephonyBinding object itself.
+     */
+    @Generated
+    public SipTelephonyBinding setAllowedCallingNumbers(List<String> allowedCallingNumbers) {
+        this.allowedCallingNumbers = allowedCallingNumbers;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SipTelephonyBinding setLabel(String label) {
+        super.setLabel(label);
+        return this;
     }
 }

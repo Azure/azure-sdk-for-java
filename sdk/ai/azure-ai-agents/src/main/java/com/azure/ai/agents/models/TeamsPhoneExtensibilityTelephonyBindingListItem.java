@@ -37,22 +37,6 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
     private final String resourceAccountObjectId;
 
     /**
-     * Creates an instance of TeamsPhoneExtensibilityTelephonyBindingListItem class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     * @param resourceAccountObjectId the resourceAccountObjectId value to set.
-     */
-    @Generated
-    private TeamsPhoneExtensibilityTelephonyBindingListItem(String id, String connectionName,
-        TelephonyBindingStatus status, String incomingCallUrl, String resourceAccountObjectId) {
-        super(id, connectionName, status, incomingCallUrl);
-        this.resourceAccountObjectId = resourceAccountObjectId;
-    }
-
-    /**
      * Get the provider property: The telephony provider.
      *
      * @return the provider value.
@@ -92,7 +76,6 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("connection_name", getConnectionName());
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("resource_account_object_id", this.resourceAccountObjectId);
@@ -115,7 +98,6 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String eTag = null;
             String label = null;
@@ -129,8 +111,6 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
@@ -148,7 +128,7 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
                 }
             }
             TeamsPhoneExtensibilityTelephonyBindingListItem deserializedTeamsPhoneExtensibilityTelephonyBindingListItem
-                = new TeamsPhoneExtensibilityTelephonyBindingListItem(id, connectionName, status, incomingCallUrl,
+                = new TeamsPhoneExtensibilityTelephonyBindingListItem(id, connectionName, incomingCallUrl,
                     resourceAccountObjectId);
             deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.setETag(eTag);
             deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.setLabel(label);
@@ -156,5 +136,20 @@ public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends Telep
             deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.phoneNumber = phoneNumber;
             return deserializedTeamsPhoneExtensibilityTelephonyBindingListItem;
         });
+    }
+
+    /**
+     * Creates an instance of TeamsPhoneExtensibilityTelephonyBindingListItem class.
+     *
+     * @param id the id value to set.
+     * @param connectionName the connectionName value to set.
+     * @param incomingCallUrl the incomingCallUrl value to set.
+     * @param resourceAccountObjectId the resourceAccountObjectId value to set.
+     */
+    @Generated
+    private TeamsPhoneExtensibilityTelephonyBindingListItem(String id, String connectionName, String incomingCallUrl,
+        String resourceAccountObjectId) {
+        super(id, connectionName, incomingCallUrl);
+        this.resourceAccountObjectId = resourceAccountObjectId;
     }
 }

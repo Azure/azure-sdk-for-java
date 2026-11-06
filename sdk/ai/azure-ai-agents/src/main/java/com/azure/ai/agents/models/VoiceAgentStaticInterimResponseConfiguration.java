@@ -24,7 +24,7 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
      * The interim-response implementation.
      */
     @Generated
-    private String type = "static_interim_response";
+    private VoiceAgentInterimResponseType type = VoiceAgentInterimResponseType.STATIC_INTERIM_RESPONSE;
 
     /*
      * Candidate text values for the interim response.
@@ -46,7 +46,7 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentInterimResponseType getType() {
         return this.type;
     }
 
@@ -104,7 +104,7 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
         if (getLatencyThresholdMs() != null) {
             jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThresholdMs().toMillis());
         }
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("texts", this.texts, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -136,7 +136,8 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
                             .setLatencyThresholdMs(Duration.ofMillis(latencyThresholdMsHolder));
                     }
                 } else if ("type".equals(fieldName)) {
-                    deserializedVoiceAgentStaticInterimResponseConfiguration.type = reader.getString();
+                    deserializedVoiceAgentStaticInterimResponseConfiguration.type
+                        = VoiceAgentInterimResponseType.fromString(reader.getString());
                 } else if ("texts".equals(fieldName)) {
                     List<String> texts = reader.readArray(reader1 -> reader1.getString());
                     deserializedVoiceAgentStaticInterimResponseConfiguration.texts = texts;

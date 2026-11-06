@@ -7,6 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,10 @@ public class VoiceAgentDefinitionSerializationTests {
 
     @Test
     public void fullVoiceDefinitionRoundTrips() throws IOException {
-        RealtimePcmAudioFormat pcm = new RealtimePcmAudioFormat().setRate(Rate._24000);
+        RealtimeAudioFormats pcm = RealtimeAudioFormats.ofAudioPcm(RealtimeAudioFormats.AudioPcm.builder()
+            .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+            .rate(Rate._24000)
+            .build());
         VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration().setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection().setThreshold(0.5)
                 .setPrefixPaddingMs(300L)
@@ -77,9 +81,7 @@ public class VoiceAgentDefinitionSerializationTests {
         assertEquals(VoiceOutputModality.AUDIO, voice.getOutputModalities().get(0));
 
         VoiceAgentAudioInputConfiguration deserializedInput = voice.getAudio().getInput();
-        RealtimePcmAudioFormat deserializedInputFormat
-            = assertInstanceOf(RealtimePcmAudioFormat.class, deserializedInput.getFormat());
-        assertEquals(pcm.getRate(), deserializedInputFormat.getRate());
+        assertEquals(Rate._24000, deserializedInput.getFormat().asAudioPcm().rate().get());
         VoiceAgentServerVadTurnDetection deserializedVad
             = assertInstanceOf(VoiceAgentServerVadTurnDetection.class, deserializedInput.getTurnDetection());
         VoiceAgentServerVadTurnDetection originalVad = (VoiceAgentServerVadTurnDetection) input.getTurnDetection();
@@ -90,9 +92,7 @@ public class VoiceAgentDefinitionSerializationTests {
         assertEquals(input.getTranscription().getModel(), deserializedInput.getTranscription().getModel());
 
         VoiceAgentAudioOutputConfiguration deserializedOutput = voice.getAudio().getOutput();
-        RealtimePcmAudioFormat deserializedOutputFormat
-            = assertInstanceOf(RealtimePcmAudioFormat.class, deserializedOutput.getFormat());
-        assertEquals(pcm.getRate(), deserializedOutputFormat.getRate());
+        assertEquals(Rate._24000, deserializedOutput.getFormat().asAudioPcm().rate().get());
         assertEquals(output.getVoice(), deserializedOutput.getVoice());
         assertEquals(output.getVoiceType(), deserializedOutput.getVoiceType());
 

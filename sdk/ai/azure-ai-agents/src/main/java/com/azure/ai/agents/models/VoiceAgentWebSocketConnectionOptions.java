@@ -107,7 +107,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     private Boolean store;
     private String agentVersionOverride;
-    private VoiceAgentTransport transport;
+    private VoiceAgentTransport transportType;
     private Duration handshakeTimeout = Duration.ofSeconds(30);
     private Duration closeTimeout = Duration.ofSeconds(10);
     private String agentSessionId;
@@ -133,7 +133,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
         this.malformedEventHandler = source.malformedEventHandler;
         this.store = source.store;
         this.agentVersionOverride = source.agentVersionOverride;
-        this.transport = source.transport;
+        this.transportType = source.transportType;
         this.handshakeTimeout = source.handshakeTimeout;
         this.closeTimeout = source.closeTimeout;
         this.agentSessionId = source.agentSessionId;
@@ -217,23 +217,23 @@ public final class VoiceAgentWebSocketConnectionOptions {
     }
 
     /**
-     * Gets the transport used for the realtime connection.
+     * Gets the transport type used for the realtime connection.
      *
-     * @return the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     * @return the transport type, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
      */
-    public VoiceAgentTransport getTransport() {
-        return transport;
+    public VoiceAgentTransport getTransportType() {
+        return transportType;
     }
 
     /**
-     * Sets the transport used for the realtime connection. When using {@link VoiceAgentTransport#WEBRTC}, the caller
-     * is responsible for completing SDP negotiation using the RTC call signaling events.
+     * Sets the transport type used for the realtime connection. When using {@link VoiceAgentTransport#WEBRTC},
+     * the caller is responsible for completing SDP negotiation using the RTC call signaling events.
      *
-     * @param transport the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     * @param transportType the transport type, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
      * @return this options instance.
      */
-    public VoiceAgentWebSocketConnectionOptions setTransport(VoiceAgentTransport transport) {
-        this.transport = transport;
+    public VoiceAgentWebSocketConnectionOptions setTransportType(VoiceAgentTransport transportType) {
+        this.transportType = transportType;
         return this;
     }
 

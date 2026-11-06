@@ -78,12 +78,6 @@ public class VoiceAgentMaxOutputTokensSerializationTests {
     }
 
     @Test
-    public void realtimeSessionConfigurationRoundTrips() throws IOException {
-        assertModelRoundTrips("{\"type\":\"realtime\"}", "max_output_tokens", RealtimeSessionConfiguration::fromJson,
-            RealtimeSessionConfiguration::getMaxOutputTokens, RealtimeSessionConfiguration::setMaxOutputTokens);
-    }
-
-    @Test
     public void responseCreateOptionsRoundTrip() throws IOException {
         assertModelRoundTrips("{\"instructions\":\"Say hello\"}", "max_output_tokens",
             VoiceAgentResponseCreateOptions::fromJson, VoiceAgentResponseCreateOptions::getMaxOutputTokens,

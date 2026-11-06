@@ -25,7 +25,7 @@ public class RealtimeSessionCreatedEventSerializationTests {
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionCreatedEvent::fromJson);
 
         assertTrue(json.contains("\"session\":{\"type\":\"realtime\""));
-        assertEquals("session", result.getSessionAsVoiceAgentSessionResponseConfiguration().getId());
+        assertEquals("session", result.getSession().getId());
     }
 
     @Test
@@ -33,6 +33,6 @@ public class RealtimeSessionCreatedEventSerializationTests {
         RealtimeSessionCreatedEvent event = UnionTypeSerializationTestUtils.deserialize(
             "{\"type\":\"session.created\",\"event_id\":\"event\"}", RealtimeSessionCreatedEvent::fromJson);
 
-        assertNull(event.getSessionAsVoiceAgentSessionResponseConfiguration());
+        assertNull(event.getSession());
     }
 }

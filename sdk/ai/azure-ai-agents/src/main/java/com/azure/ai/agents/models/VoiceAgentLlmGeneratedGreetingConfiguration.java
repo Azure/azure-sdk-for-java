@@ -23,7 +23,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfiguration extends VoiceAgen
      * The greeting mode.
      */
     @Generated
-    private String type = "llm_generated";
+    private VoiceAgentGreetingMode type = VoiceAgentGreetingMode.LLM_GENERATED;
 
     /*
      * The Handlebars prompt that guides the opening turn.
@@ -54,7 +54,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfiguration extends VoiceAgen
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentGreetingMode getType() {
         return this.type;
     }
 
@@ -96,7 +96,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfiguration extends VoiceAgen
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("prompt", this.prompt);
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         if (this.toolChoice != null) {
             jsonWriter.writeFieldName("tool_choice");
             this.toolChoice.writeTo(jsonWriter);
@@ -117,7 +117,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfiguration extends VoiceAgen
     public static VoiceAgentLlmGeneratedGreetingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String prompt = null;
-            String type = "llm_generated";
+            VoiceAgentGreetingMode type = VoiceAgentGreetingMode.LLM_GENERATED;
             BinaryData toolChoice = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -125,7 +125,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfiguration extends VoiceAgen
                 if ("prompt".equals(fieldName)) {
                     prompt = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceAgentGreetingMode.fromString(reader.getString());
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));

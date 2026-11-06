@@ -23,13 +23,13 @@ public final class VoiceRecordingChannelLayout implements JsonSerializable<Voice
      * The role carried on the left channel. Always `user`.
      */
     @Generated
-    private final String left = "user";
+    private final VoiceAudioRole left = VoiceAudioRole.USER;
 
     /*
      * The role carried on the right channel. Always `agent`.
      */
     @Generated
-    private final String right = "agent";
+    private final VoiceAudioRole right = VoiceAudioRole.AGENT;
 
     /**
      * Creates an instance of VoiceRecordingChannelLayout class.
@@ -44,7 +44,7 @@ public final class VoiceRecordingChannelLayout implements JsonSerializable<Voice
      * @return the left value.
      */
     @Generated
-    public String getLeft() {
+    public VoiceAudioRole getLeft() {
         return this.left;
     }
 
@@ -54,7 +54,7 @@ public final class VoiceRecordingChannelLayout implements JsonSerializable<Voice
      * @return the right value.
      */
     @Generated
-    public String getRight() {
+    public VoiceAudioRole getRight() {
         return this.right;
     }
 
@@ -65,8 +65,8 @@ public final class VoiceRecordingChannelLayout implements JsonSerializable<Voice
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("left", this.left);
-        jsonWriter.writeStringField("right", this.right);
+        jsonWriter.writeStringField("left", this.left == null ? null : this.left.toString());
+        jsonWriter.writeStringField("right", this.right == null ? null : this.right.toString());
         return jsonWriter.writeEndObject();
     }
 

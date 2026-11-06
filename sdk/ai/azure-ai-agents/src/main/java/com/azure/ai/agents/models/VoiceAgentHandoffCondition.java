@@ -53,7 +53,6 @@ public final class VoiceAgentHandoffCondition implements JsonSerializable<VoiceA
     private Long delay;
 
     /*
-     * 
      * Optional deterministic source-voice announcement played before target activation. Supported by cascaded
      * pipelines and realtime pipelines using local Azure TTS; model-native realtime voice requires omission or null.
      * At most 500 characters. If omitted or null, no announcement is played.
@@ -170,8 +169,8 @@ public final class VoiceAgentHandoffCondition implements JsonSerializable<VoiceA
     }
 
     /**
-     * Get the transferMessage property:
-     * Optional deterministic source-voice announcement played before target activation. Supported by cascaded
+     * Get the transferMessage property: Optional deterministic source-voice announcement played before target
+     * activation. Supported by cascaded
      * pipelines and realtime pipelines using local Azure TTS; model-native realtime voice requires omission or null.
      * At most 500 characters. If omitted or null, no announcement is played.
      *
@@ -183,8 +182,8 @@ public final class VoiceAgentHandoffCondition implements JsonSerializable<VoiceA
     }
 
     /**
-     * Set the transferMessage property:
-     * Optional deterministic source-voice announcement played before target activation. Supported by cascaded
+     * Set the transferMessage property: Optional deterministic source-voice announcement played before target
+     * activation. Supported by cascaded
      * pipelines and realtime pipelines using local Azure TTS; model-native realtime voice requires omission or null.
      * At most 500 characters. If omitted or null, no announcement is played.
      *

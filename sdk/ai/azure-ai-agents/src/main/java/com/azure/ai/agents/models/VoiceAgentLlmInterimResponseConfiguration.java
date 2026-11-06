@@ -24,7 +24,7 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
      * The interim-response implementation.
      */
     @Generated
-    private String type = "llm_interim_response";
+    private VoiceAgentInterimResponseType type = VoiceAgentInterimResponseType.LLM_INTERIM_RESPONSE;
 
     /*
      * The model used to generate interim responses.
@@ -58,7 +58,7 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentInterimResponseType getType() {
         return this.type;
     }
 
@@ -160,7 +160,7 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
         if (getLatencyThresholdMs() != null) {
             jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThresholdMs().toMillis());
         }
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
@@ -194,7 +194,8 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
                             .setLatencyThresholdMs(Duration.ofMillis(latencyThresholdMsHolder));
                     }
                 } else if ("type".equals(fieldName)) {
-                    deserializedVoiceAgentLlmInterimResponseConfiguration.type = reader.getString();
+                    deserializedVoiceAgentLlmInterimResponseConfiguration.type
+                        = VoiceAgentInterimResponseType.fromString(reader.getString());
                 } else if ("model".equals(fieldName)) {
                     deserializedVoiceAgentLlmInterimResponseConfiguration.model = reader.getString();
                 } else if ("instructions".equals(fieldName)) {

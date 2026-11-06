@@ -135,4 +135,12 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
             return super.getResult(pollingContext, resultType);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return super.poll(pollingContext, pollResponseType).map(ProjectsServicePollUtils::remapStatus);
+    }
 }

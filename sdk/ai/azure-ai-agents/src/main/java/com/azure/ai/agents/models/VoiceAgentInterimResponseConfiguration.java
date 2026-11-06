@@ -26,7 +26,8 @@ public class VoiceAgentInterimResponseConfiguration
      * The interim-response implementation.
      */
     @Generated
-    private String type = "VoiceAgentInterimResponseConfiguration";
+    private VoiceAgentInterimResponseType type
+        = VoiceAgentInterimResponseType.fromString("VoiceAgentInterimResponseConfiguration");
 
     /*
      * Conditions that may trigger one interim response.
@@ -53,7 +54,7 @@ public class VoiceAgentInterimResponseConfiguration
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public VoiceAgentInterimResponseType getType() {
         return this.type;
     }
 
@@ -115,7 +116,7 @@ public class VoiceAgentInterimResponseConfiguration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("triggers", this.triggers,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeNumberField("latency_threshold_ms", this.latencyThresholdMs);
@@ -168,7 +169,8 @@ public class VoiceAgentInterimResponseConfiguration
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedVoiceAgentInterimResponseConfiguration.type = reader.getString();
+                    deserializedVoiceAgentInterimResponseConfiguration.type
+                        = VoiceAgentInterimResponseType.fromString(reader.getString());
                 } else if ("triggers".equals(fieldName)) {
                     List<VoiceAgentInterimResponseTrigger> triggers
                         = reader.readArray(reader1 -> VoiceAgentInterimResponseTrigger.fromString(reader1.getString()));

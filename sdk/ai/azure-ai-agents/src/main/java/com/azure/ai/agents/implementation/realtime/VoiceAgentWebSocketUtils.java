@@ -117,7 +117,7 @@ public final class VoiceAgentWebSocketUtils {
         UrlBuilder url = UrlBuilder.parse(baseUri.toString());
         url.setQueryParameter("api-version", encode(configuration.getApiVersion()));
         url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
-        VoiceAgentTransport transport = options.getTransport();
+        VoiceAgentTransport transport = options.getTransportType();
         url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
         if (options.isStoreEnabled() != null) {
             url.setQueryParameter("store", options.isStoreEnabled().toString());
