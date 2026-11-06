@@ -12,22 +12,21 @@ public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentPoolUpgradeSettings model = BinaryData
-            .fromString(
-                "{\"drainTimeout\":4361894023478136574,\"maxSurge\":\"ool\",\"maxUnavailable\":\"tpkiwkkbnujry\"}")
+            .fromString("{\"drainTimeout\":2365221723834697977,\"maxSurge\":\"tnvyqiatkzwp\",\"maxUnavailable\":\"p\"}")
             .toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(4361894023478136574L, model.drainTimeout());
-        Assertions.assertEquals("ool", model.maxSurge());
-        Assertions.assertEquals("tpkiwkkbnujry", model.maxUnavailable());
+        Assertions.assertEquals(2365221723834697977L, model.drainTimeout());
+        Assertions.assertEquals("tnvyqiatkzwp", model.maxSurge());
+        Assertions.assertEquals("p", model.maxUnavailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(4361894023478136574L)
-            .withMaxSurge("ool")
-            .withMaxUnavailable("tpkiwkkbnujry");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(2365221723834697977L)
+            .withMaxSurge("tnvyqiatkzwp")
+            .withMaxUnavailable("p");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(4361894023478136574L, model.drainTimeout());
-        Assertions.assertEquals("ool", model.maxSurge());
-        Assertions.assertEquals("tpkiwkkbnujry", model.maxUnavailable());
+        Assertions.assertEquals(2365221723834697977L, model.drainTimeout());
+        Assertions.assertEquals("tnvyqiatkzwp", model.maxSurge());
+        Assertions.assertEquals("p", model.maxUnavailable());
     }
 }
