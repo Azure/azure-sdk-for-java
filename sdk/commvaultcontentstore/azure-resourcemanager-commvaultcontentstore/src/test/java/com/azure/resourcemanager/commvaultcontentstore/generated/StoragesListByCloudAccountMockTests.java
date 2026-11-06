@@ -25,7 +25,7 @@ public final class StoragesListByCloudAccountMockTests {
     @Test
     public void testListByCloudAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"location\":\"olppvksrpqvujz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"ftswibyrcdlbhsh\",\"name\":\"wpracstwitykhev\",\"type\":\"c\"}]}";
+            = "{\"value\":[{\"properties\":{\"location\":\"hszfjvfb\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COOL\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"qmqhldvriii\",\"name\":\"jnalghf\",\"type\":\"vtvsexsowueluq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,11 +35,11 @@ public final class StoragesListByCloudAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Storage> response
-            = manager.storages().listByCloudAccount("ygqukyhejh", "isxgfp", com.azure.core.util.Context.NONE);
+            = manager.storages().listByCloudAccount("zszrnwoiindfpw", "jylwbtlhflsj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("olppvksrpqvujz", response.iterator().next().properties().location());
+        Assertions.assertEquals("hszfjvfb", response.iterator().next().properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.iterator().next().properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.iterator().next().properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, response.iterator().next().properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COOL, response.iterator().next().properties().classProperty());
     }
 }

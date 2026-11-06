@@ -1,14 +1,38 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2026-11-05)
 
-### Features Added
+- Azure Resource Manager Commvault Content Store client library for Java. This package contains Microsoft Azure SDK for Commvault Content Store Management SDK.  Package api-version 2026-11-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CloudAccount$Update` was modified
 
-### Other Changes
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `withProperties(models.CloudAccountProperties)` was removed
+
+### Features Added
+
+* `models.CloudAccountOfferDetailsUpdate` was added
+
+* `models.CloudAccountMarketplaceUpdate` was added
+
+* `models.CloudAccountUserUpdate` was added
+
+* `models.CloudAccountUpdateProperties` was added
+
+* `models.CloudAccountUpdate` was added
+
+* `models.CloudAccountIdentityUpdate` was added
+
+#### `models.CloudAccount$Update` was modified
+
+* `withProperties(models.CloudAccountUpdateProperties)` was added
+* `withIdentity(models.CloudAccountIdentityUpdate)` was added
+
+#### `models.StorageClassType` was modified
+
+* `COLD` was added
 
 ## 1.0.0 (2026-10-09)
 
