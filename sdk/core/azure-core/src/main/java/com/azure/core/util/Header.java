@@ -174,6 +174,8 @@ public class Header {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
+        if (CACHED_STRING_VALUE_UPDATER.get(this) == null) {
+            CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
+        }
     }
 }

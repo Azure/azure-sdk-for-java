@@ -7,17 +7,53 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link Header}.
  */
 public class HeaderTest {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void cachedMultiValueHeaderIsInvalidated(boolean useList) {
+        Header header = useList ? new Header("name", Arrays.asList("one", "two")) : new Header("name", "one", "two");
+
+        String cachedValue = header.getValue();
+        assertEquals("one,two", cachedValue);
+        assertSame(cachedValue, header.getValue());
+        assertEquals("name:one,two", header.toString());
+
+        header.addValue("three");
+
+        assertEquals("name:one,two,three", header.toString());
+        assertEquals("one,two,three", header.getValue());
+        assertSame(header.getValue(), header.getValue());
+    }
+
+    @Test
+    public void emptyHeaderTransitionsToCachedMultiValueHeader() {
+        Header header = new Header("name");
+        assertEquals("", header.getValue());
+        assertEquals("", header.toString());
+
+        header.addValue("one");
+        assertEquals("one", header.getValue());
+        assertEquals("name:one", header.toString());
+
+        header.addValue("two");
+        assertEquals("one,two", header.getValue());
+        header.addValue("three");
+        assertEquals("one,two,three", header.getValue());
+    }
+
     @Test
     public void testAddValue() {
         // Arrange

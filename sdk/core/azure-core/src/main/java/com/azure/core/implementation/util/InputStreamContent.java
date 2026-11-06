@@ -93,6 +93,11 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
+        byte[] cachedBytes = bytes;
+        if (cachedBytes != null) {
+            return cachedBytes;
+        }
+
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 

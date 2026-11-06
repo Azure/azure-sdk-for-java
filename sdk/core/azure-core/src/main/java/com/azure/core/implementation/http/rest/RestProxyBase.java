@@ -287,10 +287,10 @@ public abstract class RestProxyBase {
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
         final String path = methodParser.setPath(args, serializer);
-        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
+        final UrlBuilder pathUrlBuilder = (path != null && path.indexOf(':') >= 0) ? UrlBuilder.parse(path) : null;
 
         final UrlBuilder urlBuilder;
-        if (pathUrlBuilder.getScheme() != null) {
+        if (pathUrlBuilder != null && pathUrlBuilder.getScheme() != null) {
             urlBuilder = pathUrlBuilder;
         } else {
             urlBuilder = new UrlBuilder();
@@ -361,12 +361,17 @@ public abstract class RestProxyBase {
             }
 
             // TODO(jogiles) this feels hacky
-            boolean isJson = false;
-            final String[] contentTypeParts = contentType.split(";");
-            for (final String contentTypePart : contentTypeParts) {
-                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
-                    isJson = true;
-                    break;
+            boolean isJson;
+            if (contentType.indexOf(';') < 0) {
+                isJson = contentType.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON);
+            } else {
+                isJson = false;
+                final String[] contentTypeParts = contentType.split(";");
+                for (final String contentTypePart : contentTypeParts) {
+                    if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                        isJson = true;
+                        break;
+                    }
                 }
             }
             updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject),

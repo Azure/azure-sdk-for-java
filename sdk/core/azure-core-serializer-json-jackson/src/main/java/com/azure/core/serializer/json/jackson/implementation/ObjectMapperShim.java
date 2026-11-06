@@ -274,6 +274,14 @@ public final class ObjectMapperShim {
         } else if (type instanceof JavaType) {
             return (JavaType) type;
         } else if (type instanceof ParameterizedType) {
+            // At capacity, use the existing miss path so the cache is cleared.
+            if (TYPE_TO_JAVA_TYPE_CACHE.size() < CACHE_SIZE_LIMIT) {
+                JavaType cachedType = TYPE_TO_JAVA_TYPE_CACHE.get(type);
+                if (cachedType != null) {
+                    return cachedType;
+                }
+            }
+
             final ParameterizedType parameterizedType = (ParameterizedType) type;
             final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];

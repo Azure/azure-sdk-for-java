@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
@@ -765,6 +766,7 @@ public class BinaryDataTest {
         firstConsumption = data.toBytes();
         secondConsumption = data.toBytes();
         assertArraysEqual(firstConsumption, secondConsumption);
+        assertSame(firstConsumption, secondConsumption);
         assertArraysEqual(expectedBytes, firstConsumption);
 
         // Check that attempt to make repeatable returns itself.
@@ -788,6 +790,16 @@ public class BinaryDataTest {
                 Named.named("expected bytes", bytes)),
             Arguments.of(Named.named("string", (Supplier<BinaryData>) () -> BinaryData.fromString("test string")),
                 Named.named("expected bytes", "test string".getBytes(StandardCharsets.UTF_8))),
+            Arguments.of(
+                Named.named("byte buffer",
+                    (Supplier<BinaryData>) () -> BinaryDataHelper
+                        .createBinaryData(new ByteBufferContent(ByteBuffer.wrap(bytes)))),
+                Named.named("expected bytes", bytes)),
+            Arguments.of(
+                Named.named("replayable flux",
+                    (Supplier<BinaryData>) () -> BinaryDataHelper.createBinaryData(new FluxByteBufferContent(
+                        Flux.defer(() -> Flux.just(ByteBuffer.wrap(bytes))), (long) bytes.length, true))),
+                Named.named("expected bytes", bytes)),
             Arguments.of(Named.named("object", (Supplier<BinaryData>) () -> BinaryData.fromObject("\"test string\"")),
                 Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))),
             Arguments.of(
