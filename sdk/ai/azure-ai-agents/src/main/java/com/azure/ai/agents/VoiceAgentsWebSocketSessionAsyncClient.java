@@ -5,7 +5,6 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -33,15 +32,14 @@ import java.util.function.Consumer;
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
  *
- * <p>Instances are created by {@link BetaVoiceAgentsWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
+ * <p>Instances are created by {@link VoiceAgentsWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
  * subscriber to {@link #receiveEvents()}. Close the session when it is no longer needed.</p>
  */
-@Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+public final class VoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
     private final WebSocketSessionAsyncTransport transport;
     private final Consumer<Throwable> malformedEventHandler;
 
-    BetaVoiceAgentsWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport transport,
+    VoiceAgentsWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport transport,
         Consumer<Throwable> malformedEventHandler) {
         this.transport = transport;
         this.malformedEventHandler = malformedEventHandler;

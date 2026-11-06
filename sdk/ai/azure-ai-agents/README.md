@@ -70,7 +70,7 @@ The Agents client library has the following sub-clients which group the differen
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
-- `BetaVoiceAgentsWebSocketClient` / `BetaVoiceAgentsWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `VoiceAgentsWebSocketClient` / `VoiceAgentsWebSocketAsyncClient`: Open typed realtime WebSocket sessions with voice agents.
 - `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
 - `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
 - `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
@@ -198,7 +198,6 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 |---|---|
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,MicrosoftCopilot=V1Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
-| `BetaVoiceAgentsWebSocketClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
@@ -208,7 +207,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 ### Realtime voice-agent sessions
 
 Create and manage preview voice agents with `VoiceAgentDefinition` and an `AgentsClient` or `AgentsAsyncClient` built
-using `allowPreview(true)`. Use `BetaVoiceAgentsWebSocketClient` or `BetaVoiceAgentsWebSocketAsyncClient` to open a typed,
+using `allowPreview(true)`. Use `VoiceAgentsWebSocketClient` or `VoiceAgentsWebSocketAsyncClient` to open a typed,
 bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`,
 negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header
 automatically.
@@ -978,23 +977,23 @@ The following [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/
 
 Authenticate with `DefaultAzureCredential`. Every voice sample requires `FOUNDRY_PROJECT_ENDPOINT`. Samples that create explicit definitions optionally use `FOUNDRY_VOICE_MODEL`, `FOUNDRY_VOICE_MODEL_TYPE`, and `FOUNDRY_VOICE_AGENT_NAME`. The persisted-conversation samples require `FOUNDRY_VOICE_AGENT_NAME` and `FOUNDRY_VOICE_CONVERSATION_ID`.
 
-### Realtime voice-agent WebSocket examples (preview)
+### Realtime voice-agent WebSocket examples
 
 Realtime WebSocket sessions provide bidirectional text and audio communication with a voice agent. Create the voice agent before opening a session; the lifecycle samples above demonstrate how to create one.
 
 #### Create a realtime WebSocket client
 
-Build a synchronous or asynchronous preview client from the same `AgentsClientBuilder`. Beta clients automatically send the required preview feature header.
+Build a synchronous or asynchronous realtime client from `AgentsClientBuilder`.
 
 ```java
 AgentsClientBuilder builder = new AgentsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint);
 
-BetaVoiceAgentsWebSocketClient realtimeClient
-    = builder.beta().buildBetaVoiceAgentsWebSocketClient();
-BetaVoiceAgentsWebSocketAsyncClient realtimeAsyncClient
-    = builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient();
+VoiceAgentsWebSocketClient realtimeClient
+    = builder.buildVoiceAgentsWebSocketClient();
+VoiceAgentsWebSocketAsyncClient realtimeAsyncClient
+    = builder.buildVoiceAgentsWebSocketAsyncClient();
 ```
 
 #### Send a synchronous text turn
@@ -1023,7 +1022,7 @@ VoiceAgentWebSocketConnectionOptions options
         .setReceiveBufferCapacity(512)
         .setMaxMessageSize(8 * 1024 * 1024)
         .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
     session.sendEvent(BinaryData.fromString(
         "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
     for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -1044,7 +1043,7 @@ Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a c
 fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
-try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
+try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
     session.sendText("Hello! Tell me about the services you provide.");
     session.createResponse();
 
@@ -1080,9 +1079,9 @@ Mono.usingWhen(
         })
         .takeUntil(event -> event instanceof RealtimeResponseDoneEvent)
         .then(),
-    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync,
+    VoiceAgentsWebSocketSessionAsyncClient::closeAsync,
     (session, error) -> session.closeAsync(),
-    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync)
+    VoiceAgentsWebSocketSessionAsyncClient::closeAsync)
     .block();
 ```
 

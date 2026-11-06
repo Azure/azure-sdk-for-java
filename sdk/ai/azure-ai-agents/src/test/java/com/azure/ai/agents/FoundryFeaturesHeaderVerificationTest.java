@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -38,6 +39,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,18 +54,44 @@ public class FoundryFeaturesHeaderVerificationTest {
 
     @Test
     public void voicePreviewFactoriesAreOnlyPublicOnBetaBuilder() throws ReflectiveOperationException {
-        AgentsClientBuilder builder = createBuilder(new RecordingHttpClient());
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://localhost").credential(new MockTokenCredential());
         for (Class<?> clientType : new Class<?>[] {
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class,
+            BetaVoiceAgentsLiveWebSocketClient.class,
+            BetaVoiceAgentsLiveWebSocketAsyncClient.class,
             BetaVoiceAgentsLiveConversationsClient.class,
             BetaVoiceAgentsLiveConversationsAsyncClient.class }) {
             String methodName = "build" + clientType.getSimpleName();
             assertThrows(NoSuchMethodException.class, () -> AgentsClientBuilder.class.getMethod(methodName));
             assertTrue(clientType.isInstance(
                 AgentsClientBuilder.BetaAgentsClientBuilder.class.getMethod(methodName).invoke(builder.beta())));
+        }
+    }
+
+    @Test
+    public void realtimeWebSocketFactoriesAreOnlyPublicOnGaBuilder() throws ReflectiveOperationException {
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://localhost").credential(new MockTokenCredential());
+        List<Class<?>> gaClients
+            = Arrays.asList(AgentsClientBuilder.class.getAnnotation(ServiceClientBuilder.class).serviceClients());
+        List<Class<?>> betaClients
+            = Arrays.asList(AgentsClientBuilder.BetaAgentsClientBuilder.class.getAnnotation(ServiceClientBuilder.class)
+                .serviceClients());
+        for (Class<?> clientType : new Class<?>[] {
+            VoiceAgentsWebSocketClient.class,
+            VoiceAgentsWebSocketAsyncClient.class }) {
+            String methodName = "build" + clientType.getSimpleName();
+            assertTrue(clientType.isInstance(AgentsClientBuilder.class.getMethod(methodName).invoke(builder)));
+            assertThrows(NoSuchMethodException.class,
+                () -> AgentsClientBuilder.BetaAgentsClientBuilder.class.getMethod(methodName));
+            assertThrows(NoSuchMethodException.class, () -> AgentsClientBuilder.BetaAgentsClientBuilder.class
+                .getMethod("buildBeta" + clientType.getSimpleName()));
+            assertTrue(gaClients.contains(clientType));
+            assertFalse(betaClients.contains(clientType));
         }
     }
 
@@ -442,11 +470,11 @@ public class FoundryFeaturesHeaderVerificationTest {
             .retryPolicy(new RetryPolicy());
 
         IllegalStateException syncError
-            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentsWebSocketClient());
+            = assertThrows(IllegalStateException.class, () -> builder.buildVoiceAgentsWebSocketClient());
         assertTrue(syncError.getMessage().contains("httpClient, pipeline, addPolicy, retryOptions, retryPolicy"));
 
-        IllegalStateException asyncError = assertThrows(IllegalStateException.class,
-            () -> builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient());
+        IllegalStateException asyncError
+            = assertThrows(IllegalStateException.class, () -> builder.buildVoiceAgentsWebSocketAsyncClient());
         assertEquals(syncError.getMessage(), asyncError.getMessage());
     }
 

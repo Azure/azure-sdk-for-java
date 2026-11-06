@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
@@ -264,8 +264,7 @@ public class VoiceAgentLiveWebSocketTests {
                 assertNotNull(live);
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentsWebSocketSessionAsyncClient realtime = builder.beta()
-                .buildBetaVoiceAgentsWebSocketAsyncClient()
+            try (VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
                 .openWebSocketSession("agent", realtimeOptions)
                 .block(TIMEOUT)) {
                 assertNotNull(realtime);
@@ -276,8 +275,8 @@ public class VoiceAgentLiveWebSocketTests {
                 = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", liveOptions)) {
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentsWebSocketSessionClient realtime
-                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
+            try (VoiceAgentsWebSocketSessionClient realtime
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
                 assertTrue(realtime.isOpen());
             }
         }

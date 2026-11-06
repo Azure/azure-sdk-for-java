@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -14,7 +13,6 @@ import java.util.function.Consumer;
 /**
  * Options used when opening a realtime voice-agent WebSocket session.
  */
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 @Fluent
 public final class VoiceAgentWebSocketConnectionOptions {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketConnectionOptions.class);

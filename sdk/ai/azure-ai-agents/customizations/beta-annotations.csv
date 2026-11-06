@@ -274,11 +274,9 @@ class;com.azure.ai.agents.models.RealtimeResponseDoneEvent;Preview API. VoiceAge
 class;com.azure.ai.agents.models.RealtimeResponseFunctionCallArgumentsDeltaEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseFunctionCallArgumentsDoneEvent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputAudio;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.RealtimeResponseInputContent;Preview API.;
 class;com.azure.ai.agents.models.RealtimeResponseInputFunctionCall;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputFunctionCallOutput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputImage;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.RealtimeResponseInputItem;Preview API.;
 class;com.azure.ai.agents.models.RealtimeResponseInputItemStatus;Preview API.;
 class;com.azure.ai.agents.models.RealtimeResponseInputMessage;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.RealtimeResponseInputMessageAssistant;Preview API. VoiceAgents=V1Preview;
@@ -554,7 +552,6 @@ class;com.azure.ai.agents.models.VoiceAgentSystemToolName;Preview API. VoiceAgen
 class;com.azure.ai.agents.models.VoiceAgentTemplateGreetingConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTool;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentToolboxTool;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentToolChoice;Preview API.;
 class;com.azure.ai.agents.models.VoiceAgentToolResponseScheduling;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentToolType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentTranscriptionPhrase;Preview API. VoiceAgents=V1Preview;

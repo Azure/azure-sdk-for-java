@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BetaVoiceAgentsWebSocketSessionClientTests {
+public class VoiceAgentsWebSocketSessionClientTests {
     @Test
     public void connectionUriUsesSelectedTransport() throws Exception {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(

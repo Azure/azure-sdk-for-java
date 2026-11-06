@@ -79,7 +79,9 @@ import java.util.stream.Collectors;
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
         AgentsAsyncClient.class,
-        ToolboxesAsyncClient.class })
+        ToolboxesAsyncClient.class,
+        VoiceAgentsWebSocketClient.class,
+        VoiceAgentsWebSocketAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -629,14 +631,12 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaVoiceAgentsWebSocketClient.class,
             BetaVoiceAgentsLiveWebSocketClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaVoiceAgentsLiveConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
-            BetaVoiceAgentsWebSocketAsyncClient.class,
             BetaVoiceAgentsLiveWebSocketAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class,
@@ -754,38 +754,6 @@ public final class AgentsClientBuilder
         @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
-        }
-
-        /**
-         * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
-         * <p>
-         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
-         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
-         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
-         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
-         *
-         * @return an asynchronous voice-agent WebSocket client.
-         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
-         */
-        @Beta
-        public BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
-            return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
-        }
-
-        /**
-         * Builds a synchronous client for realtime voice-agent WebSocket sessions.
-         * <p>
-         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
-         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
-         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
-         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
-         *
-         * @return a synchronous voice-agent WebSocket client.
-         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
-         */
-        @Beta
-        public BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
-            return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -1009,20 +977,32 @@ public final class AgentsClientBuilder
 
     /**
      * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+     * <p>
+     * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+     * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+     * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+     * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
      *
      * @return an asynchronous voice-agent WebSocket client.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
-    private BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
-        return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+    public VoiceAgentsWebSocketAsyncClient buildVoiceAgentsWebSocketAsyncClient() {
+        return new VoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
     }
 
     /**
      * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+     * <p>
+     * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+     * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+     * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+     * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
      *
      * @return a synchronous voice-agent WebSocket client.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
-    private BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
-        return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    public VoiceAgentsWebSocketClient buildVoiceAgentsWebSocketClient() {
+        return new VoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
     }
 
     /**

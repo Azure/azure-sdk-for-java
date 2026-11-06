@@ -7,7 +7,7 @@ import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
@@ -105,7 +105,7 @@ public class VoiceAgentConversationsAsyncTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition)).block(TIMEOUT);
             created = true;
-            Mono.usingWhen(builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
+            Mono.usingWhen(builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
                 session -> session.receiveEvents().index().concatMap(indexed -> {
                     if (indexed.getT1() == 0) {
                         assertTrue(indexed.getT2() instanceof RealtimeSessionCreatedEvent,
@@ -123,8 +123,8 @@ public class VoiceAgentConversationsAsyncTests {
                     .switchIfEmpty(Mono.error(new AssertionError("Session ended without response.done.")))
                     .timeout(Duration.ofSeconds(45))
                     .then(),
-                BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
-                BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
             Mono.delay(Duration.ofSeconds(30)).block(Duration.ofSeconds(35));
             reading = true;
             assertPersistedConversation(conversations, agentName, conversationId.get());
