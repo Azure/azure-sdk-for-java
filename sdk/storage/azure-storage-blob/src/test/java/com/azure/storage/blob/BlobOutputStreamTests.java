@@ -34,6 +34,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @LiveOnly
@@ -169,6 +171,20 @@ public class BlobOutputStreamTests extends BlobTestBase {
     }
 
     @Test
+    public void blockBlobOutputStreamGetETag() throws IOException {
+        byte[] data = getRandomByteArray(10 * Constants.MB);
+        BlockBlobClient blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream();
+        outputStream.write(data);
+        assertThrows(IllegalStateException.class, outputStream::getETag);
+        outputStream.close();
+
+        assertNotNull(outputStream.getETag());
+        assertEquals(blockBlobClient.getProperties().getETag(), outputStream.getETag());
+    }
+
+    @Test
     public void pageBlobOutputStream() throws IOException {
         byte[] data = getRandomByteArray(16 * Constants.MB - 512);
         PageBlobClient pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -180,6 +196,22 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.close();
 
         TestUtils.assertArraysEqual(convertInputStreamToByteArray(pageBlobClient.openInputStream()), data);
+    }
+
+    @Test
+    public void pageBlobOutputStreamGetETag() throws IOException {
+        byte[] data = getRandomByteArray(16 * Constants.MB - 512);
+        PageBlobClient pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        pageBlobClient.create(data.length);
+
+        BlobOutputStream outputStream
+            = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0).setEnd(16 * Constants.MB - 1));
+        outputStream.write(data);
+        assertThrows(IllegalStateException.class, outputStream::getETag);
+        outputStream.close();
+
+        assertNotNull(outputStream.getETag());
+        assertEquals(pageBlobClient.getProperties().getETag(), outputStream.getETag());
     }
 
     @Test
@@ -196,6 +228,34 @@ public class BlobOutputStreamTests extends BlobTestBase {
 
         assertEquals(appendBlobClient.getProperties().getBlobSize(), data.length);
         TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
+    }
+
+    @Test
+    public void appendBlobOutputStreamGetETag() throws IOException {
+        byte[] data = getRandomByteArray(4 * FOUR_MB);
+        AppendBlobClient appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        appendBlobClient.create();
+
+        BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream();
+        for (int i = 0; i != 4; i++) {
+            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB)));
+        }
+        assertThrows(IllegalStateException.class, outputStream::getETag);
+        outputStream.close();
+
+        assertNotNull(outputStream.getETag());
+        assertEquals(appendBlobClient.getProperties().getETag(), outputStream.getETag());
+    }
+
+    @Test
+    public void appendBlobOutputStreamGetETagNoWrites() throws IOException {
+        AppendBlobClient appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        appendBlobClient.create();
+
+        BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream();
+        outputStream.close();
+
+        assertNull(outputStream.getETag());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2022-11-02")

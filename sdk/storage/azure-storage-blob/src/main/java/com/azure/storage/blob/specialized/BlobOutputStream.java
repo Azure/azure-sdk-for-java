@@ -39,8 +39,14 @@ import java.util.concurrent.locks.ReentrantLock;
  * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
  */
 public abstract class BlobOutputStream extends StorageOutputStream {
+    private static final ClientLogger LOGGER = new ClientLogger(BlobOutputStream.class);
 
     private volatile boolean isClosed;
+
+    /*
+     * The ETag returned by the most recent successful service call made by this stream.
+     */
+    volatile String eTag;
 
     /**
      *
@@ -132,6 +138,22 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     abstract void commit();
 
     /**
+     * Gets the ETag of the blob as of the last successful write made by this stream. This can be used to make
+     * conditional requests against the blob that was written, without a separate, racy call to get its properties.
+     *
+     * @return The ETag of the blob, or {@code null} if no write to the service succeeded, for example if no data was
+     * written to an append or page blob stream.
+     * @throws IllegalStateException If the stream has not been closed.
+     */
+    public String getETag() {
+        if (!isClosed) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("The ETag is only available after the stream has been closed."));
+        }
+        return eTag;
+    }
+
+    /**
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
      * the buffer it is committed to the service.
      *
@@ -203,7 +225,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     new AppendBlobAppendBlockOptions(binaryData).setRequestConditions(appendBlobRequestConditions)
                         .setContentValidationAlgorithm(contentValidationAlgorithm),
                     Context.NONE))
-                .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
+                .doOnNext(response -> {
+                    appendBlobRequestConditions.setAppendPosition(newAppendOffset);
+                    eTag = response.getValue().getETag();
+                })
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
                     this.lastError = new IOException(e);
@@ -268,6 +293,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                         .setTier(tier)
                         .setRequestConditions(requestConditions)
                         .setContentValidationAlgorithm(contentValidationAlgorithm))
+                .doOnNext(response -> eTag = response.getValue().getETag())
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
                     if (e instanceof IOException) {
@@ -374,6 +400,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     .uploadPagesWithResponseInternal(new PageBlobUploadPagesOptions(pageRange, binaryData)
                         .setRequestConditions(pageBlobRequestConditions)
                         .setContentValidationAlgorithm(contentValidationAlgorithm), Context.NONE))
+                .doOnNext(response -> eTag = response.getValue().getETag())
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
