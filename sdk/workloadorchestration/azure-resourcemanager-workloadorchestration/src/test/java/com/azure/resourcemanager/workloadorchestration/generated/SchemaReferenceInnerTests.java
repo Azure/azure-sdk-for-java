@@ -6,14 +6,23 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaReferenceInner;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaReferenceProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class SchemaReferenceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaReferenceInner model = BinaryData.fromString(
-            "{\"properties\":{\"schemaId\":\"wlwnwxuqlcv\",\"provisioningState\":\"Deleting\"},\"eTag\":\"atdooaojkniod\",\"id\":\"oebwnujhemms\",\"name\":\"vdkcrodtj\",\"type\":\"nfwjlfltkacjvefk\"}")
+            "{\"properties\":{\"schemaId\":\"ufuztcktyhjtq\",\"provisioningState\":\"Deleting\"},\"eTag\":\"zulwmmrqzzrrj\",\"id\":\"gl\",\"name\":\"dzgkr\",\"type\":\"qeevt\"}")
             .toObject(SchemaReferenceInner.class);
-        Assertions.assertEquals("wlwnwxuqlcv", model.properties().schemaId());
+        Assertions.assertEquals("ufuztcktyhjtq", model.properties().schemaId());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SchemaReferenceInner model
+            = new SchemaReferenceInner().withProperties(new SchemaReferenceProperties().withSchemaId("ufuztcktyhjtq"));
+        model = BinaryData.fromObject(model).toObject(SchemaReferenceInner.class);
+        Assertions.assertEquals("ufuztcktyhjtq", model.properties().schemaId());
     }
 }

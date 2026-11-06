@@ -14,7 +14,6 @@ import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationMana
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +21,7 @@ public final class ConfigTemplateVersionsListByConfigTemplateMockTests {
     @Test
     public void testListByConfigTemplate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurations\":\"ehlq\",\"provisioningState\":\"Failed\"},\"eTag\":\"flkn\",\"id\":\"ndpgfjodhda\",\"name\":\"otwfhipxwgsab\",\"type\":\"c\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurations\":\"\\\"datazffzjwztsmp\\\"\",\"provisioningState\":\"Deleting\"},\"eTag\":\"ryelgfyatigfg\",\"id\":\"r\",\"name\":\"dknczgorywn\",\"type\":\"ojtvmdev\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +30,8 @@ public final class ConfigTemplateVersionsListByConfigTemplateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ConfigTemplateVersion> response
-            = manager.configTemplateVersions().listByConfigTemplate("ixgy", "ihlgm", com.azure.core.util.Context.NONE);
+        PagedIterable<ConfigTemplateVersion> response = manager.configTemplateVersions()
+            .listByConfigTemplate("iqlarhqtwvcaze", "d", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehlq", response.iterator().next().properties().configurations());
     }
 }

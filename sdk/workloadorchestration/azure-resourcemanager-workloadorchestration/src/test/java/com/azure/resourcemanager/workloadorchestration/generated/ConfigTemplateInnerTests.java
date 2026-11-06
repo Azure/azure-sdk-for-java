@@ -15,22 +15,22 @@ public final class ConfigTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"n\",\"latestVersion\":\"zudhcxg\",\"provisioningState\":\"Canceled\"},\"eTag\":\"xcdyuibhmfdnb\",\"location\":\"dvfvfcjnaeoi\",\"tags\":{\"mzhwplefaxvxi\":\"hmgorffukiscv\",\"yqxtjjfzql\":\"cbtgnhnz\",\"dggxdbeesmi\":\"hycav\"},\"id\":\"knlrariaawiuagy\",\"name\":\"wqfbylyrfgiagt\",\"type\":\"ojocqwogf\"}")
+            "{\"properties\":{\"uniqueIdentifier\":\"k\",\"description\":\"hltnjadhqoawjq\",\"latestVersion\":\"ueayfbpcmsplb\",\"provisioningState\":\"Deleting\"},\"eTag\":\"eqthwmg\",\"location\":\"b\",\"tags\":{\"edbw\":\"bxigdhxiidlo\"},\"id\":\"pyqy\",\"name\":\"bxubmdna\",\"type\":\"cbq\"}")
             .toObject(ConfigTemplateInner.class);
-        Assertions.assertEquals("dvfvfcjnaeoi", model.location());
-        Assertions.assertEquals("hmgorffukiscv", model.tags().get("mzhwplefaxvxi"));
-        Assertions.assertEquals("n", model.properties().description());
+        Assertions.assertEquals("b", model.location());
+        Assertions.assertEquals("bxigdhxiidlo", model.tags().get("edbw"));
+        Assertions.assertEquals("hltnjadhqoawjq", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateInner model = new ConfigTemplateInner().withLocation("dvfvfcjnaeoi")
-            .withTags(mapOf("mzhwplefaxvxi", "hmgorffukiscv", "yqxtjjfzql", "cbtgnhnz", "dggxdbeesmi", "hycav"))
-            .withProperties(new ConfigTemplateProperties().withDescription("n"));
+        ConfigTemplateInner model = new ConfigTemplateInner().withLocation("b")
+            .withTags(mapOf("edbw", "bxigdhxiidlo"))
+            .withProperties(new ConfigTemplateProperties().withDescription("hltnjadhqoawjq"));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateInner.class);
-        Assertions.assertEquals("dvfvfcjnaeoi", model.location());
-        Assertions.assertEquals("hmgorffukiscv", model.tags().get("mzhwplefaxvxi"));
-        Assertions.assertEquals("n", model.properties().description());
+        Assertions.assertEquals("b", model.location());
+        Assertions.assertEquals("bxigdhxiidlo", model.tags().get("edbw"));
+        Assertions.assertEquals("hltnjadhqoawjq", model.properties().description());
     }
 
     // Use "Map.of" if available

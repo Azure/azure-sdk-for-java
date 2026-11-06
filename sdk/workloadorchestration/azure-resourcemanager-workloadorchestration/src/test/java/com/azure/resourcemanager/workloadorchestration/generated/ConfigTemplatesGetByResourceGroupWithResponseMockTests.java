@@ -21,7 +21,7 @@ public final class ConfigTemplatesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"y\",\"latestVersion\":\"nudn\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"hjxwxq\",\"location\":\"uipmpvks\",\"tags\":{\"krdpqgfhyrfr\":\"nsqxtltc\",\"rcwfcmfcnrjajq\":\"kkld\"},\"id\":\"atxjtiel\",\"name\":\"zqgxx\",\"type\":\"fbbmtlp\"}";
+            = "{\"properties\":{\"uniqueIdentifier\":\"qssgfenffdx\",\"description\":\"vwfqjch\",\"latestVersion\":\"d\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"nxndmuvardlmzjo\",\"location\":\"r\",\"tags\":{\"o\":\"hcuhtuzlxiw\",\"ctwrapcz\":\"garp\"},\"id\":\"ojqyvzes\",\"name\":\"pi\",\"type\":\"snj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ConfigTemplatesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplate response = manager.configTemplates()
-            .getByResourceGroupWithResponse("n", "oywsxvjabjqqaxu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("udma", "swtvd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uipmpvks", response.location());
-        Assertions.assertEquals("nsqxtltc", response.tags().get("krdpqgfhyrfr"));
-        Assertions.assertEquals("y", response.properties().description());
+        Assertions.assertEquals("r", response.location());
+        Assertions.assertEquals("hcuhtuzlxiw", response.tags().get("o"));
+        Assertions.assertEquals("vwfqjch", response.properties().description());
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import com.azure.resourcemanager.workloadorchestration.models.TargetUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.TargetUpdateProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,38 +18,45 @@ public final class TargetUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"nsikvmkqzeqqkdl\":\"onz\",\"bdagxt\":\"fzxmhhvhgureodkw\",\"akbogqxndlkzgxh\":\"bqdxbx\"},\"properties\":{\"description\":\"plbpodxun\",\"displayName\":\"ebxmubyynt\",\"contextId\":\"rbqtkoie\",\"targetSpecification\":{},\"capabilities\":[\"gqrlltmuwla\"],\"hierarchyLevel\":\"zizxbmpgcj\",\"solutionScope\":\"u\",\"state\":\"active\"}}")
+            "{\"tags\":{\"dzjlu\":\"hrdgoihxumwcto\",\"wtovvtgsein\":\"dfdlwggyts\",\"knpirgnepttwq\":\"fiufx\",\"mqnrojlpijnkr\":\"sniffc\"},\"properties\":{\"description\":\"ddhcratizzr\",\"displayName\":\"asxifto\",\"contextId\":\"yzhftwesgogczh\",\"targetSpecification\":{\"gnyhmossxkkg\":\"\\\"dataxkr\\\"\",\"rghxjb\":\"\\\"datah\\\"\",\"rnsvbuswd\":\"\\\"datahqxvcxgfrpdsofbs\\\"\",\"ybycnunvj\":\"\\\"dataz\\\"\"},\"capabilities\":[\"kfawnopqgikyz\"],\"hierarchyLevel\":\"txdyuxzejntpsew\",\"solutionScope\":\"oi\",\"state\":\"active\"}}")
             .toObject(TargetUpdate.class);
-        Assertions.assertEquals("onz", model.tags().get("nsikvmkqzeqqkdl"));
-        Assertions.assertEquals("plbpodxun", model.properties().description());
-        Assertions.assertEquals("ebxmubyynt", model.properties().displayName());
-        Assertions.assertEquals("rbqtkoie", model.properties().contextId());
-        Assertions.assertEquals("gqrlltmuwla", model.properties().capabilities().get(0));
-        Assertions.assertEquals("zizxbmpgcj", model.properties().hierarchyLevel());
-        Assertions.assertEquals("u", model.properties().solutionScope());
+        Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
+        Assertions.assertEquals("ddhcratizzr", model.properties().description());
+        Assertions.assertEquals("asxifto", model.properties().displayName());
+        Assertions.assertEquals("yzhftwesgogczh", model.properties().contextId());
+        Assertions.assertEquals("kfawnopqgikyz", model.properties().capabilities().get(0));
+        Assertions.assertEquals("txdyuxzejntpsew", model.properties().hierarchyLevel());
+        Assertions.assertEquals("oi", model.properties().solutionScope());
         Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetUpdate model = new TargetUpdate()
-            .withTags(mapOf("nsikvmkqzeqqkdl", "onz", "bdagxt", "fzxmhhvhgureodkw", "akbogqxndlkzgxh", "bqdxbx"))
-            .withProperties(new TargetUpdateProperties().withDescription("plbpodxun")
-                .withDisplayName("ebxmubyynt")
-                .withContextId("rbqtkoie")
-                .withTargetSpecification(mapOf())
-                .withCapabilities(Arrays.asList("gqrlltmuwla"))
-                .withHierarchyLevel("zizxbmpgcj")
-                .withSolutionScope("u")
-                .withState(ResourceState.ACTIVE));
+        TargetUpdate model
+            = new TargetUpdate()
+                .withTags(mapOf("dzjlu", "hrdgoihxumwcto", "wtovvtgsein", "dfdlwggyts", "knpirgnepttwq", "fiufx",
+                    "mqnrojlpijnkr", "sniffc"))
+                .withProperties(
+                    new TargetUpdateProperties().withDescription("ddhcratizzr")
+                        .withDisplayName("asxifto")
+                        .withContextId("yzhftwesgogczh")
+                        .withTargetSpecification(mapOf("gnyhmossxkkg",
+                            BinaryData.fromBytes("\"dataxkr\"".getBytes(StandardCharsets.UTF_8)), "rghxjb",
+                            BinaryData.fromBytes("\"datah\"".getBytes(StandardCharsets.UTF_8)), "rnsvbuswd",
+                            BinaryData.fromBytes("\"datahqxvcxgfrpdsofbs\"".getBytes(StandardCharsets.UTF_8)),
+                            "ybycnunvj", BinaryData.fromBytes("\"dataz\"".getBytes(StandardCharsets.UTF_8))))
+                        .withCapabilities(Arrays.asList("kfawnopqgikyz"))
+                        .withHierarchyLevel("txdyuxzejntpsew")
+                        .withSolutionScope("oi")
+                        .withState(ResourceState.ACTIVE));
         model = BinaryData.fromObject(model).toObject(TargetUpdate.class);
-        Assertions.assertEquals("onz", model.tags().get("nsikvmkqzeqqkdl"));
-        Assertions.assertEquals("plbpodxun", model.properties().description());
-        Assertions.assertEquals("ebxmubyynt", model.properties().displayName());
-        Assertions.assertEquals("rbqtkoie", model.properties().contextId());
-        Assertions.assertEquals("gqrlltmuwla", model.properties().capabilities().get(0));
-        Assertions.assertEquals("zizxbmpgcj", model.properties().hierarchyLevel());
-        Assertions.assertEquals("u", model.properties().solutionScope());
+        Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
+        Assertions.assertEquals("ddhcratizzr", model.properties().description());
+        Assertions.assertEquals("asxifto", model.properties().displayName());
+        Assertions.assertEquals("yzhftwesgogczh", model.properties().contextId());
+        Assertions.assertEquals("kfawnopqgikyz", model.properties().capabilities().get(0));
+        Assertions.assertEquals("txdyuxzejntpsew", model.properties().hierarchyLevel());
+        Assertions.assertEquals("oi", model.properties().solutionScope());
         Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
     }
 

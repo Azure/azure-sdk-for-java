@@ -71,6 +71,11 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
      */
     private ManagementError errorDetails;
 
+    /*
+     * Additional metadata or properties.
+     */
+    private AdditionalData additionalData;
+
     /**
      * Creates an instance of JobProperties class.
      */
@@ -168,6 +173,15 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
     }
 
     /**
+     * Get the additionalData property: Additional metadata or properties.
+     * 
+     * @return the additionalData value.
+     */
+    public AdditionalData additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -183,6 +197,7 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
         jsonWriter.writeStringField("correlationId", this.correlationId);
         jsonWriter.writeArrayField("steps", this.steps, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("triggeredBy", this.triggeredBy);
+        jsonWriter.writeJsonField("additionalData", this.additionalData);
         return jsonWriter.writeEndObject();
     }
 
@@ -225,6 +240,8 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
                     deserializedJobProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedJobProperties.errorDetails = ManagementError.fromJson(reader);
+                } else if ("additionalData".equals(fieldName)) {
+                    deserializedJobProperties.additionalData = AdditionalData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

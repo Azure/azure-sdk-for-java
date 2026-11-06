@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkDeploySolutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkDeploySolutionParameter model = BinaryData.fromString("{\"targets\":[{\"solutionVersionId\":\"q\"}]}")
+        BulkDeploySolutionParameter model = BinaryData.fromString("{\"targets\":[{\"solutionVersionId\":\"ijpxtx\"}]}")
             .toObject(BulkDeploySolutionParameter.class);
-        Assertions.assertEquals("q", model.targets().get(0).solutionVersionId());
+        Assertions.assertEquals("ijpxtx", model.targets().get(0).solutionVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkDeploySolutionParameter model = new BulkDeploySolutionParameter()
-            .withTargets(Arrays.asList(new BulkDeployTargetDetails().withSolutionVersionId("q")));
+            .withTargets(Arrays.asList(new BulkDeployTargetDetails().withSolutionVersionId("ijpxtx")));
         model = BinaryData.fromObject(model).toObject(BulkDeploySolutionParameter.class);
-        Assertions.assertEquals("q", model.targets().get(0).solutionVersionId());
+        Assertions.assertEquals("ijpxtx", model.targets().get(0).solutionVersionId());
     }
 }

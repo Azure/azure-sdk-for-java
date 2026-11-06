@@ -11,7 +11,7 @@ public final class SchemaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaProperties model
-            = BinaryData.fromString("{\"currentVersion\":\"usarhmofc\",\"provisioningState\":\"Failed\"}")
+            = BinaryData.fromString("{\"currentVersion\":\"uhivyqniw\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(SchemaProperties.class);
     }
 

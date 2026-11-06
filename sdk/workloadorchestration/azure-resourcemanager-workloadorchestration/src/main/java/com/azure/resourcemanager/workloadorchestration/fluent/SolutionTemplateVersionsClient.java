@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.BulkDeploySolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.BulkPublishSolutionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.BulkReviewSolutionParameter;
 
 /**
  * An instance of this class provides access to all the operations defined in SolutionTemplateVersionsClient.
@@ -49,6 +50,166 @@ public interface SolutionTemplateVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionTemplateVersionInner get(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName);
+
+    /**
+     * Create or update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of solution Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SolutionTemplateVersionInner>, SolutionTemplateVersionInner> beginCreateOrUpdate(
+        String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        SolutionTemplateVersionInner resource);
+
+    /**
+     * Create or update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of solution Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SolutionTemplateVersionInner>, SolutionTemplateVersionInner> beginCreateOrUpdate(
+        String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        SolutionTemplateVersionInner resource, Context context);
+
+    /**
+     * Create or update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SolutionTemplateVersionInner createOrUpdate(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, SolutionTemplateVersionInner resource);
+
+    /**
+     * Create or update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SolutionTemplateVersionInner createOrUpdate(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, SolutionTemplateVersionInner resource, Context context);
+
+    /**
+     * Update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Template Version Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SolutionTemplateVersionInner> updateWithResponse(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, SolutionTemplateVersionInner properties, Context context);
+
+    /**
+     * Update a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SolutionTemplateVersionInner update(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, SolutionTemplateVersionInner properties);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, Context context);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        Context context);
 
     /**
      * List Solution Template Version Resources.
@@ -208,4 +369,68 @@ public interface SolutionTemplateVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void bulkPublishSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
         BulkPublishSolutionParameter body, Context context);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginBulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginBulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body, Context context);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void bulkReviewSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        BulkReviewSolutionParameter body);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void bulkReviewSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        BulkReviewSolutionParameter body, Context context);
 }
