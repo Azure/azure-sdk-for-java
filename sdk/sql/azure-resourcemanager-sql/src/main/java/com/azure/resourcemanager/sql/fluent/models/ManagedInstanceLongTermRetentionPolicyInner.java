@@ -151,7 +151,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Get the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
-     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * can be either Locked or Unlocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
      * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
      * 
      * @return the timeBasedImmutabilityMode value.
@@ -162,7 +162,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Set the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
-     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * can be either Locked or Unlocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
      * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
      * 
      * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.

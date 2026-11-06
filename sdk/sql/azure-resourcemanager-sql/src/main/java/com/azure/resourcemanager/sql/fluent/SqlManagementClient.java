@@ -467,6 +467,13 @@ public interface SqlManagementClient {
     LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups();
 
     /**
+     * Gets the ManagedInstanceLongTermRetentionBackupsClient object to access its operations.
+     * 
+     * @return the ManagedInstanceLongTermRetentionBackupsClient object.
+     */
+    ManagedInstanceLongTermRetentionBackupsClient getManagedInstanceLongTermRetentionBackups();
+
+    /**
      * Gets the LongTermRetentionPoliciesClient object to access its operations.
      * 
      * @return the LongTermRetentionPoliciesClient object.
