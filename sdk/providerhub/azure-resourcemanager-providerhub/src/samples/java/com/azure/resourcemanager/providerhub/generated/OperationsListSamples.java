@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_List.json
+     * x-ms-original-file: 2025-10-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class GlobalReachConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GlobalReachConnections_Delete.json
+     * x-ms-original-file: 2026-03-01/GlobalReachConnections_Delete.json
      */
     /**
      * Sample code: GlobalReachConnections_Delete.

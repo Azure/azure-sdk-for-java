@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.StacAssetData;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
@@ -23,7 +24,7 @@ public final class StacCollectionAssetsReplaceTests extends PlanetaryComputerPro
     @Disabled
     public void testStacCollectionAssetsReplaceTests() {
         // method invocation
-        StacCollection response = stacClient.replaceCollectionAsset("naip-atl", "test-asset", null);
+        StacCollection response = stacClient.replaceCollectionAsset("naip-atl", "test-asset", (StacAssetData) null);
 
         // response assertion
         Assertions.assertNotNull(response);

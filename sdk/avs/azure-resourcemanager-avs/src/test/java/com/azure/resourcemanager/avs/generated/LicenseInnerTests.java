@@ -12,7 +12,7 @@ public final class LicenseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseInner model = BinaryData.fromString(
-            "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"ujqgidok\",\"name\":\"jljyoxgv\",\"type\":\"ltbgsncghkj\"}")
+            "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"smx\",\"name\":\"eh\",\"type\":\"pvecxgodeb\"}")
             .toObject(LicenseInner.class);
     }
 

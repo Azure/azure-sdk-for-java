@@ -13,18 +13,18 @@ public final class L2NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2NetworkAttachmentConfiguration model
-            = BinaryData.fromString("{\"networkId\":\"z\",\"pluginType\":\"IPVLAN\"}")
+            = BinaryData.fromString("{\"networkId\":\"ipmdscwx\",\"pluginType\":\"SRIOV\"}")
                 .toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("z", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
+        Assertions.assertEquals("ipmdscwx", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkAttachmentConfiguration model
-            = new L2NetworkAttachmentConfiguration().withNetworkId("z").withPluginType(KubernetesPluginType.IPVLAN);
+        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("ipmdscwx")
+            .withPluginType(KubernetesPluginType.SRIOV);
         model = BinaryData.fromObject(model).toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("z", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
+        Assertions.assertEquals("ipmdscwx", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 }

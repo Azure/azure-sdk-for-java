@@ -24,7 +24,8 @@ import reactor.core.publisher.Mono;
 public final class ProtectionGroupsBackupWithResponseMockTests {
     @Test
     public void testBackupWithResponse() throws Exception {
-        String responseStr = "{\"taskId\":870827030,\"jobIds\":[\"ltfnhtbaxkgx\",\"wrck\",\"yklyhpluodpvruud\"]}";
+        String responseStr
+            = "{\"taskId\":1187101148,\"jobIds\":[\"okwbqplh\",\"vnuuepzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +35,13 @@ public final class ProtectionGroupsBackupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupProtectionGroupResponse response = manager.protectionGroups()
-            .backupWithResponse("qioknssxmojm", "vpkjpr", "kwcf",
-                new BackupProtectionGroupRequest().withVmList(Arrays.asList(new VmListItem().withVmGuid("ljyxgtczhe")))
-                    .withBackupOptions(new BackupOptions().withBackupLevel(BackupLevel.SYNTHETIC_FULL)
-                        .withJobDescription("sdshmkxmaehvb")
-                        .withBackupCopyImmediately(false)
+            .backupWithResponse("orwmduvwpklv", "w", "ygdxpgpqchis",
+                new BackupProtectionGroupRequest().withVmList(Arrays.asList(new VmListItem().withVmGuid("pnnbjc")))
+                    .withBackupOptions(new BackupOptions().withBackupLevel(BackupLevel.INCREMENTAL)
+                        .withJobDescription("ibbdaxconfoza")
+                        .withBackupCopyImmediately(true)
                         .withRunSnapShotBackup(true)
-                        .withNotifyUserOnJobCompletion(false)),
+                        .withNotifyUserOnJobCompletion(true)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

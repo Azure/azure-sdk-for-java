@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersi
  */
 public final class ServersStartMajorVersionUpgradePrecheckSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersStartMajorVersionUpgradePrecheck.json
+     * x-ms-original-file: 2026-07-01-preview/ServersStartMajorVersionUpgradePrecheck.json
      */
     /**
      * Sample code: Start a major version upgrade precheck validation for a PostgreSQL flexible server.

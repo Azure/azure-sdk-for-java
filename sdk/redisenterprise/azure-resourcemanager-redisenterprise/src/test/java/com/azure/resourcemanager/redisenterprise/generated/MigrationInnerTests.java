@@ -12,7 +12,7 @@ public final class MigrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"vfqawrlyxwjkcpr\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"xgjvtbv\",\"creationTime\":\"2021-12-09T20:08:32Z\",\"lastModifiedTime\":\"2021-09-19T23:48:38Z\"},\"id\":\"nruj\",\"name\":\"guhmuouqfpr\",\"type\":\"zw\"}")
+            "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"vfqawrlyxwjkcpr\",\"provisioningState\":\"ReadyForDnsSwitch\",\"statusDetails\":\"xgjvtbv\",\"creationTime\":\"2021-12-09T20:08:32Z\",\"lastModifiedTime\":\"2021-09-19T23:48:38Z\",\"rollbackEligibleUntil\":\"2021-04-18T15:39:17Z\"},\"id\":\"uj\",\"name\":\"guhmuouqfpr\",\"type\":\"zw\"}")
             .toObject(MigrationInner.class);
     }
 

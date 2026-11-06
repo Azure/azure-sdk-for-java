@@ -26,7 +26,7 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wd\"},\"provisioningState\":\"Succeeded\"},\"location\":\"tsdbpgn\",\"tags\":{\"pzxbz\":\"x\"},\"id\":\"fzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"fbunrmfqjhhk\"},\"provisioningState\":\"Succeeded\"},\"location\":\"jy\",\"tags\":{\"xqzvszjfa\":\"xxjyngudivkrtsw\"},\"id\":\"vjfdx\",\"name\":\"ivetvtcq\",\"type\":\"qtdo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,19 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Association response = manager.associationsInterfaces()
-            .define("lhaaxdbabp")
-            .withRegion("mnyyazt")
-            .withExistingTrafficController("nrs", "nlqidybyxczf")
-            .withTags(mapOf("uedck", "wwrq", "bxu", "ywbiexzfeyueax"))
+            .define("qcslyjpkiid")
+            .withRegion("nalaulppg")
+            .withExistingTrafficController("aln", "ixisxyawjoy")
+            .withTags(mapOf("igvpgylg", "pnapnyiropuh", "medjvcslynqwwncw", "git", "pkteo", "zhxgktrmgucn",
+                "pfqbuaceopzf", "llwptfdy"))
             .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("qlfktsths")))
+                .withSubnet(new AssociationSubnet().withId("znelixhnrztfolh")))
             .create();
 
-        Assertions.assertEquals("tsdbpgn", response.location());
-        Assertions.assertEquals("x", response.tags().get("pzxbz"));
+        Assertions.assertEquals("jy", response.location());
+        Assertions.assertEquals("xxjyngudivkrtsw", response.tags().get("xqzvszjfa"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("wd", response.properties().subnet().id());
+        Assertions.assertEquals("fbunrmfqjhhk", response.properties().subnet().id());
     }
 
     // Use "Map.of" if available

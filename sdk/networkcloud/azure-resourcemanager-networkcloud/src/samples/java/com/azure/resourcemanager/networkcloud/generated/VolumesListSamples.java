@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/Volumes_ListBySubscription.json
      */
     /**
      * Sample code: List volume for subscription.

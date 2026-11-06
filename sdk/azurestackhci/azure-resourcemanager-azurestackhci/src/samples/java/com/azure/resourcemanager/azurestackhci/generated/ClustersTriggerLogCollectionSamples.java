@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersTriggerLogCollectionSamples {
     /*
-     * x-ms-original-file: 2026-04-30/TriggerLogCollection.json
+     * x-ms-original-file: 2026-10-01/TriggerLogCollection.json
      */
     /**
      * Sample code: Trigger Log Collection.

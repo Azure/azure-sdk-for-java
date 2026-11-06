@@ -105,13 +105,16 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public DeploymentStacksWhatIfResult getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName");
         if (deploymentStacksWhatIfResultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
@@ -121,13 +124,16 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public Response<DeploymentStacksWhatIfResult> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName");
         if (deploymentStacksWhatIfResultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
@@ -136,13 +142,16 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName");
         if (deploymentStacksWhatIfResultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
@@ -162,13 +171,16 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName");
         if (deploymentStacksWhatIfResultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));

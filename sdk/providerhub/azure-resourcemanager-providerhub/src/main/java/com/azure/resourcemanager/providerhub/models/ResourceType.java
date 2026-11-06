@@ -113,11 +113,6 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     private List<SubscriptionStateRule> subscriptionStateRules;
 
     /*
-     * The service tree infos.
-     */
-    private List<ServiceTreeInfo> serviceTreeInfos;
-
-    /*
      * The request header options.
      */
     private ResourceTypeRequestHeaderOptions requestHeaderOptions;
@@ -150,7 +145,12 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     /*
      * The resource deletion policy.
      */
-    private ManifestResourceDeletionPolicy resourceDeletionPolicy;
+    private ResourceDeletionPolicy resourceDeletionPolicy;
+
+    /*
+     * List of resource deletion policies added.
+     */
+    private List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies;
 
     /*
      * The quota rule.
@@ -350,15 +350,6 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the serviceTreeInfos property: The service tree infos.
-     * 
-     * @return the serviceTreeInfos value.
-     */
-    public List<ServiceTreeInfo> serviceTreeInfos() {
-        return this.serviceTreeInfos;
-    }
-
-    /**
      * Get the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
@@ -417,8 +408,17 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
      * 
      * @return the resourceDeletionPolicy value.
      */
-    public ManifestResourceDeletionPolicy resourceDeletionPolicy() {
+    public ResourceDeletionPolicy resourceDeletionPolicy() {
         return this.resourceDeletionPolicy;
+    }
+
+    /**
+     * Get the resourceDeletionPolicies property: List of resource deletion policies added.
+     * 
+     * @return the resourceDeletionPolicies value.
+     */
+    public List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies() {
+        return this.resourceDeletionPolicies;
     }
 
     /**
@@ -490,9 +490,6 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         if (subscriptionStateRules() != null) {
             subscriptionStateRules().forEach(e -> e.validate());
         }
-        if (serviceTreeInfos() != null) {
-            serviceTreeInfos().forEach(e -> e.validate());
-        }
         if (requestHeaderOptions() != null) {
             requestHeaderOptions().validate();
         }
@@ -504,6 +501,9 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         }
         if (linkedOperationRules() != null) {
             linkedOperationRules().forEach(e -> e.validate());
+        }
+        if (resourceDeletionPolicies() != null) {
+            resourceDeletionPolicies().forEach(e -> e.validate());
         }
         if (quotaRule() != null) {
             quotaRule().validate();
@@ -557,8 +557,6 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         jsonWriter.writeJsonField("featuresRule", this.featuresRule);
         jsonWriter.writeArrayField("subscriptionStateRules", this.subscriptionStateRules,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("serviceTreeInfos", this.serviceTreeInfos,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
         jsonWriter.writeStringField("skuLink", this.skuLink);
         jsonWriter.writeArrayField("disallowedActionVerbs", this.disallowedActionVerbs,
@@ -570,6 +568,8 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourceDeletionPolicy",
             this.resourceDeletionPolicy == null ? null : this.resourceDeletionPolicy.toString());
+        jsonWriter.writeArrayField("resourceDeletionPolicies", this.resourceDeletionPolicies,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("quotaRule", this.quotaRule);
         jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
@@ -648,10 +648,6 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
                     List<SubscriptionStateRule> subscriptionStateRules
                         = reader.readArray(reader1 -> SubscriptionStateRule.fromJson(reader1));
                     deserializedResourceType.subscriptionStateRules = subscriptionStateRules;
-                } else if ("serviceTreeInfos".equals(fieldName)) {
-                    List<ServiceTreeInfo> serviceTreeInfos
-                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
-                    deserializedResourceType.serviceTreeInfos = serviceTreeInfos;
                 } else if ("requestHeaderOptions".equals(fieldName)) {
                     deserializedResourceType.requestHeaderOptions = ResourceTypeRequestHeaderOptions.fromJson(reader);
                 } else if ("skuLink".equals(fieldName)) {
@@ -672,7 +668,11 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
                     deserializedResourceType.linkedOperationRules = linkedOperationRules;
                 } else if ("resourceDeletionPolicy".equals(fieldName)) {
                     deserializedResourceType.resourceDeletionPolicy
-                        = ManifestResourceDeletionPolicy.fromString(reader.getString());
+                        = ResourceDeletionPolicy.fromString(reader.getString());
+                } else if ("resourceDeletionPolicies".equals(fieldName)) {
+                    List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies
+                        = reader.readArray(reader1 -> ResourceDeletionPolicyAndProperties.fromJson(reader1));
+                    deserializedResourceType.resourceDeletionPolicies = resourceDeletionPolicies;
                 } else if ("quotaRule".equals(fieldName)) {
                     deserializedResourceType.quotaRule = QuotaRule.fromJson(reader);
                 } else if ("notifications".equals(fieldName)) {

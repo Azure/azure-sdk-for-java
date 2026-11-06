@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BareMetalMachinesRestartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Restart.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Restart.json
      */
     /**
      * Sample code: Restart bare metal machine.

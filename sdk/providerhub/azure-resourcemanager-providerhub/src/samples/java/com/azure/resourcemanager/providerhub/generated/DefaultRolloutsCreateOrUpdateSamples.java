@@ -4,11 +4,14 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
+import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationCanary;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationExpeditedRollout;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationRestOfTheWorldGroupTwo;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
 import java.time.Duration;
 import java.util.Arrays;
 
@@ -17,7 +20,7 @@ import java.util.Arrays;
  */
 public final class DefaultRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: DefaultRollouts_CreateOrUpdate.
@@ -28,12 +31,15 @@ public final class DefaultRolloutsCreateOrUpdateSamples {
         manager.defaultRollouts()
             .define("2020week10")
             .withExistingProviderRegistration("Microsoft.Contoso")
-            .withProperties(
-                new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
-                    .withExpeditedRollout(new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
-                    .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
-                    .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                        .withWaitDuration(Duration.parse("PT4H")))))
+            .withProperties(new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
+                .withExpeditedRollout(new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
+                .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
+                .withRestOfTheWorldGroupTwo(
+                    new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withWaitDuration(Duration.parse("PT4H")))
+                .withManifestCheckinSpecification(new ManifestCheckinSpecification()
+                    .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
+                    .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
+                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
             .create();
     }
 }

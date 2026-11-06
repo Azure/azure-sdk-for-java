@@ -65,8 +65,6 @@
   {
     "extension": "class-and-package-tree-filter-provider",
     "configuration": {
-      "ignoredClasses": {
-      },
       "ignoredPackages": {
         "kotlin": [],
         "okhttp3": [],
@@ -77,14 +75,6 @@
       },
       "ignoredPackagesPatterns": [
         "io\\.clientcore\\..*(implementation|samples).*"
-      ]
-    }
-  },
-  {
-    "extension": "revapi.differences",
-    "configuration": {
-      "ignore": true,
-      "differences": [
       ]
     }
   }

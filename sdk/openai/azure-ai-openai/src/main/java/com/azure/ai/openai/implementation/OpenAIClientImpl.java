@@ -664,8 +664,8 @@ public final class OpenAIClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String deploymentOrModelName,
-        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseInternalAsync(
+        String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "text/plain";
         return FluxUtil.withContext(context -> service.getAudioTranscriptionAsPlainText(this.getEndpoint(),
@@ -695,7 +695,7 @@ public final class OpenAIClientImpl {
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponseInternal(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "text/plain";
@@ -754,7 +754,7 @@ public final class OpenAIClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseInternalAsync(
         String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -813,7 +813,7 @@ public final class OpenAIClientImpl {
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
+    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponseInternal(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -844,8 +844,8 @@ public final class OpenAIClientImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String deploymentOrModelName,
-        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseInternalAsync(
+        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "text/plain";
         return FluxUtil.withContext(
@@ -875,7 +875,7 @@ public final class OpenAIClientImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponseInternal(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "text/plain";
@@ -926,8 +926,8 @@ public final class OpenAIClientImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(String deploymentOrModelName,
-        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseInternalAsync(
+        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getAudioTranslationAsResponseObject(this.getEndpoint(),
@@ -978,7 +978,7 @@ public final class OpenAIClientImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
+    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponseInternal(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -2447,7 +2447,7 @@ public final class OpenAIClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
+    public Mono<Response<BinaryData>> uploadFileWithResponseInternalAsync(BinaryData uploadFileRequest,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -2483,7 +2483,8 @@ public final class OpenAIClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponseInternal(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
@@ -3400,7 +3401,7 @@ public final class OpenAIClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> addUploadPartWithResponseAsync(String uploadId, BinaryData requestBody,
+    public Mono<Response<BinaryData>> addUploadPartWithResponseInternalAsync(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -3439,7 +3440,7 @@ public final class OpenAIClientImpl {
      * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+    public Response<BinaryData> addUploadPartWithResponseInternal(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";

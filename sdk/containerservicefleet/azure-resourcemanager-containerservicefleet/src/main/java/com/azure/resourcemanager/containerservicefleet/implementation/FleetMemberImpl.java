@@ -11,6 +11,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberUpdate;
+import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -62,6 +63,10 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
 
     public FleetMemberStatus status() {
         return this.innerModel().status();
+    }
+
+    public MeshProperties meshProperties() {
+        return this.innerModel().meshProperties();
     }
 
     public String resourceGroupName() {
@@ -145,9 +150,15 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.fleetMemberName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "members");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "fleetName");
+        this.fleetMemberName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "fleetMemberName");
     }
 
     public FleetMember refresh() {

@@ -5,10 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
@@ -17,6 +14,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
@@ -49,8 +47,6 @@ public class OpenApiSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
 
         // BEGIN: com.azure.ai.agents.define_openapi
@@ -70,30 +66,31 @@ public class OpenApiSync {
             .setInstructions("Use the OpenAPI tool for HTTP request metadata.")
             .setTools(Arrays.asList(tool));
 
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient("openapi-agent");
+        ConversationService conversationService = openAIClient.conversations();
+        Conversation conversation = null;
+
         AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", agentDefinition);
-        System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
-
-        // Create a conversation and add a user message
-        Conversation conversation = conversationService.create();
-        conversationService.items().create(
-            ItemCreateParams.builder()
-                .conversationId(conversation.id())
-                .addItem(EasyInputMessage.builder()
-                    .role(EasyInputMessage.Role.USER)
-                    .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
-                    .build())
-                .build());
-
         try {
-            AgentReference agentReference = new AgentReference(agentVersion.getName())
-                .setVersion(agentVersion.getVersion());
+            System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
 
-            ResponseCreateParams.Builder options = ResponseCreateParams.builder()
-                .maxOutputTokens(300L);
+            // Create a conversation and add a user message
+            conversation = conversationService.create();
+            System.out.println("Created conversation: " + conversation.id());
+            conversationService.items().create(
+                ItemCreateParams.builder()
+                    .conversationId(conversation.id())
+                    .addItem(EasyInputMessage.builder()
+                        .role(EasyInputMessage.Role.USER)
+                        .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
+                        .build())
+                    .build());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                options.conversation(conversation.id()));
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
+                    .maxOutputTokens(300L)
+                    .conversation(conversation.id())
+                    .build());
 
             String text = response.output().stream()
                 .filter(item -> item.isMessage())
@@ -107,8 +104,15 @@ public class OpenApiSync {
             System.out.println("Status: " + response.status().map(Object::toString).orElse("unknown"));
             System.out.println("Response: " + text);
         } finally {
-            agentsClient.deleteAgentVersion(agentVersion.getName(), agentVersion.getVersion());
-            System.out.println("Agent deleted");
+            try {
+                if (conversation != null) {
+                    conversationService.delete(conversation.id());
+                    System.out.println("Conversation deleted");
+                }
+            } finally {
+                agentsClient.deleteAgentVersion(agentVersion.getName(), agentVersion.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

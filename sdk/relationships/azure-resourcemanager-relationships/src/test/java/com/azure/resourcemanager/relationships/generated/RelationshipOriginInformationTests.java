@@ -11,7 +11,7 @@ public final class RelationshipOriginInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationshipOriginInformation model = BinaryData
-            .fromString("{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"vnipjox\"}")
+            .fromString("{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"qnjaqwix\"}")
             .toObject(RelationshipOriginInformation.class);
     }
 }

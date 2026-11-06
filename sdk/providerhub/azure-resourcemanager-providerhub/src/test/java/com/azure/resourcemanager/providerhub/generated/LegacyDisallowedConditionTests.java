@@ -15,20 +15,19 @@ public final class LegacyDisallowedConditionTests {
     public void testDeserialize() throws Exception {
         LegacyDisallowedCondition model = BinaryData
             .fromString(
-                "{\"disallowedLegacyOperations\":[\"Create\",\"Create\",\"Read\",\"Delete\"],\"feature\":\"kyoqufdv\"}")
+                "{\"disallowedLegacyOperations\":[\"NotSpecified\",\"Waiting\"],\"feature\":\"hnfhqlyvijouwi\"}")
             .toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.CREATE, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("kyoqufdv", model.feature());
+        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("hnfhqlyvijouwi", model.feature());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LegacyDisallowedCondition model = new LegacyDisallowedCondition()
-            .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.CREATE, LegacyOperation.CREATE,
-                LegacyOperation.READ, LegacyOperation.DELETE))
-            .withFeature("kyoqufdv");
+            .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.NOT_SPECIFIED, LegacyOperation.WAITING))
+            .withFeature("hnfhqlyvijouwi");
         model = BinaryData.fromObject(model).toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.CREATE, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("kyoqufdv", model.feature());
+        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("hnfhqlyvijouwi", model.feature());
     }
 }

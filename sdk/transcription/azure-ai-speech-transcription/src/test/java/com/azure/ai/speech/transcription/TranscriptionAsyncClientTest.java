@@ -176,9 +176,11 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     private void transcribeAndVerifyResponse(String testName, TranscriptionOptions options,
         RequestOptions requestOptions) {
         BinaryData multipartBody = createMultipartBody(options, requestOptions);
-        StepVerifier.create(client.transcribeWithResponse(multipartBody, requestOptions)).assertNext(response -> {
-            printHttpRequestAndResponse(response);
-            validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
-        }).verifyComplete();
+        StepVerifier.create(client.transcribeWithResponseInternal(multipartBody, requestOptions))
+            .assertNext(response -> {
+                printHttpRequestAndResponse(response);
+                validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
+            })
+            .verifyComplete();
     }
 }

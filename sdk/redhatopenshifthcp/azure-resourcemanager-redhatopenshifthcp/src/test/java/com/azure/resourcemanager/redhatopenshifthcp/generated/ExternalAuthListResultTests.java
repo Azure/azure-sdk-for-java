@@ -13,21 +13,21 @@ public final class ExternalAuthListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalAuthListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":{\"conditions\":[{\"type\":\"Available\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2021-02-03T02:36:14Z\",\"reason\":\"dxyt\",\"message\":\"moyrxvwfudwpz\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastTransitionTime\":\"2021-08-24T16:23:13Z\",\"reason\":\"dzhlrq\",\"message\":\"bh\"},{\"type\":\"Degraded\",\"status\":\"False\",\"lastTransitionTime\":\"2021-02-03T03:57:15Z\",\"reason\":\"lhrxsbkyvpyc\",\"message\":\"n\"},{\"type\":\"Available\",\"status\":\"True\",\"lastTransitionTime\":\"2021-05-16T01:44:09Z\",\"reason\":\"zka\",\"message\":\"kuwbcrnwb\"}]},\"issuer\":{\"url\":\"ehhseyvjusrts\",\"audiences\":[\"spkdee\",\"aofmxagkvtme\",\"mqkrhahvljuahaqu\"],\"ca\":\"dhmdua\"},\"clients\":[{\"component\":{\"name\":\"xqpvfadmw\",\"authClientNamespace\":\"rcrgvx\"},\"clientId\":\"vgomz\",\"extraScopes\":[\"isgwbnbbeldawkz\",\"ali\"],\"type\":\"Confidential\"}],\"claim\":{\"mappings\":{\"username\":{\"claim\":\"rqhakauha\"},\"groups\":{\"claim\":\"sfwxosowzxc\"}},\"validationRules\":[{}]}},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"}],\"nextLink\":\"vmeueci\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":{\"conditions\":[{\"type\":\"Progressing\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2021-03-14T19:51:15Z\",\"reason\":\"misgwbnb\",\"message\":\"e\"},{\"type\":\"Degraded\",\"status\":\"False\",\"lastTransitionTime\":\"2021-03-30T10:55:40Z\",\"reason\":\"k\",\"message\":\"baliourqhakauha\"},{\"type\":\"Progressing\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2021-08-15T03:29:20Z\",\"reason\":\"wxosowzxcug\",\"message\":\"cjooxdjebwpucwwf\"}]},\"issuer\":{\"url\":\"ovbvmeueciv\",\"audiences\":[\"zceuojgjrw\",\"ueiotwmcdyt\",\"x\",\"it\"],\"ca\":\"rjaw\"},\"clients\":[{\"component\":{\"name\":\"gxhnisk\",\"authClientNamespace\":\"fbkp\"},\"clientId\":\"cg\",\"extraScopes\":[\"ndnhj\",\"auwhvylwzbtdhx\"],\"type\":\"Confidential\"},{\"component\":{\"name\":\"znbmpowuwprzq\",\"authClientNamespace\":\"veual\"},\"clientId\":\"pjmkhfxobbc\",\"extraScopes\":[\"rtjriplrbpbew\"],\"type\":\"Confidential\"}],\"claim\":{\"mappings\":{\"username\":{\"claim\":\"hfgblc\"},\"groups\":{\"claim\":\"xzvlvqhjkbegib\"}},\"validationRules\":[{},{}]}},\"id\":\"iebwwaloayqcgwrt\",\"name\":\"j\",\"type\":\"zg\"},{\"properties\":{\"provisioningState\":\"AwaitingSecret\",\"status\":{\"conditions\":[{\"type\":\"Progressing\",\"status\":\"False\",\"lastTransitionTime\":\"2021-10-09T13:49:19Z\",\"reason\":\"mtsavjcbpwxqp\",\"message\":\"rknftguvriuhprwm\"},{\"type\":\"Available\",\"status\":\"True\",\"lastTransitionTime\":\"2021-01-30T20:43:49Z\",\"reason\":\"qtayri\",\"message\":\"wroyqbexrmcq\"},{\"type\":\"Degraded\",\"status\":\"False\",\"lastTransitionTime\":\"2021-08-26T17:02:46Z\",\"reason\":\"nojvknmefqsg\",\"message\":\"vah\"},{\"type\":\"Degraded\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2021-01-29T21:47:45Z\",\"reason\":\"zhpvgqzcjrvxd\",\"message\":\"zlmwlxkvugfhz\"}]},\"issuer\":{\"url\":\"vawjvzunlu\",\"audiences\":[\"nnprn\",\"i\"],\"ca\":\"ilpjzuaejxdult\"},\"clients\":[{\"component\":{\"name\":\"bbtdzumvee\",\"authClientNamespace\":\"gpw\"},\"clientId\":\"zuhkfpbsjyof\",\"extraScopes\":[\"uusdttouwa\"],\"type\":\"Confidential\"},{\"component\":{\"name\":\"ekqvkeln\",\"authClientNamespace\":\"mvb\"},\"clientId\":\"wyjsflhhcaalnjix\",\"extraScopes\":[\"yaw\",\"oyaqcslyjpkiid\"],\"type\":\"Confidential\"},{\"component\":{\"name\":\"exznelixhnr\",\"authClientNamespace\":\"tfolhbnx\"},\"clientId\":\"nalaulppg\",\"extraScopes\":[\"pnapnyiropuh\",\"igvpgylg\",\"git\",\"medjvcslynqwwncw\"],\"type\":\"Public\"}],\"claim\":{\"mappings\":{\"username\":{\"claim\":\"hxg\"},\"groups\":{\"claim\":\"rmgucnap\"}},\"validationRules\":[{},{},{},{}]}},\"id\":\"ellwptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"}],\"nextLink\":\"z\"}")
             .toObject(ExternalAuthListResult.class);
-        Assertions.assertEquals("ehhseyvjusrts", model.value().get(0).properties().issuer().url());
-        Assertions.assertEquals("spkdee", model.value().get(0).properties().issuer().audiences().get(0));
-        Assertions.assertEquals("dhmdua", model.value().get(0).properties().issuer().ca());
-        Assertions.assertEquals("xqpvfadmw", model.value().get(0).properties().clients().get(0).component().name());
-        Assertions.assertEquals("rcrgvx",
+        Assertions.assertEquals("ovbvmeueciv", model.value().get(0).properties().issuer().url());
+        Assertions.assertEquals("zceuojgjrw", model.value().get(0).properties().issuer().audiences().get(0));
+        Assertions.assertEquals("rjaw", model.value().get(0).properties().issuer().ca());
+        Assertions.assertEquals("gxhnisk", model.value().get(0).properties().clients().get(0).component().name());
+        Assertions.assertEquals("fbkp",
             model.value().get(0).properties().clients().get(0).component().authClientNamespace());
-        Assertions.assertEquals("vgomz", model.value().get(0).properties().clients().get(0).clientId());
-        Assertions.assertEquals("isgwbnbbeldawkz",
-            model.value().get(0).properties().clients().get(0).extraScopes().get(0));
+        Assertions.assertEquals("cg", model.value().get(0).properties().clients().get(0).clientId());
+        Assertions.assertEquals("ndnhj", model.value().get(0).properties().clients().get(0).extraScopes().get(0));
         Assertions.assertEquals(ExternalAuthClientType.CONFIDENTIAL,
             model.value().get(0).properties().clients().get(0).type());
-        Assertions.assertEquals("rqhakauha", model.value().get(0).properties().claim().mappings().username().claim());
-        Assertions.assertEquals("sfwxosowzxc", model.value().get(0).properties().claim().mappings().groups().claim());
-        Assertions.assertEquals("vmeueci", model.nextLink());
+        Assertions.assertEquals("hfgblc", model.value().get(0).properties().claim().mappings().username().claim());
+        Assertions.assertEquals("xzvlvqhjkbegib",
+            model.value().get(0).properties().claim().mappings().groups().claim());
+        Assertions.assertEquals("z", model.nextLink());
     }
 }

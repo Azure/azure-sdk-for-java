@@ -74,6 +74,8 @@ public class ItemLevelRestoreCriteria implements JsonSerializable<ItemLevelResto
                     return ItemPathBasedRestoreCriteria.fromJson(readerToUse.reset());
                 } else if ("RangeBasedItemLevelRestoreCriteria".equals(discriminatorValue)) {
                     return RangeBasedItemLevelRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("GenericRestoreDatasourceCriteria".equals(discriminatorValue)) {
+                    return GenericRestoreDatasourceCriteria.fromJson(readerToUse.reset());
                 } else if ("KubernetesStorageClassRestoreCriteria".equals(discriminatorValue)) {
                     return KubernetesStorageClassRestoreCriteria.fromJson(readerToUse.reset());
                 } else if ("KubernetesPVRestoreCriteria".equals(discriminatorValue)) {

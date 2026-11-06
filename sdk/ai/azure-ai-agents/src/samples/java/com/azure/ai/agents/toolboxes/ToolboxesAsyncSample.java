@@ -44,12 +44,12 @@ public class ToolboxesAsyncSample {
         List<ToolboxTool> toolsWithMcpApprovalNever = Collections.singletonList(
             new McpToolboxTool("api_specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval(BinaryData.fromString("\"never\"")));
+                .setRequireApproval(BinaryData.fromObject("never")));
 
         List<ToolboxTool> toolsWithMcpApprovalAlways = Collections.singletonList(
             new McpToolboxTool("api_specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval(BinaryData.fromString("\"always\"")));
+                .setRequireApproval(BinaryData.fromObject("always")));
 
         Mono<Void> workflow = toolboxesAsyncClient.deleteToolbox(toolboxName)
             .doOnSuccess(unused -> System.out.printf("Toolbox `%s` deleted%n", toolboxName))

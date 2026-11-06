@@ -22,7 +22,7 @@ public final class AssociationsInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ihkaetcktvfc\"},\"provisioningState\":\"Deleting\"},\"location\":\"nkymuctqhjfbebrj\",\"tags\":{\"xfvjrbirp\":\"rfuwutt\",\"jky\":\"xepcyvahfn\",\"ljyoxgvcltb\":\"xjvuujqgidokg\"},\"id\":\"sncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ftguv\"},\"provisioningState\":\"Deleting\"},\"location\":\"prwmdyvxqt\",\"tags\":{\"ibycno\":\"iwwroyqbexrmc\",\"nmefqsgzvahapj\":\"v\"},\"id\":\"zhpvgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class AssociationsInterfacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Association response = manager.associationsInterfaces()
-            .getWithResponse("wrmjmwvvjektc", "senhwlrs", "frzpwvlqdqgb", com.azure.core.util.Context.NONE)
+            .getWithResponse("gwyzm", "txon", "mtsavjcbpwxqp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nkymuctqhjfbebrj", response.location());
-        Assertions.assertEquals("rfuwutt", response.tags().get("xfvjrbirp"));
+        Assertions.assertEquals("prwmdyvxqt", response.location());
+        Assertions.assertEquals("iwwroyqbexrmc", response.tags().get("ibycno"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("ihkaetcktvfc", response.properties().subnet().id());
+        Assertions.assertEquals("ftguv", response.properties().subnet().id());
     }
 }

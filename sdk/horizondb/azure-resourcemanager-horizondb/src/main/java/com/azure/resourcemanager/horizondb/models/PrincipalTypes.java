@@ -8,26 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of the Entra ID principal.
+ * The type of Microsoft Entra principal mapped to a PostgreSQL role.
  */
 public final class PrincipalTypes extends ExpandableStringEnum<PrincipalTypes> {
     /**
-     * Unknown or unrecognized type (internal only, not accepted in requests).
+     * An unknown or unrecognized type. This value is for internal use and is not accepted in requests.
      */
     public static final PrincipalTypes UNKNOWN = fromString("Unknown");
 
     /**
-     * An Entra ID user account (UPN-based principal).
+     * A Microsoft Entra ID user account.
      */
     public static final PrincipalTypes USER = fromString("User");
 
     /**
-     * An Entra ID security group. All members of the group inherit admin privileges.
+     * A Microsoft Entra ID security group. All members of the group inherit administrator privileges.
      */
     public static final PrincipalTypes GROUP = fromString("Group");
 
     /**
-     * An Entra ID application / service principal (used for automated workloads).
+     * A Microsoft Entra ID application or service principal used for automated workloads.
      */
     public static final PrincipalTypes SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 

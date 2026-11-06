@@ -9,27 +9,53 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class ElasticSansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V1_Get_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ElasticSans_Get_MinimumSet_Gen.
+     * Sample code: ElasticSans_V1_Get_MinimumSet_Gen.
      * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void elasticSansV1GetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.elasticSans()
             .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V2_Get_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ElasticSans_Get_MaximumSet_Gen.
+     * Sample code: ElasticSans_V2_Get_MinimumSet_Gen.
      * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void elasticSansV2GetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V1_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ElasticSans_V1_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void elasticSansV1GetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V2_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ElasticSans_V2_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void elasticSansV2GetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.elasticSans()
             .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }

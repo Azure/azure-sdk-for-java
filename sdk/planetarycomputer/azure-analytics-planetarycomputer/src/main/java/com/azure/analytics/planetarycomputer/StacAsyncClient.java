@@ -205,11 +205,11 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createCollectionAssetWithResponse(String collectionId, BinaryData body,
+    Mono<Response<BinaryData>> createCollectionAssetWithResponseInternal(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         // Operation 'createCollectionAsset' is of content-type 'multipart/form-data'. Protocol API is not usable and
         // hence not generated.
-        return this.serviceClient.createCollectionAssetWithResponseAsync(collectionId, body, requestOptions);
+        return this.serviceClient.createCollectionAssetWithResponseInternalAsync(collectionId, body, requestOptions);
     }
 
     /**
@@ -356,11 +356,12 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> replaceCollectionAssetWithResponse(String collectionId, String assetId, BinaryData body,
-        RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> replaceCollectionAssetWithResponseInternal(String collectionId, String assetId,
+        BinaryData body, RequestOptions requestOptions) {
         // Operation 'replaceCollectionAsset' is of content-type 'multipart/form-data'. Protocol API is not usable and
         // hence not generated.
-        return this.serviceClient.replaceCollectionAssetWithResponseAsync(collectionId, assetId, body, requestOptions);
+        return this.serviceClient.replaceCollectionAssetWithResponseInternalAsync(collectionId, assetId, body,
+            requestOptions);
     }
 
     /**
@@ -3482,9 +3483,9 @@ public final class StacAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StacCollection> createCollectionAsset(String collectionId, StacAssetData body) {
-        // Generated convenience method for createCollectionAssetWithResponse
+        // Generated convenience method for createCollectionAssetWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createCollectionAssetWithResponse(collectionId,
+        return createCollectionAssetWithResponseInternal(collectionId,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("data", body.getData())
                 .serializeFileField("file", body.getFile().getContent(), body.getFile().getContentType(),
                     body.getFile().getFilename())
@@ -3515,9 +3516,9 @@ public final class StacAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StacCollection> replaceCollectionAsset(String collectionId, String assetId, StacAssetData body) {
-        // Generated convenience method for replaceCollectionAssetWithResponse
+        // Generated convenience method for replaceCollectionAssetWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return replaceCollectionAssetWithResponse(collectionId, assetId,
+        return replaceCollectionAssetWithResponseInternal(collectionId, assetId,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("data", body.getData())
                 .serializeFileField("file", body.getFile().getContent(), body.getFile().getContentType(),
                     body.getFile().getFilename())

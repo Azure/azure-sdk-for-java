@@ -110,12 +110,6 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /*
-     * The Pool on which the Batch service runs the Job's Tasks.
-     */
-    @Generated
-    private final BatchPoolInfo poolInfo;
-
-    /*
      * The action the Batch service should take when all Tasks in the Job are in the completed state. Note that if a Job
      * contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job
      * Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set
@@ -147,18 +141,6 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
      */
     @Generated
     private List<BatchMetadataItem> metadata;
-
-    /**
-     * Creates an instance of BatchJobCreateParameters class.
-     *
-     * @param id the id value to set.
-     * @param poolInfo the poolInfo value to set.
-     */
-    @Generated
-    public BatchJobCreateParameters(String id, BatchPoolInfo poolInfo) {
-        this.id = id;
-        this.poolInfo = poolInfo;
-    }
 
     /**
      * Get the id property: A string that uniquely identifies the Job within the Account. The ID can contain any
@@ -446,16 +428,6 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Get the poolInfo property: The Pool on which the Batch service runs the Job's Tasks.
-     *
-     * @return the poolInfo value.
-     */
-    @Generated
-    public BatchPoolInfo getPoolInfo() {
-        return this.poolInfo;
-    }
-
-    /**
      * Get the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
      * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
      * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
@@ -569,7 +541,7 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeJsonField("poolInfo", this.poolInfo);
+        jsonWriter.writeJsonField("poolInfo", this.poolDetails);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeBooleanField("usesTaskDependencies", this.usesTaskDependencies);
         jsonWriter.writeNumberField("priority", this.priority);
@@ -603,7 +575,7 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
     public static BatchJobCreateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            BatchPoolInfo poolInfo = null;
+            BatchPoolDetails poolDetails = null;
             String displayName = null;
             Boolean usesTaskDependencies = null;
             Integer priority = null;
@@ -624,7 +596,7 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("poolInfo".equals(fieldName)) {
-                    poolInfo = BatchPoolInfo.fromJson(reader);
+                    poolDetails = BatchPoolDetails.fromJson(reader);
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("usesTaskDependencies".equals(fieldName)) {
@@ -657,7 +629,8 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
                     reader.skipChildren();
                 }
             }
-            BatchJobCreateParameters deserializedBatchJobCreateParameters = new BatchJobCreateParameters(id, poolInfo);
+            BatchJobCreateParameters deserializedBatchJobCreateParameters
+                = new BatchJobCreateParameters(id, poolDetails);
             deserializedBatchJobCreateParameters.displayName = displayName;
             deserializedBatchJobCreateParameters.usesTaskDependencies = usesTaskDependencies;
             deserializedBatchJobCreateParameters.priority = priority;
@@ -674,5 +647,33 @@ public final class BatchJobCreateParameters implements JsonSerializable<BatchJob
             deserializedBatchJobCreateParameters.metadata = metadata;
             return deserializedBatchJobCreateParameters;
         });
+    }
+
+    /*
+     * The Pool on which the Batch service runs the Job's Tasks.
+     */
+    @Generated
+    private final BatchPoolDetails poolDetails;
+
+    /**
+     * Creates an instance of BatchJobCreateParameters class.
+     *
+     * @param id the id value to set.
+     * @param poolDetails the poolDetails value to set.
+     */
+    @Generated
+    public BatchJobCreateParameters(String id, BatchPoolDetails poolDetails) {
+        this.id = id;
+        this.poolDetails = poolDetails;
+    }
+
+    /**
+     * Get the poolDetails property: The Pool on which the Batch service runs the Job's Tasks.
+     *
+     * @return the poolDetails value.
+     */
+    @Generated
+    public BatchPoolDetails getPoolDetails() {
+        return this.poolDetails;
     }
 }

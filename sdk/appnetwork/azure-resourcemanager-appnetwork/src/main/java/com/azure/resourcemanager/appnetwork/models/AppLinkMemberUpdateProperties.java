@@ -19,17 +19,12 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
     /*
      * Upgrade profile.
      */
-    private UpgradeProfile upgradeProfile;
-
-    /*
-     * Observability profile
-     */
-    private ObservabilityProfile observabilityProfile;
+    private UpgradeProfileUpdate upgradeProfile;
 
     /*
      * Connectivity profile.
      */
-    private ConnectivityProfile connectivityProfile;
+    private ConnectivityProfileUpdate connectivityProfile;
 
     /**
      * Creates an instance of AppLinkMemberUpdateProperties class.
@@ -42,7 +37,7 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
      * 
      * @return the upgradeProfile value.
      */
-    public UpgradeProfile upgradeProfile() {
+    public UpgradeProfileUpdate upgradeProfile() {
         return this.upgradeProfile;
     }
 
@@ -52,28 +47,8 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
      * @param upgradeProfile the upgradeProfile value to set.
      * @return the AppLinkMemberUpdateProperties object itself.
      */
-    public AppLinkMemberUpdateProperties withUpgradeProfile(UpgradeProfile upgradeProfile) {
+    public AppLinkMemberUpdateProperties withUpgradeProfile(UpgradeProfileUpdate upgradeProfile) {
         this.upgradeProfile = upgradeProfile;
-        return this;
-    }
-
-    /**
-     * Get the observabilityProfile property: Observability profile.
-     * 
-     * @return the observabilityProfile value.
-     */
-    public ObservabilityProfile observabilityProfile() {
-        return this.observabilityProfile;
-    }
-
-    /**
-     * Set the observabilityProfile property: Observability profile.
-     * 
-     * @param observabilityProfile the observabilityProfile value to set.
-     * @return the AppLinkMemberUpdateProperties object itself.
-     */
-    public AppLinkMemberUpdateProperties withObservabilityProfile(ObservabilityProfile observabilityProfile) {
-        this.observabilityProfile = observabilityProfile;
         return this;
     }
 
@@ -82,7 +57,7 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
      * 
      * @return the connectivityProfile value.
      */
-    public ConnectivityProfile connectivityProfile() {
+    public ConnectivityProfileUpdate connectivityProfile() {
         return this.connectivityProfile;
     }
 
@@ -92,7 +67,7 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
      * @param connectivityProfile the connectivityProfile value to set.
      * @return the AppLinkMemberUpdateProperties object itself.
      */
-    public AppLinkMemberUpdateProperties withConnectivityProfile(ConnectivityProfile connectivityProfile) {
+    public AppLinkMemberUpdateProperties withConnectivityProfile(ConnectivityProfileUpdate connectivityProfile) {
         this.connectivityProfile = connectivityProfile;
         return this;
     }
@@ -104,7 +79,6 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("upgradeProfile", this.upgradeProfile);
-        jsonWriter.writeJsonField("observabilityProfile", this.observabilityProfile);
         jsonWriter.writeJsonField("connectivityProfile", this.connectivityProfile);
         return jsonWriter.writeEndObject();
     }
@@ -126,13 +100,10 @@ public final class AppLinkMemberUpdateProperties implements JsonSerializable<App
                 reader.nextToken();
 
                 if ("upgradeProfile".equals(fieldName)) {
-                    deserializedAppLinkMemberUpdateProperties.upgradeProfile = UpgradeProfile.fromJson(reader);
-                } else if ("observabilityProfile".equals(fieldName)) {
-                    deserializedAppLinkMemberUpdateProperties.observabilityProfile
-                        = ObservabilityProfile.fromJson(reader);
+                    deserializedAppLinkMemberUpdateProperties.upgradeProfile = UpgradeProfileUpdate.fromJson(reader);
                 } else if ("connectivityProfile".equals(fieldName)) {
                     deserializedAppLinkMemberUpdateProperties.connectivityProfile
-                        = ConnectivityProfile.fromJson(reader);
+                        = ConnectivityProfileUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

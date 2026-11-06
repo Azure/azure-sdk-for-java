@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VolumeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeUpdate model = BinaryData
-            .fromString(
-                "{\"properties\":{\"sizeGiB\":6529186530392573346,\"managedBy\":{\"resourceId\":\"dectehfiqsc\"}}}")
+        VolumeUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"sizeGiB\":6497760848748403755,\"managedBy\":[{\"clientId\":\"hvmdajvnysounq\",\"version\":97546857,\"resourceIds\":[\"ae\",\"pfhyhl\",\"rpmopjmc\",\"atuokthfuiu\"]},{\"clientId\":\"dsfcpkvxodpuoz\",\"version\":2044584540,\"resourceIds\":[\"agfuaxbezyiu\",\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"]},{\"clientId\":\"tki\",\"version\":1173289641,\"resourceIds\":[\"yudxorrqnbp\"]}]}}")
             .toObject(VolumeUpdate.class);
-        Assertions.assertEquals(6529186530392573346L, model.sizeGiB());
-        Assertions.assertEquals("dectehfiqsc", model.managedBy().resourceId());
+        Assertions.assertEquals(6497760848748403755L, model.sizeGiB());
+        Assertions.assertEquals("hvmdajvnysounq", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(97546857, model.managedBy().get(0).version());
+        Assertions.assertEquals("ae", model.managedBy().get(0).resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeUpdate model = new VolumeUpdate().withSizeGiB(6529186530392573346L)
-            .withManagedBy(new ManagedByInfo().withResourceId("dectehfiqsc"));
+        VolumeUpdate model = new VolumeUpdate().withSizeGiB(6497760848748403755L)
+            .withManagedBy(Arrays.asList(
+                new ManagedByResources().withClientId("hvmdajvnysounq")
+                    .withVersion(97546857)
+                    .withResourceIds(Arrays.asList("ae", "pfhyhl", "rpmopjmc", "atuokthfuiu")),
+                new ManagedByResources().withClientId("dsfcpkvxodpuoz")
+                    .withVersion(2044584540)
+                    .withResourceIds(Arrays.asList("agfuaxbezyiu", "kktwhrdxw", "ywqsmbsurexim", "ryocfsfksymdd")),
+                new ManagedByResources().withClientId("tki")
+                    .withVersion(1173289641)
+                    .withResourceIds(Arrays.asList("yudxorrqnbp"))));
         model = BinaryData.fromObject(model).toObject(VolumeUpdate.class);
-        Assertions.assertEquals(6529186530392573346L, model.sizeGiB());
-        Assertions.assertEquals("dectehfiqsc", model.managedBy().resourceId());
+        Assertions.assertEquals(6497760848748403755L, model.sizeGiB());
+        Assertions.assertEquals("hvmdajvnysounq", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(97546857, model.managedBy().get(0).version());
+        Assertions.assertEquals("ae", model.managedBy().get(0).resourceIds().get(0));
     }
 }

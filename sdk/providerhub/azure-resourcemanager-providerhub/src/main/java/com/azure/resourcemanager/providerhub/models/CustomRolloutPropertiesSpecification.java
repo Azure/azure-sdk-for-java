@@ -91,6 +91,25 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification withRolloutId(String rolloutId) {
+        super.withRolloutId(rolloutId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification
+        withManifestCheckinSpecification(ManifestCheckinSpecification manifestCheckinSpecification) {
+        super.withManifestCheckinSpecification(manifestCheckinSpecification);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,6 +128,9 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+        if (manifestCheckinSpecification() != null) {
+            manifestCheckinSpecification().validate();
+        }
     }
 
     /**
@@ -125,6 +147,8 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         jsonWriter.writeJsonField("providerRegistration", providerRegistration());
         jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("rolloutId", rolloutId());
+        jsonWriter.writeJsonField("manifestCheckinSpecification", manifestCheckinSpecification());
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +191,11 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
                         = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
                     deserializedCustomRolloutPropertiesSpecification
                         .withResourceTypeRegistrations(resourceTypeRegistrations);
+                } else if ("rolloutId".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification.withRolloutId(reader.getString());
+                } else if ("manifestCheckinSpecification".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withManifestCheckinSpecification(ManifestCheckinSpecification.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

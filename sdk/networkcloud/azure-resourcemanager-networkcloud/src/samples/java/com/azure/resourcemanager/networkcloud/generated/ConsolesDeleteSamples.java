@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ConsolesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Delete.json
+     * x-ms-original-file: 2026-07-01/Consoles_Delete.json
      */
     /**
      * Sample code: Delete virtual machine console.

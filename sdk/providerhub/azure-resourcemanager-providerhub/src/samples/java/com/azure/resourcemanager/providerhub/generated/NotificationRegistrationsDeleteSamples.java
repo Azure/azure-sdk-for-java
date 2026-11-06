@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class NotificationRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_Delete.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_Delete.json
      */
     /**
      * Sample code: NotificationRegistrations_Delete.

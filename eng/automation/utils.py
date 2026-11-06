@@ -96,6 +96,49 @@ def update_root_pom(sdk_root: str, service: str):
         logging.info("[POM][Success] Write to root pom")
 
 
+def update_ci_path_filters(ci_yml: dict, service: str, module: str) -> bool:
+    """
+    Add the package paths to the CI and PR path filters.
+
+    Returns True when at least one filter was added.
+    """
+    include_path = "sdk/{0}/{1}/".format(service, module)
+    exclude_path = "sdk/{0}/{1}/pom.xml".format(service, module)
+    updated = False
+
+    for trigger_type in ("trigger", "pr"):
+        if trigger_type not in ci_yml:
+            continue
+        trigger = ci_yml.get(trigger_type)
+        if type(trigger) == str and trigger == "none":
+            continue
+        if type(trigger) != dict:
+            logging.warning("[CI][Skip] '{0}' is not a mapping".format(trigger_type))
+            continue
+
+        if "paths" not in trigger:
+            trigger["paths"] = {}
+        paths = trigger["paths"]
+        if type(paths) != dict:
+            logging.warning("[CI][Skip] '{0}.paths' is not a mapping".format(trigger_type))
+            continue
+
+        for filter_type, package_path in (("include", include_path), ("exclude", exclude_path)):
+            if filter_type not in paths:
+                paths[filter_type] = []
+            filters = paths[filter_type]
+            if type(filters) != list:
+                logging.warning(
+                    "[CI][Skip] '{0}.paths.{1}' is not a list".format(trigger_type, filter_type)
+                )
+                continue
+            if package_path not in filters:
+                filters.append(package_path)
+                updated = True
+
+    return updated
+
+
 def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, module: str):
     """
     For new lib, update ci.yml, pom.xml and changelog.md accordingly.
@@ -117,6 +160,8 @@ def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, mo
     else:
         ci_yml = yaml.safe_load(CI_FORMAT.format(service, module))
 
+    path_filters_updated = update_ci_path_filters(ci_yml, service, module)
+    artifact_added = False
     if not (
         type(ci_yml.get("extends")) == dict
         and type(ci_yml["extends"].get("parameters")) == dict
@@ -164,6 +209,9 @@ def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, mo
                     }
                 )
 
+            artifact_added = True
+
+        if artifact_added or path_filters_updated:
             ci_yml_str = yaml.dump(ci_yml, width=sys.maxsize, sort_keys=False, Dumper=ListIndentDumper)
             ci_yml_str = re.sub(r"(\n\S)", r"\n\1", ci_yml_str)
 

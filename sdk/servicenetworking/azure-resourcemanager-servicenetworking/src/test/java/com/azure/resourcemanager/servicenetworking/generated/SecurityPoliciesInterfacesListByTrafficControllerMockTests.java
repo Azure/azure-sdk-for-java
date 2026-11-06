@@ -23,7 +23,7 @@ public final class SecurityPoliciesInterfacesListByTrafficControllerMockTests {
     @Test
     public void testListByTrafficController() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"ttouwaboekqvkel\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"bxwyjsflhhcaa\",\"priority\":131354519,\"sourceAddressPrefixes\":[\"ixisxyawjoy\",\"qcslyjpkiid\",\"yexz\",\"eli\"],\"action\":\"allow\"},{\"name\":\"nr\",\"priority\":2120108327,\"sourceAddressPrefixes\":[\"o\",\"hb\",\"xknalaulppg\"],\"action\":\"deny\"},{\"name\":\"tpnapnyiropuhpig\",\"priority\":1156367150,\"sourceAddressPrefixes\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"action\":\"allow\"}]},\"provisioningState\":\"Updating\"},\"location\":\"llwptfdy\",\"tags\":{\"huaoppp\":\"qbuaceopzfqr\",\"z\":\"qeqxo\",\"moizpos\":\"ahzxctobgbk\"},\"id\":\"mgrcfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"hrkwo\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"oqac\",\"priority\":848769798,\"sourceAddressPrefixes\":[\"xpbtgiwbwo\",\"nwashrtd\"],\"action\":\"deny\"},{\"name\":\"cnqxwbpokulpi\",\"priority\":991090920,\"sourceAddressPrefixes\":[\"aasipqi\",\"obyu\"],\"action\":\"deny\"},{\"name\":\"rpqlp\",\"priority\":719268117,\"sourceAddressPrefixes\":[\"ciuqgbdb\",\"t\",\"uvfbtkuwh\",\"mhykojoxafnndl\"],\"action\":\"deny\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"o\",\"tags\":{\"vvqfovljxyws\":\"cdyhbpkkpwdreqn\",\"yrs\":\"w\"},\"id\":\"dsytgadgvr\",\"name\":\"ea\",\"type\":\"neqn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class SecurityPoliciesInterfacesListByTrafficControllerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SecurityPolicy> response = manager.securityPoliciesInterfaces()
-            .listByTrafficController("wozuhkf", "bsjyofdx", com.azure.core.util.Context.NONE);
+            .listByTrafficController("qyib", "hwflu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("llwptfdy", response.iterator().next().location());
-        Assertions.assertEquals("qbuaceopzfqr", response.iterator().next().tags().get("huaoppp"));
-        Assertions.assertEquals("ttouwaboekqvkel", response.iterator().next().properties().wafPolicy().id());
-        Assertions.assertEquals("bxwyjsflhhcaa",
+        Assertions.assertEquals("o", response.iterator().next().location());
+        Assertions.assertEquals("cdyhbpkkpwdreqn", response.iterator().next().tags().get("vvqfovljxyws"));
+        Assertions.assertEquals("hrkwo", response.iterator().next().properties().wafPolicy().id());
+        Assertions.assertEquals("oqac",
             response.iterator().next().properties().ipAccessRulesPolicy().rules().get(0).name());
-        Assertions.assertEquals(131354519,
+        Assertions.assertEquals(848769798,
             response.iterator().next().properties().ipAccessRulesPolicy().rules().get(0).priority());
-        Assertions.assertEquals("ixisxyawjoy",
+        Assertions.assertEquals("xpbtgiwbwo",
             response.iterator()
                 .next()
                 .properties()
@@ -51,7 +51,7 @@ public final class SecurityPoliciesInterfacesListByTrafficControllerMockTests {
                 .get(0)
                 .sourceAddressPrefixes()
                 .get(0));
-        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+        Assertions.assertEquals(IpAccessRuleAction.DENY,
             response.iterator().next().properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 }

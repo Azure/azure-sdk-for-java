@@ -8,10 +8,13 @@ import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
+import com.azure.resourcemanager.cosmos.models.EnableFullTextQuery;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
@@ -30,7 +33,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
@@ -64,11 +67,14 @@ public final class DatabaseAccountsUpdateSamples {
                 .withBackupPolicy(new PeriodicModeBackupPolicy()
                     .withPeriodicModeProperties(new PeriodicModeProperties().withBackupIntervalInMinutes(240)
                         .withBackupRetentionIntervalInHours(720)
-                        .withBackupStorageRedundancy(BackupStorageRedundancy.LOCAL)))
+                        .withBackupStorageRedundancy(BackupStorageRedundancy.GEO)))
                 .withNetworkAclBypass(NetworkAclBypass.AZURE_SERVICES)
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
+                .withDiagnosticLogSettings(
+                    new DiagnosticLogSettings().withEnableFullTextQuery(EnableFullTextQuery.TRUE))
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
+                .withCapacityMode(CapacityMode.PROVISIONED)
                 .withEnablePartitionMerge(true)
                 .withEnableBurstCapacity(true)
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS)

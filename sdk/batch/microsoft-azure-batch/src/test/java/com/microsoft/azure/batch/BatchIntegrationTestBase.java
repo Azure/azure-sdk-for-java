@@ -34,12 +34,11 @@ import com.microsoft.rest.interceptors.LoggingInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.OkHttpClient;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,7 +126,7 @@ public class BatchIntegrationTestBase {
         System.out.println(String.format("\n***\n*** [%s:%s] - %s\n***\n", name, id, what));
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() throws IOException {
         logger = Logger.getLogger("BatchIntegrationTestBase");
         printThreadInfo("beforeclass");
@@ -135,8 +134,7 @@ public class BatchIntegrationTestBase {
         initPlaybackUri();
     }
 
-    @Rule
-    public TestName testName = new TestName();
+    private String testName;
 
     protected InterceptorManager interceptorManager = null;
 
@@ -154,7 +152,7 @@ public class BatchIntegrationTestBase {
     void createClientWithInterceptor(AuthMode mode) throws IOException {
         BatchCredentials credentials;
 
-        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+        interceptorManager = InterceptorManager.create(testName, testMode);
         interceptorManager.addTextReplacementRule("https.*?(sig=[^&]+)", "sig=fakeSig");
         RestClient restClient;
 
@@ -228,14 +226,15 @@ public class BatchIntegrationTestBase {
                 null);
     }
 
-    @Before
-    public void beforeMethod() throws Exception {
-        printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
+    @BeforeEach
+    public void beforeMethod(TestInfo testInfo) throws Exception {
+        testName = testInfo.getTestMethod().get().getName();
+        printThreadInfo(String.format("%s: %s", "beforeTest", testName));
         createClientWithInterceptor(AuthMode.AAD);
     }
 
 
-    @After
+    @AfterEach
     public void afterMethod() throws IOException {
         interceptorManager.finalizeInterceptor();
     }
@@ -331,7 +330,7 @@ public class BatchIntegrationTestBase {
 //            elapsedTime = (new Date()).getTime() - startTime;
 //        }
 //
-//        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+//        Assertions.assertTrue(steady, "The pool did not reach a steady state in the allotted time");
 //
 //        return batchClient.poolOperations().getPool(poolId);
 //    }
@@ -416,7 +415,7 @@ public class BatchIntegrationTestBase {
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
-        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+        Assertions.assertTrue(steady, "The pool did not reach a steady state in the allotted time");
 
         return batchClient.poolOperations().getPool(poolId);
     }

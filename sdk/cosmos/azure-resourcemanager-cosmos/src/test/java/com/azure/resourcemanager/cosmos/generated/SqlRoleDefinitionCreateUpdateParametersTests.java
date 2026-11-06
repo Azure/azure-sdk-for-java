@@ -15,41 +15,35 @@ public final class SqlRoleDefinitionCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleDefinitionCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"roleName\":\"lnkvxlx\",\"type\":\"CustomRole\",\"assignableScopes\":[\"ivbgkcv\",\"hpzvuqdflvoniyp\",\"pubcpzgpxtivhjk\"],\"permissions\":[{\"id\":\"bgqjxgpnrhgo\",\"dataActions\":[\"pikqmh\",\"ao\"],\"notDataActions\":[\"mzvupor\",\"zdfuydzvkfvxcnqm\"]},{\"id\":\"psw\",\"dataActions\":[\"vkhlggdhbemz\",\"kzsz\"],\"notDataActions\":[\"wtglxx\",\"ljfp\",\"picrmnzhrgmqgjsx\",\"pqcbfrmbodthsq\"]},{\"id\":\"vriibakclacjfr\",\"dataActions\":[\"usx\",\"uzlwvsgmw\",\"hqf\",\"izvu\"],\"notDataActions\":[\"kjsvthnwpzteko\"]},{\"id\":\"ribi\",\"dataActions\":[\"gplucfotangcfhny\",\"zcugswvxwlmzqw\",\"vtxnjmxmcuqud\"],\"notDataActions\":[\"clxyn\"]}]}}")
+            "{\"properties\":{\"roleName\":\"txd\",\"type\":\"CustomRole\",\"assignableScopes\":[\"us\"],\"permissions\":[{\"id\":\"ns\",\"dataActions\":[\"zfpafolpymwamxqz\",\"agpgdph\",\"vdulajv\",\"ejchcsrlz\"],\"notDataActions\":[\"zlanrupdwvnph\",\"nzqtpjhmqrhvt\"]},{\"id\":\"aiwdcxsmlzzhz\",\"dataActions\":[\"etlgydlhqvlnnpx\",\"b\",\"fiqgeaar\"],\"notDataActions\":[\"ekglklb\",\"ulidwc\",\"vmzegj\"]}]}}")
             .toObject(SqlRoleDefinitionCreateUpdateParameters.class);
-        Assertions.assertEquals("lnkvxlx", model.roleName());
+        Assertions.assertEquals("txd", model.roleName());
         Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
-        Assertions.assertEquals("ivbgkcv", model.assignableScopes().get(0));
-        Assertions.assertEquals("bgqjxgpnrhgo", model.permissions().get(0).id());
-        Assertions.assertEquals("pikqmh", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("mzvupor", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("us", model.assignableScopes().get(0));
+        Assertions.assertEquals("ns", model.permissions().get(0).id());
+        Assertions.assertEquals("zfpafolpymwamxqz", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("zlanrupdwvnph", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlRoleDefinitionCreateUpdateParameters model
-            = new SqlRoleDefinitionCreateUpdateParameters().withRoleName("lnkvxlx")
+            = new SqlRoleDefinitionCreateUpdateParameters().withRoleName("txd")
                 .withType(RoleDefinitionType.CUSTOM_ROLE)
-                .withAssignableScopes(Arrays.asList("ivbgkcv", "hpzvuqdflvoniyp", "pubcpzgpxtivhjk"))
+                .withAssignableScopes(Arrays.asList("us"))
                 .withPermissions(Arrays.asList(
-                    new Permission().withId("bgqjxgpnrhgo")
-                        .withDataActions(Arrays.asList("pikqmh", "ao"))
-                        .withNotDataActions(Arrays.asList("mzvupor", "zdfuydzvkfvxcnqm")),
-                    new Permission().withId("psw")
-                        .withDataActions(Arrays.asList("vkhlggdhbemz", "kzsz"))
-                        .withNotDataActions(Arrays.asList("wtglxx", "ljfp", "picrmnzhrgmqgjsx", "pqcbfrmbodthsq")),
-                    new Permission().withId("vriibakclacjfr")
-                        .withDataActions(Arrays.asList("usx", "uzlwvsgmw", "hqf", "izvu"))
-                        .withNotDataActions(Arrays.asList("kjsvthnwpzteko")),
-                    new Permission().withId("ribi")
-                        .withDataActions(Arrays.asList("gplucfotangcfhny", "zcugswvxwlmzqw", "vtxnjmxmcuqud"))
-                        .withNotDataActions(Arrays.asList("clxyn"))));
+                    new Permission().withId("ns")
+                        .withDataActions(Arrays.asList("zfpafolpymwamxqz", "agpgdph", "vdulajv", "ejchcsrlz"))
+                        .withNotDataActions(Arrays.asList("zlanrupdwvnph", "nzqtpjhmqrhvt")),
+                    new Permission().withId("aiwdcxsmlzzhz")
+                        .withDataActions(Arrays.asList("etlgydlhqvlnnpx", "b", "fiqgeaar"))
+                        .withNotDataActions(Arrays.asList("ekglklb", "ulidwc", "vmzegj"))));
         model = BinaryData.fromObject(model).toObject(SqlRoleDefinitionCreateUpdateParameters.class);
-        Assertions.assertEquals("lnkvxlx", model.roleName());
+        Assertions.assertEquals("txd", model.roleName());
         Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
-        Assertions.assertEquals("ivbgkcv", model.assignableScopes().get(0));
-        Assertions.assertEquals("bgqjxgpnrhgo", model.permissions().get(0).id());
-        Assertions.assertEquals("pikqmh", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("mzvupor", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("us", model.assignableScopes().get(0));
+        Assertions.assertEquals("ns", model.permissions().get(0).id());
+        Assertions.assertEquals("zfpafolpymwamxqz", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("zlanrupdwvnph", model.permissions().get(0).notDataActions().get(0));
     }
 }

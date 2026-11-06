@@ -15,7 +15,7 @@ import java.util.Map;
  * Web search
  *
  * Search the Internet for sources related to the prompt. Learn more about the
- * [web search tool](/docs/guides/tools-web-search).
+ * [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
  */
 @Fluent
 public final class WebSearchTool extends Tool {
@@ -27,13 +27,22 @@ public final class WebSearchTool extends Tool {
     private ToolType type = ToolType.WEB_SEARCH;
 
     /*
+     * Allow live internet access for web search. Defaults to true when omitted. When false, the web search tool runs in
+     * offline/cache-only mode and will not fetch new external content.
+     */
+    @Generated
+    private Boolean externalWebAccess;
+
+    /*
      * The filters property.
      */
     @Generated
     private WebSearchToolFilters filters;
 
     /*
-     * The user_location property.
+     * The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      */
     @Generated
     private WebSearchApproximateLocation userLocation;
@@ -44,6 +53,24 @@ public final class WebSearchTool extends Tool {
      */
     @Generated
     private WebSearchToolSearchContextSize searchContextSize;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
 
     /*
      * The project connections attached to this tool. There can be a maximum of 1 connection
@@ -71,6 +98,30 @@ public final class WebSearchTool extends Tool {
     }
 
     /**
+     * Get the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @return the externalWebAccess value.
+     */
+    @Generated
+    public Boolean isExternalWebAccess() {
+        return this.externalWebAccess;
+    }
+
+    /**
+     * Set the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @param externalWebAccess the externalWebAccess value to set.
+     * @return the WebSearchTool object itself.
+     */
+    @Generated
+    public WebSearchTool setExternalWebAccess(Boolean externalWebAccess) {
+        this.externalWebAccess = externalWebAccess;
+        return this;
+    }
+
+    /**
      * Get the filters property: The filters property.
      *
      * @return the filters value.
@@ -93,7 +144,9 @@ public final class WebSearchTool extends Tool {
     }
 
     /**
-     * Get the userLocation property: The user_location property.
+     * Get the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @return the userLocation value.
      */
@@ -103,7 +156,9 @@ public final class WebSearchTool extends Tool {
     }
 
     /**
-     * Set the userLocation property: The user_location property.
+     * Set the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @param userLocation the userLocation value to set.
      * @return the WebSearchTool object itself.
@@ -137,110 +192,6 @@ public final class WebSearchTool extends Tool {
         this.searchContextSize = searchContextSize;
         return this;
     }
-
-    /**
-     * Get the customSearchConfiguration property: The project connections attached to this tool. There can be a maximum
-     * of 1 connection
-     * resource attached to the tool.
-     *
-     * @return the customSearchConfiguration value.
-     */
-    @Generated
-    public WebSearchConfiguration getCustomSearchConfiguration() {
-        return this.customSearchConfiguration;
-    }
-
-    /**
-     * Set the customSearchConfiguration property: The project connections attached to this tool. There can be a maximum
-     * of 1 connection
-     * resource attached to the tool.
-     *
-     * @param customSearchConfiguration the customSearchConfiguration value to set.
-     * @return the WebSearchTool object itself.
-     */
-    @Generated
-    public WebSearchTool setCustomSearchConfiguration(WebSearchConfiguration customSearchConfiguration) {
-        this.customSearchConfiguration = customSearchConfiguration;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("filters", this.filters);
-        jsonWriter.writeJsonField("user_location", this.userLocation);
-        jsonWriter.writeStringField("search_context_size",
-            this.searchContextSize == null ? null : this.searchContextSize.toString());
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("custom_search_configuration", this.customSearchConfiguration);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WebSearchTool from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WebSearchTool if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WebSearchTool.
-     */
-    @Generated
-    public static WebSearchTool fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WebSearchTool deserializedWebSearchTool = new WebSearchTool();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedWebSearchTool.type = ToolType.fromString(reader.getString());
-                } else if ("filters".equals(fieldName)) {
-                    deserializedWebSearchTool.filters = WebSearchToolFilters.fromJson(reader);
-                } else if ("user_location".equals(fieldName)) {
-                    deserializedWebSearchTool.userLocation = WebSearchApproximateLocation.fromJson(reader);
-                } else if ("search_context_size".equals(fieldName)) {
-                    deserializedWebSearchTool.searchContextSize
-                        = WebSearchToolSearchContextSize.fromString(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    deserializedWebSearchTool.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedWebSearchTool.description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedWebSearchTool.toolConfigs = toolConfigs;
-                } else if ("custom_search_configuration".equals(fieldName)) {
-                    deserializedWebSearchTool.customSearchConfiguration = WebSearchConfiguration.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedWebSearchTool;
-        });
-    }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
@@ -306,5 +257,94 @@ public final class WebSearchTool extends Tool {
     public WebSearchTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
         return this;
+    }
+
+    /**
+     * Get the customSearchConfiguration property: The project connections attached to this tool. There can be a maximum
+     * of 1 connection
+     * resource attached to the tool.
+     *
+     * @return the customSearchConfiguration value.
+     */
+    @Generated
+    public WebSearchConfiguration getCustomSearchConfiguration() {
+        return this.customSearchConfiguration;
+    }
+
+    /**
+     * Set the customSearchConfiguration property: The project connections attached to this tool. There can be a maximum
+     * of 1 connection
+     * resource attached to the tool.
+     *
+     * @param customSearchConfiguration the customSearchConfiguration value to set.
+     * @return the WebSearchTool object itself.
+     */
+    @Generated
+    public WebSearchTool setCustomSearchConfiguration(WebSearchConfiguration customSearchConfiguration) {
+        this.customSearchConfiguration = customSearchConfiguration;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("external_web_access", this.externalWebAccess);
+        jsonWriter.writeJsonField("filters", this.filters);
+        jsonWriter.writeJsonField("user_location", this.userLocation);
+        jsonWriter.writeStringField("search_context_size",
+            this.searchContextSize == null ? null : this.searchContextSize.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("custom_search_configuration", this.customSearchConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebSearchTool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebSearchTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebSearchTool.
+     */
+    @Generated
+    public static WebSearchTool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebSearchTool deserializedWebSearchTool = new WebSearchTool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedWebSearchTool.type = ToolType.fromString(reader.getString());
+                } else if ("external_web_access".equals(fieldName)) {
+                    deserializedWebSearchTool.externalWebAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("filters".equals(fieldName)) {
+                    deserializedWebSearchTool.filters = WebSearchToolFilters.fromJson(reader);
+                } else if ("user_location".equals(fieldName)) {
+                    deserializedWebSearchTool.userLocation = WebSearchApproximateLocation.fromJson(reader);
+                } else if ("search_context_size".equals(fieldName)) {
+                    deserializedWebSearchTool.searchContextSize
+                        = WebSearchToolSearchContextSize.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebSearchTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebSearchTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedWebSearchTool.toolConfigs = toolConfigs;
+                } else if ("custom_search_configuration".equals(fieldName)) {
+                    deserializedWebSearchTool.customSearchConfiguration = WebSearchConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedWebSearchTool;
+        });
     }
 }

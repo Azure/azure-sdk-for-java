@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
     @Test
     public void testGetValidationDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"njyixh\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"xmbjroum\",\"privateIpAddress\":\"n\",\"linkIdentifier\":\"l\",\"groupId\":\"rhuzgfxonjtpu\",\"memberName\":\"l\"},{\"id\":\"pvti\",\"privateIpAddress\":\"zbpdbo\",\"linkIdentifier\":\"gryfqiuasig\",\"groupId\":\"wsocnequygdjbo\",\"memberName\":\"rmtqjkqevadr\"}]}";
+            = "{\"id\":\"nzhctmjtsgh\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"zarpzeqacdldt\",\"privateIpAddress\":\"pypefcpczshnuq\",\"linkIdentifier\":\"aizu\",\"groupId\":\"kh\",\"memberName\":\"tu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsWithResponse("ojbf", "zd", com.azure.core.util.Context.NONE)
+            .getValidationDetailsWithResponse("vesk", "xegqphr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.publicNetworkAccess());
     }
 }

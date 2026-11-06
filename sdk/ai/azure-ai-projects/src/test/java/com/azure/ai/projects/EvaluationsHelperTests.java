@@ -30,6 +30,9 @@ public class EvaluationsHelperTests {
         Assertions.assertTrue(json.contains("\"evaluator_name\":\"builtin.coherence\""));
         Assertions.assertTrue(json.contains("\"deployment_name\":\"gpt-4o-mini\""));
         Assertions.assertTrue(json.contains("\"response\":\"{{sample.output_text}}\""));
+        // Azure models use their own JsonSerializable implementation, not Jackson bean auto-detection.
+        Assertions.assertEquals(ObjectMappers.jsonMapper().readTree(BinaryData.fromObject(evaluator).toString()),
+            ObjectMappers.jsonMapper().readTree(json));
     }
 
     @Test

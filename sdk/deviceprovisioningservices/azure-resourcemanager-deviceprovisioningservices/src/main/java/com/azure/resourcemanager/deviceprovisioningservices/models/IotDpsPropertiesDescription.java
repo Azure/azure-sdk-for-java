@@ -51,9 +51,9 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
     private List<IotHubDefinitionDescription> iotHubs;
 
     /*
-     * The Device Registry namespace that is linked to the provisioning service.
+     * The Device Registry namespaces linked to the provisioning service.
      */
-    private DeviceRegistryNamespaceDescription deviceRegistryNamespace;
+    private List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces;
 
     /*
      * Allocation policy to be used by this provisioning service.
@@ -90,6 +90,11 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
      * Portal endpoint to enable CORS for this provisioning service.
      */
     private String portalOperationsHostName;
+
+    /*
+     * Disables all authentication methods other than Azure RBAC.
+     */
+    private Boolean disableLocalAuth;
 
     /**
      * Creates an instance of IotDpsPropertiesDescription class.
@@ -219,26 +224,12 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
     }
 
     /**
-     * Get the deviceRegistryNamespace property: The Device Registry namespace that is linked to the provisioning
-     * service.
+     * Get the deviceRegistryNamespaces property: The Device Registry namespaces linked to the provisioning service.
      * 
-     * @return the deviceRegistryNamespace value.
+     * @return the deviceRegistryNamespaces value.
      */
-    public DeviceRegistryNamespaceDescription deviceRegistryNamespace() {
-        return this.deviceRegistryNamespace;
-    }
-
-    /**
-     * Set the deviceRegistryNamespace property: The Device Registry namespace that is linked to the provisioning
-     * service.
-     * 
-     * @param deviceRegistryNamespace the deviceRegistryNamespace value to set.
-     * @return the IotDpsPropertiesDescription object itself.
-     */
-    public IotDpsPropertiesDescription
-        withDeviceRegistryNamespace(DeviceRegistryNamespaceDescription deviceRegistryNamespace) {
-        this.deviceRegistryNamespace = deviceRegistryNamespace;
-        return this;
+    public List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces() {
+        return this.deviceRegistryNamespaces;
     }
 
     /**
@@ -352,6 +343,26 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
     }
 
     /**
+     * Get the disableLocalAuth property: Disables all authentication methods other than Azure RBAC.
+     * 
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disables all authentication methods other than Azure RBAC.
+     * 
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the IotDpsPropertiesDescription object itself.
+     */
+    public IotDpsPropertiesDescription withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -365,13 +376,13 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("provisioningState", this.provisioningState);
         jsonWriter.writeArrayField("iotHubs", this.iotHubs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("deviceRegistryNamespace", this.deviceRegistryNamespace);
         jsonWriter.writeStringField("allocationPolicy",
             this.allocationPolicy == null ? null : this.allocationPolicy.toString());
         jsonWriter.writeArrayField("authorizationPolicies", this.authorizationPolicies,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("enableDataResidency", this.enableDataResidency);
         jsonWriter.writeStringField("portalOperationsHostName", this.portalOperationsHostName);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         return jsonWriter.writeEndObject();
     }
 
@@ -408,9 +419,10 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
                     List<IotHubDefinitionDescription> iotHubs
                         = reader.readArray(reader1 -> IotHubDefinitionDescription.fromJson(reader1));
                     deserializedIotDpsPropertiesDescription.iotHubs = iotHubs;
-                } else if ("deviceRegistryNamespace".equals(fieldName)) {
-                    deserializedIotDpsPropertiesDescription.deviceRegistryNamespace
-                        = DeviceRegistryNamespaceDescription.fromJson(reader);
+                } else if ("deviceRegistryNamespaces".equals(fieldName)) {
+                    List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces
+                        = reader.readArray(reader1 -> DeviceRegistryNamespaceDescription.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.deviceRegistryNamespaces = deviceRegistryNamespaces;
                 } else if ("allocationPolicy".equals(fieldName)) {
                     deserializedIotDpsPropertiesDescription.allocationPolicy
                         = AllocationPolicy.fromString(reader.getString());
@@ -429,6 +441,9 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("portalOperationsHostName".equals(fieldName)) {
                     deserializedIotDpsPropertiesDescription.portalOperationsHostName = reader.getString();
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

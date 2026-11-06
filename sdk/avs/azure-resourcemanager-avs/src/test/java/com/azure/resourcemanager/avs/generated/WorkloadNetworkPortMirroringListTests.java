@@ -13,13 +13,13 @@ public final class WorkloadNetworkPortMirroringListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPortMirroringList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"ifhpf\",\"direction\":\"EGRESS\",\"source\":\"vgcxtx\",\"destination\":\"sheafid\",\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":9216614435431791768},\"id\":\"kssjhoiftxfk\",\"name\":\"wegprh\",\"type\":\"tillucbiqtg\"},{\"properties\":{\"displayName\":\"hm\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"drizetpwbr\",\"destination\":\"llibphbqzmizak\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":907050390570708707},\"id\":\"jzhajoy\",\"name\":\"hjlmu\",\"type\":\"y\"}],\"nextLink\":\"rimrs\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"hwahfbousn\",\"direction\":\"EGRESS\",\"source\":\"fewetwlyxgncx\",\"destination\":\"xhdjhl\",\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":882492007117115130},\"id\":\"cporxvxcjz\",\"name\":\"qizxfpxtgqscjavf\",\"type\":\"juhdqazkmtgguwpi\"},{\"properties\":{\"displayName\":\"jcivmmg\",\"direction\":\"EGRESS\",\"source\":\"iwrxgkn\",\"destination\":\"vyi\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":3750012133983465786},\"id\":\"shoxgsgb\",\"name\":\"fgzdjtxvz\",\"type\":\"lbqvgaqvlgafcqu\"}],\"nextLink\":\"dvetnws\"}")
             .toObject(WorkloadNetworkPortMirroringList.class);
-        Assertions.assertEquals("ifhpf", model.value().get(0).displayName());
+        Assertions.assertEquals("hwahfbousn", model.value().get(0).displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.value().get(0).direction());
-        Assertions.assertEquals("vgcxtx", model.value().get(0).source());
-        Assertions.assertEquals("sheafid", model.value().get(0).destination());
-        Assertions.assertEquals(9216614435431791768L, model.value().get(0).revision());
-        Assertions.assertEquals("rimrs", model.nextLink());
+        Assertions.assertEquals("fewetwlyxgncx", model.value().get(0).source());
+        Assertions.assertEquals("xhdjhl", model.value().get(0).destination());
+        Assertions.assertEquals(882492007117115130L, model.value().get(0).revision());
+        Assertions.assertEquals("dvetnws", model.nextLink());
     }
 }

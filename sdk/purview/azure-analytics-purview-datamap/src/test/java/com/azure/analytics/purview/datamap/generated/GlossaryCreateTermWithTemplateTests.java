@@ -30,7 +30,7 @@ public final class GlossaryCreateTermWithTemplateTests extends DataMapClientTest
                         "multi choice",
                         BinaryData.fromBytes(
                             "[Example Multi Choice A, Example Multi Choice B]".getBytes(StandardCharsets.UTF_8))))),
-            null);
+            (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

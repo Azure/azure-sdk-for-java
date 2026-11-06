@@ -12,8 +12,8 @@ public final class VirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"yxccyb\",\"moRefId\":\"ayakkudzpx\",\"folderPath\":\"jplmagstcy\",\"restrictMovement\":\"Disabled\"},\"id\":\"kyrk\",\"name\":\"bdgiogsjk\",\"type\":\"nwqjnoba\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"viacegfnmntfpmv\",\"moRefId\":\"mfnczd\",\"folderPath\":\"vbalxlllc\",\"restrictMovement\":\"Disabled\"},\"id\":\"bzevwrd\",\"name\":\"hfuk\",\"type\":\"vsjcswsmystuluqy\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"er\",\"moRefId\":\"pqbmfpjbab\",\"folderPath\":\"dfc\",\"restrictMovement\":\"Disabled\"},\"id\":\"uunnoxyhkxgqdd\",\"name\":\"i\",\"type\":\"pfhoqcaaewdao\"}],\"nextLink\":\"jvlpjxxkzbr\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"jb\",\"moRefId\":\"eorfm\",\"folderPath\":\"iqtqzfavyvnq\",\"restrictMovement\":\"Enabled\"},\"id\":\"ryeu\",\"name\":\"yjkqabqgzslesjcb\",\"type\":\"ernntiewdjcvbquw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"agohbuff\",\"moRefId\":\"rqemvvhmxt\",\"folderPath\":\"jfutacoebj\",\"restrictMovement\":\"Disabled\"},\"id\":\"cjznmwcpmg\",\"name\":\"aadraufactkahz\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"uxxpshne\",\"moRefId\":\"ulfgslqu\",\"folderPath\":\"wdlenrdsut\",\"restrictMovement\":\"Disabled\"},\"id\":\"zpjuohminyfl\",\"name\":\"orwmduvwpklv\",\"type\":\"w\"}],\"nextLink\":\"gdxpg\"}")
             .toObject(VirtualMachinesList.class);
-        Assertions.assertEquals("jvlpjxxkzbr", model.nextLink());
+        Assertions.assertEquals("gdxpg", model.nextLink());
     }
 }

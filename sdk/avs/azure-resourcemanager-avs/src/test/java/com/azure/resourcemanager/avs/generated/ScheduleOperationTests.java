@@ -11,7 +11,7 @@ public final class ScheduleOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleOperation model = BinaryData.fromString(
-            "{\"kind\":\"Schedule\",\"isDisabled\":true,\"disabledReason\":\"wgxhn\",\"constraints\":[{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"}]}")
+            "{\"kind\":\"Schedule\",\"isDisabled\":true,\"disabledReason\":\"pjzu\",\"constraints\":[{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"},{\"kind\":\"ScheduleOperationConstraint\"}],\"recommendation\":{\"maintenanceWindows\":[{\"startTime\":\"2021-11-03T21:00:46Z\",\"reason\":\"skzbb\"},{\"startTime\":\"2021-05-16T15:29:03Z\",\"reason\":\"umveekgpwozuhkf\"},{\"startTime\":\"2021-10-16T05:20:45Z\",\"reason\":\"jyofdxluusdtto\"}]}}")
             .toObject(ScheduleOperation.class);
     }
 }

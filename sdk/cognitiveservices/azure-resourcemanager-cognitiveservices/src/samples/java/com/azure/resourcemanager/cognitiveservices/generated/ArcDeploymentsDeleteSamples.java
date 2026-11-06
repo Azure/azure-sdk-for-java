@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ArcDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteArcDeployment.json
      */
     /**
      * Sample code: DeleteArcDeployment.

@@ -12,15 +12,15 @@ public final class ResourceGuardProxyBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardProxyBaseResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"slqubkwdl\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"sutujba\",\"defaultResourceRequest\":\"juohminyflnorw\"}],\"lastUpdatedTime\":\"uvwpklvxwmyg\",\"description\":\"pgpqchiszepnnb\"},\"id\":\"rxgibbd\",\"name\":\"xconfozauors\",\"type\":\"kokwbqplhlvnu\"}],\"nextLink\":\"pzlrphw\"}")
+            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"kmnwqjnobaiyhddv\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"gfnmntfpmvmemfnc\",\"defaultResourceRequest\":\"wvvb\"},{\"vaultCriticalOperation\":\"xlllchp\",\"defaultResourceRequest\":\"bzevwrd\"},{\"vaultCriticalOperation\":\"fukuvsjcswsmystu\",\"defaultResourceRequest\":\"qypfcv\"}],\"lastUpdatedTime\":\"rchpqbmfpjbabwid\",\"description\":\"xsspuunnoxyhk\"},\"id\":\"qddrihpfhoqcaae\",\"name\":\"dao\",\"type\":\"djvlpj\"}],\"nextLink\":\"kzbrmsgeivsiy\"}")
             .toObject(ResourceGuardProxyBaseResourceList.class);
-        Assertions.assertEquals("pzlrphw", model.nextLink());
-        Assertions.assertEquals("slqubkwdl", model.value().get(0).properties().resourceGuardResourceId());
-        Assertions.assertEquals("sutujba",
+        Assertions.assertEquals("kzbrmsgeivsiy", model.nextLink());
+        Assertions.assertEquals("kmnwqjnobaiyhddv", model.value().get(0).properties().resourceGuardResourceId());
+        Assertions.assertEquals("gfnmntfpmvmemfnc",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("juohminyflnorw",
+        Assertions.assertEquals("wvvb",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("uvwpklvxwmyg", model.value().get(0).properties().lastUpdatedTime());
-        Assertions.assertEquals("pgpqchiszepnnb", model.value().get(0).properties().description());
+        Assertions.assertEquals("rchpqbmfpjbabwid", model.value().get(0).properties().lastUpdatedTime());
+        Assertions.assertEquals("xsspuunnoxyhk", model.value().get(0).properties().description());
     }
 }

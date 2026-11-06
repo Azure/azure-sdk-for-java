@@ -9,7 +9,22 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSGet.json
+     * x-ms-original-file: 2026-11-01/DPSGet_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSGet_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSGetDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/DPSGet.json
      */
     /**
      * Sample code: DPSGet.
@@ -17,6 +32,21 @@ public final class IotDpsResourceGetByResourceGroupSamples {
      * @param manager Entry point to IotDpsManager.
      */
     public static void dPSGet(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/DPSGet_UserAssignedNamespaceIdentity.json
+     */
+    /**
+     * Sample code: DPSGetWithUserAssignedNamespaceIdentity.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void dPSGetWithUserAssignedNamespaceIdentity(
+        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
             .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);

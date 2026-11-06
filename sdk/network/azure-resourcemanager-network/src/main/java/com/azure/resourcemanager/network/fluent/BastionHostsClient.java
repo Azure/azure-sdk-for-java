@@ -14,7 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
-import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.BastionHostUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -189,56 +189,56 @@ public interface BastionHostsClient
         Context context);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String bastionHostName,
-        TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String bastionHostName,
+        BastionHostUpdate parameters);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(String resourceGroupName,
-        String bastionHostName, TagsObject parameters);
+    PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateAsync(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(String resourceGroupName,
-        String bastionHostName, TagsObject parameters);
+    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdate(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,43 +246,43 @@ public interface BastionHostsClient
      * @return the {@link SyncPoller} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(String resourceGroupName,
-        String bastionHostName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdate(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters, Context context);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName, TagsObject parameters);
+    Mono<BastionHostInner> updateAsync(String resourceGroupName, String bastionHostName, BastionHostUpdate parameters);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BastionHostInner updateTags(String resourceGroupName, String bastionHostName, TagsObject parameters);
+    BastionHostInner update(String resourceGroupName, String bastionHostName, BastionHostUpdate parameters);
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -290,7 +290,7 @@ public interface BastionHostsClient
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BastionHostInner updateTags(String resourceGroupName, String bastionHostName, TagsObject parameters,
+    BastionHostInner update(String resourceGroupName, String bastionHostName, BastionHostUpdate parameters,
         Context context);
 
     /**

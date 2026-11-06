@@ -459,6 +459,29 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @return the turboTier value.
+     */
+    public TurboTier turboTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().turboTier();
+    }
+
+    /**
+     * Set the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @param turboTier the turboTier value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withTurboTier(TurboTier turboTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withTurboTier(turboTier);
+        return this;
+    }
+
+    /**
      * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
      * 
@@ -957,6 +980,31 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
             this.innerProperties = new StorageAccountPropertiesCreateParameters();
         }
         this.innerProperties().withDataCollaborationPolicyProperties(dataCollaborationPolicyProperties);
+        return this;
+    }
+
+    /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantDelegationSas();
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAllowCrossTenantDelegationSas(allowCrossTenantDelegationSas);
         return this;
     }
 

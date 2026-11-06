@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineSkipShutdow
  */
 public final class BareMetalMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_PowerOff.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_PowerOff.json
      */
     /**
      * Sample code: Power off bare metal machine.

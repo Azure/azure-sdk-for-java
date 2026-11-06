@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class MetricsConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Create.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Create.json
      */
     /**
      * Sample code: Create or update metrics configuration of cluster.

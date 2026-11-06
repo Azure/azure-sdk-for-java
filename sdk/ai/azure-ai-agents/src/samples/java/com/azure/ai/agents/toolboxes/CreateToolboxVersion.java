@@ -39,7 +39,7 @@ public class CreateToolboxVersion {
         List<ToolboxTool> tools = Arrays.asList(
                 new McpToolboxTool("api_specs")
                         .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                        .setRequireApproval(BinaryData.fromString("\"never\""))
+                        .setRequireApproval(BinaryData.fromObject("never"))
         );
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.createToolboxVersion(

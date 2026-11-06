@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +22,7 @@ public final class FrontendsInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"fqdn\":\"l\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"sxnkjzkdeslpvlo\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"i\"}},\"provisioningState\":\"Accepted\"},\"location\":\"xpkd\",\"tags\":{\"edeojnabc\":\"aiuebbaumnyqu\",\"sapskr\":\"hsmtxpsiebtfhvp\",\"kyzxuutk\":\"qmhjjdhtld\"},\"id\":\"cwscwsvlx\",\"name\":\"togt\",\"type\":\"rupqsxvnmicy\"}";
+            = "{\"properties\":{\"fqdn\":\"bkrvrnsvshqj\",\"publicNetworkAccess\":\"Enabled\",\"association\":{\"id\":\"rsbfovasrruvw\"},\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"qfsubcgjbirx\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ybsrfbjfdtwss\"}},\"provisioningState\":\"Provisioning\"},\"location\":\"pvjzbe\",\"tags\":{\"uoujmkcjhwqy\":\"zznfqqnvwpmqta\"},\"id\":\"jrybnwjewgdrjer\",\"name\":\"naenqpehindo\",\"type\":\"gmifthnzd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +32,16 @@ public final class FrontendsInterfacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Frontend response = manager.frontendsInterfaces()
-            .getWithResponse("bhvgy", "gu", "svmkfssxquk", com.azure.core.util.Context.NONE)
+            .getWithResponse("mcbxvwvxysl", "bhsfxob", "ytkblmpew", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xpkd", response.location());
-        Assertions.assertEquals("aiuebbaumnyqu", response.tags().get("edeojnabc"));
-        Assertions.assertEquals("sxnkjzkdeslpvlo",
+        Assertions.assertEquals("pvjzbe", response.location());
+        Assertions.assertEquals("zznfqqnvwpmqta", response.tags().get("uoujmkcjhwqy"));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("rsbfovasrruvw", response.properties().association().id());
+        Assertions.assertEquals("qfsubcgjbirx",
             response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("i",
+        Assertions.assertEquals("ybsrfbjfdtwss",
             response.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

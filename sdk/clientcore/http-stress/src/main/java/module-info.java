@@ -15,7 +15,7 @@ module io.clientcore.http.stress {
     requires io.opentelemetry.api;
     requires io.opentelemetry.context;
     requires io.opentelemetry.instrumentation.logback_appender_1_0;
-    requires io.opentelemetry.instrumentation.runtime_telemetry_java8;
+    requires io.opentelemetry.instrumentation.runtime_telemetry;
     requires io.opentelemetry.sdk;
     requires io.opentelemetry.sdk.autoconfigure;
     requires io.opentelemetry.sdk.autoconfigure.spi;

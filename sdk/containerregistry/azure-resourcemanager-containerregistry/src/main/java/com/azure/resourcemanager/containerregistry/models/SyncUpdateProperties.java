@@ -35,6 +35,11 @@ public final class SyncUpdateProperties implements JsonSerializable<SyncUpdatePr
      */
     private Duration messageTtl;
 
+    /*
+     * The authentication type used for the connected registry to sync with its parent.
+     */
+    private AuthType authType;
+
     /**
      * Creates an instance of SyncUpdateProperties class.
      */
@@ -108,6 +113,26 @@ public final class SyncUpdateProperties implements JsonSerializable<SyncUpdatePr
     }
 
     /**
+     * Get the authType property: The authentication type used for the connected registry to sync with its parent.
+     * 
+     * @return the authType value.
+     */
+    public AuthType authType() {
+        return this.authType;
+    }
+
+    /**
+     * Set the authType property: The authentication type used for the connected registry to sync with its parent.
+     * 
+     * @param authType the authType value to set.
+     * @return the SyncUpdateProperties object itself.
+     */
+    public SyncUpdateProperties withAuthType(AuthType authType) {
+        this.authType = authType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -124,6 +149,7 @@ public final class SyncUpdateProperties implements JsonSerializable<SyncUpdatePr
         jsonWriter.writeStringField("schedule", this.schedule);
         jsonWriter.writeStringField("syncWindow", CoreUtils.durationToStringWithDays(this.syncWindow));
         jsonWriter.writeStringField("messageTtl", CoreUtils.durationToStringWithDays(this.messageTtl));
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +176,8 @@ public final class SyncUpdateProperties implements JsonSerializable<SyncUpdatePr
                 } else if ("messageTtl".equals(fieldName)) {
                     deserializedSyncUpdateProperties.messageTtl
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("authType".equals(fieldName)) {
+                    deserializedSyncUpdateProperties.authType = AuthType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

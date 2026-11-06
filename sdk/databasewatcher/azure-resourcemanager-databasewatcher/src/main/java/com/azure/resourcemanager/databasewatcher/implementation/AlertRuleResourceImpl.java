@@ -111,9 +111,15 @@ public final class AlertRuleResourceImpl
         com.azure.resourcemanager.databasewatcher.DatabaseWatcherManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.watcherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchers");
-        this.alertRuleResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "alertRuleResources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "resourceGroupName");
+        this.watcherName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "watcherName");
+        this.alertRuleResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "alertRuleResourceName");
     }
 
     public AlertRuleResource refresh() {

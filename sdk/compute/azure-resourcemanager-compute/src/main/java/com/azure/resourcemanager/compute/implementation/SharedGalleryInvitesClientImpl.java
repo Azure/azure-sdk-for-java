@@ -114,7 +114,7 @@ public final class SharedGalleryInvitesClientImpl implements SharedGalleryInvite
             return Mono
                 .error(new IllegalArgumentException("Parameter sharedGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
             .withContext(context -> service.gallerySharingAccept(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), location, sharedGallerySubscriptionId, sharedGalleryName, context))
@@ -155,7 +155,7 @@ public final class SharedGalleryInvitesClientImpl implements SharedGalleryInvite
             return Mono
                 .error(new IllegalArgumentException("Parameter sharedGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.gallerySharingAccept(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             location, sharedGallerySubscriptionId, sharedGalleryName, context);
@@ -342,7 +342,7 @@ public final class SharedGalleryInvitesClientImpl implements SharedGalleryInvite
             return Mono
                 .error(new IllegalArgumentException("Parameter sharedGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
             .withContext(context -> service.gallerySharingReject(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), location, sharedGallerySubscriptionId, sharedGalleryName, context))
@@ -383,7 +383,7 @@ public final class SharedGalleryInvitesClientImpl implements SharedGalleryInvite
             return Mono
                 .error(new IllegalArgumentException("Parameter sharedGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.gallerySharingReject(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             location, sharedGallerySubscriptionId, sharedGalleryName, context);

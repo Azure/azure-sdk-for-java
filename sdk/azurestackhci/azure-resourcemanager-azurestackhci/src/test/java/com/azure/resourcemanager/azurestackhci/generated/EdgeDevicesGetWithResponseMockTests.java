@@ -20,7 +20,7 @@ public final class EdgeDevicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"EdgeDevice\",\"id\":\"tpdyzoutxfptof\",\"name\":\"gnuywezygva\",\"type\":\"gaaqw\"}";
+            = "{\"kind\":\"EdgeDevice\",\"id\":\"vfxnzpf\",\"name\":\"fupktw\",\"type\":\"dpsegivytabvbbk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class EdgeDevicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeDevice response = manager.edgeDevices()
-            .getWithResponse("xrfomcke", "vmyifopxf", com.azure.core.util.Context.NONE)
+            .getWithResponse("bnmcvaqycd", "dobues", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

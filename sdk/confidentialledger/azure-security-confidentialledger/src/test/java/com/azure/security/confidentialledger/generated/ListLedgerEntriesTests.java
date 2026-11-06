@@ -16,7 +16,8 @@ public final class ListLedgerEntriesTests extends ConfidentialLedgerClientTestBa
     @Disabled
     public void testListLedgerEntriesTests() {
         // method invocation
-        PagedIterable<LedgerEntry> response = confidentialLedgerClient.listLedgerEntries(null, "2.15", "2.20", null);
+        PagedIterable<LedgerEntry> response
+            = confidentialLedgerClient.listLedgerEntries((String) null, "2.15", "2.20", (String) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

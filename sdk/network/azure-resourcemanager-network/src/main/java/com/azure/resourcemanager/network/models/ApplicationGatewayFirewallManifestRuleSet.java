@@ -35,6 +35,11 @@ public final class ApplicationGatewayFirewallManifestRuleSet
     private ApplicationGatewayRuleSetStatusOptions status;
 
     /*
+     * Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+     */
+    private String displayName;
+
+    /*
      * Tier of an application gateway that support the rule set.
      */
     private List<ApplicationGatewayTierTypes> tiers;
@@ -75,6 +80,16 @@ public final class ApplicationGatewayFirewallManifestRuleSet
      */
     public ApplicationGatewayRuleSetStatusOptions status() {
         return this.status;
+    }
+
+    /**
+     * Get the displayName property: Human-readable display name for the managed rule set version (e.g., 'Default
+     * Ruleset 2.2 (Latest, Recommended)').
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -132,6 +147,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet
         jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
         jsonWriter.writeArrayField("ruleGroups", this.ruleGroups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeArrayField("tiers", this.tiers,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
@@ -165,6 +181,8 @@ public final class ApplicationGatewayFirewallManifestRuleSet
                 } else if ("status".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallManifestRuleSet.status
                         = ApplicationGatewayRuleSetStatusOptions.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallManifestRuleSet.displayName = reader.getString();
                 } else if ("tiers".equals(fieldName)) {
                     List<ApplicationGatewayTierTypes> tiers
                         = reader.readArray(reader1 -> ApplicationGatewayTierTypes.fromString(reader1.getString()));

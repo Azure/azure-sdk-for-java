@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appnetwork.generated;
  */
 public final class AppLinksListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_ListBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_ListBySubscription.json
      */
     /**
      * Sample code: AppLinks_ListBySubscription.

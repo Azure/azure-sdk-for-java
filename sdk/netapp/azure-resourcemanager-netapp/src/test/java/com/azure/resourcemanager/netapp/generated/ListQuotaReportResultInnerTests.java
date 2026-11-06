@@ -13,16 +13,16 @@ public final class ListQuotaReportResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListQuotaReportResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"quotaReportRecords\":[{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"rp\",\"quotaLimitUsedInKiBs\":6658700841087644517,\"quotaLimitTotalInKiBs\":7314064083806104439,\"percentageUsed\":94.64696,\"isDerivedQuota\":false}]}}")
+            "{\"properties\":{\"quotaReportRecords\":[{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"cffgdkzzewk\",\"quotaLimitUsedInKiBs\":4567739994281506426,\"quotaLimitTotalInKiBs\":3759321515093630418,\"percentageUsed\":37.34096,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"fuflrwdmhdlx\",\"quotaLimitUsedInKiBs\":7850988880022269702,\"quotaLimitTotalInKiBs\":5460739394049509501,\"percentageUsed\":47.93144,\"isDerivedQuota\":true}]}}")
             .toObject(ListQuotaReportResultInner.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_GROUP_QUOTA,
+        Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA,
             model.properties().quotaReportRecords().get(0).quotaType());
-        Assertions.assertEquals("rp", model.properties().quotaReportRecords().get(0).quotaTarget());
-        Assertions.assertEquals(6658700841087644517L,
+        Assertions.assertEquals("cffgdkzzewk", model.properties().quotaReportRecords().get(0).quotaTarget());
+        Assertions.assertEquals(4567739994281506426L,
             model.properties().quotaReportRecords().get(0).quotaLimitUsedInKiBs());
-        Assertions.assertEquals(7314064083806104439L,
+        Assertions.assertEquals(3759321515093630418L,
             model.properties().quotaReportRecords().get(0).quotaLimitTotalInKiBs());
-        Assertions.assertEquals(94.64696F, model.properties().quotaReportRecords().get(0).percentageUsed());
+        Assertions.assertEquals(37.34096F, model.properties().quotaReportRecords().get(0).percentageUsed());
         Assertions.assertFalse(model.properties().quotaReportRecords().get(0).isDerivedQuota());
     }
 }

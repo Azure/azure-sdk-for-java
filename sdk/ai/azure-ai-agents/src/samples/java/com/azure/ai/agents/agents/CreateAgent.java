@@ -5,7 +5,6 @@ package com.azure.ai.agents.agents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -19,11 +18,10 @@ public class CreateAgent {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.valueOf("V2025-11-15-preview"))
                 .buildAgentsClient();
 
         PromptAgentDefinition request = new PromptAgentDefinition(model);
-        AgentVersionDetails agent = agentsClient.createAgentVersion("agent_created_from_java", request);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("agent-created-from-java", request);
 
         System.out.println("Agent ID: " + agent.getId());
         System.out.println("Agent Name: " + agent.getName());

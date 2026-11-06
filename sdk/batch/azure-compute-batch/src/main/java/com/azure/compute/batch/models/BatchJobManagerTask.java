@@ -159,17 +159,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
-     * property is set, the Batch service provides the Task with an authentication token which can be used to
-     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
-     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
-     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
-     * or check the status of the Job or of other Tasks under the Job.
-     */
-    @Generated
-    private AuthenticationTokenSettings authenticationTokenSettings;
-
-    /*
      * Whether the Job Manager Task may run on a Spot/Low-priority Compute Node. The default value is true.
      */
     @Generated
@@ -530,38 +519,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
     }
 
     /**
-     * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @return the authenticationTokenSettings value.
-     */
-    @Generated
-    public AuthenticationTokenSettings getAuthenticationTokenSettings() {
-        return this.authenticationTokenSettings;
-    }
-
-    /**
-     * Set the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @param authenticationTokenSettings the authenticationTokenSettings value to set.
-     * @return the BatchJobManagerTask object itself.
-     */
-    @Generated
-    public BatchJobManagerTask setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
-        this.authenticationTokenSettings = authenticationTokenSettings;
-        return this;
-    }
-
-    /**
      * Get the allowLowPriorityNode property: Whether the Job Manager Task may run on a Spot/Low-priority Compute Node.
      * The default value is true.
      *
@@ -607,7 +564,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
         jsonWriter.writeBooleanField("runExclusive", this.runExclusive);
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("authenticationTokenSettings", this.authenticationTokenSettings);
         jsonWriter.writeBooleanField("allowLowPriorityNode", this.allowLowPriorityNode);
         return jsonWriter.writeEndObject();
     }
@@ -637,7 +593,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
             UserIdentity userIdentity = null;
             Boolean runExclusive = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
-            AuthenticationTokenSettings authenticationTokenSettings = null;
             Boolean allowLowPriorityNode = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -669,8 +624,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
-                } else if ("authenticationTokenSettings".equals(fieldName)) {
-                    authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
                 } else if ("allowLowPriorityNode".equals(fieldName)) {
                     allowLowPriorityNode = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -689,7 +642,6 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
             deserializedBatchJobManagerTask.userIdentity = userIdentity;
             deserializedBatchJobManagerTask.runExclusive = runExclusive;
             deserializedBatchJobManagerTask.applicationPackageReferences = applicationPackageReferences;
-            deserializedBatchJobManagerTask.authenticationTokenSettings = authenticationTokenSettings;
             deserializedBatchJobManagerTask.allowLowPriorityNode = allowLowPriorityNode;
             return deserializedBatchJobManagerTask;
         });

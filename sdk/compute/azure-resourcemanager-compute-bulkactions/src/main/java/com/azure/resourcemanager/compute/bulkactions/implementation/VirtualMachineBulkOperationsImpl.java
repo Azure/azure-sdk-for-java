@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.AcknowledgeBulkOperationErrorsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.CancelOperationsResponseInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
@@ -24,16 +23,13 @@ import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOpera
 import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsResponse;
-import com.azure.resourcemanager.compute.bulkactions.models.CreateResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.DeallocateResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.DeleteResourceOperationResponse;
-import com.azure.resourcemanager.compute.bulkactions.models.ExecuteCreateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteReimageRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
-import com.azure.resourcemanager.compute.bulkactions.models.ExecuteVdiCreateRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusContent;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.HibernateResourceOperationResponse;
@@ -107,44 +103,6 @@ public final class VirtualMachineBulkOperationsImpl implements VirtualMachineBul
             = this.serviceClient().bulkStartOperation(resourceGroupName, location, requestBody);
         if (inner != null) {
             return new StartResourceOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CreateResourceOperationResponse> bulkCreateOperationWithResponse(String resourceGroupName,
-        String location, ExecuteCreateContent requestBody, Context context) {
-        Response<CreateResourceOperationResponseInner> inner
-            = this.serviceClient().bulkCreateOperationWithResponse(resourceGroupName, location, requestBody, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-    }
-
-    public CreateResourceOperationResponse bulkCreateOperation(String resourceGroupName, String location,
-        ExecuteCreateContent requestBody) {
-        CreateResourceOperationResponseInner inner
-            = this.serviceClient().bulkCreateOperation(resourceGroupName, location, requestBody);
-        if (inner != null) {
-            return new CreateResourceOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CreateResourceOperationResponse> bulkVdiFlexCreateOperationWithResponse(String resourceGroupName,
-        String location, ExecuteVdiCreateRequest requestBody, Context context) {
-        Response<CreateResourceOperationResponseInner> inner = this.serviceClient()
-            .bulkVdiFlexCreateOperationWithResponse(resourceGroupName, location, requestBody, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-    }
-
-    public CreateResourceOperationResponse bulkVdiFlexCreateOperation(String resourceGroupName, String location,
-        ExecuteVdiCreateRequest requestBody) {
-        CreateResourceOperationResponseInner inner
-            = this.serviceClient().bulkVdiFlexCreateOperation(resourceGroupName, location, requestBody);
-        if (inner != null) {
-            return new CreateResourceOperationResponseImpl(inner, this.manager());
         } else {
             return null;
         }

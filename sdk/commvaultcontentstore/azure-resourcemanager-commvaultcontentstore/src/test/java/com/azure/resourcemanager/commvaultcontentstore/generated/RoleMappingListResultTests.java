@@ -13,9 +13,9 @@ public final class RoleMappingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleMappingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"ccjzkzivgvv\",\"name\":\"nayrhyrnxxmueedn\",\"type\":\"rdvstkwqqtch\"},{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{},{},{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"ohgwxrtfudxepxg\",\"name\":\"qagvrvm\",\"type\":\"pkukghi\"},{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]},{\"roleName\":\"BackupAdmin\",\"entities\":[{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"zk\",\"name\":\"foqreyfkzik\",\"type\":\"jawneaiv\"}],\"nextLink\":\"czelpcirel\"}")
+            "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{},{},{}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"zjosp\",\"name\":\"youlp\",\"type\":\"rvxaglrvimjwosy\"}],\"nextLink\":\"itc\"}")
             .toObject(RoleMappingListResult.class);
-        Assertions.assertEquals(RoleName.SECURITY_ADMIN, model.value().get(0).properties().roles().get(0).roleName());
-        Assertions.assertEquals("czelpcirel", model.nextLink());
+        Assertions.assertEquals(RoleName.BACKUP_OPERATOR, model.value().get(0).properties().roles().get(0).roleName());
+        Assertions.assertEquals("itc", model.nextLink());
     }
 }

@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineMetricsConfigurationStatusLogLevel;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineMetricsConfigurationStatusMetricsLevel;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineMonitoringConfigurationStatus;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineMonitoringConfigurationStatusLogLevel;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineMonitoringConfigurationStatusMetricsLevel;
 import org.junit.jupiter.api.Assertions;
 
 public final class BareMetalMachineMonitoringConfigurationStatusTests {
@@ -16,7 +16,7 @@ public final class BareMetalMachineMonitoringConfigurationStatusTests {
         BareMetalMachineMonitoringConfigurationStatus model
             = BinaryData.fromString("{\"logLevel\":\"Default\",\"metricsLevel\":\"Nexus\"}")
                 .toObject(BareMetalMachineMonitoringConfigurationStatus.class);
-        Assertions.assertEquals(BareMetalMachineMetricsConfigurationStatusLogLevel.DEFAULT, model.logLevel());
-        Assertions.assertEquals(BareMetalMachineMetricsConfigurationStatusMetricsLevel.NEXUS, model.metricsLevel());
+        Assertions.assertEquals(BareMetalMachineMonitoringConfigurationStatusLogLevel.DEFAULT, model.logLevel());
+        Assertions.assertEquals(BareMetalMachineMonitoringConfigurationStatusMetricsLevel.NEXUS, model.metricsLevel());
     }
 }

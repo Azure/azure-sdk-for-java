@@ -17,7 +17,8 @@ public class MapsLegendsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-legend.maps-legends-get
-        BinaryData response = dataClient.getLegend("rdylgn", null, null, null, null);
+        BinaryData response
+            = dataClient.getLegend("rdylgn", (Double) null, (Double) null, (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-legend.maps-legends-get
     }
 }

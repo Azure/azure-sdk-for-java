@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateResourceProviderConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateResourceProviderConfiguration model = BinaryData.fromString("{\"allowedSubscriptions\":[\"prhptillu\"]}")
+        PrivateResourceProviderConfiguration model = BinaryData
+            .fromString("{\"allowedSubscriptions\":[\"ambtrnegvm\",\"vuqeqvldspast\",\"bkkd\",\"flvestmjlxrrilo\"]}")
             .toObject(PrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("prhptillu", model.allowedSubscriptions().get(0));
+        Assertions.assertEquals("ambtrnegvm", model.allowedSubscriptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateResourceProviderConfiguration model
-            = new PrivateResourceProviderConfiguration().withAllowedSubscriptions(Arrays.asList("prhptillu"));
+        PrivateResourceProviderConfiguration model = new PrivateResourceProviderConfiguration()
+            .withAllowedSubscriptions(Arrays.asList("ambtrnegvm", "vuqeqvldspast", "bkkd", "flvestmjlxrrilo"));
         model = BinaryData.fromObject(model).toObject(PrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("prhptillu", model.allowedSubscriptions().get(0));
+        Assertions.assertEquals("ambtrnegvm", model.allowedSubscriptions().get(0));
     }
 }

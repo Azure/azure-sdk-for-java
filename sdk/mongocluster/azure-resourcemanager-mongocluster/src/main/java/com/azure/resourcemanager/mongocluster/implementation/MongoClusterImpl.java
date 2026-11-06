@@ -135,8 +135,12 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
         com.azure.resourcemanager.mongocluster.MongoClusterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mongoClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mongoClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
+            "resourceGroupName");
+        this.mongoClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
+            "mongoClusterName");
     }
 
     public MongoCluster refresh() {

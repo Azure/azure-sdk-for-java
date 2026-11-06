@@ -14,20 +14,20 @@ public final class ScalingProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScalingProfile model = BinaryData.fromString(
-            "{\"manual\":{\"replicas\":1767161087},\"autoscale\":{\"minReplicas\":455915373,\"maxReplicas\":485576970}}")
+            "{\"manual\":{\"replicas\":1896517508},\"autoscale\":{\"minReplicas\":1833977837,\"maxReplicas\":353771493}}")
             .toObject(ScalingProfile.class);
-        Assertions.assertEquals(1767161087, model.manual().replicas());
-        Assertions.assertEquals(455915373, model.autoscale().minReplicas());
-        Assertions.assertEquals(485576970, model.autoscale().maxReplicas());
+        Assertions.assertEquals(1896517508, model.manual().replicas());
+        Assertions.assertEquals(1833977837, model.autoscale().minReplicas());
+        Assertions.assertEquals(353771493, model.autoscale().maxReplicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingProfile model = new ScalingProfile().withManual(new ManualScalingProfile().withReplicas(1767161087))
-            .withAutoscale(new AutoscaleProfile().withMinReplicas(455915373).withMaxReplicas(485576970));
+        ScalingProfile model = new ScalingProfile().withManual(new ManualScalingProfile().withReplicas(1896517508))
+            .withAutoscale(new AutoscaleProfile().withMinReplicas(1833977837).withMaxReplicas(353771493));
         model = BinaryData.fromObject(model).toObject(ScalingProfile.class);
-        Assertions.assertEquals(1767161087, model.manual().replicas());
-        Assertions.assertEquals(455915373, model.autoscale().minReplicas());
-        Assertions.assertEquals(485576970, model.autoscale().maxReplicas());
+        Assertions.assertEquals(1896517508, model.manual().replicas());
+        Assertions.assertEquals(1833977837, model.autoscale().minReplicas());
+        Assertions.assertEquals(353771493, model.autoscale().maxReplicas());
     }
 }

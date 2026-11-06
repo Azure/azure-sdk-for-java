@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.HostModelInner;
+import com.azure.resourcemanager.avs.models.HostUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in HostsClient.
@@ -76,4 +77,39 @@ public interface HostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HostModelInner get(String resourceGroupName, String privateCloudName, String clusterName, String hostId);
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HostModelInner> updateWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
+        String hostId, HostUpdate properties, Context context);
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HostModelInner update(String resourceGroupName, String privateCloudName, String clusterName, String hostId,
+        HostUpdate properties);
 }

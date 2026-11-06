@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class StorageTargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate.
@@ -42,7 +42,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate_BlobNfs.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_CreateOrUpdate_BlobNfs.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_BlobNfs.
@@ -65,7 +65,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate_NoJunctions.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_CreateOrUpdate_NoJunctions.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_NoJunctions.

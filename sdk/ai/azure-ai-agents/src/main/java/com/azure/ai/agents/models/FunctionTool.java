@@ -17,7 +17,7 @@ import java.util.Map;
  * Function
  *
  * Defines a function in your own code the model can choose to call. Learn more about [function
- * calling](https://platform.openai.com/docs/guides/function-calling).
+ * calling](https://developers.openai.com/api/docs/guides/function-calling).
  */
 @Fluent
 public final class FunctionTool extends Tool {
@@ -35,6 +35,12 @@ public final class FunctionTool extends Tool {
     private final String name;
 
     /*
+     * The async property.
+     */
+    @Generated
+    private Boolean async;
+
+    /*
      * The description property.
      */
     @Generated
@@ -47,10 +53,42 @@ public final class FunctionTool extends Tool {
     private final Map<String, BinaryData> parameters;
 
     /*
+     * The output_schema property.
+     */
+    @Generated
+    private Map<String, BinaryData> outputSchema;
+
+    /*
      * The strict property.
      */
     @Generated
     private final Boolean strict;
+
+    /*
+     * Whether this function is deferred and loaded via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Creates an instance of FunctionTool class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     * @param strict the strict value to set.
+     */
+    @Generated
+    public FunctionTool(String name, Map<String, BinaryData> parameters, Boolean strict) {
+        this.name = name;
+        this.parameters = parameters;
+        this.strict = strict;
+    }
 
     /**
      * Get the type property: The type property.
@@ -71,6 +109,28 @@ public final class FunctionTool extends Tool {
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Get the async property: The async property.
+     *
+     * @return the async value.
+     */
+    @Generated
+    public Boolean isAsync() {
+        return this.async;
+    }
+
+    /**
+     * Set the async property: The async property.
+     *
+     * @param async the async value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setAsync(Boolean async) {
+        this.async = async;
+        return this;
     }
 
     /**
@@ -106,6 +166,28 @@ public final class FunctionTool extends Tool {
     }
 
     /**
+     * Get the outputSchema property: The output_schema property.
+     *
+     * @return the outputSchema value.
+     */
+    @Generated
+    public Map<String, BinaryData> getOutputSchema() {
+        return this.outputSchema;
+    }
+
+    /**
+     * Set the outputSchema property: The output_schema property.
+     *
+     * @param outputSchema the outputSchema value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setOutputSchema(Map<String, BinaryData> outputSchema) {
+        this.outputSchema = outputSchema;
+        return this;
+    }
+
+    /**
      * Get the strict property: The strict property.
      *
      * @return the strict value.
@@ -113,6 +195,50 @@ public final class FunctionTool extends Tool {
     @Generated
     public Boolean isStrict() {
         return this.strict;
+    }
+
+    /**
+     * Get the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 
     /**
@@ -132,6 +258,7 @@ public final class FunctionTool extends Tool {
         });
         jsonWriter.writeBooleanField("strict", this.strict);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("async", this.async);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("output_schema", this.outputSchema, (writer, element) -> {
             if (element == null) {
@@ -162,6 +289,7 @@ public final class FunctionTool extends Tool {
             Map<String, BinaryData> parameters = null;
             Boolean strict = null;
             ToolType type = ToolType.FUNCTION;
+            Boolean async = null;
             String description = null;
             Map<String, BinaryData> outputSchema = null;
             Boolean deferLoading = null;
@@ -178,6 +306,8 @@ public final class FunctionTool extends Tool {
                     strict = reader.getNullable(JsonReader::getBoolean);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
+                } else if ("async".equals(fieldName)) {
+                    async = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("output_schema".equals(fieldName)) {
@@ -194,109 +324,12 @@ public final class FunctionTool extends Tool {
             }
             FunctionTool deserializedFunctionTool = new FunctionTool(name, parameters, strict);
             deserializedFunctionTool.type = type;
+            deserializedFunctionTool.async = async;
             deserializedFunctionTool.description = description;
             deserializedFunctionTool.outputSchema = outputSchema;
             deserializedFunctionTool.deferLoading = deferLoading;
             deserializedFunctionTool.allowedCallers = allowedCallers;
             return deserializedFunctionTool;
         });
-    }
-
-    /**
-     * Creates an instance of FunctionTool class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     * @param strict the strict value to set.
-     */
-    @Generated
-    public FunctionTool(String name, Map<String, BinaryData> parameters, Boolean strict) {
-        this.name = name;
-        this.parameters = parameters;
-        this.strict = strict;
-    }
-
-    /*
-     * Whether this function is deferred and loaded via tool search.
-     */
-    @Generated
-    private Boolean deferLoading;
-
-    /**
-     * Get the deferLoading property: Whether this function is deferred and loaded via tool search.
-     *
-     * @return the deferLoading value.
-     */
-    @Generated
-    public Boolean isDeferLoading() {
-        return this.deferLoading;
-    }
-
-    /**
-     * Set the deferLoading property: Whether this function is deferred and loaded via tool search.
-     *
-     * @param deferLoading the deferLoading value to set.
-     * @return the FunctionTool object itself.
-     */
-    @Generated
-    public FunctionTool setDeferLoading(Boolean deferLoading) {
-        this.deferLoading = deferLoading;
-        return this;
-    }
-
-    /*
-     * The output_schema property.
-     */
-    @Generated
-    private Map<String, BinaryData> outputSchema;
-
-    /*
-     * The allowed_callers property.
-     */
-    @Generated
-    private List<CallableToolAllowedCaller> allowedCallers;
-
-    /**
-     * Get the outputSchema property: The output_schema property.
-     *
-     * @return the outputSchema value.
-     */
-    @Generated
-    public Map<String, BinaryData> getOutputSchema() {
-        return this.outputSchema;
-    }
-
-    /**
-     * Set the outputSchema property: The output_schema property.
-     *
-     * @param outputSchema the outputSchema value to set.
-     * @return the FunctionTool object itself.
-     */
-    @Generated
-    public FunctionTool setOutputSchema(Map<String, BinaryData> outputSchema) {
-        this.outputSchema = outputSchema;
-        return this;
-    }
-
-    /**
-     * Get the allowedCallers property: The allowed_callers property.
-     *
-     * @return the allowedCallers value.
-     */
-    @Generated
-    public List<CallableToolAllowedCaller> getAllowedCallers() {
-        return this.allowedCallers;
-    }
-
-    /**
-     * Set the allowedCallers property: The allowed_callers property.
-     *
-     * @param allowedCallers the allowedCallers value to set.
-     * @return the FunctionTool object itself.
-     */
-    @Generated
-    public FunctionTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
-        this.allowedCallers = allowedCallers;
-        return this;
     }
 }

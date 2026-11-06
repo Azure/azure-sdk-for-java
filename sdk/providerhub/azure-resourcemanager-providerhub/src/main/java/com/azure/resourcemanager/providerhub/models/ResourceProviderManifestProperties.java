@@ -118,11 +118,6 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     private ResourceProviderAuthorizationRules resourceProviderAuthorizationRules;
 
     /*
-     * The dsts configuration.
-     */
-    private ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration;
-
-    /*
      * Notification options.
      */
     private NotificationOptions notificationOptions;
@@ -589,27 +584,6 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the dstsConfiguration property: The dsts configuration.
-     * 
-     * @return the dstsConfiguration value.
-     */
-    public ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration() {
-        return this.dstsConfiguration;
-    }
-
-    /**
-     * Set the dstsConfiguration property: The dsts configuration.
-     * 
-     * @param dstsConfiguration the dstsConfiguration value to set.
-     * @return the ResourceProviderManifestProperties object itself.
-     */
-    public ResourceProviderManifestProperties
-        withDstsConfiguration(ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration) {
-        this.dstsConfiguration = dstsConfiguration;
-        return this;
-    }
-
-    /**
      * Get the notificationOptions property: Notification options.
      * 
      * @return the notificationOptions value.
@@ -856,9 +830,6 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         if (resourceProviderAuthorizationRules() != null) {
             resourceProviderAuthorizationRules().validate();
         }
-        if (dstsConfiguration() != null) {
-            dstsConfiguration().validate();
-        }
         if (resourceHydrationAccounts() != null) {
             resourceHydrationAccounts().forEach(e -> e.validate());
         }
@@ -909,7 +880,6 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resourceProviderAuthorizationRules", this.resourceProviderAuthorizationRules);
-        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
         jsonWriter.writeStringField("notificationOptions",
             this.notificationOptions == null ? null : this.notificationOptions.toString());
         jsonWriter.writeArrayField("resourceHydrationAccounts", this.resourceHydrationAccounts,
@@ -1006,9 +976,6 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
                 } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.resourceProviderAuthorizationRules
                         = ResourceProviderAuthorizationRules.fromJson(reader);
-                } else if ("dstsConfiguration".equals(fieldName)) {
-                    deserializedResourceProviderManifestProperties.dstsConfiguration
-                        = ResourceProviderManifestPropertiesDstsConfiguration.fromJson(reader);
                 } else if ("notificationOptions".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.notificationOptions
                         = NotificationOptions.fromString(reader.getString());

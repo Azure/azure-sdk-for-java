@@ -117,7 +117,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * 
      * @return the encryption value.
      */
-    public AccountEncryption encryption() {
+    public AccountEncryptionPatch encryption() {
         return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
@@ -127,7 +127,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * @param encryption the encryption value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
+    public NetAppAccountPatch withEncryption(AccountEncryptionPatch encryption) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }

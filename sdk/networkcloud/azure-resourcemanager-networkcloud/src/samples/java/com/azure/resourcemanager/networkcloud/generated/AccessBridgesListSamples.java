@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class AccessBridgesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_ListBySubscription.json
      */
     /**
      * Sample code: List access bridges for subscription.

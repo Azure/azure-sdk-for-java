@@ -11,7 +11,7 @@ public final class DppResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppResource model
-            = BinaryData.fromString("{\"id\":\"vxccedcp\",\"name\":\"dyodnwzxltj\",\"type\":\"nhltiugcxn\"}")
+            = BinaryData.fromString("{\"id\":\"lhflsjcdhszfjvf\",\"name\":\"ofel\",\"type\":\"grqmqhldvrii\"}")
                 .toObject(DppResource.class);
     }
 }

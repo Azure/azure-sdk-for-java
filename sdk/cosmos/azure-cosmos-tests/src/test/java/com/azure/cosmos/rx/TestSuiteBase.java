@@ -3300,7 +3300,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         if (client != null) {
             try {
-                client.deleteDocument("/dbs/" + databaseId + "/colls/" + collectionId + "/docs/" + docId, null).block();
+                client.deleteDocument("/dbs/" + databaseId + "/colls/" + collectionId + "/docs/" + docId, null, null).block();
             } catch (Exception e) {
                 // Ignore if not found
             }
@@ -3312,7 +3312,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             try {
                 RequestOptions options = new RequestOptions();
                 options.setPartitionKey(partitionKey);
-                client.deleteDocument(documentLink, options).block();
+                client.deleteDocument(documentLink, null, options).block();
             } catch (Exception e) {
                 // Log but don't throw
                 logger.warn("Failed to delete document: {}", documentLink, e);

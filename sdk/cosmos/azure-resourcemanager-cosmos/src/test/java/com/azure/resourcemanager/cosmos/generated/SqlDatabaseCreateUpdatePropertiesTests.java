@@ -18,36 +18,36 @@ public final class SqlDatabaseCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"lxorjaltolmncws\",\"restoreParameters\":{\"restoreSource\":\"wcsdbnwdcfhucq\",\"restoreTimestampInUtc\":\"2021-05-09T06:54:09Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":665760554,\"autoscaleSettings\":{\"maxThroughput\":990974821}}}")
+            "{\"resource\":{\"id\":\"afxtsgum\",\"restoreParameters\":{\"restoreSource\":\"lik\",\"restoreTimestampInUtc\":\"2021-10-26T10:22:19Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1671943968,\"autoscaleSettings\":{\"maxThroughput\":845097361}}}")
             .toObject(SqlDatabaseCreateUpdateProperties.class);
-        Assertions.assertEquals("lxorjaltolmncws", model.resource().id());
-        Assertions.assertEquals("wcsdbnwdcfhucq", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T06:54:09Z"),
+        Assertions.assertEquals("afxtsgum", model.resource().id());
+        Assertions.assertEquals("lik", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T10:22:19Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(665760554, model.options().throughput());
-        Assertions.assertEquals(990974821, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1671943968, model.options().throughput());
+        Assertions.assertEquals(845097361, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDatabaseCreateUpdateProperties model = new SqlDatabaseCreateUpdateProperties()
-            .withResource(new SqlDatabaseResource().withId("lxorjaltolmncws")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("wcsdbnwdcfhucq")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-05-09T06:54:09Z"))
-                    .withRestoreWithTtlDisabled(true))
+            .withResource(new SqlDatabaseResource().withId("afxtsgum")
+                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("lik")
+                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-10-26T10:22:19Z"))
+                    .withRestoreWithTtlDisabled(false))
                 .withCreateMode(CreateMode.RESTORE))
-            .withOptions(new CreateUpdateOptions().withThroughput(665760554)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(990974821)));
+            .withOptions(new CreateUpdateOptions().withThroughput(1671943968)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(845097361)));
         model = BinaryData.fromObject(model).toObject(SqlDatabaseCreateUpdateProperties.class);
-        Assertions.assertEquals("lxorjaltolmncws", model.resource().id());
-        Assertions.assertEquals("wcsdbnwdcfhucq", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T06:54:09Z"),
+        Assertions.assertEquals("afxtsgum", model.resource().id());
+        Assertions.assertEquals("lik", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T10:22:19Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(665760554, model.options().throughput());
-        Assertions.assertEquals(990974821, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1671943968, model.options().throughput());
+        Assertions.assertEquals(845097361, model.options().autoscaleSettings().maxThroughput());
     }
 }

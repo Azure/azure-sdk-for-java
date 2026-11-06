@@ -37,7 +37,7 @@ public final class AppLinkMembersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"flrwd\"},\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Stable\"},\"selfManagedUpgradeProfile\":{\"version\":\"jrxs\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"cnihgwqapnedgfbc\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"vpk\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"vdrhvoo\",\"tags\":{\"opcjwvnhd\":\"tbobz\",\"mgxcxrslpm\":\"d\",\"qsluicp\":\"twuoegrpkhjwni\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}";
+            = "{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"rfbjf\"},\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"t\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"jzbexilzznfq\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"mqtaruoujmkcjh\"},\"network\":\"ytjrybnwjewgdr\"},\"provisioningState\":\"Succeeded\"},\"location\":\"naenqpehindo\",\"tags\":{\"ndslgnayqigynduh\":\"ifthnz\",\"bgycduiertgccym\":\"vhqlkthumaqo\",\"lqlfm\":\"aolps\"},\"id\":\"dnbbglzps\",\"name\":\"iydmcwyhzdxs\",\"type\":\"adbzmnvdfznud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -47,34 +47,37 @@ public final class AppLinkMembersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AppLinkMember response = manager.appLinkMembers()
-            .define("xbmp")
-            .withRegion("dyhtozfikdowwquu")
-            .withExistingAppLink("l", "tmuwlauwzi")
-            .withTags(mapOf("hqzonosggbhcoh", "xclvit"))
+            .define("grcfb")
+            .withRegion("yslqbhsfx")
+            .withExistingAppLink("lzdahzxctobgbkdm", "izpost")
+            .withTags(mapOf("wfbkrvrns", "ytkblmpew"))
             .withProperties(new AppLinkMemberProperties().withClusterType(ClusterType.AKS)
-                .withMetadata(new Metadata().withResourceId("fuzmuvpbtt"))
+                .withMetadata(new Metadata().withResourceId("fqjhhkxbpvjymj"))
                 .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.SELF_MANAGED)
                     .withFullyManagedUpgradeProfile(
                         new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID))
-                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("pxebmnzbt")))
+                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("gudivkrtswbxqz")))
                 .withObservabilityProfile(new ObservabilityProfile().withMetrics(new MetricsProfile()))
                 .withConnectivityProfile(new ConnectivityProfile()
                     .withEastWestGateway(
-                        new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.EXTERNAL))
-                    .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("uel"))))
+                        new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
+                    .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("t"))
+                    .withNetwork("aqtdoqmcbx")))
             .create();
 
-        Assertions.assertEquals("vdrhvoo", response.location());
-        Assertions.assertEquals("tbobz", response.tags().get("opcjwvnhd"));
+        Assertions.assertEquals("naenqpehindo", response.location());
+        Assertions.assertEquals("ifthnz", response.tags().get("ndslgnayqigynduh"));
         Assertions.assertEquals(ClusterType.AKS, response.properties().clusterType());
-        Assertions.assertEquals("flrwd", response.properties().metadata().resourceId());
+        Assertions.assertEquals("rfbjf", response.properties().metadata().resourceId());
         Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, response.properties().upgradeProfile().mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.STABLE,
+        Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
             response.properties().upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("jrxs", response.properties().upgradeProfile().selfManagedUpgradeProfile().version());
+        Assertions.assertEquals("t", response.properties().upgradeProfile().selfManagedUpgradeProfile().version());
         Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             response.properties().connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("vpk", response.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("mqtaruoujmkcjh",
+            response.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("ytjrybnwjewgdr", response.properties().connectivityProfile().network());
     }
 
     // Use "Map.of" if available

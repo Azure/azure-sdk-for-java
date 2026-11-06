@@ -15,9 +15,9 @@ public final class ResourceTypeRegistrationPropertiesExtensionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesExtensionOptions model = BinaryData.fromString(
-            "{\"resourceCreationBegin\":{\"request\":[\"IncludeInternalMetadata\"],\"response\":[\"NotSpecified\",\"DoNotMergeExistingReadOnlyAndSecretProperties\",\"IncludeInternalMetadata\",\"DoNotMergeExistingReadOnlyAndSecretProperties\"]}}")
+            "{\"resourceCreationBegin\":{\"request\":[\"DoNotMergeExistingReadOnlyAndSecretProperties\",\"DoNotMergeExistingReadOnlyAndSecretProperties\",\"NotSpecified\",\"IncludeInternalMetadata\"],\"response\":[\"NotSpecified\",\"NotSpecified\"]}}")
             .toObject(ResourceTypeRegistrationPropertiesExtensionOptions.class);
-        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
+        Assertions.assertEquals(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
             model.resourceCreationBegin().request().get(0));
         Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.resourceCreationBegin().response().get(0));
     }
@@ -27,13 +27,13 @@ public final class ResourceTypeRegistrationPropertiesExtensionOptionsTests {
         ResourceTypeRegistrationPropertiesExtensionOptions model
             = new ResourceTypeRegistrationPropertiesExtensionOptions()
                 .withResourceCreationBegin(new ResourceTypeExtensionOptionsResourceCreationBegin()
-                    .withRequest(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA))
-                    .withResponse(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED,
-                        ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
-                        ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
-                        ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES)));
+                    .withRequest(
+                        Arrays.asList(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
+                            ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
+                            ExtensionOptionType.NOT_SPECIFIED, ExtensionOptionType.INCLUDE_INTERNAL_METADATA))
+                    .withResponse(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED, ExtensionOptionType.NOT_SPECIFIED)));
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesExtensionOptions.class);
-        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
+        Assertions.assertEquals(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
             model.resourceCreationBegin().request().get(0));
         Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.resourceCreationBegin().response().get(0));
     }

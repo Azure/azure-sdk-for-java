@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.resourcemanager.cognitiveservices.models.SshSettings;
+import com.azure.resourcemanager.cognitiveservices.models.Identity;
+import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import com.azure.resourcemanager.cognitiveservices.models.Workbench;
-import com.azure.resourcemanager.cognitiveservices.models.WorkbenchProperties;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +17,34 @@ import java.util.Map;
  */
 public final class WorkbenchesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchComputeProperties.json
+     */
+    /**
+     * Sample code: UpdateWorkbenchComputeProperties.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        updateWorkbenchComputeProperties(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Workbench resource = manager.workbenches()
+            .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkbenchUpdateProperties().withTargetClusterId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc")
+                .withIdleTimeBeforeShutdown("PT1H")
+                .withInstanceType("Singularity.ND12_H100_v5-n1")
+                .withGpuCount(1))
+            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                    new UserAssignedIdentity())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbench.json
      */
     /**
      * Sample code: UpdateWorkbench.
@@ -27,15 +56,24 @@ public final class WorkbenchesUpdateSamples {
             .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withTags(mapOf("environment", "production"))
-            .withProperties(new WorkbenchProperties().withTargetClusterId(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
-                .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:v2")
-                .withIdleTimeBeforeShutdown("PT1H")
-                .withDatasetId("dataset-67890")
-                .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-            .apply();
+        resource.update().withProperties(new WorkbenchUpdateProperties().withIdleTimeBeforeShutdown("PT1H")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchResetComputeProperties.json
+     */
+    /**
+     * Sample code: UpdateWorkbenchResetComputeProperties.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateWorkbenchResetComputeProperties(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Workbench resource = manager.workbenches()
+            .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withProperties(new WorkbenchUpdateProperties()).apply();
     }
 
     // Use "Map.of" if available

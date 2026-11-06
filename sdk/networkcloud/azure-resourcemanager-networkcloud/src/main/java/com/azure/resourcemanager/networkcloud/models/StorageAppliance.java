@@ -91,6 +91,13 @@ public interface StorageAppliance {
     String rackId();
 
     /**
+     * Gets the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    String storageApplianceSkuId();
+
+    /**
      * Gets the rackSlot property: The slot the storage appliance is in the rack based on the BOM configuration.
      * 
      * @return the rackSlot value.
@@ -103,13 +110,6 @@ public interface StorageAppliance {
      * @return the serialNumber value.
      */
     String serialNumber();
-
-    /**
-     * Gets the storageApplianceSkuId property: The SKU for the storage appliance.
-     * 
-     * @return the storageApplianceSkuId value.
-     */
-    String storageApplianceSkuId();
 
     /**
      * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
@@ -258,10 +258,11 @@ public interface StorageAppliance {
     /**
      * The entirety of the StorageAppliance definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
-        DefinitionStages.WithAdministratorCredentials, DefinitionStages.WithRackId, DefinitionStages.WithRackSlot,
-        DefinitionStages.WithSerialNumber, DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithAdministratorCredentials,
+        DefinitionStages.WithRackId, DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithRackSlot,
+        DefinitionStages.WithSerialNumber, DefinitionStages.WithCreate {
     }
 
     /**
@@ -348,7 +349,20 @@ public interface StorageAppliance {
              * @param rackId The resource ID of the rack where this storage appliance resides.
              * @return the next definition stage.
              */
-            WithRackSlot withRackId(String rackId);
+            WithStorageApplianceSkuId withRackId(String rackId);
+        }
+
+        /**
+         * The stage of the StorageAppliance definition allowing to specify storageApplianceSkuId.
+         */
+        interface WithStorageApplianceSkuId {
+            /**
+             * Specifies the storageApplianceSkuId property: The SKU for the storage appliance..
+             * 
+             * @param storageApplianceSkuId The SKU for the storage appliance.
+             * @return the next definition stage.
+             */
+            WithRackSlot withStorageApplianceSkuId(String storageApplianceSkuId);
         }
 
         /**
@@ -375,20 +389,7 @@ public interface StorageAppliance {
              * @param serialNumber The serial number for the storage appliance.
              * @return the next definition stage.
              */
-            WithStorageApplianceSkuId withSerialNumber(String serialNumber);
-        }
-
-        /**
-         * The stage of the StorageAppliance definition allowing to specify storageApplianceSkuId.
-         */
-        interface WithStorageApplianceSkuId {
-            /**
-             * Specifies the storageApplianceSkuId property: The SKU for the storage appliance..
-             * 
-             * @param storageApplianceSkuId The SKU for the storage appliance.
-             * @return the next definition stage.
-             */
-            WithCreate withStorageApplianceSkuId(String storageApplianceSkuId);
+            WithCreate withSerialNumber(String serialNumber);
         }
 
         /**

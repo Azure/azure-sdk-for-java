@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenApiValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenApiValidation model = BinaryData.fromString("{\"allowNoncompliantCollectionResponse\":false}")
-            .toObject(OpenApiValidation.class);
-        Assertions.assertFalse(model.allowNoncompliantCollectionResponse());
+        OpenApiValidation model
+            = BinaryData.fromString("{\"allowNoncompliantCollectionResponse\":true}").toObject(OpenApiValidation.class);
+        Assertions.assertTrue(model.allowNoncompliantCollectionResponse());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OpenApiValidation model = new OpenApiValidation().withAllowNoncompliantCollectionResponse(false);
+        OpenApiValidation model = new OpenApiValidation().withAllowNoncompliantCollectionResponse(true);
         model = BinaryData.fromObject(model).toObject(OpenApiValidation.class);
-        Assertions.assertFalse(model.allowNoncompliantCollectionResponse());
+        Assertions.assertTrue(model.allowNoncompliantCollectionResponse());
     }
 }

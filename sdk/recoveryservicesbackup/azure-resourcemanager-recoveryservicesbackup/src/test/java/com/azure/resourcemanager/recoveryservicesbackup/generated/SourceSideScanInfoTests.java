@@ -14,19 +14,19 @@ public final class SourceSideScanInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceSideScanInfo model = BinaryData
-            .fromString("{\"sourceSideScanStatus\":\"NotConfigured\",\"sourceSideScanSummary\":\"NotApplicable\"}")
+            .fromString("{\"sourceSideScanStatus\":\"NotConfigured\",\"sourceSideScanSummary\":\"Unknown\"}")
             .toObject(SourceSideScanInfo.class);
         Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE, model.sourceSideScanSummary());
+        Assertions.assertEquals(SourceSideScanSummary.UNKNOWN, model.sourceSideScanSummary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceSideScanInfo model
             = new SourceSideScanInfo().withSourceSideScanStatus(SourceSideScanStatus.NOT_CONFIGURED)
-                .withSourceSideScanSummary(SourceSideScanSummary.NOT_APPLICABLE);
+                .withSourceSideScanSummary(SourceSideScanSummary.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(SourceSideScanInfo.class);
         Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE, model.sourceSideScanSummary());
+        Assertions.assertEquals(SourceSideScanSummary.UNKNOWN, model.sourceSideScanSummary());
     }
 }

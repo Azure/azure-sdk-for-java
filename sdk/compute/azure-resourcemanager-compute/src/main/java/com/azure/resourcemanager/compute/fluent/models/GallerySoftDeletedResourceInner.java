@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.SoftDeletedArtifactTypes;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -123,6 +124,27 @@ public final class GallerySoftDeletedResourceInner extends Resource {
      */
     public String softDeletedTime() {
         return this.innerProperties() == null ? null : this.innerProperties().softDeletedTime();
+    }
+
+    /**
+     * Get the consumptionEndTime property: The timestamp after which a soft-deleted gallery image version is no longer
+     * consumable for VM/VMSS creation or VMSS scale out. It is calculated from the soft-deleted time plus the retention
+     * period. In dateTime offset format.
+     * 
+     * @return the consumptionEndTime value.
+     */
+    public OffsetDateTime consumptionEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumptionEndTime();
+    }
+
+    /**
+     * Get the hardDeletionTargetTime property: The timestamp at which a soft-deleted gallery image version is
+     * permanently (hard) deleted and can no longer be recovered. In dateTime offset format.
+     * 
+     * @return the hardDeletionTargetTime value.
+     */
+    public OffsetDateTime hardDeletionTargetTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().hardDeletionTargetTime();
     }
 
     /**

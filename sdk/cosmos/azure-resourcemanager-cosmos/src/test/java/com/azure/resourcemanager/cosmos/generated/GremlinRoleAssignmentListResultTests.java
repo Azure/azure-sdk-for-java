@@ -12,11 +12,11 @@ public final class GremlinRoleAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinRoleAssignmentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"lrufssjygh\",\"scope\":\"xrkbhammgmqfmef\",\"principalId\":\"qcpdwjgquxwey\",\"provisioningState\":\"andkd\"},\"id\":\"jhunhghcg\",\"name\":\"wnrrnquoxso\",\"type\":\"ireimseobf\"},{\"properties\":{\"roleDefinitionId\":\"tcyilbvz\",\"scope\":\"xcjzlquze\",\"principalId\":\"kjxebj\",\"provisioningState\":\"zinzabwmvogljsvl\"},\"id\":\"idnwceha\",\"name\":\"idoyzl\",\"type\":\"giomqo\"},{\"properties\":{\"roleDefinitionId\":\"pia\",\"scope\":\"pfsergdtpeqna\",\"principalId\":\"heqwbpqqncjubkh\",\"provisioningState\":\"zfymcwmbupyvqyvl\"},\"id\":\"iipsejbsvsiaies\",\"name\":\"hddzydisnuepy\",\"type\":\"yjln\"},{\"properties\":{\"roleDefinitionId\":\"xottdiia\",\"scope\":\"qibzji\",\"principalId\":\"ee\",\"provisioningState\":\"ph\"},\"id\":\"vcjwqwoqsratj\",\"name\":\"dhzybsp\",\"type\":\"jhfrzgdkkagv\"}],\"nextLink\":\"khsusmmorf\"}")
+            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"uiocuselqkrsazr\",\"scope\":\"uddq\",\"principalId\":\"tffisjmr\",\"provisioningState\":\"hmwdmdlgyqixokw\"},\"id\":\"awhva\",\"name\":\"nqf\",\"type\":\"qdlcvmyolc\"},{\"properties\":{\"roleDefinitionId\":\"jchtvsnvlaqd\",\"scope\":\"yzawatu\",\"principalId\":\"kokb\",\"provisioningState\":\"othymgobl\"},\"id\":\"snwgwimaa\",\"name\":\"eakhtmhobcya\",\"type\":\"rfvqtvkhgvo\"},{\"properties\":{\"roleDefinitionId\":\"kfnaoaqymhc\",\"scope\":\"opuowyrnskbyhqu\",\"principalId\":\"zygxvha\",\"provisioningState\":\"xecxqnwh\"},\"id\":\"ozawmvgxsmpk\",\"name\":\"pwirfljfewxqouo\",\"type\":\"ud\"}],\"nextLink\":\"ckaprhknqiijge\"}")
             .toObject(GremlinRoleAssignmentListResult.class);
-        Assertions.assertEquals("lrufssjygh", model.value().get(0).roleDefinitionId());
-        Assertions.assertEquals("xrkbhammgmqfmef", model.value().get(0).scope());
-        Assertions.assertEquals("qcpdwjgquxwey", model.value().get(0).principalId());
-        Assertions.assertEquals("khsusmmorf", model.nextLink());
+        Assertions.assertEquals("uiocuselqkrsazr", model.value().get(0).roleDefinitionId());
+        Assertions.assertEquals("uddq", model.value().get(0).scope());
+        Assertions.assertEquals("tffisjmr", model.value().get(0).principalId());
+        Assertions.assertEquals("ckaprhknqiijge", model.nextLink());
     }
 }

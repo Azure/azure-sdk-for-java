@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Assertions;
 public final class GatePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatePatch model = BinaryData.fromString("{\"properties\":{\"state\":\"Completed\"}}").toObject(GatePatch.class);
-        Assertions.assertEquals(GateState.COMPLETED, model.properties().state());
+        GatePatch model = BinaryData.fromString("{\"properties\":{\"state\":\"Skipped\"}}").toObject(GatePatch.class);
+        Assertions.assertEquals(GateState.SKIPPED, model.properties().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatePatch model = new GatePatch().withProperties(new GatePatchProperties().withState(GateState.COMPLETED));
+        GatePatch model = new GatePatch().withProperties(new GatePatchProperties().withState(GateState.SKIPPED));
         model = BinaryData.fromObject(model).toObject(GatePatch.class);
-        Assertions.assertEquals(GateState.COMPLETED, model.properties().state());
+        Assertions.assertEquals(GateState.SKIPPED, model.properties().state());
     }
 }

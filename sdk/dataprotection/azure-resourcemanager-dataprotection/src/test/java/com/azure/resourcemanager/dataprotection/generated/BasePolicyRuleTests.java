@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class BasePolicyRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BasePolicyRule model = BinaryData.fromString("{\"objectType\":\"BasePolicyRule\",\"name\":\"qoaxoruzfgs\"}")
+        BasePolicyRule model = BinaryData.fromString("{\"objectType\":\"BasePolicyRule\",\"name\":\"feqztppriol\"}")
             .toObject(BasePolicyRule.class);
-        Assertions.assertEquals("qoaxoruzfgs", model.name());
+        Assertions.assertEquals("feqztppriol", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BasePolicyRule model = new BasePolicyRule().withName("qoaxoruzfgs");
+        BasePolicyRule model = new BasePolicyRule().withName("feqztppriol");
         model = BinaryData.fromObject(model).toObject(BasePolicyRule.class);
-        Assertions.assertEquals("qoaxoruzfgs", model.name());
+        Assertions.assertEquals("feqztppriol", model.name());
     }
 }

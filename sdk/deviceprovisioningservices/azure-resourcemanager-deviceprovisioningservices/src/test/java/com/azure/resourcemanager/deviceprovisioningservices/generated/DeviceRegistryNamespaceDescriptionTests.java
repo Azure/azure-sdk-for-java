@@ -7,27 +7,21 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceprovisioningservices.models.DeviceRegistryNamespaceAuthenticationType;
 import com.azure.resourcemanager.deviceprovisioningservices.models.DeviceRegistryNamespaceDescription;
+import com.azure.resourcemanager.deviceprovisioningservices.models.LinkingState;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeviceRegistryNamespaceDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceRegistryNamespaceDescription model = BinaryData.fromString(
-            "{\"resourceId\":\"xg\",\"authenticationType\":\"SystemAssigned\",\"selectedUserAssignedIdentityResourceId\":\"gcpo\"}")
+            "{\"resourceId\":\"coofsxlzev\",\"authenticationType\":\"UserAssigned\",\"selectedUserAssignedIdentityResourceId\":\"qjqabcypmivkwl\",\"namespaceUuid\":\"vccfw\",\"dataAddress\":\"nbacfi\",\"location\":\"l\",\"linkingState\":\"NotLinked\"}")
             .toObject(DeviceRegistryNamespaceDescription.class);
-        Assertions.assertEquals("xg", model.resourceId());
-        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("gcpo", model.selectedUserAssignedIdentityResourceId());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        DeviceRegistryNamespaceDescription model = new DeviceRegistryNamespaceDescription().withResourceId("xg")
-            .withAuthenticationType(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED)
-            .withSelectedUserAssignedIdentityResourceId("gcpo");
-        model = BinaryData.fromObject(model).toObject(DeviceRegistryNamespaceDescription.class);
-        Assertions.assertEquals("xg", model.resourceId());
-        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("gcpo", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("coofsxlzev", model.resourceId());
+        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.USER_ASSIGNED, model.authenticationType());
+        Assertions.assertEquals("qjqabcypmivkwl", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("vccfw", model.namespaceUuid());
+        Assertions.assertEquals("nbacfi", model.dataAddress());
+        Assertions.assertEquals("l", model.location());
+        Assertions.assertEquals(LinkingState.NOT_LINKED, model.linkingState());
     }
 }

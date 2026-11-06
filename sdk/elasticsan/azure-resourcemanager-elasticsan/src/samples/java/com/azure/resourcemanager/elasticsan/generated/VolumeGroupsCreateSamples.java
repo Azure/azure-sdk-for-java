@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.resourcemanager.elasticsan.models.Action;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionIdentity;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
@@ -12,6 +13,8 @@ import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.IdentityType;
 import com.azure.resourcemanager.elasticsan.models.KeyVaultProperties;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
+import com.azure.resourcemanager.elasticsan.models.PolicyState;
+import com.azure.resourcemanager.elasticsan.models.QualityOfService;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.UserAssignedIdentity;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
@@ -24,7 +27,27 @@ import java.util.Map;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Create_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_PerformanceCritical_Create_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void volumeGroupsPerformanceCriticalCreateMinimumSetGen(
+        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withProtocolType(StorageTargetType.DIRECT_ATTACH)
+            .withReservedIops(10000)
+            .withReservedMBps(800)
+            .withQualityOfService(QualityOfService.PERFORMANCE_CRITICAL)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MinimumSet_Gen.
@@ -39,7 +62,53 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Create_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_GeneralPurpose_Create_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        volumeGroupsGeneralPurposeCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withProtocolType(StorageTargetType.ISCSI)
+            .withQualityOfService(QualityOfService.GENERAL_PURPOSE)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_PerformanceCritical_Create_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void volumeGroupsPerformanceCriticalCreateMaximumSetGen(
+        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key2350", new UserAssignedIdentity())))
+            .withProtocolType(StorageTargetType.DIRECT_ATTACH)
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryptionProperties(new EncryptionProperties()
+                .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("vgbeephfgecgg")))
+            .withReservedIops(10000)
+            .withReservedMBps(800)
+            .withQualityOfService(QualityOfService.PERFORMANCE_CRITICAL)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MaximumSet_Gen.
@@ -62,6 +131,41 @@ public final class VolumeGroupsCreateSamples {
             .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays
                 .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("fhhawhc").withAction(Action.ALLOW))))
             .withEnforceDataIntegrityCheckForIscsi(true)
+            .withEncryptionInTransit(true)
+            .withDeleteRetentionPolicy(
+                new DeleteRetentionPolicy().withPolicyState(PolicyState.ENABLED).withRetentionPeriodDays(14))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_GeneralPurpose_Create_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        volumeGroupsGeneralPurposeCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key2350", new UserAssignedIdentity())))
+            .withProtocolType(StorageTargetType.ISCSI)
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryptionProperties(new EncryptionProperties()
+                .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("vgbeephfgecgg")))
+            .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays
+                .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("fhhawhc").withAction(Action.ALLOW))))
+            .withEnforceDataIntegrityCheckForIscsi(true)
+            .withEncryptionInTransit(true)
+            .withQualityOfService(QualityOfService.GENERAL_PURPOSE)
+            .withDeleteRetentionPolicy(
+                new DeleteRetentionPolicy().withPolicyState(PolicyState.ENABLED).withRetentionPeriodDays(14))
             .create();
     }
 

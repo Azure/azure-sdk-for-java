@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Reimage payload with common profile and per-resource overrides.
+ * The shared and per-virtual-machine configuration for a bulk reimage action.
  */
 @Fluent
 public final class ReimagePayload implements JsonSerializable<ReimagePayload> {
     /*
-     * Common reimage profile applied to all resources unless overridden
+     * The reimage configuration applied to every virtual machine unless a per-virtual-machine override is provided.
      */
     private VirtualMachineReimageParameters baseProfile;
 
     /*
-     * Per-resource reimage overrides
+     * The reimage configuration overrides for individual virtual machines.
      */
     private List<ReimageResourceOverride> resourceOverrides;
 
@@ -34,7 +34,8 @@ public final class ReimagePayload implements JsonSerializable<ReimagePayload> {
     }
 
     /**
-     * Get the baseProfile property: Common reimage profile applied to all resources unless overridden.
+     * Get the baseProfile property: The reimage configuration applied to every virtual machine unless a
+     * per-virtual-machine override is provided.
      * 
      * @return the baseProfile value.
      */
@@ -43,7 +44,8 @@ public final class ReimagePayload implements JsonSerializable<ReimagePayload> {
     }
 
     /**
-     * Set the baseProfile property: Common reimage profile applied to all resources unless overridden.
+     * Set the baseProfile property: The reimage configuration applied to every virtual machine unless a
+     * per-virtual-machine override is provided.
      * 
      * @param baseProfile the baseProfile value to set.
      * @return the ReimagePayload object itself.
@@ -54,7 +56,7 @@ public final class ReimagePayload implements JsonSerializable<ReimagePayload> {
     }
 
     /**
-     * Get the resourceOverrides property: Per-resource reimage overrides.
+     * Get the resourceOverrides property: The reimage configuration overrides for individual virtual machines.
      * 
      * @return the resourceOverrides value.
      */
@@ -63,7 +65,7 @@ public final class ReimagePayload implements JsonSerializable<ReimagePayload> {
     }
 
     /**
-     * Set the resourceOverrides property: Per-resource reimage overrides.
+     * Set the resourceOverrides property: The reimage configuration overrides for individual virtual machines.
      * 
      * @param resourceOverrides the resourceOverrides value to set.
      * @return the ReimagePayload object itself.

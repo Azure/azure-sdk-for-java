@@ -18,8 +18,8 @@ public class IngestionRunsList {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildIngestionClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list-runs.ingestion-runs-list
-        PagedIterable<IngestionRun> response
-            = ingestionClient.listRuns("naip-atl", "00000000-0000-0000-0000-000000000000", null, null);
+        PagedIterable<IngestionRun> response = ingestionClient.listRuns("naip-atl",
+            "00000000-0000-0000-0000-000000000000", (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.ingestion-list-runs.ingestion-runs-list
     }
 }

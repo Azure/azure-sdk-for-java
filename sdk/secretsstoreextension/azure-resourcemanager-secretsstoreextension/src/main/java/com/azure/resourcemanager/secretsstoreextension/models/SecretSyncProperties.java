@@ -32,8 +32,8 @@ public final class SecretSyncProperties implements JsonSerializable<SecretSyncPr
     private String serviceAccountName;
 
     /*
-     * Type specifies the type of the Kubernetes secret object, e.g. "Opaque" or"kubernetes.io/tls". The controller must
-     * have permission to create secrets of the specified type.
+     * Type specifies the type of the Kubernetes secret object, e.g. `Opaque` or `kubernetes.io/tls`. The controller
+     * must have permission to create secrets of the specified type.
      */
     private KubernetesSecretType kubernetesSecretType;
 
@@ -115,8 +115,8 @@ public final class SecretSyncProperties implements JsonSerializable<SecretSyncPr
     }
 
     /**
-     * Get the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. "Opaque"
-     * or"kubernetes.io/tls". The controller must have permission to create secrets of the specified type.
+     * Get the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. `Opaque` or
+     * `kubernetes.io/tls`. The controller must have permission to create secrets of the specified type.
      * 
      * @return the kubernetesSecretType value.
      */
@@ -125,8 +125,8 @@ public final class SecretSyncProperties implements JsonSerializable<SecretSyncPr
     }
 
     /**
-     * Set the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. "Opaque"
-     * or"kubernetes.io/tls". The controller must have permission to create secrets of the specified type.
+     * Set the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. `Opaque` or
+     * `kubernetes.io/tls`. The controller must have permission to create secrets of the specified type.
      * 
      * @param kubernetesSecretType the kubernetesSecretType value to set.
      * @return the SecretSyncProperties object itself.

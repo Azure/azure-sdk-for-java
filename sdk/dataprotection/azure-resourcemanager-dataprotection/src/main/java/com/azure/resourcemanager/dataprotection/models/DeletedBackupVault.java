@@ -23,6 +23,11 @@ public final class DeletedBackupVault implements JsonSerializable<DeletedBackupV
     private MonitoringSettings monitoringSettings;
 
     /*
+     * Cost Management Settings of the vault
+     */
+    private CostManagementSettings costManagementSettings;
+
+    /*
      * Provisioning state of the BackupVault resource
      */
     private ProvisioningState provisioningState;
@@ -110,6 +115,15 @@ public final class DeletedBackupVault implements JsonSerializable<DeletedBackupV
      */
     public MonitoringSettings monitoringSettings() {
         return this.monitoringSettings;
+    }
+
+    /**
+     * Get the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @return the costManagementSettings value.
+     */
+    public CostManagementSettings costManagementSettings() {
+        return this.costManagementSettings;
     }
 
     /**
@@ -255,6 +269,7 @@ public final class DeletedBackupVault implements JsonSerializable<DeletedBackupV
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeJsonField("costManagementSettings", this.costManagementSettings);
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeArrayField("storageSettings", this.storageSettings,
             (writer, element) -> writer.writeJson(element));
@@ -292,6 +307,8 @@ public final class DeletedBackupVault implements JsonSerializable<DeletedBackupV
                     deserializedDeletedBackupVault.resourceDeletionInfo = ResourceDeletionInfo.fromJson(reader);
                 } else if ("monitoringSettings".equals(fieldName)) {
                     deserializedDeletedBackupVault.monitoringSettings = MonitoringSettings.fromJson(reader);
+                } else if ("costManagementSettings".equals(fieldName)) {
+                    deserializedDeletedBackupVault.costManagementSettings = CostManagementSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDeletedBackupVault.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceMoveState".equals(fieldName)) {

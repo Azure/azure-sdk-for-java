@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class L3NetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Patch.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Patch.json
      */
     /**
      * Sample code: Patch L3 network.

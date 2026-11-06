@@ -136,8 +136,12 @@ public final class FileSystemResourceImpl
         com.azure.resourcemanager.dell.storage.DellStorageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.filesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "filesystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems/{filesystemName}",
+            "resourceGroupName");
+        this.filesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems/{filesystemName}",
+            "filesystemName");
     }
 
     public FileSystemResource refresh() {
