@@ -178,7 +178,7 @@ public class SessionTokenHelper {
         }
     }
 
-    static ISessionToken getLocalSessionToken(
+    private static ISessionToken getLocalSessionToken(
             RxDocumentServiceRequest request,
             String globalSessionToken,
             String partitionKeyRangeId) {

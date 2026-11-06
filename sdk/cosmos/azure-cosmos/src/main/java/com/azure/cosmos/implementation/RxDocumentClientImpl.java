@@ -8377,7 +8377,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         );
     }
 
-    Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
+    private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
         ResourceType resourceType,
         OperationType operationType,
         DocumentPointOperation callback,
@@ -8823,7 +8823,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return orderedRegionsForSpeculation;
     }
 
-    <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
+    private <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
         final ResourceType resourceType,
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
@@ -9236,7 +9236,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @FunctionalInterface
-    interface DocumentPointOperation {
+    private interface DocumentPointOperation {
         Mono<ResourceResponse<Document>> apply(
             RequestOptions requestOptions,
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,

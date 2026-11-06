@@ -42,6 +42,7 @@ import reactor.core.publisher.Sinks;
 import java.net.URI;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -253,6 +256,40 @@ public class ThinClientSessionTokenTest {
         return ((RxStoreModel) method.invoke(client, request)).processMessage(request);
     }
 
+    private static Mono<?> executeFeedWithAvailability(
+        RxDocumentClientImpl client, RxDocumentServiceRequest request,
+        Supplier<DocumentClientRetryPolicy> retryFactory,
+        BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<RxDocumentServiceResponse>> operation)
+        throws Exception {
+        Method method = RxDocumentClientImpl.class.getDeclaredMethod("executeFeedOperationWithAvailabilityStrategy",
+            ResourceType.class, OperationType.class, Supplier.class, RxDocumentServiceRequest.class,
+            BiFunction.class, String.class);
+        method.setAccessible(true);
+        return (Mono<?>) method.invoke(client, ResourceType.Document, OperationType.Query, retryFactory, request,
+            operation, "/dbs/db/colls/coll");
+    }
+
+    private static Mono<?> executePointWithAvailability(
+        RxDocumentClientImpl client, RequestOptions options, DiagnosticsClientContext context,
+        BiFunction<RequestOptions, CrossRegionAvailabilityContextForRxDocumentServiceRequest,
+            Mono<ResourceResponse<Document>>> operation) throws Exception {
+        Class<?> callbackType = Class.forName(RxDocumentClientImpl.class.getName() + "$DocumentPointOperation");
+        Object callback = Proxy.newProxyInstance(callbackType.getClassLoader(), new Class<?>[] {callbackType},
+            (proxy, method, args) -> {
+                if (!"apply".equals(method.getName())) {
+                    throw new UnsupportedOperationException("Unexpected callback method: " + method.getName());
+                }
+                return operation.apply((RequestOptions) args[0],
+                    (CrossRegionAvailabilityContextForRxDocumentServiceRequest) args[3]);
+            });
+        Method method = RxDocumentClientImpl.class.getDeclaredMethod("wrapPointOperationWithAvailabilityStrategy",
+            ResourceType.class, OperationType.class, callbackType, RequestOptions.class, boolean.class,
+            DiagnosticsClientContext.class, String.class);
+        method.setAccessible(true);
+        return (Mono<?>) method.invoke(client, ResourceType.Document, OperationType.Read, callback, options, false,
+            context, "/dbs/db/colls/coll");
+    }
+
     @DataProvider
     public Object[][] hedges() {
         return new Object[][] {
@@ -285,27 +322,24 @@ public class ThinClientSessionTokenTest {
             if (feed) {
                 RxDocumentServiceRequest parent = fixture.request(OperationType.Query, original, "0");
                 parent.requestContext.setEndToEndOperationLatencyPolicyConfig(policy);
-                client.executeFeedOperationWithAvailabilityStrategy(
-                    ResourceType.Document, OperationType.Query, fixture::retryPolicy,
-                    parent, (retry, request) -> {
-                        attempts.add(request);
-                        setHedgeScope(request, fallbackPrimary);
-                        DocumentClientRetryPolicy retryPolicy = retry.get();
-                        policies.add(retryPolicy);
-                        return BackoffRetryUtility.executeRetry(() -> {
-                            retryPolicy.onBeforeSendRequest(request);
-                            return dispatch(client, request);
-                        }, retryPolicy);
-                    }, "/dbs/db/colls/coll").block(Duration.ofSeconds(5));
+                executeFeedWithAvailability(client, parent, fixture::retryPolicy, (retry, request) -> {
+                    attempts.add(request);
+                    setHedgeScope(request, fallbackPrimary);
+                    DocumentClientRetryPolicy retryPolicy = retry.get();
+                    policies.add(retryPolicy);
+                    return BackoffRetryUtility.executeRetry(() -> {
+                        retryPolicy.onBeforeSendRequest(request);
+                        return dispatch(client, request);
+                    }, retryPolicy);
+                }).block(Duration.ofSeconds(5));
                 assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
                 assertThat(parent.useGatewayMode).isFalse();
             } else {
                 RequestOptions options = new RequestOptions();
                 options.setSessionToken(original);
                 options.setCosmosEndToEndLatencyPolicyConfig(policy);
-                client.wrapPointOperationWithAvailabilityStrategy(
-                    ResourceType.Document, OperationType.Read,
-                    (copy, config, context, availability) -> Mono.defer(() -> {
+                executePointWithAvailability(client, options, fixture.context,
+                    (copy, availability) -> Mono.defer(() -> {
                         RxDocumentServiceRequest request = fixture.request(
                             OperationType.Read, copy.getSessionToken(), "0");
                         request.requestContext.setCrossRegionAvailabilityContext(availability);
@@ -319,7 +353,7 @@ public class ThinClientSessionTokenTest {
                             return dispatch(client, request);
                         }, retryPolicy)
                             .map(response -> new ResourceResponse<>(response, Document.class));
-                    }), options, false, fixture.context, "/dbs/db/colls/coll").block(Duration.ofSeconds(5));
+                    })).block(Duration.ofSeconds(5));
                 assertThat(options.getSessionToken()).isEqualTo(original);
                 assertThat(options.getExcludedRegions()).isNullOrEmpty();
             }

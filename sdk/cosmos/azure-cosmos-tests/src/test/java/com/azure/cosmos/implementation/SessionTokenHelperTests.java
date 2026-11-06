@@ -54,10 +54,8 @@ public class SessionTokenHelperTests {
         request.requestContext.resolvedPartitionKeyRange = target;
         request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, original);
 
-        ISessionToken scoped = SessionTokenHelper.getLocalSessionToken(request, original, target.getId());
-        assertThat(scoped.convertToString()).isEqualTo(expected);
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
         SessionTokenHelper.setPartitionLocalSessionToken(request, Mockito.mock(ISessionContainer.class));
+        assertThat(request.requestContext.sessionToken.convertToString()).isEqualTo(expected);
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
             .isEqualTo(target.getId() + ":" + expected);
     }
@@ -71,9 +69,8 @@ public class SessionTokenHelperTests {
         request.requestContext.resolvedPartitionKeyRange = target;
         request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, original);
 
-        assertThat(SessionTokenHelper.getLocalSessionToken(request, original, target.getId())).isNull();
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
         SessionTokenHelper.setPartitionLocalSessionToken(request, Mockito.mock(ISessionContainer.class));
+        assertThat(request.requestContext.sessionToken).isNull();
         assertThat(request.getHeaders()).doesNotContainKey(HttpConstants.HttpHeaders.SESSION_TOKEN);
         assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
     }
@@ -125,7 +122,9 @@ public class SessionTokenHelperTests {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
             mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
         request.requestContext.resolvedPartitionKeyRange = target;
-        return SessionTokenHelper.getLocalSessionToken(request, original, target.getId());
+        request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, original);
+        SessionTokenHelper.setPartitionLocalSessionToken(request, Mockito.mock(ISessionContainer.class));
+        return request.requestContext.sessionToken;
     }
 
     static CollectionRoutingMap routingMap(PartitionKeyRange... ranges) {
