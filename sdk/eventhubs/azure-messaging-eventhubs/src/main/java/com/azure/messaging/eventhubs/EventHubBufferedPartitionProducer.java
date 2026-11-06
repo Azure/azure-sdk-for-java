@@ -284,10 +284,17 @@ class EventHubBufferedPartitionProducer implements Closeable {
         @Override
         protected void hookOnNext(PublishResult result) {
             if (result != PublishResult.EMPTY) {
-                if (result.error == null) {
-                    onSucceed.accept(new SendBatchSucceededContext(result.events, partitionId));
-                } else {
-                    onFailed.accept(new SendBatchFailedContext(result.events, partitionId, result.error));
+                // A handler exception must not reach the subscriber: it would cancel the publishing pipeline and
+                // every later enqueue to this partition would fail.
+                try {
+                    if (result.error == null) {
+                        onSucceed.accept(new SendBatchSucceededContext(result.events, partitionId));
+                    } else {
+                        onFailed.accept(new SendBatchFailedContext(result.events, partitionId, result.error));
+                    }
+                } catch (Throwable e) {
+                    final String handler = result.error == null ? "onSendBatchSucceeded" : "onSendBatchFailed";
+                    logger.atWarning().log(handler + " handler threw.", e);
                 }
             }
             final FlushCompletionOrigin origin
@@ -301,7 +308,11 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
             logger.atError().log("Publishing-subscription terminated with an error.", t);
-            onFailed.accept(new SendBatchFailedContext(null, partitionId, t));
+            try {
+                onFailed.accept(new SendBatchFailedContext(null, partitionId, t));
+            } catch (Throwable e) {
+                logger.atWarning().log("onSendBatchFailed handler threw.", e);
+            }
             tryCompleteFlush(FlushCompletionOrigin.TERMINAL_ERROR);
         }
 
