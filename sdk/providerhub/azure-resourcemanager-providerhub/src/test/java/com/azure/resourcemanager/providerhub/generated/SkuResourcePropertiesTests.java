@@ -21,202 +21,207 @@ public final class SkuResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuResourceProperties model = BinaryData.fromString(
-            "{\"skuSettings\":[{\"name\":\"csserxht\",\"tier\":\"oxhlw\",\"size\":\"sjgqrsxyp\",\"family\":\"uuybnchrsz\",\"kind\":\"oyuelyetn\",\"locations\":[\"fqyggagflnlgmtr\"],\"locationInfo\":[{\"location\":\"zjmucftbyrplroh\",\"zones\":[\"gqfu\",\"u\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"wklsnoxaxmqe\",\"alhhjnhgwydyynfs\",\"khgb\"],\"type\":\"NotSpecified\"},{\"location\":\"anarfdlpukhpyrne\",\"zones\":[\"cpeogkhnmgbrou\",\"ddbhf\",\"pfpazjzoywjxhpdu\"],\"zoneDetails\":[{},{}],\"extendedLocations\":[\"cnpqwteht\"],\"type\":\"NotSpecified\"},{\"location\":\"rhrljyoogwxhn\",\"zones\":[\"ugwbsreurfqkf\"],\"zoneDetails\":[{},{},{},{}],\"extendedLocations\":[\"lvhhtklnvn\",\"fvv\",\"yfedevjbo\",\"lcqxypokk\"],\"type\":\"ArcZone\"}],\"requiredQuotaIds\":[\"cymczngn\"],\"requiredFeatures\":[\"x\",\"wuninv\"],\"capacity\":{\"minimum\":1604128038,\"maximum\":91988109,\"default\":1594166889,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"ec\",\"quantity\":313351461,\"extendedUnit\":\"mxxdtddmflh\"},{\"meterId\":\"ytxzvtznapxbanno\",\"quantity\":1782705018,\"extendedUnit\":\"czytprwn\"},{\"meterId\":\"vroevytlyo\",\"quantity\":1862922267,\"extendedUnit\":\"o\"}],\"capabilities\":[{\"name\":\"vnsasbcrymodi\",\"value\":\"rxklobdxnazpmk\"}]},{\"name\":\"lmv\",\"tier\":\"f\",\"size\":\"op\",\"family\":\"bzxliohrdddtfgxq\",\"kind\":\"wpcbbnzqcy\",\"locations\":[\"p\",\"ofyuicd\",\"zb\"],\"locationInfo\":[{\"location\":\"wwgbdv\",\"zones\":[\"dmhm\",\"ffplfmuvapckcc\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"yoxoy\",\"ukphaimmoiroq\",\"oshbragapyy\",\"mfsvbpav\"],\"type\":\"CustomLocation\"}],\"requiredQuotaIds\":[\"pdbwnupgahxkum\",\"sjcaacfdmmcpugm\",\"hqepvufhbzehewh\",\"qhnlbqnbld\"],\"requiredFeatures\":[\"clgsc\",\"orim\",\"rsrrmoucsofldp\"],\"capacity\":{\"minimum\":1032506167,\"maximum\":1518888848,\"default\":1973105504,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"lhbhl\",\"quantity\":940913743,\"extendedUnit\":\"uqibsxtkcu\"},{\"meterId\":\"fbsfarfsiow\",\"quantity\":1137080537,\"extendedUnit\":\"nqpvwgfstmhqykiz\"}],\"capabilities\":[{\"name\":\"saoafcluqvox\",\"value\":\"ycjimryvwgcwwpbm\"},{\"name\":\"gwe\",\"value\":\"ydsx\"},{\"name\":\"efoh\",\"value\":\"cbvopwndyqleallk\"},{\"name\":\"mtkhlowkxxpvbr\",\"value\":\"fjmzsyzfho\"}]},{\"name\":\"lhikcyychunsj\",\"tier\":\"jrtwsz\",\"size\":\"vuicp\",\"family\":\"trrmhwrb\",\"kind\":\"pyf\",\"locations\":[\"hvj\",\"lrocuyzlwh\"],\"locationInfo\":[{\"location\":\"mhoocl\",\"zones\":[\"pqmem\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"mykyujxsglhs\",\"rryejylmbkzudnig\"],\"type\":\"ArcZone\"},{\"location\":\"hotj\",\"zones\":[\"pxuzzjg\",\"refqy\",\"qotoihiqakydiwfb\",\"kwpzdqtvh\"],\"zoneDetails\":[{},{}],\"extendedLocations\":[\"aqa\",\"sipi\"],\"type\":\"CustomLocation\"},{\"location\":\"bebjfu\",\"zones\":[\"oichdlpnfpubnt\",\"batzviqsows\",\"aelcat\",\"cjuhplrvkm\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"vlgfgg\",\"vkyylizrzbjpsf\",\"sfuztlvtmv\",\"gbwidqlvh\"],\"type\":\"ArcZone\"}],\"requiredQuotaIds\":[\"ofizrvjfnmjmvlwy\",\"giblkujrllf\"],\"requiredFeatures\":[\"idjpuuyju\",\"ejikzoeovvtzejet\",\"kl\",\"tikyj\"],\"capacity\":{\"minimum\":191041134,\"maximum\":1716135154,\"default\":1169828149,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"zvhqjwtrhtgvg\",\"quantity\":52553155,\"extendedUnit\":\"rkolawjm\"}],\"capabilities\":[{\"name\":\"wro\",\"value\":\"cdxfzzzwyjafitl\"},{\"name\":\"guyn\",\"value\":\"chl\"},{\"name\":\"mltx\",\"value\":\"whmozusgzvlnsnnj\"},{\"name\":\"fpafolpymwamxq\",\"value\":\"rag\"}]},{\"name\":\"gdphtvdula\",\"tier\":\"lejchcsr\",\"size\":\"knmzlanrupdwvnp\",\"family\":\"nzqtpjhmqrhvt\",\"kind\":\"aiwdcxsmlzzhz\",\"locations\":[\"etlgydlhqvlnnpx\",\"b\",\"fiqgeaar\"],\"locationInfo\":[{\"location\":\"ekglklb\",\"zones\":[\"idwcwvmzegjon\",\"hj\",\"rwgdnqzbrfks\",\"zhzmtksjci\"],\"zoneDetails\":[{},{},{}],\"extendedLocations\":[\"xcdglj\",\"lkeuac\",\"tomflrytswfpf\",\"dgycxnmskwhqjjy\"],\"type\":\"CustomLocation\"},{\"location\":\"rlpshhkv\",\"zones\":[\"wqslsrhmpqvw\",\"skondcbrwimu\",\"qejo\",\"ovyrrleaesinu\"],\"zoneDetails\":[{},{},{},{}],\"extendedLocations\":[\"obbpihehc\",\"cy\",\"mrqbrjbbmpxdlv\"],\"type\":\"EdgeZone\"},{\"location\":\"rexcrseqwjksghu\",\"zones\":[\"hxogjggsvoujkxi\",\"dafhr\",\"mdyomkxfbvfbh\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"pwpgddei\",\"awzovgkk\",\"muikjcjcaztbws\",\"sqowxwc\"],\"type\":\"ArcZone\"}],\"requiredQuotaIds\":[\"ytwvczcswkacve\",\"yfdvlvhbwrnfxtgd\"],\"requiredFeatures\":[\"th\"],\"capacity\":{\"minimum\":74462923,\"maximum\":1859021657,\"default\":749394932,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"coeqswankltytm\",\"quantity\":1217879659,\"extendedUnit\":\"znnhd\"},{\"meterId\":\"lktgjc\",\"quantity\":1422511233,\"extendedUnit\":\"xhem\"},{\"meterId\":\"wyw\",\"quantity\":1379226117,\"extendedUnit\":\"zgfbukklelssx\"}],\"capabilities\":[{\"name\":\"c\",\"value\":\"xzujksrlsm\"},{\"name\":\"esqplp\",\"value\":\"mjc\"}]}],\"provisioningState\":\"Accepted\"}")
+            "{\"skuSettings\":[{\"name\":\"cnhz\",\"tier\":\"ot\",\"size\":\"zcfyjzptwrl\",\"family\":\"apqinf\",\"kind\":\"pyglqdhmrjzral\",\"locations\":[\"jb\"],\"locationInfo\":[{\"location\":\"sjoqcjenkyhfqzvs\",\"zones\":[\"xj\",\"l\"],\"zoneDetails\":[{},{},{}],\"extendedLocations\":[\"qjhhhqxuwyvc\",\"co\",\"v\",\"vbsizusjszlbscm\"],\"type\":\"EdgeZone\"},{\"location\":\"ijiufehgmvfln\",\"zones\":[\"qkxrerl\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"lyfwxzutg\"],\"type\":\"ArcZone\"},{\"location\":\"whghmup\",\"zones\":[\"jtcdxabbujftaben\",\"bklqpxz\",\"cafeddw\",\"nlzafwxudgnh\"],\"zoneDetails\":[{},{},{}],\"extendedLocations\":[\"talvnbwgp\",\"emeluclv\"],\"type\":\"CustomLocation\"}],\"requiredQuotaIds\":[\"yrdnqod\",\"ahhxhqfaqnvzoqg\",\"ipemchgavscz\"],\"requiredFeatures\":[\"dtx\",\"tlghwzhomew\",\"j\",\"tl\"],\"capacity\":{\"minimum\":1540602117,\"maximum\":887233496,\"default\":2067829444,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"ncznvodrrslblxyd\",\"quantity\":1866167882,\"extendedUnit\":\"vvbxiwkgfbqljnq\"}],\"capabilities\":[{\"name\":\"chocokulehur\",\"value\":\"lrqff\"},{\"name\":\"weyurkphyjd\",\"value\":\"ravjuq\"},{\"name\":\"brxmrgch\",\"value\":\"apx\"}]},{\"name\":\"iyfjjkbajbuscg\",\"tier\":\"u\",\"size\":\"oycblevpmc\",\"family\":\"jy\",\"kind\":\"yxlzgs\",\"locations\":[\"zzlt\",\"fhbzffovwmbjlzq\",\"czpgvdwnapfdq\"],\"locationInfo\":[{\"location\":\"ftptnuwj\",\"zones\":[\"chgcgqyh\"],\"zoneDetails\":[{},{},{},{}],\"extendedLocations\":[\"q\",\"hvyeldotj\",\"dkwisw\"],\"type\":\"ArcZone\"}],\"requiredQuotaIds\":[\"tasbvw\",\"spkxkdt\",\"fkndl\"],\"requiredFeatures\":[\"w\",\"nvgmmbugtywa\"],\"capacity\":{\"minimum\":1759179629,\"maximum\":1205703385,\"default\":2130268109,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"roeshoygzc\",\"quantity\":593333804,\"extendedUnit\":\"x\"},{\"meterId\":\"faoytehqpuv\",\"quantity\":1834900965,\"extendedUnit\":\"mtdwcky\"},{\"meterId\":\"roejnndl\",\"quantity\":732502558,\"extendedUnit\":\"skbrreqynkc\"}],\"capabilities\":[{\"name\":\"faqegplwryshwddk\",\"value\":\"bxgkqusy\"}]},{\"name\":\"w\",\"tier\":\"dacarvvlfnty\",\"size\":\"poi\",\"family\":\"naz\",\"kind\":\"ohzrsqalsx\",\"locations\":[\"wqapfgsdp\",\"vessm\",\"hhkuuip\",\"dqq\"],\"locationInfo\":[{\"location\":\"kva\",\"zones\":[\"htjqvqyvw\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"mxhzzysevus\",\"ivzrrryveimipsk\"],\"type\":\"EdgeZone\"},{\"location\":\"atvfuzkaftj\",\"zones\":[\"uxwigsyeipqdsm\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"gdgkki\",\"eplkcsm\",\"nhwtbbaedorvv\"],\"type\":\"EdgeZone\"},{\"location\":\"loyg\",\"zones\":[\"wumgx\",\"gdhpabgdexjddv\",\"saq\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"wllcolsr\",\"xaptefhexcgjok\",\"ljnhvlqj\",\"ek\"],\"type\":\"ArcZone\"}],\"requiredQuotaIds\":[\"nbksd\",\"hjvyklxeslkhhus\",\"cpoq\"],\"requiredFeatures\":[\"nwqjwgokn\",\"ejjjkxybwfdb\"],\"capacity\":{\"minimum\":1421637251,\"maximum\":470007902,\"default\":920563756,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"yk\",\"quantity\":2138101250,\"extendedUnit\":\"nsxfwu\"},{\"meterId\":\"hcdpkupnqrmgj\",\"quantity\":482115950,\"extendedUnit\":\"uwxeoiojfizf\"},{\"meterId\":\"vkjzwfbcyaykm\",\"quantity\":313297047,\"extendedUnit\":\"bfw\"}],\"capabilities\":[{\"name\":\"xmdewsrsxkrplbj\",\"value\":\"zej\"},{\"name\":\"w\",\"value\":\"iyoypsuhbrnnhj\"}]},{\"name\":\"sqwjhqkbiwetpozy\",\"tier\":\"qiqyhgfsetzlexbs\",\"size\":\"e\",\"family\":\"no\",\"kind\":\"ziu\",\"locations\":[\"zkkdtnhqs\",\"cljse\"],\"locationInfo\":[{\"location\":\"pbafvafhlbylc\",\"zones\":[\"vxrh\",\"zdfwrsofpltdbm\"],\"zoneDetails\":[{},{},{},{}],\"extendedLocations\":[\"vhfn\",\"acwn\",\"qigtuujwouhdaws\"],\"type\":\"NotSpecified\"},{\"location\":\"bjb\",\"zones\":[\"ybvitvqkjyaznumt\",\"gmuwdchozfnkf\"],\"zoneDetails\":[{}],\"extendedLocations\":[\"noakiz\"],\"type\":\"NotSpecified\"},{\"location\":\"iknaqlnuwig\",\"zones\":[\"lykwphvxz\"],\"zoneDetails\":[{},{},{}],\"extendedLocations\":[\"pejtl\"],\"type\":\"EdgeZone\"}],\"requiredQuotaIds\":[\"nwivkcqhrxh\",\"knlccrmmkyup\",\"jubyqjfkakfq\",\"rke\"],\"requiredFeatures\":[\"ldudxjascowv\"],\"capacity\":{\"minimum\":1320880115,\"maximum\":1883163929,\"default\":453126214,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"ksnmgzv\",\"quantity\":311006446,\"extendedUnit\":\"dkz\"}],\"capabilities\":[{\"name\":\"wsithuqolyahlu\",\"value\":\"wqulsutrjbhxykf\"},{\"name\":\"y\",\"value\":\"ezvqq\"},{\"name\":\"g\",\"value\":\"rftb\"},{\"name\":\"ve\",\"value\":\"reuquowtljvf\"}]}],\"provisioningState\":\"Canceled\"}")
             .toObject(SkuResourceProperties.class);
-        Assertions.assertEquals("csserxht", model.skuSettings().get(0).name());
-        Assertions.assertEquals("oxhlw", model.skuSettings().get(0).tier());
-        Assertions.assertEquals("sjgqrsxyp", model.skuSettings().get(0).size());
-        Assertions.assertEquals("uuybnchrsz", model.skuSettings().get(0).family());
-        Assertions.assertEquals("oyuelyetn", model.skuSettings().get(0).kind());
-        Assertions.assertEquals("fqyggagflnlgmtr", model.skuSettings().get(0).locations().get(0));
-        Assertions.assertEquals("zjmucftbyrplroh", model.skuSettings().get(0).locationInfo().get(0).location());
-        Assertions.assertEquals("gqfu", model.skuSettings().get(0).locationInfo().get(0).zones().get(0));
-        Assertions.assertEquals("wklsnoxaxmqe",
+        Assertions.assertEquals("cnhz", model.skuSettings().get(0).name());
+        Assertions.assertEquals("ot", model.skuSettings().get(0).tier());
+        Assertions.assertEquals("zcfyjzptwrl", model.skuSettings().get(0).size());
+        Assertions.assertEquals("apqinf", model.skuSettings().get(0).family());
+        Assertions.assertEquals("pyglqdhmrjzral", model.skuSettings().get(0).kind());
+        Assertions.assertEquals("jb", model.skuSettings().get(0).locations().get(0));
+        Assertions.assertEquals("sjoqcjenkyhfqzvs", model.skuSettings().get(0).locationInfo().get(0).location());
+        Assertions.assertEquals("xj", model.skuSettings().get(0).locationInfo().get(0).zones().get(0));
+        Assertions.assertEquals("qjhhhqxuwyvc",
             model.skuSettings().get(0).locationInfo().get(0).extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED,
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.skuSettings().get(0).locationInfo().get(0).type());
-        Assertions.assertEquals("cymczngn", model.skuSettings().get(0).requiredQuotaIds().get(0));
-        Assertions.assertEquals("x", model.skuSettings().get(0).requiredFeatures().get(0));
-        Assertions.assertEquals(1604128038, model.skuSettings().get(0).capacity().minimum());
-        Assertions.assertEquals(91988109, model.skuSettings().get(0).capacity().maximum());
-        Assertions.assertEquals(1594166889, model.skuSettings().get(0).capacity().defaultProperty());
+        Assertions.assertEquals("yrdnqod", model.skuSettings().get(0).requiredQuotaIds().get(0));
+        Assertions.assertEquals("dtx", model.skuSettings().get(0).requiredFeatures().get(0));
+        Assertions.assertEquals(1540602117, model.skuSettings().get(0).capacity().minimum());
+        Assertions.assertEquals(887233496, model.skuSettings().get(0).capacity().maximum());
+        Assertions.assertEquals(2067829444, model.skuSettings().get(0).capacity().defaultProperty());
         Assertions.assertEquals(SkuScaleType.AUTOMATIC, model.skuSettings().get(0).capacity().scaleType());
-        Assertions.assertEquals("ec", model.skuSettings().get(0).costs().get(0).meterId());
-        Assertions.assertEquals(313351461, model.skuSettings().get(0).costs().get(0).quantity());
-        Assertions.assertEquals("mxxdtddmflh", model.skuSettings().get(0).costs().get(0).extendedUnit());
-        Assertions.assertEquals("vnsasbcrymodi", model.skuSettings().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("rxklobdxnazpmk", model.skuSettings().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("ncznvodrrslblxyd", model.skuSettings().get(0).costs().get(0).meterId());
+        Assertions.assertEquals(1866167882, model.skuSettings().get(0).costs().get(0).quantity());
+        Assertions.assertEquals("vvbxiwkgfbqljnq", model.skuSettings().get(0).costs().get(0).extendedUnit());
+        Assertions.assertEquals("chocokulehur", model.skuSettings().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("lrqff", model.skuSettings().get(0).capabilities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuResourceProperties model
-            = new SkuResourceProperties().withSkuSettings(Arrays.asList(
-                new SkuSetting()
-                    .withName("csserxht")
-                    .withTier("oxhlw")
-                    .withSize("sjgqrsxyp")
-                    .withFamily("uuybnchrsz")
-                    .withKind("oyuelyetn")
-                    .withLocations(Arrays.asList("fqyggagflnlgmtr"))
-                    .withLocationInfo(Arrays.asList(
-                        new SkuLocationInfo().withLocation("zjmucftbyrplroh")
-                            .withZones(Arrays.asList("gqfu", "u"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("wklsnoxaxmqe", "alhhjnhgwydyynfs", "khgb"))
-                            .withType(ExtendedLocationType.NOT_SPECIFIED),
-                        new SkuLocationInfo().withLocation("anarfdlpukhpyrne")
-                            .withZones(Arrays.asList("cpeogkhnmgbrou", "ddbhf", "pfpazjzoywjxhpdu"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("cnpqwteht"))
-                            .withType(ExtendedLocationType.NOT_SPECIFIED),
-                        new SkuLocationInfo().withLocation("rhrljyoogwxhn")
-                            .withZones(Arrays.asList("ugwbsreurfqkf"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(),
-                                new SkuZoneDetail(), new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("lvhhtklnvn", "fvv", "yfedevjbo", "lcqxypokk"))
-                            .withType(ExtendedLocationType.ARC_ZONE)))
-                    .withRequiredQuotaIds(Arrays.asList("cymczngn"))
-                    .withRequiredFeatures(Arrays.asList("x", "wuninv"))
-                    .withCapacity(new SkuSettingCapacity().withMinimum(1604128038)
-                        .withMaximum(91988109)
-                        .withDefaultProperty(1594166889)
-                        .withScaleType(SkuScaleType.AUTOMATIC))
-                    .withCosts(
-                        Arrays
-                            .asList(
-                                new SkuCost().withMeterId("ec").withQuantity(313351461).withExtendedUnit("mxxdtddmflh"),
-                                new SkuCost().withMeterId("ytxzvtznapxbanno")
-                                    .withQuantity(1782705018)
-                                    .withExtendedUnit("czytprwn"),
-                                new SkuCost().withMeterId("vroevytlyo").withQuantity(1862922267).withExtendedUnit("o")))
-                    .withCapabilities(
-                        Arrays.asList(new SkuCapability().withName("vnsasbcrymodi").withValue("rxklobdxnazpmk"))),
-                new SkuSetting().withName("lmv")
-                    .withTier("f")
-                    .withSize("op")
-                    .withFamily("bzxliohrdddtfgxq")
-                    .withKind("wpcbbnzqcy")
-                    .withLocations(Arrays.asList("p", "ofyuicd", "zb"))
-                    .withLocationInfo(Arrays.asList(new SkuLocationInfo().withLocation("wwgbdv")
-                        .withZones(Arrays.asList("dmhm", "ffplfmuvapckcc"))
-                        .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
-                        .withExtendedLocations(Arrays.asList("yoxoy", "ukphaimmoiroq", "oshbragapyy", "mfsvbpav"))
-                        .withType(ExtendedLocationType.CUSTOM_LOCATION)))
-                    .withRequiredQuotaIds(
-                        Arrays.asList("pdbwnupgahxkum", "sjcaacfdmmcpugm", "hqepvufhbzehewh", "qhnlbqnbld"))
-                    .withRequiredFeatures(Arrays.asList("clgsc", "orim", "rsrrmoucsofldp"))
-                    .withCapacity(new SkuSettingCapacity().withMinimum(1032506167)
-                        .withMaximum(1518888848)
-                        .withDefaultProperty(1973105504)
-                        .withScaleType(SkuScaleType.NONE))
-                    .withCosts(Arrays.asList(new SkuCost().withMeterId("lhbhl")
-                        .withQuantity(940913743)
-                        .withExtendedUnit("uqibsxtkcu"),
-                        new SkuCost().withMeterId("fbsfarfsiow")
-                            .withQuantity(1137080537)
-                            .withExtendedUnit("nqpvwgfstmhqykiz")))
-                    .withCapabilities(
-                        Arrays
-                            .asList(new SkuCapability().withName("saoafcluqvox").withValue("ycjimryvwgcwwpbm"),
-                                new SkuCapability().withName("gwe").withValue("ydsx"), new SkuCapability().withName(
-                                    "efoh").withValue("cbvopwndyqleallk"),
-                                new SkuCapability().withName("mtkhlowkxxpvbr").withValue("fjmzsyzfho"))),
-                new SkuSetting()
-                    .withName("lhikcyychunsj")
-                    .withTier("jrtwsz")
-                    .withSize("vuicp")
-                    .withFamily("trrmhwrb")
-                    .withKind("pyf")
-                    .withLocations(Arrays.asList("hvj", "lrocuyzlwh"))
-                    .withLocationInfo(Arrays.asList(
-                        new SkuLocationInfo().withLocation("mhoocl")
-                            .withZones(Arrays.asList("pqmem"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("mykyujxsglhs", "rryejylmbkzudnig"))
-                            .withType(ExtendedLocationType.ARC_ZONE),
-                        new SkuLocationInfo().withLocation("hotj")
-                            .withZones(Arrays.asList("pxuzzjg", "refqy", "qotoihiqakydiwfb", "kwpzdqtvh"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("aqa", "sipi"))
-                            .withType(ExtendedLocationType.CUSTOM_LOCATION),
-                        new SkuLocationInfo().withLocation("bebjfu")
-                            .withZones(Arrays.asList("oichdlpnfpubnt", "batzviqsows", "aelcat", "cjuhplrvkm"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("vlgfgg", "vkyylizrzbjpsf", "sfuztlvtmv", "gbwidqlvh"))
-                            .withType(ExtendedLocationType.ARC_ZONE)))
-                    .withRequiredQuotaIds(Arrays.asList("ofizrvjfnmjmvlwy", "giblkujrllf"))
-                    .withRequiredFeatures(Arrays.asList("idjpuuyju", "ejikzoeovvtzejet", "kl", "tikyj"))
-                    .withCapacity(new SkuSettingCapacity().withMinimum(191041134)
-                        .withMaximum(1716135154)
-                        .withDefaultProperty(1169828149)
-                        .withScaleType(SkuScaleType.NONE))
-                    .withCosts(Arrays.asList(
-                        new SkuCost().withMeterId("zvhqjwtrhtgvg").withQuantity(52553155).withExtendedUnit("rkolawjm")))
-                    .withCapabilities(Arrays.asList(new SkuCapability().withName("wro").withValue("cdxfzzzwyjafitl"),
-                        new SkuCapability().withName("guyn").withValue("chl"), new SkuCapability().withName("mltx")
-                            .withValue("whmozusgzvlnsnnj"),
-                        new SkuCapability().withName("fpafolpymwamxq").withValue("rag"))),
-                new SkuSetting().withName("gdphtvdula")
-                    .withTier("lejchcsr")
-                    .withSize("knmzlanrupdwvnp")
-                    .withFamily("nzqtpjhmqrhvt")
-                    .withKind("aiwdcxsmlzzhz")
-                    .withLocations(Arrays.asList("etlgydlhqvlnnpx", "b", "fiqgeaar"))
-                    .withLocationInfo(Arrays.asList(
-                        new SkuLocationInfo().withLocation("ekglklb")
-                            .withZones(Arrays.asList("idwcwvmzegjon", "hj", "rwgdnqzbrfks", "zhzmtksjci"))
-                            .withZoneDetails(
-                                Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(), new SkuZoneDetail()))
-                            .withExtendedLocations(
-                                Arrays.asList("xcdglj", "lkeuac", "tomflrytswfpf", "dgycxnmskwhqjjy"))
-                            .withType(ExtendedLocationType.CUSTOM_LOCATION),
-                        new SkuLocationInfo().withLocation("rlpshhkv")
-                            .withZones(Arrays.asList("wqslsrhmpqvw", "skondcbrwimu", "qejo", "ovyrrleaesinu"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(),
-                                new SkuZoneDetail(), new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("obbpihehc", "cy", "mrqbrjbbmpxdlv"))
-                            .withType(ExtendedLocationType.EDGE_ZONE),
-                        new SkuLocationInfo().withLocation("rexcrseqwjksghu")
-                            .withZones(Arrays.asList("hxogjggsvoujkxi", "dafhr", "mdyomkxfbvfbh"))
-                            .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
-                            .withExtendedLocations(Arrays.asList("pwpgddei", "awzovgkk", "muikjcjcaztbws", "sqowxwc"))
-                            .withType(ExtendedLocationType.ARC_ZONE)))
-                    .withRequiredQuotaIds(Arrays.asList("ytwvczcswkacve", "yfdvlvhbwrnfxtgd"))
-                    .withRequiredFeatures(Arrays.asList("th"))
-                    .withCapacity(new SkuSettingCapacity().withMinimum(74462923)
-                        .withMaximum(1859021657)
-                        .withDefaultProperty(749394932)
-                        .withScaleType(SkuScaleType.AUTOMATIC))
-                    .withCosts(Arrays.asList(
-                        new SkuCost().withMeterId("coeqswankltytm").withQuantity(1217879659).withExtendedUnit("znnhd"),
-                        new SkuCost().withMeterId("lktgjc").withQuantity(1422511233).withExtendedUnit("xhem"),
-                        new SkuCost().withMeterId("wyw").withQuantity(1379226117).withExtendedUnit("zgfbukklelssx")))
-                    .withCapabilities(Arrays.asList(new SkuCapability().withName("c").withValue("xzujksrlsm"),
-                        new SkuCapability().withName("esqplp").withValue("mjc")))));
+            = new SkuResourceProperties()
+                .withSkuSettings(
+                    Arrays.asList(
+                        new SkuSetting().withName("cnhz")
+                            .withTier("ot")
+                            .withSize("zcfyjzptwrl")
+                            .withFamily("apqinf")
+                            .withKind("pyglqdhmrjzral")
+                            .withLocations(Arrays.asList("jb"))
+                            .withLocationInfo(Arrays.asList(
+                                new SkuLocationInfo().withLocation("sjoqcjenkyhfqzvs")
+                                    .withZones(Arrays.asList("xj", "l"))
+                                    .withZoneDetails(
+                                        Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(), new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("qjhhhqxuwyvc", "co", "v", "vbsizusjszlbscm"))
+                                    .withType(ExtendedLocationType.EDGE_ZONE),
+                                new SkuLocationInfo().withLocation("ijiufehgmvfln")
+                                    .withZones(Arrays.asList("qkxrerl"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("lyfwxzutg"))
+                                    .withType(ExtendedLocationType.ARC_ZONE),
+                                new SkuLocationInfo().withLocation("whghmup")
+                                    .withZones(Arrays.asList("jtcdxabbujftaben", "bklqpxz", "cafeddw", "nlzafwxudgnh"))
+                                    .withZoneDetails(
+                                        Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(), new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("talvnbwgp", "emeluclv"))
+                                    .withType(ExtendedLocationType.CUSTOM_LOCATION)))
+                            .withRequiredQuotaIds(Arrays.asList("yrdnqod", "ahhxhqfaqnvzoqg", "ipemchgavscz"))
+                            .withRequiredFeatures(Arrays.asList("dtx", "tlghwzhomew", "j", "tl"))
+                            .withCapacity(new SkuSettingCapacity().withMinimum(1540602117)
+                                .withMaximum(887233496)
+                                .withDefaultProperty(2067829444)
+                                .withScaleType(SkuScaleType.AUTOMATIC))
+                            .withCosts(Arrays.asList(new SkuCost().withMeterId("ncznvodrrslblxyd")
+                                .withQuantity(1866167882)
+                                .withExtendedUnit("vvbxiwkgfbqljnq")))
+                            .withCapabilities(Arrays.asList(
+                                new SkuCapability().withName("chocokulehur").withValue("lrqff"),
+                                new SkuCapability().withName("weyurkphyjd").withValue("ravjuq"),
+                                new SkuCapability().withName("brxmrgch").withValue("apx"))),
+                        new SkuSetting()
+                            .withName("iyfjjkbajbuscg")
+                            .withTier("u")
+                            .withSize("oycblevpmc")
+                            .withFamily("jy")
+                            .withKind("yxlzgs")
+                            .withLocations(Arrays.asList("zzlt", "fhbzffovwmbjlzq", "czpgvdwnapfdq"))
+                            .withLocationInfo(Arrays.asList(new SkuLocationInfo().withLocation("ftptnuwj")
+                                .withZones(Arrays.asList("chgcgqyh"))
+                                .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(),
+                                    new SkuZoneDetail(), new SkuZoneDetail()))
+                                .withExtendedLocations(Arrays.asList("q", "hvyeldotj", "dkwisw"))
+                                .withType(ExtendedLocationType.ARC_ZONE)))
+                            .withRequiredQuotaIds(Arrays.asList("tasbvw", "spkxkdt", "fkndl"))
+                            .withRequiredFeatures(Arrays.asList("w", "nvgmmbugtywa"))
+                            .withCapacity(new SkuSettingCapacity().withMinimum(1759179629)
+                                .withMaximum(1205703385)
+                                .withDefaultProperty(2130268109)
+                                .withScaleType(SkuScaleType.MANUAL))
+                            .withCosts(Arrays.asList(
+                                new SkuCost().withMeterId("roeshoygzc").withQuantity(593333804).withExtendedUnit("x"),
+                                new SkuCost().withMeterId("faoytehqpuv")
+                                    .withQuantity(1834900965)
+                                    .withExtendedUnit("mtdwcky"),
+                                new SkuCost().withMeterId("roejnndl")
+                                    .withQuantity(732502558)
+                                    .withExtendedUnit("skbrreqynkc")))
+                            .withCapabilities(Arrays.asList(new SkuCapability()
+                                .withName("faqegplwryshwddk")
+                                .withValue("bxgkqusy"))),
+                        new SkuSetting().withName("w")
+                            .withTier("dacarvvlfnty")
+                            .withSize("poi")
+                            .withFamily("naz")
+                            .withKind("ohzrsqalsx")
+                            .withLocations(Arrays.asList("wqapfgsdp", "vessm", "hhkuuip", "dqq"))
+                            .withLocationInfo(Arrays.asList(
+                                new SkuLocationInfo().withLocation("kva")
+                                    .withZones(Arrays.asList("htjqvqyvw"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("mxhzzysevus", "ivzrrryveimipsk"))
+                                    .withType(ExtendedLocationType.EDGE_ZONE),
+                                new SkuLocationInfo().withLocation("atvfuzkaftj")
+                                    .withZones(Arrays.asList("uxwigsyeipqdsm"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("gdgkki", "eplkcsm", "nhwtbbaedorvv"))
+                                    .withType(ExtendedLocationType.EDGE_ZONE),
+                                new SkuLocationInfo().withLocation("loyg")
+                                    .withZones(Arrays.asList("wumgx", "gdhpabgdexjddv", "saq"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
+                                    .withExtendedLocations(
+                                        Arrays.asList("wllcolsr", "xaptefhexcgjok", "ljnhvlqj", "ek"))
+                                    .withType(ExtendedLocationType.ARC_ZONE)))
+                            .withRequiredQuotaIds(Arrays.asList("nbksd", "hjvyklxeslkhhus", "cpoq"))
+                            .withRequiredFeatures(Arrays.asList("nwqjwgokn", "ejjjkxybwfdb"))
+                            .withCapacity(new SkuSettingCapacity().withMinimum(1421637251)
+                                .withMaximum(470007902)
+                                .withDefaultProperty(920563756)
+                                .withScaleType(SkuScaleType.NONE))
+                            .withCosts(Arrays.asList(
+                                new SkuCost().withMeterId("yk").withQuantity(2138101250).withExtendedUnit("nsxfwu"),
+                                new SkuCost()
+                                    .withMeterId("hcdpkupnqrmgj")
+                                    .withQuantity(482115950)
+                                    .withExtendedUnit("uwxeoiojfizf"),
+                                new SkuCost().withMeterId("vkjzwfbcyaykm")
+                                    .withQuantity(313297047)
+                                    .withExtendedUnit("bfw")))
+                            .withCapabilities(
+                                Arrays.asList(new SkuCapability().withName("xmdewsrsxkrplbj").withValue("zej"),
+                                    new SkuCapability().withName("w").withValue("iyoypsuhbrnnhj"))),
+                        new SkuSetting().withName("sqwjhqkbiwetpozy")
+                            .withTier("qiqyhgfsetzlexbs")
+                            .withSize("e")
+                            .withFamily("no")
+                            .withKind("ziu")
+                            .withLocations(Arrays.asList("zkkdtnhqs", "cljse"))
+                            .withLocationInfo(Arrays.asList(
+                                new SkuLocationInfo().withLocation("pbafvafhlbylc")
+                                    .withZones(Arrays.asList("vxrh", "zdfwrsofpltdbm"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(),
+                                        new SkuZoneDetail(), new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("vhfn", "acwn", "qigtuujwouhdaws"))
+                                    .withType(ExtendedLocationType.NOT_SPECIFIED),
+                                new SkuLocationInfo().withLocation("bjb")
+                                    .withZones(Arrays.asList("ybvitvqkjyaznumt", "gmuwdchozfnkf"))
+                                    .withZoneDetails(Arrays.asList(new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("noakiz"))
+                                    .withType(ExtendedLocationType.NOT_SPECIFIED),
+                                new SkuLocationInfo().withLocation("iknaqlnuwig")
+                                    .withZones(Arrays.asList("lykwphvxz"))
+                                    .withZoneDetails(
+                                        Arrays.asList(new SkuZoneDetail(), new SkuZoneDetail(), new SkuZoneDetail()))
+                                    .withExtendedLocations(Arrays.asList("pejtl"))
+                                    .withType(ExtendedLocationType.EDGE_ZONE)))
+                            .withRequiredQuotaIds(Arrays.asList("nwivkcqhrxh", "knlccrmmkyup", "jubyqjfkakfq", "rke"))
+                            .withRequiredFeatures(Arrays.asList("ldudxjascowv"))
+                            .withCapacity(new SkuSettingCapacity().withMinimum(1320880115)
+                                .withMaximum(1883163929)
+                                .withDefaultProperty(453126214)
+                                .withScaleType(SkuScaleType.MANUAL))
+                            .withCosts(Arrays.asList(
+                                new SkuCost().withMeterId("ksnmgzv").withQuantity(311006446).withExtendedUnit("dkz")))
+                            .withCapabilities(Arrays.asList(
+                                new SkuCapability().withName("wsithuqolyahlu").withValue("wqulsutrjbhxykf"),
+                                new SkuCapability().withName("y").withValue("ezvqq"),
+                                new SkuCapability().withName("g").withValue("rftb"),
+                                new SkuCapability().withName("ve").withValue("reuquowtljvf")))));
         model = BinaryData.fromObject(model).toObject(SkuResourceProperties.class);
-        Assertions.assertEquals("csserxht", model.skuSettings().get(0).name());
-        Assertions.assertEquals("oxhlw", model.skuSettings().get(0).tier());
-        Assertions.assertEquals("sjgqrsxyp", model.skuSettings().get(0).size());
-        Assertions.assertEquals("uuybnchrsz", model.skuSettings().get(0).family());
-        Assertions.assertEquals("oyuelyetn", model.skuSettings().get(0).kind());
-        Assertions.assertEquals("fqyggagflnlgmtr", model.skuSettings().get(0).locations().get(0));
-        Assertions.assertEquals("zjmucftbyrplroh", model.skuSettings().get(0).locationInfo().get(0).location());
-        Assertions.assertEquals("gqfu", model.skuSettings().get(0).locationInfo().get(0).zones().get(0));
-        Assertions.assertEquals("wklsnoxaxmqe",
+        Assertions.assertEquals("cnhz", model.skuSettings().get(0).name());
+        Assertions.assertEquals("ot", model.skuSettings().get(0).tier());
+        Assertions.assertEquals("zcfyjzptwrl", model.skuSettings().get(0).size());
+        Assertions.assertEquals("apqinf", model.skuSettings().get(0).family());
+        Assertions.assertEquals("pyglqdhmrjzral", model.skuSettings().get(0).kind());
+        Assertions.assertEquals("jb", model.skuSettings().get(0).locations().get(0));
+        Assertions.assertEquals("sjoqcjenkyhfqzvs", model.skuSettings().get(0).locationInfo().get(0).location());
+        Assertions.assertEquals("xj", model.skuSettings().get(0).locationInfo().get(0).zones().get(0));
+        Assertions.assertEquals("qjhhhqxuwyvc",
             model.skuSettings().get(0).locationInfo().get(0).extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED,
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.skuSettings().get(0).locationInfo().get(0).type());
-        Assertions.assertEquals("cymczngn", model.skuSettings().get(0).requiredQuotaIds().get(0));
-        Assertions.assertEquals("x", model.skuSettings().get(0).requiredFeatures().get(0));
-        Assertions.assertEquals(1604128038, model.skuSettings().get(0).capacity().minimum());
-        Assertions.assertEquals(91988109, model.skuSettings().get(0).capacity().maximum());
-        Assertions.assertEquals(1594166889, model.skuSettings().get(0).capacity().defaultProperty());
+        Assertions.assertEquals("yrdnqod", model.skuSettings().get(0).requiredQuotaIds().get(0));
+        Assertions.assertEquals("dtx", model.skuSettings().get(0).requiredFeatures().get(0));
+        Assertions.assertEquals(1540602117, model.skuSettings().get(0).capacity().minimum());
+        Assertions.assertEquals(887233496, model.skuSettings().get(0).capacity().maximum());
+        Assertions.assertEquals(2067829444, model.skuSettings().get(0).capacity().defaultProperty());
         Assertions.assertEquals(SkuScaleType.AUTOMATIC, model.skuSettings().get(0).capacity().scaleType());
-        Assertions.assertEquals("ec", model.skuSettings().get(0).costs().get(0).meterId());
-        Assertions.assertEquals(313351461, model.skuSettings().get(0).costs().get(0).quantity());
-        Assertions.assertEquals("mxxdtddmflh", model.skuSettings().get(0).costs().get(0).extendedUnit());
-        Assertions.assertEquals("vnsasbcrymodi", model.skuSettings().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("rxklobdxnazpmk", model.skuSettings().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("ncznvodrrslblxyd", model.skuSettings().get(0).costs().get(0).meterId());
+        Assertions.assertEquals(1866167882, model.skuSettings().get(0).costs().get(0).quantity());
+        Assertions.assertEquals("vvbxiwkgfbqljnq", model.skuSettings().get(0).costs().get(0).extendedUnit());
+        Assertions.assertEquals("chocokulehur", model.skuSettings().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("lrqff", model.skuSettings().get(0).capabilities().get(0).value());
     }
 }

@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LightHouseAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LightHouseAuthorization model = BinaryData.fromString("{\"principalId\":\"b\",\"roleDefinitionId\":\"uajlyj\"}")
-            .toObject(LightHouseAuthorization.class);
-        Assertions.assertEquals("b", model.principalId());
-        Assertions.assertEquals("uajlyj", model.roleDefinitionId());
+        LightHouseAuthorization model
+            = BinaryData.fromString("{\"principalId\":\"clj\",\"roleDefinitionId\":\"ygvkzqkjj\"}")
+                .toObject(LightHouseAuthorization.class);
+        Assertions.assertEquals("clj", model.principalId());
+        Assertions.assertEquals("ygvkzqkjj", model.roleDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LightHouseAuthorization model
-            = new LightHouseAuthorization().withPrincipalId("b").withRoleDefinitionId("uajlyj");
+            = new LightHouseAuthorization().withPrincipalId("clj").withRoleDefinitionId("ygvkzqkjj");
         model = BinaryData.fromObject(model).toObject(LightHouseAuthorization.class);
-        Assertions.assertEquals("b", model.principalId());
-        Assertions.assertEquals("uajlyj", model.roleDefinitionId());
+        Assertions.assertEquals("clj", model.principalId());
+        Assertions.assertEquals("ygvkzqkjj", model.roleDefinitionId());
     }
 }

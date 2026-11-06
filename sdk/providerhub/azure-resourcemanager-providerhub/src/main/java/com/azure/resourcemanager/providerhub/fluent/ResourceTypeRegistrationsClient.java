@@ -189,4 +189,168 @@ public interface ResourceTypeRegistrationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace, Context context);
+
+    /**
+     * Gets a nested resource type details in the given subscription and provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a nested resource type details in the given subscription and provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ResourceTypeRegistrationInner> getNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, Context context);
+
+    /**
+     * Gets a nested resource type details in the given subscription and provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a nested resource type details in the given subscription and provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceTypeRegistrationInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
+     * using a specific property type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
+        beginCreateOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+            String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
+     * using a specific property type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
+        beginCreateOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+            String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties, Context context);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceTypeRegistrationInner createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties);
+
+    /**
+     * Creates or updates a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceTypeRegistrationInner createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties, Context context);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, Context context);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst);
+
+    /**
+     * Deletes a nested resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        Context context);
 }

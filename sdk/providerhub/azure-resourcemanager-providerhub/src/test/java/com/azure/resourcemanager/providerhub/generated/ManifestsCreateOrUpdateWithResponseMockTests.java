@@ -22,7 +22,7 @@ public final class ManifestsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"manifest\":\"mjpequlr\",\"manifestUri\":\"audgjtfbclakkucd\",\"commitId\":\"nhczbutoucgjt\"},\"id\":\"jwayhi\",\"name\":\"qqwwvgwks\",\"type\":\"vlizedvb\"}";
+            = "{\"properties\":{\"manifest\":\"blivw\",\"manifestUri\":\"sudy\",\"commitId\":\"mbhdo\"},\"id\":\"bng\",\"name\":\"q\",\"type\":\"gxzduvxdmxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ManifestsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManifestInfo response = manager.manifests()
-            .define("llcz")
-            .withExistingProviderRegistration("umkz")
-            .withProperties(new ManifestInfoProperties().withManifest("wnhkgq").withManifestUri("oxsstc"))
+            .define("yawkch")
+            .withExistingProviderRegistration("epgcmahiwf")
+            .withProperties(new ManifestInfoProperties().withManifest("itskshfy").withManifestUri("t"))
             .create();
 
-        Assertions.assertEquals("mjpequlr", response.properties().manifest());
-        Assertions.assertEquals("audgjtfbclakkucd", response.properties().manifestUri());
+        Assertions.assertEquals("blivw", response.properties().manifest());
+        Assertions.assertEquals("sudy", response.properties().manifestUri());
     }
 }

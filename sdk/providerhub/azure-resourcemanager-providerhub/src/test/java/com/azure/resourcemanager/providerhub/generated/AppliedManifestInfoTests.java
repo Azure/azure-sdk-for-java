@@ -13,24 +13,24 @@ public final class AppliedManifestInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppliedManifestInfo model = BinaryData.fromString(
-            "{\"region\":\"fgsftufqob\",\"manifestAppliedAt\":\"2021-10-28T00:56:19Z\",\"previousCommitId\":\"acgcckknhx\",\"appliedCommitId\":\"zvytnrzvuljraaer\"}")
+            "{\"region\":\"do\",\"manifestAppliedAt\":\"2021-04-29T17:32:24Z\",\"previousCommitId\":\"mowaziynknlqwzdv\",\"appliedCommitId\":\"w\",\"rootProviderNamespace\":\"qszdtmaajquhuxyl\"}")
             .toObject(AppliedManifestInfo.class);
-        Assertions.assertEquals("fgsftufqob", model.region());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T00:56:19Z"), model.manifestAppliedAt());
-        Assertions.assertEquals("acgcckknhx", model.previousCommitId());
-        Assertions.assertEquals("zvytnrzvuljraaer", model.appliedCommitId());
+        Assertions.assertEquals("do", model.region());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T17:32:24Z"), model.manifestAppliedAt());
+        Assertions.assertEquals("mowaziynknlqwzdv", model.previousCommitId());
+        Assertions.assertEquals("w", model.appliedCommitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedManifestInfo model = new AppliedManifestInfo().withRegion("fgsftufqob")
-            .withManifestAppliedAt(OffsetDateTime.parse("2021-10-28T00:56:19Z"))
-            .withPreviousCommitId("acgcckknhx")
-            .withAppliedCommitId("zvytnrzvuljraaer");
+        AppliedManifestInfo model = new AppliedManifestInfo().withRegion("do")
+            .withManifestAppliedAt(OffsetDateTime.parse("2021-04-29T17:32:24Z"))
+            .withPreviousCommitId("mowaziynknlqwzdv")
+            .withAppliedCommitId("w");
         model = BinaryData.fromObject(model).toObject(AppliedManifestInfo.class);
-        Assertions.assertEquals("fgsftufqob", model.region());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T00:56:19Z"), model.manifestAppliedAt());
-        Assertions.assertEquals("acgcckknhx", model.previousCommitId());
-        Assertions.assertEquals("zvytnrzvuljraaer", model.appliedCommitId());
+        Assertions.assertEquals("do", model.region());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T17:32:24Z"), model.manifestAppliedAt());
+        Assertions.assertEquals("mowaziynknlqwzdv", model.previousCommitId());
+        Assertions.assertEquals("w", model.appliedCommitId());
     }
 }

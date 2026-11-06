@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationEndpoint model
-            = BinaryData.fromString("{\"notificationDestination\":\"ozxwopd\",\"locations\":[\"p\",\"zqaclna\"]}")
-                .toObject(NotificationEndpoint.class);
-        Assertions.assertEquals("ozxwopd", model.notificationDestination());
-        Assertions.assertEquals("p", model.locations().get(0));
+        NotificationEndpoint model = BinaryData.fromString(
+            "{\"notificationDestination\":\"kfkmrocxnehvsmt\",\"locations\":[\"fpyapucygvoavyu\",\"ssxlghieegjlg\"]}")
+            .toObject(NotificationEndpoint.class);
+        Assertions.assertEquals("kfkmrocxnehvsmt", model.notificationDestination());
+        Assertions.assertEquals("fpyapucygvoavyu", model.locations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationEndpoint model = new NotificationEndpoint().withNotificationDestination("ozxwopd")
-            .withLocations(Arrays.asList("p", "zqaclna"));
+        NotificationEndpoint model = new NotificationEndpoint().withNotificationDestination("kfkmrocxnehvsmt")
+            .withLocations(Arrays.asList("fpyapucygvoavyu", "ssxlghieegjlg"));
         model = BinaryData.fromObject(model).toObject(NotificationEndpoint.class);
-        Assertions.assertEquals("ozxwopd", model.notificationDestination());
-        Assertions.assertEquals("p", model.locations().get(0));
+        Assertions.assertEquals("kfkmrocxnehvsmt", model.notificationDestination());
+        Assertions.assertEquals("fpyapucygvoavyu", model.locations().get(0));
     }
 }

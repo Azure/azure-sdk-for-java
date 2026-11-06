@@ -124,6 +124,13 @@ public interface ProviderHubManagementClient {
     ManifestsClient getManifests();
 
     /**
+     * Gets the EndpointRegistrationsClient object to access its operations.
+     * 
+     * @return the EndpointRegistrationsClient object.
+     */
+    EndpointRegistrationsClient getEndpointRegistrations();
+
+    /**
      * Gets the ResourceActionsClient object to access its operations.
      * 
      * @return the ResourceActionsClient object.

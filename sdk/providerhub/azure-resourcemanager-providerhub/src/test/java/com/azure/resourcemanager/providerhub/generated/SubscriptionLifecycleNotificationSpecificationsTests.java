@@ -17,31 +17,31 @@ public final class SubscriptionLifecycleNotificationSpecificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionLifecycleNotificationSpecifications model = BinaryData.fromString(
-            "{\"subscriptionStateOverrideActions\":[{\"state\":\"Unregistered\",\"action\":\"SoftDeleteAllResources\"},{\"state\":\"WarnedToRegistered\",\"action\":\"NotDefined\"},{\"state\":\"Unregistered\",\"action\":\"BillingCancellation\"}],\"softDeleteTTL\":\"PT63H15M39S\"}")
+            "{\"subscriptionStateOverrideActions\":[{\"state\":\"WarnedToDeleted\",\"action\":\"UndoSoftDelete\"},{\"state\":\"WarnedToSuspended\",\"action\":\"DeleteAllResources\"},{\"state\":\"Deleted\",\"action\":\"SoftDeleteAllResources\"}],\"softDeleteTTL\":\"PT28H5M26S\"}")
             .toObject(SubscriptionLifecycleNotificationSpecifications.class);
-        Assertions.assertEquals(SubscriptionTransitioningState.UNREGISTERED,
+        Assertions.assertEquals(SubscriptionTransitioningState.WARNED_TO_DELETED,
             model.subscriptionStateOverrideActions().get(0).state());
-        Assertions.assertEquals(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES,
+        Assertions.assertEquals(SubscriptionNotificationOperation.UNDO_SOFT_DELETE,
             model.subscriptionStateOverrideActions().get(0).action());
-        Assertions.assertEquals(Duration.parse("PT63H15M39S"), model.softDeleteTtl());
+        Assertions.assertEquals(Duration.parse("PT28H5M26S"), model.softDeleteTtl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionLifecycleNotificationSpecifications model = new SubscriptionLifecycleNotificationSpecifications()
             .withSubscriptionStateOverrideActions(Arrays.asList(
-                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.UNREGISTERED)
-                    .withAction(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES),
-                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.WARNED_TO_REGISTERED)
-                    .withAction(SubscriptionNotificationOperation.NOT_DEFINED),
-                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.UNREGISTERED)
-                    .withAction(SubscriptionNotificationOperation.BILLING_CANCELLATION)))
-            .withSoftDeleteTtl(Duration.parse("PT63H15M39S"));
+                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.WARNED_TO_DELETED)
+                    .withAction(SubscriptionNotificationOperation.UNDO_SOFT_DELETE),
+                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.WARNED_TO_SUSPENDED)
+                    .withAction(SubscriptionNotificationOperation.DELETE_ALL_RESOURCES),
+                new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.DELETED)
+                    .withAction(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES)))
+            .withSoftDeleteTtl(Duration.parse("PT28H5M26S"));
         model = BinaryData.fromObject(model).toObject(SubscriptionLifecycleNotificationSpecifications.class);
-        Assertions.assertEquals(SubscriptionTransitioningState.UNREGISTERED,
+        Assertions.assertEquals(SubscriptionTransitioningState.WARNED_TO_DELETED,
             model.subscriptionStateOverrideActions().get(0).state());
-        Assertions.assertEquals(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES,
+        Assertions.assertEquals(SubscriptionNotificationOperation.UNDO_SOFT_DELETE,
             model.subscriptionStateOverrideActions().get(0).action());
-        Assertions.assertEquals(Duration.parse("PT63H15M39S"), model.softDeleteTtl());
+        Assertions.assertEquals(Duration.parse("PT28H5M26S"), model.softDeleteTtl());
     }
 }

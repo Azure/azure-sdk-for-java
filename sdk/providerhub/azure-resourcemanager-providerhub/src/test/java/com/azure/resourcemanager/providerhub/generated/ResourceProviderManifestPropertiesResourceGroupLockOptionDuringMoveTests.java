@@ -13,18 +13,18 @@ public final class ResourceProviderManifestPropertiesResourceGroupLockOptionDuri
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove model
-            = BinaryData.fromString("{\"blockActionVerb\":\"Delete\"}")
+            = BinaryData.fromString("{\"blockActionVerb\":\"Write\"}")
                 .toObject(ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove.class);
-        Assertions.assertEquals(BlockActionVerb.DELETE, model.blockActionVerb());
+        Assertions.assertEquals(BlockActionVerb.WRITE, model.blockActionVerb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove model
             = new ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove()
-                .withBlockActionVerb(BlockActionVerb.DELETE);
+                .withBlockActionVerb(BlockActionVerb.WRITE);
         model = BinaryData.fromObject(model)
             .toObject(ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove.class);
-        Assertions.assertEquals(BlockActionVerb.DELETE, model.blockActionVerb());
+        Assertions.assertEquals(BlockActionVerb.WRITE, model.blockActionVerb());
     }
 }

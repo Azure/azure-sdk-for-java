@@ -11,25 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckinManifestInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckinManifestInfoInner model = BinaryData.fromString(
-            "{\"isCheckedIn\":false,\"statusMessage\":\"xzlocxscp\",\"pullRequest\":\"erhhbcsglumm\",\"commitId\":\"tjaodxobnb\"}")
+        CheckinManifestInfoInner model = BinaryData
+            .fromString(
+                "{\"isCheckedIn\":true,\"statusMessage\":\"tjaodxobnb\",\"pullRequest\":\"k\",\"commitId\":\"xo\"}")
             .toObject(CheckinManifestInfoInner.class);
-        Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("xzlocxscp", model.statusMessage());
-        Assertions.assertEquals("erhhbcsglumm", model.pullRequest());
-        Assertions.assertEquals("tjaodxobnb", model.commitId());
+        Assertions.assertTrue(model.isCheckedIn());
+        Assertions.assertEquals("tjaodxobnb", model.statusMessage());
+        Assertions.assertEquals("k", model.pullRequest());
+        Assertions.assertEquals("xo", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckinManifestInfoInner model = new CheckinManifestInfoInner().withIsCheckedIn(false)
-            .withStatusMessage("xzlocxscp")
-            .withPullRequest("erhhbcsglumm")
-            .withCommitId("tjaodxobnb");
+        CheckinManifestInfoInner model = new CheckinManifestInfoInner().withIsCheckedIn(true)
+            .withStatusMessage("tjaodxobnb")
+            .withPullRequest("k")
+            .withCommitId("xo");
         model = BinaryData.fromObject(model).toObject(CheckinManifestInfoInner.class);
-        Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("xzlocxscp", model.statusMessage());
-        Assertions.assertEquals("erhhbcsglumm", model.pullRequest());
-        Assertions.assertEquals("tjaodxobnb", model.commitId());
+        Assertions.assertTrue(model.isCheckedIn());
+        Assertions.assertEquals("tjaodxobnb", model.statusMessage());
+        Assertions.assertEquals("k", model.pullRequest());
+        Assertions.assertEquals("xo", model.commitId());
     }
 }

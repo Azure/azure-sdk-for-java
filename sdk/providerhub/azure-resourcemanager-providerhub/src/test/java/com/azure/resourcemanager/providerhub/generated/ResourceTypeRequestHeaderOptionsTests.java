@@ -14,9 +14,9 @@ public final class ResourceTypeRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRequestHeaderOptions model
-            = BinaryData.fromString("{\"optInHeaders\":\"SignedUserToken\",\"optOutHeaders\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"optInHeaders\":\"SignedAuxiliaryTokens\",\"optOutHeaders\":\"NotSpecified\"}")
                 .toObject(ResourceTypeRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.SIGNED_USER_TOKEN, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }

@@ -68,6 +68,8 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
         jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
         jsonWriter.writeArrayField("featureManagementOwners", featureManagementOwners(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("featureApprovalClaims", featureApprovalClaims(),
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +131,9 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
                 } else if ("featureManagementOwners".equals(fieldName)) {
                     List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceProviderManifestManagement.withFeatureManagementOwners(featureManagementOwners);
+                } else if ("featureApprovalClaims".equals(fieldName)) {
+                    List<String> featureApprovalClaims = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestManagement.withFeatureApprovalClaims(featureApprovalClaims);
                 } else {
                     reader.skipChildren();
                 }

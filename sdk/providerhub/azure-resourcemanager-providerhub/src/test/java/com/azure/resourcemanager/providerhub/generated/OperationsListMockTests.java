@@ -24,7 +24,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"alwcjgckbb\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"praoxn\",\"resource\":\"uffatsgftipwc\",\"operation\":\"byubhiqdxyurnpn\",\"description\":\"hza\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datauhiigbyl\\\"\"}]}";
+            = "{\"value\":[{\"name\":\"phm\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"gsut\",\"resource\":\"hllnmwynefxe\",\"operation\":\"lf\",\"description\":\"i\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datajrr\\\"\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class OperationsListMockTests {
 
         PagedIterable<OperationsDefinition> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("alwcjgckbb", response.iterator().next().name());
+        Assertions.assertEquals("phm", response.iterator().next().name());
         Assertions.assertTrue(response.iterator().next().isDataAction());
-        Assertions.assertEquals(OperationOrigins.SYSTEM, response.iterator().next().origin());
-        Assertions.assertEquals("praoxn", response.iterator().next().display().provider());
-        Assertions.assertEquals("uffatsgftipwc", response.iterator().next().display().resource());
-        Assertions.assertEquals("byubhiqdxyurnpn", response.iterator().next().display().operation());
-        Assertions.assertEquals("hza", response.iterator().next().display().description());
-        Assertions.assertEquals(OperationActionType.INTERNAL, response.iterator().next().actionType());
+        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, response.iterator().next().origin());
+        Assertions.assertEquals("gsut", response.iterator().next().display().provider());
+        Assertions.assertEquals("hllnmwynefxe", response.iterator().next().display().resource());
+        Assertions.assertEquals("lf", response.iterator().next().display().operation());
+        Assertions.assertEquals("i", response.iterator().next().display().description());
+        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, response.iterator().next().actionType());
     }
 }

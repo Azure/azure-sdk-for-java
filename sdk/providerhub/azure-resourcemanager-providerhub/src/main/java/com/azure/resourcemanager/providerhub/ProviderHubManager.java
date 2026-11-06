@@ -28,6 +28,7 @@ import com.azure.resourcemanager.providerhub.fluent.ProviderHubManagementClient;
 import com.azure.resourcemanager.providerhub.implementation.AuthorizedApplicationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.CustomRolloutsImpl;
 import com.azure.resourcemanager.providerhub.implementation.DefaultRolloutsImpl;
+import com.azure.resourcemanager.providerhub.implementation.EndpointRegistrationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.ManifestsImpl;
 import com.azure.resourcemanager.providerhub.implementation.NotificationRegistrationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.OperationsImpl;
@@ -41,6 +42,7 @@ import com.azure.resourcemanager.providerhub.implementation.SkusImpl;
 import com.azure.resourcemanager.providerhub.models.AuthorizedApplications;
 import com.azure.resourcemanager.providerhub.models.CustomRollouts;
 import com.azure.resourcemanager.providerhub.models.DefaultRollouts;
+import com.azure.resourcemanager.providerhub.models.EndpointRegistrations;
 import com.azure.resourcemanager.providerhub.models.Manifests;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistrations;
 import com.azure.resourcemanager.providerhub.models.Operations;
@@ -84,6 +86,8 @@ public final class ProviderHubManager {
     private ProviderMonitorSettings providerMonitorSettings;
 
     private Manifests manifests;
+
+    private EndpointRegistrations endpointRegistrations;
 
     private ResourceActions resourceActions;
 
@@ -436,6 +440,18 @@ public final class ProviderHubManager {
             this.manifests = new ManifestsImpl(clientObject.getManifests(), this);
         }
         return manifests;
+    }
+
+    /**
+     * Gets the resource collection API of EndpointRegistrations. It manages EndpointRegistration.
+     * 
+     * @return Resource collection API of EndpointRegistrations.
+     */
+    public EndpointRegistrations endpointRegistrations() {
+        if (this.endpointRegistrations == null) {
+            this.endpointRegistrations = new EndpointRegistrationsImpl(clientObject.getEndpointRegistrations(), this);
+        }
+        return endpointRegistrations;
     }
 
     /**

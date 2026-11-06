@@ -21,7 +21,7 @@ public final class ProviderMonitorSettingsGetByResourceGroupWithResponseMockTest
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"dusxurs\",\"tags\":{\"izfwihvaangqt\":\"uxcjkcoqwczsyiq\"},\"id\":\"hjrfdmfdvbbaex\",\"name\":\"jfwtgdfkkaui\",\"type\":\"vmuafmc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleted\"},\"location\":\"kmvyxzerejrk\",\"tags\":{\"opt\":\"byetjxr\",\"z\":\"eitwhlbecgi\",\"rwwxywpj\":\"pemnrrabo\",\"skpeswyhhmifjua\":\"spboxhifp\"},\"id\":\"xwwvcmmpeg\",\"name\":\"y\",\"type\":\"qvcml\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ProviderMonitorSettingsGetByResourceGroupWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProviderMonitorSetting response = manager.providerMonitorSettings()
-            .getByResourceGroupWithResponse("sbyidaelqpv", "kmkwjfbo", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bbwzgvzuaixcd", "kixsps", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dusxurs", response.location());
-        Assertions.assertEquals("uxcjkcoqwczsyiq", response.tags().get("izfwihvaangqt"));
+        Assertions.assertEquals("kmvyxzerejrk", response.location());
+        Assertions.assertEquals("byetjxr", response.tags().get("opt"));
     }
 }

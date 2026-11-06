@@ -12,18 +12,18 @@ public final class ResourceTypeOnBehalfOfTokenTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeOnBehalfOfToken model
-            = BinaryData.fromString("{\"actionName\":\"tutnwlduycvuzhyr\",\"lifeTime\":\"wipmvekdxuk\"}")
+            = BinaryData.fromString("{\"actionName\":\"namikzebrqbsms\",\"lifeTime\":\"iqg\"}")
                 .toObject(ResourceTypeOnBehalfOfToken.class);
-        Assertions.assertEquals("tutnwlduycvuzhyr", model.actionName());
-        Assertions.assertEquals("wipmvekdxuk", model.lifeTime());
+        Assertions.assertEquals("namikzebrqbsms", model.actionName());
+        Assertions.assertEquals("iqg", model.lifeTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeOnBehalfOfToken model
-            = new ResourceTypeOnBehalfOfToken().withActionName("tutnwlduycvuzhyr").withLifeTime("wipmvekdxuk");
+            = new ResourceTypeOnBehalfOfToken().withActionName("namikzebrqbsms").withLifeTime("iqg");
         model = BinaryData.fromObject(model).toObject(ResourceTypeOnBehalfOfToken.class);
-        Assertions.assertEquals("tutnwlduycvuzhyr", model.actionName());
-        Assertions.assertEquals("wipmvekdxuk", model.lifeTime());
+        Assertions.assertEquals("namikzebrqbsms", model.actionName());
+        Assertions.assertEquals("iqg", model.lifeTime());
     }
 }

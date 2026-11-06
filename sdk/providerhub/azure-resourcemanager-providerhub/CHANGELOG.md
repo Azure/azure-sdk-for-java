@@ -1,14 +1,104 @@
 # Release History
 
-## 3.1.0-beta.1 (Unreleased)
+## 3.1.0 (2026-10-22)
+
+- Azure Resource Manager ProviderHub client library for Java. This package contains Microsoft Azure SDK for ProviderHub Management SDK. Provider Hub. Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.EndpointRegistration$Definition` was added
 
-### Bugs Fixed
+* `models.EndpointRegistration` was added
 
-### Other Changes
+* `models.EndpointRegistrationProperties` was added
+
+* `models.RolloutOrchestrationMetadata` was added
+
+* `models.IsolationType` was added
+
+* `models.EndpointRegistration$Update` was added
+
+* `models.SwaggerSpecificationLifecycleInfo` was added
+
+* `models.PartnerCategory` was added
+
+* `models.EndpointRegistration$DefinitionStages` was added
+
+* `models.ResourceTypeLifecycleInfo` was added
+
+* `models.LifecycleStage` was added
+
+* `models.ResourceProviderLifecycleInfo` was added
+
+* `models.EndpointRegistrations` was added
+
+* `models.EndpointRegistration$UpdateStages` was added
+
+#### `models.ResourceProviderManagement` was modified
+
+* `withFeatureApprovalClaims(java.util.List)` was added
+* `featureApprovalClaims()` was added
+
+#### `models.CheckinManifestParams` was modified
+
+* `checkinComment()` was added
+* `swaggerUri()` was added
+* `withSwaggerUri(java.lang.String)` was added
+* `withCheckinComment(java.lang.String)` was added
+
+#### `models.ResourceProviderManifestPropertiesManagement` was modified
+
+* `withFeatureApprovalClaims(java.util.List)` was added
+
+#### `ProviderHubManager` was modified
+
+* `endpointRegistrations()` was added
+
+#### `models.SwaggerSpecification` was modified
+
+* `withLifecycleInfo(models.SwaggerSpecificationLifecycleInfo)` was added
+* `lifecycleInfo()` was added
+
+#### `models.CustomRolloutPropertiesSpecification` was modified
+
+* `withRolloutOrchestrationMetadata(models.RolloutOrchestrationMetadata)` was added
+
+#### `models.CustomRolloutSpecification` was modified
+
+* `withRolloutOrchestrationMetadata(models.RolloutOrchestrationMetadata)` was added
+* `rolloutOrchestrationMetadata()` was added
+
+#### `models.ProviderRegistrationProperties` was modified
+
+* `lifecycleInfo()` was added
+* `withLifecycleInfo(models.ResourceProviderLifecycleInfo)` was added
+
+#### `models.OptInHeaderType` was modified
+
+* `USER_CONTEXT` was added
+* `AUXILIARY_USER_CONTEXT` was added
+
+#### `models.AppliedManifestInfo` was modified
+
+* `rootProviderNamespace()` was added
+
+#### `models.ResourceTypeRegistrations` was modified
+
+* `deleteNestedResourceTypeFirst(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getNestedResourceTypeFirst(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteNestedResourceTypeFirst(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `createOrUpdateNestedResourceTypeFirst(java.lang.String,java.lang.String,java.lang.String,fluent.models.ResourceTypeRegistrationInner)` was added
+* `createOrUpdateNestedResourceTypeFirst(java.lang.String,java.lang.String,java.lang.String,fluent.models.ResourceTypeRegistrationInner,com.azure.core.util.Context)` was added
+* `getNestedResourceTypeFirstWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ResourceTypeRegistrationProperties` was modified
+
+* `lifecycleInfo()` was added
+* `withLifecycleInfo(models.ResourceTypeLifecycleInfo)` was added
+
+#### `models.ResourceTypeRegistrationPropertiesManagement` was modified
+
+* `withFeatureApprovalClaims(java.util.List)` was added
 
 ## 3.0.0 (2026-09-02)
 
