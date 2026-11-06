@@ -63,7 +63,7 @@
 # AzureSdkOwners:                                                  @alzimmermsft
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                                         @conniey @j7nw4r @sagar0207 @SwayGom @sjkwak @hmlam @Azure/azure-java-sdk
+/sdk/core/azure-core-amqp/                                         @conniey @j7nw4r @ayush1252 @sagar0207 @SwayGom @sjkwak @hmlam @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.AMQP
 # AzureSdkOwners:                                                  @conniey
@@ -324,16 +324,16 @@
 # ServiceOwners:                                                   @Kishp01 @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @ayush1252 @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @j7nw4r @ayush1252 @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @j7nw4r @ayush1252 @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak
+# ServiceOwners:                                                   @axisc @hmlam @j7nw4r @ayush1252 @SwayGom @sagar0207 @sjkwak
 
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                                         @alexathomases @Azure/healthdatadeidentification @Azure/azure-java-sdk
@@ -958,7 +958,7 @@
 /eng/versioning/                                                   @alzimmermsft @g2vinay @Azure/azure-java-sdk
 /eng/versioning/external_dependencies.txt                          @alzimmermsft @g2vinay @jonathangiles @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 /.github/                                                          @Azure/azure-java-sdk
-/.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
+/.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk @j7nw4r
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @praveenkuttappan
 /.github/skills/                                                   @Azure/azsdk-cli
