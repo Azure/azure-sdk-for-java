@@ -110,8 +110,6 @@ import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolResizeStopOptions;
 import com.azure.compute.batch.models.BatchPoolUpdateOptions;
 import com.azure.compute.batch.models.BatchPoolUpdateParameters;
-import com.azure.compute.batch.models.BatchPoolUsageMetrics;
-import com.azure.compute.batch.models.BatchPoolUsageMetricsListOptions;
 import com.azure.compute.batch.models.BatchPoolsListOptions;
 import com.azure.compute.batch.models.BatchSubTasksListOptions;
 import com.azure.compute.batch.models.BatchSubtask;
@@ -337,63 +335,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals,
-     * for the specified Account.
-     *
-     * If you do not specify a $filter clause including a poolId, the response
-     * includes all Pools that existed in the Account in the time range of the
-     * returned aggregation intervals. If you do not specify a $filter clause
-     * including a startTime or endTime these filters default to the start and end
-     * times of the last aggregation interval currently available; that is, only the
-     * last aggregation interval is returned.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>startTime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This
-     * must be at least two and
-     * a half hours before the current time. If not specified this defaults to the
-     * start time of the last aggregation interval currently available.</td></tr>
-     * <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This
-     * must be at least two hours
-     * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     poolId: String (Required)
-     *     startTime: OffsetDateTime (Required)
-     *     endTime: OffsetDateTime (Required)
-     *     vmSize: String (Required)
-     *     totalCoreHours: double (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listPoolUsageMetrics(RequestOptions requestOptions) {
-        return this.serviceClient.listPoolUsageMetricsAsync(requestOptions);
-    }
-
-    /**
      * Creates a Pool to the specified Account.
      *
      * When naming Pools, avoid including sensitive information such as user names or
@@ -526,6 +467,33 @@ public final class BatchAsyncClient {
      *         serviceArtifactReference (Optional): {
      *             id: String (Required)
      *         }
+     *         hardwareProfile (Optional): {
+     *             vmSizeProperties (Optional): {
+     *                 vCPUsAvailable: Integer (Optional)
+     *                 vCPUsPerCore: Integer (Optional)
+     *             }
+     *         }
+     *         placement (Optional): {
+     *             zonePlacementPolicy: String(Auto) (Required)
+     *         }
+     *         resiliencyPolicy (Optional): {
+     *             zoneAllocationPolicy (Required): {
+     *                 maxZoneCount: Integer (Optional)
+     *                 maxInstancePercentPerZonePolicy (Optional): {
+     *                     enabled: Boolean (Optional)
+     *                     value: int (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     vmSkuProfile (Optional): {
+     *         vmSizes (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 rank: Integer (Optional)
+     *             }
+     *         ]
+     *         allocationStrategy: String(lowestPrice/capacityOptimized/prioritized) (Optional)
      *     }
      *     resizeTimeout: Duration (Optional)
      *     targetDedicatedNodes: Integer (Optional)
@@ -878,6 +846,33 @@ public final class BatchAsyncClient {
      *         serviceArtifactReference (Optional): {
      *             id: String (Required)
      *         }
+     *         hardwareProfile (Optional): {
+     *             vmSizeProperties (Optional): {
+     *                 vCPUsAvailable: Integer (Optional)
+     *                 vCPUsPerCore: Integer (Optional)
+     *             }
+     *         }
+     *         placement (Optional): {
+     *             zonePlacementPolicy: String(Auto) (Required)
+     *         }
+     *         resiliencyPolicy (Optional): {
+     *             zoneAllocationPolicy (Required): {
+     *                 maxZoneCount: Integer (Optional)
+     *                 maxInstancePercentPerZonePolicy (Optional): {
+     *                     enabled: Boolean (Optional)
+     *                     value: int (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     vmSkuProfile (Optional): {
+     *         vmSizes (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 rank: Integer (Optional)
+     *             }
+     *         ]
+     *         allocationStrategy: String(lowestPrice/capacityOptimized/prioritized) (Optional)
      *     }
      *     resizeTimeout: Duration (Optional)
      *     resizeErrors (Optional): [
@@ -1029,11 +1024,6 @@ public final class BatchAsyncClient {
      *         url: String (Required)
      *         startTime: OffsetDateTime (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
      *         resourceStats (Optional): {
      *             startTime: OffsetDateTime (Required)
      *             lastUpdateTime: OffsetDateTime (Required)
@@ -1425,6 +1415,33 @@ public final class BatchAsyncClient {
      *         serviceArtifactReference (Optional): {
      *             id: String (Required)
      *         }
+     *         hardwareProfile (Optional): {
+     *             vmSizeProperties (Optional): {
+     *                 vCPUsAvailable: Integer (Optional)
+     *                 vCPUsPerCore: Integer (Optional)
+     *             }
+     *         }
+     *         placement (Optional): {
+     *             zonePlacementPolicy: String(Auto) (Required)
+     *         }
+     *         resiliencyPolicy (Optional): {
+     *             zoneAllocationPolicy (Required): {
+     *                 maxZoneCount: Integer (Optional)
+     *                 maxInstancePercentPerZonePolicy (Optional): {
+     *                     enabled: Boolean (Optional)
+     *                     value: int (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     vmSkuProfile (Optional): {
+     *         vmSizes (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 rank: Integer (Optional)
+     *             }
+     *         ]
+     *         allocationStrategy: String(lowestPrice/capacityOptimized/prioritized) (Optional)
      *     }
      *     resizeTimeout: Duration (Optional)
      *     resizeErrors (Optional): [
@@ -1576,11 +1593,6 @@ public final class BatchAsyncClient {
      *         url: String (Required)
      *         startTime: OffsetDateTime (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
      *         resourceStats (Optional): {
      *             startTime: OffsetDateTime (Required)
      *             lastUpdateTime: OffsetDateTime (Required)
@@ -1898,6 +1910,33 @@ public final class BatchAsyncClient {
      *         serviceArtifactReference (Optional): {
      *             id: String (Required)
      *         }
+     *         hardwareProfile (Optional): {
+     *             vmSizeProperties (Optional): {
+     *                 vCPUsAvailable: Integer (Optional)
+     *                 vCPUsPerCore: Integer (Optional)
+     *             }
+     *         }
+     *         placement (Optional): {
+     *             zonePlacementPolicy: String(Auto) (Required)
+     *         }
+     *         resiliencyPolicy (Optional): {
+     *             zoneAllocationPolicy (Required): {
+     *                 maxZoneCount: Integer (Optional)
+     *                 maxInstancePercentPerZonePolicy (Optional): {
+     *                     enabled: Boolean (Optional)
+     *                     value: int (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     vmSkuProfile (Optional): {
+     *         vmSizes (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 rank: Integer (Optional)
+     *             }
+     *         ]
+     *         allocationStrategy: String(lowestPrice/capacityOptimized/prioritized) (Optional)
      *     }
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
@@ -3063,6 +3102,24 @@ public final class BatchAsyncClient {
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
      *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
+     *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
@@ -3448,6 +3505,24 @@ public final class BatchAsyncClient {
      *                     }
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
+     *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
      *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
@@ -3953,6 +4028,24 @@ public final class BatchAsyncClient {
      *                     }
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
+     *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
      *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
@@ -4670,6 +4763,24 @@ public final class BatchAsyncClient {
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
      *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
+     *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
@@ -5127,6 +5238,24 @@ public final class BatchAsyncClient {
      *                     }
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
+     *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
      *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
@@ -5599,6 +5728,24 @@ public final class BatchAsyncClient {
      *                     }
      *                     serviceArtifactReference (Optional): {
      *                         id: String (Required)
+     *                     }
+     *                     hardwareProfile (Optional): {
+     *                         vmSizeProperties (Optional): {
+     *                             vCPUsAvailable: Integer (Optional)
+     *                             vCPUsPerCore: Integer (Optional)
+     *                         }
+     *                     }
+     *                     placement (Optional): {
+     *                         zonePlacementPolicy: String(Auto) (Required)
+     *                     }
+     *                     resiliencyPolicy (Optional): {
+     *                         zoneAllocationPolicy (Required): {
+     *                             maxZoneCount: Integer (Optional)
+     *                             maxInstancePercentPerZonePolicy (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 value: int (Required)
+     *                             }
+     *                         }
      *                     }
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
@@ -6396,6 +6543,24 @@ public final class BatchAsyncClient {
      *                         serviceArtifactReference (Optional): {
      *                             id: String (Required)
      *                         }
+     *                         hardwareProfile (Optional): {
+     *                             vmSizeProperties (Optional): {
+     *                                 vCPUsAvailable: Integer (Optional)
+     *                                 vCPUsPerCore: Integer (Optional)
+     *                             }
+     *                         }
+     *                         placement (Optional): {
+     *                             zonePlacementPolicy: String(Auto) (Required)
+     *                         }
+     *                         resiliencyPolicy (Optional): {
+     *                             zoneAllocationPolicy (Required): {
+     *                                 maxZoneCount: Integer (Optional)
+     *                                 maxInstancePercentPerZonePolicy (Optional): {
+     *                                     enabled: Boolean (Optional)
+     *                                     value: int (Required)
+     *                                 }
+     *                             }
+     *                         }
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
@@ -6898,6 +7063,24 @@ public final class BatchAsyncClient {
      *                         serviceArtifactReference (Optional): {
      *                             id: String (Required)
      *                         }
+     *                         hardwareProfile (Optional): {
+     *                             vmSizeProperties (Optional): {
+     *                                 vCPUsAvailable: Integer (Optional)
+     *                                 vCPUsPerCore: Integer (Optional)
+     *                             }
+     *                         }
+     *                         placement (Optional): {
+     *                             zonePlacementPolicy: String(Auto) (Required)
+     *                         }
+     *                         resiliencyPolicy (Optional): {
+     *                             zoneAllocationPolicy (Required): {
+     *                                 maxZoneCount: Integer (Optional)
+     *                                 maxInstancePercentPerZonePolicy (Optional): {
+     *                                     enabled: Boolean (Optional)
+     *                                     value: int (Required)
+     *                                 }
+     *                             }
+     *                         }
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
@@ -7387,6 +7570,24 @@ public final class BatchAsyncClient {
      *                         }
      *                         serviceArtifactReference (Optional): {
      *                             id: String (Required)
+     *                         }
+     *                         hardwareProfile (Optional): {
+     *                             vmSizeProperties (Optional): {
+     *                                 vCPUsAvailable: Integer (Optional)
+     *                                 vCPUsPerCore: Integer (Optional)
+     *                             }
+     *                         }
+     *                         placement (Optional): {
+     *                             zonePlacementPolicy: String(Auto) (Required)
+     *                         }
+     *                         resiliencyPolicy (Optional): {
+     *                             zoneAllocationPolicy (Required): {
+     *                                 maxZoneCount: Integer (Optional)
+     *                                 maxInstancePercentPerZonePolicy (Optional): {
+     *                                     enabled: Boolean (Optional)
+     *                                     value: int (Required)
+     *                                 }
+     *                             }
      *                         }
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
@@ -8055,6 +8256,24 @@ public final class BatchAsyncClient {
      *                         serviceArtifactReference (Optional): {
      *                             id: String (Required)
      *                         }
+     *                         hardwareProfile (Optional): {
+     *                             vmSizeProperties (Optional): {
+     *                                 vCPUsAvailable: Integer (Optional)
+     *                                 vCPUsPerCore: Integer (Optional)
+     *                             }
+     *                         }
+     *                         placement (Optional): {
+     *                             zonePlacementPolicy: String(Auto) (Required)
+     *                         }
+     *                         resiliencyPolicy (Optional): {
+     *                             zoneAllocationPolicy (Required): {
+     *                                 maxZoneCount: Integer (Optional)
+     *                                 maxInstancePercentPerZonePolicy (Optional): {
+     *                                     enabled: Boolean (Optional)
+     *                                     value: int (Required)
+     *                                 }
+     *                             }
+     *                         }
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
@@ -8524,6 +8743,24 @@ public final class BatchAsyncClient {
      *                         }
      *                         serviceArtifactReference (Optional): {
      *                             id: String (Required)
+     *                         }
+     *                         hardwareProfile (Optional): {
+     *                             vmSizeProperties (Optional): {
+     *                                 vCPUsAvailable: Integer (Optional)
+     *                                 vCPUsPerCore: Integer (Optional)
+     *                             }
+     *                         }
+     *                         placement (Optional): {
+     *                             zonePlacementPolicy: String(Auto) (Required)
+     *                         }
+     *                         resiliencyPolicy (Optional): {
+     *                             zoneAllocationPolicy (Required): {
+     *                                 maxZoneCount: Integer (Optional)
+     *                                 maxInstancePercentPerZonePolicy (Optional): {
+     *                                     enabled: Boolean (Optional)
+     *                                     value: int (Required)
+     *                                 }
+     *                             }
      *                         }
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
@@ -10536,6 +10773,8 @@ public final class BatchAsyncClient {
      *     allocationTime: OffsetDateTime (Required)
      *     ipAddress: String (Required)
      *     ipv6Address: String (Required)
+     *     publicIPAddress: String (Optional)
+     *     publicIPv6Address: String (Optional)
      *     affinityId: String (Required)
      *     vmSize: String (Required)
      *     totalTasksRun: int (Required)
@@ -11213,6 +11452,8 @@ public final class BatchAsyncClient {
      *     allocationTime: OffsetDateTime (Required)
      *     ipAddress: String (Required)
      *     ipv6Address: String (Required)
+     *     publicIPAddress: String (Optional)
+     *     publicIPv6Address: String (Optional)
      *     affinityId: String (Required)
      *     vmSize: String (Required)
      *     totalTasksRun: int (Required)
@@ -11817,49 +12058,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getApplicationWithResponse(applicationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals,
-     * for the specified Account.
-     *
-     * If you do not specify a $filter clause including a poolId, the response
-     * includes all Pools that existed in the Account in the time range of the
-     * returned aggregation intervals. If you do not specify a $filter clause
-     * including a startTime or endTime these filters default to the start and end
-     * times of the last aggregation interval currently available; that is, only the
-     * last aggregation interval is returned.
-     *
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics() {
-        // Generated convenience method for listPoolUsageMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(BatchPoolUsageMetrics.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -13727,71 +13925,6 @@ public final class BatchAsyncClient {
         }
         return getApplicationWithResponse(applicationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals,
-     * for the specified Account.
-     *
-     * If you do not specify a $filter clause including a poolId, the response
-     * includes all Pools that existed in the Account in the time range of the
-     * returned aggregation intervals. If you do not specify a $filter clause
-     * including a startTime or endTime these filters default to the start and end
-     * times of the last aggregation interval currently available; that is, only the
-     * last aggregation interval is returned.
-     *
-     * @param options Optional parameters for List Pool Usage Metrics operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
-        // Generated convenience method for listPoolUsageMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeout = options == null ? null : options.getTimeout();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        OffsetDateTime startTime = options == null ? null : options.getStartTime();
-        OffsetDateTime endTime = options == null ? null : options.getEndTime();
-        String filter = options == null ? null : options.getFilter();
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (startTime != null) {
-            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
-        }
-        if (endTime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endTime), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(BatchPoolUsageMetrics.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**

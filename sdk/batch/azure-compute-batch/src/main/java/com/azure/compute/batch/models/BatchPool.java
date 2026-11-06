@@ -680,6 +680,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     deserializedBatchPool.virtualMachineConfiguration = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("vmSkuProfile".equals(fieldName)) {
+                    deserializedBatchPool.vmSkuProfile = VirtualMachineSkuProfile.fromJson(reader);
                 } else if ("resizeTimeout".equals(fieldName)) {
                     deserializedBatchPool.resizeTimeout
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
@@ -757,5 +759,25 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     @Generated
     public BatchPoolStatistics getPoolStatistics() {
         return this.poolStatistics;
+    }
+
+    /*
+     * Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance Mix
+     * Pool. When specified, vmSize must be 'Mix'. This property can only be changed while the Pool has no Compute
+     * Nodes.
+     */
+    @Generated
+    private VirtualMachineSkuProfile vmSkuProfile;
+
+    /**
+     * Get the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * Compute Nodes for an Instance Mix Pool. When specified, vmSize must be 'Mix'. This property can only be changed
+     * while the Pool has no Compute Nodes.
+     *
+     * @return the vmSkuProfile value.
+     */
+    @Generated
+    public VirtualMachineSkuProfile getVmSkuProfile() {
+        return this.vmSkuProfile;
     }
 }
