@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
@@ -22,6 +23,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
@@ -29,6 +31,36 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 
 public class BootstrapperImplTests {
+
+    @Test(groups = "unit")
+    public void queryMismatchTerminatesInitializationAndReleasesHeldLock() {
+        PartitionSynchronizer synchronizer = Mockito.mock(PartitionSynchronizer.class);
+        LeaseStore store = Mockito.mock(LeaseStore.class);
+        LeaseStoreManager primary = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager auxiliary = Mockito.mock(LeaseStoreManager.class);
+        Mockito.when(store.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(auxiliary.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(store.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
+        Mockito.when(store.releaseInitializationLock()).thenReturn(Mono.empty());
+        Mockito.when(store.markInitialized()).thenReturn(Mono.error(new AssertionError("Marker must not be written")));
+        Mockito.when(synchronizer.createMissingLeases())
+            .thenReturn(Mono.error(new ChangeFeedQueryFilter.QueryFilterMismatchException()));
+
+        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, store, Duration.ofSeconds(5),
+            Duration.ofMillis(1), primary, auxiliary, new ChangeFeedProcessorOptions(), ChangeFeedMode.FULL_FIDELITY);
+        StepVerifier.create(bootstrapper.initialize())
+            .expectError(ChangeFeedQueryFilter.QueryFilterMismatchException.class).verify(Duration.ofSeconds(5));
+        Mockito.verify(store).releaseInitializationLock();
+        Mockito.verify(synchronizer).createMissingLeases();
+
+        Mockito.when(auxiliary.isInitialized())
+            .thenReturn(Mono.error(new ChangeFeedQueryFilter.QueryFilterMismatchException()));
+        Mockito.clearInvocations(store, synchronizer);
+        StepVerifier.create(bootstrapper.initialize())
+            .expectError(ChangeFeedQueryFilter.QueryFilterMismatchException.class).verify(Duration.ofSeconds(5));
+        Mockito.verify(store, Mockito.never()).acquireInitializationLock(Mockito.any());
+        Mockito.verify(synchronizer, Mockito.never()).createMissingLeases();
+    }
 
     private static final String BASE_CONTINUATION_STRING_FOR_EPK_FULL_RANGE = "{\"V\":1," +
         "\"Rid\":\"%s\"," +
@@ -167,6 +199,7 @@ public class BootstrapperImplTests {
 
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        Mockito.when(pkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
 
         ChangeFeedProcessorOptions changeFeedProcessorOptionsMock = Mockito.mock(ChangeFeedProcessorOptions.class);
 
@@ -231,6 +264,7 @@ public class BootstrapperImplTests {
 
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        Mockito.when(pkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
 
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions()
             .setLeaseVerificationEnabledOnRestart(true);

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
@@ -267,6 +268,11 @@ public class ServiceItemLeaseV1 implements Lease {
             .withLeaseToken(document.getString(PROPERTY_NAME_LEASE_TOKEN))
             .withContinuationToken(document.getString(PROPERTY_NAME_CONTINUATION_TOKEN));
 
+        String queryFingerprint = document.getString(ChangeFeedQueryFilter.PROPERTY_NAME);
+        if (queryFingerprint != null) {
+            lease.getProperties().put(ChangeFeedQueryFilter.PROPERTY_NAME, queryFingerprint);
+        }
+
         Integer versionId = document.getInt(PROPERTY_NAME_VERSION);
 
         if (versionId != null) {
@@ -344,6 +350,11 @@ public class ServiceItemLeaseV1 implements Lease {
                 writer.writeStringField(PROPERTY_NAME_OWNER, lease.getOwner());
                 writer.writeNumberField(PROPERTY_NAME_VERSION, lease.getVersion().getVersionId());
                 writer.writeObjectField(PROPERTY_NAME_FEED_RANGE, lease.getFeedRange());
+                if (lease.getProperties() != null
+                    && lease.getProperties().containsKey(ChangeFeedQueryFilter.PROPERTY_NAME)) {
+                    writer.writeStringField(ChangeFeedQueryFilter.PROPERTY_NAME,
+                        lease.getProperties().get(ChangeFeedQueryFilter.PROPERTY_NAME));
+                }
                 writer.writeEndObject();
             } catch (IOException e) {
                 throw new IllegalStateException(e);

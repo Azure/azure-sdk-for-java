@@ -51,10 +51,14 @@ public class PartitionProcessorImplTests {
     public static Object[][] changeFeed304ResponseContinuationArgProvider() {
         return new Object[][]{
             // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint
-            { true, true, true },
-            { true, false, true },
-            { false, true, true },
-            { false, false, false}
+            { true, true, true, ChangeFeedMode.INCREMENTAL },
+            { true, false, true, ChangeFeedMode.INCREMENTAL },
+            { false, true, true, ChangeFeedMode.INCREMENTAL },
+            { false, false, false, ChangeFeedMode.INCREMENTAL },
+            { true, true, true, ChangeFeedMode.FULL_FIDELITY },
+            { true, false, true, ChangeFeedMode.FULL_FIDELITY },
+            { false, true, true, ChangeFeedMode.FULL_FIDELITY },
+            { false, false, false, ChangeFeedMode.FULL_FIDELITY }
         };
     }
 
@@ -62,16 +66,19 @@ public class PartitionProcessorImplTests {
     public void shouldCheckpointFor304WhenContinuationTokenChanges(
         boolean hasMoreResult,
         boolean hasContinuationTokenChange,
-        boolean shouldDoCheckpoint) {
+        boolean shouldDoCheckpoint,
+        ChangeFeedMode mode) {
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
 
         // Setup initial state with continuation token
-        ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+        ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1, mode);
 
         CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
         ProcessorSettings processorSettings = new ProcessorSettings(initialChangeFeedState, containerMock);
         processorSettings.withMaxItemCount(10);
+        processorSettings.withQuery("SELECT * FROM c WHERE c.age > 5");
+        processorSettings.withFeedPollDelay(Duration.ZERO);
 
         // Setup lease and checkpointer mocks
         Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
@@ -83,7 +90,7 @@ public class PartitionProcessorImplTests {
         FeedResponse<Object> emptyResponse = Mockito.mock(FeedResponse.class);
         String lastContinuationToken = initialChangeFeedState.toString();
         if (hasContinuationTokenChange) {
-            ChangeFeedState newChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+            ChangeFeedState newChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1, mode);
             lastContinuationToken = newChangeFeedState.toString();
         }
         Mockito.when(emptyResponse.getContinuationToken()).thenReturn(lastContinuationToken);
@@ -96,8 +103,7 @@ public class PartitionProcessorImplTests {
             .thenReturn(Flux.error(new RuntimeException("terminating test")));
 
         // Checkpointing mock setup
-        final ChangeFeedState continuationState = ChangeFeedState.fromString(lastContinuationToken);
-        Mockito.when(partitionCheckpointer.checkpointPartition(continuationState))
+        Mockito.when(partitionCheckpointer.checkpointPartition(Mockito.any()))
             .thenReturn(Mono.empty());
 
         // Create processor
@@ -108,12 +114,16 @@ public class PartitionProcessorImplTests {
             partitionCheckpointer,
             leaseMock,
             ChangeFeedProcessorItem.class,
-            ChangeFeedMode.INCREMENTAL,
+            mode,
             null);
 
         StepVerifier
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
             .verifyComplete();
+
+        Mockito.verify(changeFeedContextClientMock, Mockito.times(2)).createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.argThat(options -> processorSettings.getQuery().equals(options.getQuery())),
+            Mockito.any());
 
         if (shouldDoCheckpoint) {
             // Verify checkpoint was called since continuation token changed
@@ -293,6 +303,10 @@ public class PartitionProcessorImplTests {
     }
 
     private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {
+        return getChangeFeedStateWithContinuationTokens(tokenCount, ChangeFeedMode.INCREMENTAL);
+    }
+
+    private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount, ChangeFeedMode mode) {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
         String continuationDummy = UUID.randomUUID().toString();
@@ -325,7 +339,7 @@ public class PartitionProcessorImplTests {
         return new ChangeFeedStateV1(
             containerRid,
             feedRange,
-            ChangeFeedMode.INCREMENTAL,
+            mode,
             startFromSettings,
             continuation);
     }

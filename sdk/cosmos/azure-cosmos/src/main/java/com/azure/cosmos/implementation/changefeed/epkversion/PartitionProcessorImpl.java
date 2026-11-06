@@ -82,6 +82,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getStartState(),
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
+        this.options.setQuery(settings.getQuery());
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
         this.lastProcessedTime = Instant.now();
     }
@@ -157,6 +158,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                             throwable))
                         .doOnSuccess((Void) -> {
                             this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
+                            this.options.setQuery(this.settings.getQuery());
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
@@ -179,6 +181,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         })
                         .doOnSuccess((Void) -> {
                             this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
+                            this.options.setQuery(this.settings.getQuery());
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }

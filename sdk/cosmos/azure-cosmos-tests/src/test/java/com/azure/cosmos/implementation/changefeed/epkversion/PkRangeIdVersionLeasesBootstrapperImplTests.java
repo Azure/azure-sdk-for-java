@@ -105,7 +105,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
 
         bootstrapper.initialize().block();
 
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(2)).isInitialized();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
@@ -202,7 +202,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(2)).isInitialized();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());

@@ -1950,7 +1950,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        return populateHeadersAsync(request, RequestVerb.GET)
+        return populateHeadersAsync(request,
+            request.getOperationType() == OperationType.Query ? RequestVerb.POST : RequestVerb.GET)
             .flatMap(requestPopulated -> getStoreProxy(requestPopulated).processMessage(requestPopulated));
     }
 

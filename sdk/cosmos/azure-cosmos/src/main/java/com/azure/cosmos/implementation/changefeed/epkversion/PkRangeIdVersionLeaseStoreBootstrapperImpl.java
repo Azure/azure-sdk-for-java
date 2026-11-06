@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -85,6 +86,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
+            .flatMap(initialized -> this.pkRangeIdVersionLeaseStoreManager.isInitialized().thenReturn(initialized))
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
 
@@ -110,6 +112,11 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             }
                         })
                         .onErrorResume(throwable -> {
+                            if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException) {
+                                return (this.isLockAcquired ? this.leaseStore.releaseInitializationLock() : Mono.empty())
+                                    .then(this.releasePkRangeIdVersionLeaseStoreLock())
+                                    .then(Mono.error(throwable));
+                            }
                             logger.warn("Unexpected exception caught while initializing the lock", throwable);
                             return Mono.just(this.isLockAcquired);
                         })
