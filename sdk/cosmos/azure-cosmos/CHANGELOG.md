@@ -3,6 +3,7 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `CosmosQueryRequestOptions.setMaxPrefetchPageCount(0)` to disable speculative backend page fetching when consuming one query page at a time. - See [Issue 51034](https://github.com/Azure/azure-sdk-for-java/issues/51034)
 * Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings. - See [PR 50888](https://github.com/Azure/azure-sdk-for-java/pull/50888), [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
 
 #### Breaking Changes
