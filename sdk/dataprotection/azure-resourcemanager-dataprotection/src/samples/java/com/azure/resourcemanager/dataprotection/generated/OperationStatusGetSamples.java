@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetOperationStatus.json
+     * x-ms-original-file: 2026-08-31-preview/GetOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.

@@ -82,6 +82,99 @@ public interface DataProtectionManagementClient {
     ResourceGuardsClient getResourceGuards();
 
     /**
+     * Gets the DppCrossTenantVaultMappingsClient object to access its operations.
+     * 
+     * @return the DppCrossTenantVaultMappingsClient object.
+     */
+    DppCrossTenantVaultMappingsClient getDppCrossTenantVaultMappings();
+
+    /**
+     * Gets the DppCrossTenantVaultMappingStatusClient object to access its operations.
+     * 
+     * @return the DppCrossTenantVaultMappingStatusClient object.
+     */
+    DppCrossTenantVaultMappingStatusClient getDppCrossTenantVaultMappingStatus();
+
+    /**
+     * Gets the BackupInstancesFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstancesFromDppCrossTenantVaultsClient object.
+     */
+    BackupInstancesFromDppCrossTenantVaultsClient getBackupInstancesFromDppCrossTenantVaults();
+
+    /**
+     * Gets the BackupInstanceFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceFromDppCrossTenantVaultsClient object.
+     */
+    BackupInstanceFromDppCrossTenantVaultsClient getBackupInstanceFromDppCrossTenantVaults();
+
+    /**
+     * Gets the RestoresFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestoresFromDppCrossTenantVaultsClient object.
+     */
+    RestoresFromDppCrossTenantVaultsClient getRestoresFromDppCrossTenantVaults();
+
+    /**
+     * Gets the ValidateRestoreFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateRestoreFromDppCrossTenantVaultsClient object.
+     */
+    ValidateRestoreFromDppCrossTenantVaultsClient getValidateRestoreFromDppCrossTenantVaults();
+
+    /**
+     * Gets the RestorableTimeRangesFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestorableTimeRangesFromDppCrossTenantVaultsClient object.
+     */
+    RestorableTimeRangesFromDppCrossTenantVaultsClient getRestorableTimeRangesFromDppCrossTenantVaults();
+
+    /**
+     * Gets the RecoveryPointsFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RecoveryPointsFromDppCrossTenantVaultsClient object.
+     */
+    RecoveryPointsFromDppCrossTenantVaultsClient getRecoveryPointsFromDppCrossTenantVaults();
+
+    /**
+     * Gets the RecoveryPointFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RecoveryPointFromDppCrossTenantVaultsClient object.
+     */
+    RecoveryPointFromDppCrossTenantVaultsClient getRecoveryPointFromDppCrossTenantVaults();
+
+    /**
+     * Gets the BackupJobsFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupJobsFromDppCrossTenantVaultsClient object.
+     */
+    BackupJobsFromDppCrossTenantVaultsClient getBackupJobsFromDppCrossTenantVaults();
+
+    /**
+     * Gets the JobFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the JobFromDppCrossTenantVaultsClient object.
+     */
+    JobFromDppCrossTenantVaultsClient getJobFromDppCrossTenantVaults();
+
+    /**
+     * Gets the BackupInstanceOperationStatusFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceOperationStatusFromDppCrossTenantVaultsClient object.
+     */
+    BackupInstanceOperationStatusFromDppCrossTenantVaultsClient
+        getBackupInstanceOperationStatusFromDppCrossTenantVaults();
+
+    /**
+     * Gets the BackupInstanceOperationResultFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceOperationResultFromDppCrossTenantVaultsClient object.
+     */
+    BackupInstanceOperationResultFromDppCrossTenantVaultsClient
+        getBackupInstanceOperationResultFromDppCrossTenantVaults();
+
+    /**
      * Gets the BackupVaultsClient object to access its operations.
      * 
      * @return the BackupVaultsClient object.
