@@ -13,9 +13,9 @@ public final class LogFileDownloadUrlInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogFileDownloadUrlInner model
-            = BinaryData.fromString("{\"downloadUri\":\"mdvy\",\"expiresAtUtc\":\"2021-08-05T12:13:03Z\"}")
+            = BinaryData.fromString("{\"downloadUri\":\"lmfwdgzx\",\"expiresAtUtc\":\"2021-02-05T19:40:40Z\"}")
                 .toObject(LogFileDownloadUrlInner.class);
-        Assertions.assertEquals("mdvy", model.downloadUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T12:13:03Z"), model.expiresAtUtc());
+        Assertions.assertEquals("lmfwdgzx", model.downloadUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T19:40:40Z"), model.expiresAtUtc());
     }
 }
