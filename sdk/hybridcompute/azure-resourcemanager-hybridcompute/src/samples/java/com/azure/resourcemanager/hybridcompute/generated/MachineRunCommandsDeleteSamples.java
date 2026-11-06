@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class MachineRunCommandsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15/runCommand/RunCommands_Delete.json
+     * x-ms-original-file: 2026-09-01/runCommand/RunCommands_Delete.json
      */
     /**
      * Sample code: Delete a Machine Run Command.

@@ -4,11 +4,18 @@
 
 ### Features Added
 
+- Added preview typed `of*` factories on `RealtimeResponseInputItem` and `RealtimeResponseInputContent` for heterogeneous
+  voice-agent response input and user-message content, with a shared `RealtimeResponseInputItemStatus` enum.
+
 ### Breaking Changes
+
+- Changed the preview `VoiceAgentResponseCreateOptions` input list to `List<RealtimeResponseInputItem>`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
 
 ## 2.9.0 (2026-10-30)
 

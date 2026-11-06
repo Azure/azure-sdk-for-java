@@ -151,6 +151,7 @@
     <module>sdk/iotoperations</module>
     <module>sdk/keyvault</module>
     <module>sdk/keyvault-v2</module>
+    <module>sdk/koreaiartemis</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
@@ -184,6 +185,7 @@
     <module>sdk/network</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
+    <module>sdk/networksecurity</module>
     <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>

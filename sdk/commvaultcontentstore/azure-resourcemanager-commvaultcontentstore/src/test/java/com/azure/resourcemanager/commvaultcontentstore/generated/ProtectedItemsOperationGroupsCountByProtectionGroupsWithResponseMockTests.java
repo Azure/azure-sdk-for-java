@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ProtectedItemsOperationGroupsCountByProtectionGroupsWithResponseMockTests {
     @Test
     public void testCountByProtectionGroupsWithResponse() throws Exception {
-        String responseStr = "{\"count\":\"ylbf\"}";
+        String responseStr = "{\"count\":\"wmmrq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class ProtectedItemsOperationGroupsCountByProtectionGroupsWithRespo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CountProtectedItemsResponse response = manager.protectedItemsOperationGroups()
-            .countByProtectionGroupsWithResponse(
-                new CountProtectedItemsRequest().withResourceIds(Arrays.asList("rpgogtqxep")),
-                com.azure.core.util.Context.NONE)
+            .countByProtectionGroupsWithResponse(new CountProtectedItemsRequest().withResourceIds(
+                Arrays.asList("hpxlktwkuziycs", "evufuztck", "yhjtqedcgzu")), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ylbf", response.count());
+        Assertions.assertEquals("wmmrq", response.count());
     }
 }

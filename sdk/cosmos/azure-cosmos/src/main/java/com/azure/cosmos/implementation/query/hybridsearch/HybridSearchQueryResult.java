@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query.hybridsearch;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ResourceId;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -16,11 +17,14 @@ public class HybridSearchQueryResult<T> extends Document {
     public List<Double> componentScores;
     public Document payload;
     public Double score;
+    private final long documentRid;
 
     public HybridSearchQueryResult(String jsonString) {
         super(jsonString);
         // Initialize rid
         this.rid = super.getResourceId();
+        // getDocument exposes the little-endian document component; compare it as unsigned.
+        this.documentRid = ResourceId.parse(this.rid).getDocument();
         // Initialize componentScores
         final Object outerObject = super.get(Constants.Properties.PAYLOAD);
         if (outerObject instanceof ObjectNode) {
@@ -46,6 +50,10 @@ public class HybridSearchQueryResult<T> extends Document {
 
     public String getRid() {
         return this.rid;
+    }
+
+    public long getDocumentRid() {
+        return this.documentRid;
     }
 
     public void setRid(String rid) {

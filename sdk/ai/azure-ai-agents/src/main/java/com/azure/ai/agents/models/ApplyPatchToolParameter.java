@@ -25,6 +25,12 @@ public final class ApplyPatchToolParameter extends Tool {
     @Generated
     private ToolType type = ToolType.APPLY_PATCH;
 
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
     /**
      * Creates an instance of ApplyPatchToolParameter class.
      */
@@ -41,6 +47,28 @@ public final class ApplyPatchToolParameter extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the ApplyPatchToolParameter object itself.
+     */
+    @Generated
+    public ApplyPatchToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 
     /**
@@ -83,33 +111,5 @@ public final class ApplyPatchToolParameter extends Tool {
             }
             return deserializedApplyPatchToolParameter;
         });
-    }
-
-    /*
-     * The allowed_callers property.
-     */
-    @Generated
-    private List<CallableToolAllowedCaller> allowedCallers;
-
-    /**
-     * Get the allowedCallers property: The allowed_callers property.
-     *
-     * @return the allowedCallers value.
-     */
-    @Generated
-    public List<CallableToolAllowedCaller> getAllowedCallers() {
-        return this.allowedCallers;
-    }
-
-    /**
-     * Set the allowedCallers property: The allowed_callers property.
-     *
-     * @param allowedCallers the allowedCallers value to set.
-     * @return the ApplyPatchToolParameter object itself.
-     */
-    @Generated
-    public ApplyPatchToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
-        this.allowedCallers = allowedCallers;
-        return this;
     }
 }

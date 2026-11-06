@@ -28,7 +28,7 @@ public final class ProtectionGroupsResumeBackupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionGroups()
-            .resumeBackupWithResponse("mlkxtrqjfs", "lmbtxhwgfwsrt", "wcoezbrhub", com.azure.core.util.Context.NONE);
+            .resumeBackupWithResponse("d", "utujba", "pjuohminyfl", com.azure.core.util.Context.NONE);
 
     }
 }
