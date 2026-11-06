@@ -172,11 +172,6 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
 
     /**
      * Sets the session token for use with session consistency.
-     * Like Direct mode, Gateway V2 selects progress for each request's target partition and its parents from
-     * compound tokens. If no entry matches, that request is sent without a session token. This option is not
-     * changed, and cached session progress is not substituted.
-     * If Gateway V2 cannot resolve a single target range, its retry policy retries once through classic Gateway
-     * in the same region with the original token.
      *
      * @param sessionToken the session token.
      * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.

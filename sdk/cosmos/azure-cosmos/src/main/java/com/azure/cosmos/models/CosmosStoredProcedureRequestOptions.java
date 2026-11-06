@@ -128,11 +128,6 @@ public final class CosmosStoredProcedureRequestOptions {
 
     /**
      * Sets the token for use with session consistency.
-     * When a session token applies to the operation, Gateway V2 selects progress for the target partition and
-     * its parents from compound tokens, like Direct mode. If no entry matches, the request is sent without a
-     * session token. This option is not changed, and cached session progress is not substituted.
-     * If Gateway V2 cannot resolve a single target range, its retry policy retries once through classic Gateway
-     * in the same region with the original token.
      *
      * @param sessionToken the session token.
      * @return the CosmosStoredProcedureRequestOptions.
