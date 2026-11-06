@@ -209,8 +209,9 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 Create and manage preview voice agents with `VoiceAgentDefinition` and an `AgentsClient` or `AgentsAsyncClient` built
 using `allowPreview(true)`. Use `VoiceAgentsWebSocketClient` or `VoiceAgentsWebSocketAsyncClient` to open a typed,
 bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`,
-negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header
-automatically.
+negotiates the `realtime` WebSocket subprotocol, and sends the `Foundry-Features: VoiceAgents=V1Preview` header
+only when built with `allowPreview(true)`. GPT Live WebSocket clients always send that preview header,
+independently of `allowPreview`.
 
 The session API supports text and audio in the format configured on the voice agent, typed streaming server events,
 response cancellation, client-executed function tools, and optional persisted conversations. See
@@ -984,6 +985,8 @@ Realtime WebSocket sessions provide bidirectional text and audio communication w
 #### Create a realtime WebSocket client
 
 Build a synchronous or asynchronous realtime client from `AgentsClientBuilder`.
+Realtime handshakes omit the preview feature header by default; set `allowPreview(true)` before building
+the client to opt into voice-agent preview features.
 
 ```java
 AgentsClientBuilder builder = new AgentsClientBuilder()

@@ -1726,7 +1726,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1799,9 +1799,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1908,7 +1908,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2024,7 +2024,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2128,7 +2128,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2239,7 +2239,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2293,7 +2293,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * Gets the initiating operation's status. PUT/cancel pollers finish with a guarded Campaign GET; deletion completes
      * without a resource result.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2328,7 +2328,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>

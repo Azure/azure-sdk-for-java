@@ -58,6 +58,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -90,8 +92,9 @@ public class VoiceAgentWebSocketSessionTests {
 
     private DisposableServer server;
 
-    @Test
-    public void handshakeUsesSdkManagedProtocolValues() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handshakeUsesSdkManagedProtocolValues(boolean allowPreview) {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = tlsServer().host("localhost").port(0).handle((request, response) -> {
@@ -111,14 +114,15 @@ public class VoiceAgentWebSocketSessionTests {
                         new Header("Foundry-Features", "override-feature"),
                         new Header("Sec-WebSocket-Protocol", "override-protocol"))));
 
-        VoiceAgentsWebSocketSessionClient session
-            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent name");
+        VoiceAgentsWebSocketClient client = builder.allowPreview(allowPreview).buildVoiceAgentsWebSocketClient();
+        builder.allowPreview(!allowPreview);
+        VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent name");
         session.close();
         assertFalse(session.isOpen());
 
         assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
         assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals(allowPreview ? "VoiceAgents=V1Preview" : null, headers.get().get("Foundry-Features"));
         assertEquals("custom-value", headers.get().get("X-Custom"));
         assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
         String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);

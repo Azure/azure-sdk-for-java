@@ -767,7 +767,8 @@ public final class AgentsClientBuilder
          */
         @Beta
         public BetaVoiceAgentsLiveWebSocketAsyncClient buildBetaVoiceAgentsLiveWebSocketAsyncClient() {
-            return new BetaVoiceAgentsLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+            return new BetaVoiceAgentsLiveWebSocketAsyncClient(
+                createVoiceAgentWebSocketConfiguration(VOICE_AGENTS_PREVIEW_FEATURES));
         }
 
         /**
@@ -781,7 +782,8 @@ public final class AgentsClientBuilder
          */
         @Beta
         public BetaVoiceAgentsLiveWebSocketClient buildBetaVoiceAgentsLiveWebSocketClient() {
-            return new BetaVoiceAgentsLiveWebSocketClient(createVoiceAgentWebSocketConfiguration());
+            return new BetaVoiceAgentsLiveWebSocketClient(
+                createVoiceAgentWebSocketConfiguration(VOICE_AGENTS_PREVIEW_FEATURES));
         }
 
         /**
@@ -930,10 +932,11 @@ public final class AgentsClientBuilder
      * WebSocket handshake and must remain aligned with {@code createHttpPipeline()} when the TypeSpec emitter changes.
      * HTTP transport, pipeline, policy, and retry settings are rejected rather than silently ignored.
      *
+     * @param previewFeatures the preview feature header value, or {@code null} for no preview opt-in.
      * @return the voice-agent WebSocket client configuration.
      * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
-    private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {
+    private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration(String previewFeatures) {
         validateClient();
         Objects.requireNonNull(tokenCredential,
             "'credential' must be configured to build a voice-agent WebSocket client.");
@@ -972,7 +975,7 @@ public final class AgentsClientBuilder
         AgentsServiceVersion localServiceVersion
             = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
         return new VoiceAgentWebSocketClientConfiguration(URI.create(endpoint), tokenCredential,
-            localServiceVersion.getVersion(), userAgent, headers, proxyOptions);
+            localServiceVersion.getVersion(), userAgent, headers, proxyOptions, previewFeatures);
     }
 
     /**
@@ -982,12 +985,14 @@ public final class AgentsClientBuilder
      * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
      * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
      * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return an asynchronous voice-agent WebSocket client.
      * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
     public VoiceAgentsWebSocketAsyncClient buildVoiceAgentsWebSocketAsyncClient() {
-        return new VoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        return new VoiceAgentsWebSocketAsyncClient(
+            createVoiceAgentWebSocketConfiguration(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null));
     }
 
     /**
@@ -997,12 +1002,14 @@ public final class AgentsClientBuilder
      * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
      * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
      * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return a synchronous voice-agent WebSocket client.
      * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
     public VoiceAgentsWebSocketClient buildVoiceAgentsWebSocketClient() {
-        return new VoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        return new VoiceAgentsWebSocketClient(
+            createVoiceAgentWebSocketConfiguration(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null));
     }
 
     /**

@@ -53,6 +53,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -63,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -72,8 +75,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VoiceAgentWebSocketSessionAsyncTests {
     private DisposableServer server;
 
-    @Test
-    public void handshakeUsesSdkManagedProtocolValues() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handshakeUsesSdkManagedProtocolValues(boolean allowPreview) {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = VoiceAgentWebSocketSessionTests.tlsServer().host("localhost").port(0).handle((request, response) -> {
@@ -93,15 +97,17 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                         new Header("Foundry-Features", "override-feature"),
                         new Header("Sec-WebSocket-Protocol", "override-protocol"))));
 
-        VoiceAgentsWebSocketSessionAsyncClient session = builder.buildVoiceAgentsWebSocketAsyncClient()
-            .openWebSocketSession("agent name")
-            .block(Duration.ofSeconds(5));
+        VoiceAgentsWebSocketAsyncClient client
+            = builder.allowPreview(allowPreview).buildVoiceAgentsWebSocketAsyncClient();
+        builder.allowPreview(!allowPreview);
+        VoiceAgentsWebSocketSessionAsyncClient session
+            = client.openWebSocketSession("agent name").block(Duration.ofSeconds(5));
         session.closeAsync().block(Duration.ofSeconds(5));
         assertFalse(session.isOpen());
 
         assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
         assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals(allowPreview ? "VoiceAgents=V1Preview" : null, headers.get().get("Foundry-Features"));
         assertEquals("custom-value", headers.get().get("X-Custom"));
         assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
         String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
@@ -395,7 +401,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .verifyComplete();
         assertEquals(Collections.singletonList("https://ai.azure.com/.default"), requestedScopes.get());
         assertEquals("Bearer test-token", authorization.get());
-        assertEquals("VoiceAgents=V1Preview", foundryFeatures.get());
+        assertNull(foundryFeatures.get());
         assertTrue(userAgent.get().startsWith("test-app azsdk-java-"));
         assertEquals("test-value", customHeader.get());
         String decodedUri = decode(requestUri.get());

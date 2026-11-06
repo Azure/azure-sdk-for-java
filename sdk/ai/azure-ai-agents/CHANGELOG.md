@@ -6,8 +6,9 @@
 
 - Promoted the handwritten realtime WebSocket clients, session clients, connection options, overflow strategy,
   raw server-event model, and typed response-input and tool-choice wrappers to GA.
-  `VoiceAgentMaxOutputTokens`, GPT Live clients, and generated realtime models remain preview;
-  WebSocket handshake headers are unchanged.
+  `VoiceAgentMaxOutputTokens`, GPT Live clients, and generated realtime models remain preview.
+- Realtime WebSocket clients now send `Foundry-Features: VoiceAgents=V1Preview` only when built with
+  `allowPreview(true)`. GPT Live WebSocket clients continue to send it regardless of `allowPreview`.
 - Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
   destinations.
 - Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
