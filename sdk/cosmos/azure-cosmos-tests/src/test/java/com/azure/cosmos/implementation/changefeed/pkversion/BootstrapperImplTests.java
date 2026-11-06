@@ -32,6 +32,63 @@ import static org.mockito.Mockito.times;
 public class BootstrapperImplTests {
 
     @Test(groups = "unit")
+    public void auxiliaryEpkLeasesCreatedBeforeLockGrantAreRevalidatedBeforeLegacyWrites() {
+        String queryA = "SELECT * FROM c WHERE c.a = 1";
+        String queryB = "SELECT * FROM c WHERE c.a = 2";
+        for (String[] change : new String[][] { { null, queryB }, { queryA, null }, { queryA, queryB } }) {
+            java.util.concurrent.atomic.AtomicReference<ServiceItemLeaseV1> persisted =
+                new java.util.concurrent.atomic.AtomicReference<>();
+            ServiceItemLeaseV1 materialized = new ServiceItemLeaseV1().withId("prefix..0").withLeaseToken("0")
+                .withVersion(LeaseVersion.EPK_RANGE_BASED_LEASE)
+                .withFeedRange(com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl.forFullRange())
+                .withProperties(ChangeFeedQueryFilter.withFingerprint(null, ChangeFeedQueryFilter.fingerprint(change[0])));
+            com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient client =
+                Mockito.mock(com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient.class);
+            Mockito.when(client.queryItems(Mockito.any(), Mockito.any(), Mockito.any(),
+                Mockito.eq(com.azure.cosmos.implementation.InternalObjectNode.class))).thenReturn(Flux.defer(() -> {
+                    @SuppressWarnings("unchecked")
+                    com.azure.cosmos.models.FeedResponse<com.azure.cosmos.implementation.InternalObjectNode> page =
+                        Mockito.mock(com.azure.cosmos.models.FeedResponse.class);
+                    java.util.List<com.azure.cosmos.implementation.InternalObjectNode> items = new java.util.ArrayList<>();
+                    if (persisted.get() != null) {
+                        com.fasterxml.jackson.databind.node.ObjectNode serialized =
+                            com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().valueToTree(persisted.get());
+                        items.add(new com.azure.cosmos.implementation.InternalObjectNode(serialized));
+                    }
+                    Mockito.when(page.getResults()).thenReturn(items);
+                    return Flux.just(page);
+                }));
+            LeaseStoreManager auxiliary = Mockito.spy(
+                com.azure.cosmos.implementation.changefeed.epkversion.LeaseStoreManagerImpl.builder()
+                    .leaseContextClient(client).leasePrefix("prefix").hostName("host").query(change[1])
+                    .leaseCollectionLink(Mockito.mock(com.azure.cosmos.CosmosAsyncContainer.class))
+                    .requestOptionsFactory(Mockito.mock(com.azure.cosmos.implementation.changefeed.RequestOptionsFactory.class))
+                    .build());
+            Mockito.doReturn(Mono.just(false)).when(auxiliary).isInitialized();
+            Mockito.doReturn(Mono.defer(() -> {
+                persisted.set(materialized);
+                return Mono.just(true);
+            })).when(auxiliary).acquireInitializationLock(Mockito.any());
+            Mockito.doReturn(Mono.just(true)).when(auxiliary).releaseInitializationLock();
+            LeaseStore store = Mockito.mock(LeaseStore.class);
+            Mockito.when(store.isInitialized()).thenReturn(Mono.just(false));
+            Mockito.when(store.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
+            Mockito.when(store.releaseInitializationLock()).thenReturn(Mono.just(true));
+            PartitionSynchronizerImpl synchronizer = Mockito.spy(new PartitionSynchronizerImpl(client,
+                Mockito.mock(com.azure.cosmos.CosmosAsyncContainer.class), auxiliary, auxiliary, 1, 1, "rid"));
+            Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, store, auxiliary,
+                new ChangeFeedProcessorOptions().setQuery(change[1]), Duration.ofSeconds(5), Duration.ofMillis(1));
+            StepVerifier.create(bootstrapper.initialize())
+                .expectError(ChangeFeedQueryFilter.QueryFilterMismatchException.class).verify(Duration.ofSeconds(5));
+            Mockito.verify(auxiliary, times(2)).getAllLeases();
+            Mockito.verify(auxiliary).releaseInitializationLock();
+            Mockito.verify(store).releaseInitializationLock();
+            Mockito.verify(store, Mockito.never()).markInitialized();
+            Mockito.verify(synchronizer, Mockito.never()).createMissingLeases();
+        }
+    }
+
+    @Test(groups = "unit")
     public void queryMismatchTerminatesInitializationAndReleasesHeldLock() {
         PartitionSynchronizer synchronizer = Mockito.mock(PartitionSynchronizer.class);
         LeaseStore store = Mockito.mock(LeaseStore.class);
@@ -39,6 +96,8 @@ public class BootstrapperImplTests {
         Mockito.when(store.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(auxiliary.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(auxiliary.getAllLeases()).thenReturn(Flux.empty());
+        Mockito.when(auxiliary.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
+        Mockito.when(auxiliary.releaseInitializationLock()).thenReturn(Mono.just(true));
         Mockito.when(store.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
         Mockito.when(store.releaseInitializationLock()).thenReturn(Mono.empty());
         Mockito.when(store.markInitialized()).thenReturn(Mono.error(new AssertionError("Marker must not be written")));
@@ -148,6 +207,7 @@ public class BootstrapperImplTests {
         Mockito
             .when(leaseStoreMock.isInitialized())
             .thenReturn(Mono.just(false))
+            .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.markInitialized()).thenReturn(Mono.just(Boolean.TRUE));
@@ -156,6 +216,8 @@ public class BootstrapperImplTests {
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.just(true));
 
         if (lease != null) {
             Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
@@ -179,7 +241,7 @@ public class BootstrapperImplTests {
 
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
-        Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        Mockito.verify(leaseStoreMock, times(3)).isInitialized();
     }
 
     @Test(groups = {"unit"}, dataProvider = "leaseProvider")
@@ -197,6 +259,7 @@ public class BootstrapperImplTests {
         Mockito
             .when(leaseStoreMock.isInitialized())
             .thenReturn(Mono.just(false))
+            .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.markInitialized()).thenReturn(Mono.just(Boolean.TRUE));
@@ -205,6 +268,8 @@ public class BootstrapperImplTests {
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.just(true));
 
         // even return empty Flux when lease != null to simulate the missing leases
         if (lease != null) {
@@ -231,14 +296,15 @@ public class BootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
+        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(expectIllegalStateException ? 1 : 2))
+            .getTopLeases(Mockito.eq(1));
         if (lease != null && lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         } else {
             Mockito.verify(partitionSynchronizerMock, times(2)).createMissingLeases();
         }
-        Mockito.verify(leaseStoreMock, times(2)).isInitialized();
-        Mockito.verify(leaseStoreMock, times(2)).acquireInitializationLock(Mockito.any());
+        Mockito.verify(leaseStoreMock, times(expectIllegalStateException ? 3 : 4)).isInitialized();
+        Mockito.verify(leaseStoreMock, times(expectIllegalStateException ? 1 : 2)).acquireInitializationLock(Mockito.any());
     }
 
     private static ServiceItemLeaseV1 createEpkRangeBasedLeaseWithContinuation(

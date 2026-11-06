@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
+import com.azure.cosmos.implementation.changefeed.common.LeaseStoreInitializationLocks;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -37,14 +38,13 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
     private final LeaseStore leaseStore;
     private final LeaseStoreManager pkRangeIdVersionLeaseStoreManager;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
-    private final Duration lockTime;
     private final Duration sleepTime;
     private final ChangeFeedMode changeFeedModeToStart;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
-    private volatile boolean isPkRangeIdVersionLeaseStoreLockAcquired;
+    private final LeaseStoreInitializationLocks initializationLocks;
 
     public PkRangeIdVersionLeaseStoreBootstrapperImpl(
         PartitionSynchronizer synchronizer,
@@ -70,8 +70,9 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
-        this.lockTime = lockTime;
         this.sleepTime = sleepTime;
+        this.initializationLocks = new LeaseStoreInitializationLocks(
+            leaseStore, pkRangeIdVersionLeaseStoreManager, lockTime);
 
         this.isInitialized = false;
     }
@@ -95,15 +96,26 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                     return this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease();
                 } else {
                     logger.info("Acquire initialization lock");
-                    return this.acquireInitializationLock()
+                    return this.initializationLocks.acquire()
                         .flatMap(lockAcquired -> {
+                            this.isLockAcquired = lockAcquired;
 
                             if (!lockAcquired) {
                                 logger.info("Another instance is initializing the store");
                                 return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                             } else {
-                                return this.pkRangeIdVersionLeaseStoreManager.isInitialized()
+                                return this.leaseStore.isInitialized()
+                                    .flatMap(epkInitialized -> {
+                                        this.isInitialized = epkInitialized;
+                                        return this.pkRangeIdVersionLeaseStoreManager.isInitialized();
+                                    })
+                                    .flatMap(pkInitialized -> this.pkRangeIdVersionLeaseStoreManager.getAllLeases()
+                                        .then().thenReturn(pkInitialized))
                                     .flatMap(pkRangeIdVersionLeaseStoreInitialized -> {
+                                        if (this.isInitialized) {
+                                            return this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease()
+                                                .thenReturn(lockAcquired);
+                                        }
                                         if (pkRangeIdVersionLeaseStoreInitialized) {
                                            return this.bootstrapFromPkRangeVersionLeases();
                                         } else {
@@ -113,9 +125,9 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             }
                         })
                         .onErrorResume(throwable -> {
-                            if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException) {
-                                return (this.isLockAcquired ? this.leaseStore.releaseInitializationLock() : Mono.empty())
-                                    .then(this.releasePkRangeIdVersionLeaseStoreLock())
+                            if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException
+                                || throwable instanceof LeaseStoreInitializationLocks.ConfigurationMismatchException) {
+                                return this.initializationLocks.release()
                                     .then(Mono.error(throwable));
                             }
                             logger.warn("Unexpected exception caught while initializing the lock", throwable);
@@ -123,8 +135,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                         })
                         .flatMap(lockAcquired -> {
                             if (this.isLockAcquired) {
-                                return this.leaseStore.releaseInitializationLock()
-                                    .then(this.releasePkRangeIdVersionLeaseStoreLock());
+                                return this.initializationLocks.release();
                             }
 
                             return Mono.just(lockAcquired);
@@ -133,14 +144,6 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             })
             .repeat(() -> !this.isInitialized)
             .then();
-    }
-
-    private Mono<Boolean> releasePkRangeIdVersionLeaseStoreLock() {
-        if (this.isPkRangeIdVersionLeaseStoreLockAcquired) {
-            return this.pkRangeIdVersionLeaseStoreManager.releaseInitializationLock();
-        }
-
-        return Mono.just(Boolean.FALSE);
     }
 
     private Mono<Boolean> bootstrapFromPkRangeVersionLeases() {
@@ -183,7 +186,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                                     "ChangeFeedProcessor#handleAllVersionsAndDeletes was also started for " +
                                     "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
-                                return Mono.error(new IllegalStateException(errorMessage));
+                                return Mono.error(new LeaseStoreInitializationLocks.ConfigurationMismatchException(errorMessage));
                             }
                         }
                     }
@@ -207,28 +210,4 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             .thenReturn(this.isLockAcquired);
     }
 
-    private Mono<Boolean> acquireInitializationLock() {
-        return this.leaseStore.acquireInitializationLock(this.lockTime)
-            .flatMap(isLockAcquired -> {
-                this.isLockAcquired = isLockAcquired;
-
-                if (!isLockAcquired) {
-                    return Mono.just(Boolean.FALSE);
-                } else {
-                    return this.pkRangeIdVersionLeaseStoreManager.isInitialized()
-                        .flatMap(pkRangeIdVersionLeaseStoreInitialized -> {
-                            if (pkRangeIdVersionLeaseStoreInitialized) {
-                                return Mono.just(Boolean.TRUE);
-                            } else {
-                                return this.pkRangeIdVersionLeaseStoreManager.acquireInitializationLock(this.lockTime)
-                                    .flatMap(pkRangeIdVersionLeaseStoreLockAcquired -> {
-                                        this.isPkRangeIdVersionLeaseStoreLockAcquired = pkRangeIdVersionLeaseStoreLockAcquired;
-
-                                        return Mono.just(this.isPkRangeIdVersionLeaseStoreLockAcquired);
-                                    });
-                            }
-                        });
-                }
-            });
-    }
 }

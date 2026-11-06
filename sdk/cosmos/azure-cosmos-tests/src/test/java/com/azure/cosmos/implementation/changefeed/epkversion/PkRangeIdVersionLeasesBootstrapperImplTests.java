@@ -81,6 +81,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito
             .when(leaseStoreMock.isInitialized())
             .thenReturn(Mono.just(false))
+            .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.markInitialized()).thenReturn(Mono.just(Boolean.TRUE));
@@ -89,6 +90,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         LeaseStoreManager pkRangeIdVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(true));
+        Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.deleteAll(anyList())).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.empty());
@@ -105,14 +107,14 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
 
         bootstrapper.initialize().block();
 
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).getAllLeases();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).isInitialized();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
-        Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        Mockito.verify(leaseStoreMock, times(3)).isInitialized();
         // when the pkRangeId version lease store is already initialized, there is no need to acquire the lock then release it
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(0)).releaseInitializationLock();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).releaseInitializationLock();
     }
 
     @Test(groups = "unit")
@@ -128,6 +130,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         LeaseStore leaseStoreMock = Mockito.mock(LeaseStore.class);
         Mockito
             .when(leaseStoreMock.isInitialized())
+            .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
@@ -156,7 +159,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.verify(partitionSynchronizerMock, times(0)).createMissingLeases(anyList());
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
-        Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        Mockito.verify(leaseStoreMock, times(3)).isInitialized();
         // when the pkRangeId version lease store is not initialized, then we need to acquire the lock of it as well
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).releaseInitializationLock();
     }
@@ -175,6 +178,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito
             .when(leaseStoreMock.isInitialized())
             .thenReturn(Mono.just(false))
+            .thenReturn(Mono.just(false))
             .thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(leaseStoreMock.markInitialized()).thenReturn(Mono.just(Boolean.TRUE));
@@ -183,6 +187,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         LeaseStoreManager pkRangeIdVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(true));
+        Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.deleteAll(anyList())).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.empty());
@@ -203,14 +208,14 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).getAllLeases();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).isInitialized();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
-        Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        Mockito.verify(leaseStoreMock, times(3)).isInitialized();
         // when the pkRangeId version lease store is already initialized, there is no need to acquire the lock then release it
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(0)).releaseInitializationLock();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).releaseInitializationLock();
     }
 
     private static ServiceItemLeaseV1 createLeaseWithContinuation(

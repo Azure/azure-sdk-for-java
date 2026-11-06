@@ -4,6 +4,10 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -30,6 +34,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,6 +95,35 @@ public class QueryFilterInitializationTest {
     }
 
     @Test(groups = "unit")
+    public void markerAbsentInterleavingIsRevalidatedUnderBothLocks() {
+        for (Object[] change : filterChanges()) {
+            String original = (String) change[0];
+            String changed = (String) change[1];
+            boolean migration = (boolean) change[2];
+            Lease legacy = new ServiceItemLease().withId("prefix..0").withLeaseToken("0")
+                .withProperties(ChangeFeedQueryFilter.withFingerprint(null, ChangeFeedQueryFilter.fingerprint(original)));
+            AtomicReference<Lease> persistedLegacy = new AtomicReference<>();
+            AtomicReference<String> marker = new AtomicReference<>();
+            Harness rejected = new Harness(changed, null, persistedLegacy, marker, migration,
+                () -> persistedLegacy.set(legacy));
+            StepVerifier.create(rejected.bootstrapper.initialize())
+                .expectError(ChangeFeedQueryFilter.QueryFilterMismatchException.class).verify(Duration.ofSeconds(5));
+            assertThat(marker).hasValue(null);
+            verify(rejected.auxiliary, times(2)).getAllLeases();
+            verify(rejected.primary, never()).createLeaseIfNotExist(any(FeedRangeEpkImpl.class), any());
+            verify(rejected.auxiliary, never()).markInitialized();
+            verify(rejected.store).releaseInitializationLock();
+            verify(rejected.auxiliary).releaseInitializationLock();
+
+            Harness recovered = new Harness(original, null, persistedLegacy, marker, true, () -> { });
+            StepVerifier.create(recovered.bootstrapper.initialize()).verifyComplete();
+            assertThat(marker).hasValue(ChangeFeedQueryFilter.fingerprint(original) == null
+                ? "unfiltered" : ChangeFeedQueryFilter.fingerprint(original));
+            verify(recovered.primary).createLeaseIfNotExist(any(FeedRangeEpkImpl.class), any());
+        }
+    }
+
+    @Test(groups = "unit")
     public void synchronizerRetainsUnrelatedErrorBehavior() {
         ChangeFeedContextClient client = mock(ChangeFeedContextClient.class);
         when(client.getOverlappingRanges(any(), eq(true)))
@@ -107,10 +141,18 @@ public class QueryFilterInitializationTest {
         private final Bootstrapper bootstrapper;
 
         private Harness(String query, Lease epkLease, Lease pkLease, AtomicReference<String> marker, boolean migration) {
+            this(query, epkLease, new AtomicReference<>(pkLease), marker, migration, () -> { });
+        }
+
+        private Harness(String query, Lease epkLease, AtomicReference<Lease> pkLease,
+            AtomicReference<String> marker, boolean migration, Runnable beforeLegacyLockGranted) {
             primary = manager(true, query, epkLease);
-            auxiliary = manager(false, query, pkLease);
+            auxiliary = manager(false, query, pkLease::get);
             doReturn(Mono.just(false)).when(auxiliary).isInitialized();
-            doReturn(Mono.just(true)).when(auxiliary).acquireInitializationLock(any());
+            doReturn(Mono.defer(() -> {
+                beforeLegacyLockGranted.run();
+                return Mono.just(true);
+            })).when(auxiliary).acquireInitializationLock(any());
             doReturn(Mono.just(true)).when(auxiliary).releaseInitializationLock();
             doReturn(Mono.just(true)).when(auxiliary).markInitialized();
             when(store.isInitialized()).thenAnswer(invocation -> Mono.fromSupplier(() -> {
@@ -143,19 +185,34 @@ public class QueryFilterInitializationTest {
     }
 
     private static LeaseStoreManager manager(boolean epk, String query, Lease lease) {
+        return manager(epk, query, () -> lease);
+    }
+
+    private static LeaseStoreManager manager(boolean epk, String query, Supplier<Lease> leaseSupplier) {
         ChangeFeedContextClient client = mock(ChangeFeedContextClient.class);
-        @SuppressWarnings("unchecked")
-        FeedResponse<InternalObjectNode> page = mock(FeedResponse.class);
-        if (lease == null) {
-            when(page.getResults()).thenReturn(Collections.emptyList());
-        } else {
-            ObjectNode serialized = Utils.getSimpleObjectMapper().valueToTree(lease);
-            InternalObjectNode compatibleFirstLease = new InternalObjectNode(serialized.deepCopy());
-            compatibleFirstLease.setId("prefix..compatible");
-            compatibleFirstLease.set(ChangeFeedQueryFilter.PROPERTY_NAME, ChangeFeedQueryFilter.fingerprint(query));
-            when(page.getResults()).thenReturn(Arrays.asList(compatibleFirstLease, new InternalObjectNode(serialized)));
-        }
-        when(client.queryItems(any(), any(), any(), eq(InternalObjectNode.class))).thenReturn(Flux.just(page));
+        when(client.queryItems(any(), any(), any(), eq(InternalObjectNode.class))).thenReturn(Flux.defer(() -> {
+            @SuppressWarnings("unchecked")
+            FeedResponse<InternalObjectNode> page = mock(FeedResponse.class);
+            Lease lease = leaseSupplier.get();
+            if (lease == null) {
+                when(page.getResults()).thenReturn(Collections.emptyList());
+            } else {
+                ObjectNode serialized = Utils.getSimpleObjectMapper().valueToTree(lease);
+                InternalObjectNode compatibleFirstLease = new InternalObjectNode(serialized.deepCopy());
+                compatibleFirstLease.setId("prefix..compatible");
+                compatibleFirstLease.set(ChangeFeedQueryFilter.PROPERTY_NAME, ChangeFeedQueryFilter.fingerprint(query));
+                when(page.getResults()).thenReturn(Arrays.asList(compatibleFirstLease, new InternalObjectNode(serialized)));
+            }
+            return Flux.just(page);
+        }));
+        when(client.createItem(any(), any(Lease.class), any(), eq(false))).thenAnswer(invocation -> {
+            ObjectNode serialized = Utils.getSimpleObjectMapper().valueToTree(invocation.getArgument(1));
+            RxDocumentServiceResponse response = mock(RxDocumentServiceResponse.class);
+            when(response.hasPayload()).thenReturn(true);
+            when(response.getResponseBody()).thenReturn(serialized);
+            return Mono.just(ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor()
+                .createCosmosItemResponse(new ResourceResponse<>(response, Document.class), InternalObjectNode.class, null));
+        });
         LeaseStoreManager.LeaseStoreManagerBuilderDefinition builder = epk
             ? LeaseStoreManagerImpl.builder()
             : com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder();
