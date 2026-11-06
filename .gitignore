@@ -82,6 +82,7 @@ package-lock.json
 # VS Code
 .vscode/*
 !.vscode/mcp.json
+.devcontainer/devcontainer-lock.json
 .factorypath
 jacoco.exec
 .vs/
@@ -129,4 +130,3 @@ TempTypeSpecFiles/
 
 # Azure Artifacts Credential Provider runtime
 .azure-artifacts/
-
