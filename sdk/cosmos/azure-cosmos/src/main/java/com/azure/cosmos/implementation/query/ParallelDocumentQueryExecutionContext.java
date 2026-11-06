@@ -215,6 +215,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         private final RequestChargeTracker tracker;
         // A page that exhausted its partition; its continuation token points at the next page's range.
         private DocumentProducer<T>.DocumentProducerFeedResponse pageAwaitingNextRange;
+        // The last page emitted to the subscriber; receives the diagnostics of filtered empty pages that follow it.
+        private FeedResponse<T> lastEmittedPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private final UUID correlatedActivityId;
         private final ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
@@ -351,6 +353,22 @@ public class ParallelDocumentQueryExecutionContext<T>
                 : Mono.just(this.addCompositeContinuationToken(lastPage, null));
         }
 
+        /**
+         * Attaches the query metrics and request statistics of filtered empty pages that arrived after the last
+         * emitted page to that page.
+         * <p>
+         * A page with a backend continuation token is emitted without waiting for the pages that follow it, so the
+         * diagnostics of trailing empty pages are only known once the query completes. Both target collections are
+         * concurrent, so they can be extended after the page has been emitted.
+         */
+        private Mono<FeedResponse<T>> attachTrailingEmptyPageDiagnostics() {
+            if (this.lastEmittedPage != null) {
+                mergeAndResetQueryMetrics(this.lastEmittedPage);
+                mergeAndResetSkippedRequestStats(this.lastEmittedPage.getCosmosDiagnostics());
+            }
+            return Mono.empty();
+        }
+
         @Override
         public Flux<FeedResponse<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             // Emit an empty page so the downstream observables know when there are no more
@@ -407,8 +425,11 @@ public class ParallelDocumentQueryExecutionContext<T>
                 // Unwrap the documentProducerFeedResponse and get back the feedResponse
                 mergeAndResetSkippedRequestStats(documentProducerFeedResponse.pageResult.getCosmosDiagnostics());
 
+                this.lastEmittedPage = documentProducerFeedResponse.pageResult;
                 return documentProducerFeedResponse.pageResult;
-            }).switchIfEmpty(Flux.defer(() -> {
+            })
+            .concatWith(Mono.defer(this::attachTrailingEmptyPageDiagnostics))
+            .switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 FeedResponse<T> artificialEmptyFeedResponse =
                     BridgeInternal.createFeedResponseWithQueryMetrics(
