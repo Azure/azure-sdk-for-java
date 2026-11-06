@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
+import com.azure.cosmos.implementation.changefeed.common.LeaseStoreInitializationLocks;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +23,13 @@ class BootstrapperImpl implements Bootstrapper {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
     private final PartitionSynchronizer synchronizer;
     private final LeaseStore leaseStore;
-    private final Duration lockTime;
     private final Duration sleepTime;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
+    private final LeaseStoreInitializationLocks initializationLocks;
 
     public BootstrapperImpl(
         PartitionSynchronizer synchronizer,
@@ -63,8 +65,8 @@ class BootstrapperImpl implements Bootstrapper {
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
-        this.lockTime = lockTime;
         this.sleepTime = sleepTime;
+        this.initializationLocks = new LeaseStoreInitializationLocks(epkRangeVersionLeaseStoreManager, leaseStore, lockTime);
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
 
@@ -77,27 +79,13 @@ class BootstrapperImpl implements Bootstrapper {
 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
+            .flatMap(initialized -> this.epkRangeVersionLeaseStoreManager.isInitialized().thenReturn(initialized))
+            .flatMap(initialized -> this.epkRangeVersionLeaseStoreManager.getAllLeases().then().thenReturn(initialized))
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
                 Mono<Void> previousOperation = Mono.empty();
                 if (initialized) {
-                    Mono<Void> validateExistingLeasesMono = this.epkRangeVersionLeaseStoreManager
-                        .getTopLeases(1)
-                        .next()
-                        .flatMap(lease -> {
-
-                            if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
-
-                                String errorMessage = String.format("ChangeFeedProcessor#handleChanges cannot be invoked when one of " +
-                                    "ChangeFeedProcessor#handleLatestVersionChanges or " +
-                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes were also started for " +
-                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
-
-                                return Mono.error(new IllegalStateException(errorMessage));
-                            }
-
-                            return Mono.empty();
-                        });
+                    Mono<Void> validateExistingLeasesMono = this.validateAuxiliaryLeaseMode();
 
                     if (!this.changeFeedProcessorOptions.isLeaseVerificationEnabledOnRestart()) {
                         return validateExistingLeasesMono;
@@ -108,7 +96,7 @@ class BootstrapperImpl implements Bootstrapper {
 
                 logger.info("Acquire initialization lock");
                 return previousOperation.then(
-                    this.leaseStore.acquireInitializationLock(this.lockTime)
+                    this.initializationLocks.acquire()
                     .flatMap(lockAcquired -> {
                         this.isLockAcquired = lockAcquired;
 
@@ -116,24 +104,50 @@ class BootstrapperImpl implements Bootstrapper {
                             logger.info("Another instance is initializing the store");
                             return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                         } else {
-                            return this.synchronizer.createMissingLeases()
-                                .then(!isInitialized
-                                    ? this.leaseStore.markInitialized().flatMap((initSucceeded) -> Mono.just(lockAcquired))
-                                    : Mono.just(lockAcquired));
+                            return this.leaseStore.isInitialized()
+                                .flatMap(currentlyInitialized -> {
+                                    this.isInitialized = currentlyInitialized;
+                                    return this.epkRangeVersionLeaseStoreManager.isInitialized();
+                                })
+                                .then(Mono.defer(() -> this.epkRangeVersionLeaseStoreManager.getAllLeases().then()))
+                                .then(Mono.defer(() -> this.isInitialized ? this.validateAuxiliaryLeaseMode() : Mono.empty()))
+                                .then(Mono.defer(() -> this.synchronizer.createMissingLeases()))
+                                .then(Mono.defer(() -> !this.isInitialized
+                                    ? this.leaseStore.markInitialized().thenReturn(lockAcquired)
+                                    : Mono.just(lockAcquired)));
                         }
                     })
                     .onErrorResume(throwable -> {
+                        if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException
+                            || throwable instanceof LeaseStoreInitializationLocks.ConfigurationMismatchException) {
+                            return this.initializationLocks.release()
+                                .then(Mono.error(throwable));
+                        }
                         logger.warn("Unexpected exception caught while initializing the lock", throwable);
                         return Mono.just(this.isLockAcquired);
                     })
                     .flatMap(lockAcquired -> {
                         if (this.isLockAcquired) {
-                            return this.leaseStore.releaseInitializationLock();
+                            return this.initializationLocks.release();
                         }
                         return Mono.just(lockAcquired);
                     }));
             })
             .repeat( () -> !this.isInitialized)
             .then();
+    }
+
+    private Mono<Void> validateAuxiliaryLeaseMode() {
+        return this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next()
+            .flatMap(lease -> {
+                if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
+                    return Mono.error(new LeaseStoreInitializationLocks.ConfigurationMismatchException(String.format(
+                        "ChangeFeedProcessor#handleChanges cannot be invoked when one of "
+                            + "ChangeFeedProcessor#handleLatestVersionChanges or "
+                            + "ChangeFeedProcessor#handleAllVersionsAndDeletes were also started for "
+                            + "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix())));
+                }
+                return Mono.empty();
+            });
     }
 }

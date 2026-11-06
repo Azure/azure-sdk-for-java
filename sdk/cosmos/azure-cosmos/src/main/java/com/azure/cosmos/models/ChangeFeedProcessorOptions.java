@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.util.Beta;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -44,6 +45,7 @@ public final class ChangeFeedProcessorOptions {
     private Duration feedPollDelay;
 
     private String leasePrefix;
+    private String query;
     private int maxItemCount;
     private String startContinuation;
     private Instant startTime;
@@ -80,6 +82,35 @@ public final class ChangeFeedProcessorOptions {
         this.scheduler = Schedulers.boundedElastic();
         this.feedPollThroughputControlGroupConfig = null;
         this.leaseVerificationOnRestartEnabled = DEFAULT_LEASE_VERIFICATION_ON_RESTART_ENABLED;
+    }
+
+    /**
+     * Gets the SQL predicate query used to filter change feed records.
+     *
+     * @return the query, or null when filtering is disabled.
+     */
+    @Beta(Beta.SinceVersion.V4_84_0)
+    public String getQuery() {
+        return this.query;
+    }
+
+    /**
+     * Sets a service-evaluated query of the form {@code SELECT * FROM c WHERE ...}.
+     * See {@link CosmosChangeFeedRequestOptions#setQuery(String)} for supported query shapes,
+     * current-image evaluation, and service validation. Filtering is supported by both processor modes.
+     * The query is captured when the processor is built. Its identity is persisted in lease configuration;
+     * a different query, including adding or removing a filter, fails with incompatible existing leases.
+     * To change it, build a processor with a new lease prefix or lease container.
+     * Query identity uses exact SQL text, so whitespace and casing changes also require new leases.
+     * The estimator continues to report outstanding physical changes, not matching changes.
+     *
+     * @param query the raw SQL query, or null or an empty string to disable filtering.
+     * @return the current processor options.
+     */
+    @Beta(Beta.SinceVersion.V4_84_0)
+    public ChangeFeedProcessorOptions setQuery(String query) {
+        this.query = query == null || query.isEmpty() ? null : query;
+        return this;
     }
 
     /**

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -239,6 +240,11 @@ public class ServiceItemLease implements Lease {
             .withLeaseToken(document.getString(PROPERTY_NAME_LEASE_TOKEN))
             .withContinuationToken(document.getString(PROPERTY_NAME_CONTINUATION_TOKEN));
 
+        String queryFingerprint = document.getString(ChangeFeedQueryFilter.PROPERTY_NAME);
+        if (queryFingerprint != null) {
+            lease.getProperties().put(ChangeFeedQueryFilter.PROPERTY_NAME, queryFingerprint);
+        }
+
         String leaseTimestamp = document.getString(PROPERTY_NAME_TIMESTAMP);
         if (leaseTimestamp != null) {
             return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
@@ -294,6 +300,11 @@ public class ServiceItemLease implements Lease {
                 writer.writeStringField(PROPERTY_NAME_CONTINUATION_TOKEN, lease.getContinuationToken());
                 writer.writeStringField(PROPERTY_NAME_TIMESTAMP, lease.getTimestamp());
                 writer.writeStringField(PROPERTY_NAME_OWNER, lease.getOwner());
+                if (lease.getProperties() != null
+                    && lease.getProperties().containsKey(ChangeFeedQueryFilter.PROPERTY_NAME)) {
+                    writer.writeStringField(ChangeFeedQueryFilter.PROPERTY_NAME,
+                        lease.getProperties().get(ChangeFeedQueryFilter.PROPERTY_NAME));
+                }
                 writer.writeEndObject();
             } catch (IOException e) {
                 throw new IllegalStateException(e);

@@ -3,6 +3,7 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added raw SQL predicate filtering for synchronous and asynchronous change feed reads and Change Feed Processor in latest-version and all-versions-and-deletes modes. Requires service support for query-filtered change feed requests. Pull continuation tokens remain independent of the query; processors reject incompatible lease filter configuration.
 * Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings. - See [PR 50888](https://github.com/Azure/azure-sdk-for-java/pull/50888), [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
 
 #### Breaking Changes
