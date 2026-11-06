@@ -626,7 +626,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
         jsonWriter.writeStringField("permissionFilterOption",
             this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
-        jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
         jsonWriter.writeJsonField("sharePointConnectorAppRegistration", this.sharePointConnectorAppRegistration);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
@@ -661,7 +660,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
             SearchIndexPermissionFilterOption permissionFilterOption = null;
-            Boolean purviewEnabled = null;
             SharePointConnectorAppRegistration sharePointConnectorAppRegistration = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -701,8 +699,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     vectorSearch = VectorSearch.fromJson(reader);
                 } else if ("permissionFilterOption".equals(fieldName)) {
                     permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
-                } else if ("purviewEnabled".equals(fieldName)) {
-                    purviewEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sharePointConnectorAppRegistration".equals(fieldName)) {
                     sharePointConnectorAppRegistration = SharePointConnectorAppRegistration.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {
@@ -727,7 +723,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             deserializedSearchIndex.semanticSearch = semanticSearch;
             deserializedSearchIndex.vectorSearch = vectorSearch;
             deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
-            deserializedSearchIndex.purviewEnabled = purviewEnabled;
             deserializedSearchIndex.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
             deserializedSearchIndex.eTag = eTag;
             return deserializedSearchIndex;
@@ -739,12 +734,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      */
     @Generated
     private SearchIndexPermissionFilterOption permissionFilterOption;
-
-    /*
-     * A value indicating whether Purview is enabled for the index.
-     */
-    @Generated
-    private Boolean purviewEnabled;
 
     /*
      * Configures a SharePoint connector app registration for the index, enabling document-level permissions from
@@ -774,28 +763,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     @Generated
     public SearchIndex setPermissionFilterOption(SearchIndexPermissionFilterOption permissionFilterOption) {
         this.permissionFilterOption = permissionFilterOption;
-        return this;
-    }
-
-    /**
-     * Get the purviewEnabled property: A value indicating whether Purview is enabled for the index.
-     *
-     * @return the purviewEnabled value.
-     */
-    @Generated
-    public Boolean isPurviewEnabled() {
-        return this.purviewEnabled;
-    }
-
-    /**
-     * Set the purviewEnabled property: A value indicating whether Purview is enabled for the index.
-     *
-     * @param purviewEnabled the purviewEnabled value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setPurviewEnabled(Boolean purviewEnabled) {
-        this.purviewEnabled = purviewEnabled;
         return this;
     }
 
