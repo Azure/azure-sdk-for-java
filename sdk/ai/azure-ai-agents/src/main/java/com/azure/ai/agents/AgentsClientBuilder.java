@@ -629,13 +629,15 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaVoiceAgentWebSocketClient.class,
+            BetaVoiceAgentsWebSocketClient.class,
+            BetaVoiceAgentsLiveWebSocketClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaVoiceAgentsLiveConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
-            BetaVoiceAgentWebSocketAsyncClient.class,
+            BetaVoiceAgentsWebSocketAsyncClient.class,
+            BetaVoiceAgentsLiveWebSocketAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class,
             BetaVoiceAgentsLiveConversationsAsyncClient.class })
@@ -766,8 +768,8 @@ public final class AgentsClientBuilder
          * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
-        public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
-            return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        public BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
+            return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -782,8 +784,36 @@ public final class AgentsClientBuilder
          * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
-        public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
-            return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        public BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
+            return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds an asynchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return an asynchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketAsyncClient buildBetaVoiceAgentsLiveWebSocketAsyncClient() {
+            return new BetaVoiceAgentsLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds a synchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return a synchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketClient buildBetaVoiceAgentsLiveWebSocketClient() {
+            return new BetaVoiceAgentsLiveWebSocketClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -982,8 +1012,8 @@ public final class AgentsClientBuilder
      *
      * @return an asynchronous voice-agent WebSocket client.
      */
-    private BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
-        return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+    private BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
+        return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
     }
 
     /**
@@ -991,8 +1021,8 @@ public final class AgentsClientBuilder
      *
      * @return a synchronous voice-agent WebSocket client.
      */
-    private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
-        return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    private BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
+        return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
     }
 
     /**

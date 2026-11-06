@@ -39,7 +39,7 @@ public class VoiceAgentBasicAsyncSample {
             .buildAgentsAsyncClient();
 
         client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a friendly voice assistant. Keep replies short and natural.")))
             .doOnNext(created -> System.out.printf("Created voice agent %s, version %s%n",
                 created.getName(), created.getVersion()))
@@ -49,7 +49,7 @@ public class VoiceAgentBasicAsyncSample {
             .thenMany(client.listAgents(AgentKind.VOICE, null, null, null, null))
             .doOnNext(agent -> System.out.println("Voice agent: " + agent.getName()))
             .then(client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a friendly voice assistant. Always greet the caller warmly."))
                     .setDescription("Updated voice-agent instructions.")))
             .doOnNext(updated -> System.out.println("Created updated version: " + updated.getVersion()))
