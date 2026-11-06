@@ -23,8 +23,11 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -81,7 +84,36 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
+    // Operation-shared scoping state must not be cleared with the attempt's sessionToken.
+    private boolean sessionTokenScoped;
+    private String scopedOriginalSessionToken;
+    private String scopedCollectionRid;
+    private String scopedRangeId;
+    private Set<String> scopedParentRangeIds;
+    private ISessionToken scopedSessionToken;
+
     public DocumentServiceRequestContext() {}
+
+    public synchronized ISessionToken getOrResolveSessionToken(
+        RxDocumentServiceRequest request, String originalToken, String rangeId, Supplier<ISessionToken> resolver) {
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        List<String> parentIds = range == null ? null : range.getParents();
+        Set<String> parents = parentIds == null ? Collections.emptySet() : new HashSet<>(parentIds);
+        String collectionRid = request.requestContext.resolvedCollectionRid;
+        if (!this.sessionTokenScoped || !Objects.equals(this.scopedOriginalSessionToken, originalToken)
+            || !Objects.equals(this.scopedCollectionRid, collectionRid) || !Objects.equals(this.scopedRangeId, rangeId)
+            || !this.scopedParentRangeIds.equals(parents)) {
+            ISessionToken token = resolver.get();
+            this.scopedOriginalSessionToken = originalToken;
+            this.scopedCollectionRid = collectionRid;
+            this.scopedRangeId = rangeId;
+            this.scopedParentRangeIds = parents;
+            this.scopedSessionToken = token;
+            // A scoped null means intentional omission, not an unprepared token.
+            this.sessionTokenScoped = true;
+        }
+        return this.scopedSessionToken;
+    }
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -287,4 +319,3 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.barrierType = barrierType;
     }
 }
-

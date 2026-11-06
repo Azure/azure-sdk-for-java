@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCi
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
@@ -28,7 +29,7 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
-    private SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation;
+    private AtomicReference<DocumentServiceRequestContext> sessionTokenContextReference;
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
@@ -50,12 +51,12 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
         return this.feedOperationContextForCircuitBreaker;
     }
 
-    public SessionTokenHelper.SessionTokenPreparation getSessionTokenPreparation() {
-        return this.sessionTokenPreparation;
+    public AtomicReference<DocumentServiceRequestContext> getSessionTokenContextReference() {
+        return this.sessionTokenContextReference;
     }
 
-    public void setSessionTokenPreparation(SessionTokenHelper.SessionTokenPreparation sessionTokenPreparation) {
-        this.sessionTokenPreparation = sessionTokenPreparation;
+    public void setSessionTokenContextReference(AtomicReference<DocumentServiceRequestContext> contextReference) {
+        this.sessionTokenContextReference = contextReference;
     }
 
     public AvailabilityStrategyContext getAvailabilityStrategyContext() {

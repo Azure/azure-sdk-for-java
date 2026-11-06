@@ -34,7 +34,7 @@ public class RxDocumentServiceRequestTest {
         "clientContext", "forcePartitionKeyRangeRefresh", "forceCollectionRoutingMapRefresh", "resourceId",
         "resourceType", "headers", "continuation", "isMedia", "isNameBased", "operationType", "resourceAddress",
         "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken", "originalSessionTokenCaptured",
-        "sessionTokenPreparation", "partitionKeyRangeIdentity",
+        "sessionTokenContextReference", "partitionKeyRangeIdentity",
         "defaultReplicaIndex", "isAddressRefresh", "isForcedAddressRefresh", "requestContext",
         "faultInjectionRequestContext", "partitionKeyInternal", "partitionKeyDefinition", "effectivePartitionKey",
         "feedRange", "effectiveRange", "numberOfItemsInBatchRequest", "contentAsByteArray", "useGatewayMode",
@@ -489,12 +489,12 @@ public class RxDocumentServiceRequestTest {
         original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, "0:1#100,1:1#200");
         RxDocumentServiceRequest first = original.clone();
         RxDocumentServiceRequest second = original.clone();
-        assertThat(first.getSessionTokenPreparation()).isSameAs(original.getSessionTokenPreparation());
-        assertThat(second.getSessionTokenPreparation()).isSameAs(first.getSessionTokenPreparation());
+        assertThat(first.getSessionTokenContextReference()).isSameAs(original.getSessionTokenContextReference());
+        assertThat(second.getSessionTokenContextReference()).isSameAs(first.getSessionTokenContextReference());
 
         first.captureOriginalSessionToken();
         first.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        assertThat(first.clone().getSessionTokenPreparation()).isSameAs(first.getSessionTokenPreparation());
+        assertThat(first.clone().getSessionTokenContextReference()).isSameAs(first.getSessionTokenContextReference());
         assertThat(original.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo("0:1#100,1:1#200");
     }
 

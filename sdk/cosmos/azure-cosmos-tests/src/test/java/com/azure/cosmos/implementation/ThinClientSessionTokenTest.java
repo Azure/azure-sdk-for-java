@@ -55,6 +55,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -454,8 +459,9 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
-            assertThat(attempts.get(0).getSessionTokenPreparation())
-                .isSameAs(attempts.get(1).getSessionTokenPreparation());
+            assertThat(attempts.get(0).getSessionTokenContextReference())
+                .isSameAs(attempts.get(1).getSessionTokenContextReference());
+            assertThat(attempts.get(0).requestContext).isNotSameAs(attempts.get(1).requestContext);
             if (!fallbackPrimary && expected != null) {
                 assertThat(attempts.get(0).requestContext.sessionToken)
                     .isSameAs(attempts.get(1).requestContext.sessionToken);
@@ -561,8 +567,10 @@ public class ThinClientSessionTokenTest {
             Supplier<ISessionToken> unexpectedEvaluation = () -> {
                 throw new AssertionError("A completed scope must not be evaluated again.");
             };
-            request.getSessionTokenPreparation().resolve(request, original, "0", unexpectedEvaluation);
-            clone.getSessionTokenPreparation().resolve(clone, original, "0", unexpectedEvaluation);
+            request.getSessionTokenContextReference().get()
+                .getOrResolveSessionToken(request, original, "0", unexpectedEvaluation);
+            clone.getSessionTokenContextReference().get()
+                .getOrResolveSessionToken(clone, original, "0", unexpectedEvaluation);
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
         }
@@ -624,8 +632,8 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
-            assertThat(attempts.get(0).getSessionTokenPreparation())
-                .isSameAs(attempts.get(1).getSessionTokenPreparation());
+            assertThat(attempts.get(0).getSessionTokenContextReference())
+                .isSameAs(attempts.get(1).getSessionTokenContextReference());
             if (expected != null) {
                 assertThat(attempts.get(1).requestContext.sessionToken)
                     .isSameAs(attempts.get(0).requestContext.sessionToken);
@@ -635,6 +643,51 @@ public class ThinClientSessionTokenTest {
             }
             assertThat(fixture.wireTokens).containsExactly(expected);
             assertThat(sends.get()).isEqualTo(2);
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "transportChanges")
+    public void concurrentClonesShareOneExistingContext(String original, String expected) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest parent = fixture.request(OperationType.Query, original, "0");
+            List<RxDocumentServiceRequest> attempts = new ArrayList<>();
+            List<Future<Boolean>> results = new ArrayList<>();
+            ExecutorService executor = Executors.newFixedThreadPool(8);
+            CyclicBarrier start = new CyclicBarrier(8);
+            try {
+                for (int i = 0; i < 8; i++) {
+                    RxDocumentServiceRequest request = parent.clone();
+                    request.captureOriginalSessionToken();
+                    request.useThinClientMode = true;
+                    attempts.add(request);
+                    results.add(executor.submit(() -> {
+                        start.await(5, TimeUnit.SECONDS);
+                        return fixture.thin.tryPrepareExplicitSessionToken(request).block(Duration.ofSeconds(5));
+                    }));
+                }
+                for (Future<Boolean> result : results) {
+                    assertThat(result.get(5, TimeUnit.SECONDS)).isTrue();
+                }
+                DocumentServiceRequestContext owner = parent.getSessionTokenContextReference().get();
+                assertThat(attempts).anySatisfy(attempt -> assertThat(owner).isSameAs(attempt.requestContext));
+                for (RxDocumentServiceRequest attempt : attempts) {
+                    assertThat(attempt.requestContext).isNotSameAs(parent.requestContext);
+                    assertThat(attempt.getSessionTokenContextReference().get()).isSameAs(owner);
+                    assertThat(attempt.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
+                    if (expected != null) {
+                        assertThat(attempt.requestContext.sessionToken).isSameAs(attempts.get(0).requestContext.sessionToken);
+                    } else {
+                        assertThat(attempt.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+                    }
+                }
+                owner.getOrResolveSessionToken(attempts.get(0), original, "0", () -> {
+                    throw new AssertionError("A completed scope must not be evaluated again.");
+                });
+                assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
+                assertThat(fixture.sentRequests).isEmpty();
+            } finally {
+                executor.shutdownNow();
+            }
         }
     }
 

@@ -45,7 +45,7 @@ public class SessionTokenHelperTests {
     @Test(groups = "unit", dataProvider = "compoundSessionTokens")
     public void detectsCompoundTokensWithoutParsing(String token, boolean expected) {
         assertThat(SessionTokenHelper.isCompoundSessionToken(token)).isEqualTo(expected);
-        assertThat(SessionTokenHelper.createSessionTokenPreparation(token) != null).isEqualTo(expected);
+        assertThat(SessionTokenHelper.createSessionTokenContextReference(token) != null).isEqualTo(expected);
     }
 
     @DataProvider
@@ -55,7 +55,7 @@ public class SessionTokenHelperTests {
 
     @Test(groups = "unit", dataProvider = "scopedOutcomes")
     public void concurrentAttemptsComputeEachScopedOutcomeOnce(boolean unmatched) throws Exception {
-        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
         String original = "0:1#100,1:1#200";
         AtomicInteger evaluations = new AtomicInteger();
         Supplier<ISessionToken> resolver = () -> {
@@ -70,7 +70,7 @@ public class SessionTokenHelperTests {
                 RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
                 results.add(executor.submit(() -> {
                     start.await(5, TimeUnit.SECONDS);
-                    return preparation.resolve(request, original, "0", resolver);
+                    return operationContext.getOrResolveSessionToken(request, original, "0", resolver);
                 }));
             }
             ISessionToken first = results.get(0).get(5, TimeUnit.SECONDS);
@@ -85,7 +85,7 @@ public class SessionTokenHelperTests {
 
     @Test(groups = "unit")
     public void scopesAreIsolatedByOperationTokenCollectionRangeAndParents() {
-        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
         String original = "0:1#100,1:1#200";
         AtomicInteger evaluations = new AtomicInteger();
         Supplier<ISessionToken> resolver = () -> {
@@ -93,35 +93,35 @@ public class SessionTokenHelperTests {
             return SessionTokenHelper.parse("1#200");
         };
         RxDocumentServiceRequest request = scopeRequest("collection", "2", Arrays.asList("0", "1"));
-        ISessionToken first = preparation.resolve(request, original, "2", resolver);
+        ISessionToken first = operationContext.getOrResolveSessionToken(request, original, "2", resolver);
         request.requestContext.resolvedPartitionKeyRange.setParents(Arrays.asList("1", "0"));
-        assertThat(preparation.resolve(request, original, "2", resolver)).isSameAs(first);
+        assertThat(operationContext.getOrResolveSessionToken(request, original, "2", resolver)).isSameAs(first);
         assertThat(evaluations.get()).isEqualTo(1);
 
         request.requestContext.resolvedPartitionKeyRange.setParents(Collections.singletonList("0"));
-        assertThat(preparation.resolve(request, original, "2", resolver)).isNotSameAs(first);
+        assertThat(operationContext.getOrResolveSessionToken(request, original, "2", resolver)).isNotSameAs(first);
         assertThat(evaluations.get()).isEqualTo(2);
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("3", "", "FF",
             Collections.singletonList("0"));
-        preparation.resolve(request, original, "3", resolver);
+        operationContext.getOrResolveSessionToken(request, original, "3", resolver);
         assertThat(evaluations.get()).isEqualTo(3);
         request.requestContext.resolvedCollectionRid = "recreated-collection";
-        preparation.resolve(request, original, "3", resolver);
+        operationContext.getOrResolveSessionToken(request, original, "3", resolver);
         assertThat(evaluations.get()).isEqualTo(4);
-        preparation.resolve(request, "0:1#300,1:1#400", "3", resolver);
+        operationContext.getOrResolveSessionToken(request, "0:1#300,1:1#400", "3", resolver);
         assertThat(evaluations.get()).isEqualTo(5);
 
         RxDocumentServiceRequest originalScope = scopeRequest("collection", "2", Arrays.asList("0", "1"));
-        assertThat(preparation.resolve(originalScope, original, "2", resolver)).isNotSameAs(first);
+        assertThat(operationContext.getOrResolveSessionToken(originalScope, original, "2", resolver)).isNotSameAs(first);
         assertThat(evaluations.get()).isEqualTo(6);
-        assertThat(new SessionTokenHelper.SessionTokenPreparation().resolve(originalScope, original, "2", resolver))
+        assertThat(new DocumentServiceRequestContext().getOrResolveSessionToken(originalScope, original, "2", resolver))
             .isNotSameAs(first);
         assertThat(evaluations.get()).isEqualTo(7);
     }
 
     @Test(groups = "unit")
     public void failedPreparationDoesNotPublishATokenOrShareAnException() {
-        SessionTokenHelper.SessionTokenPreparation preparation = new SessionTokenHelper.SessionTokenPreparation();
+        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
         RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
         String original = "0:1#100,1:invalid";
         AtomicInteger evaluations = new AtomicInteger();
@@ -130,13 +130,30 @@ public class SessionTokenHelperTests {
             return SessionTokenHelper.parse("invalid");
         };
         Throwable first = catchThrowable(
-            () -> preparation.resolve(request, original, "0", resolver));
+            () -> operationContext.getOrResolveSessionToken(request, original, "0", resolver));
         Throwable second = catchThrowable(
-            () -> preparation.resolve(request, original, "0", resolver));
+            () -> operationContext.getOrResolveSessionToken(request, original, "0", resolver));
         assertThat(first).hasRootCauseInstanceOf(BadRequestException.class);
         assertThat(second).hasRootCauseInstanceOf(BadRequestException.class).isNotSameAs(first);
         assertThat(second.getCause()).isNotSameAs(first.getCause());
         assertThat(evaluations.get()).isEqualTo(2);
+    }
+
+    @Test(groups = "unit")
+    public void resettingAttemptTokenDoesNotInvalidateSharedProgress() {
+        RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
+        DocumentServiceRequestContext operationContext = request.requestContext;
+        AtomicInteger evaluations = new AtomicInteger();
+        Supplier<ISessionToken> resolver = () -> {
+            evaluations.incrementAndGet();
+            return SessionTokenHelper.parse("1#100");
+        };
+        ISessionToken first = operationContext.getOrResolveSessionToken(request, "0:1#100,1:1#200", "0", resolver);
+        request.requestContext.sessionToken = first;
+        request.requestContext.sessionToken = null;
+        assertThat(operationContext.getOrResolveSessionToken(request, "0:1#100,1:1#200", "0", resolver))
+            .isSameAs(first);
+        assertThat(evaluations.get()).isEqualTo(1);
     }
 
     private static RxDocumentServiceRequest scopeRequest(String collectionRid, String rangeId, List<String> parents) {
