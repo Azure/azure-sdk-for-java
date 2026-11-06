@@ -5,11 +5,12 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.models.LiveFunctionToolInputParam;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.core.JsonValue;
 import com.openai.models.live.ClientEvent;
+import com.openai.models.live.FunctionTool;
 import com.openai.models.live.ResponseItemCreateEvent;
 import com.openai.models.live.ServerEvent;
 import com.openai.models.responses.ResponseInputItem;
@@ -144,17 +145,19 @@ public class GptLiveFunctionToolSample {
         throw new IllegalStateException("GPT Live disconnected without session.closed.");
     }
 
-    static LiveFunctionToolInputParam weatherTool() {
-        Map<String, BinaryData> schema = new LinkedHashMap<>();
-        schema.put("type", BinaryData.fromObject("object"));
-        schema.put("properties", BinaryData.fromObject(
-            Collections.singletonMap("city", Collections.singletonMap("type", "string"))));
-        schema.put("required", BinaryData.fromObject(Collections.singletonList("city")));
-        schema.put("additionalProperties", BinaryData.fromObject(false));
-        return new LiveFunctionToolInputParam("get_weather")
-            .setDescription("Get simulated weather for a city. This sample returns demonstration data only.")
-            .setParameters(schema)
-            .setStrict(true);
+    static FunctionTool weatherTool() {
+        FunctionTool.Parameters schema = FunctionTool.Parameters.builder()
+            .putAdditionalProperty("type", JsonValue.from("object"))
+            .putAdditionalProperty("properties", JsonValue.from(
+                Collections.singletonMap("city", Collections.singletonMap("type", "string"))))
+            .putAdditionalProperty("required", JsonValue.from(Collections.singletonList("city")))
+            .putAdditionalProperty("additionalProperties", JsonValue.from(false))
+            .build();
+        return FunctionTool.builder().name("get_weather")
+            .description("Get simulated weather for a city. This sample returns demonstration data only.")
+            .parameters(schema)
+            .strict(true)
+            .build();
     }
 
     static ClientEvent toolResult(ResponseFunctionToolCall call) {

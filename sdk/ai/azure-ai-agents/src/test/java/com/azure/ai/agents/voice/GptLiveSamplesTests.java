@@ -1222,7 +1222,7 @@ public class GptLiveSamplesTests {
     @Test
     public void toolSchemaAndArgumentsAreValidated() {
         Map<?, ?> tool
-            = GptLiveFunctionToolSample.object(BinaryData.fromObject(GptLiveFunctionToolSample.weatherTool()));
+            = GptLiveFunctionToolSample.object(OpenAIJsonHelper.toBinaryData(GptLiveFunctionToolSample.weatherTool()));
         assertEquals("function", tool.get("type"));
         assertEquals("get_weather", tool.get("name"));
         assertEquals(true, tool.get("strict"));

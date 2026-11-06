@@ -11,10 +11,8 @@ import com.azure.ai.agents.models.VoiceAgentLiveResponsesDelegation;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.openai.core.JsonValue;
-import com.openai.core.ObjectMappers;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.CommentaryAppendEvent;
-import com.openai.models.live.FunctionTool;
 import com.openai.models.live.InputAudioAppendEvent;
 import com.openai.models.live.ResponseCreateEvent;
 import com.openai.models.live.ResponseItemCreateEvent;
@@ -654,8 +652,7 @@ final class GptLiveSampleUtils {
                     ? "Use get_weather for weather requests. After receiving its result, answer briefly."
                     : "Answer the user briefly and helpfully.");
         if (tools) {
-            responses.addTool(ObjectMappers.jsonMapper().convertValue(
-                BinaryData.fromObject(GptLiveFunctionToolSample.weatherTool()).toObject(Map.class), FunctionTool.class));
+            responses.addTool(GptLiveFunctionToolSample.weatherTool());
         }
         VoiceAgentLiveDefinition definition = new VoiceAgentLiveDefinition(model)
                 .setInstructions("You are a helpful voice assistant. Delegate requests to your Responses backend.")
