@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed `ActiveClientTokenManager` interrupting the thread of a token refresh that was still in progress when the next
+  refresh was scheduled. The interrupt could close the connection's IO pipe (`ClosedByInterruptException`), resetting
+  the connection with "IO Sink was interrupted before reactor closed".
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)

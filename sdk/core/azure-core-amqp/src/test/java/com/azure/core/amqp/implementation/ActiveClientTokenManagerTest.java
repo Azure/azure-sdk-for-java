@@ -17,6 +17,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
@@ -174,6 +176,66 @@ class ActiveClientTokenManagerTest {
 
     private Mono<OffsetDateTime> getNextExpiration(Duration duration) {
         return Mono.fromCallable(() -> OffsetDateTime.now(ZoneOffset.UTC).plus(duration));
+    }
+
+    /**
+     * Scheduling the next refresh cancels the running refresh interval. The CBS response usually completes on another
+     * thread (the connection's reactor thread) while the refresh thread may still be inside its tick, e.g. signalling
+     * the connection's IO pipe. That thread must not be interrupted: an interrupt closes the pipe, which kills the
+     * connection.
+     */
+    @Test
+    void schedulingNextRefreshDoesNotInterruptRefreshInProgress() throws InterruptedException {
+        // Arrange
+        // A token that expires in 3 seconds is refreshed after 1 second.
+        final Duration expiry = Duration.ofSeconds(3);
+        final AtomicInteger calls = new AtomicInteger();
+        final AtomicBoolean interrupted = new AtomicBoolean();
+        final AtomicBoolean responseTimedOut = new AtomicBoolean();
+        final CountDownLatch refreshDone = new CountDownLatch(1);
+
+        final ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
+            if (calls.getAndIncrement() != 1) {
+                return getNextExpiration(expiry);
+            }
+            // The first scheduled refresh. Respond from another thread, then keep the refresh thread busy until
+            // the response has been processed (which schedules the next refresh).
+            return Mono.create(sink -> {
+                final CountDownLatch responded = new CountDownLatch(1);
+                final Thread responder = new Thread(() -> {
+                    sink.success(OffsetDateTime.now(ZoneOffset.UTC).plus(expiry));
+                    responded.countDown();
+                }, "cbs-responder");
+                responder.start();
+                try {
+                    if (!responded.await(10, TimeUnit.SECONDS)) {
+                        responseTimedOut.set(true);
+                    }
+                    if (Thread.currentThread().isInterrupted()) {
+                        interrupted.set(true);
+                    }
+                } catch (InterruptedException e) {
+                    interrupted.set(true);
+                } finally {
+                    refreshDone.countDown();
+                }
+            });
+        });
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+
+        try {
+            // Act
+            tokenManager.authorize().block(VERIFY_TIMEOUT);
+
+            // Assert
+            Assertions.assertTrue(refreshDone.await(10, TimeUnit.SECONDS), "Token was not refreshed.");
+            Assertions.assertFalse(responseTimedOut.get(), "CBS response was not processed in time.");
+            Assertions.assertFalse(interrupted.get(),
+                "Refresh in progress was interrupted when the next refresh was scheduled.");
+        } finally {
+            tokenManager.close();
+        }
     }
 
     private static final class MockClaimsBasedSecurityNode implements ClaimsBasedSecurityNode {
