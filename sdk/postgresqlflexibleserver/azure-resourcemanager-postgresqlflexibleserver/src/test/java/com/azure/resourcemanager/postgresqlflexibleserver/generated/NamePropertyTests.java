@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NamePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameProperty model = BinaryData.fromString("{\"value\":\"cyjtotpvop\",\"localizedValue\":\"bdb\"}")
+        NameProperty model = BinaryData.fromString("{\"value\":\"qvx\",\"localizedValue\":\"wfgtayxonsup\"}")
             .toObject(NameProperty.class);
-        Assertions.assertEquals("cyjtotpvop", model.value());
-        Assertions.assertEquals("bdb", model.localizedValue());
+        Assertions.assertEquals("qvx", model.value());
+        Assertions.assertEquals("wfgtayxonsup", model.localizedValue());
     }
 }
