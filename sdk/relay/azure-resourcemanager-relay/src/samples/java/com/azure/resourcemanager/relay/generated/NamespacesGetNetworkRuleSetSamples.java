@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class NamespacesGetNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetGet.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetGet.

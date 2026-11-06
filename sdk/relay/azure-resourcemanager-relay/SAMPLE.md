@@ -1,6 +1,18 @@
 # Code snippets and samples
 
 
+## Clusters
+
+- [CreateOrUpdate](#clusters_createorupdate)
+- [Delete](#clusters_delete)
+- [GetByResourceGroup](#clusters_getbyresourcegroup)
+- [List](#clusters_list)
+- [ListAvailableClusterRegion](#clusters_listavailableclusterregion)
+- [ListByResourceGroup](#clusters_listbyresourcegroup)
+- [ListNamespaces](#clusters_listnamespaces)
+- [ListSkus](#clusters_listskus)
+- [Update](#clusters_update)
+
 ## HybridConnections
 
 - [CreateOrUpdate](#hybridconnections_createorupdate)
@@ -60,6 +72,252 @@
 - [ListByNamespace](#wcfrelays_listbynamespace)
 - [ListKeys](#wcfrelays_listkeys)
 - [RegenerateKeys](#wcfrelays_regeneratekeys)
+### Clusters_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.relay.models.RelayClusterProperties;
+import com.azure.resourcemanager.relay.models.RelayClusterSku;
+import com.azure.resourcemanager.relay.models.RelayClusterSkuName;
+import com.azure.resourcemanager.relay.models.RelayClusterSkuTier;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
+public final class ClustersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterPut.json
+     */
+    /**
+     * Sample code: ClusterPut.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clusterPut(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters()
+            .define("testCluster")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withSku(new RelayClusterSku().withName(RelayClusterSkuName.DEDICATED)
+                .withTier(RelayClusterSkuTier.DEDICATED)
+                .withCapacity(3))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new RelayClusterProperties().withZoneRedundant(true))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Clusters_Delete
+
+```java
+/**
+ * Samples for Clusters Delete.
+ */
+public final class ClustersDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterDelete.json
+     */
+    /**
+     * Sample code: ClusterDelete.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clusterDelete(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters().delete("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_GetByResourceGroup
+
+```java
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
+public final class ClustersGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterGet.json
+     */
+    /**
+     * Sample code: ClusterGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clusterGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters()
+            .getByResourceGroupWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_List
+
+```java
+/**
+ * Samples for Clusters List.
+ */
+public final class ClustersListSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClustersListBySubscription.json
+     */
+    /**
+     * Sample code: ClustersListBySubscription.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clustersListBySubscription(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_ListAvailableClusterRegion
+
+```java
+/**
+ * Samples for Clusters ListAvailableClusterRegion.
+ */
+public final class ClustersListAvailableClusterRegionSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ListAvailableClustersGet.json
+     */
+    /**
+     * Sample code: ListAvailableClusters.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void listAvailableClusters(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters().listAvailableClusterRegionWithResponse(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_ListByResourceGroup
+
+```java
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
+public final class ClustersListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClustersListByResourceGroup.json
+     */
+    /**
+     * Sample code: ClustersListByResourceGroup.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clustersListByResourceGroup(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_ListNamespaces
+
+```java
+/**
+ * Samples for Clusters ListNamespaces.
+ */
+public final class ClustersListNamespacesSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ListNamespacesInClusterGet.json
+     */
+    /**
+     * Sample code: ListNamespacesInCluster.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void listNamespacesInCluster(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters()
+            .listNamespacesWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_ListSkus
+
+```java
+/**
+ * Samples for Clusters ListSkus.
+ */
+public final class ClustersListSkusSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterSkusGet.json
+     */
+    /**
+     * Sample code: ClusterSkusGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clusterSkusGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.clusters().listSkusWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_Update
+
+```java
+import com.azure.resourcemanager.relay.models.RelayCluster;
+import com.azure.resourcemanager.relay.models.RelayClusterSkuName;
+import com.azure.resourcemanager.relay.models.RelayClusterSkuTier;
+import com.azure.resourcemanager.relay.models.RelayClusterSkuUpdate;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Clusters Update.
+ */
+public final class ClustersUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterPatch.json
+     */
+    /**
+     * Sample code: ClusterPatch.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void clusterPatch(com.azure.resourcemanager.relay.RelayManager manager) {
+        RelayCluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("environment", "production", "owner", "relay"))
+            .withSku(new RelayClusterSkuUpdate().withName(RelayClusterSkuName.DEDICATED)
+                .withTier(RelayClusterSkuTier.DEDICATED)
+                .withCapacity(4))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### HybridConnections_CreateOrUpdate
 
 ```java
@@ -68,7 +326,7 @@
  */
 public final class HybridConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionCreate.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionCreate.json
      */
     /**
      * Sample code: RelayHybridConnectionCreate.
@@ -97,7 +355,7 @@ import java.util.Arrays;
  */
 public final class HybridConnectionsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleCreate.
@@ -123,7 +381,7 @@ public final class HybridConnectionsCreateOrUpdateAuthorizationRuleSamples {
  */
 public final class HybridConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridconnectionDelete.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridconnectionDelete.json
      */
     /**
      * Sample code: RelayHybridconnectionDelete.
@@ -146,7 +404,7 @@ public final class HybridConnectionsDeleteSamples {
  */
 public final class HybridConnectionsDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleDelete.
@@ -170,7 +428,7 @@ public final class HybridConnectionsDeleteAuthorizationRuleSamples {
  */
 public final class HybridConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionGet.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionGet.json
      */
     /**
      * Sample code: RelayHybridConnectionGet.
@@ -193,7 +451,7 @@ public final class HybridConnectionsGetSamples {
  */
 public final class HybridConnectionsGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleGet.
@@ -216,7 +474,7 @@ public final class HybridConnectionsGetAuthorizationRuleSamples {
  */
 public final class HybridConnectionsListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleListAll.
@@ -240,7 +498,7 @@ public final class HybridConnectionsListAuthorizationRulesSamples {
  */
 public final class HybridConnectionsListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionListAll.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionListAll.json
      */
     /**
      * Sample code: RelayHybridConnectionListAll.
@@ -262,7 +520,7 @@ public final class HybridConnectionsListByNamespaceSamples {
  */
 public final class HybridConnectionsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleListKey.
@@ -289,7 +547,7 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class HybridConnectionsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleRegenerateKey.
@@ -316,7 +574,7 @@ import com.azure.resourcemanager.relay.models.CheckNameAvailability;
  */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceCheckNameAvailability.json
      */
     /**
      * Sample code: RelayCheckNameAvailability.
@@ -346,7 +604,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceCreate.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceCreate.json
      */
     /**
      * Sample code: RelayNamespaceCreate.
@@ -389,7 +647,7 @@ import java.util.Arrays;
  */
 public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleCreate.
@@ -420,7 +678,7 @@ import java.util.Arrays;
  */
 public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetCreate.
@@ -451,7 +709,7 @@ public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceDelete.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceDelete.json
      */
     /**
      * Sample code: RelayNameSpaceDelete.
@@ -472,7 +730,7 @@ public final class NamespacesDeleteSamples {
  */
 public final class NamespacesDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleDelete.
@@ -495,7 +753,7 @@ public final class NamespacesDeleteAuthorizationRuleSamples {
  */
 public final class NamespacesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleGet.
@@ -518,7 +776,7 @@ public final class NamespacesGetAuthorizationRuleSamples {
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceGet.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceGet.json
      */
     /**
      * Sample code: RelayNameSpaceGet.
@@ -541,7 +799,7 @@ public final class NamespacesGetByResourceGroupSamples {
  */
 public final class NamespacesGetNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetGet.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetGet.
@@ -564,7 +822,7 @@ public final class NamespacesGetNetworkRuleSetSamples {
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceListBySubscription.json
      */
     /**
      * Sample code: RelayNameSpaceListBySubscription.
@@ -585,7 +843,7 @@ public final class NamespacesListSamples {
  */
 public final class NamespacesListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleListAll.
@@ -607,7 +865,7 @@ public final class NamespacesListAuthorizationRulesSamples {
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceListByResourceGroup.json
      */
     /**
      * Sample code: RelayNameSpaceListByResourceGroup.
@@ -628,7 +886,7 @@ public final class NamespacesListByResourceGroupSamples {
  */
 public final class NamespacesListKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleListKey.
@@ -654,7 +912,7 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class NamespacesRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleRegenerateKey.
@@ -683,7 +941,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceUpdate.json
      */
     /**
      * Sample code: RelayNameSpaceUpdate.
@@ -722,7 +980,7 @@ public final class NamespacesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/RelayOperations_List.json
+     * x-ms-original-file: 2026-07-01-preview/RelayOperations_List.json
      */
     /**
      * Sample code: RelayOperationsList.
@@ -747,7 +1005,7 @@ import com.azure.resourcemanager.relay.models.PrivateLinkConnectionStatus;
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionCreate.
@@ -775,7 +1033,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionDelete.
@@ -798,7 +1056,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionGet.
@@ -821,7 +1079,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: PrivateEndpointConnectionsList.
@@ -843,7 +1101,7 @@ public final class PrivateEndpointConnectionsListSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateLinkResourcesGet.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateLinkResourcesGet.json
      */
     /**
      * Sample code: NameSpacePrivateLinkResourceGet.
@@ -866,7 +1124,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: NameSpacePrivateLinkResourcesGet.
@@ -890,7 +1148,7 @@ import com.azure.resourcemanager.relay.models.Relaytype;
  */
 public final class WcfRelaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayCreate.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayCreate.json
      */
     /**
      * Sample code: RelayCreate.
@@ -921,7 +1179,7 @@ import java.util.Arrays;
  */
 public final class WcfRelaysCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayAuthorizationRuleCreate.
@@ -946,7 +1204,7 @@ public final class WcfRelaysCreateOrUpdateAuthorizationRuleSamples {
  */
 public final class WcfRelaysDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayDelete.json
      */
     /**
      * Sample code: RelayDelete.
@@ -969,7 +1227,7 @@ public final class WcfRelaysDeleteSamples {
  */
 public final class WcfRelaysDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleDelete.json
      */
     /**
      * Sample code: RelayAuthorizationRuleDelete.
@@ -992,7 +1250,7 @@ public final class WcfRelaysDeleteAuthorizationRuleSamples {
  */
 public final class WcfRelaysGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayGet.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayGet.json
      */
     /**
      * Sample code: RelayGet.
@@ -1015,7 +1273,7 @@ public final class WcfRelaysGetSamples {
  */
 public final class WcfRelaysGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleGet.json
      */
     /**
      * Sample code: RelayAuthorizationRuleGet.
@@ -1038,7 +1296,7 @@ public final class WcfRelaysGetAuthorizationRuleSamples {
  */
 public final class WcfRelaysListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleListAll.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleListAll.json
      */
     /**
      * Sample code: RelayAuthorizationRuleListAll.
@@ -1061,7 +1319,7 @@ public final class WcfRelaysListAuthorizationRulesSamples {
  */
 public final class WcfRelaysListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayListAll.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayListAll.json
      */
     /**
      * Sample code: RelayListAll.
@@ -1083,7 +1341,7 @@ public final class WcfRelaysListByNamespaceSamples {
  */
 public final class WcfRelaysListKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleListKey.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayAuthorizationRuleListKey.json.
@@ -1109,7 +1367,7 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class WcfRelaysRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: RelayAuthorizationRuleRegenerateKey.json.
