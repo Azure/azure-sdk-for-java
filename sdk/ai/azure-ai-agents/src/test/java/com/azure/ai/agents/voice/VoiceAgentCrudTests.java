@@ -218,7 +218,8 @@ public class VoiceAgentCrudTests {
 
     private static Map<String, Object> createBody(String instructions) {
         return object("definition",
-            object("kind", "voice", "model_type", "managed", "model", MODEL, "instructions", instructions, "audio",
+            object("kind", "voice", "sub_protocol", "realtime", "model_type", "managed", "model", MODEL, "instructions",
+                instructions, "audio",
                 object("output", object("voice", "en-US-AvaNeural", "voice_type", "azure-standard")),
                 "output_modalities", Collections.singletonList("audio")));
     }

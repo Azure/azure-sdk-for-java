@@ -49,6 +49,9 @@
 ### Bugs Fixed
 
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.
+- Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
+  structured inputs, and response structured inputs through `BinaryData`.
+
 ### Other Changes
 
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
