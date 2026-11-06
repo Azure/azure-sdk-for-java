@@ -8,7 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed caller-supplied compound session tokens in Gateway V2, including retries and hedged requests. Like Direct mode, Gateway V2 selects progress for the target partition and its parents, and omits the token when no entry matches. If a single target range cannot be resolved, the request uses classic Gateway in the same region with the original token, without an extra retry.
+* Fixed compound session token handling for GatewayV2. - See [PR 51102](https://github.com/Azure/azure-sdk-for-java/pull/51102)
 * Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
