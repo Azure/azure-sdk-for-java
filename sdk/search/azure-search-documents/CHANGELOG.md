@@ -1,6 +1,6 @@
 # Release History
 
-## 12.2.0 (Unreleased)
+## 12.2.0 (2026-11-13)
 
 These release notes compare `12.2.0` with the previous GA release, `12.1.1`. Changes that apply only when upgrading
 from a preview release are not included.
