@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ConnectionsPatch;
  */
 public final class ConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/patchConnection.json
+     * x-ms-original-file: 2026-06-29-preview/patchConnection.json
      */
     /**
      * Sample code: Updates the connection resource.

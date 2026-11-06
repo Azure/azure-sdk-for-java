@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ResourceBody;
  */
 public final class ConnectionsLinkSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/linkConnection.json
+     * x-ms-original-file: 2026-06-29-preview/linkConnection.json
      */
     /**
      * Sample code: Links the specified connection.

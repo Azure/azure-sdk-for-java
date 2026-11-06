@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GetDestinationEndpointPortsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetDestinationEndpointPortsResultInner model
-            = BinaryData.fromString("{\"ports\":[7702544556638830973,6057977291261276419,6361487186249709697]}")
-                .toObject(GetDestinationEndpointPortsResultInner.class);
-        Assertions.assertEquals(7702544556638830973L, model.ports().get(0));
+        GetDestinationEndpointPortsResultInner model = BinaryData
+            .fromString("{\"ports\":[1298799429404125560,2495014668473596147,4216685591683222034,5207539280895937272]}")
+            .toObject(GetDestinationEndpointPortsResultInner.class);
+        Assertions.assertEquals(1298799429404125560L, model.ports().get(0));
     }
 }

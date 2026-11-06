@@ -44,7 +44,7 @@ public final class FlowProfilesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"flowProfileId\":\"mxelnwcltyjed\",\"replicationScenario\":\"Stream\",\"status\":\"Disabled\",\"description\":\"mlfmkqs\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"ClamAv\"]},\"archives\":{\"minimumSizeForExpansion\":165417238037681242,\"maximumExpansionSizeLimit\":3480922619213281392,\"maximumDepthLimit\":6563700004505435420,\"maximumCompressionRatioLimit\":45.141991686801305},\"dataSize\":{\"maximum\":6127617863372488579,\"minimum\":166767772147299373},\"mimeFilters\":{\"type\":\"Allow\",\"filters\":[{},{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"xyasflvgsgzw\",\"reference\":\"Inline\",\"schema\":\"oi\"},\"textMatching\":{\"deny\":[{\"text\":\"mjblmljhlny\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Insensitive\"},{\"text\":\"tqyryuzcbmqqv\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Insensitive\"},{\"text\":\"wfgtayxonsup\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Insensitive\"},{\"text\":\"lzqnhcvs\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Sensitive\"}]}}},\"identity\":{\"principalId\":\"oibgsxg\",\"tenantId\":\"fyq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dbxiqx\":{\"principalId\":\"ox\",\"clientId\":\"o\"}}},\"location\":\"iqbi\",\"tags\":{\"bcblemb\":\"mwwinhehfqpofv\",\"ihebwtsw\":\"kbwvqvxkdiv\"},\"id\":\"zuwfmdur\",\"name\":\"gegizvcjfel\",\"type\":\"sdjubggbqigkxkbs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"flowProfileId\":\"pvufhbze\",\"replicationScenario\":\"API\",\"status\":\"Obsolete\",\"description\":\"hoqhnl\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"ClamAv\",\"Defender\"]},\"archives\":{\"minimumSizeForExpansion\":5574391290923510956,\"maximumExpansionSizeLimit\":5962852581643280273,\"maximumDepthLimit\":4524737304914832116,\"maximumCompressionRatioLimit\":86.90869150388701},\"dataSize\":{\"maximum\":413479750820054458,\"minimum\":3503769757091060693},\"mimeFilters\":{\"type\":\"Deny\",\"filters\":[{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"uviyfcaabeo\",\"reference\":\"Inline\",\"schema\":\"lvbmxuqibsxtkcu\"},\"textMatching\":{\"deny\":[{\"text\":\"farfs\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Insensitive\"}]}}},\"identity\":{\"principalId\":\"jxnqp\",\"tenantId\":\"gf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gc\":{\"principalId\":\"ykizmdksaoaf\",\"clientId\":\"uqvoxmycjimryv\"},\"wefohecbvo\":{\"principalId\":\"pbmz\",\"clientId\":\"esyds\"},\"vbrdfjmzsyzfho\":{\"principalId\":\"ndyqleal\",\"clientId\":\"lmtkhlowkxx\"}}},\"location\":\"h\",\"tags\":{\"nsjlpjrtws\":\"yych\",\"uic\":\"hv\",\"ubhvj\":\"hvtrrmhwrbfdpyf\"},\"id\":\"lrocuyzlwh\",\"name\":\"memhooclutnpq\",\"type\":\"emc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -54,72 +54,73 @@ public final class FlowProfilesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FlowProfile response = manager.flowProfiles()
-            .define("hrbbpneqvcwwyy")
-            .withRegion("wjutifdwfmv")
-            .withExistingPipeline("dlat", "tmzlbiojlv")
-            .withTags(mapOf("tzh", "rqjb"))
-            .withProperties(new FlowProfileProperties().withReplicationScenario(DataClassType.API)
+            .define("xhpdulontacnpqwt")
+            .withRegion("gbdvibidmhmwff")
+            .withExistingPipeline("xddbhfhpfpaz", "zoyw")
+            .withTags(mapOf("ccrrvweyoxoyyu", "muvapc", "oqboshbragapyyr", "phaimmoi", "pavbo", "fsv"))
+            .withProperties(new FlowProfileProperties().withReplicationScenario(DataClassType.COMPLEX)
                 .withStatus(FlowProfileStatus.OBSOLETE)
-                .withDescription("nmokayzejnhlbk")
+                .withDescription("yoogw")
                 .withRulesets(new FlowProfileRulesets()
-                    .withAntivirus(new AntivirusRuleset()
-                        .withAvSolutions(Arrays.asList(AntivirusSolutions.CLAM_AV, AntivirusSolutions.DEFENDER)))
-                    .withArchives(new ArchiveRuleset().withMinimumSizeForExpansion(5927101181188461178L)
-                        .withMaximumExpansionSizeLimit(1718820549593481354L)
-                        .withMaximumDepthLimit(353173494369186573L)
-                        .withMaximumCompressionRatioLimit(16.14008041402967D))
+                    .withAntivirus(new AntivirusRuleset().withAvSolutions(Arrays.asList(AntivirusSolutions.DEFENDER,
+                        AntivirusSolutions.CLAM_AV, AntivirusSolutions.CLAM_AV)))
+                    .withArchives(new ArchiveRuleset().withMinimumSizeForExpansion(5164563630289510273L)
+                        .withMaximumExpansionSizeLimit(1942292497864642353L)
+                        .withMaximumDepthLimit(702838745538045112L)
+                        .withMaximumCompressionRatioLimit(39.317513954044855D))
                     .withDataSize(
-                        new DataSizeRuleset().withMaximum(1374556425311315309L).withMinimum(7376500269691950777L))
+                        new DataSizeRuleset().withMaximum(7069181954640351714L).withMinimum(9147401926281654511L))
                     .withMimeFilters(new MimeFilterRuleset().withType(FilterType.DENY)
-                        .withFilters(Arrays.asList(new MimeTypeFilter(), new MimeTypeFilter(), new MimeTypeFilter())))
-                    .withXmlFilters(new XmlFilterRuleset().withDefaultNamespace("bwefqsfapaqtfer")
+                        .withFilters(Arrays.asList(new MimeTypeFilter(), new MimeTypeFilter(), new MimeTypeFilter(),
+                            new MimeTypeFilter())))
+                    .withXmlFilters(new XmlFilterRuleset().withDefaultNamespace("fvv")
                         .withReference(XmlReferenceType.INLINE)
-                        .withSchema("x"))
+                        .withSchema("devjb"))
                     .withTextMatching(new TextMatchingRuleset().withDeny(Arrays.asList(
-                        new TextMatchingRulesetDeny().withText("xap")
+                        new TextMatchingRulesetDeny().withText("qxypokkhminq")
+                            .withMatchType(MatchType.PARTIAL)
+                            .withCaseSensitivity(Casing.INSENSITIVE),
+                        new TextMatchingRulesetDeny().withText("czngnbdxxe")
+                            .withMatchType(MatchType.PARTIAL)
+                            .withCaseSensitivity(Casing.SENSITIVE),
+                        new TextMatchingRulesetDeny().withText("invudbch")
                             .withMatchType(MatchType.COMPLETE)
                             .withCaseSensitivity(Casing.INSENSITIVE),
-                        new TextMatchingRulesetDeny().withText("gqqnobpudcda")
-                            .withMatchType(MatchType.PARTIAL)
-                            .withCaseSensitivity(Casing.SENSITIVE),
-                        new TextMatchingRulesetDeny().withText("wpwyawbz")
-                            .withMatchType(MatchType.PARTIAL)
-                            .withCaseSensitivity(Casing.SENSITIVE),
-                        new TextMatchingRulesetDeny().withText("bucljgkyexaogu")
+                        new TextMatchingRulesetDeny().withText("tvq")
                             .withMatchType(MatchType.COMPLETE)
-                            .withCaseSensitivity(Casing.INSENSITIVE))))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withCaseSensitivity(Casing.SENSITIVE))))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(
-                    mapOf("zrdpsovwxznptgoe", new UserAssignedIdentity(), "lkvn", new UserAssignedIdentity(),
-                        "mifrygznmma", new UserAssignedIdentity(), "lxecwcrojphslh", new UserAssignedIdentity())))
+                    mapOf("roevyt", new UserAssignedIdentity(), "lobdxna", new UserAssignedIdentity(),
+                        "bzxliohrdddtfgxq", new UserAssignedIdentity(), "dyb", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("iqbi", response.location());
-        Assertions.assertEquals("mwwinhehfqpofv", response.tags().get("bcblemb"));
-        Assertions.assertEquals(DataClassType.STREAM, response.properties().replicationScenario());
-        Assertions.assertEquals(FlowProfileStatus.DISABLED, response.properties().status());
-        Assertions.assertEquals("mlfmkqs", response.properties().description());
+        Assertions.assertEquals("h", response.location());
+        Assertions.assertEquals("yych", response.tags().get("nsjlpjrtws"));
+        Assertions.assertEquals(DataClassType.API, response.properties().replicationScenario());
+        Assertions.assertEquals(FlowProfileStatus.OBSOLETE, response.properties().status());
+        Assertions.assertEquals("hoqhnl", response.properties().description());
         Assertions.assertEquals(AntivirusSolutions.CLAM_AV,
             response.properties().rulesets().antivirus().avSolutions().get(0));
-        Assertions.assertEquals(165417238037681242L,
+        Assertions.assertEquals(5574391290923510956L,
             response.properties().rulesets().archives().minimumSizeForExpansion());
-        Assertions.assertEquals(3480922619213281392L,
+        Assertions.assertEquals(5962852581643280273L,
             response.properties().rulesets().archives().maximumExpansionSizeLimit());
-        Assertions.assertEquals(6563700004505435420L, response.properties().rulesets().archives().maximumDepthLimit());
-        Assertions.assertEquals(45.141991686801305D,
+        Assertions.assertEquals(4524737304914832116L, response.properties().rulesets().archives().maximumDepthLimit());
+        Assertions.assertEquals(86.90869150388701D,
             response.properties().rulesets().archives().maximumCompressionRatioLimit());
-        Assertions.assertEquals(6127617863372488579L, response.properties().rulesets().dataSize().maximum());
-        Assertions.assertEquals(166767772147299373L, response.properties().rulesets().dataSize().minimum());
-        Assertions.assertEquals(FilterType.ALLOW, response.properties().rulesets().mimeFilters().type());
-        Assertions.assertEquals("xyasflvgsgzw", response.properties().rulesets().xmlFilters().defaultNamespace());
+        Assertions.assertEquals(413479750820054458L, response.properties().rulesets().dataSize().maximum());
+        Assertions.assertEquals(3503769757091060693L, response.properties().rulesets().dataSize().minimum());
+        Assertions.assertEquals(FilterType.DENY, response.properties().rulesets().mimeFilters().type());
+        Assertions.assertEquals("uviyfcaabeo", response.properties().rulesets().xmlFilters().defaultNamespace());
         Assertions.assertEquals(XmlReferenceType.INLINE, response.properties().rulesets().xmlFilters().reference());
-        Assertions.assertEquals("oi", response.properties().rulesets().xmlFilters().schema());
-        Assertions.assertEquals("mjblmljhlny", response.properties().rulesets().textMatching().deny().get(0).text());
+        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().rulesets().xmlFilters().schema());
+        Assertions.assertEquals("farfs", response.properties().rulesets().textMatching().deny().get(0).text());
         Assertions.assertEquals(MatchType.COMPLETE,
             response.properties().rulesets().textMatching().deny().get(0).matchType());
         Assertions.assertEquals(Casing.INSENSITIVE,
             response.properties().rulesets().textMatching().deny().get(0).caseSensitivity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

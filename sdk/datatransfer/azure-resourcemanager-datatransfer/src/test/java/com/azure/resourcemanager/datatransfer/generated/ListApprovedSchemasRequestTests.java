@@ -13,18 +13,18 @@ public final class ListApprovedSchemasRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListApprovedSchemasRequest model
-            = BinaryData.fromString("{\"pipeline\":\"wrevkhgnlnzon\",\"direction\":\"Receive\"}")
+            = BinaryData.fromString("{\"pipeline\":\"uxylrjvmtygjbm\",\"direction\":\"Receive\"}")
                 .toObject(ListApprovedSchemasRequest.class);
-        Assertions.assertEquals("wrevkhgnlnzon", model.pipeline());
+        Assertions.assertEquals("uxylrjvmtygjbm", model.pipeline());
         Assertions.assertEquals(Direction.RECEIVE, model.direction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListApprovedSchemasRequest model
-            = new ListApprovedSchemasRequest().withPipeline("wrevkhgnlnzon").withDirection(Direction.RECEIVE);
+            = new ListApprovedSchemasRequest().withPipeline("uxylrjvmtygjbm").withDirection(Direction.RECEIVE);
         model = BinaryData.fromObject(model).toObject(ListApprovedSchemasRequest.class);
-        Assertions.assertEquals("wrevkhgnlnzon", model.pipeline());
+        Assertions.assertEquals("uxylrjvmtygjbm", model.pipeline());
         Assertions.assertEquals(Direction.RECEIVE, model.direction());
     }
 }

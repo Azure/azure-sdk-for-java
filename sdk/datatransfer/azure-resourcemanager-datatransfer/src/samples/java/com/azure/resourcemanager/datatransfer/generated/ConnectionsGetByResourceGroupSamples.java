@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class ConnectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getConnection.json
+     * x-ms-original-file: 2026-06-29-preview/getConnection.json
      */
     /**
      * Sample code: Gets connection resource.

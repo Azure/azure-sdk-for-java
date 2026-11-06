@@ -16,48 +16,39 @@ public final class RemoteEndpointSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoteEndpointSettings model = BinaryData.fromString(
-            "{\"endpoint\":\"uaibrebqaaysj\",\"authentication\":[{\"type\":\"None\",\"instance\":\"qttezlwfffiakpjp\",\"tenantId\":\"m\",\"authority\":\"d\",\"applicationIds\":[\"mjihyeozphv\"],\"audience\":\"uyqncygupkvipmd\",\"clientIdOverride\":\"wx\",\"identityTranslation\":\"UserIdentity\"},{\"type\":\"None\",\"instance\":\"hfstotxhojujbyp\",\"tenantId\":\"mc\",\"authority\":\"hixbjxyfwnyl\",\"applicationIds\":[\"o\"],\"audience\":\"ttpkiwkkbnujrywv\",\"clientIdOverride\":\"lbfpncurd\",\"identityTranslation\":\"ServiceIdentity\"}]}")
+            "{\"endpoint\":\"y\",\"authentication\":[{\"type\":\"None\",\"instance\":\"p\",\"tenantId\":\"ipmdscwx\",\"authority\":\"pevzhfst\",\"applicationIds\":[\"hojujbypelmcuv\",\"ixbjx\"],\"audience\":\"w\",\"clientIdOverride\":\"lrcoolsttpki\",\"identityTranslation\":\"UserIdentity\"}]}")
             .toObject(RemoteEndpointSettings.class);
-        Assertions.assertEquals("uaibrebqaaysj", model.endpoint());
+        Assertions.assertEquals("y", model.endpoint());
         Assertions.assertEquals(AuthenticationType.NONE, model.authentication().get(0).type());
-        Assertions.assertEquals("qttezlwfffiakpjp", model.authentication().get(0).instance());
-        Assertions.assertEquals("m", model.authentication().get(0).tenantId());
-        Assertions.assertEquals("d", model.authentication().get(0).authority());
-        Assertions.assertEquals("mjihyeozphv", model.authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("uyqncygupkvipmd", model.authentication().get(0).audience());
-        Assertions.assertEquals("wx", model.authentication().get(0).clientIdOverride());
+        Assertions.assertEquals("p", model.authentication().get(0).instance());
+        Assertions.assertEquals("ipmdscwx", model.authentication().get(0).tenantId());
+        Assertions.assertEquals("pevzhfst", model.authentication().get(0).authority());
+        Assertions.assertEquals("hojujbypelmcuv", model.authentication().get(0).applicationIds().get(0));
+        Assertions.assertEquals("w", model.authentication().get(0).audience());
+        Assertions.assertEquals("lrcoolsttpki", model.authentication().get(0).clientIdOverride());
         Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.authentication().get(0).identityTranslation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemoteEndpointSettings model = new RemoteEndpointSettings().withEndpoint("uaibrebqaaysj")
-            .withAuthentication(Arrays.asList(
-                new Authentication().withType(AuthenticationType.NONE)
-                    .withInstance("qttezlwfffiakpjp")
-                    .withTenantId("m")
-                    .withAuthority("d")
-                    .withApplicationIds(Arrays.asList("mjihyeozphv"))
-                    .withAudience("uyqncygupkvipmd")
-                    .withClientIdOverride("wx")
-                    .withIdentityTranslation(IdentityTranslation.USER_IDENTITY),
-                new Authentication().withType(AuthenticationType.NONE)
-                    .withInstance("hfstotxhojujbyp")
-                    .withTenantId("mc")
-                    .withAuthority("hixbjxyfwnyl")
-                    .withApplicationIds(Arrays.asList("o"))
-                    .withAudience("ttpkiwkkbnujrywv")
-                    .withClientIdOverride("lbfpncurd")
-                    .withIdentityTranslation(IdentityTranslation.SERVICE_IDENTITY)));
+        RemoteEndpointSettings model = new RemoteEndpointSettings().withEndpoint("y")
+            .withAuthentication(Arrays.asList(new Authentication().withType(AuthenticationType.NONE)
+                .withInstance("p")
+                .withTenantId("ipmdscwx")
+                .withAuthority("pevzhfst")
+                .withApplicationIds(Arrays.asList("hojujbypelmcuv", "ixbjx"))
+                .withAudience("w")
+                .withClientIdOverride("lrcoolsttpki")
+                .withIdentityTranslation(IdentityTranslation.USER_IDENTITY)));
         model = BinaryData.fromObject(model).toObject(RemoteEndpointSettings.class);
-        Assertions.assertEquals("uaibrebqaaysj", model.endpoint());
+        Assertions.assertEquals("y", model.endpoint());
         Assertions.assertEquals(AuthenticationType.NONE, model.authentication().get(0).type());
-        Assertions.assertEquals("qttezlwfffiakpjp", model.authentication().get(0).instance());
-        Assertions.assertEquals("m", model.authentication().get(0).tenantId());
-        Assertions.assertEquals("d", model.authentication().get(0).authority());
-        Assertions.assertEquals("mjihyeozphv", model.authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("uyqncygupkvipmd", model.authentication().get(0).audience());
-        Assertions.assertEquals("wx", model.authentication().get(0).clientIdOverride());
+        Assertions.assertEquals("p", model.authentication().get(0).instance());
+        Assertions.assertEquals("ipmdscwx", model.authentication().get(0).tenantId());
+        Assertions.assertEquals("pevzhfst", model.authentication().get(0).authority());
+        Assertions.assertEquals("hojujbypelmcuv", model.authentication().get(0).applicationIds().get(0));
+        Assertions.assertEquals("w", model.authentication().get(0).audience());
+        Assertions.assertEquals("lrcoolsttpki", model.authentication().get(0).clientIdOverride());
         Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.authentication().get(0).identityTranslation());
     }
 }

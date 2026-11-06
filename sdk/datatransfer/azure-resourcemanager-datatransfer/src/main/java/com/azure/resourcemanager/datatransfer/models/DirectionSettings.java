@@ -53,6 +53,20 @@ public final class DirectionSettings implements JsonSerializable<DirectionSettin
      */
     private List<FlowBillingTier> messagingFlowsPricingOptions;
 
+    /*
+     * The one-to-one mappings between storage flow locations in this cloud and
+     * corresponding storage flow locations in the other cloud for this direction.
+     * Each location and paired location appears in at most one mapping.
+     */
+    private List<LocationMapping> storageLocationMappings;
+
+    /*
+     * The one-to-one mappings between messaging flow locations in this cloud and
+     * corresponding messaging flow locations in the other cloud for this direction.
+     * Each location and paired location appears in at most one mapping.
+     */
+    private List<LocationMapping> messagingLocationMappings;
+
     /**
      * Creates an instance of DirectionSettings class.
      */
@@ -126,6 +140,30 @@ public final class DirectionSettings implements JsonSerializable<DirectionSettin
     }
 
     /**
+     * Get the storageLocationMappings property: The one-to-one mappings between storage flow locations in this cloud
+     * and
+     * corresponding storage flow locations in the other cloud for this direction.
+     * Each location and paired location appears in at most one mapping.
+     * 
+     * @return the storageLocationMappings value.
+     */
+    public List<LocationMapping> storageLocationMappings() {
+        return this.storageLocationMappings;
+    }
+
+    /**
+     * Get the messagingLocationMappings property: The one-to-one mappings between messaging flow locations in this
+     * cloud and
+     * corresponding messaging flow locations in the other cloud for this direction.
+     * Each location and paired location appears in at most one mapping.
+     * 
+     * @return the messagingLocationMappings value.
+     */
+    public List<LocationMapping> messagingLocationMappings() {
+        return this.messagingLocationMappings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -144,6 +182,10 @@ public final class DirectionSettings implements JsonSerializable<DirectionSettin
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("messagingFlowsPricingOptions", this.messagingFlowsPricingOptions,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("storageLocationMappings", this.storageLocationMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messagingLocationMappings", this.messagingLocationMappings,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -184,6 +226,14 @@ public final class DirectionSettings implements JsonSerializable<DirectionSettin
                     List<FlowBillingTier> messagingFlowsPricingOptions
                         = reader.readArray(reader1 -> FlowBillingTier.fromString(reader1.getString()));
                     deserializedDirectionSettings.messagingFlowsPricingOptions = messagingFlowsPricingOptions;
+                } else if ("storageLocationMappings".equals(fieldName)) {
+                    List<LocationMapping> storageLocationMappings
+                        = reader.readArray(reader1 -> LocationMapping.fromJson(reader1));
+                    deserializedDirectionSettings.storageLocationMappings = storageLocationMappings;
+                } else if ("messagingLocationMappings".equals(fieldName)) {
+                    List<LocationMapping> messagingLocationMappings
+                        = reader.readArray(reader1 -> LocationMapping.fromJson(reader1));
+                    deserializedDirectionSettings.messagingLocationMappings = messagingLocationMappings;
                 } else {
                     reader.skipChildren();
                 }

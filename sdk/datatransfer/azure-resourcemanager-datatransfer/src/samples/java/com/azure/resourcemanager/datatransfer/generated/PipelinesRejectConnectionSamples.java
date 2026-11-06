@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ResourceBody;
  */
 public final class PipelinesRejectConnectionSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/rejectConnection.json
+     * x-ms-original-file: 2026-06-29-preview/rejectConnection.json
      */
     /**
      * Sample code: Rejects the specified connection in a pipeline.

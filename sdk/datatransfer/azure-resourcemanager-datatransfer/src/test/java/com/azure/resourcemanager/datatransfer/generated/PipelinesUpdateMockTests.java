@@ -37,12 +37,16 @@ public final class PipelinesUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.pipelines()
-            .update("mr", "ddoui",
+            .update("ywaeeczgf", "ukklelss",
                 new PipelinesPatch()
-                    .withProperties(new PipelinesPatchProperties().withFlowTypes(Arrays.asList(FlowType.MISSION)))
-                    .withTags(mapOf("zdvpiw", "iynknlq"))
-                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("kyjpmspbps", new UserAssignedIdentity()))),
+                    .withProperties(new PipelinesPatchProperties()
+                        .withFlowTypes(Arrays.asList(FlowType.DEV_SEC_OPS, FlowType.STANDARD)))
+                    .withTags(mapOf("jcdoewb", "ujksrlsmdesqplpv", "owx", "dyvt", "sxze", "gpiudeug"))
+                    .withIdentity(
+                        new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("ihywartspph", new UserAssignedIdentity(), "rmymyincqlhr",
+                                new UserAssignedIdentity(), "ptjgwdt", new UserAssignedIdentity(), "iul",
+                                new UserAssignedIdentity()))),
                 com.azure.core.util.Context.NONE);
 
     }

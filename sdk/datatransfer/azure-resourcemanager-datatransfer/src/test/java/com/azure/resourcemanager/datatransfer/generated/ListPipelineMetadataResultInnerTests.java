@@ -16,22 +16,30 @@ public final class ListPipelineMetadataResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListPipelineMetadataResultInner model = BinaryData.fromString(
-            "{\"send\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Disabled\",\"flowTypesAvailable\":[\"Mission\",\"Opaque\",\"Standard\"],\"messagingFlowTypeSchemaValidation\":\"Disabled\",\"flowProfileDataClassesAvailable\":[\"Files\",\"Stream\",\"SoftwareArtifacts\",\"API\"],\"messagingFlowsPricingOptions\":[\"BlobTransport\",\"BlobTransport\",\"BlobTransport\"]},\"receive\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Disabled\",\"flowTypesAvailable\":[\"MissionOpaqueXML\",\"Standard\",\"StreamingVideo\",\"StreamingVideo\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"SoftwareArtifacts\",\"API\",\"SoftwareArtifacts\",\"Complex\"],\"messagingFlowsPricingOptions\":[\"Standard\",\"Standard\"]}}")
+            "{\"send\":{\"completeLinking\":\"Enabled\",\"connectionApprovals\":\"Disabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Unknown\",\"DevSecOps\",\"MissionOpaqueXML\",\"DiskImages\"],\"messagingFlowTypeSchemaValidation\":\"Disabled\",\"flowProfileDataClassesAvailable\":[\"Stream\",\"API\"],\"messagingFlowsPricingOptions\":[\"Premium\",\"Standard\",\"BlobTransport\"],\"storageLocationMappings\":[{\"location\":\"pg\",\"pairedLocation\":\"icrmnzh\"},{\"location\":\"gmqgjs\",\"pairedLocation\":\"vpqcb\"},{\"location\":\"rmbodt\",\"pairedLocation\":\"s\"},{\"location\":\"qgvriibakcla\",\"pairedLocation\":\"jfrnxousxauzlwv\"}],\"messagingLocationMappings\":[{\"location\":\"wohqfzizvu\",\"pairedLocation\":\"mmkjsvthnwpztek\"},{\"location\":\"vmribiat\",\"pairedLocation\":\"gplucfotangcfhny\"},{\"location\":\"zcugswvxwlmzqw\",\"pairedLocation\":\"vtxnjmxmcuqud\"},{\"location\":\"cvclxynpdk\",\"pairedLocation\":\"gfabuiyjibuzphdu\"}]},\"receive\":{\"completeLinking\":\"Enabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Unknown\"],\"messagingFlowTypeSchemaValidation\":\"Disabled\",\"flowProfileDataClassesAvailable\":[\"SoftwareArtifacts\",\"Stream\",\"SoftwareArtifacts\",\"Files\"],\"messagingFlowsPricingOptions\":[\"Standard\",\"BlobTransport\"],\"storageLocationMappings\":[{\"location\":\"qw\",\"pairedLocation\":\"edmurrxxge\"},{\"location\":\"pkt\",\"pairedLocation\":\"qylkmqpzoyhlf\"}],\"messagingLocationMappings\":[{\"location\":\"wgcloxoebqinji\",\"pairedLocation\":\"nwjfu\"},{\"location\":\"qlafcbahhpzpofoi\",\"pairedLocation\":\"jwpfilkm\"}]}}")
             .toObject(ListPipelineMetadataResultInner.class);
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.send().completeLinking());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.send().connectionApprovals());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.send().flowApprovals());
-        Assertions.assertEquals(FlowType.MISSION, model.send().flowTypesAvailable().get(0));
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.send().completeLinking());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.send().connectionApprovals());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.send().flowApprovals());
+        Assertions.assertEquals(FlowType.UNKNOWN, model.send().flowTypesAvailable().get(0));
         Assertions.assertEquals(EnablementStatus.DISABLED, model.send().messagingFlowTypeSchemaValidation());
-        Assertions.assertEquals(DataClassType.FILES, model.send().flowProfileDataClassesAvailable().get(0));
-        Assertions.assertEquals(FlowBillingTier.BLOB_TRANSPORT, model.send().messagingFlowsPricingOptions().get(0));
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.receive().completeLinking());
+        Assertions.assertEquals(DataClassType.STREAM, model.send().flowProfileDataClassesAvailable().get(0));
+        Assertions.assertEquals(FlowBillingTier.PREMIUM, model.send().messagingFlowsPricingOptions().get(0));
+        Assertions.assertEquals("pg", model.send().storageLocationMappings().get(0).location());
+        Assertions.assertEquals("icrmnzh", model.send().storageLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals("wohqfzizvu", model.send().messagingLocationMappings().get(0).location());
+        Assertions.assertEquals("mmkjsvthnwpztek", model.send().messagingLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.receive().completeLinking());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.receive().connectionApprovals());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.receive().flowApprovals());
-        Assertions.assertEquals(FlowType.MISSION_OPAQUE_XML, model.receive().flowTypesAvailable().get(0));
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.receive().messagingFlowTypeSchemaValidation());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.receive().flowApprovals());
+        Assertions.assertEquals(FlowType.UNKNOWN, model.receive().flowTypesAvailable().get(0));
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.receive().messagingFlowTypeSchemaValidation());
         Assertions.assertEquals(DataClassType.SOFTWARE_ARTIFACTS,
             model.receive().flowProfileDataClassesAvailable().get(0));
         Assertions.assertEquals(FlowBillingTier.STANDARD, model.receive().messagingFlowsPricingOptions().get(0));
+        Assertions.assertEquals("qw", model.receive().storageLocationMappings().get(0).location());
+        Assertions.assertEquals("edmurrxxge", model.receive().storageLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals("wgcloxoebqinji", model.receive().messagingLocationMappings().get(0).location());
+        Assertions.assertEquals("nwjfu", model.receive().messagingLocationMappings().get(0).pairedLocation());
     }
 }

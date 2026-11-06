@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class PipelinesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/deletePipeline.json
+     * x-ms-original-file: 2026-06-29-preview/deletePipeline.json
      */
     /**
      * Sample code: Deletes the pipeline resource.
