@@ -11,6 +11,7 @@
 * Fixed hybrid search reciprocal rank fusion (RRF) results being ranked incorrectly when component scores are tied. Each result now receives a unique ordinal rank, with deterministic tie-breaking based on the decoded document ID portion of `_rid`. - See [PR 50940](https://github.com/Azure/azure-sdk-for-java/pull/50940)
 * Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
+* Fixed non-`ORDER BY` queries fetching the next backend page before returning a page that has a backend continuation token. Reading one page at a time from a continuation token, for example with `byPage(continuationToken, pageSize).next()`, no longer sends an extra request for a page the caller does not consume. A page that completes a partition still waits for the next non-empty page, and filtered empty pages still cost their own requests. Continuation tokens are unchanged. - See [Issue 51034](https://github.com/Azure/azure-sdk-for-java/issues/51034)
 
 #### Other Changes
 
