@@ -5,22 +5,25 @@ package com.azure.messaging.webpubsub.chat.models;
 
 import java.time.Duration;
 
-/** Options for creating a Web PubSub client access token for Chat. */
-public final class GetClientAccessTokenOptions {
+/**
+ * Options for the {@code getClientAccessToken} operation.
+ */
+public final class ClientAccessTokenOptions {
     private Duration expiresAfter = Duration.ofHours(1);
     private String userId;
 
-    /** Creates an instance of {@link GetClientAccessTokenOptions}. */
-    public GetClientAccessTokenOptions() {
+    /** Creates an instance of {@link ClientAccessTokenOptions}. */
+    public ClientAccessTokenOptions() {
     }
 
     /**
      * Sets the duration after which the client access token expires.
      *
-     * @param expiresAfter The token lifetime.
+     * @param expiresAfter The token lifetime. Must be at least one minute and at most
+     * {@link Integer#MAX_VALUE} minutes. Fractional minutes are truncated when requesting a token from the service.
      * @return The updated options.
      */
-    public GetClientAccessTokenOptions setExpiresAfter(Duration expiresAfter) {
+    public ClientAccessTokenOptions setExpiresAfter(Duration expiresAfter) {
         this.expiresAfter = expiresAfter;
         return this;
     }
@@ -28,7 +31,7 @@ public final class GetClientAccessTokenOptions {
     /**
      * Gets the duration after which the client access token expires.
      *
-     * @return The token lifetime.
+     * @return The token lifetime, which defaults to one hour.
      */
     public Duration getExpiresAfter() {
         return expiresAfter;
@@ -40,7 +43,7 @@ public final class GetClientAccessTokenOptions {
      * @param userId The user ID.
      * @return The updated options.
      */
-    public GetClientAccessTokenOptions setUserId(String userId) {
+    public ClientAccessTokenOptions setUserId(String userId) {
         this.userId = userId;
         return this;
     }
