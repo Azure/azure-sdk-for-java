@@ -22,7 +22,7 @@ public final class DataExportsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataExportId\":\"gtuwkff\",\"tableNames\":[\"ktsysidfvclglxn\"],\"destination\":{\"resourceId\":\"ijtk\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"gsfikayiansha\"}},\"enable\":false,\"createdDate\":\"ji\",\"lastModifiedDate\":\"fzyjqt\"},\"id\":\"wkpqhjpenuygbq\",\"name\":\"qqekewvnqvcdlgu\",\"type\":\"ucmfdj\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataExportId\":\"qoxwd\",\"tableNames\":[\"dbxiqx\",\"iiqbi\",\"htmwwinh\",\"hfqpofv\"],\"destination\":{\"resourceId\":\"cblembnkbwv\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"ivqiheb\"}},\"enable\":true,\"createdDate\":\"bzuwfmdurag\",\"lastModifiedDate\":\"izvcjfe\"},\"id\":\"sdjubggbqigkxkbs\",\"name\":\"zgakgacyrcmj\",\"type\":\"mspofapvuhryl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class DataExportsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataExport> response
-            = manager.dataExports().listByWorkspace("m", "urbuhhlkyqltq", com.azure.core.util.Context.NONE);
+            = manager.dataExports().listByWorkspace("nzoibgsxgnx", "yqo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gtuwkff", response.iterator().next().dataExportId());
-        Assertions.assertEquals("ktsysidfvclglxn", response.iterator().next().tableNames().get(0));
-        Assertions.assertFalse(response.iterator().next().enable());
-        Assertions.assertEquals("ji", response.iterator().next().createdDate());
-        Assertions.assertEquals("fzyjqt", response.iterator().next().lastModifiedDate());
-        Assertions.assertEquals("ijtk", response.iterator().next().resourceId());
-        Assertions.assertEquals("gsfikayiansha", response.iterator().next().eventHubName());
+        Assertions.assertEquals("qoxwd", response.iterator().next().dataExportId());
+        Assertions.assertEquals("dbxiqx", response.iterator().next().tableNames().get(0));
+        Assertions.assertTrue(response.iterator().next().enable());
+        Assertions.assertEquals("bzuwfmdurag", response.iterator().next().createdDate());
+        Assertions.assertEquals("izvcjfe", response.iterator().next().lastModifiedDate());
+        Assertions.assertEquals("cblembnkbwv", response.iterator().next().resourceId());
+        Assertions.assertEquals("ivqiheb", response.iterator().next().eventHubName());
     }
 }

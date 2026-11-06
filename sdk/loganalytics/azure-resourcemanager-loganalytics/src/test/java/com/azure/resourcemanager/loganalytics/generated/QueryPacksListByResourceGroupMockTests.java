@@ -22,7 +22,7 @@ public final class QueryPacksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"queryPackId\":\"hyrfrakkldgr\",\"timeCreated\":\"2021-03-03T23:48:26Z\",\"timeModified\":\"2021-04-27T04:59:50Z\",\"provisioningState\":\"cnrjajqmatxjtiel\"},\"location\":\"qgxxgfbb\",\"tags\":{\"calincryqxz\":\"pqagynoiprn\",\"mqimiymqru\":\"aqzi\"},\"id\":\"guhfupe\",\"name\":\"asvvoqsbpkfl\",\"type\":\"nfkgxsyaowuzowpu\"}]}";
+            = "{\"value\":[{\"properties\":{\"queryPackId\":\"rzr\",\"timeCreated\":\"2021-08-18T00:01:16Z\",\"timeModified\":\"2021-08-03T13:20:30Z\",\"provisioningState\":\"futrwpweryekzkd\"},\"location\":\"eotta\",\"tags\":{\"hnhjtfvpndpmi\":\"osxw\"},\"id\":\"jpnwynudql\",\"name\":\"zsauzp\",\"type\":\"lxeehuxiq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class QueryPacksListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogAnalyticsQueryPack> response
-            = manager.queryPacks().listByResourceGroup("sqxtltclkrdpq", com.azure.core.util.Context.NONE);
+            = manager.queryPacks().listByResourceGroup("zagxnvhycvdi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qgxxgfbb", response.iterator().next().location());
-        Assertions.assertEquals("pqagynoiprn", response.iterator().next().tags().get("calincryqxz"));
+        Assertions.assertEquals("eotta", response.iterator().next().location());
+        Assertions.assertEquals("osxw", response.iterator().next().tags().get("hnhjtfvpndpmi"));
     }
 }

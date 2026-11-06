@@ -21,7 +21,7 @@ public final class DataExportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataExportId\":\"q\",\"tableNames\":[\"mzjr\"],\"destination\":{\"resourceId\":\"kqzeqyjleziunjx\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"tkw\"}},\"enable\":true,\"createdDate\":\"amlbnseqacjjvpil\",\"lastModifiedDate\":\"ooqjagmditgueio\"},\"id\":\"jbsahrtdtpde\",\"name\":\"qacsl\",\"type\":\"otoebnfxofv\"}";
+            = "{\"properties\":{\"dataExportId\":\"kpzvcpopmxelnwc\",\"tableNames\":[\"yjede\",\"xm\"],\"destination\":{\"resourceId\":\"mkqscaz\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"z\"}},\"enable\":true,\"createdDate\":\"mwabzxrvxc\",\"lastModifiedDate\":\"hsphaivmxyas\"},\"id\":\"vgsgzwywakoihkn\",\"name\":\"mjblmljhlny\",\"type\":\"zotqyryuzcb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class DataExportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataExport response = manager.dataExports()
-            .getWithResponse("gcgbjb", "dlfgtdysnaq", "flq", com.azure.core.util.Context.NONE)
+            .getWithResponse("zhraglkafh", "n", "juj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("q", response.dataExportId());
-        Assertions.assertEquals("mzjr", response.tableNames().get(0));
+        Assertions.assertEquals("kpzvcpopmxelnwc", response.dataExportId());
+        Assertions.assertEquals("yjede", response.tableNames().get(0));
         Assertions.assertTrue(response.enable());
-        Assertions.assertEquals("amlbnseqacjjvpil", response.createdDate());
-        Assertions.assertEquals("ooqjagmditgueio", response.lastModifiedDate());
-        Assertions.assertEquals("kqzeqyjleziunjx", response.resourceId());
-        Assertions.assertEquals("tkw", response.eventHubName());
+        Assertions.assertEquals("mwabzxrvxc", response.createdDate());
+        Assertions.assertEquals("hsphaivmxyas", response.lastModifiedDate());
+        Assertions.assertEquals("mkqscaz", response.resourceId());
+        Assertions.assertEquals("z", response.eventHubName());
     }
 }

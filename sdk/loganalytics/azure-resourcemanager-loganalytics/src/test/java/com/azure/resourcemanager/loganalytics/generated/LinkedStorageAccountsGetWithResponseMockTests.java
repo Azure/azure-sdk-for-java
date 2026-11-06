@@ -22,7 +22,7 @@ public final class LinkedStorageAccountsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataSourceType\":\"Query\",\"storageAccountIds\":[\"mjceagbjqvls\"]},\"id\":\"ywzash\",\"name\":\"gon\",\"type\":\"yjfqipubyznc\"}";
+            = "{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"pjby\"]},\"id\":\"sjoqcjenkyhfqzvs\",\"name\":\"xfxjelgcmpzqj\",\"type\":\"hhqxuwyvcacoyviv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class LinkedStorageAccountsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedStorageAccountsResource response = manager.linkedStorageAccounts()
-            .getWithResponse("jcx", "yqgxhlus", DataSourceType.INGESTION, com.azure.core.util.Context.NONE)
+            .getWithResponse("apqinf", "zpyglqdhmrj", DataSourceType.ALERTS, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mjceagbjqvls", response.storageAccountIds().get(0));
+        Assertions.assertEquals("pjby", response.storageAccountIds().get(0));
     }
 }

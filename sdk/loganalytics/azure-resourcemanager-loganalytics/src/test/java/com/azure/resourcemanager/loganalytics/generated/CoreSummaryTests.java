@@ -12,9 +12,9 @@ public final class CoreSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CoreSummary model
-            = BinaryData.fromString("{\"status\":\"hgbjkvrelje\",\"numberOfDocuments\":6077325916843454388}")
+            = BinaryData.fromString("{\"status\":\"qgnjdgkynscli\",\"numberOfDocuments\":6583688595725237651}")
                 .toObject(CoreSummary.class);
-        Assertions.assertEquals("hgbjkvrelje", model.status());
-        Assertions.assertEquals(6077325916843454388L, model.numberOfDocuments());
+        Assertions.assertEquals("qgnjdgkynscli", model.status());
+        Assertions.assertEquals(6583688595725237651L, model.numberOfDocuments());
     }
 }

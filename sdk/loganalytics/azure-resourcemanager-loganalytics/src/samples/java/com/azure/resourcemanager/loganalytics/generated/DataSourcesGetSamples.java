@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class DataSourcesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesGet.json
+     * x-ms-original-file: 2026-03-01/DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.

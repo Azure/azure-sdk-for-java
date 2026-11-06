@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedServicesGet.json
+     * x-ms-original-file: 2026-03-01/LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.

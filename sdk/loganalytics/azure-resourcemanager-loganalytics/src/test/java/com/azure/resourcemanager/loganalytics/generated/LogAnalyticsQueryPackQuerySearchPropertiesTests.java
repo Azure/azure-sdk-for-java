@@ -16,27 +16,27 @@ public final class LogAnalyticsQueryPackQuerySearchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchProperties model = BinaryData.fromString(
-            "{\"related\":{\"categories\":[\"sbycucrwnamikz\",\"brqbsmswzi\",\"gfuhokzrusw\"],\"resourceTypes\":[\"czznvfbycjsxj\",\"wix\"],\"solutions\":[\"mwmxqhndvnoamld\",\"ehaohdjhh\",\"lzok\"]},\"tags\":{\"g\":[\"pelnjetag\",\"tsxoatftgz\",\"npbs\",\"vefloccsrmozihmi\"]}}")
+            "{\"related\":{\"categories\":[\"eecjmeis\",\"stvasylwxdzaumw\",\"oohgu\"],\"resourceTypes\":[\"zboyjathwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"solutions\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"]},\"tags\":{\"qwyxebeybpm\":[\"ndzaapmudq\",\"eqw\",\"gp\",\"bu\"]}}")
             .toObject(LogAnalyticsQueryPackQuerySearchProperties.class);
-        Assertions.assertEquals("sbycucrwnamikz", model.related().categories().get(0));
-        Assertions.assertEquals("czznvfbycjsxj", model.related().resourceTypes().get(0));
-        Assertions.assertEquals("mwmxqhndvnoamld", model.related().solutions().get(0));
-        Assertions.assertEquals("pelnjetag", model.tags().get("g").get(0));
+        Assertions.assertEquals("eecjmeis", model.related().categories().get(0));
+        Assertions.assertEquals("zboyjathwt", model.related().resourceTypes().get(0));
+        Assertions.assertEquals("xnmwmqtibxyijddt", model.related().solutions().get(0));
+        Assertions.assertEquals("ndzaapmudq", model.tags().get("qwyxebeybpm").get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchProperties model = new LogAnalyticsQueryPackQuerySearchProperties()
             .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                .withCategories(Arrays.asList("sbycucrwnamikz", "brqbsmswzi", "gfuhokzrusw"))
-                .withResourceTypes(Arrays.asList("czznvfbycjsxj", "wix"))
-                .withSolutions(Arrays.asList("mwmxqhndvnoamld", "ehaohdjhh", "lzok")))
-            .withTags(mapOf("g", Arrays.asList("pelnjetag", "tsxoatftgz", "npbs", "vefloccsrmozihmi")));
+                .withCategories(Arrays.asList("eecjmeis", "stvasylwxdzaumw", "oohgu"))
+                .withResourceTypes(Arrays.asList("zboyjathwt", "olbaemwmdx", "ebwjscjpahlxvea"))
+                .withSolutions(Arrays.asList("xnmwmqtibxyijddt", "qcttadijaeukmrsi")))
+            .withTags(mapOf("qwyxebeybpm", Arrays.asList("ndzaapmudq", "eqw", "gp", "bu")));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQuerySearchProperties.class);
-        Assertions.assertEquals("sbycucrwnamikz", model.related().categories().get(0));
-        Assertions.assertEquals("czznvfbycjsxj", model.related().resourceTypes().get(0));
-        Assertions.assertEquals("mwmxqhndvnoamld", model.related().solutions().get(0));
-        Assertions.assertEquals("pelnjetag", model.tags().get("g").get(0));
+        Assertions.assertEquals("eecjmeis", model.related().categories().get(0));
+        Assertions.assertEquals("zboyjathwt", model.related().resourceTypes().get(0));
+        Assertions.assertEquals("xnmwmqtibxyijddt", model.related().solutions().get(0));
+        Assertions.assertEquals("ndzaapmudq", model.tags().get("qwyxebeybpm").get(0));
     }
 
     // Use "Map.of" if available

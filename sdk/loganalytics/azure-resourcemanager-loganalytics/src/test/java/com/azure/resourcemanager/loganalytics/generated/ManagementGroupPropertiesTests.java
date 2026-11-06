@@ -13,15 +13,15 @@ public final class ManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementGroupProperties model = BinaryData.fromString(
-            "{\"serverCount\":2079646623,\"isGateway\":true,\"name\":\"awddjibab\",\"id\":\"ititvtzeexavoxt\",\"created\":\"2021-07-21T07:36:08Z\",\"dataReceived\":\"2021-10-13T21:26:08Z\",\"version\":\"m\",\"sku\":\"bwpypqtgsfjacb\"}")
+            "{\"serverCount\":1628077523,\"isGateway\":true,\"name\":\"wrd\",\"id\":\"fukuvsjcswsmystu\",\"created\":\"2021-02-12T04:05:52Z\",\"dataReceived\":\"2021-04-05T13:26:46Z\",\"version\":\"cvlerchpqbmfpjba\",\"sku\":\"idfcxsspuunnoxyh\"}")
             .toObject(ManagementGroupProperties.class);
-        Assertions.assertEquals(2079646623, model.serverCount());
+        Assertions.assertEquals(1628077523, model.serverCount());
         Assertions.assertTrue(model.isGateway());
-        Assertions.assertEquals("awddjibab", model.name());
-        Assertions.assertEquals("ititvtzeexavoxt", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T07:36:08Z"), model.created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T21:26:08Z"), model.dataReceived());
-        Assertions.assertEquals("m", model.version());
-        Assertions.assertEquals("bwpypqtgsfjacb", model.sku());
+        Assertions.assertEquals("wrd", model.name());
+        Assertions.assertEquals("fukuvsjcswsmystu", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-12T04:05:52Z"), model.created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T13:26:46Z"), model.dataReceived());
+        Assertions.assertEquals("cvlerchpqbmfpjba", model.version());
+        Assertions.assertEquals("idfcxsspuunnoxyh", model.sku());
     }
 }

@@ -21,8 +21,7 @@ import reactor.core.publisher.Mono;
 public final class IntelligencePacksListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        String responseStr
-            = "[{\"name\":\"obrl\",\"enabled\":true,\"displayName\":\"nbagnchj\"},{\"name\":\"emuowakyw\",\"enabled\":false,\"displayName\":\"ymxcgqtag\"}]";
+        String responseStr = "[{\"name\":\"lt\",\"enabled\":false,\"displayName\":\"scvsfxigctm\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +31,11 @@ public final class IntelligencePacksListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<IntelligencePack> response = manager.intelligencePacks()
-            .listWithResponse("kxkxhnegk", "jzrbhtmeplv", com.azure.core.util.Context.NONE)
+            .listWithResponse("mghihp", "ecmslclbl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("obrl", response.get(0).name());
-        Assertions.assertTrue(response.get(0).enabled());
-        Assertions.assertEquals("nbagnchj", response.get(0).displayName());
+        Assertions.assertEquals("lt", response.get(0).name());
+        Assertions.assertFalse(response.get(0).enabled());
+        Assertions.assertEquals("scvsfxigctm", response.get(0).displayName());
     }
 }

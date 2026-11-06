@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class QueryPacksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksDelete.json
+     * x-ms-original-file: 2026-03-01/QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.
