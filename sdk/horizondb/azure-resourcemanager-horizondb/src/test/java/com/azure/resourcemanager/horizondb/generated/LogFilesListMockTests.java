@@ -21,7 +21,7 @@ public final class LogFilesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-04-12T22:42:56Z\",\"lastModifiedAtUtc\":\"2021-07-13T11:30:30Z\",\"retentionExpiresAtUtc\":\"2021-10-26T11:31:47Z\",\"isMutable\":false,\"sizeInKilobytes\":8008907163889108924,\"pool\":\"iquvrehm\",\"node\":\"njhvsujztc\",\"role\":\"Unassigned\"},\"id\":\"qjtwhauu\",\"name\":\"fprnjl\",\"type\":\"tlxs\"}]}";
+            = "{\"value\":[{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-10-11T18:38:45Z\",\"lastModifiedAtUtc\":\"2021-01-20T19:50:29Z\",\"retentionExpiresAtUtc\":\"2021-08-16T03:47:52Z\",\"isMutable\":false,\"sizeInKilobytes\":288947792823620816,\"pool\":\"jxdfzantkwcegya\",\"node\":\"lbnseqac\",\"role\":\"Unassigned\"},\"id\":\"pilguooqjag\",\"name\":\"d\",\"type\":\"tg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class LogFilesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogFile> response
-            = manager.logFiles().list("ugjknf", "mfcttux", com.azure.core.util.Context.NONE);
+            = manager.logFiles().list("qbctqha", "zjrwdkqze", com.azure.core.util.Context.NONE);
 
     }
 }

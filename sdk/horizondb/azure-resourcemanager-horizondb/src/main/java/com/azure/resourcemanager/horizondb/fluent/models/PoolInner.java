@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.horizondb.models.PoolProperties;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Represents the HorizonDB pool.
@@ -23,11 +22,6 @@ public final class PoolInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     private PoolProperties properties;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -72,26 +66,6 @@ public final class PoolInner extends ProxyResource {
      */
     public PoolInner withProperties(PoolProperties properties) {
         this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the PoolInner object itself.
-     */
-    public PoolInner withTags(Map<String, String> tags) {
-        this.tags = tags;
         return this;
     }
 
@@ -141,7 +115,6 @@ public final class PoolInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -169,9 +142,6 @@ public final class PoolInner extends ProxyResource {
                     deserializedPoolInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPoolInner.properties = PoolProperties.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPoolInner.tags = tags;
                 } else if ("systemData".equals(fieldName)) {
                     deserializedPoolInner.systemData = SystemData.fromJson(reader);
                 } else {

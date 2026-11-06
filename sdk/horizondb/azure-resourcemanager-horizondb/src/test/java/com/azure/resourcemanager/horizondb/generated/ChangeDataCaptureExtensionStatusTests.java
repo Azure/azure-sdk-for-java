@@ -11,7 +11,7 @@ public final class ChangeDataCaptureExtensionStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureExtensionStatus model
-            = BinaryData.fromString("{\"name\":\"itc\",\"version\":\"kfcktqum\",\"state\":\"Removing\"}")
+            = BinaryData.fromString("{\"name\":\"pjorwkqnyhg\",\"version\":\"ij\",\"state\":\"Failed\"}")
                 .toObject(ChangeDataCaptureExtensionStatus.class);
     }
 }
