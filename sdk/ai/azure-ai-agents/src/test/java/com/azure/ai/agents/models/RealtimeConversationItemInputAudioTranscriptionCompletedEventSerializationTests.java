@@ -18,8 +18,9 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
 
     @Test
     public void tokenUsageRoundTrips() throws IOException {
-        Usage usage = OpenAIJsonHelper.fromBinaryData(BinaryData.fromString(
-            "{\"type\":\"tokens\",\"input_tokens\":2,\"output_tokens\":3,\"total_tokens\":5}"), Usage.class);
+        Usage usage = OpenAIJsonHelper.fromBinaryData(
+            BinaryData.fromString("{\"type\":\"tokens\",\"input_tokens\":2,\"output_tokens\":3,\"total_tokens\":5}"),
+            Usage.class);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
             = new RealtimeConversationItemInputAudioTranscriptionCompletedEvent("event", "item", 0, "hello", usage);
 
@@ -36,8 +37,8 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
 
     @Test
     public void durationUsageRoundTrips() throws IOException {
-        Usage usage = OpenAIJsonHelper.fromBinaryData(
-            BinaryData.fromString("{\"type\":\"duration\",\"seconds\":7.5}"), Usage.class);
+        Usage usage = OpenAIJsonHelper.fromBinaryData(BinaryData.fromString("{\"type\":\"duration\",\"seconds\":7.5}"),
+            Usage.class);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
             = new RealtimeConversationItemInputAudioTranscriptionCompletedEvent("event", "item", 0, "hello", usage);
 
@@ -66,11 +67,10 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
 
     @Test
     public void usageSurvivesServerEventDispatch() throws IOException {
-        RealtimeServerEvent event = UnionTypeSerializationTestUtils.deserialize(
-            "{\"type\":\"conversation.item.input_audio_transcription.completed\",\"event_id\":\"event\","
+        RealtimeServerEvent event = UnionTypeSerializationTestUtils
+            .deserialize("{\"type\":\"conversation.item.input_audio_transcription.completed\",\"event_id\":\"event\","
                 + "\"item_id\":\"item\",\"content_index\":0,\"transcript\":\"hello\","
-                + "\"usage\":{\"type\":\"duration\",\"seconds\":7.5}}",
-            RealtimeServerEvent::fromJson);
+                + "\"usage\":{\"type\":\"duration\",\"seconds\":7.5}}", RealtimeServerEvent::fromJson);
 
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent completed
             = (RealtimeConversationItemInputAudioTranscriptionCompletedEvent) event;
