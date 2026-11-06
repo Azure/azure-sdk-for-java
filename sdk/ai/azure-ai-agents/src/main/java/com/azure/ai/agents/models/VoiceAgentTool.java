@@ -23,7 +23,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
      * The tool kind.
      */
     @Generated
-    private String type = "VoiceAgentTool";
+    private VoiceAgentToolType type = VoiceAgentToolType.fromString("VoiceAgentTool");
 
     /**
      * Creates an instance of VoiceAgentTool class.
@@ -38,7 +38,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -49,7 +49,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -102,7 +102,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedVoiceAgentTool.type = reader.getString();
+                    deserializedVoiceAgentTool.type = VoiceAgentToolType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

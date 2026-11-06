@@ -6,6 +6,7 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -24,6 +25,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the maximum number of queued events.
+     *
      * @return the capacity, default 256.
      */
     public int getReceiveBufferCapacity() {
@@ -32,9 +34,10 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Sets the bounded receive queue capacity. Configure before connecting.
+     *
      * @param capacity number of events, between 1 and 65536.
      * @return this options instance.
-    * @throws IllegalArgumentException if capacity is outside the supported range.
+     * @throws IllegalArgumentException if capacity is outside the supported range.
      */
     public VoiceAgentWebSocketConnectionOptions setReceiveBufferCapacity(int capacity) {
         if (capacity < 1 || capacity > 65536) {
@@ -47,6 +50,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the maximum accepted JSON message size.
+     *
      * @return the size in bytes, default 32 MiB.
      */
     public int getMaxMessageSize() {
@@ -55,9 +59,10 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Sets the maximum accepted JSON message size. Oversized messages terminate the connection.
+     *
      * @param bytes positive size in bytes.
      * @return this options instance.
-    * @throws IllegalArgumentException if bytes is not positive.
+     * @throws IllegalArgumentException if bytes is not positive.
      */
     public VoiceAgentWebSocketConnectionOptions setMaxMessageSize(int bytes) {
         if (bytes <= 0) {
@@ -69,6 +74,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the receive queue overflow action.
+     *
      * @return the strategy, default ERROR.
      */
     public VoiceAgentWebSocketOverflowStrategy getOverflowStrategy() {
@@ -77,6 +83,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Sets the receive queue overflow action. Drop strategies explicitly permit data loss.
+     *
      * @param strategy the non-null strategy.
      * @return this options instance.
      */
@@ -87,6 +94,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the callback for skipping malformed events.
+     *
      * @return the callback, or null to terminate on malformed events.
      */
     public Consumer<Throwable> getMalformedEventHandler() {
@@ -97,6 +105,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
      * Sets a callback that reports and skips malformed events without terminating reception.
      * The callback runs on the receive thread and must not block. If it throws, the session terminates.
      * This does not recover from transport errors or oversized messages.
+     *
      * @param handler callback, or null to terminate on malformed events (the default).
      * @return this options instance.
      */
@@ -107,7 +116,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     private Boolean store;
     private String agentVersionOverride;
-    private VoiceAgentTransport transport;
+    private VoiceAgentTransport transportType;
     private Duration handshakeTimeout = Duration.ofSeconds(30);
     private Duration closeTimeout = Duration.ofSeconds(10);
     private String agentSessionId;
@@ -133,7 +142,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
         this.malformedEventHandler = source.malformedEventHandler;
         this.store = source.store;
         this.agentVersionOverride = source.agentVersionOverride;
-        this.transport = source.transport;
+        this.transportType = source.transportType;
         this.handshakeTimeout = source.handshakeTimeout;
         this.closeTimeout = source.closeTimeout;
         this.agentSessionId = source.agentSessionId;
@@ -142,6 +151,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the session correlation identifier.
+     *
      * @return the session identifier, or null.
      */
     public String getAgentSessionId() {
@@ -150,6 +160,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Sets the session correlation identifier.
+     *
      * @param agentSessionId the session identifier, or null.
      * @return this options instance.
      */
@@ -160,6 +171,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Gets the structured inputs JSON object sent in the handshake header.
+     *
      * @return the structured inputs, or null.
      */
     public String getStructuredInputs() {
@@ -168,6 +180,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     /**
      * Sets the structured inputs JSON object sent in the handshake header.
+     *
      * @param structuredInputs the JSON object, or null.
      * @return this options instance.
      */
@@ -217,23 +230,23 @@ public final class VoiceAgentWebSocketConnectionOptions {
     }
 
     /**
-     * Gets the transport used for the realtime connection.
+     * Gets the transport type used for the realtime connection.
      *
-     * @return the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     * @return the transport type, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
      */
-    public VoiceAgentTransport getTransport() {
-        return transport;
+    public VoiceAgentTransport getTransportType() {
+        return transportType;
     }
 
     /**
-     * Sets the transport used for the realtime connection. When using {@link VoiceAgentTransport#WEBRTC}, the caller
-     * is responsible for completing SDP negotiation using the RTC call signaling events.
+     * Sets the transport type used for the realtime connection. When using {@link VoiceAgentTransport#WEBRTC},
+     * the caller is responsible for completing SDP negotiation using the RTC call signaling events.
      *
-     * @param transport the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     * @param transportType the transport type, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
      * @return this options instance.
      */
-    public VoiceAgentWebSocketConnectionOptions setTransport(VoiceAgentTransport transport) {
-        this.transport = transport;
+    public VoiceAgentWebSocketConnectionOptions setTransportType(VoiceAgentTransport transportType) {
+        this.transportType = transportType;
         return this;
     }
 

@@ -27,7 +27,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      * The tool kind.
      */
     @Generated
-    private String type = "mcp";
+    private VoiceAgentToolType type = VoiceAgentToolType.MCP;
 
     /*
      * A label for this MCP server, used to identify it in tool calls.
@@ -122,7 +122,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -396,7 +396,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("server_label", this.serverLabel);
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("authorization", this.authorization);
         jsonWriter.writeStringField("server_description", this.serverDescription);
@@ -432,7 +432,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     public static VoiceAgentMcpTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
-            String type = "mcp";
+            VoiceAgentToolType type = VoiceAgentToolType.MCP;
             String serverUrl = null;
             String authorization = null;
             String serverDescription = null;
@@ -450,7 +450,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
                 if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceAgentToolType.fromString(reader.getString());
                 } else if ("server_url".equals(fieldName)) {
                     serverUrl = reader.getString();
                 } else if ("authorization".equals(fieldName)) {

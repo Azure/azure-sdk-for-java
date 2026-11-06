@@ -80,7 +80,7 @@ public final class VoiceAgentWebSocketClientConfiguration {
     /**
      * Gets safe additional headers.
      *
-    * @return safe additional headers, or {@code null}.
+     * @return safe additional headers, or {@code null}.
      */
     public HttpHeaders getHeaders() {
         return headers;

@@ -127,4 +127,12 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
             return super.getResult(pollingContext, resultType);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return ProjectsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType));
+    }
 }

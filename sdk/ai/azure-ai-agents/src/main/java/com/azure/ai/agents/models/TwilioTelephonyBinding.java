@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * A Twilio binding owned by a voice agent.
  */
-@Immutable
+@Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class TwilioTelephonyBinding extends TelephonyBinding {
 
@@ -29,22 +29,6 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
      */
     @Generated
     private final String phoneNumber;
-
-    /**
-     * Creates an instance of TwilioTelephonyBinding class.
-     *
-     * @param id the id value to set.
-     * @param connectionName the connectionName value to set.
-     * @param status the status value to set.
-     * @param incomingCallUrl the incomingCallUrl value to set.
-     * @param phoneNumber the phoneNumber value to set.
-     */
-    @Generated
-    private TwilioTelephonyBinding(String id, String connectionName, TelephonyBindingStatus status,
-        String incomingCallUrl, String phoneNumber) {
-        super(id, connectionName, status, incomingCallUrl);
-        this.phoneNumber = phoneNumber;
-    }
 
     /**
      * Get the provider property: The telephony provider.
@@ -74,10 +58,7 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("connection_name", getConnectionName());
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("phone_number", this.phoneNumber);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -98,7 +79,6 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
         return jsonReader.readObject(reader -> {
             String id = null;
             String connectionName = null;
-            TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String label = null;
             String phoneNumber = null;
@@ -110,8 +90,6 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
                     id = reader.getString();
                 } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("label".equals(fieldName)) {
@@ -125,10 +103,34 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
                 }
             }
             TwilioTelephonyBinding deserializedTwilioTelephonyBinding
-                = new TwilioTelephonyBinding(id, connectionName, status, incomingCallUrl, phoneNumber);
+                = new TwilioTelephonyBinding(connectionName, phoneNumber);
+            deserializedTwilioTelephonyBinding.setId(id);
+            deserializedTwilioTelephonyBinding.setIncomingCallUrl(incomingCallUrl);
             deserializedTwilioTelephonyBinding.setLabel(label);
             deserializedTwilioTelephonyBinding.provider = provider;
             return deserializedTwilioTelephonyBinding;
         });
+    }
+
+    /**
+     * Creates an instance of TwilioTelephonyBinding class.
+     *
+     * @param connectionName the connectionName value to set.
+     * @param phoneNumber the phoneNumber value to set.
+     */
+    @Generated
+    public TwilioTelephonyBinding(String connectionName, String phoneNumber) {
+        super(connectionName);
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public TwilioTelephonyBinding setLabel(String label) {
+        super.setLabel(label);
+        return this;
     }
 }

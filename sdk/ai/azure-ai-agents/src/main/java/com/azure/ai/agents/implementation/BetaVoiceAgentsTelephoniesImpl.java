@@ -4,6 +4,8 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.TelephonyCampaign;
+import com.azure.ai.agents.models.TelephonyCampaignOperation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -38,6 +40,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +103,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Mono<Response<BinaryData>> createTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData binding, RequestOptions requestOptions, Context context);
 
         @Post("/agents/{agent_name}/telephony/bindings")
         @ExpectedResponses({ 201 })
@@ -107,7 +114,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> createTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData binding, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/telephony/bindings")
         @ExpectedResponses({ 200 })
@@ -333,7 +340,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @BodyParam("application/json") BinaryData replaceTelephonyTransferTargetsRequest,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs")
+        @Post("/agents/{agent_name}/telephony_call_jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -342,10 +349,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Mono<Response<BinaryData>> createTelephonyCallJob(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs")
+        @Post("/agents/{agent_name}/telephony_call_jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -354,10 +361,50 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> createTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/telephony/call_jobs/{call_job_id}")
+        @Get("/agents/{agent_name}/telephony_call_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listTelephonyCallJobs(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_call_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTelephonyCallJobsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteTelephonyCallJob(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -368,7 +415,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/telephony/call_jobs/{call_job_id}")
+        @Get("/agents/{agent_name}/telephony_call_jobs/{call_job_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -379,7 +426,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs/{call_job_id}:cancel")
+        @Post("/agents/{agent_name}/telephony_call_jobs/{call_job_id}:cancel")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -390,7 +437,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/agents/{agent_name}/telephony/call_jobs/{call_job_id}:cancel")
+        @Post("/agents/{agent_name}/telephony_call_jobs/{call_job_id}:cancel")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -399,6 +446,160 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> cancelTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Put("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createCampaign(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData campaign,
+            RequestOptions requestOptions, Context context);
+
+        @Put("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData campaign,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCampaign(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCampaigns(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCampaignsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}/telephony_campaigns/{campaign_name}:cancel")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelCampaign(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}/telephony_campaigns/{campaign_name}:cancel")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteCampaign(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/telephony_campaigns/{campaign_name}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteCampaignSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}/validation_errors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCampaignValidationErrors(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}/validation_errors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCampaignValidationErrorsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}/operations/{operation_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCampaignOperation(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @PathParam("operation_id") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/telephony_campaigns/{campaign_name}/operations/{operation_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCampaignOperationSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("campaign_name") String campaignName,
+            @PathParam("operation_id") String operationId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
@@ -420,9 +621,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
+     *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
+     *     incoming_call_url: String (Required)
      * }
      * }
      * </pre>
@@ -432,11 +635,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -451,7 +653,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      *
      * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
+     * @param binding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -461,8 +663,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTelephonyBindingWithResponseAsync(String agentName,
-        BinaryData telephonyBinding, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTelephonyBindingWithResponseAsync(String agentName, BinaryData binding,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -480,8 +682,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             }
         });
         return FluxUtil.withContext(context -> service.createTelephonyBinding(this.client.getEndpoint(), agentName,
-            this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
-            context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, binding, requestOptionsLocal, context));
     }
 
     /**
@@ -502,9 +703,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
+     *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
+     *     incoming_call_url: String (Required)
      * }
      * }
      * </pre>
@@ -514,11 +717,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -533,7 +735,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      *
      * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
+     * @param binding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -542,7 +744,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a telephony binding owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData telephonyBinding,
+    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData binding,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -561,7 +763,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             }
         });
         return service.createTelephonyBindingSync(this.client.getEndpoint(), agentName,
-            this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
+            this.client.getServiceVersion().getVersion(), contentType, accept, binding, requestOptionsLocal,
             Context.NONE);
     }
 
@@ -574,9 +776,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -598,11 +798,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -638,9 +837,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -662,11 +859,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -723,9 +919,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -747,11 +941,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -784,9 +977,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
-     * "suspended".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -808,11 +999,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      *     etag: String (Required)
      * }
@@ -869,11 +1059,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -916,11 +1105,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -962,10 +1150,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
+     *     allowed_calling_numbers (Optional): [
+     *         String (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -975,11 +1165,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -1025,10 +1214,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
      *     connection_name: String (Optional)
      *     phone_number: String (Optional)
+     *     allowed_calling_numbers (Optional): [
+     *         String (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -1038,11 +1229,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
-     *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
      * }
      * }
@@ -1132,7 +1322,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1161,7 +1351,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1210,7 +1400,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1239,7 +1429,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1309,7 +1499,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1338,7 +1528,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1384,7 +1574,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extensibility", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio", "sip".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -1413,7 +1603,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1484,7 +1674,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1572,7 +1762,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1669,7 +1859,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1768,7 +1958,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1856,7 +2046,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -1942,7 +2132,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extensibility/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio/sip) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -2031,7 +2221,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2080,7 +2271,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2128,7 +2320,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2146,7 +2339,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2198,7 +2392,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2216,7 +2411,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *             name: String (Required)
      *             description: String (Required)
      *             destination (Required): {
-     *                 kind: String(pstn/teams/sip) (Required)
+     *                 type: String(phone_number/teams/sip) (Required)
+     *                 value: String (Required)
      *             }
      *         }
      *     ]
@@ -2256,18 +2452,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Create an outbound telephony call job
      *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
+     * Creates one durable outbound CallJob. Each attempt pins the Agent endpoint's execution version for validation and
+     * its voice session.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2280,6 +2476,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         type: String(fixed_interval) (Required)
      *         max_attempts: Integer (Optional)
      *     }
+     *     source (Required): (recursive schema, see source above)
      * }
      * }
      * </pre>
@@ -2290,11 +2487,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2304,7 +2500,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2323,6 +2518,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2331,15 +2528,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
      * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
+     * @param idempotencyKey Customer retry key. Equivalent requests return the same job; retained keys for deleted jobs
+     * return 409 call_job_deleted, never redial.
+     * @param job The direct outbound call to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2350,29 +2550,29 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTelephonyCallJobWithResponseAsync(String agentName, String idempotencyKey,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createTelephonyCallJob(this.client.getEndpoint(), agentName, idempotencyKey,
-                this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+                this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
     /**
      * Create an outbound telephony call job
      *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
+     * Creates one durable outbound CallJob. Each attempt pins the Agent endpoint's execution version for validation and
+     * its voice session.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2385,6 +2585,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         type: String(fixed_interval) (Required)
      *         max_attempts: Integer (Optional)
      *     }
+     *     source (Required): (recursive schema, see source above)
      * }
      * }
      * </pre>
@@ -2395,11 +2596,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2409,7 +2609,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2428,6 +2627,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2436,15 +2637,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
      * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
+     * @param idempotencyKey Customer retry key. Equivalent requests return the same job; retained keys for deleted jobs
+     * return 409 call_job_deleted, never redial.
+     * @param job The direct outbound call to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2454,11 +2658,466 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTelephonyCallJobWithResponse(String agentName, String idempotencyKey,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createTelephonyCallJobSync(this.client.getEndpoint(), agentName, idempotencyKey,
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listTelephonyCallJobsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listTelephonyCallJobs(this.client.getEndpoint(), agentName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyCallJobsAsync(String agentName, RequestOptions requestOptions) {
+        return listTelephonyCallJobsAsync(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyCallJobsAsync(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listTelephonyCallJobsSinglePageAsync(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listTelephonyCallJobsSinglePageAsync(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTelephonyCallJobsSinglePage(String agentName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listTelephonyCallJobsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+    }
+
+    /**
+     * List outbound telephony call jobs
+     *
+     * Lists current direct/Campaign jobs, excluding deleted or superseded rounds. Pages are live. Campaign cursors
+     * survive boundary deletion/cancel, not replacement/name reuse (400 invalid_cursor).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Optional lifecycle filter. Allowed values: "accepted",
+     * "waiting_for_schedule", "queued", "dispatching", "in_progress", "waiting_for_retry", "cancellation_requested",
+     * "completed", "blocked", "expired", "failed", "cancelled".</td></tr>
+     * <tr><td>campaign_name</td><td>String</td><td>No</td><td>Current Campaign round: 404 if absent, empty while
+     * deleting. Omit for direct and Campaign jobs. Replacement/name reuse invalidates cursors.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     destination (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     connection_name: String (Required)
+     *     purpose: String (Optional)
+     *     structured_inputs (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     schedule (Optional): {
+     *         not_before: Long (Optional)
+     *         expires_at: Long (Optional)
+     *     }
+     *     id: String (Required)
+     *     agent_name: String (Required)
+     *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
+     *     cancellation (Optional): {
+     *         requested_by: String (Required)
+     *         mode: String (Required)
+     *         requested_at: long (Required)
+     *         revision: long (Required)
+     *     }
+     *     retry_policy (Required): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     attempt_count: int (Required)
+     *     next_attempt_at: Long (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
+     *     revision: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The owning voice agent. Authorization is applied before pagination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTelephonyCallJobs(String agentName, RequestOptions requestOptions) {
+        return listTelephonyCallJobs(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTelephonyCallJobs(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listTelephonyCallJobsSinglePage(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listTelephonyCallJobsSinglePage(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Delete an outbound telephony call job
+     *
+     * Deletes a terminal, reconciled job (otherwise 409), without cancelling calls or removing Campaign outcomes/call
+     * history. Later GET returns 404; repeated DELETE returns 204.
+     *
+     * @param agentName The owning voice agent.
+     * @param callJobId The call-job identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteTelephonyCallJobWithResponseAsync(String agentName, String callJobId,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteTelephonyCallJob(this.client.getEndpoint(), agentName,
+            callJobId, this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete an outbound telephony call job
+     *
+     * Deletes a terminal, reconciled job (otherwise 409), without cancelling calls or removing Campaign outcomes/call
+     * history. Later GET returns 404; repeated DELETE returns 204.
+     *
+     * @param agentName The owning voice agent.
+     * @param callJobId The call-job identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTelephonyCallJobWithResponse(String agentName, String callJobId,
+        RequestOptions requestOptions) {
+        return service.deleteTelephonyCallJobSync(this.client.getEndpoint(), agentName, callJobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     /**
@@ -2471,11 +3130,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2485,7 +3143,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2504,6 +3161,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2512,11 +3171,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2545,11 +3205,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2559,7 +3218,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2578,6 +3236,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2586,11 +3246,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2611,18 +3272,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Cancel an outbound telephony call job
      *
-     * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
+     * Cancels future attempts using If-Match; completion may be asynchronous. New cancellation after connection returns
+     * 409 and lets the active call finish.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2632,7 +3293,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2651,6 +3311,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2659,13 +3321,16 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to cancel.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2687,18 +3352,18 @@ public final class BetaVoiceAgentsTelephoniesImpl {
     /**
      * Cancel an outbound telephony call job
      *
-     * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
+     * Cancels future attempts using If-Match; completion may be asynchronous. New cancellation after connection returns
+     * 409 and lets the active call finish.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     destination (Required): {
-     *         type: String(phone_number) (Required)
+     *         type: String(phone_number/teams/sip) (Required)
      *         value: String (Required)
      *     }
      *     connection_name: String (Required)
-     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -2708,7 +3373,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *         expires_at: Long (Optional)
      *     }
      *     id: String (Required)
-     *     object: String (Required)
      *     agent_name: String (Required)
      *     status: String(accepted/waiting_for_schedule/queued/dispatching/in_progress/waiting_for_retry/cancellation_requested/completed/blocked/expired/failed/cancelled) (Required)
      *     cancellation (Optional): {
@@ -2727,6 +3391,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
+     *     source (Required): (recursive schema, see source above)
+     *     campaign_name: String (Optional)
      * }
      * }
      * </pre>
@@ -2735,13 +3401,16 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The current call-job entity tag. Send it in If-Match when requesting
+     * cancellation.</td></tr>
+     * <tr><td>Location</td><td>String</td><td>The URI for reading the accepted call-job resource and its execution
+     * status.</td></tr>
+     * <tr><td>Retry-After</td><td>Duration</td><td>Suggested delay in seconds before reading the call-job resource
+     * again.</td></tr>
      * </table>
      *
-     * @param agentName The agentName parameter.
-     * @param callJobId The callJobId parameter.
+     * @param agentName The name of the voice agent that owns the call job.
+     * @param callJobId The service-generated identifier of the call job to cancel.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2756,6 +3425,3071 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.cancelTelephonyCallJobSync(this.client.getEndpoint(), agentName, callJobId, ifMatch,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent-owned outbound call Campaign along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> createCampaignWithResponseAsync(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createCampaign(this.client.getEndpoint(), agentName, campaignName,
+                this.client.getServiceVersion().getVersion(), contentType, accept, campaign, requestOptions, context));
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent-owned outbound call Campaign along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createCampaignWithResponse(String agentName, String campaignName, BinaryData campaign,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createCampaignSync(this.client.getEndpoint(), agentName, campaignName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, campaign, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of agent-owned outbound call Campaign.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaignWithModelAsync(String agentName,
+        String campaignName, BinaryData campaign, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class),
+            TypeReference.createInstance(TelephonyCampaign.class));
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of agent-owned outbound call Campaign.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCreateCampaignWithModel(String agentName,
+        String campaignName, BinaryData campaign, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class),
+            TypeReference.createInstance(TelephonyCampaign.class));
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of agent-owned outbound call Campaign.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateCampaignAsync(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createCampaignWithResponseAsync(agentName, campaignName, campaign, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create or replace a failed telephony campaign
+     *
+     * Creates a Campaign or fully replaces failed preparation; no PATCH. All recipients must validate and have CallJobs
+     * before dialing. Immediate calls may begin before the preparation poller returns.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Retry key: matching submitted inputs and original If-Match
+     * replay the saved monitor before current-state checks. Conflicting reuse returns 409 operation_id_conflict;
+     * retained creation keys after deletion return 409 campaign_deleted.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Required with a fresh Operation-Id for failed-state
+     * replacement; no wildcards. Changed input without it returns 409. Missing replacement ID: 400; stale token/absent
+     * resource: 412; other states: 409.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Name chosen by the caller; only a failed Campaign permits full replacement.
+     * @param campaign Complete connection, source, recipients/Dataset, schedule and retry configuration. Omitted
+     * optional fields reset to defaults; Agent/name and response-only fields cannot change.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of agent-owned outbound call Campaign.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateCampaign(String agentName, String campaignName,
+        BinaryData campaign, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createCampaignWithResponse(agentName, campaignName, campaign, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get a telephony campaign
+     *
+     * Gets Campaign configuration and execution state without inline recipients. Absent or deleted Campaigns return
+     * 404.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>operation_id</td><td>String</td><td>No</td><td>Original response's Operation-Id guards its instance/round
+     * and survives same-round actions. Replacement/name reuse: 409 campaign_operation_mismatch;
+     * missing/expired/wrong-scope operation: 404.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a telephony campaign
+     *
+     * Gets Campaign configuration and execution state without inline recipients along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCampaignWithResponseAsync(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCampaign(this.client.getEndpoint(), agentName, campaignName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a telephony campaign
+     *
+     * Gets Campaign configuration and execution state without inline recipients. Absent or deleted Campaigns return
+     * 404.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>operation_id</td><td>String</td><td>No</td><td>Original response's Operation-Id guards its instance/round
+     * and survives same-round actions. Replacement/name reuse: 409 campaign_operation_mismatch;
+     * missing/expired/wrong-scope operation: 404.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a telephony campaign
+     *
+     * Gets Campaign configuration and execution state without inline recipients along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCampaignWithResponse(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getCampaignSync(this.client.getEndpoint(), agentName, campaignName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List telephony campaigns
+     *
+     * Lists the Agent's Campaigns without inline recipients. Filters are live views, not snapshots.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter by Campaign business state. Allowed values: "validating",
+     * "running", "cancelling", "completed", "failed", "cancelled", "deleting".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return shared Foundry page shape with opaque boundary tokens bound to the original sort position along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCampaignsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCampaigns(this.client.getEndpoint(), agentName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+    }
+
+    /**
+     * List telephony campaigns
+     *
+     * Lists the Agent's Campaigns without inline recipients. Filters are live views, not snapshots.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter by Campaign business state. Allowed values: "validating",
+     * "running", "cancelling", "completed", "failed", "cancelled", "deleting".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return shared Foundry page shape with opaque boundary tokens bound to the original sort position as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCampaignsAsync(String agentName, RequestOptions requestOptions) {
+        return listCampaignsAsync(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCampaignsAsync(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listCampaignsSinglePageAsync(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listCampaignsSinglePageAsync(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List telephony campaigns
+     *
+     * Lists the Agent's Campaigns without inline recipients. Filters are live views, not snapshots.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter by Campaign business state. Allowed values: "validating",
+     * "running", "cancelling", "completed", "failed", "cancelled", "deleting".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return shared Foundry page shape with opaque boundary tokens bound to the original sort position along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCampaignsSinglePage(String agentName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCampaignsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+    }
+
+    /**
+     * List telephony campaigns
+     *
+     * Lists the Agent's Campaigns without inline recipients. Filters are live views, not snapshots.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter by Campaign business state. Allowed values: "validating",
+     * "running", "cancelling", "completed", "failed", "cancelled", "deleting".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connection_name: String (Required)
+     *     source (Required): {
+     *         type: String(phone_number/teams/sip) (Required)
+     *         value: String (Required)
+     *     }
+     *     recipients (Optional): [
+     *          (Optional){
+     *             destination (Required): (recursive schema, see destination above)
+     *             structured_inputs (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             scheduled_at: Long (Optional)
+     *         }
+     *     ]
+     *     recipient_dataset (Optional): {
+     *         name: String (Required)
+     *         version: String (Optional)
+     *     }
+     *     schedule (Optional): {
+     *         type: String(immediate/scheduled/recipient) (Required)
+     *         expires_at: Long (Optional)
+     *     }
+     *     retry_policy (Optional): {
+     *         type: String(fixed_interval) (Required)
+     *         max_attempts: Integer (Optional)
+     *     }
+     *     status: String(validating/running/cancelling/completed/failed/cancelled/deleting) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     etag: String (Required)
+     *     operation_id: String (Required)
+     *     finished_at: Long (Optional)
+     *     locked_agent_version: String (Optional)
+     *     progress (Required): {
+     *         total_recipients: Long (Optional)
+     *         pending: long (Required)
+     *         active: long (Required)
+     *         completed: long (Required)
+     *         failed: long (Required)
+     *         cancelled: long (Required)
+     *         expired: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return shared Foundry page shape with opaque boundary tokens bound to the original sort position as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCampaigns(String agentName, RequestOptions requestOptions) {
+        return listCampaigns(null, agentName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCampaigns(String initialContinuationToken, String agentName,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listCampaignsSinglePage(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listCampaignsSinglePage(agentName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return preparation/cancel/delete monitor bound to its original Campaign instance/round, independent of later
+     * actions along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> cancelCampaignWithResponseAsync(String agentName, String campaignName,
+        String ifMatch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelCampaign(this.client.getEndpoint(), agentName,
+            campaignName, ifMatch, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return preparation/cancel/delete monitor bound to its original Campaign instance/round, independent of later
+     * actions along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> cancelCampaignWithResponse(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelCampaignSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of preparation/cancel/delete monitor bound to its original Campaign
+     * instance/round, independent of later actions.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaignWithModelAsync(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class),
+            TypeReference.createInstance(TelephonyCampaign.class));
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of preparation/cancel/delete monitor bound to its original Campaign
+     * instance/round, independent of later actions.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TelephonyCampaignOperation, TelephonyCampaign> beginCancelCampaignWithModel(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class),
+            TypeReference.createInstance(TelephonyCampaign.class));
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of preparation/cancel/delete monitor bound to its original Campaign
+     * instance/round, independent of later actions.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCancelCampaignAsync(String agentName, String campaignName,
+        String ifMatch, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.cancelCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Cancel a telephony campaign
+     *
+     * Cancels a validating or running Campaign using If-Match. Stops new calls and retries; connected calls finish
+     * naturally. Returns 202 with an operation monitor to track completion.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key, generated if omitted. Original
+     * If-Match/key replays 202 even after deletion/name reuse, never touching a replacement; conflicts return 409.
+     * Failed cancellation needs a fresh key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, missing Campaigns return 404 and stale tokens
+     * 412. Starting cancellation outside validating/running returns 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of preparation/cancel/delete monitor bound to its original Campaign
+     * instance/round, independent of later actions.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCancelCampaign(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.cancelCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteCampaignWithResponseAsync(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteCampaign(this.client.getEndpoint(), agentName,
+            campaignName, ifMatch, this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<Void> deleteCampaignWithResponse(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        return service.deleteCampaignSync(this.client.getEndpoint(), agentName, campaignName, ifMatch,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TelephonyCampaignOperation, Void> beginDeleteCampaignWithModelAsync(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TelephonyCampaignOperation, Void> beginDeleteCampaignWithModel(String agentName,
+        String campaignName, String ifMatch, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(TelephonyCampaignOperation.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, Void> beginDeleteCampaignAsync(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteCampaignWithResponseAsync(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.CampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponseAsync(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Delete a telephony campaign
+     *
+     * Deletes a terminal Campaign and its recipient/task data asynchronously. Returns bodyless 202 with a monitor, not
+     * a tombstone; completion makes GET return 404 and lists omit it. Dataset, connections, Agent, independent jobs and
+     * call history are preserved.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Optional retry key. Original If-Match/key replays 202 even
+     * after deletion/name reuse, never touching a new instance; conflicts return 409. Failed cleanup needs a fresh
+     * key/current token.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Immutable Campaign name.
+     * @param ifMatch Exact current token; no wildcards. Without replay, absent Campaigns return 204 and stale tokens
+     * 412. Active calls/workers or unfinished cancellation return 409.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, Void> beginDeleteCampaign(String agentName, String campaignName, String ifMatch,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteCampaignWithResponse(agentName, campaignName, ifMatch, requestOptions),
+            new com.azure.ai.agents.implementation.SyncCampaignOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                finalRequestOptions -> this.getCampaignWithResponse(agentName, campaignName, finalRequestOptions)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * List campaign validation errors
+     *
+     * Lists current-round row validation errors. Results may be partial during preparation; an empty page does not
+     * establish success. Execution errors are in CallJobs; non-row failures are in Campaign.error.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort invalid rows by their original row_number. Allowed values:
+     * "asc", "desc".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     row_number: long (Required)
+     *     error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name. Deleting returns 409 campaign_deleting; absent/deleted returns 404.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return error-only page along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCampaignValidationErrorsSinglePageAsync(String agentName,
+        String campaignName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCampaignValidationErrors(this.client.getEndpoint(), agentName,
+                campaignName, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+    }
+
+    /**
+     * List campaign validation errors
+     *
+     * Lists current-round row validation errors. Results may be partial during preparation; an empty page does not
+     * establish success. Execution errors are in CallJobs; non-row failures are in Campaign.error.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort invalid rows by their original row_number. Allowed values:
+     * "asc", "desc".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     row_number: long (Required)
+     *     error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name. Deleting returns 409 campaign_deleting; absent/deleted returns 404.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return error-only page as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCampaignValidationErrorsAsync(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        return listCampaignValidationErrorsAsync(null, agentName, campaignName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCampaignValidationErrorsAsync(String initialContinuationToken, String agentName,
+        String campaignName, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listCampaignValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listCampaignValidationErrorsSinglePageAsync(agentName, campaignName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List campaign validation errors
+     *
+     * Lists current-round row validation errors. Results may be partial during preparation; an empty page does not
+     * establish success. Execution errors are in CallJobs; non-row failures are in Campaign.error.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort invalid rows by their original row_number. Allowed values:
+     * "asc", "desc".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     row_number: long (Required)
+     *     error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name. Deleting returns 409 campaign_deleting; absent/deleted returns 404.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return error-only page along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCampaignValidationErrorsSinglePage(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCampaignValidationErrorsSync(this.client.getEndpoint(), agentName,
+            campaignName, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+    }
+
+    /**
+     * List campaign validation errors
+     *
+     * Lists current-round row validation errors. Results may be partial during preparation; an empty page does not
+     * establish success. Execution errors are in CallJobs; non-row failures are in Campaign.error.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Opaque last_id bound to scope/filters/order; error cursors also
+     * bind instance/round/snapshot and survive cancel, not replacement. Exclusive with before; invalid tokens return
+     * 400 invalid_cursor.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Opaque first_id for backward paging with unchanged
+     * scope/filters/order; exclusive with after.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort invalid rows by their original row_number. Allowed values:
+     * "asc", "desc".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     row_number: long (Required)
+     *     error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName Owning Agent; never overridden in recipient inputs.
+     * @param campaignName Campaign name. Deleting returns 409 campaign_deleting; absent/deleted returns 404.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return error-only page as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCampaignValidationErrors(String agentName, String campaignName,
+        RequestOptions requestOptions) {
+        return listCampaignValidationErrors(null, agentName, campaignName, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCampaignValidationErrors(String initialContinuationToken, String agentName,
+        String campaignName, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listCampaignValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listCampaignValidationErrorsSinglePage(agentName, campaignName, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Get a campaign operation
+     *
+     * Gets the initiating operation's status. PUT/cancel pollers finish with a guarded Campaign GET; deletion completes
+     * without a resource result.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     *
+     * @param agentName Owning Agent.
+     * @param campaignName Immutable Campaign name.
+     * @param operationId Operation-Id from the initiating response. Saved project/Agent authorization still applies
+     * after resource deletion.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a campaign operation
+     *
+     * Gets the initiating operation's status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCampaignOperationWithResponseAsync(String agentName, String campaignName,
+        String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCampaignOperation(this.client.getEndpoint(), agentName,
+            campaignName, operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a campaign operation
+     *
+     * Gets the initiating operation's status. PUT/cancel pollers finish with a guarded Campaign GET; deletion completes
+     * without a resource result.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     kind: String(validation/cancel/delete) (Required)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     *
+     * @param agentName Owning Agent.
+     * @param campaignName Immutable Campaign name.
+     * @param operationId Operation-Id from the initiating response. Saved project/Agent authorization still applies
+     * after resource deletion.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a campaign operation
+     *
+     * Gets the initiating operation's status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCampaignOperationWithResponse(String agentName, String campaignName,
+        String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getCampaignOperationSync(this.client.getEndpoint(), agentName, campaignName, operationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

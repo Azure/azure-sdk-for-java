@@ -22,7 +22,7 @@ public final class VoiceAgentToolboxTool extends VoiceAgentTool {
      * The tool kind.
      */
     @Generated
-    private String type = "toolbox";
+    private VoiceAgentToolType type = VoiceAgentToolType.TOOLBOX;
 
     /*
      * The name of the toolbox to attach.
@@ -61,7 +61,7 @@ public final class VoiceAgentToolboxTool extends VoiceAgentTool {
      */
     @Generated
     @Override
-    public String getType() {
+    public VoiceAgentToolType getType() {
         return this.type;
     }
 
@@ -118,7 +118,7 @@ public final class VoiceAgentToolboxTool extends VoiceAgentTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("toolbox_name", this.toolboxName);
         jsonWriter.writeStringField("toolbox_version", this.toolboxVersion);
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("response_scheduling",
             this.responseScheduling == null ? null : this.responseScheduling.toString());
         return jsonWriter.writeEndObject();
@@ -138,7 +138,7 @@ public final class VoiceAgentToolboxTool extends VoiceAgentTool {
         return jsonReader.readObject(reader -> {
             String toolboxName = null;
             String toolboxVersion = null;
-            String type = "toolbox";
+            VoiceAgentToolType type = VoiceAgentToolType.TOOLBOX;
             VoiceAgentToolResponseScheduling responseScheduling = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -148,7 +148,7 @@ public final class VoiceAgentToolboxTool extends VoiceAgentTool {
                 } else if ("toolbox_version".equals(fieldName)) {
                     toolboxVersion = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                    type = VoiceAgentToolType.fromString(reader.getString());
                 } else if ("response_scheduling".equals(fieldName)) {
                     responseScheduling = VoiceAgentToolResponseScheduling.fromString(reader.getString());
                 } else {

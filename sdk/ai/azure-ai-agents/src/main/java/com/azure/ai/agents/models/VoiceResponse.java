@@ -222,9 +222,9 @@ public final class VoiceResponse implements JsonSerializable<VoiceResponse> {
      *
      * @return the maxOutputTokens value.
      */
-    BinaryData getMaxOutputTokens() {
+    public VoiceAgentMaxOutputTokens getMaxOutputTokens() {
         // AI Tooling: union type
-        return this.maxOutputTokens;
+        return this.maxOutputTokens == null ? null : this.maxOutputTokens.toObject(VoiceAgentMaxOutputTokens.class);
     }
 
     /**
@@ -293,9 +293,9 @@ public final class VoiceResponse implements JsonSerializable<VoiceResponse> {
         }
         jsonWriter.writeArrayField("output_modalities", getOutputModalities(),
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        if (getMaxOutputTokens() != null) {
+        if (this.maxOutputTokens != null) {
             jsonWriter.writeFieldName("max_output_tokens");
-            getMaxOutputTokens().writeTo(jsonWriter);
+            this.maxOutputTokens.writeTo(jsonWriter);
         }
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("conversation_id", this.conversationId);
@@ -415,41 +415,5 @@ public final class VoiceResponse implements JsonSerializable<VoiceResponse> {
     @Generated
     public VoiceResponseObjectType getObjectType() {
         return this.objectType;
-    }
-
-    /**
-     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
-     * tool calls, that was used in this response.
-     *
-     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
-     */
-    public Long getMaxOutputTokensAsLong() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(Long.class);
-    }
-
-    /**
-     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
-     * tool calls, that was used in this response.
-     *
-     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
-     */
-    public String getMaxOutputTokensAsString() {
-        // AI Tooling: union type
-        if (this.maxOutputTokens == null) {
-            return null;
-        }
-        String json = this.maxOutputTokens.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return this.maxOutputTokens.toObject(String.class);
     }
 }

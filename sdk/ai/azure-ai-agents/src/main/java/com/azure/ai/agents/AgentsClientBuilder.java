@@ -67,12 +67,14 @@ import java.util.stream.Collectors;
 @ServiceClientBuilder(
     serviceClients = {
         BetaVoiceAgentsConversationsClient.class,
+        BetaVoiceAgentsLiveConversationsClient.class,
         BetaVoiceAgentsTelephonyClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         BetaVoiceAgentsConversationsAsyncClient.class,
+        BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
@@ -601,7 +603,8 @@ public final class AgentsClientBuilder
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
      * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
      * {@link BetaVoiceAgentsTelephonyClient}, {@link BetaVoiceAgentsTelephonyAsyncClient},
-     * {@link BetaVoiceAgentsConversationsClient}, or {@link BetaVoiceAgentsConversationsAsyncClient}.
+     * {@link BetaVoiceAgentsConversationsClient}, {@link BetaVoiceAgentsConversationsAsyncClient},
+     * {@link BetaVoiceAgentsLiveConversationsClient}, or {@link BetaVoiceAgentsLiveConversationsAsyncClient}.
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -626,14 +629,18 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaVoiceAgentWebSocketClient.class,
+            BetaVoiceAgentsWebSocketClient.class,
+            BetaVoiceAgentsLiveWebSocketClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
+            BetaVoiceAgentsLiveConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
-            BetaVoiceAgentWebSocketAsyncClient.class,
+            BetaVoiceAgentsWebSocketAsyncClient.class,
+            BetaVoiceAgentsLiveWebSocketAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
-            BetaVoiceAgentsConversationsAsyncClient.class })
+            BetaVoiceAgentsConversationsAsyncClient.class,
+            BetaVoiceAgentsLiveConversationsAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -706,6 +713,20 @@ public final class AgentsClientBuilder
         }
 
         /**
+         * Builds an asynchronous beta client for persisted Live voice-agent conversations.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsLiveConversationsAsyncClient.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveConversationsAsyncClient buildBetaVoiceAgentsLiveConversationsAsyncClient() {
+            return new BetaVoiceAgentsLiveConversationsAsyncClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsLiveConversations());
+        }
+
+        /**
          * Builds a synchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
@@ -747,8 +768,8 @@ public final class AgentsClientBuilder
          * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
-        public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
-            return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        public BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
+            return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -763,8 +784,36 @@ public final class AgentsClientBuilder
          * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
-        public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
-            return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        public BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
+            return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds an asynchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return an asynchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketAsyncClient buildBetaVoiceAgentsLiveWebSocketAsyncClient() {
+            return new BetaVoiceAgentsLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds a synchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return a synchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketClient buildBetaVoiceAgentsLiveWebSocketClient() {
+            return new BetaVoiceAgentsLiveWebSocketClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -797,6 +846,20 @@ public final class AgentsClientBuilder
         public BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
             return new BetaVoiceAgentsConversationsClient(
                 buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsConversations());
+        }
+
+        /**
+         * Builds a synchronous beta client for persisted Live voice-agent conversations.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsLiveConversationsClient.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
+            return new BetaVoiceAgentsLiveConversationsClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsLiveConversations());
         }
     }
 
@@ -949,8 +1012,8 @@ public final class AgentsClientBuilder
      *
      * @return an asynchronous voice-agent WebSocket client.
      */
-    private BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
-        return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+    private BetaVoiceAgentsWebSocketAsyncClient buildBetaVoiceAgentsWebSocketAsyncClient() {
+        return new BetaVoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
     }
 
     /**
@@ -958,7 +1021,26 @@ public final class AgentsClientBuilder
      *
      * @return a synchronous voice-agent WebSocket client.
      */
-    private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
-        return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    private BetaVoiceAgentsWebSocketClient buildBetaVoiceAgentsWebSocketClient() {
+        return new BetaVoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsAsyncClient.
+     */
+    private BetaVoiceAgentsLiveConversationsAsyncClient buildBetaVoiceAgentsLiveConversationsAsyncClient() {
+        return new BetaVoiceAgentsLiveConversationsAsyncClient(
+            buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsClient.
+     */
+    private BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
+        return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
     }
 }

@@ -39,6 +39,7 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
+        customizeCampaignPollingStrategies(libraryCustomization, logger);
         stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         internalizeUnusedFunctionToolType(libraryCustomization, logger);
         deprecateLegacyBrowserAutomationTools(libraryCustomization);
@@ -171,15 +172,15 @@ public class AgentsCustomizations extends Customization {
 
     private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
         ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
-            .filter(clazz -> "ToolFunctionToolType1".equals(clazz.getClassName()))
+            .filter(clazz -> "ToolFunctionToolType3".equals(clazz.getClassName()))
             .findFirst()
             .orElse(null);
         if (enumCustomization == null) {
-            logger.info("ToolFunctionToolType1 is not generated; no enum visibility change is needed.");
+            logger.info("ToolFunctionToolType3 is not generated; no enum visibility change is needed.");
             return;
         }
-        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType1")
-            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType1 was not generated"))
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType3")
+            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType3 was not generated"))
             .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
@@ -194,23 +195,26 @@ public class AgentsCustomizations extends Customization {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
-            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "EvaluationVoiceModelConfiguration", "OptimizationContext",
             "MemoryItem", "MemoryStoreDefinition",
-            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
-            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage", "RealtimeMcpError",
-            "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
-            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
-            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
-            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
+            "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage",
+            "TelephonyAddress", "TelephonyBinding", "TelephonyCampaignSchedule",
+            "TelephonyOutboundRetryPolicy",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentBaseDefinition",
+            "VoiceAgentGreetingConfiguration",
+            "VoiceAgentPostCallDestination",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentLiveDelegation", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentSubagentConfiguration", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
+            classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
                 .getConstructors()
                 .stream()
                 .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
         }
     }
 
@@ -224,111 +228,13 @@ public class AgentsCustomizations extends Customization {
         List<String[]> requireApproval = Arrays.asList(
             stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
             modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
-        List<String[]> toolChoice = Arrays.asList(
-            openAiDirectUnionVariant("com.openai.models.responses.ToolChoiceOptions", "ToolChoiceOptions",
-                "the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or"
-                    + " {@code REQUIRED})",
-                "an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another"
-                    + " variant",
-                "json.startsWith(\"\\\"\")"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceFunction",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isFunction",
-                "asFunction", "a specific function tool"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceMcp",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isMcp",
-                "asMcp", "a specific MCP tool"));
-        List<String[]> longMaxOutputTokens = Arrays.asList(
-            longUnionVariant("the maximum number of output tokens to set"),
-            stringUnionVariant(
-                "the token-limit string to set, for example {@code \"inf\"} for an unlimited count"));
         List<String[]> allowedTools
             = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
                 modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
-        List<String[]> tracing = Arrays.asList(stringUnionVariant("the tracing mode string to set"),
-            modelUnionVariant("RealtimeSessionTracingConfiguration",
-                "the {@link RealtimeSessionTracingConfiguration} configuration to set"));
-        List<String[]> truncation = Arrays.asList(stringUnionVariant("the truncation mode string to set"),
-            openAiDirectUnionVariant("com.openai.models.realtime.RealtimeTruncationRetentionRatio",
-                "RealtimeTruncationRetentionRatio",
-                "the openai-java {@link RealtimeTruncationRetentionRatio} configuration to set",
-                "an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it is not set or"
-                    + " holds another variant",
-                "json.startsWith(\"{\")"));
-        List<String[]> voice = Arrays.asList(
-            stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
-            modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
-                "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
-        List<String[]> transcriptionUsage = Arrays.asList(
-            discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageTokens} usage to set"),
-            discriminatedModelUnionVariant("TranscriptTextUsageDuration", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageDuration} usage to set"));
-        List<String[]> voiceAgentSessionResponse = Arrays.<String[]>asList(
-            modelUnionVariant("VoiceAgentSessionResponseConfiguration",
-                "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
-
-        customizeImmutableUnionProperty(customization,
-            "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
-            "Usage statistics for the transcription.", transcriptionUsage, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionCreatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
-
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
-            tracing, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
-            logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "truncation",
-            "The truncation policy for the session.", truncation, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionAudioOutput", "voice",
-            "The built-in or custom voice used for audio output.", voice, true, false, logger);
-
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
-            "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
-            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
-            logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
             "The require_approval property.", requireApproval, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
-            logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, false, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, false, false, logger);
-
-        // Retain base-model wrappers for older snapshots and expose them directly on the flattened response models.
-        customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, true, logger);
-        customizeUnionProperty(customization, "VoiceAgentRealtimeResponse", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, false, logger);
-        customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, true, logger);
-        customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",
@@ -643,12 +549,6 @@ public class AgentsCustomizations extends Customization {
         return variant;
     }
 
-    private static String[] longUnionVariant(String paramDoc) {
-        return unionVariant("long", "Long", "Long.class", "Long", "fromObject", paramDoc,
-            "a Long, or {@code null} when it is not set or holds another variant",
-            "!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-')", null, false);
-    }
-
     private static String[] stringListUnionVariant(String paramDoc) {
         return unionVariant("List<String>", "List<String>", "new TypeReference<List<String>>() { }", "StringList",
             "fromObject", paramDoc, "a list of Strings, or {@code null} when it is not set or holds another variant",
@@ -815,6 +715,56 @@ public class AgentsCustomizations extends Customization {
             }
             logger.info("Customized {} agent optimization polling strategies.", replacementCount);
         });
+    }
+
+    private void customizeCampaignPollingStrategies(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.implementation", "BetaVoiceAgentsTelephoniesImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("BetaVoiceAgentsTelephoniesImpl")
+                .orElseThrow(() -> new IllegalStateException("BetaVoiceAgentsTelephoniesImpl was not generated."));
+            customizeCampaignPollingStrategies(clazz);
+            logger.info("Customized twelve campaign polling strategies.");
+        });
+    }
+
+    private static void customizeCampaignPollingStrategies(ClassOrInterfaceDeclaration clazz) {
+        String[] prefixes = { "beginCreateCampaign", "beginCancelCampaign", "beginDeleteCampaign" };
+        int[] counts = new int[prefixes.length];
+        for (MethodDeclaration method : clazz.getMethods()) {
+            for (int i = 0; i < prefixes.length; i++) {
+                if (!method.getNameAsString().startsWith(prefixes[i])) {
+                    continue;
+                }
+                boolean async = method.getNameAsString().endsWith("Async");
+                String originalType = async ? "DefaultPollingStrategy" : "SyncDefaultPollingStrategy";
+                String replacementType
+                    = async ? "CampaignOperationLocationPollingStrategy" : "SyncCampaignOperationLocationPollingStrategy";
+                List<ObjectCreationExpr> strategies = method.findAll(ObjectCreationExpr.class);
+                strategies.removeIf(creation -> !originalType.equals(creation.getType().getNameAsString())
+                    && !replacementType.equals(creation.getType().getNameAsString()));
+                if (strategies.size() != 1) {
+                    throw new IllegalStateException("Expected one campaign polling strategy in "
+                        + method.getNameAsString() + " but found " + strategies.size() + ".");
+                }
+                ObjectCreationExpr creation = strategies.get(0);
+                int expectedArguments = originalType.equals(creation.getType().getNameAsString()) ? 1 : 2;
+                if (creation.getArguments().size() != expectedArguments) {
+                    throw new IllegalStateException("Unexpected campaign polling strategy arguments in "
+                        + method.getNameAsString() + ".");
+                }
+                creation.setType(StaticJavaParser.parseClassOrInterfaceType(
+                    "com.azure.ai.agents.implementation." + replacementType + "<>"));
+                creation.setArguments(NodeList.nodeList(creation.getArgument(0).clone(),
+                    StaticJavaParser.parseExpression("finalRequestOptions -> this.getCampaignWithResponse"
+                        + (async ? "Async" : "") + "(agentName, campaignName, finalRequestOptions)")));
+                counts[i]++;
+            }
+        }
+        for (int i = 0; i < prefixes.length; i++) {
+            if (counts[i] != 4) {
+                throw new IllegalStateException("Expected four campaign polling strategies for " + prefixes[i]
+                    + " but customized " + counts[i] + ".");
+            }
+        }
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

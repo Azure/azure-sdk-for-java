@@ -304,7 +304,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      *     }
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *             type: String(system_tool/function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -342,7 +342,6 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -394,7 +393,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      *     }
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *             type: String(system_tool/function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -432,7 +431,6 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      *             voice_type: String(openai/azure-standard/azure-custom/azure-personal/avatar-voice-sync/azure-realtime-native) (Optional)
      *             voice_locale: String (Optional)
      *             format (Optional): {
-     *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
      *     }
@@ -496,7 +494,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(system_tool/function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>
@@ -550,7 +548,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(system_tool/function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>
@@ -584,7 +582,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *     type: String(system_tool/function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>
@@ -802,8 +800,8 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      *     sample_rate: int (Required)
      *     channels: int (Required)
      *     channel_layout (Required): {
-     *         left: String (Required)
-     *         right: String (Required)
+     *         left: String(user/agent) (Required)
+     *         right: String(user/agent) (Required)
      *     }
      *     duration_ms: long (Required)
      *     blob_uri: String (Optional)
