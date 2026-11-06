@@ -32,7 +32,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-08-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -55,7 +55,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public final class PlaywrightQuotasGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightQuotas_Get.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightQuotas_Get.json
      */
     /**
      * Sample code: PlaywrightQuotas_Get.
@@ -77,7 +77,7 @@ public final class PlaywrightQuotasGetSamples {
  */
 public final class PlaywrightQuotasListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightQuotas_ListBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightQuotas_ListBySubscription.json
      */
     /**
      * Sample code: PlaywrightQuotas_ListBySubscription.
@@ -101,7 +101,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public final class PlaywrightWorkspaceQuotasGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaceQuotas_Get.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaceQuotas_Get.json
      */
     /**
      * Sample code: PlaywrightWorkspaceQuotas_Get.
@@ -123,7 +123,7 @@ public final class PlaywrightWorkspaceQuotasGetSamples {
  */
 public final class PlaywrightWorkspaceQuotasListByPlaywrightWorkspaceSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
      */
     /**
      * Sample code: PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.
@@ -148,7 +148,7 @@ import com.azure.resourcemanager.playwright.models.CheckNameAvailabilityRequest;
  */
 public final class PlaywrightWorkspacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_CheckNameAvailability.
@@ -177,7 +177,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_CreateOrUpdate.
@@ -194,7 +194,9 @@ public final class PlaywrightWorkspacesCreateOrUpdateSamples {
             .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.ENABLED)
                 .withLocalAuth(EnablementStatus.ENABLED)
                 .withReporting(EnablementStatus.ENABLED)
-                .withStorageUri("https://examplestorageaccount.blob.core.windows.net"))
+                .withStorageUri("https://examplestorageaccount.blob.core.windows.net")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
             .create();
     }
 
@@ -220,7 +222,7 @@ public final class PlaywrightWorkspacesCreateOrUpdateSamples {
  */
 public final class PlaywrightWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_Delete.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Delete.
@@ -241,7 +243,7 @@ public final class PlaywrightWorkspacesDeleteSamples {
  */
 public final class PlaywrightWorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Get.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_Get.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Get.
@@ -263,7 +265,7 @@ public final class PlaywrightWorkspacesGetByResourceGroupSamples {
  */
 public final class PlaywrightWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_ListBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_ListBySubscription.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_ListBySubscription.
@@ -285,7 +287,7 @@ public final class PlaywrightWorkspacesListSamples {
  */
 public final class PlaywrightWorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_ListByResourceGroup.
@@ -313,7 +315,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Update.json
+     * x-ms-original-file: 2026-08-01-preview/PlaywrightWorkspaces_Update.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Update.
