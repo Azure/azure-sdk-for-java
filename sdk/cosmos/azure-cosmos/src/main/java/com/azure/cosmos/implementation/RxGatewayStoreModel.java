@@ -103,6 +103,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
+    private RxGatewayStoreModel classicGatewayStore;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
     private final Map<String, String> additionalHeaders;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
@@ -166,6 +167,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
         this.additionalHeaders = inner.additionalHeaders;
+        this.classicGatewayStore = inner.classicGatewayStore;
     }
 
     public Tag getServiceEndpointMetricTag(URI requestUri) {
@@ -1096,7 +1098,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request)
+            .then(Mono.defer(() -> {
+                RxGatewayStoreModel transport = this.classicGatewayStore != null && !request.useThinClientMode
+                    ? this.classicGatewayStore : this;
+                return transport.invokeAsync(request);
+            }));
 
         return responseObs.onErrorResume(
             e -> {
@@ -1128,6 +1135,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         ).flatMap(response ->
             this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
         );
+    }
+
+    void setClassicGatewayStore(RxGatewayStoreModel classicGatewayStore) {
+        this.classicGatewayStore = Objects.requireNonNull(classicGatewayStore, "classicGatewayStore");
     }
 
     @Override
@@ -1325,7 +1336,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             if (request.useThinClientMode
                 && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
                 return SessionTokenHelper.resolveExplicitSessionToken(request, this.collectionCache,
-                    this.partitionKeyRangeCache);
+                    this.partitionKeyRangeCache)
+                    .doOnNext(useThinClient -> request.useThinClientMode = useThinClient)
+                    .then();
             }
             return Mono.empty(); //User is explicitly controlling the session.
         }

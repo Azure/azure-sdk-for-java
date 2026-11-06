@@ -39,7 +39,8 @@ public class SessionTokenHelper {
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
-    static Mono<Void> resolveExplicitSessionToken(
+    // False means unresolved partition scope; a resolved scope with no matching progress still uses V2.
+    static Mono<Boolean> resolveExplicitSessionToken(
         RxDocumentServiceRequest request, RxCollectionCache collectionCache, RxPartitionKeyRangeCache rangeCache) {
         return Mono.defer(() -> {
             request.requestContext.sessionToken = null;
@@ -51,18 +52,19 @@ public class SessionTokenHelper {
                 }
                 DocumentCollection collection = collectionHolder.v;
                 return rangeCache.tryLookupAsync(diagnostics, collection.getResourceId(), null, request.properties)
-                    .flatMap(mapHolder -> {
+                    .map(mapHolder -> {
                         if (mapHolder.v == null) {
-                            return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
+                            throw new NotFoundException("Collection routing map could not be resolved.");
                         }
                         PartitionKeyRange target = resolveSessionTokenRange(request, collection, mapHolder.v);
                         if (target == null) {
-                            return Mono.error(new GatewayV2SessionTokenRetryPolicy.GatewayFallbackRequiredException());
+                            logger.debug("Using classic Gateway for unresolved compound session-token scope");
+                            return false;
                         }
                         request.requestContext.resolvedPartitionKeyRange = target;
                         request.requestContext.sessionToken =
                             getLocalSessionToken(request, request.getOriginalSessionToken(), target.getId());
-                        return Mono.empty();
+                        return true;
                     });
             });
         });

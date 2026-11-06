@@ -37,7 +37,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private final DocumentClientRetryPolicy throttlingRetry;
     private final DocumentClientRetryPolicy metadataThrottlingRetry;
-    private GatewayV2SessionTokenRetryPolicy gatewayV2SessionTokenRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private final int endpointFailoverMaxRetryCount;
@@ -86,14 +85,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-        if (e instanceof GatewayV2SessionTokenRetryPolicy.GatewayFallbackRequiredException) {
-            if (this.gatewayV2SessionTokenRetry == null) {
-                this.gatewayV2SessionTokenRetry = new GatewayV2SessionTokenRetryPolicy();
-                this.gatewayV2SessionTokenRetry.onBeforeSendRequest(this.request);
-            }
-            return this.gatewayV2SessionTokenRetry.shouldRetry(e);
-        }
-
         logger.debug("retry count {}, isReadRequest {}, canUseMultipleWriteLocations {}, due to failure:",
             cnt.incrementAndGet(),
             isReadRequest,
@@ -625,12 +616,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
-        if (this.gatewayV2SessionTokenRetry != null) {
-            this.gatewayV2SessionTokenRetry.onBeforeSendRequest(request);
-            if (this.gatewayV2SessionTokenRetry.hasRetried()) {
-                this.regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
-            }
-        }
         this.throttlingRetry.onBeforeSendRequest(request);
     }
 
