@@ -30,9 +30,10 @@ public class BetaVoiceAgentWebSocketSessionClientTests {
         URI defaultUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent",
             new VoiceAgentWebSocketConnectionOptions());
         URI websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent",
-            new VoiceAgentWebSocketConnectionOptions().setTransport(VoiceAgentTransport.WEBSOCKET));
+            new VoiceAgentWebSocketConnectionOptions().setTransportType(VoiceAgentTransport.WEBSOCKET));
         URI webRtcUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent",
-            new VoiceAgentWebSocketConnectionOptions().setTransport(VoiceAgentTransport.WEBRTC));
+            new VoiceAgentWebSocketConnectionOptions(
+                new VoiceAgentWebSocketConnectionOptions().setTransportType(VoiceAgentTransport.WEBRTC)));
 
         assertEquals("websocket", queryParameter(defaultUri, "transport"));
         assertEquals("websocket", queryParameter(websocketUri, "transport"));

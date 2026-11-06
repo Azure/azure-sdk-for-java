@@ -17,6 +17,8 @@
 
 ### Breaking Changes
 
+- Renamed preview `VoiceAgentWebSocketConnectionOptions.getTransport()` and `setTransport(...)` to
+  `getTransportType()` and `setTransportType(...)`.
 - Replaced preview transcription languages with OpenAI Java's `TranscriptionLanguage` and listed MCP tools with
   `RealtimeMcpListTools.Tool`. MCP tool input schemas and annotations now retain their JSON contents.
 - Replaced preview realtime session configurations, audio formats, turn detection, and MCP errors with the complete
