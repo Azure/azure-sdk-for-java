@@ -25,7 +25,7 @@ public final class StoragesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"ylwbtlhflsjcdhsz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"ljagrqmqhl\",\"name\":\"vriiio\",\"type\":\"nalghfkvtvsexso\"}";
+            = "{\"properties\":{\"location\":\"irryuzhlh\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COOL\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"atjinrvgoupmfiib\",\"name\":\"ggjioolvr\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class StoragesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Storage response = manager.storages()
-            .define("ircgpikpz")
-            .withExistingCloudAccount("zpdrhneu", "owqkdwytisi")
-            .withProperties(new StorageProperties().withLocation("ejzanlfz")
+            .define("edkowepbqpcrfk")
+            .withExistingCloudAccount("ob", "pg")
+            .withProperties(new StorageProperties().withLocation("ccsnjvcdwxlpq")
                 .withStorageType(StorageType.AIR_GAP_PROTECT)
                 .withVendor(Vendor.AZURE_BLOB_STORAGE)
-                .withClassProperty(StorageClassType.COOL))
+                .withClassProperty(StorageClassType.HOT))
             .create();
 
-        Assertions.assertEquals("ylwbtlhflsjcdhsz", response.properties().location());
+        Assertions.assertEquals("irryuzhlh", response.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, response.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COOL, response.properties().classProperty());
     }
 }

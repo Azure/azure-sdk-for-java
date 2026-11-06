@@ -555,7 +555,7 @@ public class IdentityClient extends IdentityClientBase {
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(claimsRequest);
+            builder.claims(claimsRequest).skipCache(true);
         }
         return builder;
     }
@@ -706,6 +706,9 @@ public class IdentityClient extends IdentityClientBase {
      */
     @SuppressWarnings("deprecation")
     public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request, IAccount account) {
+        if (account == null && request.isCaeEnabled() && request.getClaims() != null) {
+            return Mono.empty();
+        }
         return getConfidentialClientInstance(request).getValue().flatMap(confidentialClient -> Mono.fromFuture(() -> {
             SilentParameters.SilentParametersBuilder parametersBuilder
                 = SilentParameters.builder(new HashSet<>(request.getScopes()))
