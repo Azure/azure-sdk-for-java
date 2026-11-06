@@ -15,20 +15,20 @@ public final class SqlDatabaseGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"kzhjj\",\"_ts\":70.339195,\"_etag\":\"hmouwqlgzrfze\",\"_colls\":\"ebizikayuh\",\"_users\":\"bjbsybb\",\"id\":\"wrv\",\"restoreParameters\":{\"restoreSource\":\"gmfpgvmp\",\"restoreTimestampInUtc\":\"2021-10-24T06:37:57Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":1160919949,\"autoscaleSettings\":{\"maxThroughput\":1464941672}}},\"location\":\"wutwbdsre\",\"tags\":{\"d\":\"rhneuyowq\",\"gpikpzimejza\":\"ytisibir\",\"rjqc\":\"lfzxiavrmbzonoki\"},\"identity\":{\"principalId\":\"zpfrla\",\"tenantId\":\"zrnw\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"sj\":{\"principalId\":\"pwp\",\"clientId\":\"lwbtlhf\"},\"hldvriii\":{\"principalId\":\"hszfjvfb\",\"clientId\":\"feljagrqm\"},\"qhhahhxvrhmzkwpj\":{\"principalId\":\"nalghfkvtvsexso\",\"clientId\":\"el\"},\"guufzd\":{\"principalId\":\"wspughftqsxhqx\",\"clientId\":\"xukndxdigr\"}}},\"id\":\"yqtfihwh\",\"name\":\"otzi\",\"type\":\"gamv\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"vpuvks\",\"_ts\":16.54752,\"_etag\":\"aknynfsynljphuop\",\"_colls\":\"dlqiyntorzih\",\"_users\":\"osjswsr\",\"id\":\"slyzrpzbchckqq\",\"restoreParameters\":{\"restoreSource\":\"ox\",\"restoreTimestampInUtc\":\"2021-11-07T11:18:56Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"},\"options\":{\"throughput\":696201454,\"autoscaleSettings\":{\"maxThroughput\":1368967398}}},\"location\":\"trwyhqmib\",\"tags\":{\"mypyynpcdpu\":\"wit\"},\"identity\":{\"principalId\":\"g\",\"tenantId\":\"z\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"vokotllxdyh\":{\"principalId\":\"nsorgjhxbldt\",\"clientId\":\"wrlkdmtn\"},\"ocrkvcikh\":{\"principalId\":\"y\",\"clientId\":\"ogjltdtbnnhad\"},\"gxk\":{\"principalId\":\"p\",\"clientId\":\"qgxqquezikyw\"}}},\"id\":\"la\",\"name\":\"melwuipiccjz\",\"type\":\"z\"}")
             .toObject(SqlDatabaseGetResultsInner.class);
-        Assertions.assertEquals("wutwbdsre", model.location());
-        Assertions.assertEquals("rhneuyowq", model.tags().get("d"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("wrv", model.resource().id());
-        Assertions.assertEquals("gmfpgvmp", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-24T06:37:57Z"),
+        Assertions.assertEquals("trwyhqmib", model.location());
+        Assertions.assertEquals("wit", model.tags().get("mypyynpcdpu"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("slyzrpzbchckqq", model.resource().id());
+        Assertions.assertEquals("ox", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T11:18:56Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals("ebizikayuh", model.resource().colls());
-        Assertions.assertEquals("bjbsybb", model.resource().users());
-        Assertions.assertEquals(1160919949, model.options().throughput());
-        Assertions.assertEquals(1464941672, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("dlqiyntorzih", model.resource().colls());
+        Assertions.assertEquals("osjswsr", model.resource().users());
+        Assertions.assertEquals(696201454, model.options().throughput());
+        Assertions.assertEquals(1368967398, model.options().autoscaleSettings().maxThroughput());
     }
 }

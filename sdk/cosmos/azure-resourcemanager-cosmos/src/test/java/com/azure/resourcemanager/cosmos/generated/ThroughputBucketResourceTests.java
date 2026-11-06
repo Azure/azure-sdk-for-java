@@ -12,21 +12,21 @@ public final class ThroughputBucketResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThroughputBucketResource model = BinaryData
-            .fromString("{\"id\":1607001985,\"maxThroughputPercentage\":1011910594,\"isDefaultBucket\":false}")
+            .fromString("{\"id\":589135345,\"maxThroughputPercentage\":288302688,\"isDefaultBucket\":false}")
             .toObject(ThroughputBucketResource.class);
-        Assertions.assertEquals(1607001985, model.id());
-        Assertions.assertEquals(1011910594, model.maxThroughputPercentage());
+        Assertions.assertEquals(589135345, model.id());
+        Assertions.assertEquals(288302688, model.maxThroughputPercentage());
         Assertions.assertFalse(model.isDefaultBucket());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThroughputBucketResource model = new ThroughputBucketResource().withId(1607001985)
-            .withMaxThroughputPercentage(1011910594)
+        ThroughputBucketResource model = new ThroughputBucketResource().withId(589135345)
+            .withMaxThroughputPercentage(288302688)
             .withIsDefaultBucket(false);
         model = BinaryData.fromObject(model).toObject(ThroughputBucketResource.class);
-        Assertions.assertEquals(1607001985, model.id());
-        Assertions.assertEquals(1011910594, model.maxThroughputPercentage());
+        Assertions.assertEquals(589135345, model.id());
+        Assertions.assertEquals(288302688, model.maxThroughputPercentage());
         Assertions.assertFalse(model.isDefaultBucket());
     }
 }

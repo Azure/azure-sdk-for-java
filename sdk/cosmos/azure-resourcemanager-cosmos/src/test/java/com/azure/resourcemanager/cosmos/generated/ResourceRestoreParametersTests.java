@@ -13,21 +13,21 @@ public final class ResourceRestoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceRestoreParameters model = BinaryData.fromString(
-            "{\"restoreSource\":\"qek\",\"restoreTimestampInUtc\":\"2021-04-24T05:25:21Z\",\"restoreWithTtlDisabled\":false}")
+            "{\"restoreSource\":\"xbjhwuaanozjosph\",\"restoreTimestampInUtc\":\"2021-01-13T02:58:16Z\",\"restoreWithTtlDisabled\":false}")
             .toObject(ResourceRestoreParameters.class);
-        Assertions.assertEquals("qek", model.restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T05:25:21Z"), model.restoreTimestampInUtc());
+        Assertions.assertEquals("xbjhwuaanozjosph", model.restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T02:58:16Z"), model.restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreWithTtlDisabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceRestoreParameters model = new ResourceRestoreParameters().withRestoreSource("qek")
-            .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-04-24T05:25:21Z"))
+        ResourceRestoreParameters model = new ResourceRestoreParameters().withRestoreSource("xbjhwuaanozjosph")
+            .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-01-13T02:58:16Z"))
             .withRestoreWithTtlDisabled(false);
         model = BinaryData.fromObject(model).toObject(ResourceRestoreParameters.class);
-        Assertions.assertEquals("qek", model.restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T05:25:21Z"), model.restoreTimestampInUtc());
+        Assertions.assertEquals("xbjhwuaanozjosph", model.restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T02:58:16Z"), model.restoreTimestampInUtc());
         Assertions.assertFalse(model.restoreWithTtlDisabled());
     }
 }

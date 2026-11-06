@@ -11,7 +11,7 @@ public final class RestorableTablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTableProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"evt\",\"operationType\":\"Create\",\"canUndelete\":\"zochwbekmuyn\",\"canUndeleteReason\":\"kyvnhiysdhork\",\"eventTimestamp\":\"hr\",\"ownerId\":\"kiwlwkfflaqwmwq\",\"ownerResourceId\":\"uf\"}}")
+            "{\"resource\":{\"_rid\":\"oykdno\",\"operationType\":\"Recreate\",\"canUndelete\":\"wmgzrujlqcwnynl\",\"canUndeleteReason\":\"iqbcbgv\",\"eventTimestamp\":\"t\",\"ownerId\":\"rtoxadhxuvjhxm\",\"ownerResourceId\":\"qstjc\"}}")
             .toObject(RestorableTableProperties.class);
     }
 }

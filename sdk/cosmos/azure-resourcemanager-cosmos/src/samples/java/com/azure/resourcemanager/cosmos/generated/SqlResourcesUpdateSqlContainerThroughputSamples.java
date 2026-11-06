@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.ThroughputBucketResource;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 public final class SqlResourcesUpdateSqlContainerThroughputSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlContainerThroughputUpdate.json
+     * x-ms-original-file: 2026-07-15/CosmosDBSqlContainerThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlContainerThroughputUpdate.
@@ -27,7 +29,15 @@ public final class SqlResourcesUpdateSqlContainerThroughputSamples {
             .updateSqlContainerThroughput("rg1", "ddb1", "databaseName", "containerName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")
                     .withTags(mapOf())
-                    .withResource(new ThroughputSettingsResource().withThroughput(400)),
+                    .withResource(new ThroughputSettingsResource().withThroughput(400)
+                        .withThroughputBuckets(Arrays.asList(
+                            new ThroughputBucketResource().withId(1)
+                                .withMaxThroughputPercentage(10)
+                                .withIsDefaultBucket(true),
+                            new ThroughputBucketResource().withId(2)
+                                .withMaxThroughputPercentage(20)
+                                .withIsDefaultBucket(false),
+                            new ThroughputBucketResource().withId(3).withMaxThroughputPercentage(15)))),
                 com.azure.core.util.Context.NONE);
     }
 

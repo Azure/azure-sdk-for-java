@@ -14,17 +14,17 @@ public final class SqlDatabaseGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"o\",\"_ts\":41.892742,\"_etag\":\"udphqamvdkfwyn\",\"_colls\":\"vtbvkayh\",\"_users\":\"nvyq\",\"id\":\"atkzwpcnpw\",\"restoreParameters\":{\"restoreSource\":\"a\",\"restoreTimestampInUtc\":\"2021-02-06T15:24:08Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":1555062336,\"autoscaleSettings\":{\"maxThroughput\":306781812}}}")
+            "{\"resource\":{\"_rid\":\"vvcnayr\",\"_ts\":52.535427,\"_etag\":\"xxmueedn\",\"_colls\":\"dvstkw\",\"_users\":\"tchealmf\",\"id\":\"tdaaygdvwvg\",\"restoreParameters\":{\"restoreSource\":\"hgwxrtfudx\",\"restoreTimestampInUtc\":\"2021-10-29T17:25:59Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1910249555,\"autoscaleSettings\":{\"maxThroughput\":1104557585}}}")
             .toObject(SqlDatabaseGetProperties.class);
-        Assertions.assertEquals("atkzwpcnpw", model.resource().id());
-        Assertions.assertEquals("a", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T15:24:08Z"),
+        Assertions.assertEquals("tdaaygdvwvg", model.resource().id());
+        Assertions.assertEquals("hgwxrtfudx", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T17:25:59Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals("vtbvkayh", model.resource().colls());
-        Assertions.assertEquals("nvyq", model.resource().users());
-        Assertions.assertEquals(1555062336, model.options().throughput());
-        Assertions.assertEquals(306781812, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
+        Assertions.assertEquals("dvstkw", model.resource().colls());
+        Assertions.assertEquals("tchealmf", model.resource().users());
+        Assertions.assertEquals(1910249555, model.options().throughput());
+        Assertions.assertEquals(1104557585, model.options().autoscaleSettings().maxThroughput());
     }
 }

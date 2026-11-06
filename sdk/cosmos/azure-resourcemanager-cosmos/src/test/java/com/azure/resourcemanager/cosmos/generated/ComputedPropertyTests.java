@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputedPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputedProperty model
-            = BinaryData.fromString("{\"name\":\"as\",\"query\":\"lyhb\"}").toObject(ComputedProperty.class);
-        Assertions.assertEquals("as", model.name());
-        Assertions.assertEquals("lyhb", model.query());
+        ComputedProperty model = BinaryData.fromString("{\"name\":\"drihpfhoqcaaewda\",\"query\":\"djvlpj\"}")
+            .toObject(ComputedProperty.class);
+        Assertions.assertEquals("drihpfhoqcaaewda", model.name());
+        Assertions.assertEquals("djvlpj", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputedProperty model = new ComputedProperty().withName("as").withQuery("lyhb");
+        ComputedProperty model = new ComputedProperty().withName("drihpfhoqcaaewda").withQuery("djvlpj");
         model = BinaryData.fromObject(model).toObject(ComputedProperty.class);
-        Assertions.assertEquals("as", model.name());
-        Assertions.assertEquals("lyhb", model.query());
+        Assertions.assertEquals("drihpfhoqcaaewda", model.name());
+        Assertions.assertEquals("djvlpj", model.query());
     }
 }

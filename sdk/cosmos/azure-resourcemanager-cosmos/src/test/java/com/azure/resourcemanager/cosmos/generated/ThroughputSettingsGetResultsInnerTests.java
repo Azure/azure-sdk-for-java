@@ -13,18 +13,18 @@ public final class ThroughputSettingsGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThroughputSettingsGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"awnopqgikyzirtxd\",\"_ts\":0.34202933,\"_etag\":\"ejnt\",\"throughput\":1656228092,\"autoscaleSettings\":{\"maxThroughput\":1675293509,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":false,\"incrementPercent\":936029412}},\"targetMaxThroughput\":1776914172},\"minimumThroughput\":\"dxtqmieoxo\",\"offerReplacePending\":\"gufhyaomtbg\",\"instantMaximumThroughput\":\"avgrvkffovjz\",\"softAllowedMaximumThroughput\":\"jbibg\",\"throughputBuckets\":[{\"id\":938334267,\"maxThroughputPercentage\":1758314943,\"isDefaultBucket\":true},{\"id\":1616746030,\"maxThroughputPercentage\":832169195,\"isDefaultBucket\":false}]}},\"location\":\"ovwxnbkfezzxsc\",\"tags\":{\"zbomvzzbtdcqvpni\":\"zdgiruj\",\"n\":\"ujviylwdshfs\",\"rymsgaojfmw\":\"bgye\"},\"identity\":{\"principalId\":\"tmr\",\"tenantId\":\"irctymoxoftpipiw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dvlmfwdgzxul\":{\"principalId\":\"a\",\"clientId\":\"qjlihhyuspska\"},\"ytxifqjzgxmrh\":{\"principalId\":\"vpa\",\"clientId\":\"sreuzvxurisjnh\"},\"qhih\":{\"principalId\":\"lw\",\"clientId\":\"esutrgjupauutpw\"},\"xjvfoimwksl\":{\"principalId\":\"qg\",\"clientId\":\"pnfqntcyp\"}}},\"id\":\"cizjxvydfceacvl\",\"name\":\"vygdyft\",\"type\":\"mrtwna\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"qvujzraehtwdwrf\",\"_ts\":13.409633,\"_etag\":\"byrcdlbhshfwp\",\"throughput\":1827993805,\"autoscaleSettings\":{\"maxThroughput\":168808861,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":true,\"incrementPercent\":1950928117}},\"targetMaxThroughput\":1926336888},\"minimumThroughput\":\"c\",\"offerReplacePending\":\"dcpnmdyodnw\",\"instantMaximumThroughput\":\"ltjcvnhltiugcxna\",\"softAllowedMaximumThroughput\":\"wxqibyq\",\"throughputBuckets\":[{\"id\":601869733,\"maxThroughputPercentage\":1222380956,\"isDefaultBucket\":false}]}},\"location\":\"mdjrkvfgbvfvp\",\"tags\":{\"j\":\"daciz\",\"hvxndzwmkrefajpj\":\"lhkrribdeibqipqk\"},\"identity\":{\"principalId\":\"kqnyh\",\"tenantId\":\"ij\",\"type\":\"None\",\"userAssignedIdentities\":{\"p\":{\"principalId\":\"zs\",\"clientId\":\"bibsystawfsdjpvk\"},\"jjklff\":{\"principalId\":\"xbkzbzkdvncj\",\"clientId\":\"udurgkakmokz\"},\"eeyebi\":{\"principalId\":\"ouw\",\"clientId\":\"gzrf\"},\"pgvmpipaslthaqfx\":{\"principalId\":\"kayuhqlbjbs\",\"clientId\":\"bqwrvtldgm\"}}},\"id\":\"mwutwbdsre\",\"name\":\"pdrhne\",\"type\":\"yowqkdwytisibir\"}")
             .toObject(ThroughputSettingsGetResultsInner.class);
-        Assertions.assertEquals("ovwxnbkfezzxsc", model.location());
-        Assertions.assertEquals("zdgiruj", model.tags().get("zbomvzzbtdcqvpni"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(1656228092, model.resource().throughput());
-        Assertions.assertEquals(1675293509, model.resource().autoscaleSettings().maxThroughput());
-        Assertions.assertFalse(model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().isEnabled());
-        Assertions.assertEquals(936029412,
+        Assertions.assertEquals("mdjrkvfgbvfvp", model.location());
+        Assertions.assertEquals("daciz", model.tags().get("j"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(1827993805, model.resource().throughput());
+        Assertions.assertEquals(168808861, model.resource().autoscaleSettings().maxThroughput());
+        Assertions.assertTrue(model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().isEnabled());
+        Assertions.assertEquals(1950928117,
             model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().incrementPercent());
-        Assertions.assertEquals(938334267, model.resource().throughputBuckets().get(0).id());
-        Assertions.assertEquals(1758314943, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
-        Assertions.assertTrue(model.resource().throughputBuckets().get(0).isDefaultBucket());
+        Assertions.assertEquals(601869733, model.resource().throughputBuckets().get(0).id());
+        Assertions.assertEquals(1222380956, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
+        Assertions.assertFalse(model.resource().throughputBuckets().get(0).isDefaultBucket());
     }
 }
