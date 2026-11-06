@@ -948,6 +948,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.startFrom shouldEqual ChangeFeedStartFromModes.Beginning
     config.startFromPointInTime shouldEqual None
     config.maxItemCountPerTrigger shouldEqual None
+    config.maxRetryDuration shouldEqual Duration.ofSeconds(300)
   }
 
   it should "parse change feed config for full fidelity with incorrect casing" in {
@@ -1023,6 +1024,22 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
     config.performanceMonitoringEnabled shouldBe false
+  }
+
+  it should "parse change feed max retry duration" in {
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(Map(
+      CosmosConfigNames.ChangeFeedMaxRetryDurationInSeconds -> "42"))
+
+    config.maxRetryDuration shouldEqual Duration.ofSeconds(42)
+  }
+
+  it should "reject a non-positive change feed max retry duration" in {
+    val exception = intercept[RuntimeException] {
+      CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(Map(
+        CosmosConfigNames.ChangeFeedMaxRetryDurationInSeconds -> "0"))
+    }
+
+    exception.getMessage should include (CosmosConfigNames.ChangeFeedMaxRetryDurationInSeconds)
   }
 
   it should "complain when parsing invalid change feed mode" in {

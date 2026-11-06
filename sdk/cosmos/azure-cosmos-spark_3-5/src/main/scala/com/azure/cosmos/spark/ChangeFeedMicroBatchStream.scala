@@ -165,6 +165,9 @@ private class ChangeFeedMicroBatchStream
     log.logDebug(s"--> latestOffset.$streamId")
 
     val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
+    val operationDeadline = OperationDeadline(
+      changeFeedConfig.maxRetryDuration,
+      "Change feed latest offset discovery")
     val offset = CosmosPartitionPlanner.getLatestOffset(
       config,
       startChangeFeedOffset,
@@ -176,7 +179,8 @@ private class ChangeFeedMicroBatchStream
       this.partitioningConfig,
       this.defaultParallelism,
       this.container,
-      Some(this.partitionMetricsMap)
+      Some(this.partitionMetricsMap),
+      Some(operationDeadline)
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
@@ -211,7 +215,12 @@ private class ChangeFeedMicroBatchStream
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
       val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-        container, containerConfig, changeFeedConfig, partitioningConfig, Some(streamId))
+        container,
+        containerConfig,
+        changeFeedConfig,
+        partitioningConfig,
+        Some(streamId),
+        Some(OperationDeadline(changeFeedConfig.maxRetryDuration, "Change feed initial offset discovery")))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }
