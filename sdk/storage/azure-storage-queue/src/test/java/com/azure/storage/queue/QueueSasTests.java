@@ -6,6 +6,7 @@ package com.azure.storage.queue;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.test.TestMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
@@ -39,6 +40,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QueueSasTests extends QueueTestBase {
+    // Synthetic, non-secret credential used purely to produce a deterministic signature offline.
+    private static final StorageSharedKeyCredential TIMEZONE_CREDENTIAL = new StorageSharedKeyCredential("testaccount",
+        Base64.getEncoder().encodeToString("queue-sas-timezone-regression-key".getBytes(StandardCharsets.UTF_8)));
+
+    // The instant the issuer intends the read-only SAS to expire: 2026-10-06T14:51:33Z.
+    private static final OffsetDateTime TIMEZONE_EXPIRY_UTC
+        = OffsetDateTime.of(2026, 10, 6, 14, 51, 33, 0, ZoneOffset.UTC);
+
     private QueueClient queueClient;
 
     @BeforeEach
@@ -363,38 +372,10 @@ public class QueueSasTests extends QueueTestBase {
      * verify the generated 'se' expiry is always the UTC-converted value.
      */
 
-    // Synthetic, non-secret credential used purely to produce a deterministic signature offline.
-    private static final StorageSharedKeyCredential TIMEZONE_CREDENTIAL = new StorageSharedKeyCredential("testaccount",
-        Base64.getEncoder().encodeToString("queue-sas-timezone-regression-key".getBytes(StandardCharsets.UTF_8)));
-
-    // The instant the issuer intends the read-only SAS to expire: 2026-10-06T14:51:33Z.
-    private static final OffsetDateTime TIMEZONE_EXPIRY_UTC
-        = OffsetDateTime.of(2026, 10, 6, 14, 51, 33, 0, ZoneOffset.UTC);
-
-    private static String timezoneSasFor(OffsetDateTime expiry) {
-        QueueClient client = new QueueClientBuilder().endpoint("https://testaccount.queue.core.windows.net")
-            .queueName("testqueue")
-            .credential(TIMEZONE_CREDENTIAL)
-            .buildClient();
-        QueueSasPermission permission = new QueueSasPermission().setReadPermission(true);
-        return client.generateSas(new QueueServiceSasSignatureValues(expiry, permission));
-    }
-
-    private static String timezoneSasQueryParam(String sas, String key) {
-        for (String pair : sas.split("&")) {
-            int eq = pair.indexOf('=');
-            if (eq > 0 && pair.substring(0, eq).equals(key)) {
-                // The SAS is URL-encoded; the only encoded character in an ISO-8601 'Z' expiry is the colon (%3A).
-                return pair.substring(eq + 1).replace("%3A", ":");
-            }
-        }
-        return null;
-    }
-
     @Test
     public void queueSasUtcExpiryIsSignedAsUtc() {
         String sas = timezoneSasFor(TIMEZONE_EXPIRY_UTC);
-        assertEquals("2026-10-06T14:51:33Z", timezoneSasQueryParam(sas, "se"));
+        assertEquals("2026-10-06T14:51:33Z", SasImplUtils.parseQueryString(sas).get("se")[0]);
     }
 
     @Test
@@ -403,8 +384,8 @@ public class QueueSasTests extends QueueTestBase {
         // defect, this would be signed as 2026-10-06T23:51:33Z and outlive the intended cutoff by 32,400 seconds.
         OffsetDateTime expiryPlus9 = TIMEZONE_EXPIRY_UTC.withOffsetSameInstant(ZoneOffset.ofHours(9));
 
-        String seUtc = timezoneSasQueryParam(timezoneSasFor(TIMEZONE_EXPIRY_UTC), "se");
-        String sePlus9 = timezoneSasQueryParam(timezoneSasFor(expiryPlus9), "se");
+        String seUtc = SasImplUtils.parseQueryString(timezoneSasFor(TIMEZONE_EXPIRY_UTC)).get("se")[0];
+        String sePlus9 = SasImplUtils.parseQueryString(timezoneSasFor(expiryPlus9)).get("se")[0];
 
         assertEquals("2026-10-06T14:51:33Z", sePlus9,
             "Non-UTC expiry must be converted to UTC before signing (guards against the Python/Go Queue SAS defect).");
@@ -418,5 +399,14 @@ public class QueueSasTests extends QueueTestBase {
 
         assertEquals(timezoneSasFor(TIMEZONE_EXPIRY_UTC), timezoneSasFor(expiryMinus5),
             "The signed string-to-sign and resulting signature must be identical for the same instant.");
+    }
+
+    private static String timezoneSasFor(OffsetDateTime expiry) {
+        QueueClient client = new QueueClientBuilder().endpoint("https://testaccount.queue.core.windows.net")
+            .queueName("testqueue")
+            .credential(TIMEZONE_CREDENTIAL)
+            .buildClient();
+        QueueSasPermission permission = new QueueSasPermission().setReadPermission(true);
+        return client.generateSas(new QueueServiceSasSignatureValues(expiry, permission));
     }
 }
