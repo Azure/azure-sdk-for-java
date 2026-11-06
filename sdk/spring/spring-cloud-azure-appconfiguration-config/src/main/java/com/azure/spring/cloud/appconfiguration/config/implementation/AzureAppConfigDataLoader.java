@@ -363,7 +363,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationPropertySource propertySource;
+            AppConfigurationApplicationSettingPropertySource propertySource;
 
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
@@ -373,7 +373,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                    selectedKeys.getTagsFilter());
+                    selectedKeys.getTagsFilter(), featureFlagClient);
             }
             propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);
