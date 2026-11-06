@@ -24,6 +24,7 @@ param latestAksVersion string
 //See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles
 var blobContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') //Storage Blob Data Contributor
 var websiteContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'de139f84-1756-47ae-9be6-808fbbe84772') //Website Contributor
+var storageAccountName = 'id${uniqueString(resourceGroup().id, baseName)}'
 // cluster parameters
 var kubernetesVersion = latestAksVersion
 
@@ -73,7 +74,7 @@ resource webRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 resource sa 'Microsoft.Storage/storageAccounts@2021-08-01' = {
-  name: baseName
+  name: storageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -85,7 +86,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 }
 
 resource sa2 'Microsoft.Storage/storageAccounts@2021-08-01' = {
-  name: '${baseName}2'
+  name: '${storageAccountName}2'
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -272,7 +273,33 @@ resource newCluster 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
 }
 
 
-resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' = {
+resource natPublicIp 'Microsoft.Network/publicIPAddresses@2023-11-01' = {
+  name: '${baseName}-nat-ip'
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+}
+
+resource natGateway 'Microsoft.Network/natGateways@2023-11-01' = {
+  name: '${baseName}-nat'
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    publicIpAddresses: [
+      {
+        id: natPublicIp.id
+      }
+    ]
+  }
+}
+
+resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
   name: '${baseName}vnet'
   location: location
   properties: {
@@ -286,6 +313,10 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' = {
         name: '${baseName}subnet'
         properties: {
           addressPrefix: '10.0.0.0/24'
+          defaultOutboundAccess: false
+          natGateway: {
+            id: natGateway.id
+          }
         }
       }
     ]
