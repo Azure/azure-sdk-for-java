@@ -212,8 +212,9 @@ public class GptLiveConversationSamplesTests {
                     "conversation-1", itemId, directory)
                 .block(TIMEOUT);
         } else {
-            GptLiveReadConversationAudioSample.downloadAudio(builder.beta().buildBetaVoiceAgentsLiveConversationsClient(),
-                "live-agent", "conversation-1", itemId, directory);
+            GptLiveReadConversationAudioSample.downloadAudio(
+                builder.beta().buildBetaVoiceAgentsLiveConversationsClient(), "live-agent", "conversation-1", itemId,
+                directory);
         }
     }
 
