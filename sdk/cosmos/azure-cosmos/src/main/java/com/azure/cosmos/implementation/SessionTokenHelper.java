@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import org.slf4j.Logger;
@@ -40,7 +39,6 @@ public class SessionTokenHelper {
         RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap,
         boolean explicitCompound) {
         String rangeHeader = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-        PartitionKeyRange target = null;
         if (explicitCompound) {
             if (!collection.getResourceId().equals(routingMap.getCollectionUniqueId())) {
                 return null;
@@ -50,61 +48,32 @@ public class SessionTokenHelper {
                 && !identity.getCollectionRid().equals(collection.getResourceId())) {
                 return null;
             }
-            String rangeId = identity == null ? null : identity.getPartitionKeyRangeId();
-            if (!Strings.isNullOrEmpty(rangeHeader)) {
-                String[] parts = rangeHeader.split(",", -1);
-                if (parts.length > 2 || parts[parts.length - 1].isEmpty()
-                    || (parts.length == 2 && !parts[0].equals(collection.getResourceId()))
-                    || (rangeId != null && !rangeId.equals(parts[parts.length - 1]))) {
-                    return null;
+            if (identity != null) {
+                PartitionKeyRange target = routingMap.tryGetRangeByPartitionKeyRangeId(
+                    identity.getPartitionKeyRangeId());
+                if (target == null) {
+                    throw new PartitionKeyRangeGoneException();
                 }
-                rangeId = parts[parts.length - 1];
-            }
-            target = rangeId == null ? null : routingMap.tryGetRangeByPartitionKeyRangeId(rangeId);
-            if (rangeId != null && target == null) {
-                throw new PartitionKeyRangeGoneException();
+                return target;
             }
         } else if (StringUtils.isNotEmpty(rangeHeader)) {
             return routingMap.getRangeByPartitionKeyRangeId(rangeHeader);
         }
 
-        String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
-        String end = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
         PartitionKeyInternal key = request.getPartitionKeyInternal();
-        PartitionKeyRange scopeTarget = null;
-        if (explicitCompound && (start != null || end != null)) {
-            if (start == null || end == null || start.compareTo(end) >= 0
-                || !ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
-                    request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
-                return null;
-            }
-            List<PartitionKeyRange> overlapping =
-                routingMap.getOverlappingRanges(new Range<>(start, end, true, false));
-            if (overlapping.size() != 1) {
-                return null;
-            }
-            scopeTarget = overlapping.get(0);
-        } else if (key != null) {
+        if (key != null) {
             if (explicitCompound && collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
                 && key.getComponents().size() < collection.getPartitionKey().getPaths().size()) {
                 return null;
             }
-            String epk = explicitCompound ? null : request.getEffectivePartitionKey();
+            String epk = request.getEffectivePartitionKey();
             if (StringUtils.isEmpty(epk)) {
                 epk = PartitionKeyInternalHelper.getEffectivePartitionKeyString(key, collection.getPartitionKey());
             }
-            if (!explicitCompound) {
-                request.setEffectivePartitionKey(epk);
-            }
-            scopeTarget = routingMap.getRangeByEffectivePartitionKey(epk);
-        } else if (explicitCompound && target == null && request.requestContext.resolvedPartitionKeyRange != null) {
-            scopeTarget = routingMap.tryGetRangeByPartitionKeyRangeId(
-                request.requestContext.resolvedPartitionKeyRange.getId());
+            request.setEffectivePartitionKey(epk);
+            return routingMap.getRangeByEffectivePartitionKey(epk);
         }
-        if (target != null && scopeTarget != null && !target.getId().equals(scopeTarget.getId())) {
-            return null;
-        }
-        return scopeTarget == null ? target : scopeTarget;
+        return null;
     }
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {

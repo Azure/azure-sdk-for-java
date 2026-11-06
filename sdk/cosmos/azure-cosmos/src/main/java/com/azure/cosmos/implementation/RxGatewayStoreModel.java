@@ -1341,6 +1341,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             if (explicitCompound) {
                 SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
                 request.requestContext.sessionToken = null;
+                PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+                PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
+                if (range != null && (identity == null
+                    || (range.getId().equals(identity.getPartitionKeyRangeId())
+                        && (identity.getCollectionRid() == null
+                            || identity.getCollectionRid().equals(request.requestContext.resolvedCollectionRid))))) {
+                    SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
+                    return Mono.just(true);
+                }
             }
 
             if (this.collectionCache == null || this.partitionKeyRangeCache == null) {

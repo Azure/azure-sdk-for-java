@@ -207,6 +207,8 @@ public class ThinClientSessionTokenTest {
                 if (attemptedEndpoints.size() == 1) {
                     fixture.map = SessionTokenHelperTests.routingMap(
                         new PartitionKeyRange("2", "", "FF", Arrays.asList("0", "1")));
+                    request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "2"));
+                    request.requestContext.resolvedPartitionKeyRange = fixture.map.getRangeByPartitionKeyRangeId("2");
                     Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
                     failure.v = new RequestRateTooLargeException();
                     return true;
@@ -292,7 +294,7 @@ public class ThinClientSessionTokenTest {
 
     @DataProvider
     public Object[][] operationListenerScenarios() {
-        return new Object[][] {{"thin"}, {"classic"}, {"metadata-error"}};
+        return new Object[][] {{"thin"}, {"thin-unresolved"}, {"classic"}, {"metadata-error"}};
     }
 
     @Test(groups = "unit", dataProvider = "operationListenerScenarios")
@@ -303,6 +305,9 @@ public class ThinClientSessionTokenTest {
             RxDocumentClientImpl client = fixture.client();
             RxDocumentServiceRequest request = fixture.request(
                 OperationType.Create, ORIGINAL, "classic".equals(scenario) ? null : "0");
+            if ("thin-unresolved".equals(scenario) || "metadata-error".equals(scenario)) {
+                request.requestContext.resolvedPartitionKeyRange = null;
+            }
             OperationContext context = Mockito.mock(OperationContext.class);
             String correlationId = "00000000-0000-0000-0000-000000000001";
             Mockito.when(context.getCorrelationActivityId()).thenReturn(correlationId);
@@ -332,7 +337,8 @@ public class ThinClientSessionTokenTest {
                 assertThat(fixture.sentRequests).isEmpty();
             } else {
                 RxDocumentServiceResponse response = dispatch(client, request, tuple).block(Duration.ofSeconds(5));
-                assertThat(events).containsExactly("prepare", "request", "response");
+                assertThat(events).containsExactly("thin".equals(scenario)
+                    ? new String[] {"request", "response"} : new String[] {"prepare", "request", "response"});
                 verify(listener).requestListener(context, request);
                 verify(listener).responseListener(context, response);
                 verify(listener, never()).exceptionListener(any(), any());
@@ -499,7 +505,29 @@ public class ThinClientSessionTokenTest {
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
             verify(fixture.sessions).setSessionToken(any(RxDocumentServiceRequest.class), any(Map.class));
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.ranges, never()).tryLookupAsync(any(), any(), any(), any());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void resolvedRangeScopesParentProgressWithoutMetadataOrHashing() throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, null);
+            request.requestContext.resolvedPartitionKeyRange =
+                new PartitionKeyRange("2", "", "FF", Arrays.asList("0", "1"));
+            PartitionKeyInternal key = Mockito.mock(PartitionKeyInternal.class);
+            request.setPartitionKeyInternal(key);
+            request.captureOriginalSessionToken();
+            request.useThinClientMode = true;
+            fixture.thin.setCollectionCache(null);
+            fixture.thin.setPartitionKeyRangeCache(null);
+            prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
+
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                .isEqualTo("2:1#200#1=180#2=150");
+            verify(fixture.collections, never()).resolveCollectionAsync(any(), any());
+            verify(fixture.ranges, never()).tryLookupAsync(any(), any(), any(), any());
+            Mockito.verifyNoMoreInteractions(key);
         }
     }
 
@@ -518,6 +546,9 @@ public class ThinClientSessionTokenTest {
             fixture.map = SessionTokenHelperTests.routingMap(
                 new PartitionKeyRange("2", "", "80", Collections.singletonList("0")),
                 new PartitionKeyRange("1", "80", "FF"));
+            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker =
+                request.requestContext.resolvedPartitionKeyRange;
+            request.requestContext.resolvedPartitionKeyRange = null;
             request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "2"));
             operation.block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).containsExactly(
@@ -623,6 +654,7 @@ public class ThinClientSessionTokenTest {
     public void missingMetadataIsNotAnUnmatchedToken() {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
+            request.requestContext.resolvedPartitionKeyRange = null;
             fixture.map = null;
             assertThatThrownBy(() -> fixture.processMessage(request).block(Duration.ofSeconds(5)))
                 .isInstanceOf(NotFoundException.class);
@@ -636,6 +668,7 @@ public class ThinClientSessionTokenTest {
             Sinks.One<Utils.ValueHolder<CollectionRoutingMap>> loading = Sinks.one();
             Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any())).thenReturn(loading.asMono());
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
+            request.requestContext.resolvedPartitionKeyRange = null;
             List<Throwable> errors = new ArrayList<>();
             Disposable subscription = fixture.processMessage(request).subscribe(ignored -> { }, errors::add);
             assertThat(fixture.wireTokens).isEmpty();
@@ -645,6 +678,7 @@ public class ThinClientSessionTokenTest {
             subscription.dispose();
 
             RuntimeException failure = new IllegalStateException("metadata failure");
+            request.requestContext.resolvedPartitionKeyRange = null;
             Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any())).thenReturn(Mono.error(failure));
             assertThatThrownBy(() -> fixture.processMessage(request).block(Duration.ofSeconds(5)))
                 .isSameAs(failure);
@@ -663,6 +697,7 @@ public class ThinClientSessionTokenTest {
     public void sessionResolutionPreservesMetadataDiagnostics(CosmosDiagnostics cosmosDiagnostics) throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "1");
+            request.requestContext.resolvedPartitionKeyRange = null;
             request.captureOriginalSessionToken();
             request.useThinClientMode = true;
             request.requestContext.cosmosDiagnostics = cosmosDiagnostics;
@@ -777,6 +812,7 @@ public class ThinClientSessionTokenTest {
             Sinks.One<Utils.ValueHolder<CollectionRoutingMap>> loading = Sinks.one();
             Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any())).thenReturn(loading.asMono());
             RxDocumentServiceRequest original = fixture.request(OperationType.Query, ORIGINAL, "0");
+            original.requestContext.resolvedPartitionKeyRange = null;
             RxDocumentServiceRequest sibling = original.clone();
             sibling.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "1"));
             Disposable cancelled = fixture.processMessage(original).subscribe();
@@ -791,24 +827,30 @@ public class ThinClientSessionTokenTest {
         }
     }
 
-    @Test(groups = "unit")
-    public void fullLogicalKeyUsesResolvedMetadata() {
+    @DataProvider
+    public Object[][] cachedEffectiveKeys() {
+        return new Object[][] {{null, "0"}, {"90", "1"}};
+    }
+
+    @Test(groups = "unit", dataProvider = "cachedEffectiveKeys")
+    public void fullLogicalKeyReusesOperationComputedEffectivePartitionKey(String effectiveKey, String rangeId) {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, null);
             request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
-            request.setEffectivePartitionKey("90");
+            request.setEffectivePartitionKey(effectiveKey);
             fixture.processMessage(request).block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
+            assertThat(fixture.wireTokens).containsExactly(
+                "0".equals(rangeId) ? "0:1#100#1=90#2=-1" : "1:1#200#1=180#2=150");
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
         }
     }
 
     @Test(groups = "unit")
-    public void explicitHierarchicalPrefixUsesExactEpkScopeBeforeLogicalKey() {
+    public void explicitHierarchicalPrefixUsesOperationResolvedRange() {
         try (Fixture fixture = new Fixture()) {
             fixture.definition.setKind(PartitionKind.MULTI_HASH);
             fixture.definition.setPaths(Arrays.asList("/tenant", "/user"));
-            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
+            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, "1");
             request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"tenant"}, true));
             request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "80");
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "90");
@@ -824,9 +866,9 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit")
-    public void eachSubscriptionReevaluatesScopeAndTransport() {
+    public void eachSubscriptionUsesOperationResolvedRangeAndTransport() {
         try (Fixture fixture = new Fixture()) {
-            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
+            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, "0");
             request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "10");
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "20");
             request.getHeaders().put(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
@@ -838,10 +880,14 @@ public class ThinClientSessionTokenTest {
             assertThat(fixture.encodedTokens.get(0).get(RntbdRequestHeader.EndEpk.id()))
                 .containsExactly("20".getBytes(StandardCharsets.UTF_8));
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "FF");
+            request.setPartitionKeyRangeIdentity(null);
+            request.requestContext.resolvedPartitionKeyRange = null;
             operation.block(Duration.ofSeconds(5));
             assertThat(fixture.sentRequests.get(1).headers().value(HttpConstants.HttpHeaders.START_EPK)).isEqualTo("10");
             assertThat(fixture.sentRequests.get(1).headers().value(HttpConstants.HttpHeaders.END_EPK)).isEqualTo("FF");
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "20");
+            request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "0"));
+            request.requestContext.resolvedPartitionKeyRange = fixture.map.getRangeByPartitionKeyRangeId("0");
             operation.block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1", ORIGINAL, "0:1#100#1=90#2=-1");
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250, 443, 10250);
