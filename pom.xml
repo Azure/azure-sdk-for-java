@@ -185,6 +185,7 @@
     <module>sdk/network</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
+    <module>sdk/networksecurity</module>
     <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
