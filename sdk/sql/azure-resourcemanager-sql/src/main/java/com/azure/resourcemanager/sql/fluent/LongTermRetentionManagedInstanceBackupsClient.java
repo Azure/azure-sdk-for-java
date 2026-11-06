@@ -215,6 +215,512 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         String databaseName, String backupName, Context context);
 
     /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceLongTermRetentionBackupInner> lockTimeBasedImmutabilityByResourceGroupAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceLongTermRetentionBackupInner> removeLegalHoldImmutabilityByResourceGroupAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceLongTermRetentionBackupInner> removeTimeBasedImmutabilityByResourceGroupAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionBackupInner>, ManagedInstanceLongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceLongTermRetentionBackupInner> setLegalHoldImmutabilityByResourceGroupAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
+        String backupName);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing managed instance long term retention backup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String managedInstanceName, String databaseName, String backupName, Context context);
+
+    /**
      * Lists all long term retention backups for a managed database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

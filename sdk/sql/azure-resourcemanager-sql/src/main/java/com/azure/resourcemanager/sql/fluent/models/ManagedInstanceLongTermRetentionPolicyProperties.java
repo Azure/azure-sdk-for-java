@@ -32,7 +32,7 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
     private TimeBasedImmutability timeBasedImmutability;
 
     /*
-     * The setting for time-based immutability mode for future backup (Value can be either Locked or UnLocked. Only
+     * The setting for time-based immutability mode for future backup (Value can be either Locked or Unlocked. Only
      * effective if TimeBasedImmutability is enabled). Caution: Immutability of LTR backup cannot be removed if
      * TimeBasedImmutabilityMode is Locked.
      */
@@ -110,7 +110,7 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
 
     /**
      * Get the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
-     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * can be either Locked or Unlocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
      * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
      * 
      * @return the timeBasedImmutabilityMode value.
@@ -121,7 +121,7 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
 
     /**
      * Set the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
-     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * can be either Locked or Unlocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
      * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
      * 
      * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
