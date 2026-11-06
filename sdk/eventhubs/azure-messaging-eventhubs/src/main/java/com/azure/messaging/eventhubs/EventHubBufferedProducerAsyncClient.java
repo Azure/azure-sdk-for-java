@@ -41,8 +41,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>
  * The {@link EventHubBufferedProducerAsyncClient} does not publish immediately, instead using a deferred model where
  * events are collected into a buffer so that they may be efficiently batched and published when the batch is full or
- * the {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration) maxWaitTime} has elapsed with no new events
- * enqueued.
+ * the {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration) maxWaitTime} has elapsed since the first event
+ * was added to the batch. Adding more events to the same batch does not restart this wait. Each new batch starts its
+ * own wait when its first event is added.
+ * </p>
+ * <p>
+ * This interval controls batch building, not the time from enqueueing an event to service acknowledgement. Events may
+ * wait in the buffer before being added to a batch. Scheduling delays, queued or in-progress sends, and retries can
+ * also delay publication or acknowledgement.
  * </p>
  * <p>
  * This model is intended to shift the burden of batch management from callers, at the cost of non-deterministic timing,
