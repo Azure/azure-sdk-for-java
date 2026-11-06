@@ -411,6 +411,23 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return messageList;
     }
 
+    /**
+     * Decodes raw AMQP message bytes with the same Proton call a receive link uses, then maps the result with the
+     * receive-path mapping.
+     */
+    ServiceBusReceivedMessage deserializeMessage(byte[] encodedMessage) {
+        final Message message = Proton.message();
+        // Proton signals malformed input with several unchecked exception types, so translate them in one place.
+        // The mapping below stays outside the try block so mapper defects are not reported as bad input.
+        try {
+            message.decode(encodedMessage, 0, encodedMessage.length);
+        } catch (RuntimeException exception) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'encodedMessage' is not a valid AMQP 1.0 message.", exception));
+        }
+        return deserializeMessage(message);
+    }
+
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
         final Section body = amqpMessage.getBody();
         AmqpMessageBody amqpMessageBody;
@@ -454,8 +471,10 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final AmqpMessageHeader brokeredHeader = brokeredAmqpAnnotatedMessage.getHeader();
         brokeredHeader.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
         brokeredHeader.setDeliveryCount(amqpMessage.getDeliveryCount());
-        brokeredHeader.setDurable(amqpMessage.getHeader().getDurable());
-        brokeredHeader.setFirstAcquirer(amqpMessage.getHeader().getFirstAcquirer());
+        if (amqpMessage.getHeader() != null) {
+            brokeredHeader.setDurable(amqpMessage.getHeader().getDurable());
+            brokeredHeader.setFirstAcquirer(amqpMessage.getHeader().getFirstAcquirer());
+        }
         brokeredHeader.setPriority(amqpMessage.getPriority());
 
         // Footer

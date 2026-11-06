@@ -30,6 +30,20 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
+     * Decodes a message supplied by an integration that owns transport framing and settlement.
+     *
+     * @param encodedMessage Raw AMQP 1.0 message bytes, with any integration-specific prefix already removed.
+     * @param lockToken Canonical UUID lock token supplied separately by the integration.
+     */
+    public void fromAmqpMessage(BinaryData encodedMessage, String lockToken) {
+        // BEGIN: com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage
+        ServiceBusReceivedMessage message = ServiceBusReceivedMessage.fromAmqpMessage(encodedMessage, lockToken);
+        System.out.printf("Message %s belongs to session %s%n", message.getMessageId(), message.getSessionId());
+        System.out.printf("AMQP body type: %s%n", message.getRawAmqpMessage().getBody().getBodyType());
+        // END: com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage
+    }
+
+    /**
      * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
      * Service Bus namespace and looking in the "Essentials" panel.
      */

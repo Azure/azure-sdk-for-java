@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -49,6 +50,8 @@ import static com.azure.core.amqp.AmqpMessageConstant.MESSAGE_STATE_ANNOTATION_N
  */
 public final class ServiceBusReceivedMessage {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceivedMessage.class);
+    private static final Pattern LOCK_TOKEN_PATTERN
+        = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
 
     private UUID lockToken;
@@ -79,6 +82,56 @@ public final class ServiceBusReceivedMessage {
         Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(body);
         context = Context.NONE;
+    }
+
+    /**
+     * Creates a received message from a raw AMQP 1.0 encoded message and the lock token supplied with it.
+     *
+     * <p>This is intended for integrations, such as an Azure Functions binding, that receive messages through another
+     * client. {@code encodedMessage} is the complete AMQP message, not only its body, without any transport framing or
+     * integration-specific prefix. It is decoded and mapped the same way as a message received by a receiver.</p>
+     *
+     * <p>Use {@link #getRawAmqpMessage()} to read sequence and value bodies, because {@link #getBody()} supports only
+     * data bodies.</p>
+     *
+     * <p>The returned message is not associated with a receiver link. When {@code lockToken} is provided, a receiver's
+     * settlement methods such as {@code complete} try to settle by that lock token, and settlement fails if the lock
+     * cannot be settled from that receiver. Without a lock token, settlement fails with
+     * {@link UnsupportedOperationException}, as it does for a peeked message.</p>
+     *
+     * <!-- src_embed com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage -->
+     * <pre>
+     * ServiceBusReceivedMessage message = ServiceBusReceivedMessage.fromAmqpMessage&#40;encodedMessage, lockToken&#41;;
+     * System.out.printf&#40;&quot;Message %s belongs to session %s%n&quot;, message.getMessageId&#40;&#41;, message.getSessionId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;AMQP body type: %s%n&quot;, message.getRawAmqpMessage&#40;&#41;.getBody&#40;&#41;.getBodyType&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage -->
+     *
+     * @param encodedMessage The complete AMQP 1.0 encoded message.
+     * @param lockToken The lock token as a UUID string in the format {@code xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}, or
+     * {@code null} if the message has no lock.
+     * @return The decoded received message.
+     * @throws NullPointerException if {@code encodedMessage} is {@code null}.
+     * @throws IllegalArgumentException if {@code encodedMessage} is empty or is not a valid AMQP 1.0 message, or if
+     * {@code lockToken} is not in the expected format.
+     */
+    public static ServiceBusReceivedMessage fromAmqpMessage(BinaryData encodedMessage, String lockToken) {
+        Objects.requireNonNull(encodedMessage, "'encodedMessage' cannot be null.");
+        if (lockToken != null && !LOCK_TOKEN_PATTERN.matcher(lockToken).matches()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'lockToken' must be a UUID in the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx."));
+        }
+
+        final byte[] bytes = encodedMessage.toBytes();
+        if (bytes.length == 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'encodedMessage' cannot be empty."));
+        }
+
+        final ServiceBusReceivedMessage receivedMessage = new ServiceBusMessageSerializer().deserializeMessage(bytes);
+        if (lockToken != null) {
+            receivedMessage.setLockToken(UUID.fromString(lockToken));
+        }
+        return receivedMessage;
     }
 
     /**
