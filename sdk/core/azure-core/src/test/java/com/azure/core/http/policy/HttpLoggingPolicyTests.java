@@ -20,6 +20,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,12 +41,14 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,6 +76,122 @@ public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
 
     private final AccessibleByteArrayOutputStream logCaptureStream = new AccessibleByteArrayOutputStream();
+
+    @ParameterizedTest
+    @MethodSource("bodyDisabledLoggingSupplier")
+    public void disabledBodyLoggingDoesNotAccessRequestBody(HttpLogDetailLevel level, boolean async) {
+        AtomicInteger bodyAccesses = new AtomicInteger();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://example.com") {
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                bodyAccesses.incrementAndGet();
+                return super.getBody();
+            }
+        };
+        request.setBody("content");
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(level)))
+                .httpClient(new NoOpHttpClient())
+                .build();
+        Context context = getCallerMethodContext("disabledBodyLoggingDoesNotAccessRequestBody", LogLevel.INFORMATIONAL);
+
+        if (async) {
+            StepVerifier.create(pipeline.send(request, context)).verifyComplete();
+        } else {
+            pipeline.sendSync(request, context);
+        }
+
+        assertEquals(0, bodyAccesses.get());
+        if (level == HttpLogDetailLevel.NONE) {
+            assertEquals("", convertOutputStreamToString(logCaptureStream));
+        } else {
+            assertTrue(convertOutputStreamToString(logCaptureStream).contains("\"content-length\":7"));
+        }
+    }
+
+    private static Stream<Arguments> bodyDisabledLoggingSupplier() {
+        return Stream.of(HttpLogDetailLevel.NONE, HttpLogDetailLevel.BASIC, HttpLogDetailLevel.HEADERS)
+            .flatMap(level -> Stream.of(Arguments.of(level, false), Arguments.of(level, true)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("responseContentLengthLoggingSupplier")
+    public void responseContentLengthIsLoggedOnce(String length, boolean async) throws IOException {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, length);
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .httpClient(request -> Mono.just(new com.azure.core.http.MockHttpResponse(request, 200, headers,
+                "body".getBytes(StandardCharsets.UTF_8))))
+            .build();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.com");
+        Context context = getCallerMethodContext("responseContentLengthIsLoggedOnce", LogLevel.INFORMATIONAL);
+
+        if (async) {
+            StepVerifier.create(pipeline.send(request, context)).assertNext(HttpResponse::close).verifyComplete();
+        } else {
+            try (HttpResponse response = pipeline.sendSync(request, context)) {
+                assertEquals(200, response.getStatusCode());
+            }
+        }
+
+        String logs = convertOutputStreamToString(logCaptureStream);
+        String responseLog = Arrays.stream(logs.split("\\R"))
+            .filter(line -> line.contains("\"az.sdk.message\":\"HTTP response\""))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Missing response log: " + logs));
+        int contentLengthFields = 0;
+        JsonFactory factory = new JsonFactory().enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+        try (JsonParser parser = factory.createParser(responseLog.substring(responseLog.indexOf('{')))) {
+            while (parser.nextToken() != null) {
+                if (parser.currentToken() == JsonToken.FIELD_NAME && "content-length".equals(parser.currentName())) {
+                    contentLengthFields++;
+                }
+            }
+        }
+
+        assertEquals("4".equals(length) ? 1 : 0, contentLengthFields);
+        long diagnostics = Arrays.stream(logs.split("\\R"))
+            .filter(line -> line.contains("Could not parse the HTTP header content-length"))
+            .count();
+        assertEquals("invalid".equals(length) ? 1 : 0, diagnostics);
+    }
+
+    private static Stream<Arguments> responseContentLengthLoggingSupplier() {
+        return Stream.of(null, "", "4", "invalid")
+            .flatMap(length -> Stream.of(Arguments.of(length, false), Arguments.of(length, true)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("retryMetadataSupplier")
+    public void retryMetadataRetainsNumericAndFallbackHandling(Object rawRetryCount, Integer expected, boolean async) {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)))
+            .httpClient(new NoOpHttpClient())
+            .build();
+        Context context
+            = getCallerMethodContext("retryMetadataRetainsNumericAndFallbackHandling", LogLevel.INFORMATIONAL);
+        if (rawRetryCount != null) {
+            context = context.addData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, rawRetryCount);
+        }
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.com");
+        if (async) {
+            StepVerifier.create(pipeline.send(request, context)).verifyComplete();
+        } else {
+            pipeline.sendSync(request, context);
+        }
+
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(convertOutputStreamToString(logCaptureStream));
+        assertEquals(1, messages.size());
+        assertEquals(expected, messages.get(0).getTryCount());
+    }
+
+    private static Stream<Arguments> retryMetadataSupplier() {
+        return Stream
+            .of(Arguments.of(null, null), Arguments.of(128, 128), Arguments.of("3", 3), Arguments.of(4L, 4),
+                Arguments.of("invalid", null), Arguments.of(Long.MAX_VALUE, null))
+            .flatMap(args -> Stream.of(Arguments.of(args.get()[0], args.get()[1], false),
+                Arguments.of(args.get()[0], args.get()[1], true)));
+    }
 
     /**
      * Tests that a query string will be properly redacted before it is logged.

@@ -14,8 +14,15 @@
 
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
+- Fixed duplicate Content-Length fields and repeated malformed-length diagnostics in HTTP response logs.
 
 ### Other Changes
+
+- Avoided redundant joining of cached multi-value headers, resolution of cached generic type arguments, and atomic
+  updates when body bytes are already cached.
+- Avoided preliminary URL parsing for colon-free RestProxy paths and Content-Type splitting for media types without
+  parameters.
+- Avoided request-body access when body logging is disabled and string conversion of integer retry metadata.
 
 ## 1.61.0 (2026-10-27)
 

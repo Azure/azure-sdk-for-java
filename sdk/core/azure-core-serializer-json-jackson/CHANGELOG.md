@@ -10,6 +10,9 @@
 
 ### Other Changes
 
+- Avoided resolving generic type arguments when the outer Jackson type is cached, while preserving cache capacity
+  handling.
+
 ## 1.7.0 (2026-10-27)
 
 ### Other Changes

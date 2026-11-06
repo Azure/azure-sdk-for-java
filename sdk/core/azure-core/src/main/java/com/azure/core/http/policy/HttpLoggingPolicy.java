@@ -262,7 +262,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             Long contentLength = getAndLogContentLength(request.getHeaders(), logBuilder, logger);
 
-            if (request.getBody() == null) {
+            if (!httpLogDetailLevel.shouldLogBody() || request.getBody() == null) {
                 logBuilder.log(REQUEST_LOG_MESSAGE);
 
                 return;
@@ -270,7 +270,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
-            if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
+            if (shouldBodyBeLogged(contentType, contentLength)) {
                 // shouldBodyBeLogged ensures contentLength is not null and within limits.
                 int contentLengthInt = contentLength.intValue();
 
@@ -331,9 +331,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
-            addBasicResponseProperties(logger, loggingOptions, response, logBuilder);
-
-            Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
+            Long contentLength = addBasicResponseProperties(logger, loggingOptions, response, logBuilder);
             Mono<HttpResponse> responseMono = Mono.just(response);
 
             if (httpLogDetailLevel.shouldLogBody()) {
@@ -362,14 +360,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
         }
 
-        private void addBasicResponseProperties(ClientLogger logger, HttpResponseLoggingContext loggingOptions,
+        private Long addBasicResponseProperties(ClientLogger logger, HttpResponseLoggingContext loggingOptions,
             HttpResponse response, LoggingEventBuilder logBuilder) {
             logBuilder.addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
                 .addKeyValue(LoggingKeys.URL_KEY, urlSanitizer.getRedactedUrl(response.getRequest().getUrl()))
                 .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
 
-            getAndLogContentLength(response.getHeaders(), logBuilder, logger);
+            Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
             logHeaders(logger, response, logBuilder);
+            return contentLength;
         }
 
         @Override
@@ -383,9 +382,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
-            addBasicResponseProperties(logger, loggingOptions, response, logBuilder);
-
-            Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
+            Long contentLength = addBasicResponseProperties(logger, loggingOptions, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
@@ -535,6 +532,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         if (rawRetryCount == null) {
             return null;
+        }
+
+        if (rawRetryCount instanceof Integer) {
+            return (Integer) rawRetryCount;
         }
 
         try {
