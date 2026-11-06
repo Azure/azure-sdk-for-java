@@ -40,6 +40,7 @@ public class BootstrapperImplTests {
         LeaseStoreManager auxiliary = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(store.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(auxiliary.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(auxiliary.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(store.acquireInitializationLock(Mockito.any())).thenReturn(Mono.just(true));
         Mockito.when(store.releaseInitializationLock()).thenReturn(Mono.empty());
         Mockito.when(store.markInitialized()).thenReturn(Mono.error(new AssertionError("Marker must not be written")));
@@ -200,6 +201,7 @@ public class BootstrapperImplTests {
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(pkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
 
         ChangeFeedProcessorOptions changeFeedProcessorOptionsMock = Mockito.mock(ChangeFeedProcessorOptions.class);
 
@@ -265,6 +267,7 @@ public class BootstrapperImplTests {
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(pkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
 
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions()
             .setLeaseVerificationEnabledOnRestart(true);

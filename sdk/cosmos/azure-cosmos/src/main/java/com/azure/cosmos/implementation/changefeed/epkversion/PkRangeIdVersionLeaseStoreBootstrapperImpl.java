@@ -87,6 +87,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> this.pkRangeIdVersionLeaseStoreManager.isInitialized().thenReturn(initialized))
+            .flatMap(initialized -> this.pkRangeIdVersionLeaseStoreManager.getAllLeases().then().thenReturn(initialized))
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
 

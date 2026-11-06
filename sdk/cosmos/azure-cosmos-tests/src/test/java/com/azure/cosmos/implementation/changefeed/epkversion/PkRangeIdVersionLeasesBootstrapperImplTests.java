@@ -106,7 +106,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         bootstrapper.initialize().block();
 
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
@@ -137,6 +137,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         LeaseStoreManager pkRangeIdVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.markInitialized()).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.just(true));
@@ -203,7 +204,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         }
 
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(4)).isInitialized();
-        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(3)).getAllLeases();
         Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());

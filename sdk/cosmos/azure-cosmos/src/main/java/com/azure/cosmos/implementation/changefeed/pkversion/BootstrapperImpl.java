@@ -79,6 +79,7 @@ class BootstrapperImpl implements Bootstrapper {
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> this.epkRangeVersionLeaseStoreManager.isInitialized().thenReturn(initialized))
+            .flatMap(initialized -> this.epkRangeVersionLeaseStoreManager.getAllLeases().then().thenReturn(initialized))
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
                 Mono<Void> previousOperation = Mono.empty();
