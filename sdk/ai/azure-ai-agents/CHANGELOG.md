@@ -33,9 +33,11 @@
   Model deployment names default to `gpt-live-1` and `gpt-5.6-terra` when their environment variables are unset.
   The audio sample requests an opening greeting, labels spoken transcripts without duplicating backend text,
   reports moderation failures explicitly, and shuts down shared Reactor schedulers when its standalone main exits.
-  Both text samples support interactive terminal input with blank-line, `exit`, and `quit` termination,
-  preserve scripted command-line prompts, and shut down shared Reactor schedulers when their standalone mains exit.
-  Both interactive text modes request a spoken greeting, play frontend audio and print spoken transcripts
+  The primary text samples show agent/delegation configuration, typed sends, event handling, and graceful closure
+  directly, processing command-line prompts or one default question without console input or audio playback.
+  Separate advanced interactive text samples support terminal input with blank-line, `exit`, and `quit` termination.
+  The standalone sample mains shut down shared Reactor schedulers on exit.
+  Both advanced interactive samples request a spoken greeting, play frontend audio and print spoken transcripts
   instead of backend working notes. It preserves server closure diagnostics and handles remote hangup normally.
   Interactive voice mode streams paced silent PCM input while typing (consuming voice-session usage), uses
   blocking console line reads instead of readiness polling, and uses the native console reader when attached.
