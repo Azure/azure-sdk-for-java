@@ -12,9 +12,9 @@ public final class AllocatedToSubscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllocatedToSubscription model
-            = BinaryData.fromString("{\"subscriptionId\":\"uexhdzx\",\"quotaAllocated\":7433658867107362465}")
+            = BinaryData.fromString("{\"subscriptionId\":\"ovplw\",\"quotaAllocated\":3734794049628665607}")
                 .toObject(AllocatedToSubscription.class);
-        Assertions.assertEquals("uexhdzx", model.subscriptionId());
-        Assertions.assertEquals(7433658867107362465L, model.quotaAllocated());
+        Assertions.assertEquals("ovplw", model.subscriptionId());
+        Assertions.assertEquals(3734794049628665607L, model.quotaAllocated());
     }
 }
