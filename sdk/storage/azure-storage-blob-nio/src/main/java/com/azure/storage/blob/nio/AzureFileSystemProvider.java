@@ -881,8 +881,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
             if (accessModes != null && accessModes.length != 0) {
                 String containerName = path.toString().substring(0, path.toString().length() - 1);
-                AzureFileStore fileStore
-                    = (AzureFileStore) ((AzureFileSystem) path.getFileSystem()).getFileStore(containerName);
+                AzureFileSystem fileSystem = (AzureFileSystem) path.getFileSystem();
+                AzureFileStore fileStore = (AzureFileStore) fileSystem.getFileStore(containerName);
                 checkListAccess(fileStore.getContainerClient(), null, path);
             }
             return;

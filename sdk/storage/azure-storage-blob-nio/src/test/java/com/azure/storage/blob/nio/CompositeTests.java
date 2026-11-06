@@ -9,6 +9,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -85,16 +86,38 @@ public class CompositeTests extends BlobNioTestBase {
     // Record this test on Java 21.0.x+ (JDK-8073061), where Files.copy issues an extra checkAccess HEAD request.
     // Older JDKs skip that request and play back the recording without consuming it.
     @Test
-    public void filesCopyToForeignTarget(@TempDir Path tempDir) throws IOException {
+    public void filesCopyBlobToLocalFile(@TempDir Path tempDir) throws IOException {
         AzureFileSystem fs = createFS(config);
-        Path source = fs.getPath(generateBlobName());
-        Files.copy(DATA.getDefaultInputStream(), source);
-        Path target = tempDir.resolve("target");
+        Path azureBlobSource = fs.getPath(generateBlobName());
+        Files.copy(DATA.getDefaultInputStream(), azureBlobSource);
+        Path localDestinationFile = tempDir.resolve("target");
 
-        assertTrue(Files.isReadable(source));
-        Files.copy(source, target);
+        assertTrue(Files.isReadable(azureBlobSource));
+        Files.copy(azureBlobSource, localDestinationFile);
 
-        assertArraysEqual(DATA.getDefaultBytes(), Files.readAllBytes(target));
+        assertArraysEqual(DATA.getDefaultBytes(), Files.readAllBytes(localDestinationFile));
+    }
+
+    // Bug: https://github.com/Azure/azure-sdk-for-java/issues/48069
+    // Record this test on Java 21.0.x+ for the same reason as filesCopyBlobToLocalFile.
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void filesCopyDirectoryToLocalDirectory(boolean isVirtual, @TempDir Path tempDir) throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path azureDirectorySource = fs.getPath(generateBlobName());
+        if (!isVirtual) {
+            fs.provider().createDirectory(azureDirectorySource);
+        }
+        ((AzurePath) azureDirectorySource.resolve(generateBlobName())).toBlobClient()
+            .upload(DATA.getDefaultBinaryData());
+        Path localDestinationDirectory = tempDir.resolve("target");
+
+        assertEquals(isVirtual,
+            Files.readAttributes(azureDirectorySource, AzureBlobFileAttributes.class).isVirtualDirectory());
+        assertTrue(Files.isReadable(azureDirectorySource));
+        Files.copy(azureDirectorySource, localDestinationDirectory);
+
+        assertTrue(Files.isDirectory(localDestinationDirectory));
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325
