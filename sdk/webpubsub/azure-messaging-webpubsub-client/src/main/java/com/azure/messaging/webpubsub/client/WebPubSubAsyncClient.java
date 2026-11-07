@@ -12,9 +12,12 @@ import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubConnection;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.CancelInvocationMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeResponseMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
@@ -33,6 +36,9 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
+import com.azure.messaging.webpubsub.client.models.InvocationException;
+import com.azure.messaging.webpubsub.client.models.InvokeEventOptions;
+import com.azure.messaging.webpubsub.client.models.InvokeEventResult;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
@@ -42,6 +48,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -106,9 +113,14 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink
         = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private final ConcurrentMap<String, Sinks.One<InvokeResponseMessage>> pendingInvocations
+        = new ConcurrentHashMap<>();
 
     // incremental ackId
     private final AtomicLong ackId = new AtomicLong(0);
+
+    // incremental invocation ID
+    private final AtomicLong invocationIdCounter = new AtomicLong(0);
 
     // connection (logic, one to one map to the connectionId)
     private WebPubSubConnection webPubSubConnection;
@@ -458,6 +470,137 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     /**
+     * Invokes an upstream event and waits for the correlated response.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @return the result.
+     */
+    public Mono<InvokeEventResult> invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return invokeEvent(eventName, content, dataFormat, new InvokeEventOptions());
+    }
+
+    /**
+     * Invokes an upstream event and waits for the correlated response.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @param options the options.
+     * @return the result.
+     */
+    public Mono<InvokeEventResult> invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
+        InvokeEventOptions options) {
+        Objects.requireNonNull(eventName);
+        Objects.requireNonNull(content);
+        Objects.requireNonNull(dataFormat);
+        if (options == null) {
+            options = new InvokeEventOptions();
+        }
+
+        String invocationId = options.getInvocationId() != null ? options.getInvocationId() : nextInvocationId();
+        Duration timeout = options.getTimeout();
+
+        InvokeMessage invokeMessage = new InvokeMessage().setInvocationId(invocationId)
+            .setTarget("event")
+            .setEvent(eventName)
+            .setDataType(dataFormat.toString())
+            .setData(content);
+
+        return Mono.defer(() -> {
+            Sinks.One<InvokeResponseMessage> response = Sinks.one();
+            // Reserve the ID atomically before sending.
+            if (pendingInvocations.putIfAbsent(invocationId, response) != null) {
+                return Mono.error(logger.logExceptionAsWarning(new InvocationException(
+                    "An invocation with ID '" + invocationId + "' is already pending.", invocationId, null)));
+            }
+            return invokeEventAttempt(invocationId, invokeMessage, timeout, response.asMono())
+                .retryWhen(sendMessageRetrySpec)
+                .doOnTerminate(() -> pendingInvocations.remove(invocationId, response))
+                .doOnCancel(() -> pendingInvocations.remove(invocationId, response));
+        });
+    }
+
+    private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage,
+        Duration timeout, Mono<InvokeResponseMessage> response) {
+        return Mono.<InvokeResponseMessage>create(sink -> {
+            // Tie both subscriptions to this attempt so termination or cancellation releases them together.
+            Disposable.Composite subscriptions = Disposables.composite();
+            sink.onDispose(subscriptions);
+            // Listen before sending because the transport may deliver a response immediately.
+            subscriptions
+                .add(waitForInvokeResponse(invocationId, timeout, response).subscribe(sink::success, sink::error));
+
+            if (!subscriptions.isDisposed()) {
+                subscriptions.add(sendMessage(invokeMessage).subscribe(null, sink::error));
+            }
+        }).map(this::mapInvokeResponse).onErrorResume(throwable -> {
+            // If InvocationException, do not retry
+            if (throwable instanceof InvocationException) {
+                return Mono.error(throwable);
+            }
+            // Attempt to send cancelInvocation on failure
+            return sendCancelInvocationBestEffort(invocationId).then(Mono.error(throwable));
+        });
+    }
+
+    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout,
+        Mono<InvokeResponseMessage> responseMono) {
+        if (timeout != null) {
+            responseMono
+                = responseMono
+                    .timeout(timeout,
+                        Mono.defer(() -> Mono.error(new InvocationException(
+                            "Invocation timed out after " + timeout.toMillis()
+                                + "ms. No response received for invocation '" + invocationId + "'.",
+                            invocationId, null))));
+        }
+        return responseMono;
+    }
+
+    private InvokeEventResult mapInvokeResponse(InvokeResponseMessage message) {
+        if (Boolean.TRUE.equals(message.isSuccess())) {
+            return new InvokeEventResult(message.getInvocationId(), message.getDataType(), message.getData());
+        } else if (Boolean.FALSE.equals(message.isSuccess())) {
+            throw logger.logExceptionAsWarning(new InvocationException(
+                message.getError() != null ? message.getError().getMessage() : "Invocation failed.",
+                message.getInvocationId(), message.getError()));
+        } else {
+            throw logger.logExceptionAsWarning(
+                new InvocationException("Unsupported invoke response frame.", message.getInvocationId(), null));
+        }
+    }
+
+    /**
+     * Cancels a pending invocation by sending a cancel message to the server.
+     *
+     * @param invocationId the invocation ID to cancel.
+     * @return a {@link Mono} that completes when the cancel message has been sent, or errors if the
+     *     cancel message could not be sent (e.g., when disconnected).
+     * @throws NullPointerException if {@code invocationId} is null.
+     */
+    public Mono<Void> cancelInvocation(String invocationId) {
+        Objects.requireNonNull(invocationId, "'invocationId' cannot be null.");
+        CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
+        return sendMessage(cancelMessage);
+    }
+
+    private Mono<Void> sendCancelInvocationBestEffort(String invocationId) {
+        CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
+        return sendMessage(cancelMessage).onErrorResume(error -> {
+            logger.atVerbose().log("Failed to send cancelInvocation for " + invocationId, error);
+            return Mono.empty();
+        });
+    }
+
+    private void failPendingInvocations() {
+        pendingInvocations.forEach(
+            (invocationId, response) -> response.tryEmitError(logger.logExceptionAsWarning(new InvocationException(
+                "The connection closed before an invoke response was received.", invocationId, null))));
+    }
+
+    /**
      * Receives group message events.
      *
      * @return the Publisher of group message events.
@@ -513,6 +656,16 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private long nextAckId() {
         return ackId.updateAndGet(value -> value == Long.MAX_VALUE ? 1 : Math.max(0, value) + 1);
+    }
+
+    private String nextInvocationId() {
+        return String.valueOf(invocationIdCounter.getAndUpdate(value -> {
+            // keep positive
+            if (++value < 0) {
+                value = 0;
+            }
+            return value;
+        }));
     }
 
     private Flux<AckMessage> receiveAckMessages() {
@@ -773,6 +926,14 @@ final class WebPubSubAsyncClient implements Closeable {
             }
         } else if (webPubSubMessage instanceof AckMessage) {
             tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
+        } else if (webPubSubMessage instanceof InvokeResponseMessage) {
+            InvokeResponseMessage message = (InvokeResponseMessage) webPubSubMessage;
+            // Do not buffer unmatched responses, a later invocation may reuse the same ID
+            Sinks.One<InvokeResponseMessage> response
+                = message.getInvocationId() == null ? null : pendingInvocations.get(message.getInvocationId());
+            if (response != null) {
+                response.tryEmitValue(message);
+            }
         } else if (webPubSubMessage instanceof ConnectedMessage) {
             final ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
             final String connectionId = connectedMessage.getConnectionId();
@@ -867,6 +1028,9 @@ final class WebPubSubAsyncClient implements Closeable {
                         new StopReconnectException("Failed to recover. Client is not CONNECTED.")));
                 }
 
+                // Recovering the connection does not resume invocations from the closed transport.
+                failPendingInvocations();
+
                 return Mono.defer(() -> {
                     if (isStoppedByUser.compareAndSet(true, false)) {
                         return Mono.error(
@@ -896,6 +1060,7 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(WebPubSubClientState.STOPPED);
+        failPendingInvocations();
 
         // session
         this.webSocketSession = null;
@@ -945,6 +1110,8 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
+        failPendingInvocations();
+
         final DisconnectedEvent event
             = disconnectedEvent == null ? new DisconnectedEvent(this.getConnectionId(), null) : disconnectedEvent;
 
