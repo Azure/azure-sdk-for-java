@@ -13,35 +13,36 @@ import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
  */
 public final class MongoClustersPromoteSamples {
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_PlannedPromoteReplica.json
-     */
-    /**
-     * Sample code: Promotes a replica Mongo Cluster resource to a primary role, waiting for the replica to catch up
-     * before promoting.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void promotesAReplicaMongoClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .promote("TestGroup", "myMongoCluster",
-                new PromoteReplicaRequest().withPromoteOption(PromoteOption.PLANNED).withMode(PromoteMode.SWITCHOVER),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_ForcePromoteReplica.json
      */
     /**
-     * Sample code: Promotes a replica Mongo Cluster resource to a primary role.
+     * Sample code: Promotes a replica DocumentDB cluster resource to a primary role.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void promotesAReplicaMongoClusterResourceToAPrimaryRole(
+    public static void promotesAReplicaDocumentDBClusterResourceToAPrimaryRole(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .promote("TestGroup", "myMongoCluster",
                 new PromoteReplicaRequest().withPromoteOption(PromoteOption.FORCED).withMode(PromoteMode.SWITCHOVER),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_PlannedPromoteReplica.json
+     */
+    /**
+     * Sample code: Promotes a replica DocumentDB cluster resource to a primary role, waiting for the replica to catch
+     * up before promoting.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        promotesAReplicaDocumentDBClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .promote("TestGroup", "myMongoCluster",
+                new PromoteReplicaRequest().withPromoteOption(PromoteOption.PLANNED).withMode(PromoteMode.SWITCHOVER),
                 com.azure.core.util.Context.NONE);
     }
 }

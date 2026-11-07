@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.FirewallRuleProperties;
 import java.io.IOException;
 
 /**
- * Represents a mongo cluster firewall rule.
+ * Represents a DocumentDB cluster firewall rule.
  */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {

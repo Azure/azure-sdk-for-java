@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of storage that a mongo cluster can be provisioned with.
+ * The type of storage that a DocumentDB cluster can be provisioned with.
  */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /**
-     * Premium SSD for high performance workloads.
+     * Premium SSD storage. Premium SSD v2 is recommended for better performance.
      */
     public static final StorageType PREMIUM_SSD = fromString("PremiumSSD");
 
     /**
-     * Premium SSD v2 for very IO-intensive workloads. This is a preview option and has additional limitations.
+     * Premium SSD v2 storage. Recommended for better performance.
      */
     public static final StorageType PREMIUM_SSDV2 = fromString("PremiumSSDv2");
 

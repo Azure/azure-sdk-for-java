@@ -21,7 +21,7 @@ public interface PrivateEndpointConnectionsClient {
      * List existing private connections.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -36,7 +36,7 @@ public interface PrivateEndpointConnectionsClient {
      * List existing private connections.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +52,7 @@ public interface PrivateEndpointConnectionsClient {
      * Get a specific private connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -69,7 +69,7 @@ public interface PrivateEndpointConnectionsClient {
      * Get a specific private connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +85,7 @@ public interface PrivateEndpointConnectionsClient {
      * Create a Private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param resource Resource create parameters.
@@ -103,7 +103,7 @@ public interface PrivateEndpointConnectionsClient {
      * Create a Private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param resource Resource create parameters.
@@ -122,7 +122,7 @@ public interface PrivateEndpointConnectionsClient {
      * Create a Private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param resource Resource create parameters.
@@ -139,7 +139,7 @@ public interface PrivateEndpointConnectionsClient {
      * Create a Private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param resource Resource create parameters.
@@ -157,7 +157,7 @@ public interface PrivateEndpointConnectionsClient {
      * Delete the private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +173,7 @@ public interface PrivateEndpointConnectionsClient {
      * Delete the private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -190,7 +190,7 @@ public interface PrivateEndpointConnectionsClient {
      * Delete the private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +204,7 @@ public interface PrivateEndpointConnectionsClient {
      * Delete the private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.

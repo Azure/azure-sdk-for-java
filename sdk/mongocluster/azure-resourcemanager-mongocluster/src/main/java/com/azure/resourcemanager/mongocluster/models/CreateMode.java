@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The mode that the Mongo Cluster is created with.
+ * The mode that the DocumentDB cluster is created with.
  */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
-     * Create a new mongo cluster.
+     * Create a new DocumentDB cluster.
      */
     public static final CreateMode DEFAULT = fromString("Default");
 
     /**
-     * Create a mongo cluster from a restore point-in-time.
+     * Create a DocumentDB cluster from a restore point-in-time.
      */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 

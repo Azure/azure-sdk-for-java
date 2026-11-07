@@ -8,41 +8,41 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The status of the Mongo cluster resource.
+ * The status of the DocumentDB cluster resource.
  */
 public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterStatus> {
     /**
-     * The mongo cluster resource is ready for use.
+     * The DocumentDB cluster resource is ready for use.
      */
     public static final MongoClusterStatus READY = fromString("Ready");
 
     /**
-     * The mongo cluster resource is being provisioned.
+     * The DocumentDB cluster resource is being provisioned.
      */
     public static final MongoClusterStatus PROVISIONING = fromString("Provisioning");
 
     /**
-     * The mongo cluster resource is being updated.
+     * The DocumentDB cluster resource is being updated.
      */
     public static final MongoClusterStatus UPDATING = fromString("Updating");
 
     /**
-     * The mongo cluster resource is being started.
+     * The DocumentDB cluster resource is being started.
      */
     public static final MongoClusterStatus STARTING = fromString("Starting");
 
     /**
-     * The mongo cluster resource is being stopped.
+     * The DocumentDB cluster resource is being stopped.
      */
     public static final MongoClusterStatus STOPPING = fromString("Stopping");
 
     /**
-     * The mongo cluster resource is stopped.
+     * The DocumentDB cluster resource is stopped.
      */
     public static final MongoClusterStatus STOPPED = fromString("Stopped");
 
     /**
-     * The mongo cluster resource is being dropped.
+     * The DocumentDB cluster resource is being dropped.
      */
     public static final MongoClusterStatus DROPPING = fromString("Dropping");
 

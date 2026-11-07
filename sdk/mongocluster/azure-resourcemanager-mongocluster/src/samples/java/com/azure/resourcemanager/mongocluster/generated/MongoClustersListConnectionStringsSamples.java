@@ -12,11 +12,11 @@ public final class MongoClustersListConnectionStringsSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_ListConnectionStrings.json
      */
     /**
-     * Sample code: List the available connection strings for the Mongo Cluster resource.
+     * Sample code: List the available connection strings for the DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listTheAvailableConnectionStringsForTheMongoClusterResource(
+    public static void listTheAvailableConnectionStringsForTheDocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .listConnectionStringsWithResponse("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
