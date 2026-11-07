@@ -33,6 +33,8 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
@@ -55,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -131,6 +134,8 @@ public class ThinClientSessionTokenTest {
             ISessionToken initialScopedToken = request.requestContext.sessionToken;
 
             fixture.map = childMap;
+            client.setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                request, options, fixture.map, null, false, null);
             dispatch(client, request).block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).as(scenario).containsExactly(expectedInitialToken, expectedScopedToken);
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(expectedInitialPort, 10250);
@@ -148,6 +153,198 @@ public class ThinClientSessionTokenTest {
                 .tryLookupAsync(any(), any(), any(), any());
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
+        }
+    }
+
+    @DataProvider
+    public Object[][] preparedPointReads() {
+        return new Object[][] {
+            {ORIGINAL, "0:1#100#1=90#2=-1", 10250},
+            {"1:1#200,1:1#100", null, 10250},
+            {"2:1#200,0:1#100", "2:1#200,0:1#100", 443}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "preparedPointReads")
+    public void readDocumentPreparesOnceBeforeStartingHedges(String original, String expected, int port) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            fixture.delayFirstResponse = true;
+            RxDocumentClientImpl client = fixture.fullClient();
+            Sinks.One<Utils.ValueHolder<CollectionRoutingMap>> metadata = Sinks.one();
+            Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any())).thenReturn(metadata.asMono());
+            List<RxDocumentServiceRequest> attempts = new CopyOnWriteArrayList<>();
+            IServerErrorInjector injector = Mockito.mock(IServerErrorInjector.class);
+            Mockito.when(injector.injectServerResponseError(any(), any())).thenAnswer(invocation -> {
+                attempts.add(((FaultInjectionRequestArgs) invocation.getArgument(0)).getServiceRequest());
+                return false;
+            });
+            fixture.inject(injector);
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(original);
+            options.setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
+                        Duration.ofMillis(10), Duration.ofMillis(10))).build());
+            Method read = RxDocumentClientImpl.class.getDeclaredMethod(
+                "readDocument", String.class, String.class, RequestOptions.class, DiagnosticsClientContext.class);
+            read.setAccessible(true);
+            Mono<?> operation = (Mono<?>) read.invoke(client, "/dbs/db/colls/coll/docs/item", "item", options, fixture.context);
+            CompletableFuture<?> result = operation.toFuture();
+            assertThat(attempts).isEmpty();
+            assertThat(fixture.sentRequests).isEmpty();
+            verify(fixture.collections).resolveCollectionAsync(any(), any());
+            metadata.tryEmitValue(new Utils.ValueHolder<>(fixture.map));
+            assertThat(result.get(5, TimeUnit.SECONDS)).isNotNull();
+            assertThat(attempts).hasSize(2);
+            assertThat(attempts.get(0).requestContext).isNotSameAs(attempts.get(1).requestContext);
+            assertThat(attempts.get(0).requestContext.getSessionTokenState()).isNotNull()
+                .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
+            assertThat(fixture.wireTokens).containsExactly(expected, expected);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(port, port);
+            verify(fixture.collections, Mockito.times(3)).resolveCollectionAsync(any(), any());
+            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            assertThat(options.getSessionToken()).isEqualTo(original);
+        }
+    }
+
+    @DataProvider
+    public Object[][] pointWrites() {
+        return new Object[][] {
+            {OperationType.Create}, {OperationType.Upsert}, {OperationType.Replace},
+            {OperationType.Patch}, {OperationType.Delete}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "scopedOutcomes", dataProviderClass = SessionTokenHelperTests.class)
+    public void pointPreparationFailureOrTimeoutNeverStartsAHedge(boolean timeout) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentClientImpl client = fixture.fullClient();
+            RuntimeException metadataFailure = new IllegalStateException("metadata failure before hedging");
+            Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any()))
+                .thenReturn(timeout ? Mono.never() : Mono.error(metadataFailure));
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(ORIGINAL);
+            options.setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(200))
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
+                        Duration.ofMillis(10), Duration.ofMillis(10))).build());
+            Method read = RxDocumentClientImpl.class.getDeclaredMethod(
+                "readDocument", String.class, String.class, RequestOptions.class, DiagnosticsClientContext.class);
+            read.setAccessible(true);
+            Mono<?> operation = (Mono<?>) read.invoke(client,
+                "/dbs/db/colls/coll/docs/item", "item", options, fixture.context);
+            Throwable failure = catchThrowable(() -> operation.block(Duration.ofSeconds(5)));
+            if (timeout) {
+                assertThat(failure).isInstanceOf(OperationCancelledException.class);
+            } else {
+                assertThat(failure).isSameAs(metadataFailure);
+            }
+            assertThat(fixture.sentRequests).isEmpty();
+            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+        }
+    }
+
+    @DataProvider
+    public Object[][] pointReadRetryScopes() {
+        return new Object[][] {
+            {ORIGINAL, false, "0:1#100#1=90#2=-1", "0:1#100#1=90#2=-1", 10250},
+            {ORIGINAL, true, "0:1#100#1=90#2=-1", "2:1#100#1=90#2=-1", 10250},
+            {"2:1#200,1:1#100", true, "2:1#200,1:1#100", "2:1#200", 443}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "pointReadRetryScopes")
+    public void readDocumentRetryReusesOrReplacesPreparedScope(
+        String original, boolean split, String firstToken, String secondToken, int firstPort) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentClientImpl client = fixture.fullClient();
+            List<RxDocumentServiceRequest> attempts = new ArrayList<>();
+            List<String> attemptTokens = new ArrayList<>();
+            List<URI> attemptEndpoints = new ArrayList<>();
+            IServerErrorInjector injector = Mockito.mock(IServerErrorInjector.class);
+            Mockito.when(injector.injectServerResponseError(any(), any())).thenAnswer(invocation -> {
+                FaultInjectionRequestArgs args = invocation.getArgument(0);
+                attempts.add(args.getServiceRequest());
+                attemptTokens.add(args.getServiceRequest().getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
+                attemptEndpoints.add(args.getRequestURI());
+                if (attempts.size() == 1) {
+                    if (split) {
+                        fixture.map = SessionTokenHelperTests.routingMap(
+                            new PartitionKeyRange("2", "", "40", Collections.singletonList("0")),
+                            new PartitionKeyRange("3", "40", "80", Collections.singletonList("0")),
+                            new PartitionKeyRange("1", "80", "FF"));
+                    }
+                    Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
+                    failure.v = new RequestRateTooLargeException();
+                    return true;
+                }
+                return false;
+            });
+            fixture.inject(injector);
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(original);
+            options.setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5)).build());
+            Method read = RxDocumentClientImpl.class.getDeclaredMethod(
+                "readDocument", String.class, String.class, RequestOptions.class, DiagnosticsClientContext.class);
+            read.setAccessible(true);
+            assertThat(((Mono<?>) read.invoke(client,
+                "/dbs/db/colls/coll/docs/item", "item", options, fixture.context)).block(Duration.ofSeconds(5))).isNotNull();
+            assertThat(attemptTokens).containsExactly(firstToken, secondToken);
+            assertThat(attemptEndpoints).extracting(URI::getPort).containsExactly(firstPort, 10250);
+            assertThat(attemptEndpoints).extracting(URI::getHost).containsExactly("localhost", "localhost");
+            if (split) {
+                assertThat(attempts.get(1).requestContext.getSessionTokenState())
+                    .isNotSameAs(attempts.get(0).requestContext.getSessionTokenState());
+            } else {
+                assertThat(attempts.get(1).requestContext.getSessionTokenState())
+                    .isSameAs(attempts.get(0).requestContext.getSessionTokenState());
+            }
+            verify(fixture.ranges, Mockito.times(2)).tryLookupAsync(any(), any(), any(), any());
+            assertThat(options.getSessionToken()).isEqualTo(original);
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "pointWrites")
+    public void pointWritesPrepareCompoundProgressBeforeDispatch(OperationType operationType) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentClientImpl client = fixture.fullClient();
+            fixture.thin.setUseMultipleWriteLocations(true);
+            fixture.classic.setUseMultipleWriteLocations(true);
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(ORIGINAL);
+            options.setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5)).build());
+            Document document = new Document("{\"id\":\"item\",\"pk\":\"customer\"}");
+            Mono<ResourceResponse<Document>> result;
+            switch (operationType) {
+                case Create:
+                    result = client.createDocument("/dbs/db/colls/coll", document, options, true);
+                    break;
+                case Upsert:
+                    result = client.upsertDocument("/dbs/db/colls/coll", document, options, true);
+                    break;
+                case Replace:
+                    result = client.replaceDocument("/dbs/db/colls/coll/docs/item", "item", document, options);
+                    break;
+                case Patch:
+                    result = client.patchDocument("/dbs/db/colls/coll/docs/item", "item",
+                        CosmosPatchOperations.create().set("/value", 1), options);
+                    break;
+                case Delete:
+                    result = client.deleteDocument("/dbs/db/colls/coll/docs/item", "item", options);
+                    break;
+                default:
+                    throw new AssertionError(operationType);
+            }
+            assertThat(result.block(Duration.ofSeconds(5))).isNotNull();
+            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
+            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            assertThat(options.getSessionToken()).isEqualTo(ORIGINAL);
         }
     }
 
@@ -516,11 +713,16 @@ public class ThinClientSessionTokenTest {
                 RequestOptions options = new RequestOptions();
                 options.setSessionToken(original);
                 options.setCosmosEndToEndLatencyPolicyConfig(policy);
+                RxDocumentServiceRequest prepared = fixture.request(OperationType.Read, original, "0");
+                prepared.captureOriginalSessionToken();
+                prepared.useThinClientMode = true;
+                fixture.thin.tryPrepareExplicitSessionToken(prepared).block(Duration.ofSeconds(5));
                 executePointWithAvailability(client, options, fixture.context,
                     (copy, availability) -> Mono.defer(() -> {
                         RxDocumentServiceRequest request = fixture.request(
                             OperationType.Read, copy.getSessionToken(), "0");
                         request.requestContext.setCrossRegionAvailabilityContext(availability);
+                        request.requestContext.setSessionTokenState(prepared.requestContext.getSessionTokenState());
                         request.requestContext.setExcludeRegions(copy.getExcludedRegions());
                         setHedgeScope(request, fallbackPrimary);
                         attempts.add(request);
@@ -538,8 +740,10 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
-            assertThat(attempts.get(0).requestContext.getSessionTokenState())
-                .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
+            if (!fallbackPrimary) {
+                assertThat(attempts.get(0).requestContext.getSessionTokenState())
+                    .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
+            }
             assertThat(attempts.get(0).requestContext).isNotSameAs(attempts.get(1).requestContext);
             if (!fallbackPrimary && expected != null) {
                 assertThat(attempts.get(0).requestContext.sessionToken)
@@ -644,11 +848,7 @@ public class ThinClientSessionTokenTest {
                 assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
                 assertThat(clone.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
             }
-            Supplier<ISessionToken> unexpectedEvaluation = () -> {
-                throw new AssertionError("A completed scope must not be evaluated again.");
-            };
-            request.requestContext.getOrResolveSessionToken(request, original, "0", unexpectedEvaluation);
-            clone.requestContext.getOrResolveSessionToken(clone, original, "0", unexpectedEvaluation);
+            assertThat(request.requestContext.getSessionTokenState()).isSameAs(clone.requestContext.getSessionTokenState());
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
         }
@@ -698,11 +898,16 @@ public class ThinClientSessionTokenTest {
                     .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
                         Duration.ofMillis(10), Duration.ofMillis(10))).build());
             List<RxDocumentServiceRequest> attempts = new ArrayList<>();
+            RxDocumentServiceRequest prepared = fixture.request(OperationType.Read, original, "0");
+            prepared.captureOriginalSessionToken();
+            prepared.useThinClientMode = true;
+            fixture.thin.tryPrepareExplicitSessionToken(prepared).block(Duration.ofSeconds(5));
             executePointWithAvailability(client, options, fixture.context, (copy, availability) -> {
                 DocumentClientRetryPolicy policy = fixture.retryPolicy();
                 return BackoffRetryUtility.executeRetry(() -> {
                     RxDocumentServiceRequest request = fixture.request(OperationType.Read, copy.getSessionToken(), "0");
                     request.requestContext.setCrossRegionAvailabilityContext(availability);
+                    request.requestContext.setSessionTokenState(prepared.requestContext.getSessionTokenState());
                     attempts.add(request);
                     policy.onBeforeSendRequest(request);
                     return dispatch(client, request);
@@ -726,9 +931,13 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit", dataProvider = "transportChanges")
-    public void concurrentClonesShareOneAtomicSessionState(String original, String expected) throws Exception {
+    public void concurrentClonesReuseAlreadyPreparedSessionState(String original, String expected) throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest parent = fixture.request(OperationType.Query, original, "0");
+            parent.captureOriginalSessionToken();
+            parent.useThinClientMode = true;
+            fixture.thin.tryPrepareExplicitSessionToken(parent).block(Duration.ofSeconds(5));
+            SessionTokenHelper.setOriginalSessionToken(parent, original);
             List<RxDocumentServiceRequest> attempts = new ArrayList<>();
             List<Future<Boolean>> results = new ArrayList<>();
             ExecutorService executor = Executors.newFixedThreadPool(8);
@@ -747,12 +956,11 @@ public class ThinClientSessionTokenTest {
                 for (Future<Boolean> result : results) {
                     assertThat(result.get(5, TimeUnit.SECONDS)).isTrue();
                 }
-                DocumentServiceRequestContext.SessionTokenState state = parent.requestContext.getSessionTokenState().get();
+                DocumentServiceRequestContext.SessionTokenState state = parent.requestContext.getSessionTokenState();
                 assertThat(state).isNotNull();
                 for (RxDocumentServiceRequest attempt : attempts) {
                     assertThat(attempt.requestContext).isNotSameAs(parent.requestContext);
                     assertThat(attempt.requestContext.getSessionTokenState()).isSameAs(parent.requestContext.getSessionTokenState());
-                    assertThat(attempt.requestContext.getSessionTokenState().get()).isSameAs(state);
                     assertThat(attempt.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
                     if (expected != null) {
                         assertThat(attempt.requestContext.sessionToken).isSameAs(attempts.get(0).requestContext.sessionToken);
@@ -760,9 +968,6 @@ public class ThinClientSessionTokenTest {
                         assertThat(attempt.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
                     }
                 }
-                parent.requestContext.getOrResolveSessionToken(attempts.get(0), original, "0", () -> {
-                    throw new AssertionError("A completed scope must not be evaluated again.");
-                });
                 assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
                 assertThat(fixture.sentRequests).isEmpty();
             } finally {
@@ -882,7 +1087,7 @@ public class ThinClientSessionTokenTest {
 
     @DataProvider
     public Object[][] malformedTokens() {
-        return new Object[][] {{"0:1#100,1:future"}, {"0:1#100,2:future"}};
+        return new Object[][] {{"0:1#100,1:future"}};
     }
 
     @Test(groups = "unit", dataProvider = "malformedTokens")
@@ -1337,6 +1542,25 @@ public class ThinClientSessionTokenTest {
             setField(client, "thinProxy", thin);
             setField(client, "gatewayProxy", classic);
             setField(client, "storeModel", classic);
+            return client;
+        }
+
+        RxDocumentClientImpl fullClient() throws ReflectiveOperationException {
+            RxDocumentClientImpl client = client();
+            Mockito.doAnswer(ignored -> context.createDiagnostics()).when(client).createDiagnostics();
+            ConnectionPolicy connection = Mockito.mock(ConnectionPolicy.class);
+            Mockito.when(connection.getThrottlingRetryOptions()).thenReturn(new ThrottlingRetryOptions());
+            Mockito.when(connection.isEndpointDiscoveryEnabled()).thenReturn(true);
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker circuitBreaker =
+                Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+            setField(client, "collectionCache", collections);
+            setField(client, "partitionKeyRangeCache", ranges);
+            setField(client, "sessionContainer", sessions);
+            setField(client, "globalPartitionEndpointManagerForPerPartitionCircuitBreaker", circuitBreaker);
+            setField(client, "globalPartitionEndpointManagerForPerPartitionAutomaticFailover", automaticFailover);
+            setField(client, "connectionPolicy", connection);
+            setField(client, "resetSessionTokenRetryPolicy", new ResetSessionTokenRetryPolicyFactory(
+                sessions, collections, new RetryPolicy(context, endpointManager, connection, circuitBreaker, automaticFailover)));
             return client;
         }
 

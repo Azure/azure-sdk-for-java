@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCi
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
@@ -29,7 +28,15 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
-    private AtomicReference<DocumentServiceRequestContext.SessionTokenState> sessionTokenState;
+    private DocumentServiceRequestContext.SessionTokenState sessionTokenState;
+
+    public DocumentServiceRequestContext.SessionTokenState getSessionTokenState() {
+        return this.sessionTokenState;
+    }
+
+    public void setSessionTokenState(DocumentServiceRequestContext.SessionTokenState state) {
+        this.sessionTokenState = state;
+    }
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
@@ -49,14 +56,6 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
         return this.feedOperationContextForCircuitBreaker;
-    }
-
-    public AtomicReference<DocumentServiceRequestContext.SessionTokenState> getSessionTokenState() {
-        return this.sessionTokenState;
-    }
-
-    public void setSessionTokenState(AtomicReference<DocumentServiceRequestContext.SessionTokenState> state) {
-        this.sessionTokenState = state;
     }
 
     public AvailabilityStrategyContext getAvailabilityStrategyContext() {

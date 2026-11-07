@@ -1314,6 +1314,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return shouldApplySessionToken(request) ? resolveSessionToken(request, true) : Mono.just(true);
     }
 
+    public boolean tryPrepareExplicitSessionToken(
+        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
+        return !shouldApplySessionToken(request)
+            || SessionTokenHelper.prepareExplicitSessionToken(request, collection, routingMap);
+    }
+
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
@@ -1344,14 +1350,16 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 request.requestContext.sessionToken = null;
                 PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
                 PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-                if (range != null
-                    && request.requestContext.isSessionTokenScopeVerified(request, request.getOriginalSessionToken())
+                DocumentServiceRequestContext.SessionTokenState prepared = request.requestContext.getSessionTokenState();
+                if (prepared != null && prepared.matches(request, request.getOriginalSessionToken())
                     && (identity == null
-                    || (range.getId().equals(identity.getPartitionKeyRangeId())
+                    || (range != null && range.getId().equals(identity.getPartitionKeyRangeId())
                         && (identity.getCollectionRid() == null
                             || identity.getCollectionRid().equals(request.requestContext.resolvedCollectionRid))))) {
-                    SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
-                    return Mono.just(true);
+                    if (prepared.useThinClient()) {
+                        SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
+                    }
+                    return Mono.just(prepared.useThinClient());
                 }
             }
 
@@ -1384,17 +1392,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                             applyGlobalSessionToken(request);
                             return Mono.just(true);
                         }
-                        PartitionKeyRange range = SessionTokenHelper.resolveSessionTokenRange(
-                            request, collection, mapHolder.v, isExplicitCompoundSessionToken);
-                        if (isExplicitCompoundSessionToken && range == null) {
-                            return Mono.just(false);
-                        }
                         if (isExplicitCompoundSessionToken) {
-                            request.requestContext.resolvedPartitionKeyRange = range;
-                            if (!isExplicitSessionTokenScopeVerified(request, mapHolder.v)) {
+                            if (!SessionTokenHelper.prepareExplicitSessionToken(request, collection, mapHolder.v)) {
                                 return Mono.just(false);
                             }
+                            SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
+                            return Mono.just(true);
                         }
+                        PartitionKeyRange range = SessionTokenHelper.resolveSessionTokenRange(
+                            request, collection, mapHolder.v, false);
                         String rangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                         if (range != null || StringUtils.isNotEmpty(rangeId) || request.getPartitionKeyInternal() != null) {
                             request.requestContext.resolvedPartitionKeyRange = range;
@@ -1410,13 +1416,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     });
             });
         });
-    }
-
-    private boolean isExplicitSessionTokenScopeVerified(RxDocumentServiceRequest request, CollectionRoutingMap routingMap) {
-        String originalToken = request.getOriginalSessionToken();
-        SessionTokenHelper.resolveExplicitSessionTokenForRange(
-            request, originalToken, request.requestContext.resolvedPartitionKeyRange.getId());
-        return request.requestContext.verifySessionTokenScope(request, originalToken, routingMap);
     }
 
     private void applyGlobalSessionToken(RxDocumentServiceRequest request) {

@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 
@@ -36,10 +35,6 @@ public class SessionTokenHelper {
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
-    public static AtomicReference<DocumentServiceRequestContext.SessionTokenState> createSessionTokenState(String sessionToken) {
-        return isCompoundSessionToken(sessionToken) ? new AtomicReference<>() : null;
-    }
-
     public static boolean areSessionTokenRangesKnown(
         String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
         List<String> parents = target.getParents();
@@ -53,10 +48,20 @@ public class SessionTokenHelper {
         return true;
     }
 
-    public static ISessionToken resolveExplicitSessionTokenForRange(
-        RxDocumentServiceRequest request, String originalToken, String rangeId) {
-        return request.requestContext.getOrResolveSessionToken(
-            request, originalToken, rangeId, () -> getLocalSessionToken(request, originalToken, rangeId));
+    public static boolean prepareExplicitSessionToken(
+        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
+        String originalToken = request.getOriginalSessionToken();
+        PartitionKeyRange range = resolveSessionTokenRange(request, collection, routingMap, true);
+        request.requestContext.resolvedPartitionKeyRange = range;
+        DocumentServiceRequestContext.SessionTokenState previous = request.requestContext.getSessionTokenState();
+        if (previous != null && previous.matches(request, originalToken)) {
+            return previous.useThinClient();
+        }
+        boolean canScope = range != null && areSessionTokenRangesKnown(originalToken, routingMap, range);
+        ISessionToken token = canScope ? getLocalSessionToken(request, originalToken, range.getId()) : null;
+        request.requestContext.setSessionTokenState(new DocumentServiceRequestContext.SessionTokenState(
+            originalToken, collection.getResourceId(), range, token, canScope));
+        return canScope;
     }
 
     public static PartitionKeyRange resolveSessionTokenRange(
@@ -129,9 +134,10 @@ public class SessionTokenHelper {
 
         if (StringUtils.isNotEmpty(originalSessionToken)) {
             if (request.useThinClientMode && isCompoundSessionToken(request.getOriginalSessionToken())
-                && request.getOriginalSessionToken().equals(originalSessionToken)) {
-                request.requestContext.sessionToken =
-                    resolveExplicitSessionTokenForRange(request, originalSessionToken, partitionKeyRangeId);
+                && request.getOriginalSessionToken().equals(originalSessionToken)
+                && request.requestContext.getSessionTokenState() != null
+                && request.requestContext.getSessionTokenState().matches(request, originalSessionToken)) {
+                request.requestContext.sessionToken = request.requestContext.getSessionTokenState().getToken();
             } else {
                 request.requestContext.sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
             }

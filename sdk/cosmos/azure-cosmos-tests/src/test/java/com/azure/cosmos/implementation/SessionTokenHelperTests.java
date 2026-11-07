@@ -7,32 +7,21 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class SessionTokenHelperTests {
     @DataProvider
@@ -48,7 +37,6 @@ public class SessionTokenHelperTests {
     @Test(groups = "unit", dataProvider = "compoundSessionTokens")
     public void detectsCompoundTokensWithoutParsing(String token, boolean expected) {
         assertThat(SessionTokenHelper.isCompoundSessionToken(token)).isEqualTo(expected);
-        assertThat(SessionTokenHelper.createSessionTokenState(token) != null).isEqualTo(expected);
     }
 
     @DataProvider
@@ -57,222 +45,55 @@ public class SessionTokenHelperTests {
     }
 
     @Test(groups = "unit", dataProvider = "scopedOutcomes")
-    public void concurrentAttemptsComputeEachScopedOutcomeOnce(boolean unmatched) throws Exception {
-        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
-        String original = "0:1#100,1:1#200";
-        AtomicInteger evaluations = new AtomicInteger();
-        Supplier<ISessionToken> resolver = () -> {
-            evaluations.incrementAndGet();
-            return unmatched ? null : SessionTokenHelper.parse("1#100");
-        };
-        ExecutorService executor = Executors.newFixedThreadPool(8);
-        CyclicBarrier start = new CyclicBarrier(8);
-        try {
-            List<Future<ISessionToken>> results = new ArrayList<>();
-            for (int i = 0; i < 8; i++) {
-                RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
-                results.add(executor.submit(() -> {
-                    start.await(5, TimeUnit.SECONDS);
-                    return operationContext.getOrResolveSessionToken(request, original, "0", resolver);
-                }));
-            }
-            ISessionToken first = results.get(0).get(5, TimeUnit.SECONDS);
-            for (Future<ISessionToken> result : results) {
-                assertThat(result.get(5, TimeUnit.SECONDS)).isSameAs(first);
-            }
-            assertThat(evaluations.get()).isEqualTo(1);
-        } finally {
-            executor.shutdownNow();
-        }
-    }
-
-    @Test(groups = "unit")
-    public void scopesAreIsolatedByOperationTokenCollectionRangeAndParents() {
-        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
-        String original = "0:1#100,1:1#200";
-        AtomicInteger evaluations = new AtomicInteger();
-        Supplier<ISessionToken> resolver = () -> {
-            evaluations.incrementAndGet();
-            return SessionTokenHelper.parse("1#200");
-        };
-        RxDocumentServiceRequest request = scopeRequest("collection", "2", Arrays.asList("0", "1"));
-        ISessionToken first = operationContext.getOrResolveSessionToken(request, original, "2", resolver);
-        request.requestContext.resolvedPartitionKeyRange.setParents(Arrays.asList("1", "0"));
-        assertThat(operationContext.getOrResolveSessionToken(request, original, "2", resolver)).isSameAs(first);
-        assertThat(evaluations.get()).isEqualTo(1);
-
-        request.requestContext.resolvedPartitionKeyRange.setParents(Collections.singletonList("0"));
-        assertThat(operationContext.getOrResolveSessionToken(request, original, "2", resolver)).isNotSameAs(first);
-        assertThat(evaluations.get()).isEqualTo(2);
-        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("3", "", "FF",
-            Collections.singletonList("0"));
-        operationContext.getOrResolveSessionToken(request, original, "3", resolver);
-        assertThat(evaluations.get()).isEqualTo(3);
-        request.requestContext.resolvedCollectionRid = "recreated-collection";
-        operationContext.getOrResolveSessionToken(request, original, "3", resolver);
-        assertThat(evaluations.get()).isEqualTo(4);
-        operationContext.getOrResolveSessionToken(request, "0:1#300,1:1#400", "3", resolver);
-        assertThat(evaluations.get()).isEqualTo(5);
-
-        RxDocumentServiceRequest originalScope = scopeRequest("collection", "2", Arrays.asList("0", "1"));
-        assertThat(operationContext.getOrResolveSessionToken(originalScope, original, "2", resolver)).isNotSameAs(first);
-        assertThat(evaluations.get()).isEqualTo(6);
-        assertThat(new DocumentServiceRequestContext().getOrResolveSessionToken(originalScope, original, "2", resolver))
-            .isNotSameAs(first);
-        assertThat(evaluations.get()).isEqualTo(7);
-    }
-
-    @Test(groups = "unit")
-    public void failedPreparationDoesNotPublishATokenOrShareAnException() {
-        DocumentServiceRequestContext operationContext = new DocumentServiceRequestContext();
-        RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
-        String original = "0:1#100,1:invalid";
-        AtomicInteger evaluations = new AtomicInteger();
-        Supplier<ISessionToken> resolver = () -> {
-            evaluations.incrementAndGet();
-            return SessionTokenHelper.parse("invalid");
-        };
-        Throwable first = catchThrowable(
-            () -> operationContext.getOrResolveSessionToken(request, original, "0", resolver));
-        Throwable second = catchThrowable(
-            () -> operationContext.getOrResolveSessionToken(request, original, "0", resolver));
-        assertThat(first).hasRootCauseInstanceOf(BadRequestException.class);
-        assertThat(second).hasRootCauseInstanceOf(BadRequestException.class).isNotSameAs(first);
-        assertThat(second.getCause()).isNotSameAs(first.getCause());
-        assertThat(evaluations.get()).isEqualTo(2);
-        ISessionToken prior = operationContext.getOrResolveSessionToken(
-            request, "0:1#100,1:1#200", "0", () -> SessionTokenHelper.parse("1#100"));
-        assertThatThrownBy(() -> operationContext.getOrResolveSessionToken(request, original, "0", resolver))
-            .hasRootCauseInstanceOf(BadRequestException.class);
-        assertThat(operationContext.getOrResolveSessionToken(request, "0:1#100,1:1#200", "0", () -> {
-            throw new AssertionError("A failed scope must not discard the prior result.");
-        })).isSameAs(prior);
-    }
-
-    @Test(groups = "unit")
-    public void concurrentFailuresBelongToTheirOwnRequests() throws Exception {
-        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
-        ExecutorService executor = Executors.newFixedThreadPool(8);
-        CyclicBarrier start = new CyclicBarrier(8);
-        AtomicInteger evaluations = new AtomicInteger();
-        try {
-            List<Future<Throwable>> results = new ArrayList<>();
-            for (int i = 0; i < 8; i++) {
-                RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
-                results.add(executor.submit(() -> {
-                    start.await(5, TimeUnit.SECONDS);
-                    return catchThrowable(() -> context.getOrResolveSessionToken(request, "0:invalid,1:invalid", "0", () -> {
-                        evaluations.incrementAndGet();
-                        return SessionTokenHelper.parse("invalid");
-                    }));
-                }));
-            }
-            HashSet<Throwable> causes = new HashSet<>();
-            for (Future<Throwable> result : results) {
-                Throwable failure = result.get(5, TimeUnit.SECONDS);
-                assertThat(failure).hasRootCauseInstanceOf(BadRequestException.class);
-                assertThat(causes.add(failure.getCause())).isTrue();
-            }
-            assertThat(evaluations.get()).isEqualTo(8);
-            assertThat(context.getSessionTokenState().get()).isNull();
-        } finally {
-            executor.shutdownNow();
-        }
-    }
-
-    @DataProvider
-    public Object[][] oldScopeResults() {
-        return new Object[][] {{false}, {true}};
-    }
-
-    @Test(groups = "unit", dataProvider = "oldScopeResults")
-    public void obsoleteCompletionCannotEraseANewerScope(boolean failOld) throws Exception {
-        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
-        RxDocumentServiceRequest oldRequest = scopeRequest("collection", "0", Collections.emptyList());
-        RxDocumentServiceRequest newRequest = scopeRequest("collection", "1", Collections.emptyList());
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        CountDownLatch started = new CountDownLatch(1);
-        CompletableFuture<Void> release = new CompletableFuture<>();
-        RuntimeException failure = new IllegalArgumentException("old scope failure");
-        try {
-            Future<ISessionToken> old = executor.submit(() ->
-                context.getOrResolveSessionToken(oldRequest, "0:1#100,1:1#200", "0", () -> {
-                    started.countDown();
-                    release.join();
-                    if (failOld) {
-                        throw failure;
-                    }
-                    return SessionTokenHelper.parse("1#100");
-                }));
-            assertThat(started.await(5, TimeUnit.SECONDS)).isTrue();
-            ISessionToken newer = executor.submit(() -> context.getOrResolveSessionToken(
-                newRequest, "0:1#100,1:1#200", "1", () -> SessionTokenHelper.parse("1#200")))
-                .get(5, TimeUnit.SECONDS);
-            release.complete(null);
-            if (failOld) {
-                assertThat(catchThrowable(() -> old.get(5, TimeUnit.SECONDS)).getCause()).isSameAs(failure);
-            } else {
-                assertThat(old.get(5, TimeUnit.SECONDS).convertToString()).isEqualTo("1#100");
-            }
-            assertThat(context.getOrResolveSessionToken(newRequest, "0:1#100,1:1#200", "1", () -> {
-                throw new AssertionError("The newer scope must remain published.");
-            })).isSameAs(newer);
-        } finally {
-            release.complete(null);
-            executor.shutdownNow();
-        }
-    }
-
-    @Test(groups = "unit")
-    public void obsoleteVerificationCannotVerifyANewerScope() throws Exception {
+    public void preparedStateIsReusedWithoutScopingAgain(boolean unmatched) {
         CollectionRoutingMap map = Mockito.spy(routingMap(
             new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF")));
-        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
-        RxDocumentServiceRequest first = scopeRequest(map.getCollectionUniqueId(), "0", Collections.emptyList());
-        RxDocumentServiceRequest second = scopeRequest(map.getCollectionUniqueId(), "1", Collections.emptyList());
-        String original = "0:1#100,1:1#200";
-        context.getOrResolveSessionToken(first, original, "0", () -> SessionTokenHelper.parse("1#100"));
-        CountDownLatch started = new CountDownLatch(1);
-        CompletableFuture<Void> release = new CompletableFuture<>();
-        Mockito.doAnswer(invocation -> {
-            started.countDown();
-            release.join();
-            return invocation.callRealMethod();
-        }).when(map).tryGetRangeByPartitionKeyRangeId("0");
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        try {
-            Future<Boolean> verification = executor.submit(() -> context.verifySessionTokenScope(first, original, map));
-            assertThat(started.await(5, TimeUnit.SECONDS)).isTrue();
-            executor.submit(() ->
-                context.getOrResolveSessionToken(second, original, "1", () -> SessionTokenHelper.parse("1#200")))
-                .get(5, TimeUnit.SECONDS);
-            release.complete(null);
-            assertThat(verification.get(5, TimeUnit.SECONDS)).isTrue();
-            assertThat(context.isSessionTokenScopeVerified(first, original)).isFalse();
-            assertThat(context.isSessionTokenScopeVerified(second, original)).isFalse();
-            assertThat(context.verifySessionTokenScope(second, original, map)).isTrue();
-            assertThat(context.isSessionTokenScopeVerified(second, original)).isTrue();
-        } finally {
-            release.complete(null);
-            executor.shutdownNow();
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(map.getCollectionUniqueId());
+        RxDocumentServiceRequest request = scopeRequest(collection.getResourceId(), "0", Collections.emptyList());
+        String original = unmatched ? "1:1#100,1:1#200" : "0:1#100,1:1#200";
+        request.setOriginalSessionToken(original);
+        assertThat(SessionTokenHelper.prepareExplicitSessionToken(request, collection, map)).isTrue();
+        DocumentServiceRequestContext.SessionTokenState prepared = request.requestContext.getSessionTokenState();
+        Mockito.clearInvocations(map);
+        for (int i = 0; i < 8; i++) {
+            RxDocumentServiceRequest clone = request.clone();
+            clone.requestContext.sessionToken = null;
+            assertThat(SessionTokenHelper.prepareExplicitSessionToken(clone, collection, map)).isTrue();
+            assertThat(clone.requestContext.getSessionTokenState()).isSameAs(prepared);
+        }
+        Mockito.verify(map, Mockito.times(8)).tryGetRangeByPartitionKeyRangeId("0");
+        Mockito.verify(map, Mockito.never()).tryGetRangeByPartitionKeyRangeId("1");
+        if (unmatched) {
+            assertThat(prepared.getToken()).isNull();
+        } else {
+            assertThat(prepared.getToken().convertToString()).isEqualTo("1#100");
         }
     }
 
     @Test(groups = "unit")
-    public void resettingAttemptTokenDoesNotInvalidateSharedProgress() {
-        RxDocumentServiceRequest request = scopeRequest("collection", "0", Collections.emptyList());
-        DocumentServiceRequestContext operationContext = request.requestContext;
-        AtomicInteger evaluations = new AtomicInteger();
-        Supplier<ISessionToken> resolver = () -> {
-            evaluations.incrementAndGet();
-            return SessionTokenHelper.parse("1#100");
-        };
-        ISessionToken first = operationContext.getOrResolveSessionToken(request, "0:1#100,1:1#200", "0", resolver);
-        request.requestContext.sessionToken = first;
-        request.requestContext.sessionToken = null;
-        assertThat(operationContext.getOrResolveSessionToken(request, "0:1#100,1:1#200", "0", resolver))
-            .isSameAs(first);
-        assertThat(evaluations.get()).isEqualTo(1);
+    public void transportIsDecidedBeforeParsingAndSiblingScopesRemainIndependent() {
+        CollectionRoutingMap parentMap = routingMap(
+            new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"));
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(parentMap.getCollectionUniqueId());
+        RxDocumentServiceRequest request = scopeRequest(collection.getResourceId(), "1", Collections.emptyList());
+        request.setOriginalSessionToken("0:1#100,2:future");
+        assertThat(SessionTokenHelper.prepareExplicitSessionToken(request, collection, parentMap)).isFalse();
+        DocumentServiceRequestContext.SessionTokenState fallback = request.requestContext.getSessionTokenState();
+        RxDocumentServiceRequest sibling = request.clone();
+        CollectionRoutingMap childMap = routingMap(
+            new PartitionKeyRange("0", "", "80"),
+            new PartitionKeyRange("2", "80", "FF", Collections.singletonList("1")));
+        sibling.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("2"));
+        assertThatThrownBy(() -> SessionTokenHelper.prepareExplicitSessionToken(sibling, collection, childMap))
+            .hasRootCauseInstanceOf(BadRequestException.class);
+        assertThat(request.requestContext.getSessionTokenState()).isSameAs(fallback);
+        sibling.setOriginalSessionToken("0:1#100,2:1#200");
+        assertThat(SessionTokenHelper.prepareExplicitSessionToken(sibling, collection, childMap)).isTrue();
+        assertThat(sibling.requestContext.getSessionTokenState()).isNotSameAs(fallback);
+        assertThat(sibling.requestContext.getSessionTokenState().getToken().convertToString()).isEqualTo("1#200");
+        assertThat(request.requestContext.getSessionTokenState().useThinClient()).isFalse();
     }
 
     private static RxDocumentServiceRequest scopeRequest(String collectionRid, String rangeId, List<String> parents) {
@@ -280,38 +101,30 @@ public class SessionTokenHelperTests {
             mockDiagnosticsClientContext(), OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
         request.requestContext.resolvedCollectionRid = collectionRid;
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(rangeId, "", "FF", parents);
+        request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(rangeId));
         return request;
     }
 
     @Test(groups = "unit")
-    public void verifiesTokenRangesOncePerScopeWithoutRetainingRoutingSnapshot() {
-        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
+    public void recognizesOnlyActiveRangesAndTargetParents() {
         CollectionRoutingMap beforeSplit = Mockito.spy(routingMap(
             new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF")));
         String original = "0:1#100,1:1#200";
         RxDocumentServiceRequest request = scopeRequest(beforeSplit.getCollectionUniqueId(), "0", Collections.emptyList());
-        context.getOrResolveSessionToken(request, original, "0", () -> SessionTokenHelper.parse("1#100"));
-        assertThat(context.verifySessionTokenScope(request, original, beforeSplit)).isTrue();
-        assertThat(context.verifySessionTokenScope(request, original, beforeSplit)).isTrue();
-        assertThat(context.isSessionTokenScopeVerified(request, original)).isTrue();
-        Mockito.verify(beforeSplit).tryGetRangeByPartitionKeyRangeId("0");
-        Mockito.verify(beforeSplit).tryGetRangeByPartitionKeyRangeId("1");
-        assertThat(context.verifySessionTokenScope(request, "0:1#100,2:1#200", beforeSplit)).isFalse();
+        assertThat(SessionTokenHelper.areSessionTokenRangesKnown(original, beforeSplit, request.requestContext.resolvedPartitionKeyRange)).isTrue();
+        assertThat(SessionTokenHelper.areSessionTokenRangesKnown("0:1#100,2:1#200", beforeSplit, request.requestContext.resolvedPartitionKeyRange)).isFalse();
 
         CollectionRoutingMap afterSplit = routingMap(
             new PartitionKeyRange("0", "", "80"),
             new PartitionKeyRange("2", "80", "FF", Collections.singletonList("1")));
         request.requestContext.resolvedPartitionKeyRange = afterSplit.getRangeByPartitionKeyRangeId("2");
-        assertThat(context.isSessionTokenScopeVerified(request, original)).isFalse();
-        context.getOrResolveSessionToken(request, "1:1#100,2:1#200", "2", () -> SessionTokenHelper.parse("1#200"));
-        assertThat(context.verifySessionTokenScope(request, "1:1#100,2:1#200", afterSplit)).isTrue();
-        assertThat(context.verifySessionTokenScope(request, "1:1#100,3:1#200", afterSplit)).isFalse();
+        assertThat(SessionTokenHelper.areSessionTokenRangesKnown("1:1#100,2:1#200", afterSplit, request.requestContext.resolvedPartitionKeyRange)).isTrue();
+        assertThat(SessionTokenHelper.areSessionTokenRangesKnown("1:1#100,3:1#200", afterSplit, request.requestContext.resolvedPartitionKeyRange)).isFalse();
         CollectionRoutingMap unrelatedParent = routingMap(
             new PartitionKeyRange("2", "", "80", Collections.singletonList("1")),
             new PartitionKeyRange("3", "80", "FF", Collections.singletonList("0")));
         request.requestContext.resolvedPartitionKeyRange = unrelatedParent.getRangeByPartitionKeyRangeId("2");
-        context.getOrResolveSessionToken(request, "0:1#100,3:1#200", "2", () -> null);
-        assertThat(context.verifySessionTokenScope(request, "0:1#100,3:1#200", unrelatedParent)).isFalse();
+        assertThat(SessionTokenHelper.areSessionTokenRangesKnown("0:1#100,3:1#200", unrelatedParent, request.requestContext.resolvedPartitionKeyRange)).isFalse();
     }
 
     @DataProvider

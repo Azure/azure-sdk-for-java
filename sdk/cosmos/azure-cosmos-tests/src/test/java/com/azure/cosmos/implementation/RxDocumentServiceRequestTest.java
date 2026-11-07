@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.http.HttpTransportSerializer;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.Mockito;
@@ -483,13 +484,22 @@ public class RxDocumentServiceRequestTest {
     }
 
     @Test(groups = "unit")
-    public void clonesShareOperationScopeBeforeAndAfterHeaderPreparation() {
+    public void clonesCarryAlreadyPreparedSessionState() {
         RxDocumentServiceRequest original = RxDocumentServiceRequest.createFromName(
             mockDiagnosticsClientContext(), OperationType.Query, "/dbs/db/colls/coll/docs", ResourceType.Document);
         original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, "0:1#100,1:1#200");
+        original.captureOriginalSessionToken();
+        original.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("0"));
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId("ccZ1ANCszwk=");
+        original.requestContext.resolvedCollectionRid = collection.getResourceId();
+        assertThat(SessionTokenHelper.prepareExplicitSessionToken(original, collection,
+            SessionTokenHelperTests.routingMap(new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"))))
+            .isTrue();
         RxDocumentServiceRequest first = original.clone();
         RxDocumentServiceRequest second = original.clone();
-        assertThat(first.requestContext.getSessionTokenState()).isSameAs(original.requestContext.getSessionTokenState());
+        assertThat(first.requestContext.getSessionTokenState()).isNotNull()
+            .isSameAs(original.requestContext.getSessionTokenState());
         assertThat(second.requestContext.getSessionTokenState()).isSameAs(first.requestContext.getSessionTokenState());
 
         first.captureOriginalSessionToken();
