@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.models.FeedRange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,6 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 // Only used in CFP when customer configure throughput control config
 // The main purpose of this class is to create corresponding throughput control group for each feed range
 public class FeedRangeThroughputControlConfigManager {
+    private static final Logger logger = LoggerFactory.getLogger(FeedRangeThroughputControlConfigManager.class);
 
     private final ThroughputControlGroupConfig throughputControlGroupConfig;
     private final ChangeFeedContextClient documentClient;
@@ -36,12 +39,24 @@ public class FeedRangeThroughputControlConfigManager {
 
         // for pkRange leases, it has only been used to support for split
         // the lease feed range and partition key range is always a 1:1 mapping
-        // throughput control internally will divide the target RU across all pk ranges
-        // so all pk ranges can use the same local throughput control group
+        // for local throughput control, throughput control internally will divide the target RU across all pk ranges
+        // so all pk ranges can use the same local throughput control group. Throughput bucket uses server
+        // throughput control and can also share the same group across all pk ranges.
         // Note: if global throughput control be added in future, then we will need to create one group per pkRange
 
         if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
-            this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
+            if (this.throughputControlGroupConfig.getThroughputBucket() != null) {
+                try {
+                    this.documentClient.getContainerClient()
+                        .enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+                } catch (Exception ex) {
+                    logger.warn(
+                        "Enable server throughput control group failed, continuing without throughput control.",
+                        ex);
+                }
+            } else {
+                this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
+            }
         }
 
         return this.throughputControlGroupConfig;
