@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -18,7 +17,7 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
  *   <li>Not live in the implementation package or any of its sub-packages.</li>
  * </ol>
  */
-public class HttpPipelinePolicyCheck extends AbstractCheck {
+public class HttpPipelinePolicyCheck extends SdkCheck {
     private static final String HTTP_PIPELINE_POLICY = "HttpPipelinePolicy";
     private boolean isImplementationPackage;
 
@@ -44,7 +43,16 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
     }
 
     @Override
+    public void beginTree(DetailAST rootAST) {
+        super.beginTree(rootAST);
+        isImplementationPackage = false;
+    }
+
+    @Override
     public void visitToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (token.getType() == TokenTypes.PACKAGE_DEF) {
             final String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
             isImplementationPackage = packageName.contains("implementation");

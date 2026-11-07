@@ -5,16 +5,20 @@ package io.clientcore.linting.extensions.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ExceptionCreatedButNotThrownCheckTest extends AbstractModuleTestSupport {
+public class ClientCoreExceptionPolicyTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(ExceptionCreatedButNotThrownCheck.class));
+        DefaultConfiguration check = createModuleConfig(ExceptionHandlingCheck.class);
+        check.addProperty("checkUnthrownExceptions", "false");
+        check.addProperty("checkCaughtExceptionCause", "false");
+        checker = createChecker(check);
     }
 
     @AfterEach
@@ -28,8 +32,10 @@ public class ExceptionCreatedButNotThrownCheckTest extends AbstractModuleTestSup
     }
 
     @Test
-    public void throwCreatedException() throws Exception {
-        String[] expected = { "8:32: " + ExceptionCreatedButNotThrownCheck.ERROR_MESSAGE };
-        verify(checker, getPath("ThrowCreatedExceptionCheckTestData.java"), expected);
+    public void logNewExceptionTestData() throws Exception {
+        String[] expected = {
+            "8:15: " + ExceptionHandlingCheck.RAW_EXCEPTION_ERROR,
+            "13:33: " + ExceptionHandlingCheck.RAW_EXCEPTION_ERROR, };
+        verify(checker, getPath("LogNewExceptionCheckTestData.java"), expected);
     }
 }

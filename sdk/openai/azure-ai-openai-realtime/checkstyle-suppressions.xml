@@ -7,7 +7,7 @@
   <suppress files="com.azure.ai.openai.realtime.models.RealtimeRequestMessageItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.ai.openai.realtime.models.RealtimeRequestSystemMessageItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.MessageDecoder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.MessageEncoder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.WebSocketSessionNettyImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.MessageDecoder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.MessageEncoder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.ai.openai.realtime.implementation.websocket.WebSocketSessionNettyImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

@@ -3,16 +3,12 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -37,7 +33,7 @@ import java.util.Map;
  * </li>
  * </ol>
  */
-public class ServiceClientCheck extends AbstractCheck {
+public class ServiceClientCheck extends SdkCheck {
     private static final String ASYNC = "Async";
     private static final String SERVICE_CLIENT = "ServiceClient";
     private static final String BUILDER = "builder";
@@ -80,9 +76,6 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String SYNC_CONTEXT_ERROR
         = "Synchronous method with annotation @ServiceMethod must have ''%s'', ''%s'' or ''%s'' as a method parameter.";
 
-    // Add all imported classes into a map, key is the name of class and value is the full package path of class.
-    private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
-
     private boolean isAsync;
     private boolean isServiceClientAnnotation;
 
@@ -104,25 +97,22 @@ public class ServiceClientCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {
-            TokenTypes.IMPORT,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.CTOR_DEF,
-            TokenTypes.METHOD_DEF,
-            TokenTypes.OBJBLOCK };
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF, TokenTypes.OBJBLOCK };
     }
 
     @Override
     public void beginTree(DetailAST root) {
+        super.beginTree(root);
         isServiceClientAnnotation = false;
         isAsync = false;
     }
 
     @Override
     public void visitToken(DetailAST token) {
-        if (token.getType() == TokenTypes.IMPORT) {
-            addImportedClassPath(token);
-        } else if (token.getType() == TokenTypes.CLASS_DEF) {
+        if (isIgnoredSource()) {
+            return;
+        }
+        if (token.getType() == TokenTypes.CLASS_DEF) {
             isServiceClientAnnotation = hasServiceClientAnnotation(token);
             if (!isServiceClientAnnotation) {
                 return;
@@ -246,6 +236,8 @@ public class ServiceClientCheck extends AbstractCheck {
             return annotationIdentToken != null && "ServiceMethod".equals(annotationIdentToken.getText());
         }).ifPresent(serviceMethodAnnotation -> {
             final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
+            final String returnType
+                = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
             // 1) Methods should not have "Async" added to the method name
             if (methodName.contains(ASYNC)) {
@@ -254,14 +246,14 @@ public class ServiceClientCheck extends AbstractCheck {
             }
 
             // 2) The return type of async and sync clients should be as per guidelines
-            checkServiceClientMethodReturnType(methodDefToken, serviceMethodAnnotation, methodName);
+            checkServiceClientMethodReturnType(methodDefToken, serviceMethodAnnotation, methodName, returnType);
 
             // 3) Check 'withResponse' naming pattern
-            checkReturnTypeNamingPattern(methodDefToken, methodName);
+            checkReturnTypeNamingPattern(methodDefToken, methodName, returnType);
 
             // 4) Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
             // Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
-            checkContextInRightPlace(methodDefToken);
+            checkContextInRightPlace(methodDefToken, returnType);
         });
     }
 
@@ -278,7 +270,7 @@ public class ServiceClientCheck extends AbstractCheck {
      * if found. return the value of member'return'.
      */
     private void checkServiceClientMethodReturnType(DetailAST methodDefToken, DetailAST serviceMethodAnnotation,
-        String methodName) {
+        String methodName, String returnType) {
         // Find the annotation member 'returns' value
         TokenUtil
             .findFirstTokenByPredicate(serviceMethodAnnotation,
@@ -288,9 +280,6 @@ public class ServiceClientCheck extends AbstractCheck {
             .ifPresent(valueOptions -> {
                 String returnsAnnotationMemberValue
                     = FullIdent.createFullIdentBelow(valueOptions.findFirstToken(TokenTypes.EXPR)).getText();
-
-                String returnType
-                    = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
                 if (isAsync) {
                     if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
@@ -351,11 +340,7 @@ public class ServiceClientCheck extends AbstractCheck {
      *
      * @param methodDefToken METHOD_DEF AST node
      */
-    private void checkReturnTypeNamingPattern(DetailAST methodDefToken, String methodName) {
-        final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
-        // Use recursion to get the return type
-        final String returnType = getReturnType(typeToken, new StringBuilder()).toString();
-
+    private void checkReturnTypeNamingPattern(DetailAST methodDefToken, String methodName, String returnType) {
         if (methodName.endsWith(WITH_RESPONSE)) {
             if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET)) {
                 log(methodDefToken,
@@ -376,39 +361,24 @@ public class ServiceClientCheck extends AbstractCheck {
      *
      * @param methodDefToken METHOD_DEF AST token
      */
-    private void checkContextInRightPlace(DetailAST methodDefToken) {
+    private void checkContextInRightPlace(DetailAST methodDefToken, String returnType) {
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
-        final String returnType
-            = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
-
-        boolean containsContextParameter = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
-            if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
-                return false;
+        boolean containsContextParameter = false;
+        boolean containsRequestOptionsParameter = false;
+        boolean containsRequestContextParameter = false;
+        for (DetailAST parameter = parametersToken.getFirstChild(); parameter != null;
+            parameter = parameter.getNextSibling()) {
+            if (parameter.getType() != TokenTypes.PARAMETER_DEF) {
+                continue;
             }
-            final DetailAST paramTypeIdentToken
-                = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
-            return paramTypeIdentToken != null && CONTEXT.equals(paramTypeIdentToken.getText());
-        }).isPresent();
-
-        boolean containsRequestOptionsParameter
-            = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
-                if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
-                    return false;
-                }
-                final DetailAST paramTypeIdentToken
-                    = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
-                return paramTypeIdentToken != null && REQUEST_OPTIONS.equals(paramTypeIdentToken.getText());
-            }).isPresent();
-
-        boolean containsRequestContextParameter
-            = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
-                if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
-                    return false;
-                }
-                final DetailAST paramTypeIdentToken
-                    = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
-                return paramTypeIdentToken != null && REQUEST_CONTEXT.equals(paramTypeIdentToken.getText());
-            }).isPresent();
+            DetailAST type = parameter.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
+            if (type != null) {
+                String name = type.getText();
+                containsContextParameter |= CONTEXT.equals(name);
+                containsRequestOptionsParameter |= REQUEST_OPTIONS.equals(name);
+                containsRequestContextParameter |= REQUEST_CONTEXT.equals(name);
+            }
+        }
 
         if (containsContextParameter) {
             // MONO and PagedFlux return type implies Asynchronous method
@@ -445,17 +415,6 @@ public class ServiceClientCheck extends AbstractCheck {
             this.isAsync = isAsyncServiceClient(annotationOptions);
             return true;
         }).orElse(false);
-    }
-
-    /**
-     * Add all imported classes into a map, key is the name of class and value is the full package path of class.
-     *
-     * @param token the IMPORT AST node
-     */
-    private void addImportedClassPath(DetailAST token) {
-        final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
-        final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
-        simpleClassNameToQualifiedNameMap.put(className, importClassPath);
     }
 
     /**

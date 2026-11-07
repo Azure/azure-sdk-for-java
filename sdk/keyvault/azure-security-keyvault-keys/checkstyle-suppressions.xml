@@ -6,9 +6,9 @@
   <suppress files="com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.security.keyvault.keys.cryptography.CryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesCbc.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesCbcPad.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.EcKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.RsaKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesCbc.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesCbcPad.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.AesKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.EcKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.RsaKeyCryptographyClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

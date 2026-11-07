@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -30,7 +29,7 @@ import java.util.Set;
  * On finish tree, check what non-final fields get a value only in constructor and nowhere else by looking for
  * strings inside nonFinalFields AND assignmentsFromConstructor but NOT in assignmentsFromMethods
  */
-public class EnforceFinalFieldsCheck extends AbstractCheck {
+public class EnforceFinalFieldsCheck extends SdkCheck {
     private static final String ERROR_SUGGESTION
         = "You should consider making the field final, or suppressing the warning.";
     private static final String ERROR_MSG
@@ -88,6 +87,17 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
+        super.beginTree(root);
+        scopeParent = null;
+        currentScopeParameterSet = null;
+        variablesInScope = null;
+        currentClassName = null;
+        if (isIgnoredSource()) {
+            nonFinalFields = null;
+            assignmentsFromConstructor = null;
+            assignmentsFromMethods = null;
+            return;
+        }
         nonFinalFields = new ArrayList<>();
         assignmentsFromConstructor = new HashSet<>();
         assignmentsFromMethods = new HashSet<>();
@@ -95,6 +105,9 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 this.currentClassName = token.findFirstToken(TokenTypes.IDENT).getText();
@@ -134,6 +147,9 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         switch (token.getType()) {
             case TokenTypes.METHOD_DEF:
             case TokenTypes.CTOR_DEF:
@@ -149,6 +165,9 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
 
     @Override
     public void finishTree(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         for (DetailAST field : nonFinalFields) {
             final String fieldName = field.findFirstToken(TokenTypes.IDENT).getText();
             if (assignmentsFromConstructor.contains(fieldName) && !assignmentsFromMethods.contains(fieldName)) {
