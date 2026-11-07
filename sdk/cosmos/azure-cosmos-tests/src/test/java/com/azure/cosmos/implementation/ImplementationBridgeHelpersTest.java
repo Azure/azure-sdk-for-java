@@ -14,6 +14,9 @@ import org.testng.annotations.Test;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
@@ -30,18 +33,16 @@ import static org.assertj.core.api.Assertions.fail;
 public class ImplementationBridgeHelpersTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
+    private static final String HELPER_CLASS_SUFFIX = "Helper";
+    private static final Class<?>[] DECLARED_CLASSES = ImplementationBridgeHelpers.class.getDeclaredClasses();
 
     @Test(groups = { "unit" })
     public void accessorInitialization() {
 
-        String helperClassSuffix = "Helper";
-
-        Class<?>[] declaredClasses = ImplementationBridgeHelpers.class.getDeclaredClasses();
-
         try {
-            for (Class<?> declaredClass : declaredClasses) {
+            for (Class<?> declaredClass : DECLARED_CLASSES) {
 
-                if (declaredClass.getSimpleName().endsWith(helperClassSuffix)) {
+                if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
 
                     Field[] fields = declaredClass.getDeclaredFields();
                     boolean isAccessorReset = false;
@@ -72,11 +73,9 @@ public class ImplementationBridgeHelpersTest {
             ModelBridgeInternal.initializeAllAccessors();
             UtilBridgeInternal.initializeAllAccessors();
 
-            declaredClasses = ImplementationBridgeHelpers.class.getDeclaredClasses();
+            for (Class<?> declaredClass : DECLARED_CLASSES) {
 
-            for (Class<?> declaredClass : declaredClasses) {
-
-                if (declaredClass.getSimpleName().endsWith(helperClassSuffix)) {
+                if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
 
                     logger.info("Helper class name : {}", declaredClass.getSimpleName());
 
@@ -706,5 +705,119 @@ public class ImplementationBridgeHelpersTest {
                 + "Use 'private static XxxAccessor xxx() { return getXxxAccessor(); }' instead.\n"
                 + "Violations:\n" + String.join("\n", violations))
             .isEmpty();
+    }
+
+    @Test(groups = { "unit" })
+    public void accessorInitializationFromAccessorGetter() throws ReflectiveOperationException {
+        int accessorGetterCount = 0;
+
+        for (Class<?> declaredClass : DECLARED_CLASSES) {
+            if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
+                boolean helperAccessorGetterInvoked = false;
+
+                for (Method method : declaredClass.getDeclaredMethods()) {
+                    if (isAccessorGetter(method)) {
+                        resetAccessorReferences();
+                        assertThat(method.invoke(null)).isNotNull();
+
+                        helperAccessorGetterInvoked = true;
+                        accessorGetterCount++;
+                    }
+                }
+
+                assertThat(helperAccessorGetterInvoked).isTrue();
+            }
+        }
+
+        assertThat(accessorGetterCount).isGreaterThan(0);
+    }
+
+    @Test(groups = { "unit" })
+    public void accessorSettersKeepExistingAccessor() throws ReflectiveOperationException {
+        int accessorSetterCount = 0;
+
+        try {
+            for (Class<?> declaredClass : DECLARED_CLASSES) {
+                if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
+                    boolean helperAccessorSetterInvoked = false;
+
+                    for (Method method : declaredClass.getDeclaredMethods()) {
+                        if (isAccessorSetter(method)) {
+                            Method getter = findAccessorGetter(declaredClass, method.getParameterTypes()[0]);
+                            Object firstAccessor = proxyAccessor(method.getParameterTypes()[0]);
+                            Object secondAccessor = proxyAccessor(method.getParameterTypes()[0]);
+
+                            resetAccessorReferences();
+                            method.invoke(null, firstAccessor);
+                            method.invoke(null, secondAccessor);
+
+                            assertThat(getter.invoke(null)).isSameAs(firstAccessor);
+                            helperAccessorSetterInvoked = true;
+                            accessorSetterCount++;
+                        }
+                    }
+
+                    assertThat(helperAccessorSetterInvoked).isTrue();
+                }
+            }
+        } finally {
+            restoreAccessorReferences();
+        }
+
+        assertThat(accessorSetterCount).isGreaterThan(0);
+    }
+
+    private static boolean isAccessorGetter(Method method) {
+        return Modifier.isStatic(method.getModifiers())
+            && method.getParameterCount() == 0
+            && method.getName().startsWith("get")
+            && method.getReturnType().getSimpleName().endsWith("Accessor");
+    }
+
+    private static boolean isAccessorSetter(Method method) {
+        return Modifier.isStatic(method.getModifiers())
+            && method.getParameterCount() == 1
+            && method.getName().startsWith("set")
+            && method.getParameterTypes()[0].getSimpleName().endsWith("Accessor");
+    }
+
+    private static Method findAccessorGetter(Class<?> declaredClass, Class<?> accessorType) {
+        for (Method method : declaredClass.getDeclaredMethods()) {
+            if (isAccessorGetter(method) && method.getReturnType().equals(accessorType)) {
+                return method;
+            }
+        }
+
+        throw new AssertionError("No accessor getter found for " + accessorType.getName());
+    }
+
+    private static Object proxyAccessor(Class<?> accessorType) {
+        return Proxy.newProxyInstance(
+            accessorType.getClassLoader(),
+            new Class<?>[] { accessorType },
+            (proxy, method, args) -> null);
+    }
+
+    private static void restoreAccessorReferences() throws IllegalAccessException {
+        resetAccessorReferences();
+        ImplementationBridgeHelpers.initializeAllAccessors();
+    }
+
+    private static void resetAccessorReferences() throws IllegalAccessException {
+        for (Class<?> declaredClass : DECLARED_CLASSES) {
+            if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
+                for (Field field : declaredClass.getDeclaredFields()) {
+                    if (field.getName().contains("accessor")) {
+                        field.setAccessible(true);
+                        ((AtomicReference<?>) FieldUtils.readStaticField(field)).set(null);
+                    }
+
+                    if (field.getName().contains("ClassLoaded")) {
+                        field.setAccessible(true);
+                        ((AtomicBoolean) FieldUtils.readStaticField(field)).set(false);
+                    }
+                }
+            }
+        }
     }
 }
