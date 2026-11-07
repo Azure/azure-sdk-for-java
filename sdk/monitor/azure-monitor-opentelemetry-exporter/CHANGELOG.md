@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Route internal SDKStats using OneSettings data-boundary connection strings, with the existing Breeze connection string as the fallback.
+
 ### Breaking Changes
 
 ### Bugs Fixed
