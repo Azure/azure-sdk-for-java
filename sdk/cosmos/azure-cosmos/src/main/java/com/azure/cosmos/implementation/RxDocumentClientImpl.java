@@ -7568,12 +7568,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceRequest> prepareSessionTokenForAttempt(RxDocumentServiceRequest request) {
         request.captureOriginalSessionToken();
-        boolean explicitCompound = SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken());
-        if (explicitCompound) {
+        boolean isExplicitCompoundSessionToken = SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken());
+        if (isExplicitCompoundSessionToken) {
             SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
         }
         request.useThinClientMode = !request.useGatewayMode && useThinClientStoreModel(request);
-        if (!request.useThinClientMode || !explicitCompound) {
+        if (!request.useThinClientMode || !isExplicitCompoundSessionToken) {
             return Mono.just(request);
         }
         return this.thinProxy.tryPrepareExplicitSessionToken(request).map(canUseThinClient -> {

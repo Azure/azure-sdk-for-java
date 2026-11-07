@@ -1337,9 +1337,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return resolveSessionToken(request, false).then();
     }
 
-    private Mono<Boolean> resolveSessionToken(RxDocumentServiceRequest request, boolean explicitCompound) {
+    private Mono<Boolean> resolveSessionToken(RxDocumentServiceRequest request, boolean isExplicitCompoundSessionToken) {
         return Mono.defer(() -> {
-            if (explicitCompound) {
+            if (isExplicitCompoundSessionToken) {
                 SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
                 request.requestContext.sessionToken = null;
                 PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
@@ -1356,7 +1356,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             }
 
             if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
-                if (explicitCompound) {
+                if (isExplicitCompoundSessionToken) {
                     return Mono.error(new IllegalStateException("Session token resolution requires metadata caches."));
                 }
                 applyGlobalSessionToken(request);
@@ -1367,7 +1367,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
             return this.collectionCache.resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
                 if (collectionHolder == null || collectionHolder.v == null) {
-                    if (explicitCompound) {
+                    if (isExplicitCompoundSessionToken) {
                         return Mono.error(new NotFoundException("Collection could not be resolved."));
                     }
                     applyGlobalSessionToken(request);
@@ -1375,21 +1375,21 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
                 DocumentCollection collection = collectionHolder.v;
                 return this.partitionKeyRangeCache.tryLookupAsync(
-                    diagnostics, collection.getResourceId(), null, explicitCompound ? request.properties : null)
+                    diagnostics, collection.getResourceId(), null, isExplicitCompoundSessionToken ? request.properties : null)
                     .flatMap(mapHolder -> {
                         if (mapHolder == null || mapHolder.v == null) {
-                            if (explicitCompound) {
+                            if (isExplicitCompoundSessionToken) {
                                 return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
                             }
                             applyGlobalSessionToken(request);
                             return Mono.just(true);
                         }
                         PartitionKeyRange range = SessionTokenHelper.resolveSessionTokenRange(
-                            request, collection, mapHolder.v, explicitCompound);
-                        if (explicitCompound && range == null) {
+                            request, collection, mapHolder.v, isExplicitCompoundSessionToken);
+                        if (isExplicitCompoundSessionToken && range == null) {
                             return Mono.just(false);
                         }
-                        if (explicitCompound) {
+                        if (isExplicitCompoundSessionToken) {
                             request.requestContext.resolvedPartitionKeyRange = range;
                             if (!isExplicitSessionTokenScopeVerified(request, mapHolder.v)) {
                                 return Mono.just(false);

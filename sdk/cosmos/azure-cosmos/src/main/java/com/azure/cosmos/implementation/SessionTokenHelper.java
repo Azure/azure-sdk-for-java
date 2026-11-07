@@ -61,9 +61,9 @@ public class SessionTokenHelper {
 
     public static PartitionKeyRange resolveSessionTokenRange(
         RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap,
-        boolean explicitCompound) {
+        boolean isExplicitCompoundSessionToken) {
         String rangeHeader = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-        if (explicitCompound) {
+        if (isExplicitCompoundSessionToken) {
             if (!collection.getResourceId().equals(routingMap.getCollectionUniqueId())) {
                 return null;
             }
@@ -86,7 +86,7 @@ public class SessionTokenHelper {
 
         PartitionKeyInternal key = request.getPartitionKeyInternal();
         if (key != null) {
-            if (explicitCompound && collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
+            if (isExplicitCompoundSessionToken && collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
                 && key.getComponents().size() < collection.getPartitionKey().getPaths().size()) {
                 return null;
             }
