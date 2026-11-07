@@ -62,7 +62,6 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile String originalSessionToken;
     private boolean originalSessionTokenCaptured;
-    private AtomicReference<DocumentServiceRequestContext> sessionTokenContextReference;
     private volatile PartitionKeyRangeIdentity partitionKeyRangeIdentity;
     private volatile Integer defaultReplicaIndex;
 
@@ -944,22 +943,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.originalSessionToken = originalSessionToken;
     }
 
-    public synchronized AtomicReference<DocumentServiceRequestContext> getSessionTokenContextReference() {
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest availability =
-            this.requestContext.getCrossRegionAvailabilityContext();
-        if (availability != null && availability.getSessionTokenContextReference() != null) {
-            return availability.getSessionTokenContextReference();
-        }
-        if (this.sessionTokenContextReference == null) {
-            this.sessionTokenContextReference = new AtomicReference<>();
-        }
-        return this.sessionTokenContextReference;
-    }
-
-    public synchronized void setSessionTokenContextReference(AtomicReference<DocumentServiceRequestContext> contextReference) {
-        this.sessionTokenContextReference = contextReference;
-    }
-
     public void setDefaultReplicaIndex(Integer defaultReplicaIndex) {
         this.defaultReplicaIndex = defaultReplicaIndex;
     }
@@ -1100,12 +1083,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.originalSessionTokenCaptured = this.originalSessionTokenCaptured;
-        rxDocumentServiceRequest.sessionTokenContextReference = this.sessionTokenContextReference;
-        if (SessionTokenHelper.isCompoundSessionToken(this.originalSessionTokenCaptured
-            ? this.originalSessionToken
-            : sourceHeaders == null ? null : sourceHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            rxDocumentServiceRequest.sessionTokenContextReference = this.getSessionTokenContextReference();
-        }
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
         rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;

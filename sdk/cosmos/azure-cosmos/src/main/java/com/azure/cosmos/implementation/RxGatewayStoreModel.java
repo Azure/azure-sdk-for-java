@@ -1344,9 +1344,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 request.requestContext.sessionToken = null;
                 PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
                 PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-                DocumentServiceRequestContext sessionContext = request.getSessionTokenContextReference().get();
-                if (range != null && sessionContext != null
-                    && sessionContext.isSessionTokenScopeVerified(request, request.getOriginalSessionToken())
+                if (range != null
+                    && request.requestContext.isSessionTokenScopeVerified(request, request.getOriginalSessionToken())
                     && (identity == null
                     || (range.getId().equals(identity.getPartitionKeyRangeId())
                         && (identity.getCollectionRid() == null
@@ -1417,7 +1416,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         String originalToken = request.getOriginalSessionToken();
         SessionTokenHelper.resolveExplicitSessionTokenForRange(
             request, originalToken, request.requestContext.resolvedPartitionKeyRange.getId());
-        return request.getSessionTokenContextReference().get().verifySessionTokenScope(request, originalToken, routingMap);
+        return request.requestContext.verifySessionTokenScope(request, originalToken, routingMap);
     }
 
     private void applyGlobalSessionToken(RxDocumentServiceRequest request) {

@@ -36,7 +36,7 @@ public class SessionTokenHelper {
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
-    public static AtomicReference<DocumentServiceRequestContext> createSessionTokenContextReference(String sessionToken) {
+    public static AtomicReference<DocumentServiceRequestContext.SessionTokenState> createSessionTokenState(String sessionToken) {
         return isCompoundSessionToken(sessionToken) ? new AtomicReference<>() : null;
     }
 
@@ -55,9 +55,7 @@ public class SessionTokenHelper {
 
     public static ISessionToken resolveExplicitSessionTokenForRange(
         RxDocumentServiceRequest request, String originalToken, String rangeId) {
-        AtomicReference<DocumentServiceRequestContext> context = request.getSessionTokenContextReference();
-        context.compareAndSet(null, request.requestContext);
-        return context.get().getOrResolveSessionToken(
+        return request.requestContext.getOrResolveSessionToken(
             request, originalToken, rangeId, () -> getLocalSessionToken(request, originalToken, rangeId));
     }
 

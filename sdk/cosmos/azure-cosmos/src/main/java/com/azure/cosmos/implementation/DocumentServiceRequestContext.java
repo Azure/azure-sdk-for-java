@@ -30,9 +30,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class DocumentServiceRequestContext implements Cloneable {
@@ -85,41 +89,49 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
-    // Operation-shared scoping state must not be cleared with the attempt's sessionToken.
-    private boolean sessionTokenScoped;
-    private String scopedOriginalSessionToken;
-    private String scopedCollectionRid;
-    private String scopedRangeId;
-    private Set<String> scopedParentRangeIds;
-    private ISessionToken scopedSessionToken;
-    private boolean scopedSessionTokenTopologyVerified;
+    private volatile AtomicReference<SessionTokenState> sessionTokenState = new AtomicReference<>();
 
     public DocumentServiceRequestContext() {}
 
-    public synchronized boolean verifySessionTokenScope(
+    public AtomicReference<SessionTokenState> getSessionTokenState() {
+        return this.sessionTokenState;
+    }
+
+    public void setSessionTokenState(AtomicReference<SessionTokenState> state) {
+        this.sessionTokenState = Objects.requireNonNull(state, "state");
+    }
+
+    public boolean verifySessionTokenScope(
         RxDocumentServiceRequest request, String originalToken, CollectionRoutingMap routingMap) {
         Objects.requireNonNull(routingMap, "routingMap");
         Objects.requireNonNull(originalToken, "originalToken");
         PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        if (range == null || !Objects.equals(routingMap.getCollectionUniqueId(), request.requestContext.resolvedCollectionRid)) {
+        String collectionRid = request.requestContext.resolvedCollectionRid;
+        if (range == null || !Objects.equals(routingMap.getCollectionUniqueId(), collectionRid)) {
             return false;
         }
-        if (isSessionTokenScopeVerified(request, originalToken)) {
+        Set<String> parents = getParentRangeIds(range);
+        AtomicReference<SessionTokenState> reference = this.sessionTokenState;
+        SessionTokenState state = reference.get();
+        boolean matches = state != null && state.matches(originalToken, collectionRid, range.getId(), parents);
+        if (matches && state.topologyVerified) {
             return true;
         }
         if (!SessionTokenHelper.areSessionTokenRangesKnown(originalToken, routingMap, range)) {
             return false;
         }
-        if (matchesSessionTokenScope(request, originalToken, range.getId(), getParentRangeIds(range))) {
-            this.scopedSessionTokenTopologyVerified = true;
+        if (matches && state.isResolved()) {
+            reference.compareAndSet(state, state.withVerifiedTopology());
         }
         return true;
     }
 
-    public synchronized boolean isSessionTokenScopeVerified(RxDocumentServiceRequest request, String originalToken) {
+    public boolean isSessionTokenScopeVerified(RxDocumentServiceRequest request, String originalToken) {
         PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        return this.scopedSessionTokenTopologyVerified && range != null
-            && matchesSessionTokenScope(request, originalToken, range.getId(), getParentRangeIds(range));
+        SessionTokenState state = this.sessionTokenState.get();
+        return state != null && state.topologyVerified && range != null
+            && state.matches(originalToken, request.requestContext.resolvedCollectionRid, range.getId(),
+                getParentRangeIds(range));
     }
 
     private static Set<String> getParentRangeIds(PartitionKeyRange range) {
@@ -127,29 +139,71 @@ public class DocumentServiceRequestContext implements Cloneable {
         return parentIds == null ? Collections.emptySet() : new HashSet<>(parentIds);
     }
 
-    private boolean matchesSessionTokenScope(
-        RxDocumentServiceRequest request, String originalToken, String rangeId, Set<String> parents) {
-        return this.sessionTokenScoped && Objects.equals(this.scopedOriginalSessionToken, originalToken)
-            && Objects.equals(this.scopedCollectionRid, request.requestContext.resolvedCollectionRid)
-            && Objects.equals(this.scopedRangeId, rangeId) && this.scopedParentRangeIds.equals(parents);
-    }
-
-    public synchronized ISessionToken getOrResolveSessionToken(
+    public ISessionToken getOrResolveSessionToken(
         RxDocumentServiceRequest request, String originalToken, String rangeId, Supplier<ISessionToken> resolver) {
         Set<String> parents = getParentRangeIds(request.requestContext.resolvedPartitionKeyRange);
         String collectionRid = request.requestContext.resolvedCollectionRid;
-        if (!matchesSessionTokenScope(request, originalToken, rangeId, parents)) {
-            ISessionToken token = resolver.get();
-            this.scopedOriginalSessionToken = originalToken;
-            this.scopedCollectionRid = collectionRid;
-            this.scopedRangeId = rangeId;
-            this.scopedParentRangeIds = parents;
-            this.scopedSessionToken = token;
-            this.scopedSessionTokenTopologyVerified = false;
-            // A scoped null means intentional omission, not an unprepared token.
-            this.sessionTokenScoped = true;
+        AtomicReference<SessionTokenState> reference = this.sessionTokenState;
+        while (true) {
+            SessionTokenState previous = reference.get();
+            if (previous != null && previous.matches(originalToken, collectionRid, rangeId, parents)) {
+                try {
+                    return previous.token.join();
+                } catch (CompletionException | CancellationException failedCreator) {
+                    // Retry with this request's resolver instead of sharing a mutable exception.
+                    reference.compareAndSet(previous, null);
+                    continue;
+                }
+            }
+            SessionTokenState candidate = new SessionTokenState(
+                originalToken, collectionRid, rangeId, parents, new CompletableFuture<>(), false);
+            if (!reference.compareAndSet(previous, candidate)) {
+                continue;
+            }
+            try {
+                ISessionToken token = resolver.get();
+                candidate.token.complete(token);
+                return token;
+            } catch (RuntimeException | Error failure) {
+                reference.compareAndSet(candidate, previous != null && previous.isResolved() ? previous : null);
+                candidate.token.completeExceptionally(failure);
+                throw failure;
+            }
         }
-        return this.scopedSessionToken;
+    }
+
+    public static final class SessionTokenState {
+        private final String originalToken;
+        private final String collectionRid;
+        private final String rangeId;
+        private final Set<String> parents;
+        private final CompletableFuture<ISessionToken> token;
+        private final boolean topologyVerified;
+
+        private SessionTokenState(String originalToken, String collectionRid, String rangeId, Set<String> parents,
+            CompletableFuture<ISessionToken> token, boolean topologyVerified) {
+            this.originalToken = originalToken;
+            this.collectionRid = collectionRid;
+            this.rangeId = rangeId;
+            this.parents = parents;
+            this.token = token;
+            this.topologyVerified = topologyVerified;
+        }
+
+        private boolean matches(String originalToken, String collectionRid, String rangeId, Set<String> parents) {
+            return Objects.equals(this.originalToken, originalToken)
+                && Objects.equals(this.collectionRid, collectionRid)
+                && Objects.equals(this.rangeId, rangeId) && this.parents.equals(parents);
+        }
+
+        private boolean isResolved() {
+            return this.token.isDone() && !this.token.isCompletedExceptionally();
+        }
+
+        private SessionTokenState withVerifiedTopology() {
+            return new SessionTokenState(
+                this.originalToken, this.collectionRid, this.rangeId, this.parents, this.token, true);
+        }
     }
 
     /**
@@ -217,6 +271,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.timeoutHelper = this.timeoutHelper;
         context.resolvedCollectionRid = this.resolvedCollectionRid;
         context.sessionToken = this.sessionToken;
+        context.sessionTokenState = this.sessionTokenState;
         context.quorumSelectedLSN = this.quorumSelectedLSN;
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
         context.cachedWriteResponse = this.cachedWriteResponse;
@@ -276,6 +331,10 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setCrossRegionAvailabilityContext(CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
         this.crossRegionAvailabilityContextForRequest = crossRegionAvailabilityContextForRequest;
+        if (crossRegionAvailabilityContextForRequest != null
+            && crossRegionAvailabilityContextForRequest.getSessionTokenState() != null) {
+            this.sessionTokenState = crossRegionAvailabilityContextForRequest.getSessionTokenState();
+        }
     }
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest getCrossRegionAvailabilityContext() {
