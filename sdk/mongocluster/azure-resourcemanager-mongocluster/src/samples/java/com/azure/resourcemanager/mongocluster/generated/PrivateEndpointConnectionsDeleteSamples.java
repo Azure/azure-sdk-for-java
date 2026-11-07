@@ -12,11 +12,11 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_PrivateEndpointConnectionDelete.json
      */
     /**
-     * Sample code: Delete a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Delete a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void deleteAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void deleteAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .delete("TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0",

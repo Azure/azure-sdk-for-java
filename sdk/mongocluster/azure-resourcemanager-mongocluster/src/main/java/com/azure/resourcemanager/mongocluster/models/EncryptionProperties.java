@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The encryption configuration for the mongo cluster.
+ * The encryption configuration for the DocumentDB cluster.
  */
 @Fluent
 public final class EncryptionProperties implements JsonSerializable<EncryptionProperties> {

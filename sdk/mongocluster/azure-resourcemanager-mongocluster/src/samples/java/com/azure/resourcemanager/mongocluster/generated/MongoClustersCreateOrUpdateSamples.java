@@ -34,43 +34,15 @@ import java.util.Map;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_Create_SSDv2.json
-     */
-    /**
-     * Sample code: Creates a new Mongo Cluster resource with Premium SSDv2 storage.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsANewMongoClusterResourceWithPremiumSSDv2Storage(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myMongoCluster")
-            .withRegion("westus2")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties()
-                .withAdministrator(
-                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
-                .withServerVersion("5.0")
-                .withHighAvailability(
-                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
-                .withStorage(new StorageProperties().withSizeGb(32L).withType(StorageType.PREMIUM_SSDV2))
-                .withSharding(new ShardingProperties().withShardCount(1))
-                .withCompute(new ComputeProperties().withTier("M30"))
-                .withAuthConfig(
-                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
-            .create();
-    }
-
-    /*
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreateGeoReplica_CMK.json
      */
     /**
-     * Sample code: Creates a replica Mongo Cluster resource with Customer Managed Key encryption from a source
+     * Sample code: Creates a replica DocumentDB cluster resource with Customer Managed Key encryption from a source
      * resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource(
+    public static void createsAReplicaDocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myReplicaMongoCluster")
@@ -95,14 +67,76 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_Create_CMK.json
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_Create_SSDv2.json
      */
     /**
-     * Sample code: Creates a new Mongo Cluster resource with Customer Managed Key encryption.
+     * Sample code: Creates a new DocumentDB cluster resource with Premium SSDv2 storage.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsANewMongoClusterResourceWithCustomerManagedKeyEncryption(
+    public static void createsANewDocumentDBClusterResourceWithPremiumSSDv2Storage(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties()
+                .withAdministrator(
+                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
+                .withServerVersion("5.0")
+                .withHighAvailability(
+                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
+                .withStorage(new StorageProperties().withSizeGb(32L).withType(StorageType.PREMIUM_SSDV2))
+                .withSharding(new ShardingProperties().withShardCount(1))
+                .withCompute(new ComputeProperties().withTier("M30"))
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreatePITR_CMK.json
+     */
+    /**
+     * Sample code: Creates a DocumentDB cluster resource with Customer Managed Key encryption from a point in time
+     * restore.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsADocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withRestoreParameters(new MongoClusterRestoreParameters()
+                    .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
+                    .withSourceResourceId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
+                .withEncryption(new EncryptionProperties()
+                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryptionProperties()
+                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_Create_CMK.json
+     */
+    /**
+     * Sample code: Creates a new DocumentDB cluster resource with Customer Managed Key encryption.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsANewDocumentDBClusterResourceWithCustomerManagedKeyEncryption(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
@@ -130,36 +164,14 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreateGeoReplica.json
-     */
-    /**
-     * Sample code: Creates a replica Mongo Cluster resource from a source resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsAReplicaMongoClusterResourceFromASourceResource(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myReplicaMongoCluster")
-            .withRegion("centralus")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
-                .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
-                    .withSourceLocation("eastus"))
-                .withStorage(new StorageProperties().withType(StorageType.PREMIUM_SSDV2)))
-            .create();
-    }
-
-    /*
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreatePITR.json
      */
     /**
-     * Sample code: Creates a Mongo Cluster resource from a point in time restore.
+     * Sample code: Creates a DocumentDB cluster resource from a point in time restore.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAMongoClusterResourceFromAPointInTimeRestore(
+    public static void createsADocumentDBClusterResourceFromAPointInTimeRestore(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
@@ -176,40 +188,15 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreatePITR_EntraAuth.json
-     */
-    /**
-     * Sample code: Creates a Mongo Cluster resource from a point in time restore with Microsoft Entra ID authentication
-     * mode enabled.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myMongoCluster")
-            .withRegion("westus2")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
-                .withRestoreParameters(new MongoClusterRestoreParameters()
-                    .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
-                    .withSourceResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
-                .withAuthConfig(
-                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
-            .create();
-    }
-
-    /*
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_Create.json
      */
     /**
-     * Sample code: Creates a new Mongo Cluster resource.
+     * Sample code: Creates a new DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        createsANewMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        createsANewDocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
             .withRegion("westus2")
@@ -229,15 +216,39 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreatePITR_CMK.json
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreateGeoReplica.json
      */
     /**
-     * Sample code: Creates a Mongo Cluster resource with Customer Managed Key encryption from a point in time restore.
+     * Sample code: Creates a replica DocumentDB cluster resource from a source resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore(
+    public static void createsAReplicaDocumentDBClusterResourceFromASourceResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myReplicaMongoCluster")
+            .withRegion("centralus")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
+                .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
+                    .withSourceLocation("eastus"))
+                .withStorage(new StorageProperties().withType(StorageType.PREMIUM_SSDV2)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-15-preview/MongoClusters_CreatePITR_EntraAuth.json
+     */
+    /**
+     * Sample code: Creates a DocumentDB cluster resource from a point in time restore with Microsoft Entra ID
+     * authentication mode enabled.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        createsADocumentDBClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
             .withRegion("westus2")
@@ -247,17 +258,8 @@ public final class MongoClustersCreateOrUpdateSamples {
                     .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
                     .withSourceResourceId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
-                .withEncryption(new EncryptionProperties()
-                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryptionProperties()
-                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
-                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
-                            .withUserAssignedIdentityResourceId(
-                                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
-                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
-                    new UserAssignedIdentity())))
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
             .create();
     }
 

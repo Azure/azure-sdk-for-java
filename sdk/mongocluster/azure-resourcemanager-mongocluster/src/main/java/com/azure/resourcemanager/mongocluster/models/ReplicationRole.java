@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Replication role of the mongo cluster.
+ * Replication role of the DocumentDB cluster.
  */
 public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole> {
     /**

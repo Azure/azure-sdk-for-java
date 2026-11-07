@@ -12,12 +12,12 @@ public final class MongoClustersDeleteSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_Delete.json
      */
     /**
-     * Sample code: Deletes a Mongo Cluster resource.
+     * Sample code: Deletes a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        deletesAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        deletesADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().delete("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
 }

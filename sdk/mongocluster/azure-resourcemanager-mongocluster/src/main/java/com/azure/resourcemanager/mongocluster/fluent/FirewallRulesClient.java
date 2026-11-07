@@ -18,107 +18,107 @@ import com.azure.resourcemanager.mongocluster.fluent.models.FirewallRuleInner;
  */
 public interface FirewallRulesClient {
     /**
-     * Gets information about a mongo cluster firewall rule.
+     * Gets information about a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule along with {@link Response}.
+     * @return information about a DocumentDB cluster firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context);
 
     /**
-     * Gets information about a mongo cluster firewall rule.
+     * Gets information about a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule.
+     * @return information about a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner get(String resourceGroupName, String mongoClusterName, String firewallRuleName);
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster firewall rule.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource);
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster firewall rule.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource, Context context);
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule.
+     * @return represents a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource);
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule.
+     * @return represents a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource, Context context);
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -129,11 +129,11 @@ public interface FirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,11 +145,11 @@ public interface FirewallRulesClient {
         String firewallRuleName, Context context);
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,11 +158,11 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName);
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,10 +172,10 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,10 +185,10 @@ public interface FirewallRulesClient {
     PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName);
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -18,106 +18,106 @@ import com.azure.resourcemanager.mongocluster.fluent.models.UserInner;
  */
 public interface UsersClient {
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response}.
+     * @return the defintion of a DocumentDB cluster user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserInner> getWithResponse(String resourceGroupName, String mongoClusterName, String userName,
         Context context);
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user.
+     * @return the defintion of a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UserInner get(String resourceGroupName, String mongoClusterName, String userName);
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Mongo cluster user.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String mongoClusterName,
         String userName, UserInner resource);
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Mongo cluster user.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String mongoClusterName,
         String userName, UserInner resource, Context context);
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user.
+     * @return represents a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UserInner createOrUpdate(String resourceGroupName, String mongoClusterName, String userName, UserInner resource);
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user.
+     * @return represents a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UserInner createOrUpdate(String resourceGroupName, String mongoClusterName, String userName, UserInner resource,
         Context context);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -127,11 +127,11 @@ public interface UsersClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName, String userName);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,11 +143,11 @@ public interface UsersClient {
         Context context);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,11 +156,11 @@ public interface UsersClient {
     void delete(String resourceGroupName, String mongoClusterName, String userName);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,10 +170,10 @@ public interface UsersClient {
     void delete(String resourceGroupName, String mongoClusterName, String userName, Context context);
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,10 +183,10 @@ public interface UsersClient {
     PagedIterable<UserInner> listByMongoCluster(String resourceGroupName, String mongoClusterName);
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
