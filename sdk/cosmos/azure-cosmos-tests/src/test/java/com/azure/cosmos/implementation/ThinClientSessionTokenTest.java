@@ -77,16 +77,26 @@ public class ThinClientSessionTokenTest {
     private static final String RID = "ccZ1ANCszwk=";
 
     @DataProvider
-    public Object[][] postSplitProgress() {
-        return new Object[][] {{"2:1#200,0:1#100"}, {"1:1#100,2:1#200"}};
+    public Object[][] pointReadSessionTokenScopes() {
+        return new Object[][] {
+            {"parent-token-child-metadata", "1:1#100,0:1#900", true, "2:1#100"},
+            {"child-token-child-metadata", "2:1#200,0:1#900", true, "2:1#200"},
+            {"child-token-parent-metadata", "2:1#200,0:1#100", false, "2:1#200"},
+            {"parent-and-child-token-parent-metadata", "1:1#100,2:1#200", false, "2:1#200"}
+        };
     }
 
-    @Test(groups = "unit", dataProvider = "postSplitProgress")
-    public void warmParentRangePreservesPostSplitChildProgress(String original) throws Exception {
+    @Test(groups = "unit", dataProvider = "pointReadSessionTokenScopes")
+    public void pointReadScopesCompoundSessionTokenAcrossSplits(
+        String scenario, String original, boolean metadataHasChildren, String expectedScopedToken) throws Exception {
         try (Fixture fixture = new Fixture()) {
             PartitionKeyInternal key = PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true);
             String epk = key.getEffectivePartitionKeyString(key, fixture.definition);
-            fixture.map = SessionTokenHelperTests.routingMap(
+            CollectionRoutingMap childMap = SessionTokenHelperTests.routingMap(
+                new PartitionKeyRange("0", "", epk),
+                new PartitionKeyRange("2", epk, epk + "80", Collections.singletonList("1")),
+                new PartitionKeyRange("3", epk + "80", "FF", Collections.singletonList("1")));
+            fixture.map = metadataHasChildren ? childMap : SessionTokenHelperTests.routingMap(
                 new PartitionKeyRange("0", "", epk), new PartitionKeyRange("1", epk, "FF"));
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, original, null);
             request.setPartitionKeyInternal(key);
@@ -102,28 +112,42 @@ public class ThinClientSessionTokenTest {
             options.setPartitionKeyDefinition(fixture.definition);
             client.setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                 request, options, fixture.map, null, false, null);
-            assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).isEqualTo("1");
+            assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).as(scenario)
+                .isEqualTo(metadataHasChildren ? "2" : "1");
             assertThat(request.getPartitionKeyRangeIdentity()).isNull();
 
             dispatch(client, request).block(Duration.ofSeconds(5));
 
-            assertThat(fixture.wireTokens).containsExactly(original);
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443);
+            String expectedInitialToken = metadataHasChildren ? expectedScopedToken : original;
+            int expectedInitialPort = metadataHasChildren ? 10250 : 443;
+            assertThat(fixture.wireTokens).as(scenario).containsExactly(expectedInitialToken);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(expectedInitialPort);
             assertThat(fixture.endpoints).extracting(URI::getHost).containsExactly("localhost");
+            assertThat(request.useThinClientMode).isEqualTo(metadataHasChildren);
+            assertThat(request.getOriginalSessionToken()).isEqualTo(original);
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expectedInitialToken);
             assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
+            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            ISessionToken initialScopedToken = request.requestContext.sessionToken;
+
+            fixture.map = childMap;
+            dispatch(client, request).block(Duration.ofSeconds(5));
+            assertThat(fixture.wireTokens).as(scenario).containsExactly(expectedInitialToken, expectedScopedToken);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(expectedInitialPort, 10250);
+            assertThat(fixture.endpoints).extracting(URI::getHost).containsExactly("localhost", "localhost");
+            assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).isEqualTo("2");
+            assertThat(request.useThinClientMode).isTrue();
+            assertThat(request.getOriginalSessionToken()).isEqualTo(original);
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expectedScopedToken);
+            assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
+            if (metadataHasChildren) {
+                assertThat(initialScopedToken).isNotNull();
+                assertThat(request.requestContext.sessionToken).isSameAs(initialScopedToken);
+            }
+            verify(fixture.ranges, Mockito.times(metadataHasChildren ? 1 : 2))
+                .tryLookupAsync(any(), any(), any(), any());
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
-
-            fixture.map = SessionTokenHelperTests.routingMap(
-                new PartitionKeyRange("0", "", epk),
-                new PartitionKeyRange("2", epk, epk + "80", Collections.singletonList("1")),
-                new PartitionKeyRange("3", epk + "80", "FF", Collections.singletonList("1")));
-            dispatch(client, request).block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly(original, "2:1#200");
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443, 10250);
-            assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).isEqualTo("2");
-            verify(fixture.ranges, Mockito.times(2)).tryLookupAsync(any(), any(), any(), any());
         }
     }
 
