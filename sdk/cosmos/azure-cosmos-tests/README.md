@@ -13,9 +13,11 @@ n/a
 ### Gateway V2 live split regression (opt-in)
 
 `ThinClientSessionTokenSplitE2ETest` creates an owned container at **400 RU/s manual
-throughput**, then raises it to **8,000 RU/s**. It waits up to ten minutes for actual
-parent-to-child partition metadata; a completed throughput update alone is not
-accepted as proof of a split. If no split is observed, the test fails and cleans up.
+throughput**, then raises it to **8,000 RU/s**. It waits up to **15 minutes**, polling
+every **10 seconds**, for actual parent-to-child partition metadata. Each poll logs
+the throughput replacement's pending status, current RU/s, and observed ranges.
+The overall test timeout remains **20 minutes**. A completed throughput update alone
+is not accepted as proof of a split. If no split is observed, the test fails and cleans up.
 It does not inject synthetic ranges or increase throughput beyond 8,000 RU/s.
 
 Use a global `ACCOUNT_HOST` for a Gateway V2-enabled account and configure credentials

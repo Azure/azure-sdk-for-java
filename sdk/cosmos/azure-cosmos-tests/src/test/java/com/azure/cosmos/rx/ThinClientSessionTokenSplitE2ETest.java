@@ -69,7 +69,8 @@ public class ThinClientSessionTokenSplitE2ETest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThinClientSessionTokenSplitE2ETest.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Duration WAIT = Duration.ofSeconds(60);
-    private static final Duration SPLIT_WAIT = Duration.ofMinutes(10);
+    private static final Duration SPLIT_WAIT = Duration.ofMinutes(15);
+    private static final Duration SPLIT_POLL_INTERVAL = Duration.ofSeconds(10);
     private final CosmosClientBuilder builder;
     private CosmosAsyncClient staleReader;
     private CosmosAsyncClient observer;
@@ -207,19 +208,28 @@ public class ThinClientSessionTokenSplitE2ETest {
 
     private CollectionRoutingMap awaitSplit() {
         AtomicReference<CollectionRoutingMap> latest = new AtomicReference<>(routingMap(observer, null));
-        CollectionRoutingMap split = Flux.interval(Duration.ZERO, Duration.ofSeconds(5))
-            .concatMap(ignored -> cache(observer).tryLookupAsync(null, collectionRid, latest.get(), null))
-            .map(holder -> {
-                assertThat(holder.v).as("Observer routing map").isNotNull();
-                latest.set(holder.v);
-                return holder.v;
-            })
+        CollectionRoutingMap split = Flux.interval(Duration.ZERO, SPLIT_POLL_INTERVAL)
+            .concatMap(ignored -> currentContainer.readThroughput()
+                .flatMap(throughput -> cache(observer).tryLookupAsync(null, collectionRid, latest.get(), null)
+                    .map(holder -> {
+                        assertThat(holder.v).as("Observer routing map").isNotNull();
+                        latest.set(holder.v);
+                        LOGGER.info(
+                            "Waiting for real split: replacePending={}, manualThroughput={}, initialRangeCount={}, currentRanges={}",
+                            throughput.isReplacePending(),
+                            throughput.getProperties().getManualThroughput(),
+                            beforeSplit.getOrderedPartitionKeyRanges().size(),
+                            holder.v.getOrderedPartitionKeyRanges());
+                        return holder.v;
+                    })))
             .filter(map -> map.getOrderedPartitionKeyRanges().size() > beforeSplit.getOrderedPartitionKeyRanges().size()
                 && map.getOrderedPartitionKeyRanges().stream().anyMatch(range -> range.getParents() != null
                     && range.getParents().stream().anyMatch(parentTokens::containsKey)))
             .next()
-            .timeout(SPLIT_WAIT, Mono.error(new AssertionError(
-                "No real parent-to-child split observed after manual throughput increase from 400 to 8000 RU/s")))
+            .timeout(SPLIT_WAIT, Mono.defer(() -> Mono.error(new AssertionError(
+                "No real parent-to-child split observed within " + SPLIT_WAIT.toMinutes()
+                    + " minutes after manual throughput increase from 400 to 8000 RU/s; latest ranges: "
+                    + latest.get().getOrderedPartitionKeyRanges()))))
             .block(SPLIT_WAIT.plus(WAIT));
         LOGGER.info("Observed real split: before={}, after={}",
             beforeSplit.getOrderedPartitionKeyRanges(), split.getOrderedPartitionKeyRanges());
