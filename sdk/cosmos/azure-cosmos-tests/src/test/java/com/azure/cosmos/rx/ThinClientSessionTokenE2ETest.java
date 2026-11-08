@@ -69,8 +69,7 @@ public class ThinClientSessionTokenE2ETest {
     private final Map<String, ISessionToken> tokens = new LinkedHashMap<>();
     private final Map<String, ObjectNode> representatives = new LinkedHashMap<>();
     private final List<ObjectNode> items = new ArrayList<>();
-    private CosmosAsyncClient writer;
-    private CosmosAsyncDatabase database;
+    private String databaseId;
     private List<String> regions;
     private String compoundToken;
 
@@ -84,35 +83,37 @@ public class ThinClientSessionTokenE2ETest {
 
     @BeforeClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 300000)
     public void setup() {
-        writer = builder.buildAsyncClient();
-        awaitThinClientProbe(writer);
-        DatabaseAccount account = ReflectionUtils.getGlobalEndpointManager(
-            (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(writer)).getLatestDatabaseAccount();
-        assertThat(account.getThinClientReadableLocations()).as("Account must advertise Gateway V2").isNotEmpty();
-        regions = account.getThinClientReadableLocations().stream()
-            .map(DatabaseAccountLocation::getName).collect(Collectors.toList());
-        builder.preferredRegions(regions);
-        database = TestSuiteBase.createTestDatabase(writer, "compound-session");
-        CosmosAsyncContainer container = TestSuiteBase.createCollection(database,
-            new CosmosContainerProperties("items", "/pk"), new CosmosContainerRequestOptions(), 10100);
-        assertThat(container.getFeedRanges().block(WAIT)).hasSizeGreaterThanOrEqualTo(2);
+        try (CosmosAsyncClient writer = builder.buildAsyncClient()) {
+            awaitThinClientProbe(writer);
+            DatabaseAccount account = ReflectionUtils.getGlobalEndpointManager(
+                (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(writer)).getLatestDatabaseAccount();
+            assertThat(account.getThinClientReadableLocations()).as("Account must advertise Gateway V2").isNotEmpty();
+            regions = account.getThinClientReadableLocations().stream()
+                .map(DatabaseAccountLocation::getName).collect(Collectors.toList());
+            builder.preferredRegions(regions);
+            CosmosAsyncDatabase database = TestSuiteBase.createTestDatabase(writer, "compound-session");
+            databaseId = database.getId();
+            CosmosAsyncContainer container = TestSuiteBase.createCollection(database,
+                new CosmosContainerProperties("items", "/pk"), new CosmosContainerRequestOptions(), 10100);
+            assertThat(container.getFeedRanges().block(WAIT)).hasSizeGreaterThanOrEqualTo(2);
 
-        for (int i = 0; i < 128 && (tokens.size() < 2 || items.size() < 6); i++) {
-            ObjectNode item = MAPPER.createObjectNode().put("id", "item-" + i).put("pk", "partition-" + i)
-                .put("version", i + 1);
-            CosmosItemResponse<ObjectNode> response = container.createItem(item).block(WAIT);
-            TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
-            items.add(item);
-            assertThat(response.getSessionToken()).isNotBlank();
-            for (String segment : response.getSessionToken().split(",")) {
-                String[] parts = segment.split(":", 2);
-                assertThat(parts).hasSize(2);
-                tokens.merge(parts[0], SessionTokenHelper.parse(parts[1]), ISessionToken::merge);
-                representatives.put(parts[0], item);
+            for (int i = 0; i < 128 && (tokens.size() < 2 || items.size() < 6); i++) {
+                ObjectNode item = MAPPER.createObjectNode().put("id", "item-" + i).put("pk", "partition-" + i)
+                    .put("version", i + 1);
+                CosmosItemResponse<ObjectNode> response = container.createItem(item).block(WAIT);
+                TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
+                items.add(item);
+                assertThat(response.getSessionToken()).isNotBlank();
+                for (String segment : response.getSessionToken().split(",")) {
+                    String[] parts = segment.split(":", 2);
+                    assertThat(parts).hasSize(2);
+                    tokens.merge(parts[0], SessionTokenHelper.parse(parts[1]), ISessionToken::merge);
+                    representatives.put(parts[0], item);
+                }
             }
+            assertThat(tokens).as("The token must cover distinct physical ranges").hasSizeGreaterThanOrEqualTo(2);
+            compoundToken = combine(tokens);
         }
-        assertThat(tokens).as("The token must cover distinct physical ranges").hasSizeGreaterThanOrEqualTo(2);
-        compoundToken = combine(tokens);
     }
 
     @DataProvider
@@ -120,11 +121,12 @@ public class ThinClientSessionTokenE2ETest {
         return new Object[][] {{false}, {true}};
     }
 
+    // Verify compound progress is replayed through point reads and resumed queries with cold or warm metadata.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "metadataModes", timeOut = 180000)
     public void replayMapThroughPointReadsAndResumedQuery(boolean preloadMetadata) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
-            CosmosAsyncContainer container = reader.getDatabase(database.getId()).getContainer("items");
+            CosmosAsyncContainer container = reader.getDatabase(databaseId).getContainer("items");
             if (preloadMetadata) {
                 container.getFeedRanges().block(WAIT);
             }
@@ -171,6 +173,7 @@ public class ThinClientSessionTokenE2ETest {
         return new Object[][] {{true, false}, {false, false}, {true, true}, {false, true}};
     }
 
+    // Verify known unrelated progress can stay on V2 while unknown ranges retain the full token on classic Gateway.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "targetProgress", timeOut = 90000)
     public void unrelatedProgressUsesVerifiedScopeOrClassicGateway(boolean includeTargetProgress, boolean unknownRange) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
@@ -189,7 +192,7 @@ public class ThinClientSessionTokenE2ETest {
             }
             CosmosItemRequestOptions options = new CosmosItemRequestOptions().setSessionToken(original)
                 .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
-            CosmosItemResponse<ObjectNode> response = reader.getDatabase(database.getId()).getContainer("items")
+            CosmosItemResponse<ObjectNode> response = reader.getDatabase(databaseId).getContainer("items")
                 .readItem(item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
                 .block(WAIT);
             assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));
@@ -207,6 +210,7 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
+    // Verify an unattainable session position fails with 404/1002 instead of silently dropping required progress.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 90000)
     public void advancedTargetProgressIsNotSilentlyDropped() throws Exception {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
@@ -218,7 +222,7 @@ public class ThinClientSessionTokenE2ETest {
             ObjectNode item = target.getValue();
             CosmosItemRequestOptions options = new CosmosItemRequestOptions().setSessionToken(combine(advanced))
                 .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
-            assertThatThrownBy(() -> reader.getDatabase(database.getId()).getContainer("items")
+            assertThatThrownBy(() -> reader.getDatabase(databaseId).getContainer("items")
                 .readItem(item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
                 .block(WAIT)).isInstanceOfSatisfying(CosmosException.class, error -> {
                     assertThat(error.getStatusCode()).isEqualTo(404);
@@ -228,6 +232,7 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
+    // Verify delayed-primary point and query hedges preserve the caller's compound token across regions.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 180000)
     public void forcedPointAndQueryHedgesRetainCompoundProgress() {
         if (regions.size() < 2) {
@@ -235,7 +240,7 @@ public class ThinClientSessionTokenE2ETest {
         }
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
-            CosmosAsyncContainer container = reader.getDatabase(database.getId()).getContainer("items");
+            CosmosAsyncContainer container = reader.getDatabase(databaseId).getContainer("items");
             ObjectNode item = representatives.values().iterator().next();
             for (FaultInjectionOperationType operation : new FaultInjectionOperationType[] {
                 FaultInjectionOperationType.READ_ITEM, FaultInjectionOperationType.QUERY_ITEM}) {
@@ -284,16 +289,13 @@ public class ThinClientSessionTokenE2ETest {
 
     @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, alwaysRun = true, timeOut = 120000)
     public void cleanup() {
-        try {
-            if (database != null) {
+        if (databaseId != null) {
+            try (CosmosAsyncClient cleanupClient = builder.buildAsyncClient()) {
+                CosmosAsyncDatabase database = cleanupClient.getDatabase(databaseId);
                 TestSuiteBase.safeDeleteDatabase(database);
                 assertThatThrownBy(() -> database.read().block(WAIT))
                     .isInstanceOfSatisfying(CosmosException.class, error ->
                         assertThat(error.getStatusCode()).isEqualTo(404));
-            }
-        } finally {
-            if (writer != null) {
-                writer.close();
             }
         }
     }

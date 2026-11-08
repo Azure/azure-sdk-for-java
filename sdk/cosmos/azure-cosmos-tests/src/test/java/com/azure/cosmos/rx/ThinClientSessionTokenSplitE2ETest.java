@@ -42,7 +42,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -73,10 +72,8 @@ public class ThinClientSessionTokenSplitE2ETest {
     private static final Duration SPLIT_WAIT = Duration.ofMinutes(15);
     private static final Duration SPLIT_POLL_INTERVAL = Duration.ofSeconds(10);
     private final CosmosClientBuilder builder;
-    private CosmosAsyncClient staleReader;
-    private CosmosAsyncClient observer;
-    private CosmosAsyncClient negativeReader;
-    private CosmosAsyncDatabase database;
+    private String accountEndpoint;
+    private String databaseId;
     private CosmosAsyncContainer staleContainer;
     private CosmosAsyncContainer currentContainer;
     private CosmosAsyncContainer negativeContainer;
@@ -96,40 +93,51 @@ public class ThinClientSessionTokenSplitE2ETest {
                 .build());
     }
 
-    @BeforeClass(groups = "thinclientEndpointProbe", timeOut = 300000)
-    public void setup() {
+    // Verify parent inheritance, child scoping, and stale-metadata fallback through point reads after a real split.
+    @Test(groups = "thinclientEndpointProbe", timeOut = 1200000)
+    public void pointReadsPreserveCompoundProgressAcrossRealSplit() throws Exception {
         assertThat(Configs.isThinClientEnabled()).as("Endpoint-probe coverage must not force Gateway V2 on or off").isNull();
-        staleReader = builder.buildAsyncClient();
-        awaitThinClient(staleReader);
-        DatabaseAccount account = internal(staleReader).getGlobalEndpointManager().getLatestDatabaseAccount();
-        List<String> regions = account.getThinClientReadableLocations().stream()
-            .map(location -> location.getName()).collect(Collectors.toList());
-        assertThat(regions).as("Two Gateway V2 regions are needed to isolate the observer and both stale-reader caches")
-            .hasSizeGreaterThanOrEqualTo(2);
-        String region = regions.get(0);
-        String regionalEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
-            .filter(location -> region.equals(location.getName()))
-            .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + region))
-            .getEndpoint();
-        assertThat(URI.create(regionalEndpoint).getHost())
-            .as("Use a global ACCOUNT_HOST so the observer's regional endpoint has a separate cache")
-            .isNotEqualTo(internal(staleReader).getServiceEndpoint().getHost());
-        observer = builder.endpoint(regionalEndpoint).preferredRegions(Collections.singletonList(region)).buildAsyncClient();
+        try (CosmosAsyncClient staleReader = builder.buildAsyncClient()) {
+            accountEndpoint = internal(staleReader).getServiceEndpoint().toString();
+            awaitThinClient(staleReader);
+            DatabaseAccount account = internal(staleReader).getGlobalEndpointManager().getLatestDatabaseAccount();
+            List<String> regions = account.getThinClientReadableLocations().stream()
+                .map(location -> location.getName()).collect(Collectors.toList());
+            assertThat(regions).as("Two Gateway V2 regions are needed to isolate the observer and both stale-reader caches")
+                .hasSizeGreaterThanOrEqualTo(2);
+            String region = regions.get(0);
+            String regionalEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
+                .filter(location -> region.equals(location.getName()))
+                .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + region))
+                .getEndpoint();
+            assertThat(URI.create(regionalEndpoint).getHost())
+                .as("Use a global ACCOUNT_HOST so the observer's regional endpoint has a separate cache")
+                .isNotEqualTo(internal(staleReader).getServiceEndpoint().getHost());
+            String negativeEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
+                .filter(location -> regions.get(1).equals(location.getName()))
+                .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + regions.get(1)))
+                .getEndpoint();
+            try (CosmosAsyncClient observer = builder.endpoint(regionalEndpoint)
+                     .preferredRegions(Collections.singletonList(region)).buildAsyncClient();
+                 CosmosAsyncClient negativeReader = builder.endpoint(negativeEndpoint)
+                     .preferredRegions(Collections.singletonList(regions.get(1))).buildAsyncClient()) {
+                setup(staleReader, observer, negativeReader);
+                verifySplit(staleReader, observer, negativeReader);
+            }
+        }
+    }
+
+    private void setup(CosmosAsyncClient staleReader, CosmosAsyncClient observer, CosmosAsyncClient negativeReader) {
         awaitThinClient(observer);
         assertThat(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(staleReader)))
             .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(observer)));
-        String negativeEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
-            .filter(location -> regions.get(1).equals(location.getName()))
-            .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + regions.get(1)))
-            .getEndpoint();
-        negativeReader = builder.endpoint(negativeEndpoint)
-            .preferredRegions(Collections.singletonList(regions.get(1))).buildAsyncClient();
         awaitThinClient(negativeReader);
         assertThat(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(negativeReader)))
             .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(staleReader)))
             .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(observer)));
 
-        database = TestSuiteBase.createTestDatabase(staleReader, "compound-session-split");
+        CosmosAsyncDatabase database = TestSuiteBase.createTestDatabase(staleReader, "compound-session-split");
+        databaseId = database.getId();
         CosmosContainerProperties properties = new CosmosContainerProperties("items", "/pk");
         database.createContainer(properties, ThroughputProperties.createManualThroughput(400)).block(WAIT);
         staleContainer = database.getContainer("items");
@@ -160,10 +168,10 @@ public class ThinClientSessionTokenSplitE2ETest {
             .containsExactlyElementsOf(beforeSplit.getOrderedPartitionKeyRanges());
     }
 
-    @Test(groups = "thinclientEndpointProbe", timeOut = 1200000)
-    public void pointReadsPreserveCompoundProgressAcrossRealSplit() throws Exception {
+    private void verifySplit(
+        CosmosAsyncClient staleReader, CosmosAsyncClient observer, CosmosAsyncClient negativeReader) throws Exception {
         currentContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10100)).block(WAIT);
-        CollectionRoutingMap afterSplit = awaitSplit();
+        CollectionRoutingMap afterSplit = awaitSplit(observer);
         assertThat(currentContainer.readThroughput().block(WAIT).getProperties().getManualThroughput()).isEqualTo(10100);
         PartitionKeyRange child = afterSplit.getOrderedPartitionKeyRanges().stream()
             .filter(range -> range.getParents() != null
@@ -231,7 +239,7 @@ public class ThinClientSessionTokenSplitE2ETest {
         }
     }
 
-    private CollectionRoutingMap awaitSplit() {
+    private CollectionRoutingMap awaitSplit(CosmosAsyncClient observer) {
         AtomicReference<CollectionRoutingMap> latest = new AtomicReference<>(routingMap(observer, null));
         CollectionRoutingMap split = Flux.interval(Duration.ZERO, SPLIT_POLL_INTERVAL)
             .concatMap(ignored -> currentContainer.readThroughput()
@@ -348,27 +356,12 @@ public class ThinClientSessionTokenSplitE2ETest {
 
     @AfterClass(groups = "thinclientEndpointProbe", alwaysRun = true, timeOut = 120000)
     public void cleanup() {
-        try {
-            if (database != null) {
+        if (databaseId != null) {
+            try (CosmosAsyncClient cleanupClient = builder.endpoint(accountEndpoint).buildAsyncClient()) {
+                CosmosAsyncDatabase database = cleanupClient.getDatabase(databaseId);
                 TestSuiteBase.safeDeleteDatabase(database);
                 assertThatThrownBy(() -> database.read().block(WAIT))
                     .isInstanceOfSatisfying(CosmosException.class, error -> assertThat(error.getStatusCode()).isEqualTo(404));
-            }
-        } finally {
-            try {
-                if (observer != null) {
-                    observer.close();
-                }
-            } finally {
-                try {
-                    if (negativeReader != null) {
-                        negativeReader.close();
-                    }
-                } finally {
-                    if (staleReader != null) {
-                        staleReader.close();
-                    }
-                }
             }
         }
     }
