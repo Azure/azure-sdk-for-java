@@ -20,6 +20,7 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,13 +33,18 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -217,6 +223,59 @@ public class RequestRetryPolicyTest {
 
         StepVerifier.create(sendRequest(pipeline)).expectError(TimeoutException.class).verify(Duration.ofSeconds(5));
         assertEquals(maxTries, attempts.get());
+    }
+
+    @Test
+    public void timedOutSyncAttemptHasIndependentBodyReader() {
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicReference<byte[]> firstPayload = new AtomicReference<>();
+        CountDownLatch releaseFirstReader = new CountDownLatch(1);
+        CountDownLatch firstReaderFinished = new CountDownLatch(1);
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    int attempt = attempts.incrementAndGet();
+                    try (InputStream reader = request.getBodyAsBinaryData().toStream()) {
+                        if (attempt == 1) {
+                            byte[] actual = new byte[payload.length];
+                            actual[0] = (byte) reader.read();
+                            awaitIgnoringInterrupts(releaseFirstReader);
+                            int offset = 1;
+                            int read;
+                            while (offset < actual.length
+                                && (read = reader.read(actual, offset, actual.length - offset)) != -1) {
+                                offset += read;
+                            }
+                            firstPayload.set(java.util.Arrays.copyOf(actual, offset));
+                            firstReaderFinished.countDown();
+                        } else {
+                            Assertions.assertArrayEquals(payload, BinaryData.fromStream(reader).toBytes());
+                            releaseFirstReader.countDown();
+                            awaitIgnoringInterrupts(firstReaderFinished);
+                        }
+                        return new MockHttpResponse(request, 200);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }
+            }).build();
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(payload), (long) payload.length);
+        Assertions.assertTrue(body.isReplayable(), "The source must exercise the mark/reset replayable stream path");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body);
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(8), () -> {
+                try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+                    assertEquals(200, response.getStatusCode());
+                    assertEquals(2, attempts.get());
+                    Assertions.assertArrayEquals(payload, firstPayload.get());
+                }
+            });
+        } finally {
+            releaseFirstReader.countDown();
+        }
     }
 
     @Test

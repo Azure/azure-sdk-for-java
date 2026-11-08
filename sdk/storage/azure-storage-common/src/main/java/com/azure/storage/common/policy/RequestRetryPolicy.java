@@ -15,12 +15,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -65,10 +66,15 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // again as it will be buffered as a read-only buffer.
         HttpRequest originalHttpRequest = context.getHttpRequest();
         BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
-        if (requestRetryOptions.getMaxTries() > 1
-            && originalRequestBody != null
-            && !originalRequestBody.isReplayable()) {
-            context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
+        if (requestRetryOptions.getMaxTries() > 1 && originalRequestBody != null) {
+            if (requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
+                // Replayable streams can still share a reader. Buffer before scheduling potentially overlapping tries.
+                originalHttpRequest.setBody(
+                    BinaryData.fromFlux(originalRequestBody.toFluxByteBuffer(), originalRequestBody.getLength(), true)
+                        .block());
+            } else if (!originalRequestBody.isReplayable()) {
+                originalHttpRequest.setBody(originalRequestBody.toReplayableBinaryData());
+            }
         }
 
         return this.attemptSync(context, next, originalHttpRequest, considerSecondary, 1, 1, null);
@@ -274,8 +280,19 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     = next.clone(context.getHttpRequest().copy(), context.getContext());
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
                 // A sink discards responses returned after cancellation, including when the transport ignores interruption.
-                httpResponseMono = Mono.<HttpResponse>create(sink -> sink.success(attemptNext.processSync()))
-                    .subscribeOn(Schedulers.boundedElastic())
+                httpResponseMono = Mono.<HttpResponse>create(sink -> {
+                    // A cancelled task can ignore interruption. The shared executor keeps its thread occupied until
+                    // it returns, allowing retries to use other threads instead of reusing a cancelled scheduler worker.
+                    Future<?> task = SharedExecutorService.getInstance().submit(() -> {
+                        try {
+                            sink.success(attemptNext.processSync());
+                        } catch (Throwable error) {
+                            Exceptions.throwIfFatal(error);
+                            sink.error(error);
+                        }
+                    });
+                    sink.onCancel(() -> task.cancel(true));
+                })
                     .timeout(this.requestRetryOptions.getTryTimeoutDuration())
                     .doOnDiscard(HttpResponse.class, HttpResponse::close);
             }
