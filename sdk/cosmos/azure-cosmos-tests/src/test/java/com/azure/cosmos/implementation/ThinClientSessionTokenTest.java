@@ -1189,15 +1189,18 @@ public class ThinClientSessionTokenTest {
     @DataProvider
     public Object[][] missingSessionMetadata() {
         return new Object[][] {
-            {"collection", false}, {"collection", true}, {"ranges", false}, {"ranges", true},
-            {"caches", false}, {"caches", true}
+            {"collection", false, false}, {"collection", false, true}, {"collection", true, true},
+            {"ranges", false, false}, {"ranges", false, true}, {"ranges", true, true},
+            {"caches", false, false}, {"caches", false, true}, {"caches", true, true}
         };
     }
 
+    // Verify both Gateway transports retain ambient fallback without substituting progress for an explicit token.
     @Test(groups = "unit", dataProvider = "missingSessionMetadata")
     public void missingMetadataPreservesAutomaticFallbackButNeverSubstitutesExplicitProgress(
-        String missing, boolean explicit) throws Exception {
+        String missing, boolean explicit, boolean useThinClient) throws Exception {
         try (Fixture fixture = new Fixture()) {
+            RxGatewayStoreModel store = useThinClient ? fixture.thin : fixture.classic;
             Mockito.when(fixture.sessions.resolveGlobalSessionToken(any())).thenReturn("1:1#900");
             if ("collection".equals(missing)) {
                 Mockito.doReturn(Mono.just(new Utils.ValueHolder<>(null)))
@@ -1205,13 +1208,13 @@ public class ThinClientSessionTokenTest {
             } else if ("ranges".equals(missing)) {
                 fixture.map = null;
             } else {
-                fixture.thin.setCollectionCache(null);
-                fixture.thin.setPartitionKeyRangeCache(null);
+                store.setCollectionCache(null);
+                store.setPartitionKeyRangeCache(null);
             }
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, explicit ? ORIGINAL : null, null);
             request.captureOriginalSessionToken();
-            request.useThinClientMode = true;
-            Mono<?> preparation = prepareSessionToken(fixture.thin, request);
+            request.useThinClientMode = useThinClient;
+            Mono<?> preparation = prepareSessionToken(store, request);
             if (explicit) {
                 assertThatThrownBy(() -> preparation.block(Duration.ofSeconds(5)))
                     .isInstanceOf("caches".equals(missing) ? IllegalStateException.class : NotFoundException.class);
@@ -1229,18 +1232,24 @@ public class ThinClientSessionTokenTest {
     @DataProvider
     public Object[][] automaticRangeSelectors() {
         return new Object[][] {
-            {"range", "1"}, {"missingRange", "missing"}, {"logicalKey", "0"}, {"cachedEpk", "1"}, {"noTarget", null}
+            {"range", "1", false}, {"range", "1", true},
+            {"missingRange", "missing", false}, {"missingRange", "missing", true},
+            {"logicalKey", "0", false}, {"logicalKey", "0", true},
+            {"cachedEpk", "1", false}, {"cachedEpk", "1", true},
+            {"noTarget", null, false}, {"noTarget", null, true}
         };
     }
 
+    // Verify ambient range selection remains unchanged on both classic Gateway and Gateway V2.
     @Test(groups = "unit", dataProvider = "automaticRangeSelectors")
-    public void automaticResolutionRetainsExistingRangeSelection(String selector, String expectedRange) throws Exception {
+    public void automaticResolutionRetainsExistingRangeSelection(
+        String selector, String expectedRange, boolean useThinClient) throws Exception {
         try (Fixture fixture = new Fixture()) {
             Mockito.when(fixture.sessions.resolveGlobalSessionToken(any())).thenReturn("0:1#900,1:1#800");
             Mockito.when(fixture.sessions.resolvePartitionLocalSessionToken(any(), any()))
                 .thenReturn(SessionTokenHelper.parse("1#300"));
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, null, null);
-            request.useThinClientMode = true;
+            request.useThinClientMode = useThinClient;
             if ("range".equals(selector) || "missingRange".equals(selector)) {
                 request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(expectedRange));
                 request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
@@ -1252,7 +1261,7 @@ public class ThinClientSessionTokenTest {
             } else {
                 request.requestContext.resolvedPartitionKeyRange = fixture.map.tryGetRangeByPartitionKeyRangeId("1");
             }
-            prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
+            prepareSessionToken(useThinClient ? fixture.thin : fixture.classic, request).block(Duration.ofSeconds(5));
             if (expectedRange == null) {
                 assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
                     .isEqualTo("0:1#900,1:1#800");
@@ -1266,6 +1275,61 @@ public class ThinClientSessionTokenTest {
             }
             verify(fixture.collections).resolveCollectionAsync(any(), Mockito.eq(request));
             verify(fixture.ranges).tryLookupAsync(any(), Mockito.eq(RID), Mockito.isNull(), Mockito.isNull());
+        }
+    }
+
+    @DataProvider
+    public Object[][] sessionMetadataOutcomes() {
+        return new Object[][] {
+            {null, false, false}, {null, false, true}, {null, true, true},
+            {"collection", false, false}, {"collection", false, true}, {"collection", true, true},
+            {"ranges", false, false}, {"ranges", false, true}, {"ranges", true, true}
+        };
+    }
+
+    // Verify shared metadata lookup preserves each policy's properties and propagates failures without fallback.
+    @Test(groups = "unit", dataProvider = "sessionMetadataOutcomes")
+    public void sessionMetadataLookupPreservesPropertiesAndFailures(
+        String failingLookup, boolean explicit, boolean useThinClient) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, explicit ? ORIGINAL : null, null);
+            request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
+            request.captureOriginalSessionToken();
+            request.useThinClientMode = useThinClient;
+            request.properties = Collections.singletonMap("session-metadata-test", "value");
+            RuntimeException failure = new IllegalStateException("metadata lookup failed");
+            if ("collection".equals(failingLookup)) {
+                Mockito.doReturn(Mono.error(failure)).when(fixture.collections).resolveCollectionAsync(any(), any());
+            } else if ("ranges".equals(failingLookup)) {
+                Mockito.doReturn(Mono.error(failure)).when(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            }
+            Mockito.when(fixture.sessions.resolvePartitionLocalSessionToken(any(), any()))
+                .thenReturn(SessionTokenHelper.parse("1#300"));
+
+            Mono<?> preparation = prepareSessionToken(useThinClient ? fixture.thin : fixture.classic, request);
+            if (failingLookup == null) {
+                preparation.block(Duration.ofSeconds(5));
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                    .isEqualTo(explicit ? "0:1#100#1=90#2=-1" : "0:1#300");
+                if (!explicit) {
+                    verify(fixture.sessions).resolvePartitionLocalSessionToken(request, "0");
+                }
+            } else {
+                assertThatThrownBy(() -> preparation.block(Duration.ofSeconds(5))).isSameAs(failure);
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                    .isEqualTo(explicit ? ORIGINAL : null);
+            }
+            verify(fixture.collections).resolveCollectionAsync(any(), Mockito.eq(request));
+            if ("collection".equals(failingLookup)) {
+                verify(fixture.ranges, never()).tryLookupAsync(any(), any(), any(), any());
+            } else {
+                verify(fixture.ranges).tryLookupAsync(
+                    any(), Mockito.eq(RID), Mockito.isNull(), Mockito.eq(explicit ? request.properties : null));
+            }
+            verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
+            if (explicit || failingLookup != null) {
+                verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
+            }
         }
     }
 
