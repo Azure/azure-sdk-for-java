@@ -13,8 +13,6 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -30,20 +28,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
  */
 public class ActiveClientTokenManager implements TokenManager {
     private static final ClientLogger LOGGER = new ClientLogger(ActiveClientTokenManager.class);
-    // Cancellation must not interrupt authorization initiation: it can be writing to the connection's shared IO pipe.
-    // The Executor adapter lets Reactor cancel queued work without cancelling the underlying running scheduler task.
-    // The scheduled task owns its handle and releases it only after dispatch has returned. Scheduling rejection is
-    // propagated to the refresh pipeline rather than consumed by a separate subscription.
-    private static final Scheduler REFRESH_SCHEDULER = Schedulers.fromExecutor(task -> {
-        Disposable.Swap scheduled = Disposables.swap();
-        scheduled.update(Schedulers.boundedElastic().schedule(() -> {
-            try {
-                task.run();
-            } finally {
-                scheduled.dispose();
-            }
-        }));
-    });
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<ClaimsBasedSecurityNode> cbsNode;
@@ -160,7 +144,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
             .onBackpressureDrop()
-            .publishOn(REFRESH_SCHEDULER, 1)
+            .publishOn(AuthorizationScheduler.INSTANCE, 1)
             .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
 
