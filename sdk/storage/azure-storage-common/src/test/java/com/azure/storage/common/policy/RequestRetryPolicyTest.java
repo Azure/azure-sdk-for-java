@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -150,6 +151,66 @@ public class RequestRetryPolicyTest {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
         assertEquals(3, closeCalls.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    public void tryTimeoutStopsBlockingSyncRequest(int maxTries) {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, maxTries, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    attempts.incrementAndGet();
+                    return Mono.<HttpResponse>never().block(Duration.ofSeconds(10));
+                }
+            }).build();
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            RuntimeException error = Assertions.assertThrows(RuntimeException.class, () -> sendRequestSync(pipeline));
+            Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+            assertEquals(maxTries, attempts.get());
+        });
+    }
+
+    @Test
+    public void tryTimeoutRetriesBlockingSyncRequestSuccessfully() {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    if (attempts.incrementAndGet() == 1) {
+                        return Mono.<HttpResponse>never().block(Duration.ofSeconds(10));
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            }).build();
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            assertEquals(200, sendRequestSync(pipeline).getStatusCode());
+            assertEquals(2, attempts.get());
+        });
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    public void tryTimeoutStopsAsyncRequest(int maxTries) {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, maxTries, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    attempts.incrementAndGet();
+                    return Mono.never();
+                }
+            }).build();
+
+        StepVerifier.create(sendRequest(pipeline)).expectError(TimeoutException.class).verify(Duration.ofSeconds(5));
+        assertEquals(maxTries, attempts.get());
     }
 
     @Test

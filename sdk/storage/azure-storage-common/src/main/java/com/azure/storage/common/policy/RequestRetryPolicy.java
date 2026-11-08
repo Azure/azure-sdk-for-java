@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -260,8 +261,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
 
             /*
-             * We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound
-             * operation until after the retry backoff delay, so we call delaySubscription.
+             * Start the timeout-bound operation only after the retry backoff delay.
              */
             Mono<HttpResponse> httpResponseMono = Mono.fromCallable(() -> next.clone().processSync());
 
@@ -269,7 +269,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             // and would likely never complete.
             // TODO (alzimmer): Think about not adding this if it's over a certain length, like 1 year.
             if (this.requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
-                httpResponseMono = httpResponseMono.timeout(this.requestRetryOptions.getTryTimeoutDuration());
+                // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
+                httpResponseMono = httpResponseMono.subscribeOn(Schedulers.boundedElastic())
+                    .timeout(this.requestRetryOptions.getTryTimeoutDuration());
             }
 
             HttpResponse response = httpResponseMono.block();

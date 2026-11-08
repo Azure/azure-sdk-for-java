@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed synchronous Storage clients ignoring the per-attempt timeout configured in `RequestRetryOptions`.
+
 ### Other Changes
 
 ## 12.37.0-beta.1 (2026-11-05)

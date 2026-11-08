@@ -165,6 +165,8 @@ public final class RequestRetryOptions {
 
     /**
      * Gets the maximum time allowed for a request until it is considered timed out.
+     * This timeout applies to each attempt for both synchronous and asynchronous clients and excludes retry delays.
+     * It does not limit the total duration of an operation across all attempts.
      *
      * @return the maximum time allowed for a request until it is considered timed out.
      */
