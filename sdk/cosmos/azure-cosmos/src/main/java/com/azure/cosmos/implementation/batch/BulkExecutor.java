@@ -522,15 +522,50 @@ public final class BulkExecutor<TContext> implements Disposable {
         final FluxSink<CosmosItemOperation> groupSink = groupFluxProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
         groupSinks.add(groupSink);
 
+        return bufferOperations(
+            partitionedGroupFluxOfInputOperations
+                .mergeWith(groupFluxProcessor)
+                .onBackpressureBuffer()
+                .timestamp()
+                .subscribeOn(this.executionScheduler),
+            thresholds)
+            .flatMap(
+                (List<Tuple2<Long, CosmosItemOperation>> timeStampAndItemOperationTuples) -> {
+                    List<CosmosItemOperation> operations = new ArrayList<>(timeStampAndItemOperationTuples.size());
+                    for (Tuple2<Long, CosmosItemOperation> timeStampAndItemOperationTuple :
+                        timeStampAndItemOperationTuples) {
+
+                        CosmosItemOperation itemOperation = timeStampAndItemOperationTuple.getT2();
+                        if (itemOperation == FlushBuffersItemOperation.singleton()) {
+                            continue;
+                        }
+                        operations.add(itemOperation);
+                    }
+
+                    logDebugOrWarning(
+                        "Flushing PKRange {} micro batch with {} operations,  Context: {} {}",
+                        thresholds.getPartitionKeyRangeId(),
+                        operations.size(),
+                        this.operationContextText,
+                        getThreadInfo());
+
+                    return executeOperations(operations, thresholds, groupSink);
+                },
+                this.cosmosBulkExecutionOptions.getMaxMicroBatchConcurrency());
+    }
+
+    Flux<List<Tuple2<Long, CosmosItemOperation>>> bufferOperations(
+        Flux<Tuple2<Long, CosmosItemOperation>> timestampedOperations,
+        PartitionScopeThresholds thresholds) {
+
         AtomicLong firstRecordTimeStamp = new AtomicLong(-1);
         AtomicLong currentMicroBatchSize = new AtomicLong(0);
         AtomicInteger currentTotalSerializedLength = new AtomicInteger(0);
 
-        return partitionedGroupFluxOfInputOperations
-            .mergeWith(groupFluxProcessor)
-            .onBackpressureBuffer()
-            .timestamp()
-            .subscribeOn(this.executionScheduler)
+        return timestampedOperations
+            // A false bufferUntil predicate retains the item, so discard idle flush markers first.
+            .filter(tuple -> tuple.getT2() != FlushBuffersItemOperation.singleton()
+                || currentMicroBatchSize.get() > 0)
             .bufferUntil(timeStampItemOperationTuple -> {
                 long timestamp = timeStampItemOperationTuple.getT1();
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
@@ -589,30 +624,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                 }
 
                 return false;
-            })
-            .flatMap(
-                (List<Tuple2<Long, CosmosItemOperation>> timeStampAndItemOperationTuples) -> {
-                    List<CosmosItemOperation> operations = new ArrayList<>(timeStampAndItemOperationTuples.size());
-                    for (Tuple2<Long, CosmosItemOperation> timeStampAndItemOperationTuple :
-                        timeStampAndItemOperationTuples) {
-
-                        CosmosItemOperation itemOperation = timeStampAndItemOperationTuple.getT2();
-                        if (itemOperation == FlushBuffersItemOperation.singleton()) {
-                            continue;
-                        }
-                        operations.add(itemOperation);
-                    }
-
-                    logDebugOrWarning(
-                        "Flushing PKRange {} micro batch with {} operations,  Context: {} {}",
-                        thresholds.getPartitionKeyRangeId(),
-                        operations.size(),
-                        this.operationContextText,
-                        getThreadInfo());
-
-                    return executeOperations(operations, thresholds, groupSink);
-                },
-                this.cosmosBulkExecutionOptions.getMaxMicroBatchConcurrency());
+            });
     }
 
     private int calculateTotalSerializedLength(AtomicInteger currentTotalSerializedLength, CosmosItemOperation item) {
