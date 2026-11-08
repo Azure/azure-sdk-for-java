@@ -239,7 +239,10 @@ class ActiveClientTokenManagerTest {
         CountDownLatch release = new CountDownLatch(1);
         CountDownLatch finished = new CountDownLatch(1);
         CountDownLatch terminated = new CountDownLatch(1);
+        CountDownLatch renewed = new CountDownLatch(1);
+        CountDownLatch retryCompleted = new CountDownLatch(1);
         AtomicInteger calls = new AtomicInteger();
+        AtomicInteger accepted = new AtomicInteger();
         AtomicBoolean interrupted = new AtomicBoolean();
         AtomicReference<MonoSink<OffsetDateTime>> response = new AtomicReference<>();
         AtomicReference<Throwable> dispatchError = new AtomicReference<>();
@@ -253,8 +256,12 @@ class ActiveClientTokenManagerTest {
         Disposable shutdownSubscription = dispatcher.getShutdownSignal().subscribe(signal -> {
         }, shutdown::set);
         ClaimsBasedSecurityNode node = new MockClaimsBasedSecurityNode(() -> {
-            if (calls.incrementAndGet() == 1) {
+            int call = calls.incrementAndGet();
+            if (call == 1) {
                 return getNextExpiration(Duration.ofSeconds(3));
+            }
+            if (call > 2) {
+                return getNextExpiration(Duration.ofHours(1)).doFinally(signal -> retryCompleted.countDown());
             }
             return Mono.create(sink -> {
                 response.set(sink);
@@ -286,10 +293,13 @@ class ActiveClientTokenManagerTest {
         });
         ActiveClientTokenManager manager = new ActiveClientTokenManager(Mono.just(node), AUDIENCE, SCOPES);
         Disposable results = manager.getAuthorizationResults().subscribe(code -> {
+            if (code == AmqpResponseCode.ACCEPTED && accepted.incrementAndGet() == 2) {
+                renewed.countDown();
+            }
         }, failure -> {
             authorizationError.set(failure);
             terminated.countDown();
-        });
+        }, terminated::countDown);
         try {
             manager.authorize().block(VERIFY_TIMEOUT);
             assertTrue(entered.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS));
@@ -319,7 +329,18 @@ class ActiveClientTokenManagerTest {
             if ("close".equals(trigger) || "terminal".equals(trigger)) {
                 StepVerifier.create(manager.authorize()).expectError(AzureException.class).verify(VERIFY_TIMEOUT);
             }
-            assertEquals(2, calls.get());
+            if ("transient".equals(trigger)) {
+                assertTrue(renewed.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS),
+                    "Token renewal did not recover after the asynchronous transient CBS failure.");
+                // The result callback runs inside emitNext. Wait for the retry to unwind before closing the manager.
+                assertTrue(retryCompleted.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS),
+                    "The successful retry did not finish emitting its authorization result.");
+                assertNull(authorizationError.get());
+                assertEquals(1L, terminated.getCount(), "Authorization results terminated after a transient failure.");
+                assertEquals(3, calls.get());
+            } else {
+                assertEquals(2, calls.get());
+            }
         } finally {
             release.countDown();
             manager.close();

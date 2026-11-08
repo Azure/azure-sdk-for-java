@@ -32,8 +32,18 @@ public class ActiveClientTokenManager implements TokenManager {
     private static final ClientLogger LOGGER = new ClientLogger(ActiveClientTokenManager.class);
     // Cancellation must not interrupt authorization initiation: it can be writing to the connection's shared IO pipe.
     // The Executor adapter lets Reactor cancel queued work without cancelling the underlying running scheduler task.
-    private static final Scheduler REFRESH_SCHEDULER
-        = Schedulers.fromExecutor(task -> Schedulers.boundedElastic().schedule(task));
+    // The scheduled task owns its handle and releases it only after dispatch has returned. Scheduling rejection is
+    // propagated to the refresh pipeline rather than consumed by a separate subscription.
+    private static final Scheduler REFRESH_SCHEDULER = Schedulers.fromExecutor(task -> {
+        Disposable.Swap scheduled = Disposables.swap();
+        scheduled.update(Schedulers.boundedElastic().schedule(() -> {
+            try {
+                task.run();
+            } finally {
+                scheduled.dispose();
+            }
+        }));
+    });
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<ClaimsBasedSecurityNode> cbsNode;
