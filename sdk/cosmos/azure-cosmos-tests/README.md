@@ -10,7 +10,14 @@ n/a
 ## Examples
 n/a
 
-### Gateway V2 live split regression (opt-in)
+### Gateway V2 live split regression (endpoint-probe CI)
+
+`ThinClientSessionTokenSplitE2ETest` runs in the `thinclientEndpointProbe` TestNG
+group, selected by the `thinclient-endpoint-probe` Maven profile and the existing
+`Cosmos_Live_Test_ThinClient_EndpointProbe` CI stage. That stage supplies the account,
+allows 210 minutes per job, and runs post-job resource cleanup. The profile enables
+HTTP/2 but leaves `COSMOS.THINCLIENT_ENABLED` unset so the connectivity probe decides
+whether Gateway V2 is available.
 
 `ThinClientSessionTokenSplitE2ETest` creates an owned container at **400 RU/s manual
 throughput**, then raises it to **10,100 RU/s**. It waits up to **15 minutes**, polling
@@ -28,11 +35,11 @@ either metadata polling or the positive fallback read from refreshing the negati
 control's endpoint-shared routing cache. Only the test's own database/container is
 changed or deleted.
 
-From the repository root in PowerShell:
+To run just this test locally, from the repository root in PowerShell:
 
 ```powershell
 mvn -f sdk\cosmos\pom.xml -pl azure-cosmos-tests -am test-compile failsafe:integration-test failsafe:verify `
-  -Pthinclient '-Dtest.groups=thinclientSplit' '-Dit.test=ThinClientSessionTokenSplitE2ETest' `
+  -Pthinclient-endpoint-probe '-Dit.test=ThinClientSessionTokenSplitE2ETest' `
   '-Dfailsafe.failIfNoSpecifiedTests=false' '-Dgpg.skip=true'
 ```
 
@@ -44,7 +51,8 @@ progress control must fail with 404/1002 instead of succeeding after progress is
 When the initial container has a single range, the parent compound token concatenates
 two genuine responses from that parent; no partition ID or progress is fabricated.
 
-This group is intentionally excluded from the ordinary Gateway V2 suites. Provisioned
+No custom group override is needed; the endpoint-probe suite includes this test
+automatically. It is not part of the force-enabled `thinclient` group. Provisioned
 throughput incurs charges; let the unconditional cleanup finish when debugging.
 
 ## Troubleshooting

@@ -96,8 +96,9 @@ public class ThinClientSessionTokenSplitE2ETest {
                 .build());
     }
 
-    @BeforeClass(groups = "thinclientSplit", timeOut = 300000)
+    @BeforeClass(groups = "thinclientEndpointProbe", timeOut = 300000)
     public void setup() {
+        assertThat(Configs.isThinClientEnabled()).as("Endpoint-probe coverage must not force Gateway V2 on or off").isNull();
         staleReader = builder.buildAsyncClient();
         awaitThinClient(staleReader);
         DatabaseAccount account = internal(staleReader).getGlobalEndpointManager().getLatestDatabaseAccount();
@@ -159,7 +160,7 @@ public class ThinClientSessionTokenSplitE2ETest {
             .containsExactlyElementsOf(beforeSplit.getOrderedPartitionKeyRanges());
     }
 
-    @Test(groups = "thinclientSplit", timeOut = 1200000)
+    @Test(groups = "thinclientEndpointProbe", timeOut = 1200000)
     public void pointReadsPreserveCompoundProgressAcrossRealSplit() throws Exception {
         currentContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10100)).block(WAIT);
         CollectionRoutingMap afterSplit = awaitSplit();
@@ -345,7 +346,7 @@ public class ThinClientSessionTokenSplitE2ETest {
             .isNotEmpty();
     }
 
-    @AfterClass(groups = "thinclientSplit", alwaysRun = true, timeOut = 120000)
+    @AfterClass(groups = "thinclientEndpointProbe", alwaysRun = true, timeOut = 120000)
     public void cleanup() {
         try {
             if (database != null) {
