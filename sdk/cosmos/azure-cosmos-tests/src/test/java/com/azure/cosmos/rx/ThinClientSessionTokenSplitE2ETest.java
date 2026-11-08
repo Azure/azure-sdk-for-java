@@ -47,6 +47,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
@@ -74,12 +75,15 @@ public class ThinClientSessionTokenSplitE2ETest {
     private final CosmosClientBuilder builder;
     private CosmosAsyncClient staleReader;
     private CosmosAsyncClient observer;
+    private CosmosAsyncClient negativeReader;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer staleContainer;
     private CosmosAsyncContainer currentContainer;
+    private CosmosAsyncContainer negativeContainer;
     private String collectionRid;
     private PartitionKeyDefinition partitionKeyDefinition;
     private CollectionRoutingMap beforeSplit;
+    private CollectionRoutingMap negativeBeforeSplit;
     private final Map<String, List<String>> parentTokens = new LinkedHashMap<>();
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2", dataProviderClass = TestSuiteBase.class)
@@ -97,7 +101,11 @@ public class ThinClientSessionTokenSplitE2ETest {
         staleReader = builder.buildAsyncClient();
         awaitThinClient(staleReader);
         DatabaseAccount account = internal(staleReader).getGlobalEndpointManager().getLatestDatabaseAccount();
-        String region = account.getThinClientReadableLocations().iterator().next().getName();
+        List<String> regions = account.getThinClientReadableLocations().stream()
+            .map(location -> location.getName()).collect(Collectors.toList());
+        assertThat(regions).as("Two Gateway V2 regions are needed to isolate the observer and both stale-reader caches")
+            .hasSizeGreaterThanOrEqualTo(2);
+        String region = regions.get(0);
         String regionalEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
             .filter(location -> region.equals(location.getName()))
             .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + region))
@@ -109,16 +117,28 @@ public class ThinClientSessionTokenSplitE2ETest {
         awaitThinClient(observer);
         assertThat(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(staleReader)))
             .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(observer)));
+        String negativeEndpoint = StreamSupport.stream(account.getReadableLocations().spliterator(), false)
+            .filter(location -> regions.get(1).equals(location.getName()))
+            .findFirst().orElseThrow(() -> new IllegalStateException("No classic endpoint for " + regions.get(1)))
+            .getEndpoint();
+        negativeReader = builder.endpoint(negativeEndpoint)
+            .preferredRegions(Collections.singletonList(regions.get(1))).buildAsyncClient();
+        awaitThinClient(negativeReader);
+        assertThat(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(negativeReader)))
+            .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(staleReader)))
+            .isNotSameAs(ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(cache(observer)));
 
         database = TestSuiteBase.createTestDatabase(staleReader, "compound-session-split");
         CosmosContainerProperties properties = new CosmosContainerProperties("items", "/pk");
         database.createContainer(properties, ThroughputProperties.createManualThroughput(400)).block(WAIT);
         staleContainer = database.getContainer("items");
         currentContainer = observer.getDatabase(database.getId()).getContainer("items");
+        negativeContainer = negativeReader.getDatabase(database.getId()).getContainer("items");
         CosmosContainerProperties actual = staleContainer.read().block(WAIT).getProperties();
         collectionRid = actual.getResourceId();
         partitionKeyDefinition = actual.getPartitionKeyDefinition();
-        assertThat(currentContainer.read().block(WAIT).getProperties().getResourceId()).isEqualTo(collectionRid);
+        assertThat(awaitContainer(currentContainer).getResourceId()).isEqualTo(collectionRid);
+        assertThat(awaitContainer(negativeContainer).getResourceId()).isEqualTo(collectionRid);
         assertThat(staleContainer.readThroughput().block(WAIT).getProperties().getManualThroughput()).isEqualTo(400);
         beforeSplit = routingMap(staleReader, null);
         assertThat(beforeSplit.getOrderedPartitionKeyRanges()).isNotEmpty();
@@ -134,13 +154,16 @@ public class ThinClientSessionTokenSplitE2ETest {
             parentTokens.put(parent.getId(), tokens);
         }
         assertThat(routingMap(staleReader, null)).isSameAs(beforeSplit);
+        negativeBeforeSplit = routingMap(negativeReader, null);
+        assertThat(negativeBeforeSplit.getOrderedPartitionKeyRanges())
+            .containsExactlyElementsOf(beforeSplit.getOrderedPartitionKeyRanges());
     }
 
     @Test(groups = "thinclientSplit", timeOut = 1200000)
     public void pointReadsPreserveCompoundProgressAcrossRealSplit() throws Exception {
-        currentContainer.replaceThroughput(ThroughputProperties.createManualThroughput(8000)).block(WAIT);
+        currentContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10100)).block(WAIT);
         CollectionRoutingMap afterSplit = awaitSplit();
-        assertThat(currentContainer.readThroughput().block(WAIT).getProperties().getManualThroughput()).isEqualTo(8000);
+        assertThat(currentContainer.readThroughput().block(WAIT).getProperties().getManualThroughput()).isEqualTo(10100);
         PartitionKeyRange child = afterSplit.getOrderedPartitionKeyRanges().stream()
             .filter(range -> range.getParents() != null
                 && range.getParents().stream().anyMatch(parentTokens::containsKey))
@@ -176,33 +199,34 @@ public class ThinClientSessionTokenSplitE2ETest {
         }
         String childCompound = combine(childProgress);
         ObjectNode item = childItems.get(child.getId());
-        assertStale(parentId, child.getId());
+        assertStale(staleReader, beforeSplit, parentId, child.getId());
 
         try (RequestRecorder freshRequests = new RequestRecorder(observer);
-             RequestRecorder staleRequests = new RequestRecorder(staleReader)) {
+             RequestRecorder staleRequests = new RequestRecorder(staleReader);
+             RequestRecorder negativeRequests = new RequestRecorder(negativeReader)) {
             readAndAssert(currentContainer, item, parentCompound,
                 child.getId() + ":" + parentProgress.convertToString(), true, freshRequests);
             readAndAssert(currentContainer, item, childCompound,
                 child.getId() + ":" + childProgress.get(child.getId()).convertToString(), true, freshRequests);
-            assertStale(parentId, child.getId());
+            assertStale(staleReader, beforeSplit, parentId, child.getId());
             readAndAssert(staleContainer, item, childCompound, childCompound, false, staleRequests);
 
-            assertStale(parentId, child.getId());
+            assertStale(negativeReader, negativeBeforeSplit, parentId, child.getId());
             Map<String, ISessionToken> advanced = new LinkedHashMap<>(childProgress);
             ISessionToken target = advanced.get(child.getId());
             advanced.put(child.getId(), ConsistencyTestsBase.createSessionToken(target, target.getLSN() + 1000000));
             String advancedCompound = combine(advanced);
-            staleRequests.clear();
-            assertThatThrownBy(() -> staleContainer.readItem(
+            negativeRequests.clear();
+            assertThatThrownBy(() -> negativeContainer.readItem(
                 item.get("id").asText(), new PartitionKey(item.get("pk").asText()),
                 options(advancedCompound), ObjectNode.class).block(WAIT))
                 .isInstanceOfSatisfying(CosmosException.class, error -> {
                     assertThat(error.getStatusCode()).isEqualTo(404);
                     assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
                 });
-            assertThat(staleRequests.requests).isNotEmpty();
-            assertThat(staleRequests.requests.get(0).getRight()).isEqualTo(advancedCompound);
-            assertThat(staleRequests.requests.get(0).getLeft().getPort()).isIn(-1, 443);
+            assertThat(negativeRequests.requests).isNotEmpty();
+            assertThat(negativeRequests.requests.get(0).getRight()).isEqualTo(advancedCompound);
+            assertThat(negativeRequests.requests.get(0).getLeft().getPort()).isIn(-1, 443);
         }
     }
 
@@ -228,7 +252,7 @@ public class ThinClientSessionTokenSplitE2ETest {
             .next()
             .timeout(SPLIT_WAIT, Mono.defer(() -> Mono.error(new AssertionError(
                 "No real parent-to-child split observed within " + SPLIT_WAIT.toMinutes()
-                    + " minutes after manual throughput increase from 400 to 8000 RU/s; latest ranges: "
+                    + " minutes after manual throughput increase from 400 to 10100 RU/s; latest ranges: "
                     + latest.get().getOrderedPartitionKeyRanges()))))
             .block(SPLIT_WAIT.plus(WAIT));
         LOGGER.info("Observed real split: before={}, after={}",
@@ -236,10 +260,10 @@ public class ThinClientSessionTokenSplitE2ETest {
         return split;
     }
 
-    private void assertStale(String parentId, String childId) {
-        CollectionRoutingMap cached = routingMap(staleReader, null);
+    private void assertStale(CosmosAsyncClient reader, CollectionRoutingMap original, String parentId, String childId) {
+        CollectionRoutingMap cached = routingMap(reader, null);
         assertThat(cached).as("Reader must retain its genuine pre-split cache; do not silently test a refreshed reader")
-            .isSameAs(beforeSplit);
+            .isSameAs(original);
         assertThat(cached.tryGetRangeByPartitionKeyRangeId(parentId)).isNotNull();
         assertThat(cached.tryGetRangeByPartitionKeyRangeId(childId)).isNull();
     }
@@ -289,6 +313,15 @@ public class ThinClientSessionTokenSplitE2ETest {
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(20)).build());
     }
 
+    private static CosmosContainerProperties awaitContainer(CosmosAsyncContainer container) {
+        return container.read()
+            .retryWhen(Retry.fixedDelay(30, Duration.ofSeconds(1))
+                .filter(error -> error instanceof CosmosException && ((CosmosException) error).getStatusCode() == 404)
+                .doBeforeRetry(ignored -> LOGGER.info("Waiting for container {} to become visible in the reader region", container.getId()))
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure()))
+            .block(WAIT).getProperties();
+    }
+
     private static String combine(Map<String, ISessionToken> tokens) {
         return tokens.entrySet().stream()
             .map(entry -> entry.getKey() + ":" + entry.getValue().convertToString()).collect(Collectors.joining(","));
@@ -326,8 +359,14 @@ public class ThinClientSessionTokenSplitE2ETest {
                     observer.close();
                 }
             } finally {
-                if (staleReader != null) {
-                    staleReader.close();
+                try {
+                    if (negativeReader != null) {
+                        negativeReader.close();
+                    }
+                } finally {
+                    if (staleReader != null) {
+                        staleReader.close();
+                    }
                 }
             }
         }

@@ -13,17 +13,20 @@ n/a
 ### Gateway V2 live split regression (opt-in)
 
 `ThinClientSessionTokenSplitE2ETest` creates an owned container at **400 RU/s manual
-throughput**, then raises it to **8,000 RU/s**. It waits up to **15 minutes**, polling
+throughput**, then raises it to **10,100 RU/s**. It waits up to **15 minutes**, polling
 every **10 seconds**, for actual parent-to-child partition metadata. Each poll logs
 the throughput replacement's pending status, current RU/s, and observed ranges.
 The overall test timeout remains **20 minutes**. A completed throughput update alone
 is not accepted as proof of a split. If no split is observed, the test fails and cleans up.
-It does not inject synthetic ranges or increase throughput beyond 8,000 RU/s.
+It does not inject synthetic ranges or increase throughput beyond 10,100 RU/s.
 
-Use a global `ACCOUNT_HOST` for a Gateway V2-enabled account and configure credentials
-through the existing `cosmos-v4.properties` mechanism. A regional endpoint is used by
-the observer so its metadata polling cannot refresh the stale reader's endpoint-shared
-routing cache. Only the test's own database/container is changed or deleted.
+Use a global `ACCOUNT_HOST` for an account with **at least two Gateway V2 regions**
+and configure credentials through the existing `cosmos-v4.properties` mechanism.
+The global endpoint and two regional endpoints isolate the positive stale reader,
+the split observer, and a separate stale reader for the negative control. This prevents
+either metadata polling or the positive fallback read from refreshing the negative
+control's endpoint-shared routing cache. Only the test's own database/container is
+changed or deleted.
 
 From the repository root in PowerShell:
 
