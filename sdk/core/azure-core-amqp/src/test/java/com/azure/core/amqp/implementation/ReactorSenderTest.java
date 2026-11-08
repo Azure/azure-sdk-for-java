@@ -22,6 +22,7 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -198,7 +199,8 @@ public class ReactorSenderTest {
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     void linkClosesDuringEncoding(boolean terminalError) throws Exception {
-        final SendLinkHandler realHandler = createActiveHandler();
+        final TestMeter meter = new TestMeter();
+        final SendLinkHandler realHandler = createActiveHandler(new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
         final Message encodingMessage = spy(message);
         doAnswer(invocation -> {
             terminateHandler(realHandler, terminalError);
@@ -213,6 +215,9 @@ public class ReactorSenderTest {
 
         assertNoPendingSends();
         verify(sender, never()).delivery(any(byte[].class));
+        final TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.producer.send.duration");
+        assertNotNull(sendDuration);
+        assertTrue(sendDuration.getMeasurements().isEmpty());
     }
 
     @ParameterizedTest
@@ -278,19 +283,57 @@ public class ReactorSenderTest {
         assertNoPendingSends();
     }
 
+    @Test
+    void cancellationPreventsDelayedRetry() throws Exception {
+        options.setMode(AmqpRetryMode.FIXED).setDelay(Duration.ofMillis(1)).setTryTimeout(Duration.ofSeconds(30));
+        final SendLinkHandler realHandler = createActiveHandler();
+        final Delivery delivery = mock(Delivery.class);
+        final Rejected rejected = new Rejected();
+        rejected.setError(new ErrorCondition(AmqpErrorCode.SERVER_BUSY_ERROR, "Retry this send."));
+        when(delivery.getRemoteState()).thenReturn(rejected);
+        when(delivery.getLink()).thenReturn(sender);
+        when(sender.delivery(any(byte[].class))).thenAnswer(invocation -> {
+            final byte[] deliveryTag = invocation.getArgument(0);
+            when(delivery.getTag()).thenReturn(deliveryTag);
+            return delivery;
+        });
+        when(sender.send(any(byte[].class), anyInt(), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
+        final Event event = mock(Event.class);
+        when(event.getDelivery()).thenReturn(delivery);
+        final ArgumentCaptor<Runnable> retryWork = ArgumentCaptor.forClass(Runnable.class);
+
+        StepVerifier.create(reactorSender.send(message)).then(() -> {
+            realHandler.onDelivery(event);
+            Assertions
+                .assertDoesNotThrow(() -> verify(reactorDispatcher).invoke(retryWork.capture(), any(Duration.class)));
+            assertNoPendingSends();
+        }).thenCancel().verify(VERIFY_TIMEOUT);
+
+        retryWork.getValue().run();
+
+        assertNoPendingSends();
+        verify(sender).delivery(any(byte[].class));
+        verify(sender).send(any(byte[].class), anyInt(), anyInt());
+        realHandler.onLinkFinal(event);
+    }
+
     private SendLinkHandler createActiveHandler() throws IOException {
+        return createActiveHandler(AmqpMetricsProvider.noop());
+    }
+
+    private SendLinkHandler createActiveHandler(AmqpMetricsProvider metricsProvider) throws IOException {
         doAnswer(invocation -> {
             final Runnable work = invocation.getArgument(0);
             work.run();
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
         final SendLinkHandler realHandler
-            = new SendLinkHandler("connectionId", HOSTNAME, "linkName", ENTITY_PATH, AmqpMetricsProvider.noop());
+            = new SendLinkHandler("connectionId", HOSTNAME, "linkName", ENTITY_PATH, metricsProvider);
         final Event event = mock(Event.class);
         when(event.getSender()).thenReturn(sender);
         realHandler.onLinkFlow(event);
         reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, realHandler, reactorProvider,
-            tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+            tokenManager, messageSerializer, options, scheduler, metricsProvider);
         return realHandler;
     }
 

@@ -135,7 +135,8 @@ class RetriableWorkItem {
     }
 
     private void reportMetrics(DeliveryState deliveryState) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        // A send rejected before its first attempt has no delivery duration to report.
+        if (tryStartTime != 0 && metricsProvider.isSendDeliveryEnabled()) {
             metricsProvider.recordSend(tryStartTime, deliveryState == null ? null : deliveryState.getType());
         }
     }
